@@ -1,13 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+        {% block stylesheets %}{% endblock %}
+
+        <link rel="stylesheet" href="/style.css" type="text/css" media="screen, projection" />
+        <!--[if IE 7]><link rel="stylesheet" href="/style_ie7.css" type="text/css" media="screen, projection" /><![endif]-->
     </head>
+
     <body>
-        {% block body %}{% endblock %}
+        <div id="wrapper">
+
+            <nav class="top-nav">
+                <ul>
+                    <li><a href="# ">О Frameworks Days</a></li>
+                    <li class="active"><a href="# ">События</a></li>
+                    <li><a href="# ">Контактная информация</a></li>
+                    <li><a href="# ">Партнеры</a></li>
+                </ul>
+            </nav>
+
+            <header id="header">
+                <div class="wrap">
+                    <div class="logo">
+                        <div><a href="# " title="frameworks days">frameworks days</a>конференции разработчиков фреймворков</div>
+                    </div><!-- div.logo -->
+
+                    <div class="event-slider">
+                        <div class="slide">
+                            <div class="icon"><img src="/images/temp/zend-logo.png" width="162" height="172" alt="" /></div>
+                            <div class="text">
+                                <h2>26 августа 2011, Киев<br /> Экспо Плаза</h2>
+                                <p>Лучшие специалисты PHP и Zend Framework Украины, России и других стан СНГ соберутся вместе в Украине на одной конференции.</p>
+                                <a class="know-more" href="# ">Узнать больше</a>
+                            </div>
+                        </div>
+                        <div class="btn-prev"><a href="# " title="previous">previous</a></div>
+                        <div class="btn-next"><a href="# " title="next">next</a></div>
+                    </div><!-- div.event-slider -->
+                </div>
+            </header><!-- #header-->
+
+            <div class="events-switches">
+                <div class="wrap">
+                    <ul>
+                        <li class="active"><a href="# ">Zend Framework Day</a></li>
+                        <li><a href="# ">PHP Frameworks Day</a></li>
+                        <li class="past-events"><a href="# ">Прошедшие</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section id="middle">
+
+                <div id="container">
+                    <div id="content">
+                        {% block content %}{% endblock %}
+                    </div><!-- #content-->
+                </div><!-- #container-->
+
+                <aside id="side-left">
+                    <div class="soc-plugin-holder"><div class="tmp-soc-plugin"></div></div>
+                    <div class="soc-plugin-holder"><div class="tmp-soc-plugin"></div></div>
+                    <div class="soc-plugin-holder"><div class="tmp-soc-plugin"></div></div>
+                </aside><!-- #side-left -->
+
+                <aside id="side-right">
+                    <div class="side-right-wrap">
+                        <div class="side-right-holder">
+
+                            <div class="partners">
+
+                                <h2>Спонсоры</h2>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-sponsor-magento.png" width="110" height="67" alt="Magento" title="Magento" /></a></div>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-sponsor-habr.png" width="110" height="63" alt="Habrahabr" title="Habrahabr" /></a></div>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-sponsor-runnerpeak.png" width="110" height="62" alt="Runnerpeak" title="Runnerpeak" /></a></div>
+
+                            </div>
+
+                            <div class="partners">
+
+                                <h2>Партнеры</h2>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-partner-zconf.png" width="110" height="69" alt="ZConf" title="ZConf" /></a></div>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-partner-zfru.png" width="110" height="76" alt="ZF.RU" title="ZF.RU" /></a></div>
+                                <div class="partner"><a href="# "><img src="/images/temp/img-partner-stfalcon.png" width="110" height="71" alt="Stfalcon" title="Stfalcon" /></a></div>
+
+                            </div>
+
+                            <div class="become-partner"><a href="# ">Здесь может<br /> быть ваш логотип</a></div>
+
+                        </div><!-- .side-right-holder -->
+                    </div><!-- .side-right-wrap -->
+                </aside><!-- #side-right -->
+
+            </section><!-- #middle-->
+
+        </div><!-- #wrapper -->
+
+        <footer id="footer">
+            <div class="wrap">
+
+                <div class="copyright">&#169; 2011 Frameworks Days.</div>
+                <address>Электронная почта: <a href="# ">info@fwdays.com</a><br /> Телефон для справок: +380 (097) 874-03-42</address>
+                <div class="created-by">Сделано в <a class="stfalcon" href="http://stfalcon.com">stfalcon-studio</a></div>
+
+            </div>
+        </footer><!-- #footer -->
+
         {% block javascripts %}{% endblock %}
+
     </body>
 </html>
