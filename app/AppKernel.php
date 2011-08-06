@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Application\DefaultBundle\ApplicationDefaultBundle(),
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
+            new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

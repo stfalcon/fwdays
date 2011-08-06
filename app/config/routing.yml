@@ -1,3 +1,8 @@
+StfalconNewsBundle:
+    resource: "@StfalconNewsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 StfalconPageBundle:
     resource: "@StfalconPageBundle/Controller/"
     type:     annotation

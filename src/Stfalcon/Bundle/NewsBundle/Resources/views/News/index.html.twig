@@ -1,0 +1,43 @@
+<h1>News list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Slug</th>
+            <th>Preview</th>
+            <th>Text</th>
+            <th>Created_at</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('news_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.slug }}</td>
+            <td>{{ entity.preview }}</td>
+            <td>{{ entity.text }}</td>
+            <td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('news_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('news_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('news_new') }}">
+            Create a new entry
+        </a>
+    </li>
+</ul>
