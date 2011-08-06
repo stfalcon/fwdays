@@ -12,14 +12,14 @@ use Stfalcon\Bundle\PageBundle\Form\PageType;
 /**
  * Page controller.
  *
- * @Route("/page")
  */
+//  * @Route("/page")
 class PageController extends Controller
 {
     /**
      * Lists all Page entities.
      *
-     * @Route("/", name="page")
+     * @Route("/admin/pages", name="pages")
      * @Template()
      */
     public function indexAction()
@@ -34,30 +34,26 @@ class PageController extends Controller
     /**
      * Finds and displays a Page entity.
      *
-     * @Route("/{id}/show", name="page_show")
+     * @Route("/page/{slug}", name="page")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('StfalconPageBundle:Page')->find($id);
+        $page = $em->getRepository('StfalconPageBundle:Page')->findOneBy(array('slug' => $slug));
 
-        if (!$entity) {
+        if (!$page) {
             throw $this->createNotFoundException('Unable to find Page entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        );
+        return array('page' => $page);
     }
 
     /**
      * Displays a form to create a new Page entity.
      *
-     * @Route("/new", name="page_new")
+     * @Route("/admin/pages/new", name="page_new")
      * @Template()
      */
     public function newAction()
@@ -74,7 +70,7 @@ class PageController extends Controller
     /**
      * Creates a new Page entity.
      *
-     * @Route("/create", name="page_create")
+     * @Route("/admin/pages/create", name="page_create")
      * @Method("post")
      * @Template("StfalconPageBundle:Page:new.html.twig")
      */
@@ -90,7 +86,7 @@ class PageController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('page_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('page', array('slug' => $entity->getSlug())));
             
         }
 
@@ -103,7 +99,7 @@ class PageController extends Controller
     /**
      * Displays a form to edit an existing Page entity.
      *
-     * @Route("/{id}/edit", name="page_edit")
+     * @Route("/admin/pages/edit/{id}", name="page_edit")
      * @Template()
      */
     public function editAction($id)
@@ -129,7 +125,7 @@ class PageController extends Controller
     /**
      * Edits an existing Page entity.
      *
-     * @Route("/{id}/update", name="page_update")
+     * @Route("/admin/pages/update/{id}", name="page_update")
      * @Method("post")
      * @Template("StfalconPageBundle:Page:edit.html.twig")
      */
@@ -167,7 +163,7 @@ class PageController extends Controller
     /**
      * Deletes a Page entity.
      *
-     * @Route("/{id}/delete", name="page_delete")
+     * @Route("/admin/pages/delete/{id}", name="page_delete")
      * @Method("post")
      */
     public function deleteAction($id)
@@ -189,7 +185,7 @@ class PageController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('page'));
+        return $this->redirect($this->generateUrl('pages'));
     }
 
     private function createDeleteForm($id)

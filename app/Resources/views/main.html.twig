@@ -18,10 +18,10 @@
 
             <nav class="top-nav">
                 <ul>
-                    <li><a href="# ">О Frameworks Days</a></li>
-                    <li class="active"><a href="# ">События</a></li>
-                    <li><a href="# ">Контактная информация</a></li>
-                    <li><a href="# ">Партнеры</a></li>
+                    <li><a href="{{ path('page', { 'slug': 'about' }) }}">О Frameworks Days</a></li>
+                    <li class="active"><a href="{{ path('mainpage') }}">События</a></li>
+                    <li><a href="{{ path('page', { 'slug': 'contacts' }) }}">Контактная информация</a></li>
+                    <li><a href="{{ path('page', { 'slug': 'partners' }) }}">Партнеры</a></li>
                 </ul>
             </nav>
 
@@ -106,7 +106,7 @@
             <div class="wrap">
 
                 <div class="copyright">&#169; 2011 Frameworks Days.</div>
-                <address>Электронная почта: <a href="# ">info@fwdays.com</a><br /> Телефон для справок: +380 (097) 874-03-42</address>
+                <address>Электронная почта: <a href="mailto:info@fwdays.com">info@fwdays.com</a><br /> Телефон для справок: +380 (097) 874-03-42</address>
                 <div class="created-by">Сделано в <a class="stfalcon" href="http://stfalcon.com">stfalcon-studio</a></div>
 
             </div>
