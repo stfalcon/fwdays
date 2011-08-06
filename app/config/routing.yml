@@ -1,3 +1,8 @@
+StfalconEventBundle:
+    resource: "@StfalconEventBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 StfalconNewsBundle:
     resource: "@StfalconNewsBundle/Controller/"
     type:     annotation
