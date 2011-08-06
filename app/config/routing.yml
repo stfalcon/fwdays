@@ -1,3 +1,8 @@
+StfalconPageBundle:
+    resource: "@StfalconPageBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation
