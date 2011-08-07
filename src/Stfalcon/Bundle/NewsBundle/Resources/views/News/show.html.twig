@@ -1,35 +1,13 @@
-<h1>News</h1>
+{% extends '::main-no-head.html.twig' %}
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>                <td>{{ entity.id }}</td>        </tr>
-        <tr>
-            <th>Slug</th>                <td>{{ entity.slug }}</td>        </tr>
-        <tr>
-            <th>Preview</th>                <td>{{ entity.preview }}</td>        </tr>
-        <tr>
-            <th>Text</th>                <td>{{ entity.text }}</td>        </tr>
-        <tr>
-            <th>Created_at</th>                <td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>        </tr>
-    </tbody>
-</table>
+{% block content %}
+    <article>
+        <h2>{{ entity.title }}</h2>
+        
+        <div class="article-date-rubrics">{{ entity.createdat|date('d M Y') }}, <a href="# ">Python Frameworks Day</a></div>
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('news') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('news_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('news_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+        <p>{{ entity.text|raw }}</p>
+    </article>
+        
+    <div class="to-entitylist-link"><a href="{{ path('news') }}">← <u>к списку новостей</u></a></div>        
+{% endblock %}

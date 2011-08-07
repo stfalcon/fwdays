@@ -34,7 +34,7 @@ class PageController extends Controller
     /**
      * Finds and displays a Page entity.
      *
-     * @Route("/page/{slug}", name="page")
+     * @Route("/page/{slug}", name="page_show")
      * @Template()
      */
     public function showAction($slug)

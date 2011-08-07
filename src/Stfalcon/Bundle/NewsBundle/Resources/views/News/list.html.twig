@@ -1,0 +1,13 @@
+<h2>Новости и анонсы</h2>
+
+<div class="news-list">
+    {% for entity in entities %}
+    <article class="intro">
+        <h2><a href="{{ path('news_show', { 'slug': entity.slug }) }}">{{ entity.title }}</a></h2>
+        <div class="article-date-rubrics">{{ entity.createdat|date('d M Y') }}, <a href="# ">Zend Framework Day</a></div>
+        <p>{{ entity.preview }}</p>
+    </article>
+    {% endfor %}
+
+    <div class="allnews-link"><a href="{{ path('news') }}">все новости</a></div>
+</div>

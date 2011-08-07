@@ -1,43 +1,27 @@
-<h1>News list</h1>
+{% extends '::main-no-head.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Slug</th>
-            <th>Preview</th>
-            <th>Text</th>
-            <th>Created_at</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('news_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.slug }}</td>
-            <td>{{ entity.preview }}</td>
-            <td>{{ entity.text }}</td>
-            <td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('news_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('news_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% block content %}
+    <h2>Новости и анонсы</h2>
 
-<ul>
-    <li>
-        <a href="{{ path('news_new') }}">
-            Create a new entry
-        </a>
-    </li>
-</ul>
+    <div class="news-list">
+        {% for entity in entities %}
+        <article class="intro">
+            <h2><a href="{{ path('news_show', { 'slug': entity.slug }) }}">{{ entity.title }}</a></h2>
+            <div class="article-date-rubrics">{{ entity.createdat|date('d M Y') }}, <a href="# ">Zend Framework Day</a></div>
+            <p>{{ entity.preview }}</p>
+        </article>
+        {% endfor %}
+
+        {#<div class="prev-next-links"><a href="# ">← <u>предыдущая</u></a> <a href="# "><u>следующая</u> →</a></div>
+        <div class="paginator">
+            <a href="# ">1</a>
+            <span class="current">2</span>
+            <a href="# ">3</a>
+            <a href="# ">4</a>
+            <a href="# ">5</a>
+            <span class="placeholder">...</span>
+            <a href="# ">11</a>
+            <a href="# ">12</a>
+        </div>#}
+    </div>
+{% endblock %}

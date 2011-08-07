@@ -12,14 +12,13 @@ use Stfalcon\Bundle\EventBundle\Form\EventType;
 /**
  * Event controller.
  *
- * @Route("/event")
  */
 class EventController extends Controller
 {
     /**
      * Lists all Event entities.
      *
-     * @Route("/", name="event")
+     * @Route("/events", name="events")
      * @Template()
      */
     public function indexAction()
