@@ -57,3 +57,7 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+    
+# KnpMenuBundle
+knp_menu:
+    twig: true

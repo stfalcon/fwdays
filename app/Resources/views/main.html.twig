@@ -4,46 +4,7 @@
         
     <body>
         <div id="wrapper">
-
-            <nav class="top-nav">
-                <ul>
-                    <li><a href="{{ path('page_show', { 'slug': 'about' }) }}">О Frameworks Days</a></li>
-                    <li class="active"><a href="{{ path('events') }}">События</a></li>
-                    <li><a href="{{ path('page_show', { 'slug': 'contacts' }) }}">Контактная информация</a></li>
-                    <li><a href="{{ path('page_show', { 'slug': 'partners' }) }}">Партнеры</a></li>
-                </ul>
-            </nav>
-
-            <header id="header">
-                <div class="wrap">
-                    <div class="logo">
-                        <div><a href="{{ path('mainpage') }}" title="frameworks days">frameworks days</a>конференции разработчиков фреймворков</div>
-                    </div><!-- div.logo -->
-
-                    <div class="event-slider">
-                        <div class="slide">
-                            <div class="icon"><img src="/images/temp/zend-logo.png" width="162" height="172" alt="" /></div>
-                            <div class="text">
-                                <h2>26 августа 2011, Киев<br /> Экспо Плаза</h2>
-                                <p>Лучшие специалисты PHP и Zend Framework Украины, России и других стан СНГ соберутся вместе в Украине на одной конференции.</p>
-                                <a class="know-more" href="# ">Узнать больше</a>
-                            </div>
-                        </div>
-                        <div class="btn-prev"><a href="# " title="previous">previous</a></div>
-                        <div class="btn-next"><a href="# " title="next">next</a></div>
-                    </div><!-- div.event-slider -->
-                </div>
-            </header><!-- #header-->
-
-            <div class="events-switches">
-                <div class="wrap">
-                    <ul>
-                        <li class="active"><a href="# ">Zend Framework Day</a></li>
-                        <li><a href="# ">PHP Frameworks Day</a></li>
-                        <li class="past-events"><a href="# ">Прошедшие</a></li>
-                    </ul>
-                </div>
-            </div>
+            {% include '::_header.html.twig' with {'no_head': false} %}
 
             <section id="middle">
 

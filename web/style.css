@@ -575,10 +575,10 @@ label.for-radio {
     text-shadow: none;
     background: #0fcfb8;
 }
-.top-nav ul li.active a:link,
-.top-nav ul li.active a:visited,
-.top-nav ul li.active a:hover,
-.top-nav ul li.active a:active {
+.top-nav ul li.current a:link,
+.top-nav ul li.current a:visited,
+.top-nav ul li.current a:hover,
+.top-nav ul li.current a:active {
     padding: 0 10px;
     margin: -5px -5px 0;
     height: 32px;
@@ -761,13 +761,13 @@ label.for-radio {
     color: #cd3b23;
     border-bottom: 0 none;
 }
-.events-switches ul li.active {
+.events-switches ul li.current {
     padding: 0;
 }
-.events-switches ul li.active a:link,
-.events-switches ul li.active a:visited,
-.events-switches ul li.active a:hover,
-.events-switches ul li.active a:active {
+.events-switches ul li.current a:link,
+.events-switches ul li.current a:visited,
+.events-switches ul li.current a:hover,
+.events-switches ul li.current a:active {
     margin-top: 0;
     padding: 0 5px;
     height: 24px;
@@ -823,7 +823,7 @@ label.for-radio {
     margin-left: 4%;
     padding: 4px 12px 0 0;
 }
-.event-nav ul li.active {
+.event-nav ul li.current {
     height: 37px;
     font-weight: bold;
     color: #466173;
@@ -838,7 +838,7 @@ label.for-radio {
     -webkit-box-shadow: 0px 1px 2px #c0c0c0;
     box-shadow: 0px 1px 2px #c0c0c0;
 }
-.event-nav ul li.active a {
+.event-nav ul li.current a {
     color: #466173;
     text-decoration: none;
 }

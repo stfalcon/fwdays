@@ -4,23 +4,7 @@
         
     <body>
         <div id="wrapper" class="no-head">
-
-            <nav class="top-nav">
-                <ul>
-                    <li><a href="{{ path('page_show', { 'slug': 'about' }) }}">О Frameworks Days</a></li>
-                    <li><a href="{{ path('events') }}">События</a></li>
-                    <li><a href="{{ path('page_show', { 'slug': 'contacts' }) }}">Контактная информация</a></li>
-                    <li><a href="{{ path('page_show', { 'slug': 'partners' }) }}">Партнеры</a></li>
-                </ul>
-            </nav>
-
-            <header id="header">
-                <div class="wrap">
-                    <div class="logo">
-                        <div><a href="{{ path('mainpage') }}" title="frameworks days">frameworks days</a>конференции разработчиков фреймворков</div>
-                    </div><!-- div.logo -->
-                </div>
-            </header><!-- #header-->
+            {% include '::_header.html.twig' with {'no_head': true} %}
 
             <section id="middle">
 
