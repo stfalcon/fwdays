@@ -125,3 +125,4 @@ system(sprintf('%s %s assets:install %s', $interpreter, escapeshellarg($rootDir.
 
 // Remove the cache
 system(sprintf('%s %s cache:clear --no-warmup', $interpreter, escapeshellarg($rootDir.'/app/console')));
+

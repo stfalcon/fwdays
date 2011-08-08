@@ -21,6 +21,10 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Sonata\BluePrintBundle\SonataBluePrintBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\jQueryBundle\SonatajQueryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
