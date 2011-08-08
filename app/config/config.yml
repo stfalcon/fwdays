@@ -57,10 +57,3 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
-    
-services:
-   stfalcon.news.admin.news:
-      class: Stfalcon\Bundle\NewsBundle\Admin\NewsAdmin
-      tags:
-        - { name: sonata.admin, manager_type: orm, group: stfalcon_news, label: news }
-      arguments: [null, Stfalcon\Bundle\NewsBundle\Entity\News, StfalconNewsBundle:NewsAdmin]

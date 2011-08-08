@@ -4,17 +4,23 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <parameters>
-        <parameter key="stfalcon_page.example.class">Stfalcon\Bundle\PageBundle\Example</parameter>
+        <parameter key="stfalcon_page.admin.page.class">Stfalcon\Bundle\PageBundle\Admin\PageAdmin</parameter>
+        <parameter key="stfalcon_page.admin.page.entity">Stfalcon\Bundle\PageBundle\Entity\Page</parameter>
+        <parameter key="stfalcon_page.admin.page.controller">StfalconPageBundle:PageAdmin</parameter>
     </parameters>
-
+    
     <services>
-        <service id="stfalcon_page.example" class="%stfalcon_page.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="stfalcon_page.admin.page" class="%stfalcon_page.admin.page.class%">
+        <tag name="sonata.admin" manager_type="orm" group="stfalcon_page" label="page"/>
+        <argument />
+        <argument>%stfalcon_page.admin.page.entity%</argument>
+        <argument>%stfalcon_page.admin.page.controller%</argument>
+
+<!--        <call method="setUserManager">
+            <argument type="service" id="fos_user.user_manager" />
+        </call>-->
         </service>
     </services>
-    -->
+    
 </container>
