@@ -33,6 +33,29 @@
 [twig-extensions]
     git=http://github.com/fabpot/Twig-extensions.git
 
+[gherkin]
+    git=https://github.com/Behat/Gherkin.git
+    target=/behat/gherkin
+
+[behat]
+    git=https://github.com/Behat/Behat.git
+    target=/behat/behat
+
+[mink]
+    git=https://github.com/Behat/Mink.git
+    target=/behat/mink
+
+[goutte]
+    git=http://github.com/fabpot/Goutte.git
+
+[buzz]
+    git=https://github.com/kriswallsmith/Buzz.git
+    target=/buzz
+
+[sahi]
+    git=http://github.com/Behat/SahiClient.git
+    target=/behat/sahi
+
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
     version=1.0.0
@@ -73,3 +96,15 @@
 [SonataAdminBundle]
     git=http://github.com/sonata-project/SonataAdminBundle.git
     target=/bundles/Sonata/AdminBundle
+
+[LiipFunctionalTestBundle]
+    git=http://github.com/liip/LiipFunctionalTestBundle.git
+    target=/bundles/Liip/FunctionalTestBundle
+
+[BehatBundle]
+    git=http://github.com/Behat/BehatBundle.git
+    target=/bundles/Behat/BehatBundle
+
+[MinkBundle]
+    git=http://github.com/Behat/MinkBundle.git
+    target=/bundles/Behat/MinkBundle
