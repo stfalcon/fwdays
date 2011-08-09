@@ -29,20 +29,6 @@ class Event
     private $slug;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string $logo
-     *
-     * @ORM\Column(name="logo", type="string", length=255)
-     */
-    private $logo;
-
-    /**
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -56,7 +42,14 @@ class Event
      */
     private $description;
 
+    /**
+     * @var string $logo
+     *
+     * @ORM\Column(name="logo", type="string", length=255)
+     */
+    private $logo;
 
+    
     /**
      * Get id
      *
@@ -85,26 +78,6 @@ class Event
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
