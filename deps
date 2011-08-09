@@ -45,6 +45,17 @@
     git=https://github.com/Behat/Mink.git
     target=/behat/mink
 
+[goutte]
+    git=http://github.com/fabpot/Goutte.git
+
+[buzz]
+    git=https://github.com/kriswallsmith/Buzz.git
+    target=/buzz
+
+[sahi]
+    git=http://github.com/Behat/SahiClient.git
+    target=/behat/sahi
+
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
     version=1.0.0
