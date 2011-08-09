@@ -16,8 +16,8 @@ swiftmailer:
 behat: ~
 
 mink:
-    base_url:   http://cookorama.net
-#    goutte:     ~   # enable both Goutte
+    base_url:   http://fwdays.com.my
+    goutte:     ~   # enable both Goutte
 #    sahi:       ~   # and Sahi session
 ##    sahi:       
 ##        host:     x.local
