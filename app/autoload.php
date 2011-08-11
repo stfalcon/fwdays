@@ -18,12 +18,11 @@ $loader->registerNamespaces(array(
     'Metadata'         => __DIR__.'/../vendor/metadata/src',
     'Behat\Gherkin'    => __DIR__.'/../vendor/behat/gherkin/src',
     'Behat\Behat'      => __DIR__.'/../vendor/behat/behat/src',
-    'Behat\Sahi'       => __DIR__.'/../vendor/behat/sahi/src',
     'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
     'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src',
     'Behat\MinkBundle' => __DIR__.'/../vendor/bundles',
-    'Goutte'           => __DIR__.'/../vendor/goutte/src',
-    'Buzz'             => __DIR__.'/../vendor/buzz/lib',
+    'Imagine'          => __DIR__.'/../vendor/imagine/lib',
+    'Avalanche'        => __DIR__.'/../vendor/bundles',    
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

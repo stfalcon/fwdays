@@ -26,10 +26,26 @@ class EventAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('slug')
-                ->add('logo', 'file', array('type' => false, 'required' => false))
                 ->add('title')
                 ->add('description')
+                ->add('file', 'file')
             ->end()
         ;
+    }
+    
+    public function prePersist($object)
+    {
+        if (null === $object->file) {
+            return;
+        }
+    
+        $uploadDir = '/uploads/event';
+        $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
+        $newFileName = $object->getSlug() . '.' . pathinfo($object->file->getClientOriginalName(), PATHINFO_EXTENSION);
+        
+        $object->file->move($pathToUploads, $newFileName);
+        $object->setLogo($uploadDir . '/' . $object->file->getClientOriginalName());
+        
+        unset($object->file);
     }
 }

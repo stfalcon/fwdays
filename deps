@@ -45,20 +45,12 @@
     git=https://github.com/Behat/Mink.git
     target=/behat/mink
 
-[goutte]
-    git=http://github.com/fabpot/Goutte.git
-
-[buzz]
-    git=https://github.com/kriswallsmith/Buzz.git
-    target=/buzz
-
-[sahi]
-    git=http://github.com/Behat/SahiClient.git
-    target=/behat/sahi
-
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
     version=1.0.0
+
+[imagine]
+    git=http://github.com/avalanche123/Imagine.git
 
 [SensioFrameworkExtraBundle]
     git=http://github.com/sensio/SensioFrameworkExtraBundle.git
@@ -108,3 +100,7 @@
 [MinkBundle]
     git=http://github.com/Behat/MinkBundle.git
     target=/bundles/Behat/MinkBundle
+
+[AvalancheImagineBundle]
+    git=http://github.com/avalanche123/AvalancheImagineBundle.git
+    target=bundles/Avalanche/Bundle/ImagineBundle

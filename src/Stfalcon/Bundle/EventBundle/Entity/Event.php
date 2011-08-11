@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
@@ -48,6 +49,11 @@ class Event
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo;
+    
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     
     /**
@@ -81,7 +87,7 @@ class Event
     }
 
     /**
-     * Set logo
+     * Set path to logo
      *
      * @param string $logo
      */
@@ -91,7 +97,7 @@ class Event
     }
 
     /**
-     * Get logo
+     * Get path to logo
      *
      * @return string 
      */
