@@ -17,6 +17,7 @@ class EventAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
+            ->add('name')
             ->add('title')
         ;
     }
@@ -26,9 +27,11 @@ class EventAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('slug')
+                ->add('name')
                 ->add('title')
                 ->add('description')
-                ->add('file', 'file')
+                ->add('about')
+                ->add('file', 'file', array('required' => false))
                 ->add('active')
             ->end()
         ;

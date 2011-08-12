@@ -17,7 +17,7 @@
                             <img src="{{ event.logo }}" width="120" height="129" alt="" />
                         </a>
                     </div><!-- div.logo -->
-                    <div class="event-head-text">26 августа 2011, Киев<br /> Экспо Плаза</div>
+                    <div class="event-head-text">{{ event.title|raw }}</div>
                 </div>
             </header><!-- #header-->
 
@@ -39,66 +39,7 @@
 
                 <div id="container">
                     <div id="content">
-
-                        <h2>О событии</h2>
-
-                        <article class="about-event">
-                            <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru. ZFConf Russia была первой конференцией по Zend Framework и прошла в марте этого года в Санкт-Петербурге, Россия, собрав более 200 участников из России, Беларуси, Украины, Литвы и других стран СНГ</p>
-                            <p>Конференция MageConf впервые прошла в мае 2010 года в Киеве. Это была первая конференция из серии PHP and Zend Framework в Украине. Ее посетили больше 150 специалистов.</p>
-                            <p>Проведение совместной конференции даст шанс объединить лучших спикеров, лучшие доклады и самые интересные темы.</p>
-
-                            <table class="event-details">
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="event-details-h">Место проведения:</div>
-                                        <p>КиевЭкспоПлаза, ул. Салютная 2б, 3 павильон, Киев, Украина</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="event-details-h">Время:</div>
-                                        <p>27 ноября 2010 г. (с 10:00 до 19:00)<br /> Регистрация участников начнется в 10:00.</p>
-                                    </td>
-                                    <td>
-                                        <div class="event-details-h">Длительность:</div>
-                                        <p>1 полный день</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="price" colspan="2">
-                                        <p><b>Стоимость участия:</b> бесплатно</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="event-details-h">Формат:</div>
-                                        <p>доклады в три потока и обсуждения на флипчарте (в перерывах)</p>
-                                    </td>
-                                    <td>
-                                        <div class="event-details-h">Язык докладов:</div>
-                                        <p>русский</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="event-details-h">Аудитория:</div>
-                                        <p>Разработчики ПО и специалисты по Project Management с Украины, России и близлежащих стран СНГ. Ожидаемое количество участников – 500 человек</p>
-                                    </td>
-                                    <td>
-                                        <div class="event-details-h">Потоки:</div>
-                                        <p>Zend Framework, PHP, Magento</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </article>
-
-                        <ul class="socnet-likes">
-                            <li class="vk"><a href="# "><img src="/images/temp/socnet-like-vk.png" width="82" height="22" alt="" /></a></li>
-                            <li class="fb"><a href="# "><img src="/images/temp/socnet-like-fb.png" width="124" height="20" alt="" /></a></li>
-                            <li class="tw"><a href="# "><img src="/images/temp/socnet-like-tw.png" width="107" height="20" alt="" /></a></li>
-                            <li class="gg"><a href="# "><img src="/images/temp/socnet-like-gg.png" width="76" height="20" alt="" /></a></li>
-                        </ul>
-
+                        {% block content %}{% endblock %}
                     </div><!-- #content-->
                 </div><!-- #container-->
 

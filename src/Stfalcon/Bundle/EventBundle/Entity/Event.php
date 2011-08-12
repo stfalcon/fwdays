@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
- * @ORM\Table()
+ * @ORM\Table(name="events")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\EventRepository")
  */
 class Event
@@ -30,6 +30,13 @@ class Event
     private $slug;
 
     /**
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+    
+    /**
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -42,6 +49,13 @@ class Event
      * @ORM\Column(name="description", type="text")
      */
     private $description;
+    
+    /**
+     * @var text $about
+     *
+     * @ORM\Column(name="about", type="text")
+     */
+    private $about;
 
     /**
      * @var string $logo
@@ -176,6 +190,22 @@ class Event
      */
     public function setActive($active) {
         $this->active = $active;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    public function getAbout() {
+        return $this->about;
+    }
+
+    public function setAbout($about) {
+        $this->about = $about;
     }
 
 }

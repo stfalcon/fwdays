@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Stfalcon\Bundle\PageBundle\Entity\Page
  *
- * @ORM\Table()
+ * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\PageBundle\Entity\PageRepository")
  */
 class Page
