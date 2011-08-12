@@ -3,3 +3,4 @@
 /web/bundles
 /vendor
 /web/uploads/event/*
+/web/media/cache/*

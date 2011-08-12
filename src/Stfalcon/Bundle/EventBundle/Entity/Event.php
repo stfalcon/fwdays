@@ -159,11 +159,21 @@ class Event
     public function setFile($file) {
         $this->file = $file;
     }
-    
+
+    /**
+     * Get active
+     * 
+     * @return boolean
+     */
     public function getActive() {
         return $this->active;
     }
 
+    /**
+     * Set active
+     * 
+     * @param boolean $active 
+     */
     public function setActive($active) {
         $this->active = $active;
     }

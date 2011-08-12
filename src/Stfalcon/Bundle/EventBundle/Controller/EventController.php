@@ -25,32 +25,28 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entities = $em->getRepository('StfalconEventBundle:Event')->findAll();
+        $events = $em->getRepository('StfalconEventBundle:Event')->findAll();
 
-        return array('entities' => $entities);
+        return array('events' => $events);
     }
 
     /**
      * Finds and displays a Event entity.
      *
-     * @Route("/{id}/show", name="event_show")
+     * @Route("/event/{slug}", name="event_show")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('StfalconEventBundle:Event')->find($id);
+        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $slug));
 
-        if (!$entity) {
+        if (!$event) {
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        );
+        return array('event' => $event);
     }
 
 }

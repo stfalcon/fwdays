@@ -5,13 +5,13 @@
 
     <table class="conferences-list">
         <tbody>
-            {% for entity in entities %}
+            {% for event in events %}
                 <tr>
-                    <td class="conf-logo"><img src="{{ entity.logo }}" width="82" height="87" alt="{{ entity.title }}"></td>
+                    <td class="conf-logo"><img src="{{ event.logo }}" width="82" height="87" alt="{{ event.title }}"></td>
                     <td class="conf-info">
                         <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
-                        <p>{{ entity.description }}</p>
-                        <div class="conf-info-links"><a href="# ">Детальная информация</a></div>
+                        <p>{{ event.description }}</p>
+                        <div class="conf-info-links"><a href="{{ path('event_show', {'slug': event.slug } )}}">Детальная информация</a></div>
                     </td>
                 </tr>
             {% endfor %}

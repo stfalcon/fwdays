@@ -27,6 +27,10 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
     
+_imagine:
+    resource: .
+    type: imagine
+    
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"

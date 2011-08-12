@@ -6,11 +6,17 @@
 
     <parameters>
         <parameter key="menu.main.class">Application\DefaultBundle\Menu\MainMenu</parameter>
+        <parameter key="menu.event.class">Application\DefaultBundle\Menu\EventMenu</parameter>
     </parameters>
 
     <services>
         <service id="menu.main" class="%menu.main.class%" scope="request">
             <tag name="knp_menu.menu" alias="main" />
+            <argument type="service" id="request" />
+            <argument type="service" id="router" />
+        </service>
+        <service id="menu.event" class="%menu.event.class%" scope="request">
+            <tag name="knp_menu.menu" alias="event" />
             <argument type="service" id="request" />
             <argument type="service" id="router" />
         </service>

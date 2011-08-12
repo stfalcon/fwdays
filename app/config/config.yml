@@ -61,3 +61,13 @@ jms_security_extra:
 # KnpMenuBundle
 knp_menu:
     twig: true
+    
+#avalanche_imagine:
+#    filters:
+#        events_thumb:
+#            type:    thumbnail
+#            options: { size: [82, 87], mode: outbound }
+#        
+#        event_thumb:
+#            type:    thumbnail
+#            options: { size: [120, 129], mode: outbound }
