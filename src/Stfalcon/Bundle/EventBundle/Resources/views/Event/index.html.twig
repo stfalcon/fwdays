@@ -1,45 +1,62 @@
-<h1>Event list</h1>
+{% extends '::main-no-head.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Slug</th>
-            <th>Name</th>
-            <th>Logo</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('event_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.slug }}</td>
-            <td>{{ entity.name }}</td>
-            <td>{{ entity.logo }}</td>
-            <td>{{ entity.title }}</td>
-            <td>{{ entity.description }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('event_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('event_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+{% block content %}
+    <h2>Будущие события</h2>
+
+    <table class="conferences-list">
+        <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td class="conf-logo"><img src="{{ entity.logo }}" width="82" height="87" alt="{{ entity.title }}"></td>
+                    <td class="conf-info">
+                        <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                        <p>{{ entity.description }}</p>
+                        <div class="conf-info-links"><a href="# ">Детальная информация</a></div>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
+        </tbody>
+    </table>
+
+    {#<h2>Прошедшие события</h2>
+
+    <table class="conferences-list conferences-list-past">
+        <tbody><tr>
+            <td class="conf-logo"><img src="images/temp/zfd-logo-mini.png" width="82" height="87" alt=""></td>
+            <td class="conf-info">
+                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
+                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
             </td>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
 
-<ul>
-    <li>
-        <a href="{{ path('event_new') }}">
-            Create a new entry
-        </a>
-    </li>
-</ul>
+        <tr>
+            <td class="conf-logo"><img src="images/temp/pfd-logo-mini.png" width="88" height="87" alt=""></td>
+            <td class="conf-info">
+                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
+                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="conf-logo"><img src="images/temp/zfd-logo-mini.png" width="82" height="87" alt=""></td>
+            <td class="conf-info">
+                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
+                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="conf-logo"><img src="images/temp/pfd-logo-mini.png" width="88" height="87" alt=""></td>
+            <td class="conf-info">
+                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
+                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
+            </td>
+        </tr>
+    </tbody></table>#}
+{% endblock %}

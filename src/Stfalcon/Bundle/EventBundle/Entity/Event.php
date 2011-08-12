@@ -51,11 +51,17 @@ class Event
     private $logo;
     
     /**
+     * @var boolean $active
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */    
+    private $active = true;
+    
+    /**
      * @Assert\File(maxSize="6000000")
      */
-    public $file;
+    private $file;
 
-    
     /**
      * Get id
      *
@@ -145,4 +151,21 @@ class Event
     {
         return $this->description;
     }
+    
+    public function getFile() {
+        return $this->file;
+    }
+
+    public function setFile($file) {
+        $this->file = $file;
+    }
+    
+    public function getActive() {
+        return $this->active;
+    }
+
+    public function setActive($active) {
+        $this->active = $active;
+    }
+
 }

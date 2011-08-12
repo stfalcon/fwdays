@@ -29,23 +29,39 @@ class EventAdmin extends Admin
                 ->add('title')
                 ->add('description')
                 ->add('file', 'file')
+                ->add('active')
             ->end()
         ;
     }
     
-    public function prePersist($object)
+    /**
+     * Saves an uploaded logo of event
+     * 
+     * @param Event $event
+     * @return void 
+     */
+    public function uploadLogo($event)
     {
-        if (null === $object->file) {
+        if (null === $event->getFile()) {
             return;
         }
     
         $uploadDir = '/uploads/event';
         $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName = $object->getSlug() . '.' . pathinfo($object->file->getClientOriginalName(), PATHINFO_EXTENSION);
+        $newFileName = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
         
-        $object->file->move($pathToUploads, $newFileName);
-        $object->setLogo($uploadDir . '/' . $object->file->getClientOriginalName());
+        $event->getFile()->move($pathToUploads, $newFileName);
+        $event->setLogo($uploadDir . '/' . $newFileName);
         
-        unset($object->file);
+        $event->setFile(null);
+    }
+    
+    public function prePersist($event)
+    {
+        $this->uploadLogo($event);
+    }
+    
+    public function preUpdate($event) {
+        $this->uploadLogo($event);
     }
 }
