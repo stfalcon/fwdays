@@ -19,6 +19,8 @@ class PageAdmin extends Admin
             ->addIdentifier('slug')
             ->add('title')
         ;
+        
+        return $listMapper;
     }
     
     protected function configureFormFields(FormMapper $formMapper)
@@ -30,5 +32,7 @@ class PageAdmin extends Admin
                 ->add('text')
             ->end()
         ;
+        
+        return $formMapper;
     }
 }

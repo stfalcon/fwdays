@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\NewsBundle\Entity\News;
-use Stfalcon\Bundle\NewsBundle\Form\NewsType;
 
 /**
  * News controller.

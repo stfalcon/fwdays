@@ -8,14 +8,27 @@
         <parameter key="stfalcon_event.admin.event.class">Stfalcon\Bundle\EventBundle\Admin\EventAdmin</parameter>
         <parameter key="stfalcon_event.admin.event.entity">Stfalcon\Bundle\EventBundle\Entity\Event</parameter>
         <parameter key="stfalcon_event.admin.event.controller">StfalconEventBundle:EventAdmin</parameter>
+        <parameter key="stfalcon_event.admin.page.class">Stfalcon\Bundle\EventBundle\Admin\PageAdmin</parameter>
+        <parameter key="stfalcon_event.admin.page.entity">Stfalcon\Bundle\EventBundle\Entity\Page</parameter>
+        <parameter key="stfalcon_event.admin.page.controller">StfalconEventBundle:PageAdmin</parameter>
     </parameters>
     
     <services>
         <service id="stfalcon_event.admin.event" class="%stfalcon_event.admin.event.class%">
-        <tag name="sonata.admin" manager_type="orm" group="stfalcon_event" label="event"/>
-        <argument />
-        <argument>%stfalcon_event.admin.event.entity%</argument>
-        <argument>%stfalcon_event.admin.event.controller%</argument>
+            <tag name="sonata.admin" manager_type="orm" group="stfalcon_event" label="event"/>
+            <argument />
+            <argument>%stfalcon_event.admin.event.entity%</argument>
+            <argument>%stfalcon_event.admin.event.controller%</argument>
+
+<!--        <call method="setUserManager">
+            <argument type="service" id="fos_user.user_manager" />
+        </call>-->
+        </service>
+        <service id="stfalcon_event.admin.page" class="%stfalcon_event.admin.page.class%">
+            <tag name="sonata.admin" manager_type="orm" group="stfalcon_event" label="page"/>
+            <argument />
+            <argument>%stfalcon_event.admin.page.entity%</argument>
+            <argument>%stfalcon_event.admin.page.controller%</argument>
 
 <!--        <call method="setUserManager">
             <argument type="service" id="fos_user.user_manager" />

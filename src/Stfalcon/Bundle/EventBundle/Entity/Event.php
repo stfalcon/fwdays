@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
- * @ORM\Table(name="events")
+ * @ORM\Table(name="event__events")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\EventRepository")
  */
 class Event
@@ -207,5 +207,7 @@ class Event
     public function setAbout($about) {
         $this->about = $about;
     }
+    
+    public function __toString() { return $this->name; }
 
 }
