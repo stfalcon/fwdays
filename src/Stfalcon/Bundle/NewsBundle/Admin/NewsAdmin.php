@@ -21,6 +21,8 @@ class NewsAdmin extends Admin
             ->add('preview')
             ->add('created_at')
         ;
+        
+        return $listMapper;
     }
     
     protected function configureFormFields(FormMapper $formMapper)
@@ -34,5 +36,7 @@ class NewsAdmin extends Admin
                 ->add('created_at')
             ->end()
         ;
+        
+        return $formMapper;
     }
 }
