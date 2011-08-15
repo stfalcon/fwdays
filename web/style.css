@@ -593,7 +593,7 @@ label.for-radio {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.top-nav ul li:first-child.active a {
+.top-nav ul li:first-child.current a {
     margin-left: -10px;
 }
 

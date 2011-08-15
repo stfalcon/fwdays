@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="menu.main.class">Application\DefaultBundle\Menu\MainMenu</parameter>
         <parameter key="menu.event.class">Application\DefaultBundle\Menu\EventMenu</parameter>
+        <parameter key="menu.event_sub.class">Application\DefaultBundle\Menu\EventSubMenu</parameter>
     </parameters>
 
     <services>
@@ -19,6 +20,12 @@
             <tag name="knp_menu.menu" alias="event" />
             <argument type="service" id="request" />
             <argument type="service" id="router" />
+        </service>
+        <service id="menu.event_sub" class="%menu.event_sub.class%" scope="request">
+            <tag name="knp_menu.menu" alias="event_sub" />
+            <argument type="service" id="request" />
+            <argument type="service" id="router" />
+            <argument type="service" id="stfalcon_event.current_event" />
         </service>
     </services>
 </container>

@@ -38,15 +38,22 @@ class EventController extends Controller
      */
     public function showAction($slug)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $slug));
+        return array('event' => $this->getEventBySlug($slug));
+    }
+    
+    public function getEventBySlug($slug) 
+    {
+        $event = $this->getDoctrine()->getEntityManager()
+                      ->getRepository('StfalconEventBundle:Event')
+                      ->findOneBy(array('slug' => $slug));
 
         if (!$event) {
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
-
-        return array('event' => $event);
+        
+        $this->container->set('stfalcon_event.current_event', $event);
+        
+        return $event;
     }
-
+    
 }

@@ -24,8 +24,12 @@ class PageController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $event_slug));
+        if (!$event) {
+            throw $this->createNotFoundException('Unable to find Event entity.');
+        }
+        $this->container->set('stfalcon_event.current_event', $event);
+        
         $page = $em->getRepository('StfalconEventBundle:Page')->findOneBy(array('slug' => $page_slug, 'event' => $event->getId()));
-
         if (!$page) {
             throw $this->createNotFoundException('Unable to find Page entity.');
         }

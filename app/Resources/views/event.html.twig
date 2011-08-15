@@ -3,7 +3,6 @@
     {% include '::_head.html.twig' %}
 
     <body>
-
         <div id="wrapper" class="sidebars-right">
 
             <nav class="top-nav">
@@ -24,14 +23,12 @@
             <nav class="event-nav">
                 <div class="wrap">
                     <ul>
-                        <li><a class="reg-button" href="# ">Зарегистрироваться</a></li>
-                        <li><a href="# ">Программа</a></li>
-                        <li class="active"><a href="# ">Докладчики</a></li>
-                        <li><a href="# ">Участникам</a></li>
-                        <li><a href="# ">Партнеры</a></li>
-                        <li><a href="# ">Архив</a></li>
-                        <li><a href="# ">Организаторы</a></li>
+                        <li>
+                            <a class="reg-button" href="# ">Зарегистрироваться</a>
+                        </li>
                     </ul>
+
+                    {{ knp_menu('event_sub') }}
                 </div>
             </nav>
 
@@ -73,6 +70,8 @@
                     <div class="allpresenters-link"><a href="# ">все докладчики</a></div>
 
                     <h2>Новости</h2>
+
+                    {% render "StfalconNewsBundle:News:list" with { 'count': 7, 'short': true } %}
 
                     <ul class="side-news">
                         <li>

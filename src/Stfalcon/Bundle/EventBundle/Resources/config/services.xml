@@ -14,6 +14,8 @@
     </parameters>
     
     <services>
+        <service id="stfalcon_event.current_event" class="%stfalcon_event.admin.event.entity%" />
+
         <service id="stfalcon_event.admin.event" class="%stfalcon_event.admin.event.class%">
             <tag name="sonata.admin" manager_type="orm" group="stfalcon_event" label="event"/>
             <argument />

@@ -70,11 +70,17 @@ class Event
      * @ORM\Column(name="active", type="boolean")
      */    
     private $active = true;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
+     */
+    private $pages;
+
     /**
      * @Assert\File(maxSize="6000000")
      */
     private $file;
+    
 
     /**
      * Get id
@@ -209,5 +215,13 @@ class Event
     }
     
     public function __toString() { return $this->name; }
+
+    public function getPages() {
+        return $this->pages;
+    }
+
+    public function setPages($pages) {
+        $this->pages = $pages;
+    }
 
 }
