@@ -21,16 +21,8 @@ class PageController extends Controller
      * @Route("/{slug}", name="page_show")
      * @Template()
      */
-    public function showAction($slug)
+    public function showAction(Page $page)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $page = $em->getRepository('StfalconPageBundle:Page')->findOneBy(array('slug' => $slug));
-
-        if (!$page) {
-            throw $this->createNotFoundException('Unable to find Page entity.');
-        }
-
         return array('page' => $page);
     }
     

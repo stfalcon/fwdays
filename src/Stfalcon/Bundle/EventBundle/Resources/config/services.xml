@@ -11,6 +11,9 @@
         <parameter key="stfalcon_event.admin.page.class">Stfalcon\Bundle\EventBundle\Admin\PageAdmin</parameter>
         <parameter key="stfalcon_event.admin.page.entity">Stfalcon\Bundle\EventBundle\Entity\Page</parameter>
         <parameter key="stfalcon_event.admin.page.controller">StfalconEventBundle:PageAdmin</parameter>
+        <parameter key="stfalcon_event.admin.news.class">Stfalcon\Bundle\EventBundle\Admin\NewsAdmin</parameter>
+        <parameter key="stfalcon_event.admin.news.entity">Stfalcon\Bundle\EventBundle\Entity\News</parameter>
+        <parameter key="stfalcon_event.admin.news.controller">StfalconEventBundle:NewsAdmin</parameter>
     </parameters>
     
     <services>
@@ -31,6 +34,16 @@
             <argument />
             <argument>%stfalcon_event.admin.page.entity%</argument>
             <argument>%stfalcon_event.admin.page.controller%</argument>
+
+<!--        <call method="setUserManager">
+            <argument type="service" id="fos_user.user_manager" />
+        </call>-->
+        </service>
+        <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
+            <tag name="sonata.admin" manager_type="orm" group="stfalcon_event" label="news"/>
+            <argument />
+            <argument>%stfalcon_event.admin.news.entity%</argument>
+            <argument>%stfalcon_event.admin.news.controller%</argument>
 
 <!--        <call method="setUserManager">
             <argument type="service" id="fos_user.user_manager" />

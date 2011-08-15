@@ -9,59 +9,53 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\NewsBundle\Entity\News;
 
 /**
- * News controller.
+ * News controller
  */
 class NewsController extends Controller
 {
     /**
-     * Lists all News entities.
+     * List of all news
      *
      * @Route("/news", name="news")
      * @Template()
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        // @todo здесь нужно будет добавить пагинатор и заменить выборку
+        $news = $this->getDoctrine()
+                     ->getEntityManager()
+                     ->getRepository('StfalconNewsBundle:News')
+                     ->findAll();
 
-        $entities = $em->getRepository('StfalconNewsBundle:News')->findAll();
-
-        return array('entities' => $entities);
+        return array('news' => $news);
     }
 
     /**
-     * List las News entities
-     *
-     * @Template()
-     *
-     * @param null $count
-     * @return void
-     */
-    public function listAction($count = null)
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entities = $em->getRepository('StfalconNewsBundle:News')->findAll();
-        
-        return array('entities' => $entities);
-    }
-
-    /**
-     * Finds and displays a News entity.
+     * Finds and displays a news
      *
      * @Route("/news/{slug}", name="news_show")
      * @Template()
      */
-    public function showAction($slug)
+    public function showAction(News $oneNews)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $entity = $em->getRepository('StfalconNewsBundle:News')->findOneBy(array('slug' => $slug));
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find News entity.');
-        }
-
-        return array('entity' => $entity);
+        return array('one_news' => $oneNews);
     }
 
+    /**
+     * List of last news
+     *
+     * @Template()
+     *
+     * @param integer $count
+     * @return void
+     */
+    public function lastAction($count)
+    {
+        // @todo здесь нужно будет добавить ограничение
+        $news = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconNewsBundle:News')->getLastNews($count);
+
+        return array('news' => $news);
+    }
+    
 }

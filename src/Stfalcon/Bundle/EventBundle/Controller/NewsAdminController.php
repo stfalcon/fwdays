@@ -1,5 +1,5 @@
 <?php
-namespace Stfalcon\Bundle\NewsBundle\Controller;
+namespace Stfalcon\Bundle\EventBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 

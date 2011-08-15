@@ -23,7 +23,7 @@
             <nav class="event-nav">
                 <div class="wrap">
                     <div class="reg-button-hold"><a class="reg-button" href="# ">Зарегистрироваться</a></div>
-                    
+
                     {{ knp_menu('event_sub') }}
                 </div>
             </nav>
@@ -35,41 +35,6 @@
                         {% block content %}{% endblock %}
                     </div><!-- #content-->
                 </div><!-- #container-->
-
-                <aside id="side-left">
-
-                    <h2>Докладчики</h2>
-
-                    <ul class="presenters">
-                        <li>
-                            <div class="presenter-photo"><img src="/images/temp/presenter-mini1.jpg" width="64" height="64" alt="" /></div>
-                            <div class="presenter-info">
-                                <a href="# ">Александр Веремьев</a>
-                                <div class="presenter-company">Zend Technologies</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="presenter-photo"><img src="/images/temp/presenter-mini2.jpg" width="64" height="64" alt="" /></div>
-                            <div class="presenter-info">
-                                <a href="# ">Ростислав Михайлив</a>
-                                <div class="presenter-company">4C</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="presenter-photo"><img src="/images/temp/presenter-mini3.jpg" width="64" height="64" alt="" /></div>
-                            <div class="presenter-info">
-                                <a href="# ">Ростислав Михайлив</a>
-                                <div class="presenter-company">Gadu-Gadu</div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="allpresenters-link"><a href="# ">все докладчики</a></div>
-
-                    <h2>Новости</h2>
-                    
-                    {% render "StfalconEventBundle:News:list" with { 'event': event, 'count': 7 } %}
-                    
-                </aside><!-- #side-left -->
 
                 <aside id="side-right">
                     <div class="side-right-wrap">

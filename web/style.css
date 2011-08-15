@@ -807,10 +807,19 @@ label.for-radio {
     height: 52px;
     border-bottom: 1px solid #e0dcca;
 }
-.event-nav ul {
+.event-nav .wrap-inner {
     max-width: 1400px;
-    padding: 8px 0 0;
     margin: 0 auto;
+}
+.reg-button-hold {
+    float: left;
+    margin-left: 4%;
+    padding-top: 12px;
+}
+.event-nav ul {
+    float: left;
+    padding: 8px 0 0;
+    margin: 0 4%;
     list-style: none outside;
 }
 .event-nav ul li {
@@ -820,8 +829,7 @@ label.for-radio {
     background: transparent;
 }
 .event-nav ul li:first-child {
-    margin-left: 4%;
-    padding: 4px 12px 0 0;
+    margin-left: -17px;
 }
 .event-nav ul li.current {
     height: 37px;

@@ -77,6 +77,11 @@ class Event
     private $pages;
 
     /**
+     * @ORM\OneToMany(targetEntity="News", mappedBy="event")
+     */
+    private $news;
+
+    /**
      * @Assert\File(maxSize="6000000")
      */
     private $file;
@@ -222,6 +227,14 @@ class Event
 
     public function setPages($pages) {
         $this->pages = $pages;
+    }
+
+    public function getNews() {
+        return $this->news;
+    }
+
+    public function setNews($news) {
+        $this->news = $news;
     }
 
 }

@@ -18,7 +18,6 @@ class NewsAdmin extends Admin
         $listMapper
             ->addIdentifier('slug')
             ->add('title')
-            ->add('preview')
             ->add('created_at')
         ;
         
