@@ -12,7 +12,7 @@ use Stfalcon\Bundle\EventBundle\Form\SpeakerType;
 /**
  * Speaker controller
  */
-class SpeakerController extends Controller
+class SpeakerController extends BaseController
 {
     /**
      * Lists all sreakers for event
@@ -22,10 +22,11 @@ class SpeakerController extends Controller
      */
     public function indexAction($event_slug)
     {
-        // @todo это заглушка
-        $em = $this->getDoctrine()->getEntityManager();
-        $entities = $em->getRepository('StfalconEventBundle:Speaker')->findAll();
-        return array('entities' => $entities);
+        
+        $event = $this->getEventBySlug($event_slug);
+        $speakers = $event->getSpeakers();
+
+        return array('event' => $event, 'speakers' => $speakers);
     }
 
     /**
@@ -47,5 +48,5 @@ class SpeakerController extends Controller
             'entity'      => $entity,
         );
     }
-
+    
 }

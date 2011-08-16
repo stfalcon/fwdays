@@ -70,6 +70,14 @@ class Speaker
     private $file;
     
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     */
+    private $event;
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -204,6 +212,13 @@ class Speaker
 
     public function setFile($file) {
         $this->file = $file;
-    }    
+    }
 
+    public function getEvent() {
+        return $this->event;
+    }
+
+    public function setEvent($event) {
+        $this->event = $event;
+    }    
 }

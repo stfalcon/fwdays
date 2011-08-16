@@ -1,35 +1,28 @@
-<h1>Speaker list</h1>
+{% extends '::event.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
-            <th>Company</th>
-            <th>About</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('speaker_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.firstname }}</td>
-            <td>{{ entity.lastname }}</td>
-            <td>{{ entity.email }}</td>
-            <td>{{ entity.company }}</td>
-            <td>{{ entity.about }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('speaker_show', { 'id': entity.id }) }}">show</a>
-                    </li>
+{% block content %}
+    <h2>Докладчики</h2>
+
+    <div class="presenters">
+        {% for speaker in speakers %}
+        <div class="presenter">
+            <div class="presenter-photo">
+                <img src="{{ speaker.photo }}" width="100" height="127" alt="" />
+            </div>
+            <div class="presenter-info">
+                {#<div class="presenter-name"><a href="# ">Александр Веремьев</a></div>#}
+                <div class="presenter-name">{{ speaker.name }}</div>
+                <div class="presenter-company">{{ speaker.company }}</div>
+                
+                {{ speaker.about|raw }}
+    {#            <ul class="presenter-facts">
+                    <li>Zend Framework Core группа;</li>
+                    <li>Разработчик Zend_Search_Lucene, Zend_Pdf, Zend_Soap и других компонент ZF;</li>
+                    <li>Специалист по реляционным СУБД, кластерными системам, параллельным вычислениям, работал в csa.ru</li>
                 </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
+                <div class="presenter-presentation">Доклад: <a href="# ">Встречайте Zend Framework 2.0</a></div>#}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

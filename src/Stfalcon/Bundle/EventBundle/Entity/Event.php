@@ -82,6 +82,11 @@ class Event
     private $news;
 
     /**
+     * @ORM\OneToMany(targetEntity="Speaker", mappedBy="event")
+     */
+    private $speakers;
+
+    /**
      * @Assert\File(maxSize="6000000")
      */
     private $file;
@@ -235,6 +240,14 @@ class Event
 
     public function setNews($news) {
         $this->news = $news;
+    }
+    
+    public function getSpeakers() {
+        return $this->speakers;
+    }
+
+    public function setSpeakers($speakers) {
+        $this->speakers = $speakers;
     }
 
 }

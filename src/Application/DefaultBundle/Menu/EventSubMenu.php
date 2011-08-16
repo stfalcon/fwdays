@@ -19,6 +19,12 @@ class EventSubMenu extends Menu
         
         $this->setCurrentUri($request->getRequestUri());
         
+        if ($event->getSpeakers()) {
+            $this->addChild(
+                    "Докладчики",
+                    $router->generate('event_speakers', array('event_slug' => $event->getSlug())));
+        }
+        
         // Ссылки на страницы ивента
         // @todo можно добавить для страниц свойство "отображать в меню"
         foreach($event->getPages() as $page) {

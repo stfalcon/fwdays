@@ -8,7 +8,7 @@
             {% for event in events %}
                 <tr>
                     <td class="conf-logo">
-                        <a href="{{ path('event_show', {'slug': event.slug } )}}">
+                        <a href="{{ path('event_show', {'event_slug': event.slug } )}}">
                             <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.name }}">
                         </a>
                     </td>
@@ -20,7 +20,7 @@
                         <p>{{ event.description }}</p>
                         
                         <div class="conf-info-links">
-                            <a href="{{ path('event_show', {'slug': event.slug } )}}">Детальная информация</a>
+                            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
                         </div>
                     </td>
                 </tr>
