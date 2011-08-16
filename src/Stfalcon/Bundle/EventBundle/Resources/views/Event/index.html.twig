@@ -9,12 +9,16 @@
                 <tr>
                     <td class="conf-logo">
                         <a href="{{ path('event_show', {'slug': event.slug } )}}">
-                            <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.title }}">
+                            <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.name }}">
                         </a>
                     </td>
                     <td class="conf-info">
-                        <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
+                        <div class="conf-info-h">
+                            {{ event.title|raw }}
+                        </div>
+                            
                         <p>{{ event.description }}</p>
+                        
                         <div class="conf-info-links">
                             <a href="{{ path('event_show', {'slug': event.slug } )}}">Детальная информация</a>
                         </div>

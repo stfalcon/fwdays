@@ -20,6 +20,7 @@ class EventController extends BaseController
      */
     public function indexAction()
     {
+        // @todo refact. отдельнымы спискамм активные и прошедние ивенты
         $events = $this->getDoctrine()->getEntityManager()
                        ->getRepository('StfalconEventBundle:Event')->findAll();
 
@@ -38,5 +39,17 @@ class EventController extends BaseController
         
         return array('event' => $event);
     }
+    
+    /**
+     * @Template()
+     */
+    public function sliderAction()
+    {
+        $events = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconEventBundle:Event')
+                     ->findBy(array('active' => true ));
+        
+        return array('events' => $events);
+    }    
     
 }
