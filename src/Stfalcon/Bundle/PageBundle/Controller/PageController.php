@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\PageBundle\Entity\Page;
 
 /**
- * Page controller.
+ * Page controller
  *
  * @Route("/page")
  */

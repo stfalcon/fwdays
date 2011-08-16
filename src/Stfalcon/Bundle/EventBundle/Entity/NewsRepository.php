@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * NewsRepository
@@ -12,11 +13,35 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
-//    public function getAllNews()
-//    {
-//        $query = $this->_em->createNativeQuery('SELECT * FROM news UNION  WHERE name = ?', $rsm);
-//        $query->setParameter(1, 'romanb');
-//        echo 111;
-//        exit;
-//    }
+
+   /**
+     * Get array of last news for event
+     * 
+     * @param integer $count
+     * @return array
+     */
+    public function getLastNewsForEvent(Event $event, $count)
+    {
+        $count = (int) $count;
+        if (!$count) {
+            throw new Exception('You must set the count of the latest news');
+        }
+        
+        $query = $this->getEntityManager()
+                ->createQuery('
+                    SELECT 
+                        n
+                    FROM 
+                        StfalconEventBundle:News n
+                    WHERE 
+                        n.event = :event
+                    ORDER BY 
+                        n.created_at DESC
+                    ')
+                ->setParameter('event', $event)
+                ->setMaxResults($count);
+        
+        return $query->getResult();
+    }
+    
 }

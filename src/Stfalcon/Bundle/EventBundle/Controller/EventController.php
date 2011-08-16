@@ -2,18 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Form\EventType;
 
 /**
- * Event controller.
- *
+ * Event controller
  */
-class EventController extends Controller
+class EventController extends BaseController
 {
     /**
      * Lists all Event entities.
@@ -23,9 +20,8 @@ class EventController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $events = $em->getRepository('StfalconEventBundle:Event')->findAll();
+        $events = $this->getDoctrine()->getEntityManager()
+                       ->getRepository('StfalconEventBundle:Event')->findAll();
 
         return array('events' => $events);
     }
@@ -36,24 +32,11 @@ class EventController extends Controller
      * @Route("/event/{slug}", name="event_show")
      * @Template()
      */
-    public function showAction($slug)
+    public function showAction(Event $event)
     {
-        return array('event' => $this->getEventBySlug($slug));
-    }
-    
-    public function getEventBySlug($slug) 
-    {
-        $event = $this->getDoctrine()->getEntityManager()
-                      ->getRepository('StfalconEventBundle:Event')
-                      ->findOneBy(array('slug' => $slug));
-
-        if (!$event) {
-            throw $this->createNotFoundException('Unable to find Event entity.');
-        }
+        $this->setEventToContainer($event);
         
-        $this->container->set('stfalcon_event.current_event', $event);
-        
-        return $event;
+        return array('event' => $event);
     }
     
 }

@@ -7,11 +7,17 @@
         <tbody>
             {% for event in events %}
                 <tr>
-                    <td class="conf-logo"><img src="{{ event.logo }}" width="82" height="87" alt="{{ event.title }}"></td>
+                    <td class="conf-logo">
+                        <a href="{{ path('event_show', {'slug': event.slug } )}}">
+                            <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.title }}">
+                        </a>
+                    </td>
                     <td class="conf-info">
                         <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
                         <p>{{ event.description }}</p>
-                        <div class="conf-info-links"><a href="{{ path('event_show', {'slug': event.slug } )}}">Детальная информация</a></div>
+                        <div class="conf-info-links">
+                            <a href="{{ path('event_show', {'slug': event.slug } )}}">Детальная информация</a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

@@ -4,12 +4,8 @@
     <h2>Новости и анонсы</h2>
 
     <div class="news-list">
-        {% for one_news in news %}
-        <article class="intro">
-            <h2><a href="{{ path('event_news_show', { 'news_slug': one_news.slug, 'event_slug': event.slug }) }}">{{ one_news.title }}</a></h2>
-            <div class="article-date-rubrics">{{ one_news.createdat|date('d M Y') }}, <a href="{{ path('event_show', { 'slug': event.slug } )}}">Zend Framework Day</a></div>
-            <p>{{ one_news.preview }}</p>
-        </article>
+        {% for one_news in event.news %}
+            {% include 'StfalconEventBundle:News:_one-news-preview.html.twig' with {'one_news': one_news} %}
         {% endfor %}
 
         {#<div class="prev-next-links"><a href="# ">← <u>предыдущая</u></a> <a href="# "><u>следующая</u> →</a></div>

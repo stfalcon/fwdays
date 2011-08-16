@@ -6,12 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\StfalconBundle\Entity\Page;
+use Stfalcon\Bundle\EventBundle\Entity\Page;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * Page controller.
+ * Page controller
  */
-class PageController extends Controller
+class PageController extends BaseController
 {
     /**
      * Finds and displays a Page entity.
@@ -21,20 +22,17 @@ class PageController extends Controller
      */
     public function showAction($event_slug, $page_slug)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $event_slug));
-        if (!$event) {
-            throw $this->createNotFoundException('Unable to find Event entity.');
-        }
-        $this->container->set('stfalcon_event.current_event', $event);
+        $event = $this->getEventBySlug($event_slug);
         
-        $page = $em->getRepository('StfalconEventBundle:Page')->findOneBy(array('slug' => $page_slug, 'event' => $event->getId()));
+        $page = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconEventBundle:Page')
+                     ->findOneBy(array('event' => $event->getId(), 'slug' => $page_slug));
+        
         if (!$page) {
             throw $this->createNotFoundException('Unable to find Page entity.');
         }
 
-        return array('page' => $page, 'event' => $event);
+        return array('event' => $event, 'page' => $page);
     }
     
 }

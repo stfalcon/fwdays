@@ -22,16 +22,14 @@ class NewsController extends Controller
     public function indexAction()
     {
         // @todo здесь нужно будет добавить пагинатор и заменить выборку
-        $news = $this->getDoctrine()
-                     ->getEntityManager()
-                     ->getRepository('StfalconNewsBundle:News')
-                     ->findAll();
+        $news = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconNewsBundle:News')->findAll();
 
         return array('news' => $news);
     }
 
     /**
-     * Finds and displays a news
+     * Finds and displays a one news
      *
      * @Route("/news/{slug}", name="news_show")
      * @Template()
