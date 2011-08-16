@@ -35,9 +35,7 @@ class EventController extends BaseController
      */
     public function showAction($event_slug)
     {
-        var_dump($event_slug);
-        exit;
-        $this->setEventToContainer($event);
+        $event = $this->getEventBySlug($event_slug);
         
         return array('event' => $event);
     }

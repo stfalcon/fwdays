@@ -17,7 +17,7 @@ class SpeakerController extends Controller
     /**
      * Lists all sreakers for event
      *
-     * @Route("/event/{event_slug}", name="event_speakers")
+     * @Route("/event/{event_slug}/speakers", name="event_speakers")
      * @Template()
      */
     public function indexAction($event_slug)

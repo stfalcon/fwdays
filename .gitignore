@@ -1,6 +1,7 @@
-/app/cache
-/app/logs
-/web/bundles
-/vendor
-/web/uploads/event/*
-/web/media/cache/*
+vendor
+*/cache/*
+*/logs/*
+web/bundles/*
+web/media/cache/*
+web/uploads/events/*
+web/uploads/speakers/*

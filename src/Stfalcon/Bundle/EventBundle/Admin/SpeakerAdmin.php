@@ -19,7 +19,6 @@ class SpeakerAdmin extends Admin
         $listMapper
             ->addIdentifier('slug')
             ->add('name')
-            ->add('title')
         ;
     }
     
@@ -29,43 +28,42 @@ class SpeakerAdmin extends Admin
             ->with('General')
                 ->add('slug')
                 ->add('name')
-                ->add('title')
-                ->add('description')
+                ->add('email')
+                ->add('company')
                 ->add('about')
-                ->add('file', 'file', array('required' => false))
-                ->add('active')
+                ->add('file', 'file')
             ->end()
         ;
     }
     
     /**
-     * Saves an uploaded logo of event
+     * Saves an uploaded photo of speakers
      * 
-     * @param Event $event
+     * @param Speaker $speaker
      * @return void 
      */
-    public function uploadLogo($event)
+    public function uploadLogo($speaker)
     {
-        if (null === $event->getFile()) {
+        if (null === $speaker->getFile()) {
             return;
         }
-    
-        $uploadDir = '/uploads/event';
+        
+        $uploadDir = '/uploads/speakers';
         $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        $newFileName = $speaker->getSlug() . '.' . pathinfo($speaker->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
         
-        $event->getFile()->move($pathToUploads, $newFileName);
-        $event->setLogo($uploadDir . '/' . $newFileName);
+        $speaker->getFile()->move($pathToUploads, $newFileName);
+        $speaker->setPhoto($uploadDir . '/' . $newFileName);
         
-        $event->setFile(null);
+        $speaker->setFile(null);
     }
     
-    public function prePersist($event)
+    public function prePersist($speaker)
     {
-        $this->uploadLogo($event);
+        $this->uploadLogo($speaker);
     }
     
-    public function preUpdate($event) {
-        $this->uploadLogo($event);
+    public function preUpdate($speaker) {
+        $this->uploadLogo($speaker);
     }
 }

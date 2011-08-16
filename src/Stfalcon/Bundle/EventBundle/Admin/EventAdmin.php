@@ -49,7 +49,7 @@ class EventAdmin extends Admin
             return;
         }
     
-        $uploadDir = '/uploads/event';
+        $uploadDir = '/uploads/events';
         $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
         $newFileName = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
         

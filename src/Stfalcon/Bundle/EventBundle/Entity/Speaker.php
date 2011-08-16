@@ -3,11 +3,12 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Speaker
  *
- * @ORM\Table()
+ * @ORM\Table(name="event__speakers")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\SpeakerRepository")
  */
 class Speaker
@@ -24,7 +25,7 @@ class Speaker
     /**
      * @var string $slug
      *
-     * @ORM\Column(slug="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255)
      */
     private $slug;
 
@@ -55,8 +56,19 @@ class Speaker
      * @ORM\Column(name="about", type="text")
      */
     private $about;
+    
+    /**
+     * @var string $photo
+     *
+     * @ORM\Column(name="photo", type="string", length=255)
+     */
+    private $photo;    
 
-
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
+    
     /**
      * Get id
      *
@@ -167,4 +179,31 @@ class Speaker
     {
         return $this->about;
     }
+    
+    /**
+     * Get photo
+     * 
+     * @return string
+     */
+    public function getPhoto() {
+        return $this->photo;
+    }
+
+    /**
+     * Set photo
+     * 
+     * @param type $photo 
+     */
+    public function setPhoto($photo) {
+        $this->photo = $photo;
+    }
+    
+    public function getFile() {
+        return $this->file;
+    }
+
+    public function setFile($file) {
+        $this->file = $file;
+    }    
+
 }
