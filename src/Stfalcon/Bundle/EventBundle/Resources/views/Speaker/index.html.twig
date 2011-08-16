@@ -1,0 +1,35 @@
+<h1>Speaker list</h1>
+
+<table class="records_list">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Company</th>
+            <th>About</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('speaker_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.firstname }}</td>
+            <td>{{ entity.lastname }}</td>
+            <td>{{ entity.email }}</td>
+            <td>{{ entity.company }}</td>
+            <td>{{ entity.about }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('speaker_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

@@ -30,11 +30,13 @@ class EventController extends BaseController
     /**
      * Finds and displays a Event entity.
      *
-     * @Route("/event/{slug}", name="event_show")
+     * @Route("/event/{event_slug}", name="event_show")
      * @Template()
      */
-    public function showAction(Event $event)
+    public function showAction($event_slug)
     {
+        var_dump($event_slug);
+        exit;
         $this->setEventToContainer($event);
         
         return array('event' => $event);

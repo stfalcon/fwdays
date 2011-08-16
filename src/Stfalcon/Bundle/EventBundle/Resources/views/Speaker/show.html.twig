@@ -1,0 +1,38 @@
+<h1>Speaker</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Firstname</th>
+            <td>{{ entity.firstname }}</td>
+        </tr>
+        <tr>
+            <th>Lastname</th>
+            <td>{{ entity.lastname }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ entity.email }}</td>
+        </tr>
+        <tr>
+            <th>Company</th>
+            <td>{{ entity.company }}</td>
+        </tr>
+        <tr>
+            <th>About</th>
+            <td>{{ entity.about }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('speaker') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
