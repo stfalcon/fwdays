@@ -26,6 +26,8 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
 //            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new FwDays\Bundle\UserBundle\FwDaysUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

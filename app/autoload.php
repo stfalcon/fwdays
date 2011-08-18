@@ -22,7 +22,8 @@ $loader->registerNamespaces(array(
     'Behat\Mink'       => __DIR__.'/../vendor/behat/mink/src',
     'Behat\MinkBundle' => __DIR__.'/../vendor/bundles',
     'Imagine'          => __DIR__.'/../vendor/imagine/lib',
-    'Avalanche'        => __DIR__.'/../vendor/bundles',    
+    'Avalanche'        => __DIR__.'/../vendor/bundles',
+    'FOS'              => __DIR__.'/../vendor/bundles',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

@@ -1,6 +1,24 @@
 
 <nav class="top-nav">
-    {{ knp_menu('main') }}
+    <div class="wrap">
+        {{ knp_menu('main') }}
+            
+<!--
+            <div class="user-nav">
+            <div class="user-menu">
+                <a class="username" href="# "><span>Вася Пупкин</span></a>
+                <ul class="user-menu-dropdown">
+                    <li><a href="# ">Личная информация</a></li>
+                    <li><a href="# ">Платежи</a></li>
+                    <li><a href="# ">Статистика</a></li>
+                    <li><a href="# ">Выйти</a></li>
+                </ul>
+            </div>
+        </div>
+-->
+
+        <div class="user-nav"><a class="signin" href="{{ path('fos_user_security_login') }}">Войти</a></div>
+    </div>            
 </nav>
 
 <header id="header">

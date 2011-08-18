@@ -514,21 +514,103 @@ label.for-radio {
 
 
 .top-nav {
+    position: relative;
+    z-index: 2;
     height: 36px;
     background: #3c5260 url(images/sprite-main.jpg) left top repeat-x;
 }
-.top-nav ul {
-    list-style: none;
+.top-nav .wrap {
     max-width: 1400px;
     margin: 0 auto;
 }
-.top-nav ul {
+
+.top-nav .user-nav {
+    float: right;
+    margin-right: 4%;
+    padding-top: 6px;
+}
+.top-nav .user-nav .signin,
+.top-nav .user-nav .username {
+    display: block;
+    float: right;
+    padding: 0 10px;
+    height: 24px;
+    line-height: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 0 -1px 1px #1ca2bc;
+    background: #2abbd7 url(images/sprite-main.jpg) left -702px repeat-x;
+    -webkit-box-shadow: inset 0px 1px 1px #5ee5f9;
+    -moz-box-shadow: inset 0px 1px 1px #5ee5f9;
+    box-shadow: inset 0px 1px 1px #5ee5f9;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    border-radius: 13px;
+}
+.top-nav .user-nav .user-menu {
+    float: right;
+    position: relative;
+}
+.top-nav .user-nav .username {
+    font-weight: normal;
+}
+.top-nav .user-nav .username {
+    font-weight: normal;
+}
+.top-nav .user-nav .username:hover,
+.top-nav .user-menu:hover .username {
+    -webkit-border-bottom-right-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.top-nav .user-nav .username span {
+    display: block;
+    float: right;
+    padding-right: 13px;
+    background: url(images/sprite-icons.png) right -60px no-repeat;
+}
+.top-nav .user-menu-dropdown {
     list-style: none outside;
-    max-width: 1400px;
-    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    top: 24px;
+    padding: 7px 11px 6px;
+    display: none;
+    background: #0c9db9;
+    -webkit-border-top-left-radius: 11px;
+    -moz-border-radius-topleft: 11px;
+    border-top-left-radius: 11px;
+}
+.top-nav .user-menu:hover .user-menu-dropdown {
+    display: block;
+}
+.top-nav .user-menu-dropdown li {
+    line-height: 18px;
+    padding: 0 0 6px;
+    margin: 0;
+    white-space: nowrap;
+    background: transparent;
+}
+.top-nav .user-menu-dropdown li a:link,
+.top-nav .user-menu-dropdown li a:visited {
+    color: #fff;
+}
+.top-nav .user-menu-dropdown li a:hover,
+.top-nav .user-menu-dropdown li a:active {
+    text-decoration: none;
+}
+
+.top-nav ul.nav {
+    float: left;
+    width: 80%;
+    list-style: none outside;
     padding: 9px 0 0;
 }
-.top-nav ul li {
+.top-nav ul.nav li {
     float: left;
     padding: 0 20px;
     margin: 0;
@@ -536,22 +618,22 @@ label.for-radio {
     border-right: 1px solid #657782;
     background: transparent;
 }
-.top-nav ul li:first-child {
+.top-nav ul.nav li:first-child {
     margin-left: 4%;
     padding-left: 0;
     background: transparent;
 }
-#wrapper.wide-content .top-nav ul li:first-child,
-#wrapper.sidebars-right .top-nav ul li:first-child {
+#wrapper.wide-content .top-nav ul.nav li:first-child,
+#wrapper.sidebars-right .top-nav ul.nav li:first-child {
     height: 27px;
     padding-top: 9px;
     margin-top: -9px;
 }
-.top-nav ul li:last-child {
+.top-nav ul.nav li:last-child {
     border-right: 0 none;
 }
-.top-nav ul li a:link,
-.top-nav ul li a:visited {
+.top-nav ul.nav li a:link,
+.top-nav ul.nav li a:visited {
     display: block;
     float: left;
     height: 20px;
@@ -563,22 +645,22 @@ label.for-radio {
     text-decoration: none;
     text-shadow: 0px -1px 0px #11171b;
 }
-.top-nav ul li:first-child a {
+.top-nav ul.nav li:first-child a {
     margin-left: -5px;
 }
-#wrapper.wide-content .top-nav ul li:first-child a,
-#wrapper.sidebars-right .top-nav ul li:first-child a {
+#wrapper.wide-content .top-nav ul.nav li:first-child a,
+#wrapper.sidebars-right .top-nav ul.nav li:first-child a {
     margin-left: -23px;
 }
-.top-nav ul li a:hover,
-.top-nav ul li a:active {
+.top-nav ul.nav li a:hover,
+.top-nav ul.nav li a:active {
     text-shadow: none;
     background: #0fcfb8;
 }
-.top-nav ul li.current a:link,
-.top-nav ul li.current a:visited,
-.top-nav ul li.current a:hover,
-.top-nav ul li.current a:active {
+.top-nav ul.nav li.current a:link,
+.top-nav ul.nav li.current a:visited,
+.top-nav ul.nav li.current a:hover,
+.top-nav ul.nav li.current a:active {
     padding: 0 10px;
     margin: -5px -5px 0;
     height: 32px;
@@ -593,7 +675,7 @@ label.for-radio {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.top-nav ul li:first-child.current a {
+.top-nav ul.nav li:first-child.active a {
     margin-left: -10px;
 }
 

@@ -18,6 +18,8 @@ class MainMenu extends Menu
 
         $this->setCurrentUri($request->getRequestUri());
         
+        $this->setAttribute('class', 'nav');
+        
         $this->addChild('О Frameworks Days', $router->generate('page_show', array('slug' => 'about')));
         $this->addChild('События', $router->generate('events'));
         $this->addChild('Контактная информация', $router->generate('page_show', array('slug' => 'contacts')));

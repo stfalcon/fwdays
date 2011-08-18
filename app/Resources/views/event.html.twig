@@ -22,7 +22,11 @@
 
             <nav class="event-nav">
                 <div class="wrap">
-                    <div class="reg-button-hold"><a class="reg-button" href="# ">Зарегистрироваться</a></div>
+                    <div class="reg-button-hold">
+                        <a class="reg-button" href="{{ path('fos_user_registration_register') }}">
+                            Зарегистрироваться
+                        </a>
+                    </div>
                     
                     {{ knp_menu('event_sub') }}
                 </div>
