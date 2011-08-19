@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="application_users.admin.user.class">Application\Bundle\UserBundle\Admin\UserAdmin</parameter>
+        <parameter key="application_users.admin.user.entity">Application\Bundle\UserBundle\Entity\User</parameter>
+<!--        <parameter key="application_users.admin.user.controller">ApplicationUserBundle:UserAdmin</parameter>-->
+        <parameter key="application_users.admin.user.controller">SonataAdminBundle:CRUDController</parameter>
+    </parameters>
+    
+    <services>
+        <service id="application_users.admin.user" class="%application_users.admin.user.class%">
+            <tag name="sonata.admin" manager_type="orm" group="User" label="user"/>
+            <argument />
+            <argument>%application_users.admin.user.entity%</argument>
+            <argument>%application_users.admin.user.controller%</argument>
+
+<!--            <call method="setUserManager">
+                <argument type="service" id="fos_user.user_manager" />
+            </call>-->
+        </service>
+    </services>
+
+</container>

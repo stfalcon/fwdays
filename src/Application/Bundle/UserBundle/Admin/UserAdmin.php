@@ -1,5 +1,5 @@
 <?php
-namespace FwDays\Bundle\UserBundle\Admin;
+namespace Application\Bundle\UserBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -26,22 +26,22 @@ class UserAdmin extends Admin
             ->end()
         ;
     }
-    public function preUpdate($user)
-    {
-        $this->getUserManager()->updateCanonicalFields($user);
-        $this->getUserManager()->updatePassword($user);
-    }
-
-    public function setUserManager(UserManagerInterface $userManager)
-    {
-        $this->userManager = $userManager;
-    }
-
-    /**
-     * @return UserManagerInterface
-     */
-    public function getUserManager()
-    {
-        return $this->userManager;
-    }
+//    public function preUpdate($user)
+//    {
+//        $this->getUserManager()->updateCanonicalFields($user);
+//        $this->getUserManager()->updatePassword($user);
+//    }
+//
+//    public function setUserManager(UserManagerInterface $userManager)
+//    {
+//        $this->userManager = $userManager;
+//    }
+//
+//    /**
+//     * @return UserManagerInterface
+//     */
+//    public function getUserManager()
+//    {
+//        return $this->userManager;
+//    }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace FwDays\Bundle\UserBundle\Entity;
+namespace Application\Bundle\UserBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

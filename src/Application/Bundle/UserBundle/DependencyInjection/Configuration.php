@@ -1,6 +1,6 @@
 <?php
 
-namespace FwDays\Bundle\UserBundle\DependencyInjection;
+namespace Application\Bundle\UserBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fw_days_user');
+        $rootNode = $treeBuilder->root('application_user');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

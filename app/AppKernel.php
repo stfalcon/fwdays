@@ -27,7 +27,7 @@ class AppKernel extends Kernel
             new Sonata\jQueryBundle\SonatajQueryBundle(),
 //            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new FOS\UserBundle\FOSUserBundle(),
-            new FwDays\Bundle\UserBundle\FwDaysUserBundle(),
+            new Application\Bundle\UserBundle\ApplicationUserBundle(),
             new Sonata\UserBundle\SonataUserBundle('FOSUserBundle')
         );
 

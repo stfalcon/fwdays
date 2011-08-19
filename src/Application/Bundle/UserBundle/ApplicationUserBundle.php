@@ -1,10 +1,10 @@
 <?php
 
-namespace FwDays\Bundle\UserBundle;
+namespace Application\Bundle\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class FwDaysUserBundle extends Bundle
+class ApplicationUserBundle extends Bundle
 {
     public function getParent()
     {
