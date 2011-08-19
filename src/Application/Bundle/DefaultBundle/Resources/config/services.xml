@@ -5,9 +5,9 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="menu.main.class">Application\DefaultBundle\Menu\MainMenu</parameter>
-        <parameter key="menu.event.class">Application\DefaultBundle\Menu\EventMenu</parameter>
-        <parameter key="menu.event_sub.class">Application\DefaultBundle\Menu\EventSubMenu</parameter>
+        <parameter key="menu.main.class">Application\Bundle\DefaultBundle\Menu\MainMenu</parameter>
+        <parameter key="menu.event.class">Application\Bundle\DefaultBundle\Menu\EventMenu</parameter>
+        <parameter key="menu.event_sub.class">Application\Bundle\DefaultBundle\Menu\EventSubMenu</parameter>
     </parameters>
 
     <services>

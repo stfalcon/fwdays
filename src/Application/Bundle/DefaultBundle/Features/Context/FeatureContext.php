@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\DefaultBundle\Features\Context;
+namespace Application\Bundle\DefaultBundle\Features\Context;
 
 use Behat\BehatBundle\Context\BehatContext,
     Behat\BehatBundle\Context\MinkContext;
