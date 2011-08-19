@@ -4,7 +4,7 @@ imports:
     
 framework:
     #esi:             ~
-    #translator:      { fallback: en }
+    translator:      { fallback: ru }
     secret:          %secret%
     charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -15,8 +15,6 @@ framework:
     session:
         default_locale: %locale%
         auto_start:     true
-    translator:
-        fallback: ru
         
 # Twig Configuration
 twig:
