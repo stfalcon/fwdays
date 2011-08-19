@@ -1,7 +1,7 @@
-FwDaysUserBundle:
-    resource: "@FwDaysUserBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#FwDaysUserBundle:
+#    resource: "@FwDaysUserBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 StfalconEventBundle:
     resource: "@StfalconEventBundle/Controller/"
@@ -17,6 +17,11 @@ StfalconPageBundle:
     resource: "@StfalconPageBundle/Controller/"
     type:     annotation
     prefix:   /
+#
+#FwDaysUserBundle:
+#    resource: "@FwDaysUserBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
