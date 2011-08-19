@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Entity;
 
-use Sonata\UserBundle\Entity\BaseUser;
+use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

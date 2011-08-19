@@ -7,8 +7,8 @@
     <parameters>
         <parameter key="application_users.admin.user.class">Application\Bundle\UserBundle\Admin\UserAdmin</parameter>
         <parameter key="application_users.admin.user.entity">Application\Bundle\UserBundle\Entity\User</parameter>
-<!--        <parameter key="application_users.admin.user.controller">ApplicationUserBundle:UserAdmin</parameter>-->
-        <parameter key="application_users.admin.user.controller">SonataAdminBundle:CRUDController</parameter>
+        <parameter key="application_users.admin.user.controller">ApplicationUserBundle:UserAdmin</parameter>
+<!--        <parameter key="application_users.admin.user.controller">SonataAdminBundle:CRUDController</parameter>-->
     </parameters>
     
     <services>

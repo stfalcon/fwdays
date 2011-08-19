@@ -28,7 +28,7 @@ class AppKernel extends Kernel
 //            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
-            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle')
+//            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle')
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
