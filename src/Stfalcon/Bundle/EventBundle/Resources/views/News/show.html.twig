@@ -4,11 +4,14 @@
     <article>
         <h2>{{ one_news.title }}</h2>
         
-        <div class="article-date-rubrics">{{ one_news.createdat|date('d M Y') }}, <a href="# ">Python Frameworks Day</a></div>
+        <div class="article-date-rubrics">{{ one_news.createdat|date('d M Y') }}, <a href="{{ path('event_show', { 'event_slug': event.slug }) }}">{{ event.name }}</a></div>
 
         <p>{{ one_news.preview|raw }}</p>
         <p>{{ one_news.text|raw }}</p>
     </article>
         
-    <div class="to-one_newslist-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">← <u>к списку новостей</u></a></div>        
+    <div class="to-newslist-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">← <u>к списку новостей</u></a></div>        
+    
+    {% include "::_disqus.html.twig" %}
+    
 {% endblock %}

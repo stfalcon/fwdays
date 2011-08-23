@@ -1504,3 +1504,12 @@ a.reg-button:active {
     background-position: left -465px;
 }
 
+#disqus_thread ul {
+    list-style: none;
+}
+#disqus_thread ul li {
+    background: transparent;
+}  
+#dsq-toolbar-dropdown-wrap ul {
+    width: 210px;
+}
