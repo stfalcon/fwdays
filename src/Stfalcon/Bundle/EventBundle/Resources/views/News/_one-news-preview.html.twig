@@ -6,7 +6,7 @@
     </h2>
     <div class="article-date-rubrics">
         {{ one_news.createdat|date('d M Y') }}, 
-        <a href="{{ path('event_show', { 'slug': event.slug } )}}">
+        <a href="{{ path('event_show', { 'event_slug': event.slug } )}}">
             Zend Framework Day
         </a>
     </div>
