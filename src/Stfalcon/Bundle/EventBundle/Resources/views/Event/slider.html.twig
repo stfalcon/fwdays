@@ -2,7 +2,7 @@
     {% for event in events %}
     <div class="slide">
         <div class="icon">
-            <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="{{ event.name }}">
+            <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
                 <img src="{{ event.logo }}" width="162" height="172" alt="{{ event.name }}" />
             </a>
         </div>
@@ -13,7 +13,7 @@
                 
             <p>{{ event.description }}</p>
             
-            <a class="register" href="# ">Зарегистрироваться</a><a class="know-more" href="{{ path('event_show', {'event_slug': event.slug } )}}">Узнать больше</a>
+            <a class="register" href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a><a class="know-more" href="{{ path('event_show', {'event_slug': event.slug } )}}">Узнать больше</a>
         </div>
     </div>
     {% endfor %}
