@@ -1,6 +1,6 @@
 [symfony]
     git=http://github.com/symfony/symfony.git
-    version=v2.0.0
+    version=v2.0.1
 
 [twig]
     git=http://github.com/fabpot/Twig.git
@@ -8,19 +8,19 @@
 
 [monolog]
     git=http://github.com/Seldaek/monolog.git
-    version=1.0.0
+    version=1.0.1
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
-    version=2.1.0
+    version=2.1.1
 
 [doctrine-dbal]
     git=http://github.com/doctrine/dbal.git
-    version=2.1.0
+    version=2.1.1
 
 [doctrine]
     git=http://github.com/doctrine/doctrine2.git
-    version=2.1.0
+    version=2.1.1
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
@@ -28,7 +28,7 @@
 
 [assetic]
     git=http://github.com/kriswallsmith/assetic.git
-    version=v1.0.1
+    version=v1.0.2
 
 [twig-extensions]
     git=http://github.com/fabpot/Twig-extensions.git
@@ -51,6 +51,9 @@
 
 [imagine]
     git=http://github.com/avalanche123/Imagine.git
+
+[KnpMenu]
+    git=http://github.com/knplabs/KnpMenu.git
 
 [SensioFrameworkExtraBundle]
     git=http://github.com/sensio/SensioFrameworkExtraBundle.git

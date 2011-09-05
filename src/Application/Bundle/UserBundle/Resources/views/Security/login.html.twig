@@ -7,7 +7,7 @@
 
 <form action="{{ path("fos_user_security_check") }}" method="post">
     <div>
-        <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+        <label for="username">{{ 'security.login.username'|trans({}, 'ApplicationUserBundle') }}</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}" />
     </div>
 

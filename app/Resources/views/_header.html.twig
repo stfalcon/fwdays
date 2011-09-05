@@ -1,7 +1,7 @@
 
 <nav class="top-nav">
     <div class="wrap">
-        {{ knp_menu('main') }}
+        {{ 'main'|knp_menu_render('twig') }}
             
         <div class="user-nav">
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
