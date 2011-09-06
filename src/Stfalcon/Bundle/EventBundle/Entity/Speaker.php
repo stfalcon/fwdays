@@ -220,5 +220,8 @@ class Speaker
 
     public function setEvent($event) {
         $this->event = $event;
-    }    
+    }
+    
+    public function __toString() { return $this->name; }
+    
 }

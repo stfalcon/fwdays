@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
-//use Stfalcon\Bundle\PageBundle\Entity\BasePage;
+use Stfalcon\Bundle\PageBundle\Entity\BasePage;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,16 +12,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="event__reviews")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\ReviewRepository")
  */
-class Review extends Page {
+class Review extends BasePage {
     
-//    /**
-//     * @var \Doctrine\Common\Collections\ArrayCollection
-//     *
-//     * @ORM\ManyToOne(targetEntity="Event")
-//     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-//     */
-//    private $event;
-//    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     */
+    private $event;
+    
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -30,13 +30,13 @@ class Review extends Page {
      */
     private $speaker;
     
-//    public function getEvent() {
-//        return $this->event;
-//    }
-//
-//    public function setEvent($event) {
-//        $this->event = $event;
-//    }
+    public function getEvent() {
+        return $this->event;
+    }
+
+    public function setEvent($event) {
+        $this->event = $event;
+    }
     
     public function getSpeaker() {
         return $this->speaker;

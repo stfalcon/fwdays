@@ -20,6 +20,10 @@
         <parameter key="stfalcon_event.admin.news.class">Stfalcon\Bundle\EventBundle\Admin\NewsAdmin</parameter>
         <parameter key="stfalcon_event.admin.news.entity">Stfalcon\Bundle\EventBundle\Entity\News</parameter>
         <parameter key="stfalcon_event.admin.news.controller">StfalconEventBundle:NewsAdmin</parameter>
+        
+        <parameter key="stfalcon_event.admin.reviews.class">Stfalcon\Bundle\EventBundle\Admin\ReviewAdmin</parameter>
+        <parameter key="stfalcon_event.admin.reviews.entity">Stfalcon\Bundle\EventBundle\Entity\Review</parameter>
+        <parameter key="stfalcon_event.admin.reviews.controller">SonataAdminBundle:CRUD</parameter>
     </parameters>
     
     <services>
@@ -48,6 +52,12 @@
             <argument />
             <argument>%stfalcon_event.admin.news.entity%</argument>
             <argument>%stfalcon_event.admin.news.controller%</argument>
+        </service>
+        <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Event" label="reviews"/>
+            <argument />
+            <argument>%stfalcon_event.admin.reviews.entity%</argument>
+            <argument>%stfalcon_event.admin.reviews.controller%</argument>
         </service>
     </services>
     
