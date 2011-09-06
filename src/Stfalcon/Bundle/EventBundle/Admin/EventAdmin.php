@@ -7,9 +7,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-use Knp\Bundle\MenuBundle\MenuItem;
-
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+//use Knp\Bundle\MenuBundle\MenuItem;
+//
+//use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 class EventAdmin extends Admin 
 {

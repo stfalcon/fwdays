@@ -8,8 +8,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\PageBundle\Admin\PageAdmin as BasePageAdmin;
 
-//use Knp\Bundle\MenuBundle\MenuItem;
-
 class PageAdmin extends BasePageAdmin 
 {
     protected function configureListFields(ListMapper $listMapper)

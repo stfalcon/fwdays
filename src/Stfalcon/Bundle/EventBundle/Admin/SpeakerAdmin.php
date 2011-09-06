@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
 
-//use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 class SpeakerAdmin extends Admin 

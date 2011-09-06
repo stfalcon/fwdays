@@ -8,8 +8,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\NewsBundle\Admin\NewsAdmin as BaseNewsAdmin;
 
-//use Knp\Bundle\MenuBundle\MenuItem;
-
 class NewsAdmin extends BaseNewsAdmin
 {
     protected function configureListFields(ListMapper $listMapper)
