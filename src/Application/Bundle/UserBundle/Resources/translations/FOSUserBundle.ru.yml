@@ -1,2 +1,3 @@
 # Security
 security.login.username: "Электронная почта:"
+fos_user_profile_form_email: "Электронная почта:"

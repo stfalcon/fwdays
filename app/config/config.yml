@@ -20,7 +20,9 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-
+#    form:
+#        resources: ['form_table_layout.html.twig']
+        
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
@@ -79,3 +81,7 @@ fos_user:
     registration:
         form:
             type: application_user_registration
+    profile:
+        form:
+            type: application_user_profile
+            handler: application_user.profile.form.handler

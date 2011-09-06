@@ -8,7 +8,6 @@
         <parameter key="application_users.admin.user.class">Application\Bundle\UserBundle\Admin\UserAdmin</parameter>
         <parameter key="application_users.admin.user.entity">Application\Bundle\UserBundle\Entity\User</parameter>
         <parameter key="application_users.admin.user.controller">ApplicationUserBundle:UserAdmin</parameter>
-<!--        <parameter key="application_users.admin.user.controller">SonataAdminBundle:CRUDController</parameter>-->
     </parameters>
     
     <services>
@@ -17,16 +16,22 @@
             <argument />
             <argument>%application_users.admin.user.entity%</argument>
             <argument>%application_users.admin.user.controller%</argument>
-
-<!--            <call method="setUserManager">
-                <argument type="service" id="fos_user.user_manager" />
-            </call>-->
         </service>
         
-        <service id="application_user.registration.form.type" class="Application\Bundle\UserBundle\Form\Registration">
+        <service id="application_user.registration.form.type" class="Application\Bundle\UserBundle\Form\Type\RegistrationFormType">
             <tag name="form.type" alias="application_user_registration" />
             <argument>%fos_user.model.user.class%</argument>
         </service>
+        <service id="application_user.profile.form.type" class="Application\Bundle\UserBundle\Form\Type\ProfileFormType">
+            <tag name="form.type" alias="application_user_profile" />
+            <argument>%fos_user.model.user.class%</argument>
+        </service>
+        <service id="application_user.profile.form.handler" class="Application\Bundle\UserBundle\Form\Handler\ProfileFormHandler" scope="request" public="false">
+            <argument type="service" id="fos_user.profile.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="fos_user.user_manager" />
+        </service>
+        
     </services>
 
 </container>
