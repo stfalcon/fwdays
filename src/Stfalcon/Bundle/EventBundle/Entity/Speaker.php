@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -72,11 +73,31 @@ class Speaker
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     */
-    private $event;
+     * @ORM\ManyToMany(targetEntity="Event")
+     * @ORM\JoinTable(name="event__events_speakers",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     *   }
+     * )
+     */    
+    private $events;
     
+    /**
+     * @var Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
+     */
+    private $reviews;    
+    
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -86,7 +107,6 @@ class Speaker
     {
         return $this->id;
     }
-
 
     /**
      * Set slug
@@ -214,14 +234,24 @@ class Speaker
         $this->file = $file;
     }
 
-    public function getEvent() {
-        return $this->event;
+    public function getEvents() {
+        return $this->events;
     }
 
-    public function setEvent($event) {
-        $this->event = $event;
+    public function setEvents($events) {
+        var_dump($events);
+        exit;
+        $this->events = $events;
     }
     
+    public function getReviews() {
+        return $this->reviews;
+    }
+
+    public function setReviews($reviews) {
+        $this->reviews = $reviews;
+    }
+
     public function __toString() { return $this->name; }
     
 }

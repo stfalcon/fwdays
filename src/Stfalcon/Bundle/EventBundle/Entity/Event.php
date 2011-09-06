@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -82,16 +83,22 @@ class Event
     private $news;
 
     /**
-     * @ORM\OneToMany(targetEntity="Speaker", mappedBy="event")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      */
     private $speakers;
-
+    
     /**
      * @Assert\File(maxSize="6000000")
      */
     private $file;
+       
+    public function __construct()
+    {
+        $this->speakers = new ArrayCollection();
+    }
     
-
     /**
      * Get id
      *
@@ -245,9 +252,9 @@ class Event
     public function getSpeakers() {
         return $this->speakers;
     }
-
-    public function setSpeakers($speakers) {
-        $this->speakers = $speakers;
-    }
+//
+//    public function setSpeakers($speakers) {
+//        $this->speakers = $speakers;
+//    }
 
 }

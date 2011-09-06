@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Stfalcon\Bundle\PageBundle\Entity\BasePage;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,10 +26,22 @@ class Review extends BasePage {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Speaker")
-     * @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
-     */
-    private $speaker;
+     * @ORM\ManyToMany(targetEntity="Speaker")
+     * @ORM\JoinTable(name="event__speakers_reviews",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="review_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
+     *   }
+     * )
+     */  
+    private $speakers;
+    
+    public function __construct()
+    {
+        $this->speakers = new ArrayCollection();
+    }
     
     public function getEvent() {
         return $this->event;
@@ -38,12 +51,12 @@ class Review extends BasePage {
         $this->event = $event;
     }
     
-    public function getSpeaker() {
-        return $this->speaker;
+    public function getSpeakers() {
+        return $this->speakers;
     }
 
-    public function setSpeaker($speaker) {
-        $this->speaker = $speaker;
+    public function setSpeaker($speakers) {
+        $this->speakers = $speakers;
     }
 
 }

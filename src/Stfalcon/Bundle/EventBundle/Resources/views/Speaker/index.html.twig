@@ -10,17 +10,15 @@
                 <img src="{{ speaker.photo }}" width="120" alt="{{ speaker.name }}" />
             </div>
             <div class="presenter-info">
-                {#<div class="presenter-name"><a href="# ">Александр Веремьев</a></div>#}
                 <div class="presenter-name">{{ speaker.name }}</div>
                 <div class="presenter-company">{{ speaker.company }}</div>
                 
                 {{ speaker.about|raw }}
-    {#            <ul class="presenter-facts">
-                    <li>Zend Framework Core группа;</li>
-                    <li>Разработчик Zend_Search_Lucene, Zend_Pdf, Zend_Soap и других компонент ZF;</li>
-                    <li>Специалист по реляционным СУБД, кластерными системам, параллельным вычислениям, работал в csa.ru</li>
-                </ul>
-                <div class="presenter-presentation">Доклад: <a href="# ">Встречайте Zend Framework 2.0</a></div>#}
+                <div class="presenter-presentation">Доклад:         
+                    {% for review in speaker.reviews %}
+                        <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         {% endfor %}

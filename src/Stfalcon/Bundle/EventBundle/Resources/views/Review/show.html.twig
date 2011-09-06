@@ -1,0 +1,24 @@
+{% extends '::event.html.twig' %}
+
+{% block content %}
+    <h2>{{ review.title }}</h2>
+
+    <article class="presentation">
+        {% for speaker in review.speakers %}
+            <div class="presenter">
+                <div class="presenter-photo">
+                    <img src="{{ speaker.photo }}" width="120" alt="{{ speaker.name }}" />
+                </div>
+                <div class="presenter-info">
+                    <div class="presenter-name">{{ speaker.name }}</div>
+                    <div class="presenter-company">{{ speaker.company }}</div>
+
+                    {{ speaker.about|raw }}
+                </div>
+            </div>
+         {% endfor %}
+         
+         {{ review.text|raw }}
+    </article>
+        
+{% endblock %}

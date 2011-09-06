@@ -11,7 +11,7 @@ use Knp\Bundle\MenuBundle\MenuItem;
 
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
-class SpeakerAdmin extends Admin 
+class SpeakerAdmin extends Admin
 {
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -31,8 +31,9 @@ class SpeakerAdmin extends Admin
                 ->add('company')
                 ->add('about')
                 ->add('file', 'file', array('required' => false))
-                ->add('event', 'entity',  array(
+                ->add('events', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple' => true, 'expanded' => true,
                 ))                
             ->end()
         ;

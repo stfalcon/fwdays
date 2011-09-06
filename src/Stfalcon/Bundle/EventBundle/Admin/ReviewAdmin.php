@@ -14,7 +14,7 @@ class ReviewAdmin extends BasePageAdmin
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper->add('event');
-        $listMapper->add('speaker');
+        $listMapper->add('speakers');
     }
     
     protected function configureFormFields(FormMapper $formMapper)
@@ -25,8 +25,9 @@ class ReviewAdmin extends BasePageAdmin
                 ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                 ))
-                ->add('speaker', 'entity',  array(
+                ->add('speakers', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Speaker',
+                    'multiple' => true, 'expanded' => true,
                 ))
             ->end()
         ;
