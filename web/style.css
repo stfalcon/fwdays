@@ -518,12 +518,6 @@ input[type="submit"] {
     color: #fff;
     text-shadow: 0 -1px 1px #1ca2bc;
     background: #2abbd7 url(images/sprite-main.jpg) left -702px repeat-x;
-    -webkit-box-shadow: inset 0px 1px 1px #5ee5f9;
-    -moz-box-shadow: inset 0px 1px 1px #5ee5f9;
-    box-shadow: inset 0px 1px 1px #5ee5f9;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    border-radius: 13px;
 }
 .top-nav .user-nav .user-menu {
     float: right;
@@ -531,15 +525,6 @@ input[type="submit"] {
 }
 .top-nav .user-nav .username {
     font-weight: normal;
-}
-.top-nav .user-nav .username:hover,
-.top-nav .user-menu:hover .username {
-    -webkit-border-bottom-right-radius: 0px;
-    -webkit-border-bottom-left-radius: 0px;
-    -moz-border-radius-bottomright: 0px;
-    -moz-border-radius-bottomleft: 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
 }
 .top-nav .user-nav .username span {
     display: block;
@@ -555,9 +540,6 @@ input[type="submit"] {
     padding: 7px 11px 6px;
     display: none;
     background: #0c9db9;
-    -webkit-border-top-left-radius: 11px;
-    -moz-border-radius-topleft: 11px;
-    border-top-left-radius: 11px;
 }
 .top-nav .user-menu:hover .user-menu-dropdown {
     display: block;
