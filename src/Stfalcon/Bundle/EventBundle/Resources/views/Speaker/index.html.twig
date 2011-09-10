@@ -14,11 +14,14 @@
                 <div class="presenter-company">{{ speaker.company }}</div>
                 
                 {{ speaker.about|raw }}
-                <div class="presenter-presentation">Доклад:         
-                    {% for review in speaker.reviews %}
-                        <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
-                    {% endfor %}
-                </div>
+                
+                {% if speaker.reviews.count %}
+                    <div class="presenter-presentation">Доклад:         
+                        {% for review in speaker.reviews %}
+                            <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
