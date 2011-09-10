@@ -14,7 +14,34 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 class NewsRepository extends EntityRepository
 {
 
-   /**
+    /**
+     * Get array of last news
+     * 
+     * @param integer $count
+     * @return array
+     */
+    public function getLastNews($count)
+    {
+        $count = (int) $count;
+        if (!$count) {
+            throw new Exception('You must set the count of the latest news');
+        }
+        
+        $query = $this->getEntityManager()
+                ->createQuery('
+                    SELECT 
+                        n
+                    FROM 
+                        StfalconEventBundle:News n
+                    ORDER BY 
+                        n.created_at DESC
+                    ')
+                ->setMaxResults($count);
+        
+        return $query->getResult();
+    }
+    
+    /**
      * Get array of last news for event
      * 
      * @param integer $count
