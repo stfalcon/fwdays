@@ -19,13 +19,8 @@ class NewsRepository extends EntityRepository
      * @param integer $count
      * @return array
      */
-    public function getLastNews($count)
+    public function getLastNews($count = null)
     {
-        $count = (int) $count;
-        if (!$count) {
-            throw new Exception('You must set the count of the latest news');
-        }
-        
         $query = $this->getEntityManager()
                 ->createQuery('
                     SELECT 
@@ -34,8 +29,12 @@ class NewsRepository extends EntityRepository
                         StfalconNewsBundle:News n
                     ORDER BY 
                         n.created_at DESC
-                    ')
-                ->setMaxResults($count);
+                    ');
+        
+        $count = (int) $count;
+        if ($count) {
+            $query->setMaxResults($count);
+        }        
         
         return $query->getResult();
     }

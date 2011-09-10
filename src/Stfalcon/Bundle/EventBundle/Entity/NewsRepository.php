@@ -14,31 +14,31 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 class NewsRepository extends EntityRepository
 {
 
+    private function _getBaseQueryBuilder($count = null)
+    {
+        $qb = $this->getEntityManager()
+                ->createQueryBuilder()
+                ->add('select', 'n')
+                ->add('from', 'StfalconEventBundle:News n')
+                ->add('orderBy', 'n.created_at DESC');
+
+        $count = (int) $count;
+        if ($count) {
+            $qb->setMaxResults($count);
+        }
+
+        return $qb;
+    }
+    
     /**
      * Get array of last news
      * 
      * @param integer $count
      * @return array
      */
-    public function getLastNews($count)
+    public function getLastNews($count = null)
     {
-        $count = (int) $count;
-        if (!$count) {
-            throw new Exception('You must set the count of the latest news');
-        }
-        
-        $query = $this->getEntityManager()
-                ->createQuery('
-                    SELECT 
-                        n
-                    FROM 
-                        StfalconEventBundle:News n
-                    ORDER BY 
-                        n.created_at DESC
-                    ')
-                ->setMaxResults($count);
-        
-        return $query->getResult();
+        return $this->_getBaseQueryBuilder($count)->getQuery()->getResult();
     }
     
     /**
@@ -47,28 +47,13 @@ class NewsRepository extends EntityRepository
      * @param integer $count
      * @return array
      */
-    public function getLastNewsForEvent(Event $event, $count)
+    public function getLastNewsForEvent(Event $event, $count = null)
     {
-        $count = (int) $count;
-        if (!$count) {
-            throw new Exception('You must set the count of the latest news');
-        }
+        $qb = $this->_getBaseQueryBuilder($count)
+                ->where('n.event = :event')
+                ->setParameter('event', $event);
         
-        $query = $this->getEntityManager()
-                ->createQuery('
-                    SELECT 
-                        n
-                    FROM 
-                        StfalconEventBundle:News n
-                    WHERE 
-                        n.event = :event
-                    ORDER BY 
-                        n.created_at DESC
-                    ')
-                ->setParameter('event', $event)
-                ->setMaxResults($count);
-        
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
     
 }
