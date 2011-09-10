@@ -1,3 +1,15 @@
 # Security
 security.login.username: "Электронная почта:"
 fos_user_profile_form_email: "Электронная почта:"
+
+fos_user_registration_form_fullname: "Фамилия и имя:"
+fos_user_registration_form_company: "Компания:"
+fos_user_registration_form_post: "Должность:"
+fos_user_registration_form_subscribe: "Подписаться на новости:"
+
+fos_user_profile_form_fullname: "Фамилия и имя:"
+fos_user_profile_form_company: "Компания:"
+fos_user_profile_form_post: "Должность:"
+fos_user_profile_form_subscribe: "Подписаться на новости:"
+
+profile.show.fullname: "Фамилия и имя"

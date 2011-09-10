@@ -12,7 +12,11 @@ class RegistrationFormType extends BaseRegistrationFormType
     {
         $builder
             ->add('email', 'email')
-            ->add('plainPassword', 'repeated', array('type' => 'password'));
+            ->add('fullname')
+            ->add('plainPassword', 'repeated', array('type' => 'password'))
+            ->add('company', null, array('required' => false))
+            ->add('post', null, array('required' => false))
+            ->add('subscribe', 'checkbox');
     }
     
     public function getName()

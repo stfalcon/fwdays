@@ -25,6 +25,10 @@ class ProfileFormType extends BaseProfileFormType
     {
         $builder
             ->add('email', 'email')
+            ->add('fullname')
+            ->add('company', null, array('required' => false))
+            ->add('post', null, array('required' => false))
+            ->add('subscribe', 'checkbox');
         ;
     }
     
