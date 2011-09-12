@@ -79,6 +79,7 @@ class Event
 
     /**
      * @ORM\OneToMany(targetEntity="News", mappedBy="event")
+     * @ORM\OrderBy({"created_at" = "DESC"})
      */
     private $news;
 
