@@ -16,6 +16,7 @@ class RegistrationFormType extends BaseRegistrationFormType
             ->add('plainPassword', 'repeated', array('type' => 'password'))
             ->add('company', null, array('required' => false))
             ->add('post', null, array('required' => false))
+            ->add('comment', null, array('required' => false))
             ->add('subscribe', 'checkbox');
     }
     

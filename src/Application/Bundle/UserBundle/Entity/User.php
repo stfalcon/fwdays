@@ -44,8 +44,15 @@ class User extends BaseUser
      *
      * @ORM\Column(name="subscribe", type="boolean")
      */    
-    protected $subscribe;
+    protected $subscribe = true;
 
+    /**
+     * @var string $text
+     *
+     * @ORM\Column(name="comment", type="text")
+     */    
+    protected $comment;
+    
 //    public function __construct()
 //    {
 //        parent::__construct();
@@ -90,6 +97,12 @@ class User extends BaseUser
         $this->subscribe = $subscribe;
     }
 
+    public function getComment() {
+        return $this->comment;
+    }
 
+    public function setComment($comment) {
+        $this->comment = $comment;
+    }
 
 }
