@@ -81,7 +81,13 @@ fos_user:
     registration:
         form:
             type: application_user_registration
+        confirmation:
+            enabled:    true
+            template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
             type: application_user_profile
             handler: application_user.profile.form.handler
+    from_email:
+        address:        orgs@fwdays.com
+        sender_name:    Frameworks Days
