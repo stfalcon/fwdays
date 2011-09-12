@@ -49,10 +49,10 @@ class User extends BaseUser
     /**
      * @var string $text
      *
-     * @ORM\Column(name="comment", type="text")
-     */    
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
     protected $comment;
-    
+
 //    public function __construct()
 //    {
 //        parent::__construct();
