@@ -28,7 +28,7 @@ class ProfileFormType extends BaseProfileFormType
             ->add('fullname')
             ->add('company', null, array('required' => false))
             ->add('post', null, array('required' => false))
-            ->add('subscribe', 'checkbox');
+            ->add('subscribe', 'checkbox', array('required' => false));
         ;
     }
     

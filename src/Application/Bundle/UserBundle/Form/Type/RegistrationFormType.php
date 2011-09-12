@@ -17,7 +17,7 @@ class RegistrationFormType extends BaseRegistrationFormType
             ->add('company', null, array('required' => false))
             ->add('post', null, array('required' => false))
             ->add('comment', null, array('required' => false))
-            ->add('subscribe', 'checkbox');
+            ->add('subscribe', 'checkbox', array('required' => false));
     }
     
     public function getName()
