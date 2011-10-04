@@ -24,6 +24,10 @@
         <parameter key="stfalcon_event.admin.reviews.class">Stfalcon\Bundle\EventBundle\Admin\ReviewAdmin</parameter>
         <parameter key="stfalcon_event.admin.reviews.entity">Stfalcon\Bundle\EventBundle\Entity\Review</parameter>
         <parameter key="stfalcon_event.admin.reviews.controller">SonataAdminBundle:CRUD</parameter>
+        
+        <parameter key="stfalcon_event.admin.mails.class">Stfalcon\Bundle\EventBundle\Admin\MailAdmin</parameter>
+        <parameter key="stfalcon_event.admin.mails.entity">Stfalcon\Bundle\EventBundle\Entity\Mail</parameter>
+        <parameter key="stfalcon_event.admin.mails.controller">SonataAdminBundle:CRUD</parameter>
     </parameters>
     
     <services>
@@ -35,29 +39,40 @@
             <argument>%stfalcon_event.admin.event.entity%</argument>
             <argument>%stfalcon_event.admin.event.controller%</argument>
         </service>
+        
         <service id="stfalcon_event.admin.speaker" class="%stfalcon_event.admin.speaker.class%">
             <tag name="sonata.admin" manager_type="orm" group="Event" label="speaker"/>
             <argument />
             <argument>%stfalcon_event.admin.speaker.entity%</argument>
             <argument>%stfalcon_event.admin.speaker.controller%</argument>
         </service>
+        
         <service id="stfalcon_event.admin.page" class="%stfalcon_event.admin.page.class%">
             <tag name="sonata.admin" manager_type="orm" group="Event" label="page"/>
             <argument />
             <argument>%stfalcon_event.admin.page.entity%</argument>
             <argument>%stfalcon_event.admin.page.controller%</argument>
         </service>
+        
         <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
             <tag name="sonata.admin" manager_type="orm" group="Event" label="news"/>
             <argument />
             <argument>%stfalcon_event.admin.news.entity%</argument>
             <argument>%stfalcon_event.admin.news.controller%</argument>
         </service>
+        
         <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
             <tag name="sonata.admin" manager_type="orm" group="Event" label="reviews"/>
             <argument />
             <argument>%stfalcon_event.admin.reviews.entity%</argument>
             <argument>%stfalcon_event.admin.reviews.controller%</argument>
+        </service>
+        
+        <service id="stfalcon_event.admin.mails" class="%stfalcon_event.admin.mails.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Event" label="mails"/>
+            <argument />
+            <argument>%stfalcon_event.admin.mails.entity%</argument>
+            <argument>%stfalcon_event.admin.mails.controller%</argument>
         </service>
     </services>
     
