@@ -239,8 +239,6 @@ class Speaker
     }
 
     public function setEvents($events) {
-        var_dump($events);
-        exit;
         $this->events = $events;
     }
     
