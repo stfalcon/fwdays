@@ -17,6 +17,9 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title')
+            ->add('events')
+            ->add('image', 'string', array('template' => 'StfalconEventBundle:Mail:test.html.twig'))
+                
         ;
     }
     
@@ -30,8 +33,46 @@ class MailAdmin extends Admin
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true, 'expanded' => true,
                 ))                
+                ->add('start', null, array('required' => false))
             ->end()
         ;
+    }
+    
+    public function postUpdate($mail)
+    {
+        // @todo refact
+        if ($mail->getComplite()) {
+            return false;
+        }
+        
+        $container = $this->getConfigurationPool()->getContainer();
+        $em = $container->get('doctrine')->getEntityManager();
+                
+        $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
+        
+        foreach ($users as $user) {
+            $mail->replace(array('%fullname%' => $user->getFullname()));
+            
+            $message = \Swift_Message::newInstance()
+                ->setSubject($mail->getTitle())
+                // @todo refact
+                ->setFrom('orgs@fwdays.com')
+                ->setTo($user->getEmail())
+                ->setBody($mail->getText());
+
+            $container->get('mailer')->send($message);
+            
+            var_dump($mail->getTitle(), $mail->getText(), $user->getEmail());
+            var_dump($user->getFullname());
+            exit;
+        }
+        
+        $mail->setComplite(true);
+        
+        $em->persist($mail);
+        $em->flush();
+        
+        return true;
     }
     
 }

@@ -52,6 +52,20 @@ class Mail
      */    
     private $events;
     
+    /**
+     * @var boolean $start
+     * 
+     * @ORM\Column(name="start", type="boolean")
+     */
+    private $start;
+    
+    /**
+     * @var boolean $complete
+     * 
+     * @ORM\Column(name="complete", type="boolean")
+     */
+    private $complite;
+    
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -91,4 +105,26 @@ class Mail
         $this->events = $events;
     }
     
+    public function getStart() {
+        return $this->start;
+    }
+
+    public function setStart($start) {
+        $this->start = $start;
+    }
+    
+    public function getComplite() {
+        return $this->complite;
+    }
+
+    public function setComplite($complite) {
+        $this->complite = $complite;
+    }
+
+    public function replace($data) {
+        foreach ($data as $key => $value) {
+            $this->setText(preg_replace('/' . $key .'/', $value, $this->getText()));
+        }
+    }
+
 }
