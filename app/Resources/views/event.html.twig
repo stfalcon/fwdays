@@ -6,7 +6,7 @@
         <div id="wrapper" class="sidebars-right">
 
             <nav class="top-nav">
-                {{ 'event_main'|knp_menu_render('twig') }}
+                {{ knp_menu_render('event_main') }}
                     
                 <div class="user-nav">
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -46,7 +46,7 @@
                         </div>
                     {% endif %}
                     
-                    {{ 'event_sub'|knp_menu_render('twig') }}
+                    {{ knp_menu_render('event_sub') }}
                 </div>
             </nav>
 

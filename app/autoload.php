@@ -25,6 +25,7 @@ $loader->registerNamespaces(array(
     'Avalanche'        => __DIR__.'/../vendor/bundles',
     'FOS'              => __DIR__.'/../vendor/bundles',
     'Knp\Menu'         => __DIR__.'/../vendor/KnpMenu/src',
+    'Zend'             => __DIR__.'/../vendor/zf2/library',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

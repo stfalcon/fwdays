@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\NewsBundle\Entity\News;
 use Stfalcon\Bundle\NewsBundle\Controller\NewsController AS BaseNewsController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * News controller
@@ -53,5 +54,30 @@ class NewsController extends BaseNewsController
     {
         return array('news' => $this->_getNews());
     }
+    
+    /**
+     * @Route("/rss", name="rss")
+     */
+    public function rssAction()
+    {
+        $feed = new \Zend\Feed\Writer\Feed();
+
+        // @todo text to config
+        $feed->setTitle('Frameworks Days');
+        $feed->setDescription('News about conferences');
+        $feed->setLink($this->generateUrl('rss', array(), true));
+
+        $news = $this->_getNews();
+        foreach($news as $one_news) {
+            $entry = new \Zend\Feed\Writer\Entry();
+            $entry->setTitle($one_news->getTitle());
+            $entry->setDescription($one_news->getPreview());
+            $entry->setLink($this->generateUrl('news_show', array('slug' => $one_news->getSlug()), true));
+            
+            $feed->addEntry($entry);
+        }
+
+        return new Response($feed->export('rss'));
+    }    
 
 }
