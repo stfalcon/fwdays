@@ -56,7 +56,7 @@ class MailAdmin extends Admin
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
                 // @todo refact
-                ->setFrom('orgs@fwdays.com')
+                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
                 ->setBody($mail->getText());
 

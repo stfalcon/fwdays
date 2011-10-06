@@ -20,5 +20,7 @@
          
          {{ review.text|raw }}
     </article>
-        
+
+    {% include "::_disqus.html.twig" %}
+    
 {% endblock %}
