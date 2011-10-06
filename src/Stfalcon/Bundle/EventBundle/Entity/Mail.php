@@ -55,16 +55,16 @@ class Mail
     /**
      * @var boolean $start
      * 
-     * @ORM\Column(name="start", type="boolean")
+     * @ORM\Column(name="start", type="boolean", nullable=true)
      */
     private $start;
     
     /**
      * @var boolean $complete
      * 
-     * @ORM\Column(name="complete", type="boolean")
+     * @ORM\Column(name="complete", type="boolean", nullable=true)
      */
-    private $complite;
+    private $complete;
     
     public function __construct()
     {
@@ -113,12 +113,12 @@ class Mail
         $this->start = $start;
     }
     
-    public function getComplite() {
-        return $this->complite;
+    public function getComplete() {
+        return $this->complete;
     }
 
-    public function setComplite($complite) {
-        $this->complite = $complite;
+    public function setComplete($complite) {
+        $this->complite = $complete;
     }
 
     public function replace($data) {

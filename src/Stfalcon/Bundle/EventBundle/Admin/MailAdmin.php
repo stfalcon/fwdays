@@ -41,7 +41,7 @@ class MailAdmin extends Admin
     public function postUpdate($mail)
     {
         // @todo refact
-        if ($mail->getComplite()) {
+        if ($mail->getComplete()) {
             return false;
         }
         
@@ -67,7 +67,7 @@ class MailAdmin extends Admin
             exit;
         }
         
-        $mail->setComplite(true);
+        $mail->setComplete(true);
         
         $em->persist($mail);
         $em->flush();
