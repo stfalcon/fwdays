@@ -12,11 +12,21 @@ use FOS\UserBundle\Model\UserManagerInterface;
 class UserAdmin extends Admin
 {
     
+    protected function configureDatagridFilters(DatagridMapper $datagrid)
+    {
+        $datagrid
+            ->add('email')
+            ->add('fullname')
+        ;
+    }
+        
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('username')
-            ->add('email')
+            ->addIdentifier('email')
+            ->add('fullname')
+            ->add('company')
+            ->add('post')
         ;
     }
     
@@ -24,9 +34,11 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('username')
+                ->add('fullname')
                 ->add('email')
-                ->add('plainPassword', 'text')
+                ->add('company')
+                ->add('post')
+//                ->add('plainPassword', 'text')
             ->end()
 //            ->with('Groups')
 //                ->add('groups', 'sonata_type_model', array('required' => false))
