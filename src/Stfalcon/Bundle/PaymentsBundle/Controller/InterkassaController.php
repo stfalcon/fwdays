@@ -21,9 +21,11 @@ class InterkassaController extends Controller
     {
         $sum = 150; //@todo подставлять из конфига
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         $payment = new Payment();
         $payment->setStatus(Payment::STATUS_PENDING);
-        $payment->setUserId(1); //@todo подставлять из сессии
+        $payment->setUserId($user->getId());
         $payment->setSum($sum);
 
         /** @var $em \Doctrine\ORM\EntityManager */
