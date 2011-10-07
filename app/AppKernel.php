@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
             new Application\Bundle\NewsBundle\ApplicationNewsBundle(),
 //            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle')
+            new Stfalcon\Bundle\PaymentsBundle\StfalconPaymentsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
