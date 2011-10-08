@@ -19,9 +19,18 @@ class InterkassaController extends Controller
      */
     public function payAction()
     {
-        $sum = 150; //@todo подставлять из конфига
+        /** @var $token \Symfony\Component\Security\Core\Authentication\Token\AnonymousToken */
+        $token = $this->container->get('security.context')->getToken();
+        //@todo пускать только авторизованого пользователя
+        //        if ($token->isAuthenticated()) {
+        //            $user = $token->getUser();
+        //        } else {
+        //
+        //        }
+        
+        $user = $token->getUser();
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $sum = 150; //@todo подставлять из конфига
 
         $payment = new Payment();
         $payment->setStatus(Payment::STATUS_PENDING);
@@ -38,7 +47,7 @@ class InterkassaController extends Controller
         $form->setData(
             array(
                 'amount' => $payment->getSum(),
-                'ik_shop_id' => 'N5vZX2kWJe67ChUt', //@todo secret key, подставлять из конфига
+                'ik_shop_id' => '8EEAE9AF-2BDA-441B-275C-EC193BB7560D', //@todo shop_id, подставлять из конфига;
                 'ik_payment_amount' => $payment->getSum(),
                 'ik_payment_id' => $payment->getId(),
                 'ik_payment_desc' => 'Оплата участия в конференции',
@@ -56,11 +65,10 @@ class InterkassaController extends Controller
      */
     public function statusAction()
     {
-        $params = $this->getRequest()->getPost();
+        $params = $this->getRequest()->request->all();
         $payment = $this->getDoctrine()->getEntityManager()
-                     ->getRepository('StfalconPaymentsBundle:Payments')
-                     ->findBy(array('paymentId' => $params['ik_payment_id'] ));
-
+                     ->getRepository('StfalconPaymentsBundle:Payment')
+                     ->findBy(array('id' => $params['ik_payment_id']));
 
         if ($this->_checkPaymentStatus($params)) {
             $payment->setStatus(Payment::STATUS_PAID);
