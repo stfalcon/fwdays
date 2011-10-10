@@ -15,3 +15,7 @@ fos_user_profile_form_comment: "Комментарий, пожелания, до
 fos_user_profile_form_subscribe: "Я согласен получать важные новости на e-mail:"
 
 profile.show.fullname: "Фамилия и имя"
+
+resetting.request.invalid_username: Пользователь с e-mail "%username%" не существует.
+resetting.request.username: "Ваш e-mail:"
+resetting.check_email: На e-mail "%email%" отправлено письмо с ссылкой для сброса пароля.

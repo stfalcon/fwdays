@@ -47,7 +47,7 @@ class InterkassaController extends Controller
 
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->createForm(new PayType());
-        
+
         // @todo данные брать с билета
         $form->setData(
             array(
