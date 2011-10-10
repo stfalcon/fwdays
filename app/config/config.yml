@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
-    
+
 framework:
     #esi:             ~
     translator:      { fallback: ru }
@@ -15,14 +15,14 @@ framework:
     session:
         default_locale: %locale%
         auto_start:     true
-        
+
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 #    form:
 #        resources: ['form_table_layout.html.twig']
-        
+
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
@@ -59,17 +59,17 @@ swiftmailer:
 #jms_security_extra:
 #    secure_controllers:  true
 #    secure_all_services: false
-    
+
 # KnpMenuBundle
 knp_menu:
     twig: true
-    
+
 #avalanche_imagine:
 #    filters:
 #        events_thumb:
 #            type:    thumbnail
 #            options: { size: [82, 87], mode: outbound }
-#        
+#
 #        event_thumb:
 #            type:    thumbnail
 #            options: { size: [120, 129], mode: outbound }
@@ -90,4 +90,9 @@ fos_user:
             handler: application_user.profile.form.handler
     from_email:
         address:        orgs@fwdays.com
-        sender_name:    Frameworks Days
+        sender_name:    "Frameworks Days"
+
+stfalcon_payments:
+    interkassa:
+        shop_id: "24C1AF18-3D1A-44FC-9B32-210336A4B231"
+        secret: %interkassa_secret%

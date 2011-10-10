@@ -19,6 +19,8 @@ class InterkassaController extends Controller
      */
     public function payAction()
     {
+        $config = $this->container->getParameter('stfalcon_payments.config');
+
         /** @var $token \Symfony\Component\Security\Core\Authentication\Token\AnonymousToken */
         $token = $this->container->get('security.context')->getToken();
         //@todo пускать только авторизованого пользователя
@@ -27,10 +29,11 @@ class InterkassaController extends Controller
         //        } else {
         //
         //        }
-        
+
         $user = $token->getUser();
 
-        $sum = 150; //@todo подставлять из конфига
+        $sum = 1; //@todo подставлять из конфига
+//        $sum = 150; //@todo подставлять из конфига
 
         $payment = new Payment();
         $payment->setStatus(Payment::STATUS_PENDING);
@@ -44,13 +47,15 @@ class InterkassaController extends Controller
 
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->createForm(new PayType());
+        
+        // @todo данные брать с билета
         $form->setData(
             array(
                 'amount' => $payment->getSum(),
-                'ik_shop_id' => '8EEAE9AF-2BDA-441B-275C-EC193BB7560D', //@todo shop_id, подставлять из конфига;
+                'ik_shop_id' => $config['interkassa']['shop_id'],
                 'ik_payment_amount' => $payment->getSum(),
                 'ik_payment_id' => $payment->getId(),
-                'ik_payment_desc' => 'Оплата участия в конференции',
+                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day',
                 'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getSum()),
             )
         );
@@ -124,6 +129,8 @@ class InterkassaController extends Controller
             return false;
         }
 
+        $config = $this->container->getParameter('stfalcon_payments.config');
+
         $crc = md5(
             $params['ik_shop_id'] .':'.
             $params['ik_payment_amount'] .':'.
@@ -134,7 +141,7 @@ class InterkassaController extends Controller
             $params['ik_trans_id'] .':'.
             $params['ik_currency_exch'] .':'.
             $params['ik_fees_payer'] .':'.
-            'N5vZX2kWJe67ChUt' //@todo secret key, подставлять из конфига
+            $config['interkassa']['secret']
         );
         if (strtoupper($params['ik_sign_hash']) === strtoupper($crc) &&
                 $params['ik_payment_state'] == 'success') {
@@ -152,7 +159,9 @@ class InterkassaController extends Controller
      */
     protected function _getSignHash($paymentId, $sum)
     {
-        $params['ik_shop_id'] = '8EEAE9AF-2BDA-441B-275C-EC193BB7560D'; //@todo shop_id, подставлять из конфига;
+        $config = $this->container->getParameter('stfalcon_payments.config');
+
+        $params['ik_shop_id'] = $config['interkassa']['shop_id'];
         $params['ik_payment_amount'] = $sum;
         $params['ik_payment_id'] = $paymentId;
         $params['ik_paysystem_alias'] = '';
@@ -164,7 +173,7 @@ class InterkassaController extends Controller
             $params['ik_payment_id'] .':'.
             $params['ik_paysystem_alias'] .':'.
             $params['ik_baggage_fields'] .':'.
-            'N5vZX2kWJe67ChUt' //@todo secret key, подставлять из конфига
+            $config['interkassa']['secret']
         );
 
         return $hash;
