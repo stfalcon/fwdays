@@ -55,7 +55,7 @@ class InterkassaController extends Controller
                 'ik_shop_id' => $config['interkassa']['shop_id'],
                 'ik_payment_amount' => $payment->getSum(),
                 'ik_payment_id' => $payment->getId(),
-                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day',
+                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ').',
                 'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getSum()),
             )
         );
