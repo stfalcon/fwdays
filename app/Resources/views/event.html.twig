@@ -8,21 +8,7 @@
             <nav class="top-nav">
                 {{ knp_menu_render('event_main') }}
                     
-                <div class="user-nav">
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <div class="user-menu">
-                            <a class="username" href="# "><span>{{ app.user.username }}</span></a>
-                            <ul class="user-menu-dropdown">
-                                <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
-                                {#<li><a href="# ">Платежи</a></li>#}
-                                {#<li><a href="# ">Статистика</a></li>#}
-                                <li><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <a class="signin" href="{{ path('fos_user_security_login') }}">Войти</a>
-                    {% endif %}
-                </div>
+                {% include '::_user-nav.html.twig' %}
             </nav>
             
             <header id="header">
