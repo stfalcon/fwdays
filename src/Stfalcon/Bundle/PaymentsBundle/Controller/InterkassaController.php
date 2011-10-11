@@ -13,7 +13,7 @@ class InterkassaController extends Controller
 {
 
     /**
-     * @Route("/payments/interkassa/pay")
+     * @Route("/payments/interkassa/pay", name="payments_pay")
      * @Template()
      * @return array
      */
@@ -32,6 +32,19 @@ class InterkassaController extends Controller
 
         $user = $token->getUser();
 
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $paid = $em->getRepository('StfalconPaymentsBundle:Payment')
+            ->findBy(array('userId' => $user->getId(), 'status' => Payment::STATUS_PAID));
+        if (count($paid) > 0) {
+            $response = $this->forward(
+                'StfalconPaymentsBundle:Interkassa:success',
+                array('message' => 'Вы уже оплатили участие в конференции Zend Framework Day')
+            );
+            return $response;
+        }
+
         $sum = 1; //@todo подставлять из конфига
 //        $sum = 150; //@todo подставлять из конфига
 
@@ -40,8 +53,6 @@ class InterkassaController extends Controller
         $payment->setUserId($user->getId());
         $payment->setSum($sum);
 
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getEntityManager();
         $em->persist($payment);
         $em->flush();
 
@@ -70,12 +81,13 @@ class InterkassaController extends Controller
      */
     public function statusAction()
     {
-        $params = $this->getRequest()->request->all();
+//        $params = $this->getRequest()->request->all();
+        $params = $_POST;
         $payment = $this->getDoctrine()->getEntityManager()
                      ->getRepository('StfalconPaymentsBundle:Payment')
-                     ->findBy(array('id' => $params['ik_payment_id']));
+                     ->findOneBy(array('id' => $params['ik_payment_id']));
 
-        if ($this->_checkPaymentStatus($params)) {
+        if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
             $payment->setStatus(Payment::STATUS_PAID);
             /** @var $em \Doctrine\ORM\EntityManager */
             $em = $this->getDoctrine()->getEntityManager();
@@ -91,11 +103,12 @@ class InterkassaController extends Controller
     /**
      * @Route("/payments/interkassa/success")
      * @Template()
+     * @param string $message
      * @return array
      */
-    public function successAction()
+    public function successAction($message = 'Спасибо за оплату!')
     {
-        return array('message' => 'Спасибо за оплату!');
+        return array('message' => $message);
     }
 
     /**
