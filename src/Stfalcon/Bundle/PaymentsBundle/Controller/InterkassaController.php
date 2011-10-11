@@ -45,8 +45,7 @@ class InterkassaController extends Controller
             return $response;
         }
 
-        $sum = 1; //@todo подставлять из конфига
-//        $sum = 150; //@todo подставлять из конфига
+        $sum = 150; //@todo подставлять из конфига
 
         $payment = new Payment();
         $payment->setStatus(Payment::STATUS_PENDING);
