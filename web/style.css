@@ -412,7 +412,8 @@ input[type="submit"] {
     overflow: hidden;
 }
 #content {
-    margin: 0 20% 0 27%;
+    margin: 0 20% 0 320px;
+/*    margin: 0 20% 0 27%;*/
     padding-bottom: 20px;
 }
 #wrapper.no-head #content {
@@ -430,9 +431,10 @@ input[type="submit"] {
 -----------------------------------------------------------------------------*/
 #side-left {
     float: left;
-    width: 19%;
+    width: 240px;
+/*    width: 19%;*/
     margin-left: -100%;
-    padding-left: 4%;
+    padding-left: 40px;
     position: relative;
 }
 #wrapper.no-head #side-left {
@@ -1490,7 +1492,7 @@ a.reg-button:active {
 }
 #disqus_thread ul li {
     background: transparent;
-}  
+}
 #dsq-toolbar-dropdown-wrap ul {
     width: 210px;
 }

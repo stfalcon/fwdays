@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     {% include '::_head.html.twig' %}
 
     <body>
@@ -7,8 +7,10 @@
 
             <nav class="top-nav">
                 {{ knp_menu_render('event_main') }}
+
+                {% include '::_user-nav.html.twig' %}
             </nav>
-            
+
             <header id="header">
                 <div class="wrap">
                     <div class="logo">

@@ -8,7 +8,7 @@
       interval: 6000,
       title: 'Что пишут о',
       subject: 'Frameworks Days',
-      width: 'auto',
+      width: 240,
       height: 300,
       theme: {
         shell: {
@@ -35,5 +35,13 @@
     </script>
 </div>
 <div class="soc-plugin-holder">
-    <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FFrameworks-Days%2F235981893111914&amp;width=200&amp;colorscheme=light&amp;show_faces=false&amp;border_color&amp;stream=false&amp;header=true&amp;height=62" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:62px;" {#allowTransparency="true"#}></iframe>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/uk_UA/all.js#xfbml=1&appId=147663055321186";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <div class="fb-like-box" data-href="http://www.facebook.com/fwdays" data-width="240" data-show-faces="true" data-stream="false" data-header="true"></div>
 </div>
