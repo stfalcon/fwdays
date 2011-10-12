@@ -5,9 +5,7 @@
         {{ page.title }}
     </h2>
 
-    <p>
-        {{ page.text|raw }}
-    </p>
+    {{ page.text|raw }}
 
     {% include "::_disqus.html.twig" %}
 
