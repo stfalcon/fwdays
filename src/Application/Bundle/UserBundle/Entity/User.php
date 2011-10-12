@@ -17,33 +17,33 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @var string $fullname
      *
      * @ORM\Column(name="fullname", type="string", length=255)
-     */    
+     */
     protected $fullname;
-    
+
     /**
      * @var string $company
      *
      * @ORM\Column(name="company", type="string", length=255, nullable=true)
-     */    
+     */
     protected $company;
-    
+
     /**
      * @var string $post
      *
      * @ORM\Column(name="post", type="string", length=255, nullable=true)
-     */    
+     */
     protected $post;
-    
+
     /**
      * @var boolean $subscribe
      *
      * @ORM\Column(name="subscribe", type="boolean")
-     */    
+     */
     protected $subscribe = true;
 
     /**
@@ -58,12 +58,12 @@ class User extends BaseUser
 //        parent::__construct();
 //        // your own logic
 //    }
-    
-    public function setEmail($email) 
-    { 
-             parent::setEmail($email); 
-             $this->setUsername($email); 
-    } 
+
+    public function setEmail($email)
+    {
+             parent::setEmail($email);
+             $this->setUsername($email);
+    }
 
     public function getFullname() {
         return $this->fullname;
@@ -88,7 +88,7 @@ class User extends BaseUser
     public function setPost($post) {
         $this->post = $post;
     }
-    
+
     public function isSubscribe() {
         return $this->subscribe;
     }
