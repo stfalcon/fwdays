@@ -61,10 +61,6 @@ class MailAdmin extends Admin
                 ->setBody($mail->getText());
 
             $container->get('mailer')->send($message);
-            
-            var_dump($mail->getTitle(), $mail->getText(), $user->getEmail());
-            var_dump($user->getFullname());
-            exit;
         }
         
         $mail->setComplete(true);
