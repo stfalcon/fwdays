@@ -12,20 +12,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class EventController extends BaseController
 {
-    /**
-     * Lists all Event entities.
-     *
-     * @Route("/events", name="events")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        // @todo refact. отдельнымы спискамм активные и прошедние ивенты
-        $events = $this->getDoctrine()->getEntityManager()
-                       ->getRepository('StfalconEventBundle:Event')->findAll();
-
-        return array('events' => $events);
-    }
 
     /**
      * Finds and displays a Event entity.

@@ -28,7 +28,6 @@ class AppKernel extends Kernel
 //            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
-            new Application\Bundle\NewsBundle\ApplicationNewsBundle(),
 //            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle')
             new Stfalcon\Bundle\PaymentsBundle\StfalconPaymentsBundle(),
         );

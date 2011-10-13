@@ -23,10 +23,10 @@ ApplicationDefaultBundle:
     type:     annotation
     prefix:   /
     
-ApplicationUserBundle:
-    resource: "@ApplicationDefaultBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#ApplicationUserBundle:
+#    resource: "@ApplicationDefaultBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

@@ -316,12 +316,6 @@ input[type="submit"] {
     margin: 0 auto;
     position: relative;
 }
-#wrapper.no-head #header {
-    position: static;
-    height: auto;
-    border: 0 none;
-    background: transparent;
-}
 #wrapper.wide-content #header,
 #wrapper.sidebars-right #header {
     height: 180px;
@@ -510,7 +504,8 @@ input[type="submit"] {
     margin-right: 4%;
     padding-top: 6px;
 }
-.top-nav .user-nav .signin,
+.top-nav .user-nav .register,
+.top-nav .user-nav .login,
 .top-nav .user-nav .username {
     display: block;
     float: right;
@@ -522,6 +517,9 @@ input[type="submit"] {
     color: #fff;
     text-shadow: 0 -1px 1px #1ca2bc;
     background: #2abbd7 url(images/sprite-main.jpg) left -702px repeat-x;
+}
+.top-nav .user-nav .register {
+    margin-left: 10px;
 }
 .top-nav .user-nav .user-menu {
     float: right;

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {#<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />#}
+        <meta charset="utf-8" />
+        <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <title>{% block title %}Frameworks Days{% endblock %}</title>
+
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+        {% block stylesheets %}{% endblock %}
+
+        <link rel="stylesheet" href="/style.css" type="text/css" media="screen, projection" />
+        <!--[if IE 7]><link rel="stylesheet" href="/style_ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+
+        <link href="{{ path('rss') }}" rel="alternate" type="application/rss+xml" title="Подписка по RSS" />
+    </head>
+
+    <body>
+        <div id="wrapper" class="{% block div_wrapper_class %}no-head{% endblock %}">
+
+            <nav class="top-nav">
+                <div class="wrap">
+                    {{ knp_menu_render('main') }}
+
+                    <div class="user-nav">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <div class="user-menu">
+                                <a class="username" href="# "><span>{{ app.user.username }}</span></a>
+                                <ul class="user-menu-dropdown">
+                                    <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
+                                    <li><a href="{{ path('payments_pay') }}">Оплата</a></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <a class="register" href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a>
+                            <a class="login" href="{{ path('fos_user_security_login') }}">Войти</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+
+            <header id="header">
+                <div class="wrap">
+                    <div class="logo">
+                        <div>
+                            <a href="{{ path('homepage') }}" title="Frameworks Days">Frameworks Days</a>
+                        </div>
+                    </div><!-- div.logo -->
+
+                    {% block slider %}{% endblock %}
+                </div>
+            </header><!-- #header-->
+
+            {#<div class="events-switches">
+                <div class="wrap">
+                    <ul>
+                        <li class="active"><a href="# ">Zend Framework Day</a></li>
+                        <li><a href="# ">PHP Frameworks Day</a></li>
+                        <li class="past-events"><a href="# ">Прошедшие</a></li>
+                    </ul>
+                </div>
+            </div>#}
+
+            <section id="middle">
+
+                <div id="container">
+                    <div id="content">
+                        {% block content %}{% endblock %}
+                    </div><!-- #content-->
+                </div><!-- #container-->
+
+                <aside id="side-left">
+                    {% include "::_soc-widgets.html.twig" %}
+                </aside><!-- #side-left -->
+
+                <aside id="side-right">
+                    {% include "::_sponsors.html.twig" %}
+                </aside><!-- #side-right -->
+
+            </section><!-- #middle-->
+
+        </div><!-- #wrapper -->
+
+        <footer id="footer">
+            <div class="wrap">
+
+                <div class="copyright">&#169; 2011 Frameworks Days.</div>
+                <address>Электронная почта: <a href="mailto:info@fwdays.com">info@fwdays.com</a><br /> Телефон для справок: +380 (097) 874-03-42</address>
+                <div class="created-by">Сделано в <a class="stfalcon" href="http://stfalcon.com">stfalcon-studio</a></div>
+            </div>
+        </footer><!-- #footer -->
+
+        {% block javascripts %}{% endblock %}
+
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-19310691-2']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+
+    </body>
+</html>
