@@ -18,12 +18,28 @@ class EventController extends Controller
      *
      * @Route("/events", name="events")
      * @Template()
+     * @return array
      */
     public function indexAction()
     {
         // @todo refact. отдельнымы спискамм активные и прошедние ивенты
         $events = $this->getDoctrine()->getEntityManager()
                        ->getRepository('StfalconEventBundle:Event')->findAll();
+
+        return array('events' => $events);
+    }
+
+    /**
+     * Events slider (block)
+     *
+     * @Template()
+     * @return array
+     */
+    public function sliderAction()
+    {
+        $events = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconEventBundle:Event')
+                     ->findBy(array('active' => true ));
 
         return array('events' => $events);
     }

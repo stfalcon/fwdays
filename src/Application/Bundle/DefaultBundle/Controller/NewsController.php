@@ -45,7 +45,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Get last all news (widget)
+     * Get last all news (block)
      *
      * @Template()
      * @return array

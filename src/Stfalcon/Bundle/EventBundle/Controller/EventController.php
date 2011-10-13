@@ -22,35 +22,8 @@ class EventController extends BaseController
     public function showAction($event_slug)
     {
         $event = $this->getEventBySlug($event_slug);
-        
+
         return array('event' => $event);
     }
-    
-    /**
-     * @Template()
-     */
-    public function sliderAction()
-    {
-        $events = $this->getDoctrine()->getEntityManager()
-                     ->getRepository('StfalconEventBundle:Event')
-                     ->findBy(array('active' => true ));
-        
-        return array('events' => $events);
-    }
 
-    /**
-     * 
-     * @Route("/events/payment-status", name="events_payment_status")
-     * @Template()
-     * @return array
-     */
-    public function statusAction()
-    {
-        $paidEvents = $this->getDoctrine()->getEntityManager()
-                       ->getRepository('StfalconEventBundle:Ticket')
-                       ->findAllPaid();
-
-        return compact('paidEvents');
-    }
-    
 }
