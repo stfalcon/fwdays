@@ -16,19 +16,19 @@ class EventSubMenu extends Menu
     public function __construct(Request $request, Router $router, $event)
     {
         parent::__construct();
-        
+
         $this->setCurrentUri($request->getRequestUri());
-        
+
         $this->addChild("О событии", $router->generate('event_show', array('event_slug' => $event->getSlug())));
-        
+
         if ($event->getSpeakers()) {
             $this->addChild("Докладчики", $router->generate('event_speakers', array('event_slug' => $event->getSlug())));
         }
-        
+
         // Ссылки на страницы ивента
         // @todo можно добавить для страниц свойство "отображать в меню"
         foreach($event->getPages() as $page) {
-            $url = $router->generate('event_page_show', 
+            $url = $router->generate('event_page_show',
                     array('event_slug' => $event->getSlug(), 'page_slug' => $page->getSlug()));
             $this->addChild($page->getTitle(), $url);
         }

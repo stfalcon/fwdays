@@ -12,50 +12,37 @@
         <service id="application_default.menu_builder" class="%application_default.menu_builder.class%">
             <argument type="service" id="knp_menu.factory" />
         </service>
-        
-        <service id="application_default.menu.main" 
-                 class="Knp\Menu\MenuItem" 
-                 scope="request" 
-                 factory-service="application_default.menu_builder" 
+
+        <!-- main menu -->
+        <service id="application_default.menu.main"
+                 class="Knp\Menu\MenuItem"
+                 scope="request"
+                 factory-service="application_default.menu_builder"
                  factory-method="createMainMenu">
             <tag name="knp_menu.menu" alias="main" />
             <argument type="service" id="request" />
         </service>
-        
-        <service id="application_default.menu.event_main" 
-                 class="Knp\Menu\MenuItem" 
-                 scope="request" 
-                 factory-service="application_default.menu_builder" 
+
+        <!-- main menu on pages of event -->
+        <service id="application_default.menu.event_main"
+                 class="Knp\Menu\MenuItem"
+                 scope="request"
+                 factory-service="application_default.menu_builder"
                  factory-method="createEventMainMenu">
             <tag name="knp_menu.menu" alias="event_main" />
             <argument type="service" id="request" />
         </service>
-        
-        <service id="application_default.menu.event_sub" 
-                 class="Knp\Menu\MenuItem" 
-                 scope="request" 
-                 factory-service="application_default.menu_builder" 
+
+        <!-- sub menu on pages of event -->
+        <service id="application_default.menu.event_sub"
+                 class="Knp\Menu\MenuItem"
+                 scope="request"
+                 factory-service="application_default.menu_builder"
                  factory-method="createEventSubMenu">
             <tag name="knp_menu.menu" alias="event_sub" />
             <argument type="service" id="request" />
             <argument type="service" id="stfalcon_event.current_event" />
         </service>
-        
-        
-<!--        <service id="menu.main" class="%menu.main.class%" scope="request">
-            <tag name="knp_menu.menu" alias="main" />
-            <argument type="service" id="request" />
-            <argument type="service" id="router" />
-        </service>
-        <service id="menu.event" class="%menu.event.class%" scope="request">
-            <tag name="knp_menu.menu" alias="event" />
-            <argument type="service" id="request" />
-            <argument type="service" id="router" />
-        </service>
-        <service id="menu.event_sub" class="%menu.event_sub.class%" scope="request">
-            <tag name="knp_menu.menu" alias="event_sub" />
-            <argument type="service" id="request" />
-            <argument type="service" id="router" />
-        </service>-->
+
     </services>
 </container>
