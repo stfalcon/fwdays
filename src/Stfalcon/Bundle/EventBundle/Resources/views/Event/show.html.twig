@@ -7,10 +7,13 @@
         {{ event.about|raw }}
     </article>
 
-    <ul class="socnet-likes">
-        <li class="vk"><a href="# "><img src="/images/temp/socnet-like-vk.png" width="82" height="22" alt="" /></a></li>
-        <li class="fb"><a href="# "><img src="/images/temp/socnet-like-fb.png" width="124" height="20" alt="" /></a></li>
-        <li class="tw"><a href="# "><img src="/images/temp/socnet-like-tw.png" width="107" height="20" alt="" /></a></li>
-        <li class="gg"><a href="# "><img src="/images/temp/socnet-like-gg.png" width="76" height="20" alt="" /></a></li>
-    </ul>
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style ">
+        <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:action="recommend"></a>
+        <a class="addthis_button_tweet"></a>
+        <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    </div>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e976de3658cacf2"></script>
+    <!-- AddThis Button END -->
+
 {% endblock %}

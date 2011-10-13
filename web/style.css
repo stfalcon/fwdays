@@ -1264,19 +1264,6 @@ table.event-details .price b {
     color: #000;
 }
 
-.socnet-likes {
-    list-style: none outside;
-    overflow: hidden;
-}
-.socnet-likes li {
-    float: left;
-    padding: 0 0 0 33px;
-    background: transparent;
-}
-.socnet-likes li:first-child {
-    padding-left: 0;
-}
-
 div.presenters {
     padding-top: 3px;
     font-size: 14px;
