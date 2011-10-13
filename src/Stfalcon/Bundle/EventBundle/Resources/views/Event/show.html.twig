@@ -1,4 +1,4 @@
-{% extends '::event.html.twig' %}
+{% extends 'StfalconEventBundle::layout.html.twig' %}
 
 {% block content %}
     <h2>О событии</h2>
@@ -7,10 +7,10 @@
         {{ event.about|raw }}
     </article>
 
-    {#<ul class="socnet-likes">
+    <ul class="socnet-likes">
         <li class="vk"><a href="# "><img src="/images/temp/socnet-like-vk.png" width="82" height="22" alt="" /></a></li>
         <li class="fb"><a href="# "><img src="/images/temp/socnet-like-fb.png" width="124" height="20" alt="" /></a></li>
         <li class="tw"><a href="# "><img src="/images/temp/socnet-like-tw.png" width="107" height="20" alt="" /></a></li>
         <li class="gg"><a href="# "><img src="/images/temp/socnet-like-gg.png" width="76" height="20" alt="" /></a></li>
-    </ul>#}
+    </ul>
 {% endblock %}

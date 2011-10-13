@@ -41,17 +41,19 @@
                 </div>
             </nav>
 
-            <header id="header">
-                <div class="wrap">
-                    <div class="logo">
-                        <div>
-                            <a href="{{ path('homepage') }}" title="Frameworks Days">Frameworks Days</a>
-                        </div>
-                    </div><!-- div.logo -->
+            {% block header %}
+                <header id="header">
+                    <div class="wrap">
+                        <div class="logo">
+                            <div>
+                                <a href="{{ path('homepage') }}" title="Frameworks Days">Frameworks Days</a>
+                            </div>
+                        </div><!-- div.logo -->
 
-                    {% block slider %}{% endblock %}
-                </div>
-            </header><!-- #header-->
+                        {% block slider %}{% endblock %}
+                    </div>
+                </header><!-- #header-->
+            {% endblock %}
 
             {#<div class="events-switches">
                 <div class="wrap">
@@ -72,11 +74,15 @@
                 </div><!-- #container-->
 
                 <aside id="side-left">
-                    {% include "::_soc-widgets.html.twig" %}
+                    {% block sidebar_left %}
+                            {% include "::_soc-widgets.html.twig" %}
+                    {% endblock %}
                 </aside><!-- #side-left -->
 
                 <aside id="side-right">
-                    {% include "::_sponsors.html.twig" %}
+                    {% block sidebar_right %}
+                        {% include "::_sponsors.html.twig" %}
+                    {% endblock %}
                 </aside><!-- #side-right -->
 
             </section><!-- #middle-->
