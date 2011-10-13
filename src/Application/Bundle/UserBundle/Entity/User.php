@@ -53,54 +53,105 @@ class User extends BaseUser
      */
     protected $comment;
 
-//    public function __construct()
-//    {
-//        parent::__construct();
-//        // your own logic
-//    }
-
+    /**
+     * Redefinition email setter for use email as username
+     *
+     * @param string $email
+     */
     public function setEmail($email)
     {
              parent::setEmail($email);
              $this->setUsername($email);
     }
 
+    /**
+     * Get user fullname
+     *
+     * @return string
+     */
     public function getFullname() {
         return $this->fullname;
     }
 
+    /**
+     * Set user fullname
+     *
+     * @param string $fullname
+     */
     public function setFullname($fullname) {
         $this->fullname = $fullname;
     }
 
+    /**
+     * Get user company
+     *
+     * @return string
+     */
     public function getCompany() {
         return $this->company;
     }
 
+    /**
+     * Set user company
+     *
+     * @param string $company
+     */
     public function setCompany($company) {
         $this->company = $company;
     }
 
+    /**
+     * Get user post
+     *
+     * @return string
+     */
     public function getPost() {
         return $this->post;
     }
 
+    /**
+     * Set user post
+     *
+     * @param string $post
+     */
     public function setPost($post) {
         $this->post = $post;
     }
 
+    /**
+     * User has subscribed to the newsletter?
+     *
+     * @return string
+     */
     public function isSubscribe() {
         return $this->subscribe;
     }
 
+    /**
+     * Set subscribe
+     *
+     * @param type $subscribe
+     */
     public function setSubscribe($subscribe) {
         $this->subscribe = $subscribe;
     }
 
+    /**
+     * Get comment
+     *
+     * @todo: rm this method
+     * @return type
+     */
     public function getComment() {
         return $this->comment;
     }
 
+    /**
+     * Set comment
+     *
+     * @todo: rm this method
+     * @param type $comment
+     */
     public function setComment($comment) {
         $this->comment = $comment;
     }

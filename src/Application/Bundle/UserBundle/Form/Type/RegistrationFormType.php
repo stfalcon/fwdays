@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilder;
 
 class RegistrationFormType extends BaseRegistrationFormType
 {
-    
+
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
@@ -19,10 +19,10 @@ class RegistrationFormType extends BaseRegistrationFormType
             ->add('comment', null, array('required' => false))
             ->add('subscribe', 'checkbox', array('required' => false));
     }
-    
+
     public function getName()
     {
         return 'application_user_registration';
-    }    
-    
+    }
+
 }

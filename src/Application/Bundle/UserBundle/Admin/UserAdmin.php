@@ -11,7 +11,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
 {
-    
+
     protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
         $datagrid
@@ -19,60 +19,43 @@ class UserAdmin extends Admin
             ->add('fullname')
         ;
     }
-        
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('email')
+            ->add('enabled')
             ->add('fullname')
             ->add('company')
-            ->add('post')
+            ->add('comment')
         ;
     }
-    
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('General')
                 ->add('fullname')
                 ->add('email')
-                ->add('company')
-                ->add('post')
+                ->add('company', null, array('required' => false))
+                ->add('post', null, array('required' => false))
+//                ->add('comment', null, array('required' => false))
+                ->add('subscribe', null, array('required' => false))
 //                ->add('plainPassword', 'text')
             ->end()
 //            ->with('Groups')
 //                ->add('groups', 'sonata_type_model', array('required' => false))
 //            ->end()
             ->with('Management')
-//                ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
-                ->add('locked', null, array('required' => false))
-                ->add('expired', null, array('required' => false))
-                ->add('enabled', null, array('required' => false))
-                ->add('credentialsExpired', null, array('required' => false))
-            ->end()
-        ;
-    }    
-
-//    protected function configureFormFields(FormMapper $formMapper)
-//    {
-//        $formMapper
-//            ->with('General')
-//                ->add('username')
-//                ->add('email')
-//                ->add('plainPassword', 'text')
-//            ->end()
-//            ->with('Groups')
-//                ->add('groups', 'sonata_type_model', array('required' => false))
-//            ->end()
-//            ->with('Management')
-//                ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
+                ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
 //                ->add('locked', null, array('required' => false))
 //                ->add('expired', null, array('required' => false))
-//                ->add('enabled', null, array('required' => false))
+                ->add('enabled', null, array('required' => false))
 //                ->add('credentialsExpired', null, array('required' => false))
-//            ->end()
-//        ;
-//    }
+            ->end()
+        ;
+    }
+
 //    public function preUpdate($user)
 //    {
 //        $this->getUserManager()->updateCanonicalFields($user);
