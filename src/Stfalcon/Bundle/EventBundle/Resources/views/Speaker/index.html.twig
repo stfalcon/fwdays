@@ -1,4 +1,4 @@
-{% extends '::event.html.twig' %}
+{% extends 'StfalconEventBundle::layout.html.twig' %}
 
 {% block content %}
     <h2>Докладчики</h2>
@@ -12,11 +12,11 @@
             <div class="presenter-info">
                 <div class="presenter-name">{{ speaker.name }}</div>
                 <div class="presenter-company">{{ speaker.company }}</div>
-                
+
                 {{ speaker.about|raw }}
-                
+
                 {% if speaker.reviews.count %}
-                    <div class="presenter-presentation">Доклад:         
+                    <div class="presenter-presentation">Доклад:
                         {% for review in speaker.reviews %}
                             <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
                         {% endfor %}

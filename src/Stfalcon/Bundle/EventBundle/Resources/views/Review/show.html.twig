@@ -1,4 +1,4 @@
-{% extends '::event.html.twig' %}
+{% extends 'StfalconEventBundle::layout.html.twig' %}
 
 {% block content %}
     <h2>{{ review.title }}</h2>
@@ -17,10 +17,10 @@
                 </div>
             </div>
          {% endfor %}
-         
+
          {{ review.text|raw }}
     </article>
 
     {% include "::_disqus.html.twig" %}
-    
+
 {% endblock %}

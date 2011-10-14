@@ -28,24 +28,4 @@ class SpeakerController extends BaseController
         return array('event' => $event, 'speakers' => $speakers);
     }
 
-    /**
-     * Finds and displays a Speaker entity.
-     *
-     * @Route("/event/{event_slug}/speaker/{id}", name="event_speaker_show")
-     * @Template()
-     */
-    public function showAction($event_slug, $id)
-    {
-        // @todo это заглушка
-        $em = $this->getDoctrine()->getEntityManager();
-        $entity = $em->getRepository('StfalconEventBundle:Speaker')->find($id);
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Speaker entity.');
-        }
-        
-        return array(
-            'entity'      => $entity,
-        );
-    }
-    
 }
