@@ -22,3 +22,4 @@ set :deploy_via, :rsync_with_remote_cache
 
 set :shared_files,	["app/config/parameters.ini"]
 set :shared_children,	[app_path + "/logs", web_path + "/uploads", "vendor"]
+set :dump_assetic_assets, true

@@ -3,6 +3,5 @@ vendor
 */logs/*
 .rsync_cache/
 web/bundles/*
-web/media/cache/*
 web/uploads/events/*
 web/uploads/speakers/*

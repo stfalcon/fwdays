@@ -8,10 +8,10 @@
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
-        {% block stylesheets %}{% endblock %}
-
-        <link rel="stylesheet" href="/style.css" type="text/css" media="screen, projection" />
-        <!--[if IE 7]><link rel="stylesheet" href="/style_ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+        {% stylesheets 'css/style.css' filter='yui_css' output="tmp/css/*.css" %}
+            <link rel="stylesheet" type="text/css" media="screen, projection" href="{{ asset_url }}" />
+            <!--[if IE 7]><link rel="stylesheet" href="/css/style_ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+        {% endstylesheets %}
 
         <link href="{{ path('rss') }}" rel="alternate" type="application/rss+xml" title="Подписка по RSS" />
     </head>
@@ -91,9 +91,8 @@
 
         <footer id="footer">
             <div class="wrap">
-
                 <div class="copyright">&#169; 2011 Frameworks Days.</div>
-                <address>Электронная почта: <a href="mailto:info@fwdays.com">info@fwdays.com</a><br /> Телефон для справок: +380 (097) 874-03-42</address>
+                <address>Электронная почта: <a href="mailto:info@fwdays.com">orgs@fwdays.com</a></address>
                 <div class="created-by">Сделано в <a class="stfalcon" href="http://stfalcon.com">stfalcon-studio</a></div>
             </div>
         </footer><!-- #footer -->
