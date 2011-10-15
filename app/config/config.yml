@@ -25,7 +25,8 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+#    debug:          %kernel.debug%
+    use_controller: false
     filters:
         yui_css:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
