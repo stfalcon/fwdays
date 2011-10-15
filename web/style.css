@@ -1264,6 +1264,19 @@ table.event-details .price b {
     color: #000;
 }
 
+.share-buttons div {
+    float: left;
+    padding-left: 5px;
+}
+
+.share-buttons div.google-plus {
+    width: 78px;
+}
+
+.share-buttons div.facebook-like {
+    width: 75px;
+}
+
 div.presenters {
     padding-top: 3px;
     font-size: 14px;
