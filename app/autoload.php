@@ -10,6 +10,7 @@ $loader->registerNamespaces(array(
     'JMS'              => __DIR__.'/../vendor/bundles',
     'Sonata'           => __DIR__.'/../vendor/bundles',
     'Knp'              => __DIR__.'/../vendor/bundles',
+    'Knp\Menu'         => __DIR__.'/../vendor/KnpMenu/src',
     'Doctrine\\Common' => __DIR__.'/../vendor/doctrine-common/lib',
     'Doctrine\\DBAL'   => __DIR__.'/../vendor/doctrine-dbal/lib',
     'Doctrine'         => __DIR__.'/../vendor/doctrine/lib',
@@ -24,10 +25,11 @@ $loader->registerNamespaces(array(
     'Imagine'          => __DIR__.'/../vendor/imagine/lib',
     'Avalanche'        => __DIR__.'/../vendor/bundles',
     'FOS'              => __DIR__.'/../vendor/bundles',
-    'Knp\Menu'         => __DIR__.'/../vendor/KnpMenu/src',
     'Zend'             => __DIR__.'/../vendor/zf2/library',
     'Gedmo'            => __DIR__.'/../vendor/doctrine-extensions/lib',
     'Stof'             => __DIR__.'/../vendor/bundles',
+    'Doctrine\\DBAL\\Migrations' => __DIR__.'/../vendor/doctrine-migrations/lib',
+    'Doctrine\\DBAL'             => __DIR__.'/../vendor/doctrine-dbal/lib',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

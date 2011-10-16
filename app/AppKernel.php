@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
 
             new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
