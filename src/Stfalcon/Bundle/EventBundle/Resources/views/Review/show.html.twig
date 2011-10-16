@@ -1,5 +1,7 @@
 {% extends 'StfalconEventBundle::layout.html.twig' %}
 
+{% block title %}{{ review.title }} / {{ parent() }}{% endblock %}
+
 {% block content %}
     <h2>{{ review.title }}</h2>
 

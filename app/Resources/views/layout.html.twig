@@ -92,26 +92,27 @@
         <footer id="footer">
             <div class="wrap">
                 <div class="copyright">&#169; 2011 Frameworks Days.</div>
-                <address>Электронная почта: <a href="mailto:info@fwdays.com">orgs@fwdays.com</a></address>
+                <address>Электронная почта: <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a></address>
                 <div class="created-by">Сделано в <a class="stfalcon" href="http://stfalcon.com">stfalcon-studio</a></div>
             </div>
         </footer><!-- #footer -->
 
         {% block javascripts %}{% endblock %}
 
-        <script type="text/javascript">
+        {% if app.environment == 'prod' %}
+            <script type="text/javascript">
 
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-19310691-2']);
-          _gaq.push(['_trackPageview']);
+              var _gaq = _gaq || [];
+              _gaq.push(['_setAccount', 'UA-19310691-2']);
+              _gaq.push(['_trackPageview']);
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
+              (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              })();
 
-        </script>
-
+            </script>
+        {% endif %}
     </body>
 </html>

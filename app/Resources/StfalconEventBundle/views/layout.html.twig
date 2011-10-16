@@ -1,5 +1,7 @@
 {% extends '::layout.html.twig' %}
 
+{% block title %}{{ event.name }} / {{ parent() }}{% endblock %}
+
 {% block div_wrapper_class %}sidebars-right{% endblock %}
 
 {% block header %}

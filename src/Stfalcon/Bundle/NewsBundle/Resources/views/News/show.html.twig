@@ -1,5 +1,7 @@
 {% extends 'StfalconNewsBundle::layout.html.twig' %}
 
+{% block title %}{{ one_news.title }} / {{ parent() }}{% endblock %}
+
 {% block content %}
     <article>
         <h2>{{ one_news.title }}</h2>
