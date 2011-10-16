@@ -1,14 +1,6 @@
-[symfony]
-    git=http://github.com/symfony/symfony.git
-    version=v2.0.4
-
-[twig]
-    git=http://github.com/fabpot/Twig.git
-    version=v1.1.2
-
-[monolog]
-    git=http://github.com/Seldaek/monolog.git
-    version=1.0.1
+[assetic]
+    git=http://github.com/kriswallsmith/assetic.git
+    version=v1.0.2
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
@@ -22,19 +14,105 @@
     git=http://github.com/doctrine/doctrine2.git
     version=2.1.2
 
-[doctrine-extensions]
-    git=http://github.com/l3pp4rd/DoctrineExtensions.git
+[metadata]
+    git=http://github.com/schmittjoh/metadata.git
+    version=1.0.0
+
+[monolog]
+    git=http://github.com/Seldaek/monolog.git
+    version=1.0.1
+
+[symfony]
+    git=http://github.com/symfony/symfony.git
+    version=v2.0.4
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
     version=v4.1.2
 
-[assetic]
-    git=http://github.com/kriswallsmith/assetic.git
-    version=v1.0.2
+[twig]
+    git=http://github.com/fabpot/Twig.git
+    version=v1.1.2
 
 [twig-extensions]
     git=http://github.com/fabpot/Twig-extensions.git
+
+[zf2]
+    git=http://github.com/zendframework/zf2.git
+    version=e76d9577565a15b009d3fad4d39298f07fd71436
+
+[AsseticBundle]
+    git=http://github.com/symfony/AsseticBundle.git
+    target=/bundles/Symfony/Bundle/AsseticBundle
+    version=v1.0.1
+
+[FOSUserBundle]
+    git=git://github.com/FriendsOfSymfony/FOSUserBundle.git
+    target=bundles/FOS/UserBundle
+
+[JMSSecurityExtraBundle]
+    git=http://github.com/schmittjoh/JMSSecurityExtraBundle.git
+    target=/bundles/JMS/SecurityExtraBundle
+    version=origin/1.0.x
+
+[LiipFunctionalTestBundle]
+    git=http://github.com/liip/LiipFunctionalTestBundle.git
+    target=/bundles/Liip/FunctionalTestBundle
+
+[SensioDistributionBundle]
+    git=http://github.com/sensio/SensioDistributionBundle.git
+    target=/bundles/Sensio/Bundle/DistributionBundle
+    version=origin/1.0
+
+[SensioFrameworkExtraBundle]
+    git=http://github.com/sensio/SensioFrameworkExtraBundle.git
+    target=/bundles/Sensio/Bundle/FrameworkExtraBundle
+
+[SensioGeneratorBundle]
+    git=http://github.com/sensio/SensioGeneratorBundle.git
+    target=/bundles/Sensio/Bundle/GeneratorBundle
+
+;==============================================================================================
+; AvalancheImagineBundle
+
+[imagine]
+    git=http://github.com/avalanche123/Imagine.git
+
+[AvalancheImagineBundle]
+    git=http://github.com/avalanche123/AvalancheImagineBundle.git
+    target=bundles/Avalanche/Bundle/ImagineBundle
+
+;==============================================================================================
+; KnpMenuBundle
+
+[KnpMenu]
+    git=http://github.com/knplabs/KnpMenu.git
+
+[KnpMenuBundle]
+    git=http://github.com/knplabs/KnpMenuBundle.git
+    target=/bundles/Knp/Bundle/MenuBundle
+
+;==============================================================================================
+; SonataAdminBundle
+
+[SonataAdminBundle]
+    git=http://github.com/sonata-project/SonataAdminBundle.git
+    target=/bundles/Sonata/AdminBundle
+
+[SonataBluePrintBundle]
+    git=http://github.com/sonata-project/SonataBluePrintBundle.git
+    target=/bundles/Sonata/BluePrintBundle
+
+[SonatajQueryBundle]
+    git=http://github.com/sonata-project/SonatajQueryBundle.git
+    target=/bundles/Sonata/jQueryBundle
+
+[SonataUserBundle]
+    git=http://github.com/sonata-project/SonataUserBundle.git
+    target=/bundles/Sonata/UserBundle
+
+;==============================================================================================
+; BehatBundle
 
 [gherkin]
     git=https://github.com/Behat/Gherkin.git
@@ -48,67 +126,6 @@
     git=https://github.com/Behat/Mink.git
     target=/behat/mink
 
-[metadata]
-    git=http://github.com/schmittjoh/metadata.git
-    version=1.0.0
-
-[imagine]
-    git=http://github.com/avalanche123/Imagine.git
-
-[KnpMenu]
-    git=http://github.com/knplabs/KnpMenu.git
-
-[zf2]
-    git=http://github.com/zendframework/zf2.git
-    version=e76d9577565a15b009d3fad4d39298f07fd71436
-
-[SensioFrameworkExtraBundle]
-    git=http://github.com/sensio/SensioFrameworkExtraBundle.git
-    target=/bundles/Sensio/Bundle/FrameworkExtraBundle
-
-[JMSSecurityExtraBundle]
-    git=http://github.com/schmittjoh/JMSSecurityExtraBundle.git
-    target=/bundles/JMS/SecurityExtraBundle
-    version=origin/1.0.x
-
-[SensioDistributionBundle]
-    git=http://github.com/sensio/SensioDistributionBundle.git
-    target=/bundles/Sensio/Bundle/DistributionBundle
-    version=origin/1.0
-
-[SensioGeneratorBundle]
-    git=http://github.com/sensio/SensioGeneratorBundle.git
-    target=/bundles/Sensio/Bundle/GeneratorBundle
-
-[AsseticBundle]
-    git=http://github.com/symfony/AsseticBundle.git
-    target=/bundles/Symfony/Bundle/AsseticBundle
-    version=v1.0.1
-
-[SonataBluePrintBundle]
-    git=http://github.com/sonata-project/SonataBluePrintBundle.git
-    target=/bundles/Sonata/BluePrintBundle
-
-[SonatajQueryBundle]
-    git=http://github.com/sonata-project/SonatajQueryBundle.git
-    target=/bundles/Sonata/jQueryBundle
-
-[KnpMenuBundle]
-    git=http://github.com/knplabs/KnpMenuBundle.git
-    target=/bundles/Knp/Bundle/MenuBundle
-
-[SonataAdminBundle]
-    git=http://github.com/sonata-project/SonataAdminBundle.git
-    target=/bundles/Sonata/AdminBundle
-
-[SonataUserBundle]
-    git=http://github.com/sonata-project/SonataUserBundle.git
-    target=/bundles/Sonata/UserBundle
-
-[LiipFunctionalTestBundle]
-    git=http://github.com/liip/LiipFunctionalTestBundle.git
-    target=/bundles/Liip/FunctionalTestBundle
-
 [BehatBundle]
     git=http://github.com/Behat/BehatBundle.git
     target=/bundles/Behat/BehatBundle
@@ -117,13 +134,11 @@
     git=http://github.com/Behat/MinkBundle.git
     target=/bundles/Behat/MinkBundle
 
-[AvalancheImagineBundle]
-    git=http://github.com/avalanche123/AvalancheImagineBundle.git
-    target=bundles/Avalanche/Bundle/ImagineBundle
+;==============================================================================================
+; DoctrineExtensionsBundle
 
-[FOSUserBundle]
-    git=git://github.com/FriendsOfSymfony/FOSUserBundle.git
-    target=bundles/FOS/UserBundle
+[doctrine-extensions]
+    git=http://github.com/l3pp4rd/DoctrineExtensions.git
 
 [DoctrineExtensionsBundle]
     git=http://github.com/stof/StofDoctrineExtensionsBundle.git
