@@ -32,7 +32,7 @@ assetic:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
-            
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -47,6 +47,17 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+
+# DoctrineExtensionsBundle
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            loggable: false
+            sluggable: true
+            timestampable: true
+            translatable: false
+            tree: false
 
 # Swiftmailer Configuration
 swiftmailer:

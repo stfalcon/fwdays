@@ -4,6 +4,7 @@ namespace Application\Bundle\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
@@ -52,6 +53,14 @@ class User extends BaseUser
      * @ORM\Column(name="comment", type="text", nullable=true)
      */
     protected $comment;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
 
     /**
      * Redefinition email setter for use email as username
@@ -154,6 +163,16 @@ class User extends BaseUser
      */
     public function setComment($comment) {
         $this->comment = $comment;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
 
 }

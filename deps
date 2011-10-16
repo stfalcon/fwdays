@@ -22,6 +22,9 @@
     git=http://github.com/doctrine/doctrine2.git
     version=2.1.2
 
+[doctrine-extensions]
+    git=http://github.com/l3pp4rd/DoctrineExtensions.git
+
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
     version=v4.1.2
@@ -121,3 +124,7 @@
 [FOSUserBundle]
     git=git://github.com/FriendsOfSymfony/FOSUserBundle.git
     target=bundles/FOS/UserBundle
+
+[DoctrineExtensionsBundle]
+    git=http://github.com/stof/StofDoctrineExtensionsBundle.git
+    target=/bundles/Stof/DoctrineExtensionsBundle
