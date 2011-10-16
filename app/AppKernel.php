@@ -32,7 +32,6 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
-            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
             new Stfalcon\Bundle\PaymentsBundle\StfalconPaymentsBundle(),
         );
 

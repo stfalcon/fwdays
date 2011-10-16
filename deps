@@ -107,10 +107,6 @@
     git=http://github.com/sonata-project/SonatajQueryBundle.git
     target=/bundles/Sonata/jQueryBundle
 
-[SonataUserBundle]
-    git=http://github.com/sonata-project/SonataUserBundle.git
-    target=/bundles/Sonata/UserBundle
-
 ;==============================================================================================
 ; BehatBundle
 

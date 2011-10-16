@@ -39,21 +39,22 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('company', null, array('required' => false))
                 ->add('post', null, array('required' => false))
-//                ->add('comment', null, array('required' => false))
+                ->add('comment', null, array('required' => false))
                 ->add('subscribe', null, array('required' => false))
 //                ->add('plainPassword', 'text')
             ->end()
-//            ->with('Groups')
-//                ->add('groups', 'sonata_type_model', array('required' => false))
-//            ->end()
             ->with('Management')
-                ->add('roles', 'sonata_security_roles', array( 'multiple' => true))
 //                ->add('locked', null, array('required' => false))
 //                ->add('expired', null, array('required' => false))
                 ->add('enabled', null, array('required' => false))
 //                ->add('credentialsExpired', null, array('required' => false))
             ->end()
         ;
+    }
+
+    public function getBatchActions()
+    {
+        return array();
     }
 
 //    public function preUpdate($user)

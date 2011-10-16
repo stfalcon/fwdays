@@ -63,6 +63,14 @@ class User extends BaseUser
     private $createdAt;
 
     /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    /**
      * Redefinition email setter for use email as username
      *
      * @param string $email
@@ -173,6 +181,16 @@ class User extends BaseUser
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 
 }
