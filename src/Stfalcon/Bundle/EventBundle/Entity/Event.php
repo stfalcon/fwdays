@@ -18,58 +18,90 @@ class Event
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string $slug
-     *
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    private $slug;
-
-    /**
      * @var string $name
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
+     * @var string $slug
+     *
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
+    private $slug;
+
+    /**
+     * @todo remove
      * @var string $title
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $title;
 
     /**
+     * @var string $city
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var string $place
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $place;
+
+    /**
+     * @var \DateTime $dateStart
+     *
+     * @ORM\Column(name="date_start", type="datetime", nullable=true)
+     */
+    private $dateStart;
+
+    /**
+     * @var \DateTime $dateEnd
+     *
+     * @ORM\Column(name="date_end", type="datetime", nullable=true)
+     */
+    private $dateEnd;
+
+    /**
      * @var text $description
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var text $about
      *
-     * @ORM\Column(name="about", type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $about;
 
     /**
      * @var string $logo
      *
-     * @ORM\Column(name="logo", type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $logo;
 
     /**
      * @var boolean $active
      *
-     * @ORM\Column(name="active", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $active = true;
 
