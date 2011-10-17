@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
@@ -36,7 +37,7 @@ class Event
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-    
+
     /**
      * @var string $title
      *
@@ -50,7 +51,7 @@ class Event
      * @ORM\Column(name="description", type="text")
      */
     private $description;
-    
+
     /**
      * @var text $about
      *
@@ -64,12 +65,12 @@ class Event
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo;
-    
+
     /**
      * @var boolean $active
      *
      * @ORM\Column(name="active", type="boolean")
-     */    
+     */
     private $active = true;
 
     /**
@@ -89,25 +90,44 @@ class Event
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      */
     private $speakers;
-    
+
     /**
      * @Assert\File(maxSize="6000000")
+     * @Assert\Image
      */
     private $file;
-       
+
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set event name
+     *
+     * @param type $name
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    /**
+     * Get event name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 
     /**
@@ -123,11 +143,76 @@ class Event
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set text about event (for main page of event)
+     *
+     * @param type $about
+     */
+    public function setAbout($about) {
+        $this->about = $about;
+    }
+
+    /**
+     * Get text about event (for main page of event)
+     *
+     * @return type
+     */
+    public function getAbout() {
+        return $this->about;
+    }
+    /**
+     * Set status of activity
+     *
+     * @param boolean $active
+     */
+    public function setActive($active) {
+        $this->active = $active;
+    }
+
+    /**
+     * Is this event active?
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->active;
+    }
+
+
+    /**
+     * Get event speakers
+     *
+     * @return ArrayCollection
+     */
+    public function getSpeakers() {
+        return $this->speakers;
     }
 
     /**
@@ -143,7 +228,7 @@ class Event
     /**
      * Get path to logo
      *
-     * @return string 
+     * @return string
      */
     public function getLogo()
     {
@@ -151,6 +236,34 @@ class Event
     }
 
     /**
+     * Get event name if object treated like a string
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
+     * Set file
+     *
+     * @param UploadedFile|null $file
+     */
+    public function setFile($file) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
+
+    /**
+     * @todo remove this method and property
      * Set title
      *
      * @param string $title
@@ -161,9 +274,10 @@ class Event
     }
 
     /**
+     * @todo remove this method and property
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -171,91 +285,23 @@ class Event
     }
 
     /**
-     * Set description
+     * @todo remove this method (and try remove property)
+     * Get event pages
      *
-     * @param text $description
+     * @return type
      */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * Get description
-     *
-     * @return text 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-    
-    public function getFile() {
-        return $this->file;
-    }
-
-    public function setFile($file) {
-        $this->file = $file;
-    }
-
-    /**
-     * Get active
-     * 
-     * @return boolean
-     */
-    public function getActive() {
-        return $this->active;
-    }
-
-    /**
-     * Set active
-     * 
-     * @param boolean $active 
-     */
-    public function setActive($active) {
-        $this->active = $active;
-    }
-    
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-    }
-
-    public function getAbout() {
-        return $this->about;
-    }
-
-    public function setAbout($about) {
-        $this->about = $about;
-    }
-    
-    public function __toString() { return $this->name; }
-
     public function getPages() {
         return $this->pages;
     }
 
-    public function setPages($pages) {
-        $this->pages = $pages;
-    }
-
+    /**
+     * @todo remove this method (and try remove property)
+     * Get event news
+     *
+     * @return ArrayCollection
+     */
     public function getNews() {
         return $this->news;
     }
-
-    public function setNews($news) {
-        $this->news = $news;
-    }
-    
-    public function getSpeakers() {
-        return $this->speakers;
-    }
-//
-//    public function setSpeakers($speakers) {
-//        $this->speakers = $speakers;
-//    }
 
 }
