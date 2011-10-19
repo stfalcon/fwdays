@@ -5,7 +5,7 @@ namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-class LoadUserData implements FixtureInterface
+class LoadEventData implements FixtureInterface
 {
     public function load($manager)
     {

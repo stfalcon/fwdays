@@ -9,6 +9,10 @@ use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Event\SuiteEvent,
+    Behat\Behat\Event\ScenarioEvent;
+use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 
 //
 // Require 3rd-party libraries here:
@@ -33,6 +37,18 @@ class FeatureContext extends MinkContext //MinkContext if you want to test web
     {
         $container = $this->getContainer();
         $container->get('some_service')->doSomethingWith($argument);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function beforeScen()
+    {
+        $loader = new Loader($this->getContainer());
+        $loader->addFixture(new \Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData());
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $executor = new ORMExecutor($em);
+        $executor->execute($loader->getFixtures(), true);
     }
 
 }
