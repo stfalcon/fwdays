@@ -55,8 +55,6 @@ class IntlExtension extends \Twig_Extension {
             'full'   => \IntlDateFormatter::FULL,
         );
 
-//        var_dump(\IntlDateFormatter::LONG);
-//        exit;
         $formatter = \IntlDateFormatter::create(
             $locale !== null ? $locale : \Locale::getDefault(),
             $formatValues[$dateFormat],
