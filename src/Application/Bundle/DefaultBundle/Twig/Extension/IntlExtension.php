@@ -11,9 +11,6 @@
 
 namespace Application\Bundle\DefaultBundle\Twig\Extension;
 
-//use Symfony\Component\HttpKernel\KernelInterface;
-//use Symfony\Bundle\TwigBundle\Loader\FilesystemLoader;
-
 class IntlExtension extends \Twig_Extension {
     
     public function __construct()
