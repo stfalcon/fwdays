@@ -24,3 +24,6 @@ mink:
 #    show_cmd:   google-chrome %%s
 #    #default_session: sahi
 #    default_session: symfony    
+doctrine:
+    dbal:
+        dbname:   fwdays_com_testing
