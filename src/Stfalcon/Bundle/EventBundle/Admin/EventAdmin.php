@@ -16,9 +16,8 @@ class EventAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('slug')
             ->add('name')
-            ->add('title')
+            ->addIdentifier('slug')
         ;
     }
 
@@ -28,7 +27,10 @@ class EventAdmin extends Admin
             ->with('General')
                 ->add('name')
                 ->add('slug')
-                ->add('title')
+                ->add('city')
+                ->add('place')
+                ->add('dateStart')
+                ->add('dateEnd')
                 ->add('description')
                 ->add('about')
                 ->add('file', 'file', array('required' => false))

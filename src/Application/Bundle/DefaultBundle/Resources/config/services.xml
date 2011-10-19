@@ -44,5 +44,10 @@
             <argument type="service" id="stfalcon_event.current_event" />
         </service>
 
+        <!-- twig intl extension -->
+        <service id="twig.extension.intl" class="Application\Bundle\DefaultBundle\Twig\Extension\IntlExtension">
+            <argument type="service" id="service_container"></argument>
+            <tag name="twig.extension" alias="intl" />
+        </service>
     </services>
 </container>

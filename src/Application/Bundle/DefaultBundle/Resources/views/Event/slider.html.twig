@@ -8,7 +8,9 @@
         </div>
         <div class="text">
             <h2>
-                {{ event.title|raw }}
+                {{ event.date|localizeddate('full', 'none') }}
+                <br>
+                {{ event.place }}, {{ event.city }}
             </h2>
 
             <p>{{ event.description }}</p>

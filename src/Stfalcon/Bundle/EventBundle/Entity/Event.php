@@ -41,14 +41,6 @@ class Event
     private $slug;
 
     /**
-     * @todo remove
-     * @var string $title
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $title;
-
-    /**
      * @var string $city
      *
      * @ORM\Column(type="string", nullable=true)
@@ -63,18 +55,11 @@ class Event
     private $place;
 
     /**
-     * @var \DateTime $dateStart
+     * @var \DateTime $date
      *
-     * @ORM\Column(name="date_start", type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateStart;
-
-    /**
-     * @var \DateTime $dateEnd
-     *
-     * @ORM\Column(name="date_end", type="datetime", nullable=true)
-     */
-    private $dateEnd;
+    private $date;
 
     /**
      * @var text $description
@@ -183,6 +168,60 @@ class Event
     }
 
     /**
+     * Set city in which the conference takes place
+     *
+     * @param string|null $city
+     */
+    public function setCity($city) {
+        $this->city = $city;
+    }
+
+    /**
+     * Get city in which the conference takes place
+     *
+     * @return string
+     */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+     * Set place
+     *
+     * @param string|null $place
+     */
+    public function setPlace($place) {
+        $this->place = $place;
+    }
+
+    /**
+     * Get place
+     *
+     * @return string
+     */
+    public function getPlace() {
+        return $this->place;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime|null
+     */
+    public function getDate() {
+        return $this->date;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime|null $date
+     */
+    public function setDate($date) {
+        $this->date = $date;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -205,7 +244,7 @@ class Event
     /**
      * Set text about event (for main page of event)
      *
-     * @param type $about
+     * @param string $about
      */
     public function setAbout($about) {
         $this->about = $about;
@@ -214,7 +253,7 @@ class Event
     /**
      * Get text about event (for main page of event)
      *
-     * @return type
+     * @return string
      */
     public function getAbout() {
         return $this->about;
@@ -292,28 +331,6 @@ class Event
      */
     public function getFile() {
         return $this->file;
-    }
-
-    /**
-     * @todo remove this method and property
-     * Set title
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @todo remove this method and property
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**

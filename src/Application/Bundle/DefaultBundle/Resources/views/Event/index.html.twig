@@ -16,7 +16,9 @@
                     </td>
                     <td class="conf-info">
                         <div class="conf-info-h">
-                            {{ event.title|raw }}
+                            {{ event.date|localizeddate('full', 'none') }}
+                            <br>
+                            {{ event.place }}, {{ event.city }}
                         </div>
 
                         <p>{{ event.description }}</p>
