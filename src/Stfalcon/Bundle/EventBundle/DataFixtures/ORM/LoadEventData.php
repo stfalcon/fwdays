@@ -1,11 +1,12 @@
 <?php
 
-namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
+namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-class LoadEventData implements FixtureInterface
+class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load($manager)
     {
@@ -17,5 +18,12 @@ class LoadEventData implements FixtureInterface
 
         $manager->persist($event);
         $manager->flush();
+
+        $this->addReference('event-zfday', $event);
+    }
+
+    public function getOrder()
+    {
+        return 1; // the order in which fixtures will be loaded
     }
 }

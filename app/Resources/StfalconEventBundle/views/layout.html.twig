@@ -12,7 +12,11 @@
                     <img src="{{ event.logo }}" width="120" height="129" alt="" />
                 </a>
             </div><!-- div.logo -->
-            <div class="event-head-text">{{ event.title|raw }}</div>
+            <div class="event-head-text">
+                {{ event.date|localizeddate('full', 'none') }}
+                <br>
+                {{ event.place }}, {{ event.city }}
+            </div>
         </div>
     </header><!-- #header-->
 
