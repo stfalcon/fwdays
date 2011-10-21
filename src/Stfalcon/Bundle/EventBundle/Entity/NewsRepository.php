@@ -29,10 +29,10 @@ class NewsRepository extends EntityRepository
 
         return $qb;
     }
-    
+
     /**
      * Get array of last news
-     * 
+     *
      * @param integer $count
      * @return array
      */
@@ -40,10 +40,10 @@ class NewsRepository extends EntityRepository
     {
         return $this->_getBaseQueryBuilder($count)->getQuery()->getResult();
     }
-    
+
     /**
      * Get array of last news for event
-     * 
+     *
      * @param integer $count
      * @return array
      */
@@ -52,8 +52,12 @@ class NewsRepository extends EntityRepository
         $qb = $this->_getBaseQueryBuilder($count)
                 ->where('n.event = :event')
                 ->setParameter('event', $event);
-        
-        return $qb->getQuery()->getResult();
+
+        // cache sample
+        // $query = $qb->getQuery()->useResultCache(true, 86400, 'last_news_for_event');
+        $query = $qb->getQuery();
+
+        return $query->getResult();
     }
-    
+
 }
