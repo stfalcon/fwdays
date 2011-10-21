@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\PaymentsBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Stfalcon\Bundle\PaymentsBundle\Form\Payments\Interkassa\PayType;
 use Stfalcon\Bundle\PaymentsBundle\Entity\Payment;
