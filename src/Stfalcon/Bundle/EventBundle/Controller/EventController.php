@@ -2,10 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Event controller
