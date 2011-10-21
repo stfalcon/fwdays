@@ -26,7 +26,11 @@
 
             <nav class="top-nav">
                 <div class="wrap">
-                    {{ knp_menu_render('main') }}
+                    {% if event is defined %}
+                        {{ knp_menu_render('event_main') }}
+                    {% else %}
+                        {{ knp_menu_render('main') }}
+                    {% endif %}
 
                     <div class="user-nav">
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
