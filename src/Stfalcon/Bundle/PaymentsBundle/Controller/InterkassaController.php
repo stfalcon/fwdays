@@ -15,6 +15,7 @@ class InterkassaController extends Controller
     /**
      * @Route("/payments/interkassa/pay", name="payments_pay")
      * @Template()
+     * @Secure(roles="ROLE_USER")
      * @return array
      */
     public function payAction()
