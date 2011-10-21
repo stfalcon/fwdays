@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
  * @ORM\Table(name="event__events")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\EventRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventRepository")
  */
 class Event
 {

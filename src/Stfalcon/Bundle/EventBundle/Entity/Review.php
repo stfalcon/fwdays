@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Stfalcon\Bundle\EventBundle\Entity\Review
  *
  * @ORM\Table(name="event__reviews")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\ReviewRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
  */
 class Review extends BasePage {
     

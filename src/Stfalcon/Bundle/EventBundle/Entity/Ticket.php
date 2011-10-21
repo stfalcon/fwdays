@@ -9,10 +9,13 @@ use Stfalcon\Bundle\PaymentsBundle\Entity\Payment;
  * Stfalcon\Bundle\EventBundle\Entity\Ticket
  *
  * @ORM\Table(name="event__tickets")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\TicketRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\TicketRepository")
  */
 class Ticket
 {
+
+    const STATUS_NEW = "new";
+
     /**
      * @var integer $id
      *
@@ -26,7 +29,7 @@ class Ticket
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

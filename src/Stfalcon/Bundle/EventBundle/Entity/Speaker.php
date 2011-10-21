@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Stfalcon\Bundle\EventBundle\Entity\Speaker
  *
  * @ORM\Table(name="event__speakers")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\SpeakerRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
  */
 class Speaker
 {

@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
  * @ORM\Table(name="event__pages")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\PageRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
  */
 class Page extends BasePage {
     

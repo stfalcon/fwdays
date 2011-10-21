@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Stfalcon\Bundle\EventBundle\Entity\Mail
  *
  * @ORM\Table(name="event__mails")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Entity\MailRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\MailRepository")
  */
 class Mail
 {
