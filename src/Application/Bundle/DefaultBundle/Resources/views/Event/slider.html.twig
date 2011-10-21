@@ -15,10 +15,8 @@
 
             <p>{{ event.description }}</p>
 
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
-                <a class="register" href="{{ path('fos_user_registration_register') }}">Принять участие</a>
-            {% endif %}
-            <a class="know-more" href="{{ path('event_show', {'event_slug': event.slug } )}}">Узнать больше</a>
+            <a class="register" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">Принять участие</a>
+            <a class="know-more" href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
         </div>
     </div>
     {% endfor %}
