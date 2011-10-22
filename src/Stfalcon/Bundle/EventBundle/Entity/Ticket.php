@@ -133,4 +133,14 @@ class Ticket
         return $this->status;
     }
 
+    /**
+     * This is a new ticket?
+     *
+     * @return bool
+     */
+    public function isNew()
+    {
+        return (bool) $this->getStatus() == self::STATUS_NEW;
+    }
+
 }

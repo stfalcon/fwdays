@@ -150,6 +150,20 @@ input {
     vertical-align: middle;
 }
 
+.ticket-status {
+    padding: 6px 13px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+.ticket-status-new {
+    color: #e11111;
+    margin-right: 18px;
+}
+
 .info-msg-block,
 .error-msg-block {
     padding: 16px 20px;

@@ -37,6 +37,7 @@
                             <div class="user-menu">
                                 <a class="username" href="# "><span>{{ app.user.username }}</span></a>
                                 <ul class="user-menu-dropdown">
+                                    <li><a href="{{ path('events_my') }}"><b>Мои события</b></a></li>
                                     <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
                                     <li><a href="{{ path('payments_pay') }}">Оплата</a></li>
                                     <li><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
