@@ -76,23 +76,9 @@ class EventController extends BaseController
         $em = $this->getDoctrine()->getEntityManager();
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
-        // если нет, тогда создаем платеж и билет
+        // если нет, тогда создаем билет
         if (is_null($ticket)) {
-//            $payment = new Payment();
-//            $payment->setStatus(Payment::STATUS_PENDING);
-//////            $payment->setUserId($user->getId());
-//            $payment->setUser($user);
-////            // @todo: стоимость ивента указывается в ивенте
-//            $payment->setAmount(150);
-//            $em->persist($payment);
-//            $em->flush();
-
-            $ticket = new Ticket();
-            $ticket->setUser($user);
-            $ticket->setEvent($event);
-//            $ticket->setPayment($payment);
-            // @todo: лучше использовать статус платежа в методе isNew() или что-то типа того
-            $ticket->setStatus(Ticket::STATUS_NEW);
+            $ticket = new Ticket($event, $user);
 
             $em->persist($ticket);
             $em->flush();
@@ -131,8 +117,14 @@ class EventController extends BaseController
     public function payAction($event_slug)
     {
         $event = $this->getEventBySlug($event_slug);
-        var_dump($event);
-        exit;
+
+        // создаем проплату и показываем страницу платежа бандла StfalconPaymentBundle
+        $payment = new Payment();
+        $payment->setUser($user);
+        // @todo: стоимость ивента указывается в ивенте
+        $payment->setAmount(150);
+
+        $em->persist($payment);
 
         $em = $this->getDoctrine()->getEntityManager();
         $tickets = $em->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));

@@ -11,7 +11,7 @@
                 <tr>
                     {% set event = ticket.event %}
                     <td class="conf-logo">
-                        <a href="{{ path('event_show', {'event_slug': event.slug } )}}">
+                        <a href="{{ path('event_show', {'event_slug': event.slug }) }}">
                             <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.name }}">
                         </a>
                     </td>
@@ -25,7 +25,7 @@
                         <div class="ticket-status">
                             {% if ticket.isNew() %}
                                 <span class="ticket-status-new">Не оплачено</span>
-                                <input type="submit" value="Оплатить" onclick="location.href='{{ path('payments_pay') }}'" />
+                                <input type="submit" value="Оплатить" onclick="location.href='{{ path('event_pay', {'event_slug': event.slug}) }}'" />
                             {% endif %}
                         </div>
 

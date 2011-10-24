@@ -4,7 +4,7 @@ namespace Stfalcon\Bundle\PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use FOS\UserBundle\Entity\User;
+use Application\Bundle\UserBundle\Entity\User;
 
 /**
  * Stfalcon\Bundle\PaymentBundle\Entity\Payment
@@ -30,10 +30,10 @@ class Payment
 
     /**
      * Кто оплатил. Т.е. провел транзакцию.
-     * 
+     *
      * @var User $user
      *
-     * @ORM\OneToOne(targetEntity="FOS\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -67,6 +67,15 @@ class Payment
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
+
+    /**
+     * Constructor. Set default status to new payment.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->setStatus(self::STATUS_PENDING);
+    }
 
     /**
      * Get id

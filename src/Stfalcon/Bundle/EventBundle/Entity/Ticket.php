@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Application\Bundle\UserBundle\Entity\User;
 
@@ -15,8 +16,6 @@ use Application\Bundle\UserBundle\Entity\User;
 class Ticket
 {
 
-    const STATUS_NEW = "new";
-
     /**
      * @var integer $id
      *
@@ -26,6 +25,52 @@ class Ticket
      */
     private $id;
 
+    /**
+     * @var Event
+     *
+     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     */
+    private $event;
+
+    /**
+     * На кого выписан билет. Т.е. участник не обязательно плательщик
+     *
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
+     *
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
+     */
+    private $payment;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    public function __construct(Event $event, User $user) {
+        $this->setEvent($event);
+        $this->setUser($user);
+    }
 
     /**
      * Get id
@@ -38,39 +83,6 @@ class Ticket
     }
 
     /**
-     * @var Event
-     *
-     * @ORM\OneToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     */
-    private $event;
-
-    /**
-     * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
-     *
-     * @ORM\OneToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
-     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
-     */
-    private $payment;
-
-    /**
-     * На кого выписан билет. Т.е. участник не обязательно плательщик
-     * 
-     * @var User
-     *
-     * @ORM\OneToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
-    /**
-     * @var string $status
-     *
-     * @ORM\Column(name="status", type="string")
-     */
-    private $status;
-
-    /**
      * @return Event
      */
     public function getEvent() {
@@ -81,7 +93,7 @@ class Ticket
      * @param Event $event
      * @return void
      */
-    public function setEvent(Event $event) {
+    private function setEvent(Event $event) {
         $this->event = $event;
     }
 
@@ -103,7 +115,7 @@ class Ticket
     /**
      * @param User $user
      */
-    public function setUser(User $user)
+    private function setUser(User $user)
     {
         $this->user = $user;
     }
@@ -117,33 +129,33 @@ class Ticket
     }
 
     /**
-     * Set status
-     *
-     * @param string $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * This is a new ticket?
+     * This is a new ticket? Check if ticket have payment
      *
      * @return bool
      */
     public function isNew()
     {
-        return (bool) $this->getStatus() == self::STATUS_NEW;
+        return is_null($this->getPayment());
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 
 }
