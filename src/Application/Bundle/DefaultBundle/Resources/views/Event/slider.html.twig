@@ -1,6 +1,6 @@
 <div class="event-slider">
     {% for event in events %}
-    <div class="slide">
+    <div class="slide" {% if loop.index != 1 %}style="display: none"{% endif %}>
         <div class="icon">
             <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
                 <img src="{{ event.logo }}" width="162" height="172" alt="{{ event.name }}" />
