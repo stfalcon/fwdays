@@ -1,15 +1,16 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentsBundle\Entity;
+namespace Stfalcon\Bundle\PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use FOS\UserBundle\Entity\User;
 
 /**
- * Stfalcon\Bundle\PaymentsBundle\Entity\Payment
+ * Stfalcon\Bundle\PaymentBundle\Entity\Payment
  *
  * @ORM\Table(name="payments")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\PaymentsBundle\Entity\PaymentRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\PaymentBundle\Entity\PaymentRepository")
  */
 class Payment
 {
@@ -26,19 +27,23 @@ class Payment
      */
     private $id;
 
-    /**
-     * @var int $userId
-     *
-     * @ORM\Column(name="user_id", type="integer")
-     */
-    private $userId;
 
     /**
-     * @var decimal $sum
+     * Кто оплатил. Т.е. провел транзакцию.
+     * 
+     * @var User $user
      *
-     * @ORM\Column(name="sum", type="decimal")
+     * @ORM\OneToOne(targetEntity="FOS\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $sum;
+    private $user;
+
+    /**
+     * @var decimal $amount
+     *
+     * @ORM\Column(name="amount", type="decimal")
+     */
+    private $amount;
 
     /**
      * @var string $status
@@ -74,23 +79,23 @@ class Payment
     }
 
     /**
-     * Set sum
+     * Set amount
      *
-     * @param decimal $sum
+     * @param decimal $amount
      */
-    public function setSum($sum)
+    public function setAmount($amount)
     {
-        $this->sum = $sum;
+        $this->amount = $amount;
     }
 
     /**
-     * Get sum
+     * Get amount
      *
      * @return decimal
      */
-    public function getSum()
+    public function getAmount()
     {
-        return $this->sum;
+        return $this->amount;
     }
 
     /**
@@ -114,19 +119,19 @@ class Payment
     }
 
     /**
-     * @param integer $userId
+     * @param User $user
      */
-    public function setUserId($userId)
+    public function setUser(User $user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     /**
-     * @return integer
+     * @return User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
     public function getCreatedAt()

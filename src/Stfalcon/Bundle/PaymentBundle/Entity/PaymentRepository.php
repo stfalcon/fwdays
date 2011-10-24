@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentsBundle\Entity;
+namespace Stfalcon\Bundle\PaymentBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

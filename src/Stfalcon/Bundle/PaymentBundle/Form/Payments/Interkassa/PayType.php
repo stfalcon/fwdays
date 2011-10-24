@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentsBundle\Form\Payments\Interkassa;
+namespace Stfalcon\Bundle\PaymentBundle\Form\Payments\Interkassa;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;

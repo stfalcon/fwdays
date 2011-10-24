@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentsBundle\DependencyInjection;
+namespace Stfalcon\Bundle\PaymentBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class StfalconPaymentsExtension extends Extension
+class StfalconPaymentExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -22,7 +22,7 @@ class StfalconPaymentsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('stfalcon_payments.config', $config);
+        $container->setParameter('stfalcon_payment.config', $config);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');

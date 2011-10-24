@@ -3,7 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Stfalcon\Bundle\PaymentsBundle\Entity\Payment;
+use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Application\Bundle\UserBundle\Entity\User;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Ticket
@@ -37,7 +38,7 @@ class Ticket
     }
 
     /**
-     * @var Stfalcon\Bundle\EventBundle\Entity\Event
+     * @var Event
      *
      * @ORM\OneToOne(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
@@ -45,15 +46,17 @@ class Ticket
     private $event;
 
     /**
-     * @var Stfalcon\Bundle\PaymentsBundle\Entity\Payment
+     * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
      *
-     * @ORM\OneToOne(targetEntity="Stfalcon\Bundle\PaymentsBundle\Entity\Payment")
+     * @ORM\OneToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
      */
     private $payment;
 
     /**
-     * @var Application\Bundle\UserBundle\Entity\User
+     * На кого выписан билет. Т.е. участник не обязательно плательщик
+     * 
+     * @var User
      *
      * @ORM\OneToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -68,45 +71,45 @@ class Ticket
     private $status;
 
     /**
-     * @return Stfalcon\Bundle\EventBundle\Entity\Event
+     * @return Event
      */
     public function getEvent() {
         return $this->event;
     }
 
     /**
-     * @param $event
+     * @param Event $event
      * @return void
      */
-    public function setEvent($event) {
+    public function setEvent(Event $event) {
         $this->event = $event;
     }
 
     /**
-     * @return Stfalcon\Bundle\PaymentsBundle\Entity\Payment
+     * @return Payment
      */
     public function getPayment() {
         return $this->payment;
     }
 
     /**
-     * @param Stfalcon\Bundle\PaymentsBundle\Entity\Payment $payment
+     * @param Payment $payment
      * @return void
      */
-    public function setPayment($payment) {
+    public function setPayment(Payment $payment) {
         $this->payment = $payment;
     }
 
     /**
-     * @param \Application\Bundle\UserBundle\Entity\User $user
+     * @param User $user
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }
 
     /**
-     * @return \Application\Bundle\UserBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

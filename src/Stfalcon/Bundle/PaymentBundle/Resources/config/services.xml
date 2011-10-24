@@ -6,7 +6,7 @@
 
     <!--
     <parameters>
-        <parameter key="stfalcon_payments.example.class">Stfalcon\Bundle\PaymentsBundle\Example</parameter>
+        <parameter key="stfalcon_payments.example.class">Stfalcon\Bundle\PaymentBundle\Example</parameter>
     </parameters>
 
     <services>

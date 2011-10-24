@@ -102,7 +102,7 @@ fos_user:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
 
-stfalcon_payments:
+stfalcon_payment:
     interkassa:
         shop_id: "24C1AF18-3D1A-44FC-9B32-210336A4B231"
         secret: %interkassa_secret%
