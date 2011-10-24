@@ -29,7 +29,7 @@ class Ticket
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $event;
 
@@ -39,7 +39,7 @@ class Ticket
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $user;
 
@@ -47,7 +47,7 @@ class Ticket
      * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
-     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $payment;
 
@@ -128,16 +128,6 @@ class Ticket
         return $this->user;
     }
 
-    /**
-     * This is a new ticket? Check if ticket have payment
-     *
-     * @return bool
-     */
-    public function isNew()
-    {
-        return is_null($this->getPayment());
-    }
-
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -156,6 +146,11 @@ class Ticket
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function isPaid()
+    {
+        return (bool) ($this->getPayment() != null && $this->getPayment()->isPaid());
     }
 
 }

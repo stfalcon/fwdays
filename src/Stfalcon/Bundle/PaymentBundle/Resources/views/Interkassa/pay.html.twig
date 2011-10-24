@@ -2,7 +2,6 @@
 
 {% block content %}
     {# todo название и стоимость должны тянуться с события/билета #}
-    {# todo разобраться с array('property_path' => false), для коротких имен элементов в форме #}
     <h2>Оплата участия в конференции Zend Framework Day</h2>
 
     <div class="info-msg-block">
@@ -12,17 +11,19 @@
     </div>
 
     <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
-        {{ form_widget(form) }}
-                {#{{ form_row(form.amount) }}
-        <input type="hidden" name="ik_payment_id" value="{{ form.all['value']['ik_payment_id'] }}">
-        <input type="hidden" name="ik_shop_id" value="{{ form.all['value']['ik_shop_id'] }}">
-        <input type="hidden" name="ik_payment_amount" value="{{ form.all['value']['ik_payment_amount'] }}">
-        <input type="hidden" name="ik_payment_id" value="{{ form.all['value']['ik_payment_id'] }}">
-        <input type="hidden" name="ik_payment_desc" value="{{ form.all['value']['ik_payment_desc'] }}">
+        <div>
+            Сумма к оплате: <b>{{ payment.amount }} грн.</b>
+        </div>
+        <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
+        <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
+        <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
+        <input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc }}">
         <input type="hidden" name="ik_paysystem_alias" value="">
         <input type="hidden" name="ik_baggage_fields" value="">
-        <input type="hidden" name="ik_sign_hash" value="{{ form.all['value']['ik_sign_hash'] }}">
-        <input type="submit" value="Оплатить участие" />#}
+        <input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">
+        <div>
+            <input type="submit" value="Оплатить участие" />
+        </div>
     </form>
 
 {% endblock %}

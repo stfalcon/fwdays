@@ -13,86 +13,25 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 class InterkassaController extends Controller
 {
 
+//     * @Route("/payments/interkassa/pay", name="payments_pay")
     /**
-     * @Route("/payments/interkassa/pay", name="payments_pay")
      * @Template()
      * @Secure(roles="ROLE_USER")
      * @return array
      */
-    public function payAction()
+    public function payAction($user, $payment)
     {
-        $config = $this->container->getParameter('stfalcon_payments.config');
-
-        /** @var $token \Symfony\Component\Security\Core\Authentication\Token\AnonymousToken */
-        $token = $this->container->get('security.context')->getToken();
-
-        $user = $token->getUser();
-
-        /** @var $em \Doctrine\ORM\EntityManager */
+        $config = $this->container->getParameter('stfalcon_payment.config');
         $em = $this->getDoctrine()->getEntityManager();
 
-        $paid = $em->getRepository('StfalconPaymentBundle:Payment')
-            ->findBy(array('userId' => $user->getId(), 'status' => Payment::STATUS_PAID));
-        if (count($paid) > 0) {
-            $response = $this->forward(
-                'StfalconPaymentBundle:Interkassa:success',
-                array('message' => 'Вы уже оплатили участие в конференции Zend Framework Day')
-            );
-            return $response;
-        }
+        $data = array(
+            'ik_shop_id' => $config['interkassa']['shop_id'],
+//            'ik_payment_amount' => $payment->getAmount(),
+//            'ik_payment_id' => $payment->getId(),
+            'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ').',
+            'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getAmount()));
 
-        $sum = 150; //@todo подставлять из конфига
-
-        $payment = new Payment();
-        $payment->setStatus(Payment::STATUS_PENDING);
-        $payment->setUserId($user->getId());
-        $payment->setSum($sum);
-
-        $em->persist($payment);
-        $em->flush();
-
-        $form = $this->createFormBuilder(array(
-                'amount' => $payment->getSum(),
-                'ik_shop_id' => $config['interkassa']['shop_id'],
-                'ik_payment_amount' => $payment->getSum(),
-                'ik_payment_id' => $payment->getId(),
-                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ').',
-                'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getSum()),
-            ))
-            ->add('ik_shop_id', 'hidden')
-            ->add('ik_payment_amount', 'hidden')
-            ->add('ik_payment_id', 'hidden')
-            ->add('ik_payment_desc', 'hidden')
-            ->add('ik_paysystem_alias', 'hidden')
-            ->add('ik_baggage_fields', 'hidden')
-            ->add('ik_sign_hash', 'hidden')
-            ->add('amount', 'text', array('read_only' => true, 'label' => 'Сумма к оплате'))
-            ->getForm();
-
-//        $form = $this->container->get('form.factory')->create($type, $data, $options);
-
-        /** @var $form \Symfony\Component\Form\Form */
-//        $form = $this->createForm(new PayType(), array(
-//                'amount' => $payment->getSum(),
-//                'ik_shop_id' => $config['interkassa']['shop_id'],
-//                'ik_payment_amount' => $payment->getSum(),
-//                'ik_payment_id' => $payment->getId(),
-//                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ').',
-//                'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getSum()),
-//            ));
-
-        // @todo данные брать с билета
-//        $form->setData(
-//            array(
-//                'amount' => $payment->getSum(),
-//                'ik_shop_id' => $config['interkassa']['shop_id'],
-//                'ik_payment_amount' => $payment->getSum(),
-//                'ik_payment_id' => $payment->getId(),
-//                'ik_payment_desc' => 'Оплата участия в конференции Zend Framework Day. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ').',
-//                'ik_sign_hash' => $this->_getSignHash($payment->getId(), $payment->getSum()),
-//            )
-//        );
-        return array('form' => $form->createView());
+        return array('data' => $data, 'payment' => $payment);
     }
 
     /**
@@ -123,32 +62,6 @@ class InterkassaController extends Controller
     }
 
     /**
-     * @todo: rm this method. change interassa setting
-     *
-     * @Route("/payments/interkassa/success")
-     * @Template()
-     * @param string $message
-     * @return array
-     */
-//    public function successAction($message = 'Спасибо за оплату!')
-//    {
-//        return array('message' => $message);
-//    }
-
-    /**
-     * @todo: rm this method. change interassa setting
-     *
-     * @Route("/payments/interkassa/fail")
-     * @Template()
-     * @return array
-     */
-//    public function failAction()
-//    {
-//        return array('message' => 'Платеж не выполен!');
-//    }
-
-
-    /**
      * Проверяет валидность и статус платежа
      *
      * @param array $params
@@ -168,7 +81,7 @@ class InterkassaController extends Controller
             return false;
         }
 
-        $config = $this->container->getParameter('stfalcon_payments.config');
+        $config = $this->container->getParameter('stfalcon_payment.config');
 
         $crc = md5(
             $params['ik_shop_id'] .':'.
@@ -198,7 +111,7 @@ class InterkassaController extends Controller
      */
     protected function _getSignHash($paymentId, $sum)
     {
-        $config = $this->container->getParameter('stfalcon_payments.config');
+        $config = $this->container->getParameter('stfalcon_payment.config');
 
         $params['ik_shop_id'] = $config['interkassa']['shop_id'];
         $params['ik_payment_amount'] = $sum;

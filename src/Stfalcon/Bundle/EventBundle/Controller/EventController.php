@@ -56,30 +56,17 @@ class EventController extends BaseController
      */
     public function takePartAction($event_slug)
     {
+        $em = $this->getDoctrine()->getEntityManager();
         $event = $this->getEventBySlug($event_slug);
-
-        // пользователь авторизирован
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        /*
-        // пользователь не авторизирован
-            // я зарегистрированный пользователь
-                // вводит e-mail и пароль
-                // создаем билет
-            // я новый пользователь
-                // <<< регистрируем пользователя
-                // на e-mail отправляем ссылку для активации аккаунта >>>
-                // создаем билет
-        */
-
         // проверяем или у него нет билетов на этот ивент
-        $em = $this->getDoctrine()->getEntityManager();
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
             $ticket = new Ticket($event, $user);
-
             $em->persist($ticket);
             $em->flush();
         }
@@ -99,9 +86,8 @@ class EventController extends BaseController
     public function myAction()
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $tickets = $em->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
+        $tickets = $this->getDoctrine()->getEntityManager()
+                ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
         return array('tickets' => $tickets);
     }
@@ -112,24 +98,34 @@ class EventController extends BaseController
      * @Secure(roles="ROLE_USER")
      * @Route("/event/{event_slug}/pay", name="event_pay")
      * @Template()
+     * @param string $event_slug
      * @return array
      */
     public function payAction($event_slug)
     {
-        $event = $this->getEventBySlug($event_slug);
-
-        // создаем проплату и показываем страницу платежа бандла StfalconPaymentBundle
-        $payment = new Payment();
-        $payment->setUser($user);
-        // @todo: стоимость ивента указывается в ивенте
-        $payment->setAmount(150);
-
-        $em->persist($payment);
-
         $em = $this->getDoctrine()->getEntityManager();
-        $tickets = $em->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
+        $event = $this->getEventBySlug($event_slug);
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
-        return array('tickets' => $tickets);
+        $ticket = $this->getDoctrine()->getEntityManager()
+                ->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+
+        // создаем проплату или апдейтим стоимость уже существующей
+        if ($payment = $ticket->getPayment()) {
+            $payment->setAmount($event->getAmount());
+            $em->persist($payment);
+        } else {
+            $payment = new Payment($user, $event->getAmount());
+            $em->persist($payment);
+            $ticket->setPayment($payment);
+            $em->persist($ticket);
+        }
+
+        $em->flush();
+
+        return $this->forward('StfalconPaymentBundle:Interkassa:pay', 
+                array('user' => $user, 'payment' => $payment));
     }
 
 }

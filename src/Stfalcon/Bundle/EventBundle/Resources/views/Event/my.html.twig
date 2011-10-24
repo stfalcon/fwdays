@@ -23,8 +23,10 @@
                         </div>
 
                         <div class="ticket-status">
-                            {% if ticket.isNew() %}
-                                <span class="ticket-status-new">Не оплачено</span>
+                            {% if ticket.isPaid() %}
+                                <span class="ticket-status-paid">Участие оплачено</span>
+                            {% else %}
+                                <span class="ticket-status-new">Участие не оплачено</span>
                                 <input type="submit" value="Оплатить" onclick="location.href='{{ path('event_pay', {'event_slug': event.slug}) }}'" />
                             {% endif %}
                         </div>

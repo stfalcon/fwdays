@@ -163,6 +163,9 @@ input {
     color: #e11111;
     margin-right: 18px;
 }
+.ticket-status-paid {
+    color: #0091AD;
+}
 
 .info-msg-block,
 .error-msg-block {

@@ -333,6 +333,11 @@ class Event
         return $this->file;
     }
 
+    public function getAmount() {
+        // !!! @todo: get from database
+        return 150;
+    }
+
     /**
      * @todo remove this method (and try remove property)
      * Get event pages

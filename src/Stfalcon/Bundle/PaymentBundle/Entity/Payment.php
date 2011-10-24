@@ -34,14 +34,14 @@ class Payment
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $user;
 
     /**
      * @var decimal $amount
      *
-     * @ORM\Column(name="amount", type="decimal")
+     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
 
@@ -73,7 +73,9 @@ class Payment
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct(User $user, $amount) {
+        $this->setUser($user);
+        $this->setAmount($amount);
         $this->setStatus(self::STATUS_PENDING);
     }
 
@@ -161,6 +163,11 @@ class Payment
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function isPaid()
+    {
+        return ($this->getStatus() == self::STATUS_PAID);
     }
 
 }
