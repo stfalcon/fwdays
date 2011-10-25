@@ -113,8 +113,11 @@ class EventController extends BaseController
 
         // создаем проплату или апдейтим стоимость уже существующей
         if ($payment = $ticket->getPayment()) {
-            $payment->setAmount($event->getAmount());
-            $em->persist($payment);
+            // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
+            // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
+            // может не соответствовать цене
+//            $payment->setAmount($event->getAmount());
+//            $em->persist($payment);
         } else {
             $payment = new Payment($user, $event->getAmount());
             $em->persist($payment);
@@ -124,7 +127,7 @@ class EventController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay', 
+        return $this->forward('StfalconPaymentBundle:Interkassa:pay',
                 array('user' => $user, 'payment' => $payment));
     }
 
