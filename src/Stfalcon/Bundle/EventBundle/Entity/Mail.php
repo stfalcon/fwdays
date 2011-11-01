@@ -117,13 +117,13 @@ class Mail
         return $this->complete;
     }
 
-    public function setComplete($complite) {
-        $this->complite = $complete;
+    public function setComplete($complete) {
+        $this->complete = $complete;
     }
 
     public function replace($data) {
         foreach ($data as $key => $value) {
-            $this->setText(preg_replace('/' . $key .'/', $value, $this->getText()));
+            return preg_replace('/' . $key .'/', $value, $this->getText());
         }
     }
 

@@ -47,14 +47,14 @@ class MailAdmin extends Admin
         $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
 
         foreach ($users as $user) {
-            $mail->replace(array('%fullname%' => $user->getFullname()));
+            $text = $mail->replace(array('%fullname%' => $user->getFullname()));
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
                 // @todo refact
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
-                ->setBody($mail->getText());
+                ->setBody($text);
 
             $container->get('mailer')->send($message);
         }
