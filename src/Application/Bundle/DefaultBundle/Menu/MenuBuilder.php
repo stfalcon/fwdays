@@ -33,7 +33,7 @@ class MenuBuilder
         $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
         $menu->addChild('События', array('route' => 'events'));
         $menu->addChild('Контактная информация', array('route' => 'page_show', 'routeParameters' => array('slug' => 'contacts')));
-        $menu->addChild('Партнеры', array('route' => 'page_show', 'routeParameters' => array('slug' => 'partners')));
+        $menu->addChild('Спонсоры и партнеры', array('route' => 'page_show', 'routeParameters' => array('slug' => 'partners')));
 
         return $menu;
     }
