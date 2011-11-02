@@ -16,8 +16,10 @@ class EventAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('name')
             ->addIdentifier('slug')
+            ->add('name')
+            ->add('active')
+            ->add('receivePayments')
         ;
     }
 
@@ -33,7 +35,8 @@ class EventAdmin extends Admin
                 ->add('description')
                 ->add('about')
                 ->add('file', 'file', array('required' => false))
-                ->add('active')
+                ->add('active', null, array('required' => false))
+                ->add('receivePayments', null, array('required' => false))
             ->end()
         ;
     }

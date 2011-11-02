@@ -22,11 +22,13 @@
 
     <nav class="event-nav">
         <div class="wrap">
-            <div class="reg-button-hold">
-                <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
-                    Принять участие
-                </a>
-            </div>
+            {% if event.receivePayments %}
+                <div class="reg-button-hold">
+                    <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
+                        Принять участие
+                    </a>
+                </div>
+            {% endif %}
 
             {{ knp_menu_render('event_sub') }}
         </div>

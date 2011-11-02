@@ -91,6 +91,13 @@ class Event
     private $active = true;
 
     /**
+     * @var boolean $receivePayments
+     *
+     * @ORM\Column(name="receive_payments", type="boolean")
+     */
+    private $receivePayments;
+
+    /**
      * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
      */
     private $pages;
@@ -113,6 +120,7 @@ class Event
      * @Assert\Image
      */
     private $file;
+
 
     public function __construct()
     {
@@ -258,6 +266,7 @@ class Event
     public function getAbout() {
         return $this->about;
     }
+
     /**
      * Set status of activity
      *
@@ -276,6 +285,13 @@ class Event
         return $this->active;
     }
 
+    public function setReceivePayments($receivePayments) {
+        $this->receivePayments = $receivePayments;
+    }
+
+    public function getReceivePayments() {
+        return $this->receivePayments;
+    }
 
     /**
      * Get event speakers

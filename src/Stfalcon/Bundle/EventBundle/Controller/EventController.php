@@ -103,8 +103,13 @@ class EventController extends BaseController
      */
     public function payAction($event_slug)
     {
-        $em = $this->getDoctrine()->getEntityManager();
         $event = $this->getEventBySlug($event_slug);
+
+        if (!$event->getReceivePayments()) {
+            throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = $this->getDoctrine()->getEntityManager()

@@ -15,7 +15,9 @@
 
             <p>{{ event.description }}</p>
 
-            <a class="register" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">Принять участие</a>
+            {% if event.receivePayments %}
+                <a class="register" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">Принять участие</a>
+            {% endif %}
             <a class="know-more" href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
         </div>
     </div>
