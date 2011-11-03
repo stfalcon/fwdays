@@ -43,7 +43,7 @@
 
     {% block event_news_widget %}
         <h2>Новости</h2>
-        {% render "StfalconEventBundle:News:last" with { 'event': event, 'count': 7 } %}
+        {% render "StfalconEventBundle:News:widget" with { 'event': event, 'count': 7 } %}
     {% endblock %}
 
 {% endblock %}

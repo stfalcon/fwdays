@@ -62,7 +62,7 @@ class NewsController extends BaseController
      * @param integer $count
      * @return array
      */
-    public function lastAction(Event $event, $count)
+    public function widgetAction(Event $event, $count)
     {
         $news = $this->getDoctrine()->getEntityManager()
                 ->getRepository('StfalconEventBundle:News')->getLastNewsForEvent($event, $count);
