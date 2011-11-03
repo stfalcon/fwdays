@@ -77,20 +77,29 @@ class DefaultController extends Controller {
 
                     $this->get('fos_user.user_manager')->updateUser($user);
 
-$url = $this->router->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
+$url = $this->generateUrl('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
 $text = "Приветствуем " . $user->getFullname() ."!
 
 Вы были автоматически зарегистрированы на сайте Frameworks Days.
 Для подтверждения вашего e-mail и активации аккаунта пройдите по ссылке " . $url . "
 
-Ваш текущий пароль " . $password . " сгенерирован автоматически.
-Его можно сменить на странице " . $this->router->generate('fos_user_change_password', array('token' => $user->getConfirmationToken()), true) . "
+Ваш временный пароль: " . $password . "
+Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
 
 
 ---
 С уважением,
 Орг. Комитет \"Zend Framework Day\"";
-$this->get('fos_user.mailer')->sendEmailMessage($text, 'orgs@fwdays.com', $user->getEmail());
+
+$message = \Swift_Message::newInstance()
+    ->setSubject("Регистрация на сайте Frameworks Days")
+    // @todo refact
+    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+    ->setTo($user->getEmail())
+    ->setBody($text);
+
+// @todo каждый вызов отнимает память
+$this->get('mailer')->send($message);
 
                     $ticket = null;
                 }
