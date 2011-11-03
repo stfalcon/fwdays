@@ -8,72 +8,72 @@
         <parameter key="stfalcon_event.admin.event.class">Stfalcon\Bundle\EventBundle\Admin\EventAdmin</parameter>
         <parameter key="stfalcon_event.admin.event.entity">Stfalcon\Bundle\EventBundle\Entity\Event</parameter>
         <parameter key="stfalcon_event.admin.event.controller">SonataAdminBundle:CRUD</parameter>
-        
+
         <parameter key="stfalcon_event.admin.speaker.class">Stfalcon\Bundle\EventBundle\Admin\SpeakerAdmin</parameter>
         <parameter key="stfalcon_event.admin.speaker.entity">Stfalcon\Bundle\EventBundle\Entity\Speaker</parameter>
         <parameter key="stfalcon_event.admin.speaker.controller">SonataAdminBundle:CRUD</parameter>
-        
+
         <parameter key="stfalcon_event.admin.page.class">Stfalcon\Bundle\EventBundle\Admin\PageAdmin</parameter>
         <parameter key="stfalcon_event.admin.page.entity">Stfalcon\Bundle\EventBundle\Entity\Page</parameter>
         <parameter key="stfalcon_event.admin.page.controller">SonataAdminBundle:CRUD</parameter>
-        
+
         <parameter key="stfalcon_event.admin.news.class">Stfalcon\Bundle\EventBundle\Admin\NewsAdmin</parameter>
         <parameter key="stfalcon_event.admin.news.entity">Stfalcon\Bundle\EventBundle\Entity\News</parameter>
         <parameter key="stfalcon_event.admin.news.controller">SonataAdminBundle:CRUD</parameter>
-        
+
         <parameter key="stfalcon_event.admin.reviews.class">Stfalcon\Bundle\EventBundle\Admin\ReviewAdmin</parameter>
         <parameter key="stfalcon_event.admin.reviews.entity">Stfalcon\Bundle\EventBundle\Entity\Review</parameter>
         <parameter key="stfalcon_event.admin.reviews.controller">SonataAdminBundle:CRUD</parameter>
-        
+
         <parameter key="stfalcon_event.admin.mails.class">Stfalcon\Bundle\EventBundle\Admin\MailAdmin</parameter>
         <parameter key="stfalcon_event.admin.mails.entity">Stfalcon\Bundle\EventBundle\Entity\Mail</parameter>
         <parameter key="stfalcon_event.admin.mails.controller">SonataAdminBundle:CRUD</parameter>
     </parameters>
-    
+
     <services>
         <service id="stfalcon_event.current_event" class="%stfalcon_event.admin.event.entity%" />
 
         <service id="stfalcon_event.admin.event" class="%stfalcon_event.admin.event.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="event"/>
+            <tag name="sonata.admin" manager_type="orm" group="События" label="События"/>
             <argument />
             <argument>%stfalcon_event.admin.event.entity%</argument>
             <argument>%stfalcon_event.admin.event.controller%</argument>
         </service>
-        
-        <service id="stfalcon_event.admin.speaker" class="%stfalcon_event.admin.speaker.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="speaker"/>
-            <argument />
-            <argument>%stfalcon_event.admin.speaker.entity%</argument>
-            <argument>%stfalcon_event.admin.speaker.controller%</argument>
-        </service>
-        
-        <service id="stfalcon_event.admin.page" class="%stfalcon_event.admin.page.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="page"/>
-            <argument />
-            <argument>%stfalcon_event.admin.page.entity%</argument>
-            <argument>%stfalcon_event.admin.page.controller%</argument>
-        </service>
-        
+
         <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="news"/>
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>
             <argument />
             <argument>%stfalcon_event.admin.news.entity%</argument>
             <argument>%stfalcon_event.admin.news.controller%</argument>
         </service>
-        
+
+        <service id="stfalcon_event.admin.page" class="%stfalcon_event.admin.page.class%">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Страницы"/>
+            <argument />
+            <argument>%stfalcon_event.admin.page.entity%</argument>
+            <argument>%stfalcon_event.admin.page.controller%</argument>
+        </service>
+
         <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="reviews"/>
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Доклады"/>
             <argument />
             <argument>%stfalcon_event.admin.reviews.entity%</argument>
             <argument>%stfalcon_event.admin.reviews.controller%</argument>
         </service>
-        
+
+        <service id="stfalcon_event.admin.speaker" class="%stfalcon_event.admin.speaker.class%">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Докладчики"/>
+            <argument />
+            <argument>%stfalcon_event.admin.speaker.entity%</argument>
+            <argument>%stfalcon_event.admin.speaker.controller%</argument>
+        </service>
+
         <service id="stfalcon_event.admin.mails" class="%stfalcon_event.admin.mails.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Event" label="mails"/>
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Почтовые рассылки"/>
             <argument />
             <argument>%stfalcon_event.admin.mails.entity%</argument>
             <argument>%stfalcon_event.admin.mails.controller%</argument>
         </service>
     </services>
-    
+
 </container>

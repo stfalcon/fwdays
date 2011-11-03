@@ -13,7 +13,7 @@
     <services>
         <!-- SonataAdminBundle users settings -->
         <service id="application_users.admin.user" class="%application_users.admin.user.class%">
-            <tag name="sonata.admin" manager_type="orm" group="User" label="user"/>
+            <tag name="sonata.admin" manager_type="orm" group="Пользователи" label="Пользователи"/>
             <argument />
             <argument>%application_users.admin.user.entity%</argument>
             <argument>%application_users.admin.user.controller%</argument>
