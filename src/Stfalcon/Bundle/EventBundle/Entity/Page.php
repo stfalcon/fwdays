@@ -13,7 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
  */
 class Page extends BasePage {
-    
+
+    /**
+     * @var boolean $showInMenu
+     *
+     * @ORM\Column(name="show_in_menu", type="boolean")
+     */
+    private $showInMenu = false;
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -21,13 +28,21 @@ class Page extends BasePage {
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
-    
+
+    public function setEvent(Event $event) {
+        $this->event = $event;
+    }
+
     public function getEvent() {
         return $this->event;
     }
 
-    public function setEvent($event) {
-        $this->event = $event;
+    public function setShowInMenu($showInMenu) {
+        $this->showInMenu = $showInMenu;
+    }
+
+    public function isShowInMenu() {
+        return $this->showInMenu;
     }
 
 }

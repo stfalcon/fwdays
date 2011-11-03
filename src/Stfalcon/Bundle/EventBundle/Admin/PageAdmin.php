@@ -24,6 +24,7 @@ class PageAdmin extends BasePageAdmin
                 ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                 ))
+                ->add('showInMenu', null, array('required' => false))
             ->end()
         ;
     }

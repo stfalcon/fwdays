@@ -70,11 +70,12 @@ class MenuBuilder
             $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
-        // Ссылки на страницы ивента
-        // @todo можно добавить для страниц свойство "отображать в меню"
+        // ссылки на страницы ивента
         foreach($event->getPages() as $page) {
-            $menu->addChild($page->getTitle(), array('route' => 'event_page_show',
-                    'routeParameters' => array('event_slug' => $event->getSlug(), 'page_slug' => $page->getSlug())));
+            if ($page->isShowInMenu()) {
+                $menu->addChild($page->getTitle(), array('route' => 'event_page_show',
+                        'routeParameters' => array('event_slug' => $event->getSlug(), 'page_slug' => $page->getSlug())));
+            }
         }
 
         return $menu;

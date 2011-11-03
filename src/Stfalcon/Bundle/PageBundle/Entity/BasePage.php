@@ -14,7 +14,7 @@ abstract class BasePage
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -23,21 +23,21 @@ abstract class BasePage
     /**
      * @var string $slug
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column()
      */
     private $slug;
 
     /**
      * @var string $title
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column()
      */
     private $title;
 
     /**
      * @var text $text
      *
-     * @ORM\Column(name="text", type="text")
+     * @ORM\Column(type="text")
      */
     private $text;
 
@@ -45,7 +45,7 @@ abstract class BasePage
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -65,7 +65,7 @@ abstract class BasePage
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -85,7 +85,7 @@ abstract class BasePage
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -105,7 +105,7 @@ abstract class BasePage
     /**
      * Get text
      *
-     * @return text 
+     * @return text
      */
     public function getText()
     {
