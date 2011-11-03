@@ -95,7 +95,7 @@ class Event
      *
      * @ORM\Column(name="receive_payments", type="boolean")
      */
-    private $receivePayments;
+    private $receivePayments = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Page", mappedBy="event")

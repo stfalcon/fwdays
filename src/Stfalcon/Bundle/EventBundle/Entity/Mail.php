@@ -55,16 +55,16 @@ class Mail
     /**
      * @var boolean $start
      * 
-     * @ORM\Column(name="start", type="boolean", nullable=true)
+     * @ORM\Column(name="start", type="boolean")
      */
-    private $start;
+    private $start = false;
     
     /**
      * @var boolean $complete
      * 
-     * @ORM\Column(name="complete", type="boolean", nullable=true)
+     * @ORM\Column(name="complete", type="boolean")
      */
-    private $complete;
+    private $complete = false;
     
     public function __construct()
     {
