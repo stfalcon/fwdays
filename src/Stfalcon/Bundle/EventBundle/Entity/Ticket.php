@@ -93,9 +93,9 @@ class Ticket
      * @param Event $event
      * @return void
      */
-//    private function setEvent(Event $event) {
-//        $this->event = $event;
-//    }
+    private function setEvent(Event $event) {
+        $this->event = $event;
+    }
 
     /**
      * @return Payment

@@ -51,6 +51,13 @@ class Payment
      * @ORM\Column(name="status", type="string")
      */
     private $status;
+    
+    /**
+     * @var gate $gate
+     *
+     * @ORM\Column()
+     */
+    private $gate = 'interkassa';
 
     /**
      * @var \DateTime $createdAt
@@ -169,5 +176,15 @@ class Payment
     {
         return ($this->getStatus() == self::STATUS_PAID);
     }
+    
+    public function getGate() {
+        return $this->gate;
+    }
+
+    public function setGate($gate) {
+        $this->gate = $gate;
+    }
+
+
 
 }
