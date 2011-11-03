@@ -17,6 +17,8 @@ class NewsController extends BaseController
      *
      * @Route("/event/{event_slug}/news", name="event_news")
      * @Template()
+     * @param string $event_slug
+     * @return array
      */
     public function indexAction($event_slug)
     {
@@ -32,6 +34,9 @@ class NewsController extends BaseController
      *
      * @Route("/event/{event_slug}/news/{news_slug}", name="event_news_show")
      * @Template()
+     * @param string $event_slug
+     * @param string $news_slug
+     * @return array
      */
     public function showAction($event_slug, $news_slug)
     {
@@ -55,7 +60,7 @@ class NewsController extends BaseController
      *
      * @param Event $event
      * @param integer $count
-     * @return void
+     * @return array
      */
     public function lastAction(Event $event, $count)
     {
