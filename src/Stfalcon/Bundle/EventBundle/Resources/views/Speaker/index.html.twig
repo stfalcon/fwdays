@@ -9,12 +9,14 @@
 
     <div class="presenters">
         {% for speaker in speakers %}
-        <div class="presenter" id="speaker-{{ speaker.id }}">
+        <div class="presenter">
             <div class="presenter-photo">
                 <img src="{{ speaker.photo }}" width="120" alt="{{ speaker.name }}" />
             </div>
             <div class="presenter-info">
-                <div class="presenter-name">{{ speaker.name }}</div>
+                <div class="presenter-name">
+                    <a href="#speaker-{{ speaker.id }}" id="speaker-{{ speaker.id }}">{{ speaker.name }}</a>
+                </div>
                 <div class="presenter-company">{{ speaker.company }}</div>
 
                 {{ speaker.about|raw }}
