@@ -16,6 +16,8 @@ fos_user_profile_form_subscribe: "Я согласен получать важн�
 
 profile.show.fullname: "Фамилия и имя"
 
+registration.check_email: На e-mail %email% выслано письмо с ссылкой для подвтерждения регистрации.
+
 resetting.request.invalid_username: Пользователь с e-mail "%username%" не существует.
 resetting.request.username: "Ваш e-mail:"
 resetting.check_email: На e-mail "%email%" отправлено письмо с ссылкой для сброса пароля.

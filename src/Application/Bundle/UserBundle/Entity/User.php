@@ -48,27 +48,12 @@ class User extends BaseUser
     protected $subscribe = true;
 
     /**
-     * @var string $text
-     *
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     */
-    protected $comment;
-
-    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
-
-    /**
-     * @var \DateTime $updatedAt
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedAt;
 
     /**
      * Redefinition email setter for use email as username
@@ -153,26 +138,6 @@ class User extends BaseUser
         $this->subscribe = $subscribe;
     }
 
-    /**
-     * Get comment
-     *
-     * @todo: rm this method
-     * @return type
-     */
-    public function getComment() {
-        return $this->comment;
-    }
-
-    /**
-     * Set comment
-     *
-     * @todo: rm this method
-     * @param type $comment
-     */
-    public function setComment($comment) {
-        $this->comment = $comment;
-    }
-
     public function getCreatedAt()
     {
         return $this->createdAt;
@@ -181,16 +146,6 @@ class User extends BaseUser
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
     }
 
 }

@@ -27,7 +27,7 @@ class UserAdmin extends Admin
             ->add('enabled')
             ->add('fullname')
             ->add('company')
-            ->add('comment')
+            ->add('createdAt')
         ;
     }
 
@@ -39,7 +39,6 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('company', null, array('required' => false))
                 ->add('post', null, array('required' => false))
-                ->add('comment', null, array('required' => false))
                 ->add('subscribe', null, array('required' => false))
 //                ->add('plainPassword', 'text')
             ->end()
