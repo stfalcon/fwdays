@@ -74,15 +74,12 @@ jms_security_extra:
 knp_menu:
     twig: true
 
-#avalanche_imagine:
-#    filters:
-#        events_thumb:
-#            type:    thumbnail
-#            options: { size: [82, 87], mode: outbound }
-#
-#        event_thumb:
-#            type:    thumbnail
-#            options: { size: [120, 129], mode: outbound }
+avalanche_imagine:
+    cache_prefix: /tmp/media/cache
+    filters:
+        speaker_thumb:
+            type:    thumbnail
+            options: { size: [64, 64], mode: outbound }
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'

@@ -22,7 +22,7 @@ ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation
     prefix:   /
-    
+
 #ApplicationUserBundle:
 #    resource: "@ApplicationDefaultBundle/Controller/"
 #    type:     annotation
@@ -42,10 +42,10 @@ _sonata_admin:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
 
-#_imagine:
-#    resource: .
-#    type: imagine
-    
+_imagine:
+    resource: .
+    type: imagine
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

@@ -36,35 +36,14 @@
 {% endblock %}
 
 {% block sidebar_left %}
-    {#<h2>Докладчики</h2>
+    {% block event_speakers_widget %}
+        <h2>Докладчики</h2>
+        {% render "StfalconEventBundle:Speaker:widget" with { 'event': event, 'count': 3 } %}
+    {% endblock %}
 
-    <ul class="presenters">
-        <li>
-            <div class="presenter-photo"><img src="/images/temp/presenter-mini1.jpg" width="64" height="64" alt="" /></div>
-            <div class="presenter-info">
-                <a href="# ">Александр Веремьев</a>
-                <div class="presenter-company">Zend Technologies</div>
-            </div>
-        </li>
-        <li>
-            <div class="presenter-photo"><img src="/images/temp/presenter-mini2.jpg" width="64" height="64" alt="" /></div>
-            <div class="presenter-info">
-                <a href="# ">Ростислав Михайлив</a>
-                <div class="presenter-company">4C</div>
-            </div>
-        </li>
-        <li>
-            <div class="presenter-photo"><img src="/images/temp/presenter-mini3.jpg" width="64" height="64" alt="" /></div>
-            <div class="presenter-info">
-                <a href="# ">Ростислав Михайлив</a>
-                <div class="presenter-company">Gadu-Gadu</div>
-            </div>
-        </li>
-    </ul>
-    <div class="allpresenters-link"><a href="# ">все докладчики</a></div>
-    #}
+    {% block event_news_widget %}
+        <h2>Новости</h2>
+        {% render "StfalconEventBundle:News:last" with { 'event': event, 'count': 7 } %}
+    {% endblock %}
 
-    <h2>Новости</h2>
-
-    {% render "StfalconEventBundle:News:last" with { 'event': event, 'count': 7 } %}
 {% endblock %}
