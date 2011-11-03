@@ -33,10 +33,9 @@ class DefaultController extends Controller {
             $data = explode("\r\n", $_POST['users']);
 
             $mail = new Mail();
-            $mail->setTitle('Подтверждение участия в конференции ' . $event->getName());
+            $mail->setTitle($event->getName() . ' -- подтверждение участия');
             $mail->setText('Доброго времени суток, %fullname%.
 
-Благодарим Вас, за оплату участия в конференции Zend Framework Day.
 Напоминаем, что конференция состоится 12 ноября 2011 года, в конференц
 зале отеля "Казацкий" (г. Киев, ул. Михайловская 1/3, рядом с Площадью
 Независимости).
@@ -60,10 +59,9 @@ class DefaultController extends Controller {
 
                 $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $d['email']));
 
+                $em = $this->getDoctrine()->getEntityManager();
                 if ($user) {
                     // проверяем или у него нет билетов на этот ивент
-                    $em = $this->getDoctrine()->getEntityManager();
-
                     $ticket = $em->getRepository('StfalconEventBundle:Ticket')
                             ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
                     echo "#{$user->getId()} {$user->getFullname()} уже зарегистрирован ---<br>";
@@ -71,11 +69,28 @@ class DefaultController extends Controller {
                     $user = $this->get('fos_user.user_manager')->createUser();
                     $user->setEmail($d['email']);
                     $user->setFullname($d['name']);
-                    $user->setPlainPassword(substr(str_shuffle(md5(time())), 5, 8));
+                    $password = substr(str_shuffle(md5(time())), 5, 8);
+                    $user->setPlainPassword($password);
 
                     $user->setEnabled(false);
-                    $this->get('fos_user.mailer')->sendConfirmationEmailMessage($user);
+//                    $this->get('fos_user.mailer')->sendConfirmationEmailMessage($user);
+
                     $this->get('fos_user.user_manager')->updateUser($user);
+
+$url = $this->router->generate('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
+$text = "Приветствуем " . $user->getFullname() ."!
+
+Вы были автоматически зарегистрированы на сайте Frameworks Days.
+Для подтверждения вашего e-mail и активации аккаунта пройдите по ссылке " . $url . "
+
+Ваш текущий пароль " . $password . " сгенерирован автоматически.
+Его можно сменить на странице " . $this->router->generate('fos_user_change_password', array('token' => $user->getConfirmationToken()), true) . "
+
+
+---
+С уважением,
+Орг. Комитет \"Zend Framework Day\"";
+$this->get('fos_user.mailer')->sendEmailMessage($text, 'orgs@fwdays.com', $user->getEmail());
 
                     $ticket = null;
                 }
