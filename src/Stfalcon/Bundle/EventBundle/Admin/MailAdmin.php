@@ -15,7 +15,7 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title')
-            ->add('events')
+            ->add('event')
         ;
     }
 
@@ -25,9 +25,9 @@ class MailAdmin extends Admin
             ->with('General')
                 ->add('title')
                 ->add('text')
-                ->add('events', 'entity',  array(
+                ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple' => true, 'expanded' => true,
+                    'multiple' => false, 'expanded' => false, 'required' => false
                 ))
                 ->add('start', null, array('required' => false))
             ->end()
@@ -36,18 +36,41 @@ class MailAdmin extends Admin
 
     public function postUpdate($mail)
     {
+        if (!$mail->getStart()) {
+            return false;
+        }
+
         // @todo refact
         if ($mail->getComplete()) {
-            return false;
+            throw new \Exception('Эта рассылка уже разослана');
         }
 
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getEntityManager();
 
-        $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
+        if ($mail->getEvent()) {
+            // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
+            $tickets = $em->getRepository('StfalconEventBundle:Ticket')
+                ->findBy(array('event' => $mail->getEvent()->getId()));
+
+            foreach ($tickets as $ticket) {
+                $users[] = $ticket->getUser();
+            }
+        } else {
+            $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
+        }
 
         foreach ($users as $user) {
-            $text = $mail->replace(array('%fullname%' => $user->getFullname()));
+            if (!$user->isSubscribe()) {
+                continue;
+            }
+
+            $text = $mail->replace(
+                array(
+                    '%fullname%' => $user->getFullname(),
+                    '%user_id%' => $user->getId(),
+                )
+            );
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
@@ -56,6 +79,7 @@ class MailAdmin extends Admin
                 ->setTo($user->getEmail())
                 ->setBody($text);
 
+            // @todo каждый вызов отнимает память
             $container->get('mailer')->send($message);
         }
 

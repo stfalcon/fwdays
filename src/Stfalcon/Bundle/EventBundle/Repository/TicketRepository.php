@@ -13,19 +13,20 @@ use Doctrine\ORM\EntityRepository;
 class TicketRepository extends EntityRepository
 {
 
-    /**
-     * @return array
-     */
-    public function findAllPaid()
-    {
-        $qb = $this->getEntityManager()
-                ->createQueryBuilder()
-                ->add('select', 't')
-                ->add('from', 'StfalconEventBundle:Ticket t')
-                ->where('t.status = :status')
-                ->setParameter('status', 'paid')
-                ->add('orderBy', 't.status DESC');
+//    /**
+//     * @return array
+//     */
+//    public function findAllPaid()
+//    {
+//        $qb = $this->getEntityManager()
+//                ->createQueryBuilder()
+//                ->add('select', 't')
+//                ->add('from', 'StfalconEventBundle:Ticket t')
+//                ->where('t.status = :status')
+//                ->setParameter('status', 'paid')
+//                ->add('orderBy', 't.status DESC');
+//
+//        return $qb->getQuery()->getResult();
+//    }
 
-        return $qb->getQuery()->getResult();
-    }
 }

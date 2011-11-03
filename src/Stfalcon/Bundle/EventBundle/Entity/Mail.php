@@ -36,45 +36,34 @@ class Mail
      * @ORM\Column(name="text", type="text")
      */
     private $text;
-    
+
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event
      *
-     * @ORM\ManyToMany(targetEntity="Event")
-     * @ORM\JoinTable(name="event__events_mails",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="mail_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     *   }
-     * )
-     */    
-    private $events;
-    
+     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
+     */
+    private $event;
+
     /**
      * @var boolean $start
-     * 
+     *
      * @ORM\Column(name="start", type="boolean")
      */
     private $start = false;
-    
+
     /**
      * @var boolean $complete
-     * 
+     *
      * @ORM\Column(name="complete", type="boolean")
      */
     private $complete = false;
-    
-    public function __construct()
-    {
-        $this->events = new ArrayCollection();
-    }
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -97,14 +86,21 @@ class Mail
         $this->text = $text;
     }
 
-    public function getEvents() {
-        return $this->events;
+    /**
+     * @return Event
+     */
+    public function getEvent() {
+        return $this->event;
     }
 
-    public function setEvents($events) {
-        $this->events = $events;
+    /**
+     * @param Event|null $event
+     * @return void
+     */
+    public function setEvent($event) {
+        $this->event = $event;
     }
-    
+
     public function getStart() {
         return $this->start;
     }
@@ -112,7 +108,7 @@ class Mail
     public function setStart($start) {
         $this->start = $start;
     }
-    
+
     public function getComplete() {
         return $this->complete;
     }
@@ -122,9 +118,11 @@ class Mail
     }
 
     public function replace($data) {
+        $text = $this->getText();
         foreach ($data as $key => $value) {
-            return preg_replace('/' . $key .'/', $value, $this->getText());
+            $text = str_replace($key, $value, $text);
         }
+        return $text;
     }
 
 }
