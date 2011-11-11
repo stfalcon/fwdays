@@ -30,7 +30,10 @@ class MailAdmin extends Admin
                     'multiple' => false, 'expanded' => false, 'required' => false
                 ))
                 ->add('start', null, array('required' => false))
-            ->end()
+                ->add('paymentStatus', 'choice', array(
+                    'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
+                    'required' => false))
+                ->end()
         ;
     }
 
@@ -54,14 +57,23 @@ class MailAdmin extends Admin
                 ->findBy(array('event' => $mail->getEvent()->getId()));
 
             foreach ($tickets as $ticket) {
-                $users[] = $ticket->getUser();
+                // @todo тяжелая цепочка
+                // нужно сделать выборку билетов с платежами определенного статуса
+                if($mail->getPaymentStatus()) {
+                    if ($ticket->getPayment() && $ticket->getPayment()->getStatus() == $mail->getPaymentStatus()) {
+                        $users[] = $ticket->getUser();
+                    }
+                } else {
+                    $users[] = $ticket->getUser();
+                }
             }
         } else {
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
+        $mailer = $container->get('mailer');
         foreach ($users as $user) {
-            if (!$user->isSubscribe()) {
+            if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                 continue;
             }
 
@@ -80,7 +92,7 @@ class MailAdmin extends Admin
                 ->setBody($text);
 
             // @todo каждый вызов отнимает память
-            $container->get('mailer')->send($message);
+            $mailer->send($message);
         }
 
         $mail->setComplete(true);

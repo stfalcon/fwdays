@@ -59,6 +59,13 @@ class Mail
      */
     private $complete = false;
 
+    /**
+     * @todo refact. это костыльное и временное решение
+     * @var text $text
+     *
+     * @ORM\Column(name="payment_status")
+     */
+    private $paymentStatus = null;
 
     /**
      * Get id
@@ -123,6 +130,14 @@ class Mail
             $text = str_replace($key, $value, $text);
         }
         return $text;
+    }
+
+    public function getPaymentStatus() {
+        return $this->paymentStatus;
+    }
+
+    public function setPaymentStatus($paymentStatus) {
+        $this->paymentStatus = $paymentStatus;
     }
 
 }
