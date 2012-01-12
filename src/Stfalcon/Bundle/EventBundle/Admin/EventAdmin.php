@@ -37,6 +37,11 @@ class EventAdmin extends Admin
                 ->add('file', 'file', array('required' => false))
                 ->add('active', null, array('required' => false))
                 ->add('receivePayments', null, array('required' => false))
+            ->with('Sponsors')
+                ->add('sponsors', 'entity',  array(
+                    'class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
+                    'multiple' => true, 'expanded' => true, 'required' => false
+                ))
             ->end()
         ;
     }
