@@ -12,4 +12,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class SponsorRepository extends EntityRepository
 {
+    /**
+     * Get all sponsors of event by event slug
+     *
+     * @param string $slug Event slug
+     * @return array Sponsors array
+     */
+    public function findAllByEventSlug($slug)
+    {
+        $query = $this->getEntityManager()
+                ->createQuery('
+                    SELECT s
+                    FROM StfalconSponsorBundle:Sponsor s
+                      JOIN s.events e
+                    WHERE e.slug = :event_slug
+
+                   '
+//                     SELECT p, c
+//                    FROM AcmeStoreBundle:Product p
+//                        JOIN p.category c
+//                    WHERE p.id = :id
+                )
+            ->setParameter('event_slug', $slug);
+        return $query->getResult();
+        try {
+            return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findOneByIdJoinedToCategory($id)
+    {
+        $query = $this->getEntityManager()
+                ->createQuery('
+            SELECT p, c FROM AcmeStoreBundle:Product p
+            JOIN p.category c
+            WHERE p.id = :id'
+                )->setParameter('id', $id);
+
+        try {
+            return $query->getSingleResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
 }

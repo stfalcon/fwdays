@@ -42,13 +42,14 @@ class Sponsor
      * @var string $site
      *
      * @ORM\Column(name="site", type="string", nullable=true, length=255)
+     * @Assert\Url
      */
     private $site;
 
     /**
      * @var string $logo
      *
-     * @ORM\Column(name="logo", type="string", length=255)
+     * @ORM\Column(name="logo", type="string", nullable=true, length=255)
      */
     private $logo;
 

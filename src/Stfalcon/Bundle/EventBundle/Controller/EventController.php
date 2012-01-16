@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
@@ -27,7 +26,7 @@ class EventController extends BaseController
     {
         // @todo refact. отдельнымы спискамм активные и прошедние ивенты
         $events = $this->getDoctrine()->getEntityManager()
-                       ->getRepository('StfalconEventBundle:Event')->findAll();
+                ->getRepository('StfalconEventBundle:Event')->findAll();
 
         return array('events' => $events);
     }
@@ -40,9 +39,10 @@ class EventController extends BaseController
      */
     public function showAction($event_slug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event    = $this->getEventBySlug($event_slug);
+        $sponsors = $event->getSponsors();
 
-        return array('event' => $event);
+        return array('event'    => $event, 'sponsors' => $sponsors);
     }
 
     /**
@@ -56,13 +56,13 @@ class EventController extends BaseController
      */
     public function takePartAction($event_slug)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em    = $this->getDoctrine()->getEntityManager();
         $event = $this->getEventBySlug($event_slug);
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user  = $this->container->get('security.context')->getToken()->getUser();
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+            ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
@@ -85,7 +85,7 @@ class EventController extends BaseController
      */
     public function myAction()
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user    = $this->container->get('security.context')->getToken()->getUser();
         $tickets = $this->getDoctrine()->getEntityManager()
                 ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
@@ -109,12 +109,12 @@ class EventController extends BaseController
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em   = $this->getDoctrine()->getEntityManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:Ticket')
-                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
 
         // создаем проплату или апдейтим стоимость уже существующей
         if ($payment = $ticket->getPayment()) {
@@ -123,7 +123,8 @@ class EventController extends BaseController
             // может не соответствовать цене
 //            $payment->setAmount($event->getAmount());
 //            $em->persist($payment);
-        } else {
+        }
+        else {
             $payment = new Payment($user, $event->getAmount());
             $em->persist($payment);
             $ticket->setPayment($payment);
@@ -132,8 +133,6 @@ class EventController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay',
-                array('user' => $user, 'payment' => $payment));
+        return $this->forward('StfalconPaymentBundle:Interkassa:pay', array('user'    => $user, 'payment' => $payment));
     }
-
 }

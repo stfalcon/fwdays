@@ -1,0 +1,27 @@
+<div class="side-right-wrap">
+    <div class="side-right-holder">
+        <div class="partners">
+            <h2>Спонсоры</h2>
+            {% if sponsors.count > 0 %}
+                {% for sponsor in sponsors %}
+                    {% if sponsor.logo %}
+                        <div class="partner">
+                            <a href="{{ sponsor.site }}">
+                                <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{{ sponsor.site }}" title="{{ sponsor.name }}" /></a>
+                    {% endif %}
+                    {# Если последний элемент списка - перевод на новую строку не делаем #}
+                    {% if not loop.last %}
+                        <br />
+                    {% endif %}
+                {% endfor %}
+            {# А тут прикол, по желанию его можно убрать #}
+            {% else %}
+                Им можете стать Вы! ;)
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -38,10 +38,11 @@ class EventAdmin extends Admin
                 ->add('active', null, array('required' => false))
                 ->add('receivePayments', null, array('required' => false))
             ->with('Sponsors')
-                ->add('sponsors', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
-                    'multiple' => true, 'expanded' => true, 'required' => false
-                ))
+                ->add('sponsors', 'sonata_type_model', array('required' => false), array('edit' => 'standart', 'expanded' => true, 'multiple' => true))
+//                ->add('sponsors', 'entity',  array(
+//                    'class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
+//                    'multiple' => true, 'edit' => 'standart', 'expanded' => true, 'required' => false
+//                ))
             ->end()
         ;
     }
