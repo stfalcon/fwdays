@@ -1,4 +1,5 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
@@ -7,12 +8,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-//use Knp\Bundle\MenuBundle\MenuItem;
-//
-//use Stfalcon\Bundle\EventBundle\Entity\Event;
-
 class EventAdmin extends Admin
 {
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -27,22 +25,16 @@ class EventAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('name')
-                ->add('slug')
-                ->add('city')
-                ->add('place')
-                ->add('date')
-                ->add('description')
-                ->add('about')
-                ->add('file', 'file', array('required' => false))
-                ->add('active', null, array('required' => false))
-                ->add('receivePayments', null, array('required' => false))
-            ->with('Sponsors')
-                ->add('sponsors', 'sonata_type_model', array('required' => false), array('edit' => 'standart', 'expanded' => true, 'multiple' => true))
-//                ->add('sponsors', 'entity',  array(
-//                    'class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
-//                    'multiple' => true, 'edit' => 'standart', 'expanded' => true, 'required' => false
-//                ))
+            ->add('name')
+            ->add('slug')
+            ->add('city')
+            ->add('place')
+            ->add('date')
+            ->add('description')
+            ->add('about')
+            ->add('file', 'file', array('required' => false))
+            ->add('active', null, array('required' => false))
+            ->add('receivePayments', null, array('required' => false))
             ->end()
         ;
     }
@@ -51,6 +43,7 @@ class EventAdmin extends Admin
      * Saves an uploaded logo of event
      *
      * @param Event $event
+     * 
      * @return void
      */
     public function uploadLogo($event)
@@ -59,9 +52,9 @@ class EventAdmin extends Admin
             return;
         }
 
-        $uploadDir = '/uploads/events';
+        $uploadDir     = '/uploads/events';
         $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        $newFileName   = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
 
         $event->getFile()->move($pathToUploads, $newFileName);
         $event->setLogo($uploadDir . '/' . $newFileName);
@@ -74,7 +67,8 @@ class EventAdmin extends Admin
         $this->uploadLogo($event);
     }
 
-    public function preUpdate($event) {
+    public function preUpdate($event)
+    {
         $this->uploadLogo($event);
     }
 

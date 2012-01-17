@@ -30,17 +30,14 @@ class SponsorAdmin extends Admin
             ->add('site')
             ->add('about')
             ->add('file', 'file', array('required' => false))
-            ->with('Events')
-            ->add('events', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple' => true, 'expanded' => true,
-                ))
+            ->with('Sponsors')
+            ->add('events', 'sonata_type_model', array('required' => false), array('edit'     => 'standart', 'expanded' => true, 'multiple' => true))
             ->end()
         ;
     }
 
     /**
-     * Saves an uploaded logo of event
+     * Saves an uploaded logo of sponsor
      *
      * @param Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
      *

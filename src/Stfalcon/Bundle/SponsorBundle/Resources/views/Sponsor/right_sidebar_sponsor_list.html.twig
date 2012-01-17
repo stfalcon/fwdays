@@ -11,14 +11,11 @@
                             </a>
                         </div>
                     {% else %}
-                        <a href="{{ sponsor.site }}" title="{{ sponsor.name }}" /></a>
-                    {% endif %}
-                    {# Если последний элемент списка - перевод на новую строку не делаем #}
-                    {% if not loop.last %}
-                        <br />
+                        <div>
+                            <a href="{{ sponsor.site }}" title="{{ sponsor.name }}" />{{ sponsor.name }}</a>
+                        </div>
                     {% endif %}
                 {% endfor %}
-            {# А тут прикол, по желанию его можно убрать #}
             {% else %}
                 Им можете стать Вы! ;)
             {% endif %}
