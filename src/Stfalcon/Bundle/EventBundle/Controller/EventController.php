@@ -39,10 +39,9 @@ class EventController extends BaseController
      */
     public function showAction($event_slug)
     {
-        $event    = $this->getEventBySlug($event_slug);
-        $sponsors = $event->getSponsors();
+        $event = $this->getEventBySlug($event_slug);
 
-        return array('event'    => $event, 'sponsors' => $sponsors);
+        return array('event' => $event);
     }
 
     /**
@@ -113,8 +112,8 @@ class EventController extends BaseController
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = $this->getDoctrine()->getEntityManager()
-            ->getRepository('StfalconEventBundle:Ticket')
-            ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
+                ->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
 
         // создаем проплату или апдейтим стоимость уже существующей
         if ($payment = $ticket->getPayment()) {
@@ -123,8 +122,7 @@ class EventController extends BaseController
             // может не соответствовать цене
 //            $payment->setAmount($event->getAmount());
 //            $em->persist($payment);
-        }
-        else {
+        } else {
             $payment = new Payment($user, $event->getAmount());
             $em->persist($payment);
             $ticket->setPayment($payment);
@@ -133,6 +131,6 @@ class EventController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay', array('user'    => $user, 'payment' => $payment));
+        return $this->forward('StfalconPaymentBundle:Interkassa:pay', array('user' => $user, 'payment' => $payment));
     }
 }

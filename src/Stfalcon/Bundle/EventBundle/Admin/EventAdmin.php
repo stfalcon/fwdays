@@ -25,16 +25,16 @@ class EventAdmin extends Admin
     {
         $formMapper
             ->with('General')
-            ->add('name')
-            ->add('slug')
-            ->add('city')
-            ->add('place')
-            ->add('date')
-            ->add('description')
-            ->add('about')
-            ->add('file', 'file', array('required' => false))
-            ->add('active', null, array('required' => false))
-            ->add('receivePayments', null, array('required' => false))
+                ->add('name')
+                ->add('slug')
+                ->add('city')
+                ->add('place')
+                ->add('date')
+                ->add('description')
+                ->add('about')
+                ->add('file', 'file', array('required' => false))
+                ->add('active', null, array('required' => false))
+                ->add('receivePayments', null, array('required' => false))
             ->end()
         ;
     }
@@ -43,7 +43,7 @@ class EventAdmin extends Admin
      * Saves an uploaded logo of event
      *
      * @param Event $event
-     * 
+     *
      * @return void
      */
     public function uploadLogo($event)

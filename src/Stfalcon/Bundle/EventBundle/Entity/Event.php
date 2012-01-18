@@ -116,13 +116,6 @@ class Event
     private $speakers;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Sponsor", mappedBy="events")
-     */
-    private $sponsors;
-
-    /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      */
@@ -403,15 +396,5 @@ class Event
     public function getNews()
     {
         return $this->news;
-    }
-
-    public function getSponsors()
-    {
-        return $this->sponsors;
-    }
-
-    public function setSponsors($sponsors)
-    {
-        $this->sponsors = $sponsors;
     }
 }

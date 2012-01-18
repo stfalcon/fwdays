@@ -23,9 +23,8 @@ class SpeakerController extends BaseController
 
         $event = $this->getEventBySlug($event_slug);
         $speakers = $event->getSpeakers();
-        $sponsors = $event->getSponsors();
 
-        return array('event' => $event, 'speakers' => $speakers, 'sponsors' => $sponsors);
+        return array('event' => $event, 'speakers' => $speakers);
     }
 
     /**

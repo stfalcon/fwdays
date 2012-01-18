@@ -71,8 +71,11 @@ class Sponsor
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="sponsors")
-     * @ORM\JoinTable(name="event__events_sponsors")
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
+     * @ORM\JoinTable(name="event__events_sponsors",
+     *      joinColumns={@ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
+     *      )
      */
     private $events;
 
