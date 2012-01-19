@@ -8,25 +8,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-
 /**
  * Sponsor controller
  */
 class SponsorController extends Controller
 {
     /**
-     * List of last news for event
+     * List of sponsors of event
      *
      * @Template()
      *
      * @param Event $event
-     * @return array
+     *
+     * @return array List of sponsors
      */
     public function widgetAction(Event $event)
     {
         $sponsors = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:Sponsors')->getSponsorsOfEvent($event);
+                         ->getRepository('StfalconSponsorBundle:Sponsor')->getSponsorsOfEvent($event);
 
-        return array('event' => $event, 'sponsors' => $sponsors);
+        return array('sponsors' => $sponsors);
     }
 }

@@ -26,7 +26,7 @@ class EventController extends BaseController
     {
         // @todo refact. отдельнымы спискамм активные и прошедние ивенты
         $events = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:Event')->findAll();
+                       ->getRepository('StfalconEventBundle:Event')->findAll();
 
         return array('events' => $events);
     }
@@ -61,7 +61,7 @@ class EventController extends BaseController
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')
-            ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
+                     ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
@@ -86,7 +86,7 @@ class EventController extends BaseController
     {
         $user    = $this->container->get('security.context')->getToken()->getUser();
         $tickets = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
+                        ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
         return array('tickets' => $tickets);
     }
@@ -112,8 +112,8 @@ class EventController extends BaseController
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:Ticket')
-                ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
+                       ->getRepository('StfalconEventBundle:Ticket')
+                       ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
 
         // создаем проплату или апдейтим стоимость уже существующей
         if ($payment = $ticket->getPayment()) {

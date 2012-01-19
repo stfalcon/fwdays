@@ -23,7 +23,7 @@ class SponsorRepository extends EntityRepository
      */
     public function getSponsorsOfEvent(Event $event)
     {
-        $qb    = $this->getEntityManager()
+        $qb = $this->getEntityManager()
                 ->createQueryBuilder()
                 ->add('select', 's')
                 ->add('from', 'StfalconSponsorBundle:Sponsor s')
