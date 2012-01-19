@@ -23,7 +23,7 @@ abstract class BasePage
     /**
      * @var string $slug
      *
-     * @ORM\Column()
+     * @ORM\Column(unique=true)
      */
     private $slug;
 

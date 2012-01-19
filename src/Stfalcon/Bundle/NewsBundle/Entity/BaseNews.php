@@ -23,10 +23,10 @@ class BaseNews
     /**
      * @var string $slug
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", unique=true, length=255)
      */
     private $slug;
-    
+
     /**
      * @var string $title
      *
@@ -61,7 +61,7 @@ class BaseNews
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -81,13 +81,13 @@ class BaseNews
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
         return $this->slug;
     }
-    
+
     /**
      * Set title
      *
@@ -101,13 +101,13 @@ class BaseNews
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     /**
      * Set preview
      *
@@ -121,7 +121,7 @@ class BaseNews
     /**
      * Get preview
      *
-     * @return text 
+     * @return text
      */
     public function getPreview()
     {
@@ -141,7 +141,7 @@ class BaseNews
     /**
      * Get text
      *
-     * @return text 
+     * @return text
      */
     public function getText()
     {
@@ -161,7 +161,7 @@ class BaseNews
     /**
      * Get created_at
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCreatedAt()
     {

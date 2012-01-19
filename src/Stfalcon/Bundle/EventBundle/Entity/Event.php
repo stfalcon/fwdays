@@ -35,7 +35,7 @@ class Event
     /**
      * @var string $slug
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      * @Assert\NotBlank()
      */
     private $slug;
