@@ -57,19 +57,19 @@ class Speaker
      * @ORM\Column(name="about", type="text")
      */
     private $about;
-    
+
     /**
      * @var string $photo
      *
      * @ORM\Column(name="photo", type="string", length=255)
      */
-    private $photo;    
+    private $photo;
 
     /**
      * @Assert\File(maxSize="6000000")
      */
     private $file;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -82,16 +82,16 @@ class Speaker
      *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      *   }
      * )
-     */    
+     */
     private $events;
-    
+
     /**
      * @var Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
      */
-    private $reviews;    
-    
+    private $reviews;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -101,7 +101,7 @@ class Speaker
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -121,13 +121,13 @@ class Speaker
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
         return $this->slug;
     }
-    
+
     /**
      * Set name
      *
@@ -141,7 +141,7 @@ class Speaker
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -161,7 +161,7 @@ class Speaker
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -181,7 +181,7 @@ class Speaker
     /**
      * Get company
      *
-     * @return string 
+     * @return string
      */
     public function getCompany()
     {
@@ -201,16 +201,16 @@ class Speaker
     /**
      * Get about
      *
-     * @return text 
+     * @return text
      */
     public function getAbout()
     {
         return $this->about;
     }
-    
+
     /**
      * Get photo
-     * 
+     *
      * @return string
      */
     public function getPhoto() {
@@ -219,13 +219,13 @@ class Speaker
 
     /**
      * Set photo
-     * 
-     * @param type $photo 
+     *
+     * @param type $photo
      */
     public function setPhoto($photo) {
         $this->photo = $photo;
     }
-    
+
     public function getFile() {
         return $this->file;
     }
@@ -241,7 +241,7 @@ class Speaker
     public function setEvents($events) {
         $this->events = $events;
     }
-    
+
     public function getReviews() {
         return $this->reviews;
     }
@@ -251,5 +251,5 @@ class Speaker
     }
 
     public function __toString() { return $this->name; }
-    
+
 }

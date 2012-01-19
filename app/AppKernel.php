@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
             new Stfalcon\Bundle\PaymentBundle\StfalconPaymentBundle(),
+            new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
