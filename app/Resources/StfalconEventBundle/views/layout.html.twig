@@ -47,3 +47,9 @@
     {% endblock %}
 
 {% endblock %}
+
+{% block sidebar_right %}
+    {% block event_sponsors_widget %}
+        {% render "StfalconSponsorBundle:Sponsor:widget" with { 'event': event } %}
+    {% endblock %}
+{% endblock %}

@@ -121,10 +121,13 @@ class Event
      */
     private $file;
 
-
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
+        $this->sponsors = new ArrayCollection();
     }
 
     /**
@@ -142,7 +145,8 @@ class Event
      *
      * @param type $name
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
@@ -151,7 +155,8 @@ class Event
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -180,7 +185,8 @@ class Event
      *
      * @param string|null $city
      */
-    public function setCity($city) {
+    public function setCity($city)
+    {
         $this->city = $city;
     }
 
@@ -189,7 +195,8 @@ class Event
      *
      * @return string
      */
-    public function getCity() {
+    public function getCity()
+    {
         return $this->city;
     }
 
@@ -198,7 +205,8 @@ class Event
      *
      * @param string|null $place
      */
-    public function setPlace($place) {
+    public function setPlace($place)
+    {
         $this->place = $place;
     }
 
@@ -207,7 +215,8 @@ class Event
      *
      * @return string
      */
-    public function getPlace() {
+    public function getPlace()
+    {
         return $this->place;
     }
 
@@ -216,7 +225,8 @@ class Event
      *
      * @return \DateTime|null
      */
-    public function getDate() {
+    public function getDate()
+    {
         return $this->date;
     }
 
@@ -225,7 +235,8 @@ class Event
      *
      * @param \DateTime|null $date
      */
-    public function setDate($date) {
+    public function setDate($date)
+    {
         $this->date = $date;
     }
 
@@ -254,7 +265,8 @@ class Event
      *
      * @param string $about
      */
-    public function setAbout($about) {
+    public function setAbout($about)
+    {
         $this->about = $about;
     }
 
@@ -263,7 +275,8 @@ class Event
      *
      * @return string
      */
-    public function getAbout() {
+    public function getAbout()
+    {
         return $this->about;
     }
 
@@ -272,7 +285,8 @@ class Event
      *
      * @param boolean $active
      */
-    public function setActive($active) {
+    public function setActive($active)
+    {
         $this->active = $active;
     }
 
@@ -281,15 +295,18 @@ class Event
      *
      * @return boolean
      */
-    public function isActive() {
+    public function isActive()
+    {
         return $this->active;
     }
 
-    public function setReceivePayments($receivePayments) {
+    public function setReceivePayments($receivePayments)
+    {
         $this->receivePayments = $receivePayments;
     }
 
-    public function getReceivePayments() {
+    public function getReceivePayments()
+    {
         return $this->receivePayments;
     }
 
@@ -298,7 +315,8 @@ class Event
      *
      * @return ArrayCollection
      */
-    public function getSpeakers() {
+    public function getSpeakers()
+    {
         return $this->speakers;
     }
 
@@ -327,7 +345,8 @@ class Event
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 
@@ -336,7 +355,8 @@ class Event
      *
      * @param UploadedFile|null $file
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
     }
 
@@ -345,11 +365,13 @@ class Event
      *
      * @return UploadedFile
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function getAmount() {
+    public function getAmount()
+    {
         // !!! @todo: get from database
         return 150;
     }
@@ -360,7 +382,8 @@ class Event
      *
      * @return type
      */
-    public function getPages() {
+    public function getPages()
+    {
         return $this->pages;
     }
 
@@ -370,8 +393,8 @@ class Event
      *
      * @return ArrayCollection
      */
-    public function getNews() {
+    public function getNews()
+    {
         return $this->news;
     }
-
 }

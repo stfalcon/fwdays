@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Admin;
+namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class EventAdmin extends Admin
+class SponsorAdmin extends Admin
 {
 
     protected function configureListFields(ListMapper $listMapper)
@@ -16,8 +16,8 @@ class EventAdmin extends Admin
         $listMapper
             ->addIdentifier('slug')
             ->add('name')
-            ->add('active')
-            ->add('receivePayments')
+            ->add('site')
+            ->add('about')
         ;
     }
 
@@ -27,49 +27,46 @@ class EventAdmin extends Admin
             ->with('General')
                 ->add('name')
                 ->add('slug')
-                ->add('city')
-                ->add('place')
-                ->add('date')
-                ->add('description')
+                ->add('site')
                 ->add('about')
                 ->add('file', 'file', array('required' => false))
-                ->add('active', null, array('required' => false))
-                ->add('receivePayments', null, array('required' => false))
+            ->with('Events')
+                ->add('events', 'sonata_type_model', array('required' => false), array('edit'     => 'standart', 'expanded' => true, 'multiple' => true))
             ->end()
         ;
     }
 
     /**
-     * Saves an uploaded logo of event
+     * Saves an uploaded logo of sponsor
      *
-     * @param Event $event
+     * @param Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
      *
      * @return void
      */
-    public function uploadLogo($event)
+    public function uploadLogo($sponsor)
     {
-        if (null === $event->getFile()) {
+        if (null === $sponsor->getFile()) {
             return;
         }
 
-        $uploadDir     = '/uploads/events';
+        $uploadDir     = '/uploads/sponsors';
         $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName   = $event->getSlug() . '.' . pathinfo($event->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+        $newFileName   = $sponsor->getSlug() . '.' . pathinfo($sponsor->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
 
-        $event->getFile()->move($pathToUploads, $newFileName);
-        $event->setLogo($uploadDir . '/' . $newFileName);
+        $sponsor->getFile()->move($pathToUploads, $newFileName);
+        $sponsor->setLogo($uploadDir . '/' . $newFileName);
 
-        $event->setFile(null);
+        $sponsor->setFile(null);
     }
 
-    public function prePersist($event)
+    public function prePersist($sponsor)
     {
-        $this->uploadLogo($event);
+        $this->uploadLogo($sponsor);
     }
 
-    public function preUpdate($event)
+    public function preUpdate($sponsor)
     {
-        $this->uploadLogo($event);
+        $this->uploadLogo($sponsor);
     }
 
     public function getBatchActions()
