@@ -43,10 +43,11 @@ doctrine:
         user:     %database_user%
         password: %database_password%
         charset:  UTF8
-
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        mappings:
+            StofDoctrineExtensionsBundle: false
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:
@@ -54,7 +55,7 @@ stof_doctrine_extensions:
     orm:
         default:
             loggable: false
-            sluggable: true
+            sluggable: false
             timestampable: true
             translatable: false
             tree: false

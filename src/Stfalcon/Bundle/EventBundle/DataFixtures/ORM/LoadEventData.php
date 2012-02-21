@@ -15,6 +15,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setSlug('zend-framework-day-2011');
         $event->setDescription('Zend Framework Day посвящен популярному PHP фреймворку Zend Framework и является наследником конференции ZFConf Ukraine 2010.');
         $event->setLogo('/tmp/logo.jpg');
+        $event->setCity('Киев');
+        $event->setPlace('отель "Казацкий"');
 
         $manager->persist($event);
         $manager->flush();
