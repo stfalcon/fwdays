@@ -10,6 +10,7 @@ $loader->registerNamespaces(array(
     'JMS'               => __DIR__.'/../vendor/bundles',
     'Sonata'            => __DIR__.'/../vendor/bundles',
     'Knp'               => __DIR__.'/../vendor/bundles',
+    'Liip'               => __DIR__.'/../vendor/bundles',
     'Knp\Menu'          => __DIR__.'/../vendor/KnpMenu/src',
     'Doctrine\\Common'  => __DIR__.'/../vendor/doctrine-common/lib',
     'Doctrine\\DBAL'    => __DIR__.'/../vendor/doctrine-dbal/lib',
