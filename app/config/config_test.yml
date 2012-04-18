@@ -21,7 +21,8 @@ mink:
 doctrine:
     dbal:
         dbname:   fwdays_com_testing
-
+        
+liip_functional_test: ~
 #doctrine:
 #    dbal:
 #        driver:   pdo_sqlite
