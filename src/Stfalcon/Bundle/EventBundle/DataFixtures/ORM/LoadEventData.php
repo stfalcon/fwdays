@@ -17,6 +17,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setLogo('/tmp/logo.jpg');
         $event->setCity('Киев');
         $event->setPlace('отель "Казацкий"');
+        $event->setAbout("Описание события");
+        $event->setDate(new \DateTime("2012-04-19", new \DateTimeZone('Europe/Kiev')));
 
         $manager->persist($event);
         $manager->flush();
