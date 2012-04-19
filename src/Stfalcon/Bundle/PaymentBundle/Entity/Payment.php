@@ -34,7 +34,7 @@ class Payment
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
