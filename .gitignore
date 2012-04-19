@@ -7,3 +7,4 @@ vendor/
 web/tmp/*
 web/uploads/events/*
 web/uploads/speakers/*
+web/uploads/sponsors/*

@@ -41,7 +41,7 @@ class Mail
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $event;
 

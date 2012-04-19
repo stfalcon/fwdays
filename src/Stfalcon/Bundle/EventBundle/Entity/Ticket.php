@@ -29,7 +29,7 @@ class Ticket
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $event;
 
@@ -39,7 +39,7 @@ class Ticket
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $user;
 
@@ -47,7 +47,7 @@ class Ticket
      * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
-     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
      */
     private $payment;
 
