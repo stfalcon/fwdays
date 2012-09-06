@@ -3,13 +3,20 @@
 namespace Application\Bundle\UserBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseProfileFormType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class ProfileFormType extends BaseProfileFormType
 {
-
+    /**
+     * @var string
+     */
     private $class;
 
+    /**
+     * Constructor
+     *
+     * @param string $class
+     */
     public function __construct($class)
     {
         $this->class = $class;
@@ -18,10 +25,10 @@ class ProfileFormType extends BaseProfileFormType
     /**
      * Builds the embedded form representing the user.
      *
-     * @param FormBuilder $builder
-     * @param array $options
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', 'email')
@@ -32,11 +39,23 @@ class ProfileFormType extends BaseProfileFormType
         ;
     }
 
+    /**
+     * Get default options
+     *
+     * @param array $options
+     *
+     * @return array
+     */
     public function getDefaultOptions(array $options)
     {
         return array('data_class' => $this->class);
     }
 
+    /**
+     * Get name
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'application_user_profile';
