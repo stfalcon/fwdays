@@ -34,12 +34,12 @@ class Payment
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
-     * @var decimal $amount
+     * @var float $amount
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
@@ -51,7 +51,7 @@ class Payment
      * @ORM\Column(name="status", type="string")
      */
     private $status;
-    
+
     /**
      * @var gate $gate
      *
@@ -99,7 +99,7 @@ class Payment
     /**
      * Set amount
      *
-     * @param decimal $amount
+     * @param float $amount
      */
     public function setAmount($amount)
     {
@@ -109,7 +109,7 @@ class Payment
     /**
      * Get amount
      *
-     * @return decimal
+     * @return float
      */
     public function getAmount()
     {
@@ -176,15 +176,14 @@ class Payment
     {
         return ($this->getStatus() == self::STATUS_PAID);
     }
-    
-    public function getGate() {
+
+    public function getGate()
+    {
         return $this->gate;
     }
 
-    public function setGate($gate) {
+    public function setGate($gate)
+    {
         $this->gate = $gate;
     }
-
-
-
 }
