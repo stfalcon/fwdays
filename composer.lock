@@ -1,5 +1,5 @@
 {
-    "hash": "eb13ec473be3cdf16543a57bb48e7727",
+    "hash": "dc7cf516a26cfd1dde8bbf744748f841",
     "packages": [
         {
             "package": "avalanche123/imagine-bundle",
@@ -14,6 +14,22 @@
         {
             "package": "behat/gherkin",
             "version": "v2.2.4"
+        },
+        {
+            "package": "behat/mink",
+            "version": "v1.4.0"
+        },
+        {
+            "package": "behat/mink-browserkit-driver",
+            "version": "dev-master",
+            "source-reference": "97fa7d67ab5afb13d74515c15ef5c0cab12c0bc0",
+            "commit-date": "1341477260"
+        },
+        {
+            "package": "behat/mink-extension",
+            "version": "dev-master",
+            "source-reference": "0b8a4d7d10dd83211accaa1299d57f521d912c1c",
+            "commit-date": "1346250202"
         },
         {
             "package": "behat/symfony2-extension",
@@ -329,9 +345,9 @@
         "sonata-project/admin-bundle": 20,
         "sonata-project/doctrine-orm-admin-bundle": 20,
         "kriswallsmith/assetic": 20,
+        "avalanche123/imagine-bundle": 20,
         "friendsofsymfony/user-bundle": 20,
         "liip/functional-test-bundle": 20,
-        "avalanche123/imagine-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "stof/doctrine-extensions-bundle": 20

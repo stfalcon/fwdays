@@ -27,6 +27,9 @@
         "friendsofsymfony/user-bundle": "dev-master",
 
         "behat/symfony2-extension": "*",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*",
+
         "liip/functional-test-bundle": "dev-master",
 
         "doctrine/doctrine-fixtures-bundle":   "dev-master",
