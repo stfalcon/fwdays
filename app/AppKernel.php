@@ -13,41 +13,44 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\DoctrineBundle\DoctrineBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
-            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
             new FOS\UserBundle\FOSUserBundle(),
-            new Sonata\BluePrintBundle\SonataBluePrintBundle(),
+
+            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
+
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            new Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
+
+            new Sonata\CacheBundle\SonataCacheBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\jQueryBundle\SonatajQueryBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
-            new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
 
-            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
-            new Application\Bundle\UserBundle\ApplicationUserBundle(),
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
             new Stfalcon\Bundle\PaymentBundle\StfalconPaymentBundle(),
             new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
-            new Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
+
+            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
+            new Application\Bundle\UserBundle\ApplicationUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-        }
-
-        if ($this->getEnvironment() == 'test') {
-            $bundles[] = new Behat\BehatBundle\BehatBundle();
-            $bundles[] = new Behat\MinkBundle\MinkBundle();
         }
 
         return $bundles;

@@ -2,13 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture,
+    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
+    Doctrine\Common\Persistence\ObjectManager;
+
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 
 class LoadReviewData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load($manager)
+    public function load(ObjectManager $manager)
     {
         $review = new Review();
         $review->setTitle('Review title');

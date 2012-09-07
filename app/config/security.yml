@@ -1,4 +1,9 @@
 security:
+    encoders:
+        'Application\Bundle\UserBundle\Entity\User':
+            algorithm: sha512
+            encode_as_base64: false
+            iterations: 1
     providers:
         fos_userbundle:
             id: fos_user.user_manager
@@ -20,6 +25,10 @@ security:
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
-        
-    acl:
-        connection: default        
+
+#    acl:
+#        connection: default
+
+jms_security_extra:
+    secure_all_services: false
+    expressions: true

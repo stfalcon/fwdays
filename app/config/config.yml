@@ -6,15 +6,13 @@ framework:
     #esi:             ~
     translator:      { fallback: ru }
     secret:          %secret%
-    charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    session:
-        default_locale: %locale%
-        auto_start:     true
+    session:         ~
+    default_locale:  %locale%
 
 # Twig Configuration
 twig:
@@ -67,10 +65,6 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
 
-jms_security_extra:
-    secure_controllers:  true
-    secure_all_services: false
-
 # KnpMenuBundle
 knp_menu:
     twig: true
@@ -104,3 +98,21 @@ stfalcon_payment:
     interkassa:
         shop_id: "24C1AF18-3D1A-44FC-9B32-210336A4B231"
         secret: %interkassa_secret%
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media:
