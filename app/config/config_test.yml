@@ -13,15 +13,10 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
-behat: ~
-
-mink:
-    base_url:   http://fwdays.com.my
-
 doctrine:
     dbal:
         dbname:   fwdays_com_testing
-        
+
 liip_functional_test: ~
 #doctrine:
 #    dbal:
