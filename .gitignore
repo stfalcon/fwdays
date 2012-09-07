@@ -5,5 +5,4 @@ app/logs/*
 vendor/
 .rsync_cache/
 web/tmp/*
-web/uploads/events/*
-web/uploads/speakers/*
+web/uploads/*
