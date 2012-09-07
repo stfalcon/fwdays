@@ -1,63 +1,37 @@
 <?php
 
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
+if (!$loader = include __DIR__.'/../vendor/.composer/autoload.php') {
+    $nl = PHP_SAPI === 'cli' ? PHP_EOL : '<br />';
+    echo "$nl$nl";
+    if (is_writable(dirname(__DIR__)) && $installer = @file_get_contents('http://getcomposer.org/installer')) {
+        echo 'You must set up the project dependencies.'.$nl;
+        $installerPath = dirname(__DIR__).'/install-composer.php';
+        file_put_contents($installerPath, $installer);
+        echo 'The composer installer has been downloaded in '.$installerPath.$nl;
+        die('Run the following commands in '.dirname(__DIR__).':'.$nl.$nl.
+            'php install-composer.php'.$nl.
+            'php composer.phar install'.$nl);
+    }
+    die('You must set up the project dependencies.'.$nl.
+        'Run the following commands in '.dirname(__DIR__).':'.$nl.$nl.
+        'curl -s http://getcomposer.org/installer | php'.$nl.
+        'php composer.phar install'.$nl);
+}
 
-$loader = new UniversalClassLoader();
-$loader->registerNamespaces(array(
-    'Symfony'           => array(__DIR__.'/../vendor/symfony/src', __DIR__.'/../vendor/bundles'),
-    'Sensio'            => __DIR__.'/../vendor/bundles',
-    'JMS'               => __DIR__.'/../vendor/bundles',
-    'Sonata'            => __DIR__.'/../vendor/bundles',
-    'Knp'               => __DIR__.'/../vendor/bundles',
-    'Liip'               => __DIR__.'/../vendor/bundles',
-    'Knp\Menu'          => __DIR__.'/../vendor/KnpMenu/src',
-    'Doctrine\\Common'  => __DIR__.'/../vendor/doctrine-common/lib',
-    'Doctrine\\DBAL'    => __DIR__.'/../vendor/doctrine-dbal/lib',
-    'Doctrine'          => __DIR__.'/../vendor/doctrine/lib',
-    'Monolog'           => __DIR__.'/../vendor/monolog/src',
-    'Assetic'           => __DIR__.'/../vendor/assetic/src',
-    'Metadata'          => __DIR__.'/../vendor/metadata/src',
-    'Behat\Gherkin'     => __DIR__.'/../vendor/behat/gherkin/src',
-    'Behat\Behat'       => __DIR__.'/../vendor/behat/behat/src',
-    'Behat\BehatBundle' => __DIR__.'/../vendor/bundles',
-    'Behat\Mink'        => __DIR__.'/../vendor/behat/mink/src',
-    'Behat\MinkBundle'  => __DIR__.'/../vendor/bundles',
-    'Imagine'           => __DIR__.'/../vendor/imagine/lib',
-    'Avalanche'         => __DIR__.'/../vendor/bundles',
-    'FOS'               => __DIR__.'/../vendor/bundles',
-    'Zend'              => __DIR__.'/../vendor/zf2/library',
-    'Gedmo'             => __DIR__.'/../vendor/doctrine-extensions/lib',
-    'Stof'              => __DIR__.'/../vendor/bundles',
-    'Doctrine\\DBAL\\Migrations' => __DIR__.'/../vendor/doctrine-migrations/lib',
-    'Doctrine\\DBAL'    => __DIR__.'/../vendor/doctrine-dbal/lib',
-    'Doctrine\\Common\\DataFixtures' => __DIR__.'/../vendor/doctrine-fixtures/lib',
-    'Doctrine\\Common'  => __DIR__.'/../vendor/doctrine-common/lib',
-));
-$loader->registerPrefixes(array(
-    'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',
-    'Twig_'            => __DIR__.'/../vendor/twig/lib',
-));
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 // intl
 if (!function_exists('intl_get_error_code')) {
-    require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs/functions.php';
-
-    $loader->registerPrefixFallbacks(array(__DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs'));
+    require_once __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/Locale/Resources/stubs/functions.php';
+    $loader->add(null, __DIR__.'/../vendor/symfony/symfony/src/Symfony/Component/Locale/Resources/stubs');
 }
 
-$loader->registerNamespaceFallbacks(array(
-    __DIR__.'/../src',
-));
-$loader->register();
-
-AnnotationRegistry::registerLoader(function($class) use ($loader) {
-    $loader->loadClass($class);
-    return class_exists($class, false);
-});
-AnnotationRegistry::registerFile(__DIR__.'/../vendor/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+AnnotationRegistry::registerFile(
+    __DIR__.'/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
+);
 
 // Swiftmailer needs a special autoloader to allow
 // the lazy loading of the init file (which is expensive)
-require_once __DIR__.'/../vendor/swiftmailer/lib/classes/Swift.php';
-Swift::registerAutoload(__DIR__.'/../vendor/swiftmailer/lib/swift_init.php');
+require_once __DIR__.'/../vendor/swiftmailer/swiftmailer/lib/classes/Swift.php';
+Swift::registerAutoload(__DIR__.'/../vendor/swiftmailer/swiftmailer/lib/swift_init.php');

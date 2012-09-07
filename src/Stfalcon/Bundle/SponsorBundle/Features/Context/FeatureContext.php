@@ -11,9 +11,9 @@ use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Event\SuiteEvent,
     Behat\Behat\Event\ScenarioEvent;
-use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader,
+    Doctrine\Common\DataFixtures\Executor\ORMExecutor,
+    Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 /**
  * Feature context.

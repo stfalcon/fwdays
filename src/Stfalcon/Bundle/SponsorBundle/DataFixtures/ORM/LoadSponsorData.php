@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 
 /**
@@ -12,7 +13,7 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
 {
 
-    public function load($manager)
+    public function load(ObjectManager $manager)
     {
         $sponsor1 = new Sponsor();
         $sponsor1->setName('ePochta');

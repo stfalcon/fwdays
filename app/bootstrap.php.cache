@@ -23,6 +23,8 @@ interface ContainerAwareInterface
 namespace Symfony\Component\DependencyInjection
 {
 
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+
 
 interface ContainerInterface
 {
@@ -73,6 +75,8 @@ interface ContainerInterface
 namespace Symfony\Component\DependencyInjection
 {
 
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -80,7 +84,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 
 
-class Container implements ContainerInterface
+class Container implements IntrospectableContainerInterface
 {
     protected $parameterBag;
     protected $services;
@@ -146,14 +150,14 @@ class Container implements ContainerInterface
     public function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
         if (self::SCOPE_PROTOTYPE === $scope) {
-            throw new \InvalidArgumentException('You cannot set services of scope "prototype".');
+            throw new InvalidArgumentException('You cannot set services of scope "prototype".');
         }
 
         $id = strtolower($id);
 
         if (self::SCOPE_CONTAINER !== $scope) {
             if (!isset($this->scopedServices[$scope])) {
-                throw new \RuntimeException('You cannot set services of inactive scopes.');
+                throw new RuntimeException('You cannot set services of inactive scopes.');
             }
 
             $this->scopedServices[$scope][$id] = $service;
@@ -202,6 +206,12 @@ class Container implements ContainerInterface
             throw new ServiceNotFoundException($id);
         }
     }
+    
+    
+    public function initialized($id)
+    {
+        return isset($this->services[strtolower($id)]);
+    }
 
     
     public function getServiceIds()
@@ -221,11 +231,11 @@ class Container implements ContainerInterface
     public function enterScope($name)
     {
         if (!isset($this->scopes[$name])) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" does not exist.', $name));
+            throw new InvalidArgumentException(sprintf('The scope "%s" does not exist.', $name));
         }
 
         if (self::SCOPE_CONTAINER !== $this->scopes[$name] && !isset($this->scopedServices[$this->scopes[$name]])) {
-            throw new \RuntimeException(sprintf('The parent scope "%s" must be active when entering this scope.', $this->scopes[$name]));
+            throw new RuntimeException(sprintf('The parent scope "%s" must be active when entering this scope.', $this->scopes[$name]));
         }
 
                                 if (isset($this->scopedServices[$name])) {
@@ -253,7 +263,7 @@ class Container implements ContainerInterface
     public function leaveScope($name)
     {
         if (!isset($this->scopedServices[$name])) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" is not active.', $name));
+            throw new InvalidArgumentException(sprintf('The scope "%s" is not active.', $name));
         }
 
                         $services = array($this->services, $this->scopedServices[$name]);
@@ -284,13 +294,13 @@ class Container implements ContainerInterface
         $parentScope = $scope->getParentName();
 
         if (self::SCOPE_CONTAINER === $name || self::SCOPE_PROTOTYPE === $name) {
-            throw new \InvalidArgumentException(sprintf('The scope "%s" is reserved.', $name));
+            throw new InvalidArgumentException(sprintf('The scope "%s" is reserved.', $name));
         }
         if (isset($this->scopes[$name])) {
-            throw new \InvalidArgumentException(sprintf('A scope with name "%s" already exists.', $name));
+            throw new InvalidArgumentException(sprintf('A scope with name "%s" already exists.', $name));
         }
         if (self::SCOPE_CONTAINER !== $parentScope && !isset($this->scopes[$parentScope])) {
-            throw new \InvalidArgumentException(sprintf('The parent scope "%s" does not exist, or is invalid.', $parentScope));
+            throw new InvalidArgumentException(sprintf('The parent scope "%s" does not exist, or is invalid.', $parentScope));
         }
 
         $this->scopes[$name] = $parentScope;
@@ -428,6 +438,7 @@ use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\FileLocator;
@@ -440,10 +451,10 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\ClassLoader\ClassCollectionLoader;
-use Symfony\Component\ClassLoader\DebugUniversalClassLoader;
+use Symfony\Component\ClassLoader\DebugClassLoader;
 
 
-abstract class Kernel implements KernelInterface
+abstract class Kernel implements KernelInterface, TerminableInterface
 {
     protected $bundles;
     protected $bundleMap;
@@ -455,8 +466,9 @@ abstract class Kernel implements KernelInterface
     protected $name;
     protected $startTime;
     protected $classes;
+    protected $errorReportingLevel;
 
-    const VERSION = '2.0.4';
+    const VERSION = '2.1.0-DEV';
 
     
     public function __construct($environment, $debug)
@@ -481,8 +493,8 @@ abstract class Kernel implements KernelInterface
             ini_set('display_errors', 1);
             error_reporting(-1);
 
-            DebugUniversalClassLoader::enable();
-            ErrorHandler::register();
+            DebugClassLoader::enable();
+            ErrorHandler::register($this->errorReportingLevel);
             if ('cli' !== php_sapi_name()) {
                 ExceptionHandler::register();
             }
@@ -518,6 +530,18 @@ abstract class Kernel implements KernelInterface
         }
 
         $this->booted = true;
+    }
+
+    
+    public function terminate(Request $request, Response $response)
+    {
+        if (false === $this->booted) {
+            return;
+        }
+
+        if ($this->getHttpKernel() instanceof TerminableInterface) {
+            $this->getHttpKernel()->terminate($request, $response);
+        }
     }
 
     
@@ -678,7 +702,7 @@ abstract class Kernel implements KernelInterface
     
     public function loadClassCache($name = 'classes', $extension = '.php')
     {
-        if (!$this->booted && file_exists($this->getCacheDir().'/classes.map')) {
+        if (!$this->booted && is_file($this->getCacheDir().'/classes.map')) {
             ClassCollectionLoader::load(include($this->getCacheDir().'/classes.map'), $this->getCacheDir(), $name, $this->debug, false, $extension);
         }
     }
@@ -787,7 +811,7 @@ abstract class Kernel implements KernelInterface
         $this->container = new $class();
         $this->container->set('kernel', $this);
 
-        if (!$fresh) {
+        if (!$fresh && $this->container->has('cache_warmer')) {
             $this->container->get('cache_warmer')->warmUp($this->container->getParameter('kernel.cache_dir'));
         }
     }
@@ -821,7 +845,7 @@ abstract class Kernel implements KernelInterface
     {
         $parameters = array();
         foreach ($_SERVER as $key => $value) {
-            if ('SYMFONY__' === substr($key, 0, 9)) {
+            if (0 === strpos($key, 'SYMFONY__')) {
                 $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
             }
         }
@@ -842,11 +866,9 @@ abstract class Kernel implements KernelInterface
             }
         }
 
-        $container = new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+        $container = $this->getContainerBuilder();
         $extensions = array();
         foreach ($this->bundles as $bundle) {
-            $bundle->build($container);
-
             if ($extension = $bundle->getContainerExtension()) {
                 $container->registerExtension($extension);
                 $extensions[] = $extension->getAlias();
@@ -856,6 +878,10 @@ abstract class Kernel implements KernelInterface
                 $container->addObjectResource($bundle);
             }
         }
+        foreach ($this->bundles as $bundle) {
+            $bundle->build($container);
+        }
+
         $container->addObjectResource($this);
 
                 $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
@@ -868,6 +894,12 @@ abstract class Kernel implements KernelInterface
         $container->compile();
 
         return $container;
+    }
+
+    
+    protected function getContainerBuilder()
+    {
+        return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
     }
 
     
@@ -963,7 +995,7 @@ class ClassCollectionLoader
                 $reload = false;
         if ($autoReload) {
             $metadata = $cacheDir.'/'.$name.$extension.'.meta';
-            if (!file_exists($metadata) || !file_exists($cache)) {
+            if (!is_file($metadata) || !is_file($cache)) {
                 $reload = true;
             } else {
                 $time = filemtime($cache);
@@ -973,7 +1005,7 @@ class ClassCollectionLoader
                     $reload = true;
                 } else {
                     foreach ($meta[0] as $resource) {
-                        if (!file_exists($resource) || filemtime($resource) > $time) {
+                        if (!is_file($resource) || filemtime($resource) > $time) {
                             $reload = true;
 
                             break;
@@ -983,7 +1015,7 @@ class ClassCollectionLoader
             }
         }
 
-        if (!$reload && file_exists($cache)) {
+        if (!$reload && is_file($cache)) {
             require_once $cache;
 
             return;
@@ -1071,7 +1103,7 @@ class ClassCollectionLoader
     {
         $tmpFile = tempnam(dirname($file), basename($file));
         if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $file)) {
-            chmod($file, 0644);
+            chmod($file, 0666 ^ umask());
 
             return;
         }
@@ -1115,6 +1147,19 @@ class UniversalClassLoader
     private $prefixes = array();
     private $namespaceFallbacks = array();
     private $prefixFallbacks = array();
+    private $useIncludePath = false;
+
+    
+    public function useIncludePath($useIncludePath)
+    {
+        $this->useIncludePath = $useIncludePath;
+    }
+
+    
+    public function getUseIncludePath()
+    {
+        return $this->useIncludePath;
+    }
 
     
     public function getNamespaces()
@@ -1147,9 +1192,21 @@ class UniversalClassLoader
     }
 
     
+    public function registerNamespaceFallback($dir)
+    {
+        $this->namespaceFallbacks[] = $dir;
+    }
+
+    
     public function registerPrefixFallbacks(array $dirs)
     {
         $this->prefixFallbacks = $dirs;
+    }
+
+    
+    public function registerPrefixFallback($dir)
+    {
+        $this->prefixFallbacks[] = $dir;
     }
 
     
@@ -1203,46 +1260,53 @@ class UniversalClassLoader
 
         if (false !== $pos = strrpos($class, '\\')) {
                         $namespace = substr($class, 0, $pos);
+            $className = substr($class, $pos + 1);
+            $normalizedClass = str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
             foreach ($this->namespaces as $ns => $dirs) {
                 if (0 !== strpos($namespace, $ns)) {
                     continue;
                 }
 
                 foreach ($dirs as $dir) {
-                    $className = substr($class, $pos + 1);
-                    $file = $dir.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.str_replace('_', DIRECTORY_SEPARATOR, $className).'.php';
-                    if (file_exists($file)) {
+                    $file = $dir.DIRECTORY_SEPARATOR.$normalizedClass;
+                    if (is_file($file)) {
                         return $file;
                     }
                 }
             }
 
             foreach ($this->namespaceFallbacks as $dir) {
-                $file = $dir.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
-                if (file_exists($file)) {
+                $file = $dir.DIRECTORY_SEPARATOR.$normalizedClass;
+                if (is_file($file)) {
                     return $file;
                 }
             }
+
         } else {
-                        foreach ($this->prefixes as $prefix => $dirs) {
+                        $normalizedClass = str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
+            foreach ($this->prefixes as $prefix => $dirs) {
                 if (0 !== strpos($class, $prefix)) {
                     continue;
                 }
 
                 foreach ($dirs as $dir) {
-                    $file = $dir.DIRECTORY_SEPARATOR.str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-                    if (file_exists($file)) {
+                    $file = $dir.DIRECTORY_SEPARATOR.$normalizedClass;
+                    if (is_file($file)) {
                         return $file;
                     }
                 }
             }
 
             foreach ($this->prefixFallbacks as $dir) {
-                $file = $dir.DIRECTORY_SEPARATOR.str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-                if (file_exists($file)) {
+                $file = $dir.DIRECTORY_SEPARATOR.$normalizedClass;
+                if (is_file($file)) {
                     return $file;
                 }
             }
+        }
+
+        if ($this->useIncludePath && $file = stream_resolve_include_path($normalizedClass)) {
+            return $file;
         }
     }
 }
@@ -1442,7 +1506,7 @@ class ConfigCache
     
     public function isFresh()
     {
-        if (!file_exists($this->file)) {
+        if (!is_file($this->file)) {
             return false;
         }
 
@@ -1451,7 +1515,7 @@ class ConfigCache
         }
 
         $metadata = $this->file.'.meta';
-        if (!file_exists($metadata)) {
+        if (!is_file($metadata)) {
             return false;
         }
 
@@ -1480,7 +1544,7 @@ class ConfigCache
 
         $tmpFile = tempnam(dirname($this->file), basename($this->file));
         if (false !== @file_put_contents($tmpFile, $content) && @rename($tmpFile, $this->file)) {
-            chmod($this->file, 0666);
+            chmod($this->file, 0666 ^ umask());
         } else {
             throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $this->file));
         }
@@ -1489,7 +1553,7 @@ class ConfigCache
             $file = $this->file.'.meta';
             $tmpFile = tempnam(dirname($file), basename($file));
             if (false !== @file_put_contents($tmpFile, serialize($metadata)) && @rename($tmpFile, $file)) {
-                chmod($file, 0666);
+                chmod($file, 0666 ^ umask());
             }
         }
     }

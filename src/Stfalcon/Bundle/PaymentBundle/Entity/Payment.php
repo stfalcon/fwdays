@@ -34,7 +34,7 @@ class Payment
      * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", onUpdate="CASCADE")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
@@ -51,7 +51,7 @@ class Payment
      * @ORM\Column(name="status", type="string")
      */
     private $status;
-    
+
     /**
      * @var gate $gate
      *
@@ -176,7 +176,7 @@ class Payment
     {
         return ($this->getStatus() == self::STATUS_PAID);
     }
-    
+
     public function getGate() {
         return $this->gate;
     }

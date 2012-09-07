@@ -4,11 +4,12 @@ namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load($manager)
+    public function load(ObjectManager $manager)
     {
         $event = new Event();
         $event->setName('Zend Framework Day');
