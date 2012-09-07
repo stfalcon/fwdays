@@ -29,7 +29,7 @@
                     {% if event is defined %}
                         {{ knp_menu_render('event_main') }}
                     {% else %}
-                        {{ knp_menu_render('main') }}
+                        {{ knp_menu_render('main', {'class': 'nav'}) }}
                     {% endif %}
 
                     <div class="user-nav">
@@ -90,7 +90,6 @@
 
                 <aside id="side-right">
                     {% block sidebar_right %}
-                        {% include "::_sponsors.html.twig" %}
                     {% endblock %}
                 </aside><!-- #side-right -->
 
