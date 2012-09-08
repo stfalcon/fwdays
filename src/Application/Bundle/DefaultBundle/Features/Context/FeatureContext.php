@@ -4,18 +4,8 @@ namespace Application\Bundle\DefaultBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Exception\PendingException;
-
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use Behat\Behat\Event\SuiteEvent,
-    Behat\Behat\Event\ScenarioEvent;
+use Behat\Symfony2Extension\Context\KernelAwareInterface,
+    Behat\MinkExtension\Context\MinkContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
