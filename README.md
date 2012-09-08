@@ -25,7 +25,7 @@ If you get any warnings or recommendations, fix these now before moving on.
 
 **Requirements**
 
-* PHP needs to be a minimum version of PHP 5.3.2
+* PHP needs to be a minimum version of PHP 5.3.3
 * Sqlite3 needs to be enabled
 * JSON needs to be enabled
 * ctype needs to be enabled
@@ -43,11 +43,15 @@ If you get any warnings or recommendations, fix these now before moving on.
 	$ git submodule init
 	$ git submodule update
 
-### d) Install the Vendor Libraries
+### d) Install Composer
 
-    $ ./bin/vendors install
+	$ curl -s https://getcomposer.org/installer | php
 
-### e) Change DBAL settings, create DB, update it and load fixtures
+### e) Install the Vendor Libraries
+
+    $ ./composer.phar install
+
+### f) Change DBAL settings, create DB, update it and load fixtures
 
 Change DBAL setting in `app/config/config.yml`, `app/config/config_dev.yml` or
 `app/config/config_test.yml`. After that execute the following:
@@ -58,6 +62,6 @@ Change DBAL setting in `app/config/config.yml`, `app/config/config_dev.yml` or
 
 You can set environment `test` for command if you add `--env=test` to it.
 
-### f) Install Assets (if they hadn't been installed in **d** step or if you want to update them )
+### g) Install Assets (if they hadn't been installed in **e** step or if you want to update them )
 
-    $ ./console assets:install web
+    $ ./console assets:install web --symlink
