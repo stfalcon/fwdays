@@ -580,14 +580,14 @@ input[type="submit"] {
     text-decoration: none;
 }
 
-.top-nav ul {
+.top-nav div.wrap > ul {
     float: left;
     width: 70%;
     list-style: none outside;
     padding: 9px 0 0;
     margin: 0;
 }
-.top-nav ul li {
+.top-nav div.wrap > ul li {
     float: left;
     padding: 0 20px;
     margin: 0;
@@ -595,22 +595,22 @@ input[type="submit"] {
     border-right: 1px solid #657782;
     background: transparent;
 }
-.top-nav ul li:first-child {
+.top-nav div.wrap > ul li:first-child {
     margin-left: 4%;
     padding-left: 0;
     background: transparent;
 }
-#wrapper.wide-content .top-nav ul li:first-child,
-#wrapper.sidebars-right .top-nav ul li:first-child {
+#wrapper.wide-content .top-nav div.wrap > ul li:first-child,
+#wrapper.sidebars-right .top-nav div.wrap > ul li:first-child {
     height: 27px;
     padding-top: 9px;
     margin-top: -9px;
 }
-.top-nav ul li:last-child {
+.top-nav div.wrap > ul li:last-child {
     border-right: 0 none;
 }
-.top-nav ul li a:link,
-.top-nav ul li a:visited {
+.top-nav div.wrap > ul li a:link,
+.top-nav div.wrap > ul li a:visited {
     display: block;
     float: left;
     height: 20px;
@@ -622,22 +622,22 @@ input[type="submit"] {
     text-decoration: none;
     text-shadow: 0px -1px 0px #11171b;
 }
-.top-nav ul li:first-child a {
+.top-nav div.wrap > ul li:first-child a {
     margin-left: -5px;
 }
-#wrapper.wide-content .top-nav ul li:first-child a,
-#wrapper.sidebars-right .top-nav ul li:first-child a {
+#wrapper.wide-content .top-nav div.wrap > ul li:first-child a,
+#wrapper.sidebars-right .top-nav div.wrap > ul li:first-child a {
     margin-left: -23px;
 }
-.top-nav ul li a:hover,
-.top-nav ul li a:active {
+.top-nav div.wrap > ul li a:hover,
+.top-nav div.wrap > ul li a:active {
     text-shadow: none;
     background: #0fcfb8;
 }
-.top-nav ul li.current a:link,
-.top-nav ul li.current a:visited,
-.top-nav ul li.current a:hover,
-.top-nav ul li.current a:active {
+.top-nav div.wrap > ul li.current a:link,
+.top-nav div.wrap > ul li.current a:visited,
+.top-nav div.wrap > ul li.current a:hover,
+.top-nav div.wrap > ul li.current a:active {
     padding: 0 10px;
     margin: -5px -5px 0;
     height: 32px;
@@ -652,7 +652,7 @@ input[type="submit"] {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
-.top-nav ul li:first-child.active a {
+.top-nav div.wrap > ul li:first-child.active a {
     margin-left: -10px;
 }
 
