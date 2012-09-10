@@ -56,6 +56,19 @@ class User extends BaseUser
     private $createdAt;
 
     /**
+     * @var string $city
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     */
+    protected $city;
+
+    /**
+     * @var string $country
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     */
+    protected $country;
+    /**
      * Redefinition email setter for use email as username
      *
      * @param string $email
@@ -146,6 +159,48 @@ class User extends BaseUser
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Get user country
+     *
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+     * Set user country
+     *
+     * @param string $country
+     * @return User
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get user city
+     *
+     * @return string
+     */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+     * Set user city
+     *
+     * @param string $city
+     * @return User
+     */
+    public function setCity($city) {
+        $this->city = $city;
+
+        return $this;
     }
 
 }
