@@ -10,7 +10,10 @@
         <mkdir dir="${logsdir}" />
         <mkdir dir="${cachedir}" />
         <exec command="rm -rf ./vendor/*" escape="false" />
-        <exec command="./bin/vendors install" escape="false" />
+	<!--><exec command="php composer.phar self-update" escape="false" /> -->
+        <exec command="php composer.phar install" escape="false" />
+        <exec command="git submodule init" escape="false" />
+        <exec command="git submodule update" escape="false" />
         <exec command="cp /var/lib/jenkins/configs/frameworksdays_com.ini ./app/config/parameters.ini" escape="false" />
         <exec command="php app/console cache:clear" escape="false" />
     </target>
