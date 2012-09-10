@@ -31,10 +31,12 @@
         "behat/mink-browserkit-driver": "*",
 
         "liip/functional-test-bundle": "dev-master",
+        "sonata-project/intl-bundle": "dev-master",
 
         "doctrine/doctrine-fixtures-bundle":   "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master"
+
     },
     "repositories": [
         {

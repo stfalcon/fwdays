@@ -31,6 +31,8 @@ class AppKernel extends Kernel
 
             new Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
 
+            new Sonata\IntlBundle\SonataIntlBundle(),
+
             new Sonata\CacheBundle\SonataCacheBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
