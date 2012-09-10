@@ -3,74 +3,31 @@
 {% block title %}События / {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>Будущие события</h2>
 
-    <table class="conferences-list">
-        <tbody>
-            {% for event in events %}
-                <tr>
-                    <td class="conf-logo">
-                        <a href="{{ path('event_show', {'event_slug': event.slug } )}}">
-                            <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.name }}">
-                        </a>
-                    </td>
-                    <td class="conf-info">
-                        <div class="conf-info-h">
-                            {{ event.date|localizeddate('full', 'none') }}
-                            <br>
-                            {{ event.place }}, {{ event.city }}
-                        </div>
+    {% if activeEvents|length %}
+        <h2>Будущие события</h2>
 
-                        <p>{{ event.description }}</p>
+        <table class="conferences-list">
+            <tbody>
+                {% for event in activeEvents %}
+                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                {% endfor %}
 
-                        <div class="conf-info-links">
-                            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
+            {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
+            </tbody>
+        </table>
+    {% endif %}
 
-        {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
-        </tbody>
-    </table>
+    {% if pastEvents|length %}
+        <h2>Прошедшие события</h2>
 
-    {#<h2>Прошедшие события</h2>
+        <table class="conferences-list conferences-list-past">
+            <tbody>
+                {% for event in pastEvents %}
+                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
-    <table class="conferences-list conferences-list-past">
-        <tbody><tr>
-            <td class="conf-logo"><img src="images/temp/zfd-logo-mini.png" width="82" height="87" alt=""></td>
-            <td class="conf-info">
-                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
-                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
-                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="conf-logo"><img src="images/temp/pfd-logo-mini.png" width="88" height="87" alt=""></td>
-            <td class="conf-info">
-                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
-                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
-                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="conf-logo"><img src="images/temp/zfd-logo-mini.png" width="82" height="87" alt=""></td>
-            <td class="conf-info">
-                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
-                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
-                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="conf-logo"><img src="images/temp/pfd-logo-mini.png" width="88" height="87" alt=""></td>
-            <td class="conf-info">
-                <div class="conf-info-h">26 августа 2011, Киев<br> Экспо Плаза</div>
-                <p>ZFConf Ukraine – первая в Украине конференция по Zend Framework, проводится в партнерстве с ZFConf Russia и сообществом zendframework.ru.</p>
-                <div class="conf-info-links"><a href="# ">Доклады</a> <a href="# ">Детальная информация</a></div>
-            </td>
-        </tr>
-    </tbody></table>#}
 {% endblock %}

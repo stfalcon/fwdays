@@ -16,7 +16,7 @@ class EventController extends BaseController
 {
 
     /**
-     * List of past and future events
+     * List of active and past events
      *
      * @Route("/events", name="events")
      * @Template()
@@ -24,11 +24,16 @@ class EventController extends BaseController
      */
     public function indexAction()
     {
-        // @todo refact. отдельнымы спискамм активные и прошедние ивенты
-        $events = $this->getDoctrine()->getEntityManager()
-                       ->getRepository('StfalconEventBundle:Event')->findAll();
+        $activeEvents = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconEventBundle:Event')
+                     ->findBy(array('active' => true ));
 
-        return array('events' => $events);
+        $pastEvents = $this->getDoctrine()->getEntityManager()
+                     ->getRepository('StfalconEventBundle:Event')
+                     ->findBy(array('active' => false ));
+
+        return array('activeEvents' => $activeEvents,
+            'pastEvents' => $pastEvents);
     }
 
     /**
