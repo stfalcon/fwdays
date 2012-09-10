@@ -8,9 +8,7 @@
         </div>
         <div class="text">
             <h2>
-                {{ event.date|localizeddate('full', 'none') }}
-                <br>
-                {{ event.place }}, {{ event.city }}
+                {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
             </h2>
 
             <p>{{ event.description }}</p>
