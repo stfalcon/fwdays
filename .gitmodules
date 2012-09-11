@@ -1,6 +1,6 @@
 [submodule "src/Stfalcon/Bundle/NewsBundle"]
 	path = src/Stfalcon/Bundle/NewsBundle
-	url = git@github.com:stfalcon/NewsBundle.git
+	url = git://github.com/stfalcon/NewsBundle.git
 [submodule "src/Stfalcon/Bundle/PageBundle"]
 	path = src/Stfalcon/Bundle/PageBundle
-	url = git@github.com:stfalcon/PageBundle.git
+	url = git://github.com/stfalcon/PageBundle.git
