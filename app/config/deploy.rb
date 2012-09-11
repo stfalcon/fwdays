@@ -17,7 +17,9 @@ set  :keep_releases,  3
 set  :user,       "fwdays-com"
 set  :use_sudo,   false
 
-set  :update_vendors, true
+#set  :update_vendors, true
+set :use_composer, true
+
 set :deploy_via, :rsync_with_remote_cache
 
 set :shared_files,	["app/config/parameters.ini"]
