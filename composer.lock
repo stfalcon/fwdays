@@ -1,5 +1,5 @@
 {
-    "hash": "3a98e4973cf2d2fb5db839d9a3b079a2",
+    "hash": "038be13250fa50179caef632490722d2",
     "packages": [
         {
             "package": "avalanche123/imagine-bundle",
@@ -28,8 +28,8 @@
         {
             "package": "behat/mink-extension",
             "version": "dev-master",
-            "source-reference": "0b8a4d7d10dd83211accaa1299d57f521d912c1c",
-            "commit-date": "1346250202"
+            "source-reference": "2a0913a19c145d7e0cb0aba592635dfceb8808a1",
+            "commit-date": "1347305071"
         },
         {
             "package": "behat/symfony2-extension",
@@ -64,8 +64,8 @@
         {
             "package": "doctrine/doctrine-bundle",
             "version": "dev-master",
-            "source-reference": "v1.0.0",
-            "commit-date": "1347052701"
+            "source-reference": "d3c930599723c8343472a5791b0f5909a4111a73",
+            "commit-date": "1347289964"
         },
         {
             "package": "doctrine/doctrine-fixtures-bundle",
@@ -102,6 +102,12 @@
             "version": "dev-master",
             "source-reference": "878b7c8320159fb09e8e94d446c498b00142b206",
             "commit-date": "1347102006"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
         },
         {
             "package": "gedmo/doctrine-extensions",
@@ -181,25 +187,13 @@
         },
         {
             "package": "sensio/distribution-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/distribution-bundle",
-            "version": "dev-master",
-            "source-reference": "98921298951598e8707258cba2b6180b96faa91c",
-            "commit-date": "1347023757"
+            "version": "2.1.x-dev",
+            "source-reference": "2eee3cb4cd761c851f0d766649fb9ff6f4c97002",
+            "commit-date": "1347340208"
         },
         {
             "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
+            "version": "2.1.x-dev",
             "source-reference": "v2.1.0",
             "commit-date": "1346234539"
         },
@@ -214,6 +208,12 @@
             "version": "dev-master",
             "source-reference": "v2.1.0-RC2",
             "commit-date": "1346138171"
+        },
+        {
+            "package": "sonata-project/admin-bundle",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "sonata-project/admin-bundle",
@@ -256,6 +256,12 @@
             "version": "dev-master",
             "source-reference": "5f87a761302e6c78304e071416f75d41eb1fb3c2",
             "commit-date": "1346283282"
+        },
+        {
+            "package": "stof/doctrine-extensions-bundle",
+            "version": "dev-master",
+            "alias-pretty-version": "1.1.x-dev",
+            "alias-version": "1.1.9999999.9999999-dev"
         },
         {
             "package": "stof/doctrine-extensions-bundle",
@@ -314,8 +320,8 @@
         {
             "package": "symfony/symfony",
             "version": "2.1.x-dev",
-            "source-reference": "3c32fd993dfb1e07b79acbe4e4bf24f382cd81b3",
-            "commit-date": "1347274422"
+            "source-reference": "f23fd03732e115fd15ec675c0ada4cba20a035d1",
+            "commit-date": "1347354770"
         },
         {
             "package": "twig/extensions",
@@ -348,6 +354,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "sensio/distribution-bundle": 20,
         "sonata-project/admin-bundle": 20,
         "sonata-project/doctrine-orm-admin-bundle": 20,
         "kriswallsmith/assetic": 20,
