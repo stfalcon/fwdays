@@ -5,24 +5,23 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
-        "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.0.*",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/swiftmailer-bundle": "2.1.*",
-        "symfony/monolog-bundle": "2.1.*",
-        "sensio/distribution-bundle": "2.1.*",
-        "sensio/framework-extra-bundle": "2.1.*",
-        "sensio/generator-bundle": "2.1.*",
-        "jms/security-extra-bundle": "1.2.*",
-        "jms/di-extra-bundle": "1.1.*",
+        "symfony/symfony": "2.1.1",
+        "doctrine/orm": "2.2.3",
+        "doctrine/doctrine-bundle": "1.0.0",
+        "twig/extensions": "dev-master#f904575642b1213db69b4a98f08397e722ba1cae",
+        "symfony/assetic-bundle": "2.1.0",
+        "symfony/swiftmailer-bundle": "2.1.0",
+        "symfony/monolog-bundle": "2.1.0",
+        "sensio/distribution-bundle": "2.1.0",
+        "sensio/framework-extra-bundle": "2.1.0",
+        "sensio/generator-bundle": "2.1.0",
+        "jms/security-extra-bundle": "1.2.0",
+        "jms/di-extra-bundle": "1.1.0",
 
-        "sonata-project/admin-bundle": "dev-master",
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
 
-        "kriswallsmith/assetic": "dev-master",
-        "avalanche123/imagine-bundle": "dev-master",
+        "kriswallsmith/assetic": "1.1.*",
+        "avalanche123/imagine-bundle": "dev-master#eb03645887f732410127a2b3d992befe0f175277",
 
         "friendsofsymfony/user-bundle": "dev-master",
 
@@ -30,13 +29,12 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
 
-        "liip/functional-test-bundle": "dev-master",
+        "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
         "sonata-project/intl-bundle": "dev-master",
 
-        "doctrine/doctrine-fixtures-bundle":   "dev-master",
-        "doctrine/doctrine-migrations-bundle": "dev-master",
-        "stof/doctrine-extensions-bundle": "dev-master"
-
+        "doctrine/doctrine-fixtures-bundle": "dev-master#186d605aa6b592bd577e07e0e9a2c420b02b2492",
+        "doctrine/doctrine-migrations-bundle": "dev-master#3792aa78445773387754c6853bbd7f4dcb31f486",
+        "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799"
     },
     "repositories": [
         {
