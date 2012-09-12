@@ -1,5 +1,5 @@
 "Bad credentials": Неверная электронная почта или пароль
-
+"User account is disabled.": Не активирован аккаунт
 # Security
 security.login.username: "Электронная почта:"
 fos_user_profile_form_email: "Электронная почта:"
@@ -15,6 +15,8 @@ fos_user_profile_form_company: "Компания:"
 fos_user_profile_form_post: "Должность:"
 fos_user_profile_form_comment: "Комментарий, пожелания, доп. информация:"
 fos_user_profile_form_subscribe: "Я согласен получать важные новости на e-mail:"
+fos_user_profile_form_city: "Город:"
+fos_user_profile_form_country: "Страна:"
 
 profile.show.fullname: "Фамилия и имя"
 
