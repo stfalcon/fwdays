@@ -37,6 +37,11 @@
             <argument type="service" id="fos_user.user_manager" />
         </service>
 
+        <service id="application_user.user_listener" class="Application\Bundle\UserBundle\Entity\UserListener" public="false">
+            <tag name="doctrine.event_listener" event="postPersist" />
+            <argument type="service" id="service_container" />
+        </service>
+
     </services>
 
 </container>
