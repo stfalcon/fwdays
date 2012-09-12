@@ -32,18 +32,18 @@ class SponsorAdmin extends Admin
     {
         $formMapper
             ->with('General')
-            ->add('name')
-            ->add('slug')
-            ->add('site')
-            ->add('about')
-            ->add('file', 'file', array('required' => false))
+                ->add('name')
+                ->add('slug')
+                ->add('site')
+                ->add('about')
+                ->add('file', 'file', array('required' => false))
             ->with('Events')
-            ->add('events', 'sonata_type_model',
-            array(
-                 'expanded' => true,
-                 'multiple' => true
-            )
-        )
+                ->add('events', 'sonata_type_model',
+                    array(
+                         'expanded' => true,
+                         'multiple' => true
+                    )
+                )
             ->end();
     }
 
