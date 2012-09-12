@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Application\Bundle\UserBundle\Entity\User;
 
 /**
  * EventRepository
@@ -29,4 +30,24 @@ class TicketRepository extends EntityRepository
 //        return $qb->getQuery()->getResult();
 //    }
 
+    /**
+     * Find tickets of active events for some user
+     *
+     * @param User $user
+     *
+     * @return array
+     */
+    public function findTicketsOfActiveEventsForUser(User $user)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT t
+                FROM StfalconEventBundle:Ticket t
+                JOIN t.event e
+                WHERE e.active = TRUE
+                    AND t.user = :user
+            ')
+            ->setParameter('user', $user)
+            ->getResult();
+    }
 }
