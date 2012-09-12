@@ -80,18 +80,22 @@ class EventController extends BaseController
     }
 
     /**
-     * Show user events
+     * Show user's only active events.
+     *
+     * @return array
      *
      * @Secure(roles="ROLE_USER")
      * @Route("/events/my", name="events_my")
      * @Template()
-     * @return array
      */
     public function myAction()
     {
-        $user    = $this->container->get('security.context')->getToken()->getUser();
-        $tickets = $this->getDoctrine()->getEntityManager()
-                        ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket');
+        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
 
         return array('tickets' => $tickets);
     }
