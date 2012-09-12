@@ -32,7 +32,7 @@ class ProfileFormType extends BaseProfileFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle'))
+            ->add('email', 'email', array('label' => 'fos_user_profile_form_email', 'translation_domain' => 'FOSUserBundle'))
             ->add('fullname', null, array('label' => 'fos_user_profile_form_fullname', 'translation_domain' => 'FOSUserBundle'))
             ->add('company', null, array('required' => false, 'label' => 'fos_user_registration_form_company', 'translation_domain' => 'FOSUserBundle'))
             ->add('post', null, array('required' => false, 'label' => 'fos_user_profile_form_post', 'translation_domain' => 'FOSUserBundle'))
