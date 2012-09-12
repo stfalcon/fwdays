@@ -39,6 +39,8 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('company', null, array('required' => false))
                 ->add('post', null, array('required' => false))
+                ->add('city', null, array('required' => false))
+                ->add('country', null, array('required' => false))
                 ->add('subscribe', null, array('required' => false))
 //                ->add('plainPassword', 'text')
             ->end()

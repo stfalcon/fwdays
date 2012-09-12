@@ -41,6 +41,20 @@ class User extends BaseUser
     protected $post;
 
     /**
+     * @var string $city
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     */
+    protected $city;
+
+    /**
+     * @var string $country
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     */
+    protected $country;
+
+    /**
      * @var boolean $subscribe
      *
      * @ORM\Column(name="subscribe", type="boolean")
@@ -136,6 +150,48 @@ class User extends BaseUser
      */
     public function setSubscribe($subscribe) {
         $this->subscribe = $subscribe;
+    }
+
+    /**
+     * Get user country
+     *
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+     * Set user country
+     *
+     * @param string $country
+     * @return User
+     */
+    public function setCountry($country) {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get user city
+     *
+     * @return string
+     */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+     * Set user city
+     *
+     * @param string $city
+     * @return User
+     */
+    public function setCity($city) {
+        $this->city = $city;
+
+        return $this;
     }
 
     public function getCreatedAt()
