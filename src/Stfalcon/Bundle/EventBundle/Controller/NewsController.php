@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
@@ -11,18 +12,19 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class NewsController extends BaseController
 {
-
     /**
      * List of all news for event
      *
+     * @param string $eventSlug
+     *
+     * @return array
+     *
      * @Route("/event/{event_slug}/news", name="event_news")
      * @Template()
-     * @param string $event_slug
-     * @return array
      */
-    public function indexAction($event_slug)
+    public function indexAction($eventSlug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event = $this->getEventBySlug($eventSlug);
         // @todo refact. добавить пагинатор
         $news = $event->getNews();
 
@@ -32,42 +34,51 @@ class NewsController extends BaseController
     /**
      * Finds and displays a one news for event
      *
+     * @param string $eventSlug Event slug
+     * @param string $newsSlug  News slug
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     *
      * @Route("/event/{event_slug}/news/{news_slug}", name="event_news_show")
      * @Template()
-     * @param string $event_slug
-     * @param string $news_slug
-     * @return array
      */
-    public function showAction($event_slug, $news_slug)
+    public function showAction($eventSlug, $newsSlug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event = $this->getEventBySlug($eventSlug);
 
-        $oneNews = $this->getDoctrine()->getEntityManager()
+        $oneNews = $this->getDoctrine()->getManager()
                         ->getRepository('StfalconEventBundle:News')
-                        ->findOneBy(array('event' => $event->getId(), 'slug' => $news_slug));
+                        ->findOneBy(array('event' => $event->getId(), 'slug' => $newsSlug));
 
         if (!$oneNews) {
             throw $this->createNotFoundException('Unable to find News entity.');
         }
 
-        return array('event' => $event, 'one_news' => $oneNews);
+        return array(
+            'event'    => $event,
+            'one_news' => $oneNews
+        );
     }
 
     /**
      * List of last news for event
      *
-     * @Template()
+     * @param Event $event Event
+     * @param int   $count Number of news for last event
      *
-     * @param Event $event
-     * @param integer $count
      * @return array
+     *
+     * @Template()
      */
     public function widgetAction(Event $event, $count)
     {
-        $news = $this->getDoctrine()->getEntityManager()
+        $news = $this->getDoctrine()->getManager()
                 ->getRepository('StfalconEventBundle:News')->getLastNewsForEvent($event, $count);
 
-        return array('event' => $event, 'news' => $news);
+        return array(
+            'event' => $event,
+            'news'  => $news
+        );
     }
-
 }

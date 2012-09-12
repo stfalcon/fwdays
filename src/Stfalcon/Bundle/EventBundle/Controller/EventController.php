@@ -14,21 +14,21 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
  */
 class EventController extends BaseController
 {
-
     /**
      * List of active and past events
      *
+     * @return array
+     *
      * @Route("/events", name="events")
      * @Template()
-     * @return array
      */
     public function indexAction()
     {
-        $activeEvents = $this->getDoctrine()->getEntityManager()
+        $activeEvents = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Event')
                      ->findBy(array('active' => true ));
 
-        $pastEvents = $this->getDoctrine()->getEntityManager()
+        $pastEvents = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Event')
                      ->findBy(array('active' => false ));
 
@@ -38,6 +38,10 @@ class EventController extends BaseController
 
     /**
      * Finds and displays a Event entity.
+     *
+     * @param string $eventSlug
+     *
+     * @return array
      *
      * @Route("/event/{event_slug}", name="event_show")
      * @Template()
@@ -52,16 +56,18 @@ class EventController extends BaseController
     /**
      * Take part in the event. Create new ticket for user
      *
+     * @param string $eventSlug
+     *
+     * @return RedirectResponse
+     *
      * @Secure(roles="ROLE_USER")
      * @Route("/event/{event_slug}/take-part", name="event_takePart")
      * @Template()
-     * @param string $event_slug
-     * @return RedirectResponse
      */
-    public function takePartAction($event_slug)
+    public function takePartAction($eventSlug)
     {
-        $em    = $this->getDoctrine()->getEntityManager();
-        $event = $this->getEventBySlug($event_slug);
+        $em    = $this->getDoctrine()->getManager();
+        $event = $this->getEventBySlug($eventSlug);
         $user  = $this->container->get('security.context')->getToken()->getUser();
 
         // проверяем или у него нет билетов на этот ивент
@@ -82,16 +88,19 @@ class EventController extends BaseController
     /**
      * Show user events
      *
+     * @return array
+     *
      * @Secure(roles="ROLE_USER")
      * @Route("/events/my", name="events_my")
      * @Template()
-     * @return array
      */
     public function myAction()
     {
         $user    = $this->container->get('security.context')->getToken()->getUser();
-        $tickets = $this->getDoctrine()->getEntityManager()
-                        ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
+        $tickets = $this->getDoctrine()->getManager()
+                        ->getRepository('StfalconEventBundle:Ticket')->findBy(
+                            array('user' => $user->getId())
+                        );
 
         return array('tickets' => $tickets);
     }
@@ -99,24 +108,27 @@ class EventController extends BaseController
     /**
      * Event pay
      *
+     * @param string $eventSlug
+     *
+     * @return array
+     * @throws \Exception
+     *
      * @Secure(roles="ROLE_USER")
      * @Route("/event/{event_slug}/pay", name="event_pay")
      * @Template()
-     * @param string $event_slug
-     * @return array
      */
-    public function payAction($event_slug)
+    public function payAction($eventSlug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event = $this->getEventBySlug($eventSlug);
 
         if (!$event->getReceivePayments()) {
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
 
-        $em   = $this->getDoctrine()->getEntityManager();
+        $em   = $this->getDoctrine()->getManager();
         $user = $this->container->get('security.context')->getToken()->getUser();
 
-        $ticket = $this->getDoctrine()->getEntityManager()
+        $ticket = $this->getDoctrine()->getManager()
                        ->getRepository('StfalconEventBundle:Ticket')
                        ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
 

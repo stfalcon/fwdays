@@ -13,7 +13,11 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class NewsRepository extends EntityRepository
 {
-
+    /**
+     * @param null $count
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     private function _getBaseQueryBuilder($count = null)
     {
         $qb = $this->getEntityManager()
@@ -34,6 +38,7 @@ class NewsRepository extends EntityRepository
      * Get array of last news
      *
      * @param integer $count
+     *
      * @return array
      */
     public function getLastNews($count = null)
@@ -44,7 +49,9 @@ class NewsRepository extends EntityRepository
     /**
      * Get array of last news for event
      *
-     * @param integer $count
+     * @param Event    $event Event
+     * @param int|null $count Number of news for last event
+     *
      * @return array
      */
     public function getLastNewsForEvent(Event $event, $count = null)

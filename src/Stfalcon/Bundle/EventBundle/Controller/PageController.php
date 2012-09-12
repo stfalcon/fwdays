@@ -13,16 +13,21 @@ class PageController extends BaseController
     /**
      * Finds and displays a Page entity.
      *
+     * @param string $eventSlug Event slug
+     * @param string $pageSlug  Page slug
+     *
+     * @return array
+     *
      * @Route("/event/{event_slug}/page/{page_slug}", name="event_page_show")
      * @Template()
      */
-    public function showAction($event_slug, $page_slug)
+    public function showAction($eventSlug, $pageSlug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event = $this->getEventBySlug($eventSlug);
 
-        $page = $this->getDoctrine()->getEntityManager()
+        $page = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Page')
-                     ->findOneBy(array('event' => $event->getId(), 'slug' => $page_slug));
+                     ->findOneBy(array('event' => $event->getId(), 'slug' => $pageSlug));
 
         if (!$page) {
             throw $this->createNotFoundException('Unable to find Page entity.');
@@ -30,5 +35,4 @@ class PageController extends BaseController
 
         return array('event' => $event, 'page' => $page);
     }
-
 }

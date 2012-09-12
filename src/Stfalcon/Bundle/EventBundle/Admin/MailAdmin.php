@@ -9,34 +9,49 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
 
+/**
+ * MailAdmin class
+ */
 class MailAdmin extends Admin
 {
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('title')
-            ->add('event')
-        ;
+            ->add('event');
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('General')
                 ->add('title')
                 ->add('text')
-                ->add('event', 'entity',  array(
+                ->add('event', 'entity', array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple' => false, 'expanded' => false, 'required' => false
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false
                 ))
                 ->add('start', null, array('required' => false))
                 ->add('paymentStatus', 'choice', array(
                     'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
                     'required' => false))
-                ->end()
-        ;
+                ->end();
     }
 
+    /**
+     * @param mixed $mail
+     *
+     * @return bool|mixed|void
+     * @throws \Exception
+     */
     public function postUpdate($mail)
     {
         if (!$mail->getStart()) {
@@ -49,7 +64,7 @@ class MailAdmin extends Admin
         }
 
         $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getEntityManager();
+        $em = $container->get('doctrine')->getManager();
 
         if ($mail->getEvent()) {
             // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
@@ -59,7 +74,7 @@ class MailAdmin extends Admin
             foreach ($tickets as $ticket) {
                 // @todo тяжелая цепочка
                 // нужно сделать выборку билетов с платежами определенного статуса
-                if($mail->getPaymentStatus()) {
+                if ($mail->getPaymentStatus()) {
                     if ($ticket->getPayment() && $ticket->getPayment()->getStatus() == $mail->getPaymentStatus()) {
                         $users[] = $ticket->getUser();
                     }
@@ -102,5 +117,4 @@ class MailAdmin extends Admin
 
         return true;
     }
-
 }

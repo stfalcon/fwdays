@@ -6,4 +6,6 @@
         </li>
     {% endfor %}
 </ul>
-<div class="allnews-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">все новости</a></div>
+<div class="allnews-link">
+    <a href="{{ path('event_news', { 'event_slug': event.slug }) }}">все новости</a>
+</div>
