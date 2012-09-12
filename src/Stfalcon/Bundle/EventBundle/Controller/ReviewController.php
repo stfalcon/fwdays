@@ -20,7 +20,7 @@ class ReviewController extends BaseController
      * @return array
      * @throws NotFoundHttpException
      *
-     * @Route("/event/{event_slug}/review/{review_slug}", name="event_review_show")
+     * @Route("/event/{eventSlug}/review/{reviewSlug}", name="event_review_show")
      * @Template()
      */
     public function showAction($eventSlug, $reviewSlug)

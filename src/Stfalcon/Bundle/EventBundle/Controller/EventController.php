@@ -32,8 +32,10 @@ class EventController extends BaseController
                      ->getRepository('StfalconEventBundle:Event')
                      ->findBy(array('active' => false ));
 
-        return array('activeEvents' => $activeEvents,
-            'pastEvents' => $pastEvents);
+        return array(
+            'activeEvents' => $activeEvents,
+            'pastEvents'   => $pastEvents
+        );
     }
 
     /**
@@ -43,12 +45,12 @@ class EventController extends BaseController
      *
      * @return array
      *
-     * @Route("/event/{event_slug}", name="event_show")
+     * @Route("/event/{eventSlug}", name="event_show")
      * @Template()
      */
-    public function showAction($event_slug)
+    public function showAction($eventSlug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event = $this->getEventBySlug($eventSlug);
 
         return array('event' => $event);
     }
@@ -61,7 +63,7 @@ class EventController extends BaseController
      * @return RedirectResponse
      *
      * @Secure(roles="ROLE_USER")
-     * @Route("/event/{event_slug}/take-part", name="event_takePart")
+     * @Route("/event/{eventSlug}/take-part", name="event_takePart")
      * @Template()
      */
     public function takePartAction($eventSlug)
@@ -86,7 +88,7 @@ class EventController extends BaseController
     }
 
     /**
-     * Show user events
+     * Show user's only active events.
      *
      * @return array
      *
@@ -96,11 +98,12 @@ class EventController extends BaseController
      */
     public function myAction()
     {
-        $user    = $this->container->get('security.context')->getToken()->getUser();
-        $tickets = $this->getDoctrine()->getManager()
-                        ->getRepository('StfalconEventBundle:Ticket')->findBy(
-                            array('user' => $user->getId())
-                        );
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket');
+        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
 
         return array('tickets' => $tickets);
     }
@@ -114,7 +117,7 @@ class EventController extends BaseController
      * @throws \Exception
      *
      * @Secure(roles="ROLE_USER")
-     * @Route("/event/{event_slug}/pay", name="event_pay")
+     * @Route("/event/{eventSlug}/pay", name="event_pay")
      * @Template()
      */
     public function payAction($eventSlug)

@@ -19,7 +19,7 @@ class SpeakerController extends BaseController
      *
      * @return array
      *
-     * @Route("/event/{event_slug}/speakers", name="event_speakers")
+     * @Route("/event/{eventSlug}/speakers", name="event_speakers")
      * @Template()
      */
     public function indexAction($eventSlug)

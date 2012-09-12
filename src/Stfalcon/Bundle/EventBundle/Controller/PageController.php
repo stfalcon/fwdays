@@ -18,7 +18,7 @@ class PageController extends BaseController
      *
      * @return array
      *
-     * @Route("/event/{event_slug}/page/{page_slug}", name="event_page_show")
+     * @Route("/event/{eventSlug}/page/{pageSlug}", name="event_page_show")
      * @Template()
      */
     public function showAction($eventSlug, $pageSlug)

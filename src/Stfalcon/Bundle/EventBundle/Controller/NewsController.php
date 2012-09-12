@@ -19,7 +19,7 @@ class NewsController extends BaseController
      *
      * @return array
      *
-     * @Route("/event/{event_slug}/news", name="event_news")
+     * @Route("/event/{eventSlug}/news", name="event_news")
      * @Template()
      */
     public function indexAction($eventSlug)
@@ -28,7 +28,10 @@ class NewsController extends BaseController
         // @todo refact. добавить пагинатор
         $news = $event->getNews();
 
-        return array('event' => $event, 'news' => $news);
+        return array(
+            'event' => $event,
+            'news'  => $news
+        );
     }
 
     /**
@@ -40,7 +43,7 @@ class NewsController extends BaseController
      * @return array
      * @throws NotFoundHttpException
      *
-     * @Route("/event/{event_slug}/news/{news_slug}", name="event_news_show")
+     * @Route("/event/{eventSlug}/news/{newsSlug}", name="event_news_show")
      * @Template()
      */
     public function showAction($eventSlug, $newsSlug)

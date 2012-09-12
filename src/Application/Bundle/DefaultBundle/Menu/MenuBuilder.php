@@ -64,17 +64,17 @@ class MenuBuilder
 
         $menu->setCurrentUri($request->getRequestUri());
 
-        $menu->addChild("О событии", array('route' => 'event_show', 'routeParameters' => array('event_slug' => $event->getSlug())));
+        $menu->addChild("О событии", array('route' => 'event_show', 'routeParameters' => array('eventSlug' => $event->getSlug())));
 
         if ($event->getSpeakers()) {
-            $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
+            $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('eventSlug' => $event->getSlug())));
         }
 
         // ссылки на страницы ивента
         foreach($event->getPages() as $page) {
             if ($page->isShowInMenu()) {
                 $menu->addChild($page->getTitle(), array('route' => 'event_page_show',
-                        'routeParameters' => array('event_slug' => $event->getSlug(), 'page_slug' => $page->getSlug())));
+                        'routeParameters' => array('eventSlug' => $event->getSlug(), 'pageSlug' => $page->getSlug())));
             }
         }
 

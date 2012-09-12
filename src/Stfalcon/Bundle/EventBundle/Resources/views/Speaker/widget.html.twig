@@ -5,7 +5,7 @@
             <img src="{{ speaker.photo|apply_filter('speaker_thumb') }}" width="64" height="64" alt="{{ speaker.name }}" />
         </div>
         <div class="presenter-info">
-            <a href="{{ path('event_speakers', {'event_slug': event.slug}) }}#speaker-{{ speaker.id }}">{{ speaker.name }}</a>
+            <a href="{{ path('event_speakers', {'eventSlug': event.slug}) }}#speaker-{{ speaker.id }}">{{ speaker.name }}</a>
             <div class="presenter-company">{{ speaker.company }}</div>
         </div>
     </li>
@@ -13,5 +13,5 @@
 </ul>
 
 <div class="allpresenters-link">
-    <a href="{{ path('event_speakers', {'event_slug': event.slug}) }}">все докладчики</a>
+    <a href="{{ path('event_speakers', {'eventSlug': event.slug}) }}">все докладчики</a>
 </div>

@@ -3,7 +3,7 @@
         <article class="intro">
             <h2>
                 {% if one_news.event is defined %}
-                    <a href="{{ path('event_news_show', { 'event_slug': one_news.event.slug, 'news_slug':one_news.slug }) }}">
+                    <a href="{{ path('event_news_show', { 'eventSlug': one_news.event.slug, 'newsSlug':one_news.slug }) }}">
                         {{one_news.title }}
                     </a>
                 {% else %}
@@ -13,7 +13,7 @@
             <div class="article-date-rubrics">
                 {{ one_news.createdat|date('d M Y') }}
                 {% if one_news.event is defined %}
-                    <a href="{{ path('event_show', { 'event_slug': one_news.event.slug }) }}">
+                    <a href="{{ path('event_show', { 'eventSlug': one_news.event.slug }) }}">
                         {{ one_news.event.name }}
                     </a>
                 {% endif %}

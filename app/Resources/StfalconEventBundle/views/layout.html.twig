@@ -8,7 +8,7 @@
     <header id="header">
         <div class="wrap">
             <div class="logo">
-                <a class="custom" href="{{ path('event_show', {'event_slug': event.slug } )}}" title="{{ event.name }}">
+                <a class="custom" href="{{ path('event_show', {'eventSlug': event.slug } )}}" title="{{ event.name }}">
                     <img src="{{ event.logo }}" width="120" height="129" alt="" />
                 </a>
             </div><!-- div.logo -->
@@ -22,7 +22,7 @@
         <div class="wrap">
             {% if event.receivePayments %}
                 <div class="reg-button-hold">
-                    <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
+                    <a class="reg-button" href="{{ path('event_takePart', {'eventSlug': event.slug }) }}">
                         Принять участие
                     </a>
                 </div>
