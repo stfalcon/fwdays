@@ -4,6 +4,7 @@ namespace Application\Bundle\UserBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseProfileFormType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProfileFormType extends BaseProfileFormType
 {
@@ -41,16 +42,12 @@ class ProfileFormType extends BaseProfileFormType
         ;
     }
 
-    /**
-     * Get default options
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array('data_class' => $this->class);
+        $resolver->setDefaults(array(
+            'data_class' => $this->class,
+            'intention'  => 'profile',
+        ));
     }
 
     /**

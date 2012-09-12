@@ -15,3 +15,4 @@ app/config/parameters.yml
 # Application directories
 .rsync_cache/
 web/tmp/*
+composer.lock

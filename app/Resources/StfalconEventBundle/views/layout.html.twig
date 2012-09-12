@@ -13,9 +13,7 @@
                 </a>
             </div><!-- div.logo -->
             <div class="event-head-text">
-                {{ event.date|localizeddate('full', 'none') }}
-                <br>
-                {{ event.place }}, {{ event.city }}
+                {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
             </div>
         </div>
     </header><!-- #header-->
