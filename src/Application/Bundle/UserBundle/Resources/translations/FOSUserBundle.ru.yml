@@ -1,4 +1,5 @@
 "Bad credentials": Неверная электронная почта или пароль
+"User account is disabled.": Не активирован аккаунт
 
 # Security
 security.login.username: "Электронная почта:"
