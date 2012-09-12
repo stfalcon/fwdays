@@ -3,7 +3,7 @@
 namespace Stfalcon\Bundle\SponsorBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stfalcon\Bundle\EventBundle\Entity\Event AS Event;
+use Stfalcon\Bundle\EventBundle\Entity\Event as Event;
 
 /**
  * SponsorRepository
@@ -13,7 +13,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Event AS Event;
  */
 class SponsorRepository extends EntityRepository
 {
-
     /**
      * Get all sponsors of event
      *
@@ -23,16 +22,15 @@ class SponsorRepository extends EntityRepository
      */
     public function getSponsorsOfEvent(Event $event)
     {
-        $qb = $this->getEntityManager()
-                ->createQueryBuilder()
-                ->add('select', 's')
-                ->add('from', 'StfalconSponsorBundle:Sponsor s')
-                ->join('s.events', 'e')
-                ->add('where', 'e.id = ?1')
-                ->add('orderBy', 's.name ASC')
-                ->setParameter(1, $event->getId());
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT s
+                FROM StfalconSponsorBundle:Sponsor s
+                JOIN s.events e
+                WHERE e.id = :eventId
+                ORDER BY s.name ASC
+            ')
+            ->setParameter('eventId', $event->getId())
+            ->getResult();
     }
 }

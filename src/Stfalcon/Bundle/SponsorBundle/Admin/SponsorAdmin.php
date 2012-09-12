@@ -8,19 +8,26 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+/**
+ * SponsorAdmin Class
+ */
 class SponsorAdmin extends Admin
 {
-
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('slug')
             ->add('name')
             ->add('site')
-            ->add('about')
-        ;
+            ->add('about');
     }
 
+    /**
+     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -31,15 +38,19 @@ class SponsorAdmin extends Admin
                 ->add('about')
                 ->add('file', 'file', array('required' => false))
             ->with('Events')
-                ->add('events', 'sonata_type_model', array('required' => false), array('edit'     => 'standart', 'expanded' => true, 'multiple' => true))
-            ->end()
-        ;
+                ->add('events', 'sonata_type_model',
+                    array(
+                         'expanded' => true,
+                         'multiple' => true
+                    )
+                )
+            ->end();
     }
 
     /**
      * Saves an uploaded logo of sponsor
      *
-     * @param Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
+     * @param \Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
      *
      * @return void
      */
@@ -59,16 +70,29 @@ class SponsorAdmin extends Admin
         $sponsor->setFile(null);
     }
 
+    /**
+     * @param mixed $sponsor
+     *
+     * @return mixed|void
+     */
     public function prePersist($sponsor)
     {
         $this->uploadLogo($sponsor);
     }
 
+    /**
+     * @param mixed $sponsor
+     *
+     * @return mixed|void
+     */
     public function preUpdate($sponsor)
     {
         $this->uploadLogo($sponsor);
     }
 
+    /**
+     * @return array|void
+     */
     public function getBatchActions()
     {
         $actions = array();
