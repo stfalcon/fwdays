@@ -22,21 +22,21 @@ class Sponsor
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $slug
      *
      * @ORM\Column(name="slug", type="string", length=255)
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $site
@@ -44,14 +44,14 @@ class Sponsor
      * @ORM\Column(name="site", type="string", nullable=true, length=255)
      * @Assert\Url
      */
-    private $site;
+    protected $site;
 
     /**
      * @var string $logo
      *
      * @ORM\Column(name="logo", type="string", nullable=true, length=255)
      */
-    private $logo;
+    protected $logo;
 
     /**
      * @var resource $file
@@ -59,25 +59,25 @@ class Sponsor
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      */
-    private $file;
+    protected $file;
 
     /**
-     * @var text $about
+     * @var string $about
      *
      * @ORM\Column(name="about", type="text", nullable=true)
      */
-    private $about;
+    protected $about;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
      * @ORM\JoinTable(name="event__events_sponsors",
-     *      joinColumns={@ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
-     *      )
+     *   joinColumns={@ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
+     * )
      */
-    private $events;
+    protected $events;
 
     /**
      * @var \DateTime $created
@@ -193,11 +193,17 @@ class Sponsor
         return $this->site;
     }
 
+    /**
+     * @return resource
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * @param $file
+     */
     public function setFile($file)
     {
         $this->file = $file;
@@ -246,7 +252,7 @@ class Sponsor
     /**
      * Get createdAt
      *
-     * @return /Datetime createdAt
+     * @return \Datetime createdAt
      */
     public function getCreatedAt()
     {
@@ -256,7 +262,7 @@ class Sponsor
     /**
      * Set createdAt
      *
-     * @param /Datetime $createdAt createdAt
+     * @param \Datetime $createdAt createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -266,7 +272,7 @@ class Sponsor
     /**
      * Get updatedAt
      *
-     * @return /Datetime updatedAt
+     * @return \Datetime updatedAt
      */
     public function getUpdatedAt()
     {
@@ -276,7 +282,7 @@ class Sponsor
     /**
      * Set updatedAt
      *
-     * @param /Datetime $updatedAt updatedAt
+     * @param \Datetime $updatedAt updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {
