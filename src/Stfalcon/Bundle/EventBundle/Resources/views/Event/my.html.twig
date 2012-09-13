@@ -17,9 +17,7 @@
                     </td>
                     <td class="conf-info">
                         <div class="conf-info-h">
-                            {{ event.date|localizeddate('full', 'none') }}
-                            <br>
-                            {{ event.place }}, {{ event.city }}
+                            {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
                         </div>
 
                         <div class="ticket-status">
