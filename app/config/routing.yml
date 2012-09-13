@@ -16,7 +16,7 @@ StfalconNewsBundle:
 StfalconPageBundle:
     resource: "@StfalconPageBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /page
 
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
