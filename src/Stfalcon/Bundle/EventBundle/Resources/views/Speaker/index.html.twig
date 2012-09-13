@@ -21,7 +21,7 @@
 
                 {{ speaker.about|raw }}
 
-                {% if speaker.reviews.count %}
+                {% if speaker.reviews %}
                     <div class="presenter-presentation">Доклад:
                         {% for review in speaker.reviews %}
                             <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
