@@ -46,7 +46,7 @@
         <mkdir dir="${logsdir}/reports/coverage" />
          <exec command="php app/console doctrine:schema:update --env=test --force" escape="false" />
         <exec command="phpunit -c ./app/ --log-junit ${logsdir}/reports/testsuites.xml --coverage-clover ${logsdir}/reports/coverage/clover.xml -c ./app/ " escape="false" />
-        <exec command="./bin/behat --format='junit' --out='${logsdir}/reports/'" escape="false" />
+        <exec command="./bin/behat --format='junit' --out='${logsdir}/reports/' src" escape="false" />
     </target>
 
 
