@@ -47,6 +47,22 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($event);
         $this->addReference('event-phpday', $event);
 
+        unset($event);
+
+        $event = new Event();
+        $event->setName('Not Active Frameworks Day');
+        $event->setSlug('not-active-frameworks-day');
+        $event->setDescription('Это событие тестовое, но должно быть неактивным');
+        $event->setLogo('/tmp/logo.jpg');
+        $event->setCity('Где-то там');
+        $event->setPlace('Пока неизвестно');
+        $event->setAbout("Описание события");
+        $event->setActive(false);
+        $event->setDate(new \DateTime("2012-12-12", new \DateTimeZone('Europe/Kiev')));
+
+        $manager->persist($event);
+        $this->addReference('event-not-active', $event);
+
         $manager->flush();
     }
 
