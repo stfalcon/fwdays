@@ -21,6 +21,9 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
+require_once 'PHPUnit/Autoload.php';
+require_once 'PHPUnit/Framework/Assert/Functions.php';
+
 /**
  * Feature context.
  */

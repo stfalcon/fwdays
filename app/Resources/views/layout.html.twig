@@ -11,6 +11,12 @@
         <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
         <title>{% block title %}Frameworks Days{% endblock %}</title>
 
+        {# Metadata from the StfalconPageBundle #}
+        {% set _meta_keywords = block('meta_keywords') %}
+        {% set _meta_description = block('meta_description') %}
+        {% if _meta_keywords is not empty %}<meta name="keyword" content="{{ _meta_keywords }}">{% endif %}
+        {% if _meta_description is not empty %}<meta name="description" content="{{ _meta_description }}">{% endif %}
+
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
         {% stylesheets 'css/style.css' filter='?yui_css' output="tmp/css/*.css" %}
