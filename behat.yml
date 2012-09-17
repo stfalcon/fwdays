@@ -9,3 +9,5 @@ default:
             default_session: 'symfony2'
     paths:
         features:  features
+    context:
+        class:  Application\Bundle\DefaultBundle\Features\Context\BaseFeatureContext
