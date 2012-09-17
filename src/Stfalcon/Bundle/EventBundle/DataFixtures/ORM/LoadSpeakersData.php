@@ -8,24 +8,58 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
 
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
+/**
+ * LoadSpeakersData Class
+ */
 class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $speaker = new Speaker();
-        $speaker->setName('Name');
-        $speaker->setEmail('speakerOne@wtfzf.com');
-        $speaker->setCompany('Oracle');
-        $speaker->setAbout('Short about info');
-        $speaker->setSlug('speakerOne');
+        $speaker->setName('Андрей Шкодяк');
+        $speaker->setEmail('a_s@test.com');
+        $speaker->setCompany('Stfalcon');
+        $speaker->setAbout('About Andrew');
+        $speaker->setSlug('andrew-shkodyak');
         $speaker->setPhoto('test/photo');
-        $speaker->setEvents(array($manager->merge($this->getReference('event-zfday'))));
+        $speaker->setEvents(
+            array(
+                 $manager->merge($this->getReference('event-zfday')),
+                 $manager->merge($this->getReference('event-phpday')),
+            )
+        );
 
         $manager->persist($speaker);
+        $this->addReference('speaker-shkodyak', $speaker);
+
+        unset($speaker);
+
+        $speaker = new Speaker();
+        $speaker->setName('Валерий Рабиевский');
+        $speaker->setEmail('v_r@test.com');
+        $speaker->setCompany('Stfalcon');
+        $speaker->setAbout('About Valeriy');
+        $speaker->setSlug('valeriy-rabievskiy');
+        $speaker->setPhoto('test/photo');
+        $speaker->setEvents(
+            array(
+                 $manager->merge($this->getReference('event-zfday')),
+                 $manager->merge($this->getReference('event-phpday')),
+            )
+        );
+
+        $manager->persist($speaker);
+        $this->addReference('speaker-rabievskiy', $speaker);
+
         $manager->flush();
-        $this->addReference('speaker-one', $speaker);
     }
 
+    /**
+     * @return int
+     */
     public function getOrder()
     {
         return 5; // the order in which fixtures will be loaded

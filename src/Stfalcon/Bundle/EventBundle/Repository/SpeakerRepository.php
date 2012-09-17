@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class SpeakerRepository extends EntityRepository
 {
+    /**
+     * Find speakers for some event
+     *
+     * @param string $eventSlug
+     *
+     * @return array
+     */
+    public function findSpeakersForEvent($eventSlug)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT s
+                FROM StfalconEventBundle:Speaker s
+                JOIN s.events e
+                WHERE e.slug = :eventSlug
+            ')
+            ->setParameter('eventSlug', $eventSlug)
+            ->getArrayResult();
+    }
 }
