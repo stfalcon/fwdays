@@ -13,28 +13,47 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 class SpeakerController extends BaseController
 {
     /**
-     * Lists all sreakers for event
+     * Lists all speakers for event
+     *
+     * @param string $event_slug
+     *
+     * @return array
      *
      * @Route("/event/{event_slug}/speakers", name="event_speakers")
      * @Template()
      */
     public function indexAction($event_slug)
     {
-
         $event = $this->getEventBySlug($event_slug);
-        $speakers = $event->getSpeakers();
 
-        return array('event' => $event, 'speakers' => $speakers);
+        /** @var $speakerRepository \Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository */
+        $speakerRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Speaker');
+
+        /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
+        $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
+
+        $speakers = $speakerRepository->findSpeakersForEvent($event_slug);
+
+        /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
+        foreach ($speakers as &$speaker) {
+            $speaker['reviews'] = $reviewRepository->findReviewsOfSpeakerForEvent($speaker['id'], $event_slug);
+        }
+
+        return array(
+            'event'    => $event,
+            'speakers' => $speakers
+        );
     }
 
     /**
      * List of speakers for event
      *
-     * @Template()
+     * @param Event $event Event
+     * @param int   $count Count
      *
-     * @param Event $event
-     * @param integer $count
      * @return array
+     *
+     * @Template()
      */
     public function widgetAction(Event $event, $count)
     {
@@ -45,7 +64,9 @@ class SpeakerController extends BaseController
             $speakers = array_slice($speakers, 0, $count);
         }
 
-        return array('event' => $event, 'speakers' => $speakers);
+        return array(
+            'event' => $event,
+            'speakers' => $speakers
+        );
     }
-
 }

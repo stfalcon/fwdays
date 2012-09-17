@@ -12,4 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReviewRepository extends EntityRepository
 {
+    /**
+     * Find reviews of speaker for event
+     *
+     * @param int    $speakerId
+     * @param string $eventSlug
+     *
+     * @return array
+     */
+    public function findReviewsOfSpeakerForEvent($speakerId, $eventSlug)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT r
+                FROM StfalconEventBundle:Review r
+                JOIN r.speakers s
+                JOIN r.event e
+                WHERE s.id = :speakerId
+                    AND e.slug = :eventSlug
+            ')
+            ->setParameters(
+                array(
+                     'speakerId' => $speakerId,
+                     'eventSlug' => $eventSlug
+                )
+            )
+            ->getArrayResult();
+    }
 }

@@ -12,7 +12,7 @@
         <p>{{ event.description }}</p>
 
         <div class="conf-info-links">
-            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
+            <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="Детальная информация о {{ event.name }}">Детальная информация</a>
         </div>
     </td>
 </tr>
