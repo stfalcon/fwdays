@@ -74,7 +74,7 @@ class BaseFeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Find sponsor image by src
+     * Check that document contains image from some source
      *
      * @param string $src
      *
@@ -92,5 +92,26 @@ class BaseFeatureContext extends MinkContext implements KernelAwareInterface
             }
         }
         assertTrue($founded);
+    }
+
+    /**
+     * Check that document not contains image from some source
+     *
+     * @param string $src
+     *
+     * @Given /^я не должен видеть картинку с исходником "([^"]*)"$/
+     */
+    public function documentNotContainsImageWithSrc($src)
+    {
+        $rawImages = $this->getSession()->getPage()->findAll('css', 'div.partner img');
+
+        $founded = false;
+        foreach ($rawImages as $rawImage) {
+            if ($rawImage->getAttribute('src') == $src) {
+                $founded = true;
+                break;
+            }
+        }
+        assertFalse($founded);
     }
 }

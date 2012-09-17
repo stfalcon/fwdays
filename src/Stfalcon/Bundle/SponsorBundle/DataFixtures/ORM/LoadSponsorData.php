@@ -18,32 +18,60 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $sponsor1 = new Sponsor();
-        $sponsor1->setName('ePochta');
-        $sponsor1->setSlug('epochta');
-        $sponsor1->setSite('http://www.epochta.ru/');
-        $sponsor1->setLogo('/images/partners/epochta.png');
-        $sponsor1->setAbout('About ePochta');
-        $sponsor1->setEvents(array($manager->merge($this->getReference('event-zfday'))));
-        $manager->persist($sponsor1);
+        // ePochta
+        $sponsor = new Sponsor();
+        $sponsor->setName('ePochta');
+        $sponsor->setSlug('epochta');
+        $sponsor->setSite('http://www.epochta.ru/');
+        $sponsor->setLogo('/images/partners/epochta.png');
+        $sponsor->setAbout('About ePochta');
+        $sponsor->setEvents(array($manager->merge($this->getReference('event-zfday'))));
+        $manager->persist($sponsor);
 
-        $sponsor2 = new Sponsor();
-        $sponsor2->setName('Magento');
-        $sponsor2->setSlug('magento');
-        $sponsor2->setSite('http://ua.magento.com/');
-        $sponsor2->setLogo('/images/partners/magento/small_logo.png');
-        $sponsor2->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
-        $sponsor2->setEvents(array($manager->merge($this->getReference('event-zfday'))));
-        $manager->persist($sponsor2);
+        unset($sponsor);
 
-        $sponsor3 = new Sponsor();
-        $sponsor3->setName('Symfony Camp');
-        $sponsor3->setSlug('symfony-camp');
-        $sponsor3->setSite('http://2011.symfonycamp.org.ua/');
-        $sponsor3->setLogo('/images/partners/symfonycamp.png');
-        $sponsor3->setAbout('About Symfony Camp');
-        $sponsor3->setEvents(array($manager->merge($this->getReference('event-zfday'))));
-        $manager->persist($sponsor3);
+        // Magento
+        $sponsor = new Sponsor();
+        $sponsor->setName('Magento');
+        $sponsor->setSlug('magento');
+        $sponsor->setSite('http://ua.magento.com/');
+        $sponsor->setLogo('/images/partners/magento/small_logo.png');
+        $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
+        $sponsor->setEvents(
+            array(
+                 $manager->merge($this->getReference('event-zfday')),
+                 $manager->merge($this->getReference('event-phpday'))
+            )
+        );
+        $manager->persist($sponsor);
+
+        unset($sponsor);
+
+        // Symfony Camp
+        $sponsor = new Sponsor();
+        $sponsor->setName('Symfony Camp');
+        $sponsor->setSlug('symfony-camp');
+        $sponsor->setSite('http://2011.symfonycamp.org.ua/');
+        $sponsor->setLogo('/images/partners/symfonycamp.png');
+        $sponsor->setAbout('About Symfony Camp');
+        $sponsor->setEvents(
+            array(
+                 $manager->merge($this->getReference('event-zfday')),
+                 $manager->merge($this->getReference('event-phpday'))
+            )
+        );
+        $manager->persist($sponsor);
+        unset($sponsor);
+
+        // Smart Me
+        $sponsor = new Sponsor();
+        $sponsor->setName('SmartMe');
+        $sponsor->setSlug('smart-me');
+        $sponsor->setSite('http://www.smartme.com.ua/');
+        $sponsor->setLogo('/images/partners/smartme.png');
+        $sponsor->setAbout('About Smart Me');
+        $sponsor->setEvents(array($manager->merge($this->getReference('event-phpday'))));
+        $manager->persist($sponsor);
 
         $manager->flush();
     }
