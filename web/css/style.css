@@ -1450,18 +1450,22 @@ table.event-program .epe-presenter-company {
     padding-right: 28px;
     color: #466173;
 }
-#footer .stfalcon {
-    display: -moz-inline-stack;
-    display: inline-block;
-    vertical-align: middle;
-    text-indent: -9999px;
-    overflow: hidden;
-    position: relative;
-    top: -4px;
-    width: 104px;
-    height: 28px;
-    background: url(/images/sprite-objects.png) left -92px no-repeat;
+
+#footer .stfalcon{
+  text-decoration: none;
+  color:#466173;
 }
+#footer .stfalcon .icon{
+  display: inline-block;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAYxJREFUeNqslMFHRFEUxm9vnogYIoaYTbUr1aJSIopEtEiUEs2mXZsipUT0HxRthhZp1LLUptQqzSqlVhERkSKGFDHqO3yP43rvvklz+Hnvnnfnm3vP/e6pGMjMjxljasGmKUN44AlsgF1QVQ7BPNgHE+ASpP8rKLECiqAVXIO+iPlzIFWK4AM453sNOAGrIGHNH+W3ZJygxKR6F6E1cAbqVF7q3QyOouqtBd/AlvW9F9yCYY5f+OwBe6DSJWgo+GHlpAQHdEJB5eVPtm3BRH1btx6/ghbQFLKbDvAFTkE7c7L9T7ojdIUSS6xVWAzyQPIqtw4aXIKP4MLhDPHrlRpLHZddghK5GP+m6Nsg7uIEj1mrqBhS2y5od3iOHy1Yq9AhHuyiI5I8mB+QdQne8I5HhZi/2s55MbWaBc8l9IQi52biBNOObRvVB0aCfuo5TjHLzhPWzuQgdkAnaASHwQc/pNjSohZ5t3Ms/Dv9+c3TvY9arq8KPAWmaZlxPv8cPp0+w+vWX0LNnPErwACX9kw2Zljw8wAAAABJRU5ErkJggg==) 0 0 no-repeat;
+  vertical-align: middle;
+  position: relative;
+  top:-2px;
+  width:20px;
+  height:21px;
+  margin:0 2px 0 0;
+}
+*+ html #footer .stfalcon .icon{display: inline;zoom:1;}
 
 
 a.reg-button:link,
