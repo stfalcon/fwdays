@@ -1467,11 +1467,6 @@ table.event-program .epe-presenter-company {
     margin: 0 2px 0 0;
 }
 
-*+ html #footer .stfalcon .icon {
-    display: inline;
-    zoom: 1;
-}
-
 a.reg-button:link,
 a.reg-button:visited {
     display: block;
