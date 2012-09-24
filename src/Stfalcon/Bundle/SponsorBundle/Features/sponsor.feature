@@ -11,7 +11,7 @@
         И я должен видеть картинку с исходником "/images/partners/epochta.png"
         И я должен видеть картинку с исходником "/images/partners/magento/small_logo.png"
         И я должен видеть картинку с исходником "/images/partners/symfonycamp.png"
-        И я не должен видеть элемент ".become-partner"
+        И я должен видеть элемент ".become-partner"
         И я не должен видеть картинку с исходником "/images/partners/smartme.png"
 
         Допустим я на странице "/event/php-frameworks-day-2012"
@@ -20,7 +20,7 @@
         И я должен видеть картинку с исходником "/images/partners/magento/small_logo.png"
         И я должен видеть картинку с исходником "/images/partners/smartme.png"
         И я должен видеть картинку с исходником "/images/partners/symfonycamp.png"
-        И я не должен видеть элемент ".become-partner"
+        И я должен видеть элемент ".become-partner"
         И я не должен видеть картинку с исходником "/images/partners/epochta.png"
 
         Допустим я на странице "/event/not-active-frameworks-day"
