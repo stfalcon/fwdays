@@ -1512,3 +1512,81 @@ a.reg-button:active {
 #dsq-toolbar-dropdown-wrap ul {
     width: 210px;
 }
+
+.btn-brown{
+    font-size: 13px;
+    text-shadow: 0 1px 0 #fff;
+    padding: 0 15px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #989589;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    cursor: pointer;
+    background-color: #eeede9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fdfdfd), to(#e8e7e0)); /* Safari 4+, Chrome */
+    background-image: -webkit-linear-gradient(top, #fdfdfd, #e8e7e0); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+    background-image:    -moz-linear-gradient(top, #fdfdfd, #e8e7e0); /* Firefox 3.6-15 */
+    background-image:      -o-linear-gradient(top, #fdfdfd, #e8e7e0); /* Opera 11.10-12.00 */
+    background-image:         linear-gradient(to bottom, #fdfdfd, #e8e7e0);
+}
+
+.fos_user_registration_register {
+    background: url(../../images/key.jpg) 100% 1px no-repeat;
+    display: block;
+}
+.fos_user_registration_register input[type="checkbox"] {
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+}
+.fos_user_registration_register .note {
+    display: block;
+    font-size: 11px;
+    color: #727272;
+    clear: both;
+}
+.fos_user_registration_register .wrap {
+    padding: 20px 0 12px;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    margin: 0 0 15px;
+}
+.fos_user_registration_register .wrap table {
+    width: 100%;
+    border: none;
+    margin: 0;
+}
+.fos_user_registration_register .wrap table input[type="password"],
+.fos_user_registration_register .wrap table input[type="text"],
+.fos_user_registration_register .wrap table input[type="email"] {
+    width: 99%;
+    padding-right: 0;
+    padding-left: 0;
+    text-indent: 7px;
+}
+.fos_user_registration_register .wrap table td {
+    padding: 0;
+    background: #fff;
+    border: none;
+}
+.fos_user_registration_register .wrap table tr td:first-child {
+    border-right: 7px solid #fff;
+}
+
+.fos_user_registration_register label {
+    font-size: 15px;
+    margin: 0 0 4px;
+}
+
+.fos_user_registration_register label.required:after {
+    content: ' *';
+    color: #cd3b23;
+}
+
+.fos_user_registration_register input[type="text"],
+.fos_user_registration_register input[type="password"],
+.fos_user_registration_register input[type="email"] {
+    width: 319px;
+}
