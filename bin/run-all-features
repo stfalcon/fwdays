@@ -1,0 +1,19 @@
+#!/bin/bash
+
+reporting=$1;
+if [ -z $reporting ]; then
+   reporting='false'
+fi;
+
+reports_dir=$2;
+
+for feature_path in `find src/ -path '*/Features'`; do
+   bundle=$(echo $feature_path | sed -e 's/^[^\/]\+\/\([^\/]\+\)\/Bundle\/\([^\/]\+\)\/.*/\1\2/');
+   if [ $reporting == "ci" ]; then
+       opts="--format=junit --out=$reports_dir/$bundle"
+   else
+       opts=' '
+   fi;
+   echo "Running suite for $bundle";
+       ./bin/behat $opts "@$bundle";
+done
