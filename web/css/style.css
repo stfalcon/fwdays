@@ -1595,8 +1595,10 @@ a.reg-button:active {
 }
 
 .eye {
+    width: 16px;
+    height: 12px;
     float: left;
-    margin-left: 2px;
+    margin-left: 5px;
     margin-top: 9px;
     background: url(../../images/eye.png) 100% 1px no-repeat;
     cursor: pointer;
