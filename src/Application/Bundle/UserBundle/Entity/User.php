@@ -24,7 +24,7 @@ class User extends BaseUser
     /**
      * @var string $fullname
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
      */
     protected $fullname;
 
