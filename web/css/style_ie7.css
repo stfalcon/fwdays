@@ -155,3 +155,8 @@
 *+html .add-comment-link a:visited {
     zoom: 1;
 }
+
+*+ html #footer .stfalcon .icon {
+    display: inline;
+    zoom: 1;
+}
