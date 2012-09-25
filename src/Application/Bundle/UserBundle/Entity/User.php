@@ -5,6 +5,7 @@ namespace Application\Bundle\UserBundle\Entity;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User Class
@@ -25,6 +26,7 @@ class User extends BaseUser
      * @var string $fullname
      *
      * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     protected $fullname;
 
