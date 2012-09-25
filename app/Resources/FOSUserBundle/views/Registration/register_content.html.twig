@@ -9,19 +9,21 @@
 
 <h2>Регистрация на сайте</h2>
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-    {{ form_errors(form) }}
     <div id="fos_user_registration_form">
         <div>
             <label for="fos_user_registration_form_fullname" class="required">Ваше имя и фамилия</label>
             {{ form_widget(form.fullname, {'attr': {'required': 'required'}}) }}
+            {{ form_errors(form.fullname) }}
         </div>
         <div>
             <label for="fos_user_registration_form_email" class="required">Электронная почта</label>
             {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
         </div>
         <div>
             <label for="fos_user_registration_form_plainPassword" class="required">Пароль</label>
             {{ form_widget(form.plainPassword) }}
+            {{ form_errors(form.plainPassword) }}
             <span class="eye" title="Показать пароль"></span>
         </div>
         <div class="wrap">
