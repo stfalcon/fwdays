@@ -1593,3 +1593,11 @@ a.reg-button:active {
 .fos_user_registration_register input[type="email"] {
     width: 319px;
 }
+
+.eye {
+    float: left;
+    margin-left: 2px;
+    margin-top: 9px;
+    background: url(../../images/eye.png) 100% 1px no-repeat;
+    cursor: pointer;
+}
