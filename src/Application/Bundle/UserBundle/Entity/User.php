@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
+ * User Class
+ *
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
@@ -41,6 +43,20 @@ class User extends BaseUser
     protected $post;
 
     /**
+     * @var string $country
+     *
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     */
+    protected $country;
+
+    /**
+     * @var string $city
+     *
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     */
+    protected $city;
+
+    /**
      * @var boolean $subscribe
      *
      * @ORM\Column(name="subscribe", type="boolean")
@@ -71,7 +87,8 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getFullname() {
+    public function getFullname()
+    {
         return $this->fullname;
     }
 
@@ -80,7 +97,8 @@ class User extends BaseUser
      *
      * @param string $fullname
      */
-    public function setFullname($fullname) {
+    public function setFullname($fullname)
+    {
         $this->fullname = $fullname;
     }
 
@@ -89,7 +107,8 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getCompany() {
+    public function getCompany()
+    {
         return $this->company;
     }
 
@@ -98,7 +117,8 @@ class User extends BaseUser
      *
      * @param string $company
      */
-    public function setCompany($company) {
+    public function setCompany($company)
+    {
         $this->company = $company;
     }
 
@@ -107,7 +127,8 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getPost() {
+    public function getPost()
+    {
         return $this->post;
     }
 
@@ -116,7 +137,8 @@ class User extends BaseUser
      *
      * @param string $post
      */
-    public function setPost($post) {
+    public function setPost($post)
+    {
         $this->post = $post;
     }
 
@@ -125,27 +147,78 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function isSubscribe() {
+    public function isSubscribe()
+    {
         return $this->subscribe;
     }
 
     /**
      * Set subscribe
      *
-     * @param type $subscribe
+     * @param boolean $subscribe
      */
-    public function setSubscribe($subscribe) {
+    public function setSubscribe($subscribe)
+    {
         $this->subscribe = $subscribe;
     }
 
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * Set city
+     *
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
 }

@@ -1,0 +1,53 @@
+<h2>Регистрация на сайте</h2>
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+    <div id="fos_user_registration_form">
+        <div>
+            <label for="fos_user_registration_form_fullname" class="required">Ваше имя и фамилия</label>
+            {{ form_widget(form.fullname, {'attr': {'required': 'required'}}) }}
+        </div>
+        <div>
+            <label for="fos_user_registration_form_email" class="required">Электронная почта</label>
+            {{ form_widget(form.email) }}
+            <span class="note">пароль мы сгенерируем и вышлем вам на почту</span>
+        </div>
+        <div class="wrap">
+            <table>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="fos_user_registration_form_company">Компания</label>
+                            {{ form_widget(form.company) }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <label for="fos_user_registration_form_post">Должность</label>
+                            {{ form_widget(form.post) }}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <label for="fos_user_registration_form_plainPassword_first">Город</label>
+                            {{ form_widget(form.city) }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <label for="fos_user_registration_form_plainPassword_second">Страна</label>
+                            {{ form_widget(form.country) }}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <label for="fos_user_registration_form_subscribe">
+            {{ form_widget(form.subscribe) }}
+            Я хочу получать обновления новостей и событий на почту.</label>
+        </div>
+        <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="03f4f16576f88fe0101a03c7fa0c99ab554e2035">
+        <input type="submit" class="btn-brown" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
+    </div>
+</form>
