@@ -1594,7 +1594,7 @@ a.reg-button:active {
     width: 319px;
 }
 
-.eye {
+.fos_user_registration_register .eye {
     width: 16px;
     height: 12px;
     float: left;

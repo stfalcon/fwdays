@@ -48,7 +48,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $purger   = new ORMPurger();
+        $purger = new ORMPurger();
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
