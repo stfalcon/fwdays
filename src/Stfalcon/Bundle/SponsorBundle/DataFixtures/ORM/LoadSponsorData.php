@@ -23,7 +23,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setName('ePochta');
         $sponsor->setSlug('epochta');
         $sponsor->setSite('http://www.epochta.ru/');
-        $sponsor->setLogo('/images/partners/epochta.png');
+        $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
         $sponsor->setAbout('About ePochta');
         $sponsor->setEvents(array($manager->merge($this->getReference('event-zfday'))));
         $manager->persist($sponsor);
@@ -35,7 +35,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setName('Magento');
         $sponsor->setSlug('magento');
         $sponsor->setSite('http://ua.magento.com/');
-        $sponsor->setLogo('/images/partners/magento/small_logo.png');
+        $sponsor->setLogo('/bundles/stfalconsponsor/images/magento.png');
         $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
         $sponsor->setEvents(
             array(
@@ -52,7 +52,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setName('Symfony Camp');
         $sponsor->setSlug('symfony-camp');
         $sponsor->setSite('http://2011.symfonycamp.org.ua/');
-        $sponsor->setLogo('/images/partners/symfonycamp.png');
+        $sponsor->setLogo('/bundles/stfalconsponsor/images/symfonycamp.png');
         $sponsor->setAbout('About Symfony Camp');
         $sponsor->setEvents(
             array(
@@ -68,7 +68,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setName('SmartMe');
         $sponsor->setSlug('smart-me');
         $sponsor->setSite('http://www.smartme.com.ua/');
-        $sponsor->setLogo('/images/partners/smartme.png');
+        $sponsor->setLogo('/bundles/stfalconsponsor/images/smartme.png');
         $sponsor->setAbout('About Smart Me');
         $sponsor->setEvents(array($manager->merge($this->getReference('event-phpday'))));
         $manager->persist($sponsor);
