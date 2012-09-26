@@ -24,6 +24,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         $userAdmin = new User();
         $userAdmin->setUsername('Администратор');
+        $userAdmin->setFullname('Jack Sparrow');
         $userAdmin->setEmail('admin@fwdays.com');
         $userAdmin->setPlainPassword('qwerty');
         $userAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
@@ -36,6 +37,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 
         $userDefault = new User();
         $userDefault->setUsername('Пользователь');
+        $userDefault->setFullname('Michael Jordan');
         $userDefault->setEmail('user@fwdays.com');
         $userDefault->setPlainPassword('qwerty');
         $userDefault->addRole('ROLE_USER');
@@ -45,8 +47,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($userDefault);
         $manager->flush();
         $this->addReference('user-default', $userDefault);
-
-
     }
 
     /**
@@ -58,5 +58,4 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         return 1; // the order in which fixtures will be loaded
     }
-
 }

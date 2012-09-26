@@ -44,6 +44,11 @@ class RegistrationFormType extends BaseRegistrationFormType
                 'label'              => 'fos_user_profile_form_post',
                 'translation_domain' => 'FOSUserBundle'
             ))
+            ->add('plainPassword', 'password', array(
+                'required'           => true,
+                'label'              => 'fos_user_profile_form_password',
+                'translation_domain' => 'FOSUserBundle'
+            ))
             ->add('subscribe', 'checkbox', array(
                 'required'           => false,
                 'label'              => 'fos_user_profile_form_subscribe',
