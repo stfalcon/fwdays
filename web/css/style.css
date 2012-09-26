@@ -1506,16 +1506,6 @@ a.reg-button:active {
     background-position: left -465px;
 }
 
-#disqus_thread ul {
-    list-style: none;
-}
-#disqus_thread ul li {
-    background: transparent;
-}
-#dsq-toolbar-dropdown-wrap ul {
-    width: 210px;
-}
-
 .btn-brown{
     font-size: 13px;
     text-shadow: 0 1px 0 #fff;
@@ -1535,8 +1525,21 @@ a.reg-button:active {
     background-image:         linear-gradient(to bottom, #fdfdfd, #e8e7e0);
 }
 
+/* фиксы стилей для виджета комментариев от disqus */
+
+#disqus_thread ul {
+    list-style: none;
+}
+#disqus_thread ul li {
+    background: transparent;
+}
+#dsq-toolbar-dropdown-wrap ul {
+    width: 210px;
+}
+
+/* верстка для кастомной формы регистрации */
 .fos_user_registration_register {
-    background: url(../../images/key.jpg) 100% 1px no-repeat;
+    background: url(/images/key.jpg) 100% 1px no-repeat;
     display: block;
 }
 .fos_user_registration_register input[type="checkbox"] {
@@ -1600,6 +1603,6 @@ a.reg-button:active {
     float: left;
     margin-left: 5px;
     margin-top: 9px;
-    background: url(../../images/eye.png) 100% 1px no-repeat;
+    background: url(/images/eye.png) 100% 1px no-repeat;
     cursor: pointer;
 }
