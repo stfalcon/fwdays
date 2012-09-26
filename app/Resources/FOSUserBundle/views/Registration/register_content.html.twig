@@ -1,14 +1,30 @@
+{% block javascripts %}
+    {% javascripts
+        'js/jquery-1.8.2.min.js'
+        'js/password-field-eye.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 <h2>Регистрация на сайте</h2>
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
     <div id="fos_user_registration_form">
         <div>
             <label for="fos_user_registration_form_fullname" class="required">Ваше имя и фамилия</label>
             {{ form_widget(form.fullname, {'attr': {'required': 'required'}}) }}
+            {{ form_errors(form.fullname) }}
         </div>
         <div>
             <label for="fos_user_registration_form_email" class="required">Электронная почта</label>
             {{ form_widget(form.email) }}
-            <span class="note">пароль мы сгенерируем и вышлем вам на почту</span>
+            {{ form_errors(form.email) }}
+        </div>
+        <div>
+            <label for="fos_user_registration_form_plainPassword" class="required">Пароль</label>
+            {{ form_widget(form.plainPassword) }}
+            {{ form_errors(form.plainPassword) }}
+            <span class="eye" title="Показать пароль"></span>
         </div>
         <div class="wrap">
             <table>
@@ -29,13 +45,13 @@
                 <tr>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_plainPassword_first">Город</label>
+                            <label for="fos_user_registration_form_city">Город</label>
                             {{ form_widget(form.city) }}
                         </div>
                     </td>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_plainPassword_second">Страна</label>
+                            <label for="fos_user_registration_form_country">Страна</label>
                             {{ form_widget(form.country) }}
                         </div>
                     </td>
@@ -47,7 +63,7 @@
             {{ form_widget(form.subscribe) }}
             Я хочу получать обновления новостей и событий на почту.</label>
         </div>
-        <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="03f4f16576f88fe0101a03c7fa0c99ab554e2035">
+        {{ form_widget(form._token) }}
         <input type="submit" class="btn-brown" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
 </form>

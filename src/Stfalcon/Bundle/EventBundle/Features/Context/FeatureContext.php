@@ -4,32 +4,22 @@ namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Exception\PendingException;
-
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use Behat\Behat\Event\SuiteEvent,
-    Behat\Behat\Event\ScenarioEvent;
+use Behat\Symfony2Extension\Context\KernelAwareInterface,
+    Behat\MinkExtension\Context\MinkContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 /**
- * Feature context.
+ * Feature context for StfalconEventBundle
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    private $kernel;
+    protected $kernel;
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
@@ -52,6 +42,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakersData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
+        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
+        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
+        $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 

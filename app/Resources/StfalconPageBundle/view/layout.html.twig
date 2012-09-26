@@ -1,0 +1,14 @@
+{% extends '::layout.html.twig' %}
+
+{% block metatags %}
+    {# Metadata from the StfalconPageBundle #}
+    {% set _meta_keywords = block('meta_keywords') %}
+    {% set _meta_description = block('meta_description') %}
+
+    {% if _meta_keywords is not empty %}
+            <meta name="keyword" content="{{ _meta_keywords }}">
+    {% endif %}
+    {% if _meta_description is not empty %}
+            <meta name="description" content="{{ _meta_description }}">
+    {% endif %}
+{% endblocks %}

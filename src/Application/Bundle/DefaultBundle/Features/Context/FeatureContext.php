@@ -12,14 +12,14 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 /**
- * Feature context.
+ * Feature context for ApplicationDefaultBundle
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
-    private $kernel;
+    protected $kernel;
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
@@ -47,5 +47,4 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
     }
-
 }

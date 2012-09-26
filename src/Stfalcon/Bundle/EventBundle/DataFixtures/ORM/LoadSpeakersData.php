@@ -24,7 +24,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Andrew');
         $speaker->setSlug('andrew-shkodyak');
-        $speaker->setPhoto('test/photo');
+        $speaker->setPhoto('/bundles/stfalconevent/images/speakers/andrew.png');
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -43,7 +43,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Valeriy');
         $speaker->setSlug('valeriy-rabievskiy');
-        $speaker->setPhoto('test/photo');
+        $speaker->setPhoto('/bundles/stfalconevent/images/speakers/valeriy.png');
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
