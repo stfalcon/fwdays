@@ -885,6 +885,8 @@ input[type="submit"] {
     background: #f3f1e7 url(/images/sprite-main.jpg) left -517px repeat-x;
 }
 .event-nav .wrap {
+    max-width:1400px;
+    margin:0 auto;
     height: 52px;
     border-bottom: 1px solid #e0dcca;
 }
