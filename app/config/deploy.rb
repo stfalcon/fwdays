@@ -20,5 +20,5 @@ set :use_sudo,   false
 set :use_composer, true
 
 set :shared_files,	["app/config/parameters.ini"]
-set :shared_children,	[app_path + "/logs", web_path + "/uploads", "vendor"]
+set :shared_children,	[app_path + "/logs", web_path + "/uploads"]
 set :dump_assetic_assets, true
