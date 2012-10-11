@@ -25,6 +25,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setSite('http://www.epochta.ru/');
         $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
         $sponsor->setAbout('About ePochta');
+        $sponsor->setSortOrder(10);
         $sponsor->setEvents(array($manager->merge($this->getReference('event-zfday'))));
         $manager->persist($sponsor);
 
@@ -37,6 +38,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setSite('http://ua.magento.com/');
         $sponsor->setLogo('/bundles/stfalconsponsor/images/magento.png');
         $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
+        $sponsor->setSortOrder(100);
         $sponsor->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -54,6 +56,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setSite('http://2011.symfonycamp.org.ua/');
         $sponsor->setLogo('/bundles/stfalconsponsor/images/symfonycamp.png');
         $sponsor->setAbout('About Symfony Camp');
+        $sponsor->setSortOrder(1);
         $sponsor->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -70,6 +73,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setSite('http://www.smartme.com.ua/');
         $sponsor->setLogo('/bundles/stfalconsponsor/images/smartme.png');
         $sponsor->setAbout('About Smart Me');
+        $sponsor->setSortOrder(1000);
         $sponsor->setEvents(array($manager->merge($this->getReference('event-phpday'))));
         $manager->persist($sponsor);
 

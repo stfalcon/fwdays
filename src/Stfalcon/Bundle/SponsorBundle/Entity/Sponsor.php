@@ -54,6 +54,13 @@ class Sponsor
     protected $logo;
 
     /**
+     * @var int $sortOrder
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false)
+     */
+    protected $sortOrder = 1;
+
+    /**
      * @var resource $file
      *
      * @Assert\File(maxSize="6000000")
@@ -171,6 +178,26 @@ class Sponsor
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Set sortOrder
+     *
+     * @param int $sortOrder
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * Get sortOrder
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
     }
 
     /**
