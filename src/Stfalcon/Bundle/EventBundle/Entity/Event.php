@@ -22,7 +22,7 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $name
@@ -30,7 +30,7 @@ class Event
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string $slug
@@ -38,88 +38,89 @@ class Event
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string $city
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $city;
+    protected $city;
 
     /**
      * @var string $place
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $place;
+    protected $place;
 
     /**
      * @var \DateTime $date
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $date;
+    protected $date;
 
     /**
-     * @var text $description
+     * @var string $description
      *
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
-    private $description;
+    protected $description;
 
     /**
-     * @var text $about
+     * @var string $about
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $about;
+    protected $about;
 
     /**
      * @var string $logo
      *
      * @ORM\Column(type="string")
      */
-    private $logo;
+    protected $logo;
 
     /**
      * @var boolean $active
      *
      * @ORM\Column(type="boolean")
      */
-    private $active = true;
+    protected $active = true;
 
     /**
      * @var boolean $receivePayments
      *
      * @ORM\Column(name="receive_payments", type="boolean")
      */
-    private $receivePayments = false;
+    protected $receivePayments = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
+     * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
-    private $pages;
+    protected $pages;
 
     /**
      * @ORM\OneToMany(targetEntity="News", mappedBy="event")
      * @ORM\OrderBy({"created_at" = "DESC"})
      */
-    private $news;
+    protected $news;
 
     /**
-     * @var Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      */
-    private $speakers;
+    protected $speakers;
 
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      */
-    private $file;
+    protected $file;
 
     /**
      * Constructor
@@ -143,7 +144,7 @@ class Event
     /**
      * Set event name
      *
-     * @param type $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -300,11 +301,17 @@ class Event
         return $this->active;
     }
 
+    /**
+     * @param $receivePayments
+     */
     public function setReceivePayments($receivePayments)
     {
         $this->receivePayments = $receivePayments;
     }
 
+    /**
+     * @return bool
+     */
     public function getReceivePayments()
     {
         return $this->receivePayments;
@@ -370,6 +377,9 @@ class Event
         return $this->file;
     }
 
+    /**
+     * @return int
+     */
     public function getAmount()
     {
         // !!! @todo: get from database
