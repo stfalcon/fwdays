@@ -12,14 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="event__pages")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
  */
-class Page extends BasePage {
-
+class Page extends BasePage
+{
     /**
-     * @var boolean $showInMenu
+     * @var bool $showInMenu
      *
      * @ORM\Column(name="show_in_menu", type="boolean")
      */
-    private $showInMenu = false;
+    protected $showInMenu = false;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -27,22 +27,64 @@ class Page extends BasePage {
      * @ORM\ManyToOne(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
-    private $event;
+    protected $event;
 
-    public function setEvent(Event $event) {
+    /**
+     * @var int $sortOrder
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false)
+     */
+    protected $sortOrder = 1;
+
+    /**
+     * @param Event $event
+     */
+    public function setEvent(Event $event)
+    {
         $this->event = $event;
     }
 
-    public function getEvent() {
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setShowInMenu($showInMenu) {
+    /**
+     * @param bool $showInMenu
+     */
+    public function setShowInMenu($showInMenu)
+    {
         $this->showInMenu = $showInMenu;
     }
 
-    public function isShowInMenu() {
+    /**
+     * @return bool
+     */
+    public function isShowInMenu()
+    {
         return $this->showInMenu;
     }
 
+    /**
+     * Set sortOrder
+     *
+     * @param int $sortOrder
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * Get sortOrder
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
 }
