@@ -17,6 +17,7 @@ class LoadPagesData extends AbstractFixture implements OrderedFixtureInterface
         $page->setSlug('eventPage');
         $page->setText('<p>Текст страницы</p>');
         $page->setEvent($manager->merge($this->getReference('event-zfday')));
+        $page->setSortOrder(1);
 
         $manager->persist($page);
         $manager->flush();
