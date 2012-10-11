@@ -28,7 +28,7 @@ class SponsorRepository extends EntityRepository
                 FROM StfalconSponsorBundle:Sponsor s
                 JOIN s.events e
                 WHERE e.id = :eventId
-                ORDER BY s.name ASC
+                ORDER BY s.sortOrder DESC, s.name ASC
             ')
             ->setParameter('eventId', $event->getId())
             ->getResult();
