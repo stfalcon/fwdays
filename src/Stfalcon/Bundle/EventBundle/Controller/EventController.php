@@ -15,7 +15,6 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
  */
 class EventController extends BaseController
 {
-
     /**
      * List of active and past events
      *
@@ -50,9 +49,36 @@ class EventController extends BaseController
      */
     public function showAction($event_slug)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        $eventAdded = false;
+        $eventPaid  = false;
+
+        if (true === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+            $ticketRepository = $this->getDoctrine()->getManager()
+                ->getRepository('StfalconEventBundle:Ticket');
+
+            /** @var $userTicketForEvent \Stfalcon\Bundle\EventBundle\Entity\Ticket */
+            $userTicketForEvent = $ticketRepository->findTicketOfUserForSomeEvent($user, $event_slug);
+
+            // If found user's ticket for this event, then event was added
+            if ($userTicketForEvent) {
+                $eventAdded = true;
+                // If payment for this ticket was found and it has status 'paid', then event was paid
+                if ($userTicketForEvent->isPaid()) {
+                    $eventPaid = true;
+                }
+            }
+        }
+
         $event = $this->getEventBySlug($event_slug);
 
-        return array('event' => $event);
+        return array(
+            'event'       => $event,
+            'event_paid'  => $eventPaid,
+            'event_added' => $eventAdded
+        );
     }
 
     /**
