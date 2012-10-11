@@ -79,6 +79,24 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Check that some element contains image from some source
+     *
+     * @param string $src     Source of image
+     * @param string $element Selector enginen name
+     *
+     * @Given /^я должен видеть картинку с исходником "([^"]*)" внутри элемента "([^"]*)"$/
+     */
+    public function elementContainsImageWithSrc($src, $element)
+    {
+        $rawImage = $this->getSession()->getPage()->find('css', $element);
+        $founded = false;
+        if ($rawImage->getAttribute('src') == $src) {
+            $founded = true;
+        }
+        assertTrue($founded);
+    }
+
+    /**
      * Check that document not contains image from some source
      *
      * @param string $src
