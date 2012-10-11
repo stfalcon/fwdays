@@ -5,7 +5,7 @@
             {% if sponsors %}
                 {% for sponsor in sponsors %}
                     {% if sponsor.logo %}
-                        <div class="partner">
+                        <div class="partner sort-order-{{ loop.index }}">
                             {# Если у спонсора есть сайт, то выводим картинку как ссылку #}
                             {% if sponsor.site %}
                                 <a href="{{ sponsor.site }}">
@@ -17,7 +17,7 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <div>
+                        <div class="sort-order-{{ loop.index }}">
                             {# Аналогичная проверка только без картинок, только текст #}
                             {% if sponsor.site %}
                                 <a href="{{ sponsor.site }}" title="{{ sponsor.name }}" />{{ sponsor.name }}</a>
