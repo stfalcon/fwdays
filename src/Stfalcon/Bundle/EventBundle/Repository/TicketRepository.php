@@ -50,4 +50,29 @@ class TicketRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getResult();
     }
+
+    /**
+     * Find ticket of user for some ticket
+     *
+     * @param User   $user      User
+     * @param string $eventSlug Slug of event
+     *
+     * @return array
+     */
+    public function findTicketOfUserForSomeEvent(User $user, $eventSlug)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT t
+                FROM StfalconEventBundle:Ticket t
+                JOIN t.event e
+                WHERE e.slug = :eventSlug
+                    AND t.user = :user
+            ')
+            ->setParameters(array(
+                'user'      => $user,
+                'eventSlug' => $eventSlug
+            ))
+            ->getSingleResult();
+    }
 }
