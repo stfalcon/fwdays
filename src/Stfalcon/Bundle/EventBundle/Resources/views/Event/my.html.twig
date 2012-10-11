@@ -24,7 +24,7 @@
                             {% if ticket.paid %}
                                 <span class="ticket-status-paid">Участие оплачено</span>
                             {% else %}
-                                <span class="ticket-status-new">Участие не оплачено</span>
+                                <span class="ticket-status-new">Участие еще не оплачено</span>
                                 {% if event.receivePayments %}
                                     <input type="submit" value="Оплатить" onclick="location.href='{{ path('event_pay', {'event_slug': event.slug}) }}'" />
                                 {% endif %}

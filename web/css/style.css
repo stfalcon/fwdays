@@ -160,7 +160,7 @@ input {
     border-radius: 10px;
 }
 .ticket-status-new {
-    color: #e11111;
+    color: #bd2727;
     margin-right: 18px;
 }
 .ticket-status-paid {
@@ -786,7 +786,7 @@ input[type="submit"] {
 .event-head-text {
     position: absolute;
     left: 27%;
-    top: 62px;
+    top: 42px;
     font-family: "Open Sans", Arial, sans-serif;
     font-size: 29px;
     line-height: 30px;
@@ -896,7 +896,6 @@ input[type="submit"] {
 }
 .reg-button-hold {
     float: left;
-    margin-left: 4%;
     padding-top: 12px;
 }
 .event-nav ul {
@@ -1472,7 +1471,7 @@ table.event-program .epe-presenter-company {
 a.reg-button:link,
 a.reg-button:visited {
     display: block;
-    width: 178px;
+    width: 150px;
     height: 26px;
     font-family: 'Open Sans', Arial, sans-serif;
     font-size: 14px;
@@ -1607,4 +1606,18 @@ a.reg-button:active {
     margin-top: 9px;
     background: url(/images/eye.png) 100% 1px no-repeat;
     cursor: pointer;
+}
+
+.event-text {
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+.event-text a {
+    text-decoration: none;
+    color: #414950;
+}
+
+.not-paid-yet a {
+    color: #bd2727;
 }
