@@ -22,7 +22,8 @@ class SponsorAdmin extends Admin
             ->addIdentifier('slug')
             ->add('name')
             ->add('site')
-            ->add('about');
+            ->add('about')
+            ->add('sortOrder');
     }
 
     /**
@@ -37,6 +38,11 @@ class SponsorAdmin extends Admin
                 ->add('site')
                 ->add('about')
                 ->add('file', 'file', array('required' => false))
+                ->add('sortOrder', null, array(
+                    'attr' => array(
+                        'min' => 1
+                    )
+                ))
             ->with('Events')
                 ->add('events', 'sonata_type_model',
                     array(
