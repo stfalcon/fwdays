@@ -3,31 +3,26 @@
 {% block title %}События / {{ parent() }}{% endblock %}
 
 {% block content %}
-
-    {% if activeEvents|length %}
+    {% if active_events|length %}
         <h2>Будущие события</h2>
-
         <table class="conferences-list">
             <tbody>
-                {% for event in activeEvents %}
-                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                {% for event in active_events %}
+                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with {'event': event, 'user_events_info': user_active_events_info} %}
                 {% endfor %}
-
-            {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
+                {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
             </tbody>
         </table>
     {% endif %}
 
-    {% if pastEvents|length %}
+    {% if past_events|length %}
         <h2>Прошедшие события</h2>
-
         <table class="conferences-list conferences-list-past">
             <tbody>
-                {% for event in pastEvents %}
-                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                {% for event in past_events %}
+                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with {'event': event, 'user_events_info': user_past_events_info} %}
                 {% endfor %}
             </tbody>
         </table>
     {% endif %}
-
 {% endblock %}

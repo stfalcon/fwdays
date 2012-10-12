@@ -13,16 +13,28 @@
 
             <p>{{ event.description }}</p>
 
-            {#{% if event.receivePayments %}#}
-                <a class="register" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">Принять участие</a>
-            {#{% endif %}#}
-            <a class="know-more" href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+            {% if event.active %} {# If event is active, then show some button or text, depends on situation #}
+                {% if user_events_info|length and user_events_info[event.id]['user_paid_event'] %} {# User paid the event #}
+                    <a href="{{ path('events_my') }}" class="event-info" title="Участие оплачено">
+                        <img src="{{ asset('images/check-small.png') }}" alt="Участие оплачено"/>
+                        Участие оплачено
+                    </a>
+                {% elseif user_events_info|length and user_events_info[event.id]['user_added_event'] and not event.receivePayments %} {# User added event, not paid it and payments are disabled #}
+                    <a href="{{ path('events_my') }}" class="event-info" title="Событие добавлено">Событие добавлено</a>
+                {% elseif user_events_info|length and user_events_info[event.id]['user_added_event'] and event.receivePayments %} {# User added event, paid it and payments are enabled #}
+                    <a href="{{ path('events_my') }}" class="event-not-paid-yet" title="Участие еще не оплачено">Участие еще не оплачено</a>
+                {% else %} {# User didn't add and paid this event #}
+                    <a href="{{ path('event_takePart', {'event_slug': event.slug}) }}" class="register">Принять участие</a>
+                {% endif %}
+            {% endif %}
+
+            <a href="{{ path('event_show', {'event_slug': event.slug}) }}" class="know-more" title="Узнать больше">Узнать больше</a>
         </div>
     </div>
     {% endfor %}
 
     {% if events|length > 1 %}
-        <div class="btn-prev"><a href="# " title="previous">previous</a></div>
-        <div class="btn-next"><a href="# " title="next">next</a></div>
+        <div class="btn-prev"><a href="#" title="previous">previous</a></div>
+        <div class="btn-next"><a href="#" title="next">next</a></div>
     {% endif %}
 </div><!-- div.event-slider -->

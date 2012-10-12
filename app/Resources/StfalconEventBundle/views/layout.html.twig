@@ -13,26 +13,29 @@
                 </a>
             </div><!-- div.logo -->
             <div class="event-head-text">
-                {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
-                {% if event_paid %}
-                    <div class="event-text">
-                        <a href="{{ path('events_my') }}" title="Участие оплачено">
-                            <img src="{{ asset('images/check-big.png') }}" alt="Участие оплачено"/>
-                            Участие оплачено
-                        </a>
-                    </div>
-                {% elseif event_added and not event.receivePayments %}
-                    <div class="event-text">
-                        <a href="{{ path('events_my') }}" title="Событие добавлено">Событие добавлено</a>
-                    </div>
-                {% elseif event_added and event.receivePayments %}
-                    <div class="event-text not-paid-yet">
-                        <a href="{{ path('events_my') }}" title="Участие еще не оплачено">Участие еще не оплачено</a>
-                    </div>
-                {% elseif event.receivePayments %}
-                    <div class="reg-button-hold">
-                        <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">Принять участие</a>
-                    </div>
+                {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with {'event': event} %}
+
+                {% if event.active %} {# If event is active, then show some button or text, depends on situation #}
+                    {% if user_paid_event %} {# User paid the event #}
+                        <div class="event-text">
+                            <a href="{{ path('events_my') }}" title="Участие оплачено">
+                                <img src="{{ asset('images/check-big.png') }}" alt="Участие оплачено"/>
+                                Участие оплачено
+                            </a>
+                        </div>
+                    {% elseif user_added_event and not event.receivePayments %} {# User added event, not paid it and payments are disabled #}
+                        <div class="event-text">
+                            <a href="{{ path('events_my') }}" title="Событие добавлено">Событие добавлено</a>
+                        </div>
+                    {% elseif user_added_event and event.receivePayments %} {# User added event, paid it and payments are enabled #}
+                        <div class="event-text not-paid-yet">
+                            <a href="{{ path('events_my') }}" title="Участие еще не оплачено">Участие еще не оплачено</a>
+                        </div>
+                    {% else %} {# User didn't add and paid this event #}
+                        <div class="reg-button-hold">
+                            <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug}) }}">Принять участие</a>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -40,14 +43,6 @@
 
     <nav class="event-nav">
         <div class="wrap">
-            {#{% if event.receivePayments %}#}
-                {#<div class="reg-button-hold">#}
-                    {#<a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">#}
-                        {#Принять участие#}
-                    {#</a>#}
-                {#</div>#}
-            {#{% endif %}#}
-
             {{ knp_menu_render('event_sub') }}
         </div>
     </nav>
@@ -56,18 +51,18 @@
 {% block sidebar_left %}
     {% block event_speakers_widget %}
         <h2>Докладчики</h2>
-        {% render "StfalconEventBundle:Speaker:widget" with { 'event': event, 'count': 3 } %}
+        {% render "StfalconEventBundle:Speaker:widget" with {'event': event, 'count': 3} %}
     {% endblock %}
 
     {% block event_news_widget %}
         <h2>Новости</h2>
-        {% render "StfalconEventBundle:News:widget" with { 'event': event, 'count': 7 } %}
+        {% render "StfalconEventBundle:News:widget" with {'event': event, 'count': 7} %}
     {% endblock %}
 
 {% endblock %}
 
 {% block sidebar_right %}
     {% block event_sponsors_widget %}
-        {% render "StfalconSponsorBundle:Sponsor:widget" with { 'event': event } %}
+        {% render "StfalconSponsorBundle:Sponsor:widget" with {'event': event} %}
     {% endblock %}
 {% endblock %}
