@@ -67,7 +67,7 @@ class TicketRepository extends EntityRepository
                 FROM StfalconEventBundle:Ticket t
                 JOIN t.event e
                 WHERE e.slug = :eventSlug
-                    AND e.active = 1
+                    AND e.active = TRUE
                     AND t.user = :user
             ')
             ->setParameters(array(
