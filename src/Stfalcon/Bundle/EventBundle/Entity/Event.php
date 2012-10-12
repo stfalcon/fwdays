@@ -383,7 +383,7 @@ class Event
     public function getAmount()
     {
         // !!! @todo: get from database
-        return 150;
+        return 400;
     }
 
     /**
