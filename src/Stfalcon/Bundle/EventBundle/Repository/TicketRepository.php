@@ -52,14 +52,14 @@ class TicketRepository extends EntityRepository
     }
 
     /**
-     * Find ticket of user for some ticket
+     * Find ticket of user for some active event
      *
      * @param User   $user      User
      * @param string $eventSlug Slug of event
      *
      * @return array
      */
-    public function findTicketOfUserForSomeEvent(User $user, $eventSlug)
+    public function findTicketOfUserForSomeActiveEvent(User $user, $eventSlug)
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -67,12 +67,13 @@ class TicketRepository extends EntityRepository
                 FROM StfalconEventBundle:Ticket t
                 JOIN t.event e
                 WHERE e.slug = :eventSlug
+                    AND e.active = 1
                     AND t.user = :user
             ')
             ->setParameters(array(
                 'user'      => $user,
                 'eventSlug' => $eventSlug
             ))
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 }
