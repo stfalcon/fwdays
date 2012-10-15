@@ -6,12 +6,31 @@
     </td>
     <td class="conf-info">
         <div class="conf-info-h">
-            {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
+            {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with {'event': event} %}
         </div>
 
         <p>{{ event.description }}</p>
 
-        <div class="conf-info-links">
+        {% if event.active %}
+            <div class="event-state">
+                {% if user_events_info|length and user_events_info[event.id]['user_paid_event'] %} {# User paid the event #}
+                    <a href="{{ path('events_my') }}" class="event-info" title="Участие оплачено">
+                        <img src="{{ asset('images/check-small.png') }}" alt="Участие оплачено"/>
+                        Участие оплачено
+                    </a>
+                {% elseif user_events_info|length and user_events_info[event.id]['user_added_event'] and not event.receivePayments %} {# User added event, not paid it and payments are disabled #}
+                    <a href="{{ path('events_my') }}" class="event-info" title="Событие добавлено">Событие добавлено</a>
+                {% elseif user_events_info|length and user_events_info[event.id]['user_added_event'] and event.receivePayments %} {# User added event, paid it and payments are enabled #}
+                    <a href="{{ path('events_my') }}" class="event-not-paid-yet" title="Участие еще не оплачено">Участие еще не оплачено</a>
+                {% else %} {# User didn't add and paid this event #}
+                    <div class="reg-button-small-hold">
+                        <a href="{{ path('event_takePart', {'event_slug': event.slug}) }}" class="reg-button-small">Принять участие</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="conf-info-links" style="float:">
             <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="Детальная информация о {{ event.name }}">Детальная информация</a>
         </div>
     </td>

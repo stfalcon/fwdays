@@ -17,29 +17,32 @@
                     </td>
                     <td class="conf-info">
                         <div class="conf-info-h">
-                            {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
-                        </div>
-
-                        <div class="ticket-status">
-                            {% if ticket.paid %}
-                                <span class="ticket-status-paid">Участие оплачено</span>
-                            {% else %}
-                                <span class="ticket-status-new">Участие не оплачено</span>
-                                {% if event.receivePayments %}
-                                    <input type="submit" value="Оплатить" onclick="location.href='{{ path('event_pay', {'event_slug': event.slug}) }}'" />
-                                {% endif %}
-                            {% endif %}
+                            {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with {'event': event} %}
                         </div>
 
                         <p>{{ event.description }}</p>
 
+                        {% if event.active %}
+                            <div class="event-state">
+                                {% if ticket.paid %} {# User paid the event #}
+                                    <img src="{{ asset('images/check-small.png') }}" alt="Участие оплачено"/>
+                                    Участие оплачено
+                                {% elseif not ticket.paid and not event.receivePayments %} {# User added event, not paid it and payments are disabled #}
+                                    Событие добавлено
+                                {% elseif not ticket.paid and event.receivePayments %} {# User added event, paid it and payments are enabled #}
+                                    <div class="reg-button-small-hold">
+                                        <a href="{{ path('event_pay', {'event_slug': event.slug}) }}" class="reg-button-small pay" title="Оплатить">Оплатить</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
                         <div class="conf-info-links">
-                            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
+                            <a href="{{ path('event_show', {'event_slug': event.slug} )}}">Детальная информация</a>
                         </div>
                     </td>
                 </tr>
             {% endfor %}
-
         </tbody>
     </table>
 {% endblock %}
