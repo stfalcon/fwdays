@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('discount')->end()
                 ->arrayNode('interkassa')
                     ->children()
                         ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
