@@ -385,15 +385,6 @@ class Event
     }
 
     /**
-     * @return int
-     */
-    public function getAmount()
-    {
-        // !!! @todo: get from database
-        return 400;
-    }
-
-    /**
      * @todo remove this method (and try remove property)
      * Get event pages
      *
