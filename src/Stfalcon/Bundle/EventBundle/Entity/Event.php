@@ -125,7 +125,7 @@ class Event
     /**
      * @var float $cost
      *
-     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
      */
     protected $cost;
 
