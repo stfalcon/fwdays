@@ -167,18 +167,22 @@ class EventController extends BaseController
                 ->getRepository('StfalconPaymentBundle:Payment')
                 ->findPaidPaymentsForUser($user);
 
+            // Вытягиваем скидку из конфига
             $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
-            $discount = (float) $paymentsConfig['discount']; // Get discount from payment config
+            $discount = (float) $paymentsConfig['discount'];
 
-            // If user had paid some payments earlie, then he will get a discount
+            // Если пользователь имеет оплаченные события, то он получает скидку
             if (count($paidPayments) > 0) {
                 $cost = $event->getCost() - $event->getCost() * $discount;
+                $hasDiscount = true;
             } else {
                 $cost = $event->getCost();
+                $hasDiscount = false;
             }
 
-            $payment = new Payment($user, $cost);
+            $payment = new Payment($user, $cost, $hasDiscount);
             $payment->getUser();
+            $payment->setAmountWithoutDiscount($event->getCost());
             $em->persist($payment);
             $ticket->setPayment($payment);
             $em->persist($ticket);
