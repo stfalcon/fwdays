@@ -61,9 +61,9 @@ class Mail
 
     /**
      * @todo refact. это костыльное и временное решение
-     * @var text $text
+     * @var string $text
      *
-     * @ORM\Column(name="payment_status")
+     * @ORM\Column(name="payment_status", type="string", nullable=true)
      */
     private $paymentStatus = null;
 
