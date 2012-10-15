@@ -1617,3 +1617,8 @@ table.event-program .epe-presenter-company {
     background: url(/images/eye.png) 100% 1px no-repeat;
     cursor: pointer;
 }
+
+div.amount {
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
