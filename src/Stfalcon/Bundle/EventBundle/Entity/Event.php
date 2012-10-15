@@ -123,6 +123,13 @@ class Event
     protected $file;
 
     /**
+     * @var float $cost
+     *
+     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    protected $cost;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -378,15 +385,6 @@ class Event
     }
 
     /**
-     * @return int
-     */
-    public function getAmount()
-    {
-        // !!! @todo: get from database
-        return 400;
-    }
-
-    /**
      * @todo remove this method (and try remove property)
      * Get event pages
      *
@@ -406,5 +404,25 @@ class Event
     public function getNews()
     {
         return $this->news;
+    }
+
+    /**
+     * Set cost
+     *
+     * @param float $cost
+     */
+    public function setCost($cost)
+    {
+        $this->cost = $cost;
+    }
+
+    /**
+     * Get cost
+     *
+     * @return float
+     */
+    public function getCost()
+    {
+        return $this->cost;
     }
 }

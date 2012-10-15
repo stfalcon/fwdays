@@ -160,7 +160,7 @@ input {
     border-radius: 10px;
 }
 .ticket-status-new {
-    color: #e11111;
+    color: #bd2727;
     margin-right: 18px;
 }
 .ticket-status-paid {
@@ -716,7 +716,11 @@ input[type="submit"] {
     padding: 3px 0 13px;
 }
 .event-slider .slide .know-more:link,
-.event-slider .slide .know-more:visited {
+.event-slider .slide .know-more:visited,
+.event-info:link,
+.event-info:visited,
+.event-not-paid-yet:link,
+.event-not-paid-yet:visited {
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
@@ -730,11 +734,41 @@ input[type="submit"] {
     -moz-border-radius: 13px;
     border-radius: 13px;
 }
+
+.event-info:link,
+.event-info:visited {
+    color: black;
+}
+
+.event-not-paid-yet:link,
+.event-not-paid-yet:visited {
+    color: #bd2727;
+}
+
 .event-slider .slide .know-more:hover,
-.event-slider .slide .know-more:active {
+.event-slider .slide .know-more:active,
+.event-info:hover,
+.event-info:active,
+.event-not-paid-yet:hover,
+.event-not-paid-yet:active {
     color: #cd3b23;
     text-decoration: none;
 }
+
+.event-state {
+    float: left;
+    margin-right: 15px;
+}
+
+.event-state .event-info:link,
+.event-state .event-info:visited,
+.event-state .event-not-paid-yet:link,
+.event-state .event-not-paid-yet:visited {
+    height: auto;
+    line-height: 18px;
+    padding: 0;
+}
+
 .event-slider .slide .register:link,
 .event-slider .slide .register:visited {
     display: -moz-inline-stack;
@@ -786,7 +820,7 @@ input[type="submit"] {
 .event-head-text {
     position: absolute;
     left: 27%;
-    top: 62px;
+    top: 42px;
     font-family: "Open Sans", Arial, sans-serif;
     font-size: 29px;
     line-height: 30px;
@@ -895,9 +929,11 @@ input[type="submit"] {
     margin: 0 auto;
 }
 .reg-button-hold {
-    float: left;
-    margin-left: 4%;
     padding-top: 12px;
+}
+.reg-button-small-hold {
+    float: left;
+    margin-top: -2px;
 }
 .event-nav ul {
     float: left;
@@ -1428,7 +1464,6 @@ table.event-program .epe-presenter-company {
     color: #727272;
 }
 
-
 #footer .copyright {
     position: absolute;
     left: 4%;
@@ -1470,9 +1505,11 @@ table.event-program .epe-presenter-company {
 }
 
 a.reg-button:link,
-a.reg-button:visited {
+a.reg-button:visited,
+a.reg-button-small:link,
+a.reg-button-small:visited {
     display: block;
-    width: 178px;
+    width: 150px;
     height: 26px;
     font-family: 'Open Sans', Arial, sans-serif;
     font-size: 14px;
@@ -1493,14 +1530,30 @@ a.reg-button:visited {
     border-bottom: 1px solid #02788f;
     background: url(/images/sprite-main.jpg) left -413px repeat-x;
 }
-a.reg-button:hover {
+
+a.reg-button-small:link,
+a.reg-button-small:visited {
+    width: 114px;
+    height: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 19px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+a.reg-button:hover,
+a.reg-button-small:hover {
     text-shadow: #33bcd6 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     background-position: left -439px;
 }
-a.reg-button:active {
+
+a.reg-button:active,
+a.reg-button-small:active {
     text-shadow: #048da7 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0;
@@ -1508,7 +1561,12 @@ a.reg-button:active {
     background-position: left -465px;
 }
 
-.btn-brown{
+a.reg-button-small.pay:link,
+a.reg-button-small.pay:visited {
+    width: 75px;
+}
+
+.btn-brown {
     font-size: 13px;
     text-shadow: 0 1px 0 #fff;
     padding: 0 15px;
@@ -1607,4 +1665,23 @@ a.reg-button:active {
     margin-top: 9px;
     background: url(/images/eye.png) 100% 1px no-repeat;
     cursor: pointer;
+}
+
+.event-text {
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+.event-text a {
+    text-decoration: none;
+    color: #414950;
+}
+
+.not-paid-yet a {
+    color: #bd2727 !important;
+}
+
+div.amount {
+    padding-top: 15px;
+    padding-bottom: 5px;
 }

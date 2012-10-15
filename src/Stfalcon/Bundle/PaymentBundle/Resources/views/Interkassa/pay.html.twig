@@ -12,7 +12,14 @@
 
     <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
         <div>
-            Сумма к оплате: <b>{{ payment.amount }} грн.</b>
+            {% if payment.hasDiscount %}
+                Цена без скидки: {{ payment.amountWithoutDiscount }} грн.<br />
+                <div class="amount">
+                    Сумма к оплате <b>{{ payment.amount }} грн.</b> (с учетом скидки 20%)
+                </div>
+            {% else %}
+                Сумма к оплате: <b>{{ payment.amount }} грн.</b>
+            {% endif %}
         </div>
         <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
         <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">

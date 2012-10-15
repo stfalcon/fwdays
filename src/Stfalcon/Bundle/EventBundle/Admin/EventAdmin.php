@@ -18,6 +18,7 @@ class EventAdmin extends Admin
             ->add('name')
             ->add('active')
             ->add('receivePayments')
+            ->add('cost')
         ;
     }
 
@@ -35,6 +36,7 @@ class EventAdmin extends Admin
                 ->add('file', 'file', array('required' => false))
                 ->add('active', null, array('required' => false))
                 ->add('receivePayments', null, array('required' => false))
+                ->add('cost', null, array('required' => true))
             ->end()
         ;
     }
