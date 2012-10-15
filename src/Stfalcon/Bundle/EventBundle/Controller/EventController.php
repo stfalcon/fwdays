@@ -148,17 +148,37 @@ class EventController extends BaseController
 
         $ticket = $this->getDoctrine()->getManager()
                        ->getRepository('StfalconEventBundle:Ticket')
-                       ->findOneBy(array('event' => $event->getId(), 'user'  => $user->getId()));
+                       ->findOneBy(array(
+                            'event' => $event->getId(),
+                            'user'  => $user->getId()
+                           )
+                       );
 
         // создаем проплату или апдейтим стоимость уже существующей
         if ($payment = $ticket->getPayment()) {
             // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
             // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
             // может не соответствовать цене
-//            $payment->setAmount($event->getAmount());
+//            $payment->setAmount($event->getCost());
 //            $em->persist($payment);
         } else {
-            $payment = new Payment($user, $event->getAmount());
+            // Find paid payments for current user
+            $paidPayments = $this->getDoctrine()->getManager()
+                ->getRepository('StfalconPaymentBundle:Payment')
+                ->findPaidPaymentsForUser($user);
+
+            $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+            $discount = (float) $paymentsConfig['discount']; // Get discount from payment config
+
+            // If user had paid some payments earlie, then he will get a discount
+            if (count($paidPayments) > 0) {
+                $cost = $event->getCost() - $event->getCost() * $discount;
+            } else {
+                $cost = $event->getCost();
+            }
+
+            $payment = new Payment($user, $cost);
+            $payment->getUser();
             $em->persist($payment);
             $ticket->setPayment($payment);
             $em->persist($ticket);
