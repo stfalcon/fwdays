@@ -1,0 +1,24 @@
+{% if event.active %}
+    {% if ticket and ticket.paid %}
+        <div class="button">
+            <a href="{{ path('events_my') }}" title="Участие оплачено">
+                <img src="{{ asset('images/check-big.png') }}" alt="Участие оплачено"/>
+                Участие оплачено
+            </a>
+        </div>
+    {% elseif ticket and event.receivePayments %} {# User added event, paid it and payments are enabled #}
+        <div class="button">
+            <a class="event-not-paid-yet" href="{{ path('events_my') }}" title="Участие еще не оплачено">Участие еще не оплачено</a>
+        </div>
+    {% elseif ticket and not event.receivePayments %}
+        <div class="button">
+            <a href="{{ path('events_my') }}" title="Событие добавлено">Событие добавлено</a>
+        </div>
+    {% else %}
+        <div class="button take-part">
+            <a class="take-part" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
+                Принять участие
+            </a>
+        </div>
+    {% endif %}
+{% endif %}

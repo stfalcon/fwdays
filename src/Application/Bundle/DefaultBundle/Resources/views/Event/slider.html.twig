@@ -13,9 +13,11 @@
 
             <p>{{ event.description }}</p>
 
-            {% include "StfalconEventBundle:Event:_event_button_take_part.html.twig" with { 'event': event } %}
+            {% render "StfalconEventBundle:Ticket:status" with { 'event': event } %}
 
-            <a class="know-more" href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+            <div class="button">
+                <a href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+            </div>
         </div>
     </div>
     {% endfor %}

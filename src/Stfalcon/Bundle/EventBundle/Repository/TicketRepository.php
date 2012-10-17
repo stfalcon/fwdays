@@ -14,22 +14,6 @@ use Application\Bundle\UserBundle\Entity\User;
 class TicketRepository extends EntityRepository
 {
 
-//    /**
-//     * @return array
-//     */
-//    public function findAllPaid()
-//    {
-//        $qb = $this->getEntityManager()
-//                ->createQueryBuilder()
-//                ->add('select', 't')
-//                ->add('from', 'StfalconEventBundle:Ticket t')
-//                ->where('t.status = :status')
-//                ->setParameter('status', 'paid')
-//                ->add('orderBy', 't.status DESC');
-//
-//        return $qb->getQuery()->getResult();
-//    }
-
     /**
      * Find tickets of active events for some user
      *
@@ -50,4 +34,5 @@ class TicketRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getResult();
     }
+
 }

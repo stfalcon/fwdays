@@ -15,7 +15,7 @@
             <div class="event-head-text">
                 {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
 
-                {% include "StfalconEventBundle:Event:_event_button_take_part.html.twig" with { 'event': event } %}
+                {% render "StfalconEventBundle:Ticket:status" with { 'event' : event } %}
             </div>
         </div>
     </header><!-- #header-->

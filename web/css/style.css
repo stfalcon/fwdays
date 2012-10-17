@@ -715,26 +715,6 @@ input[type="submit"] {
     font-size: 14px;
     padding: 3px 0 13px;
 }
-.event-slider .slide .know-more:link,
-.event-slider .slide .know-more:visited {
-    display: -moz-inline-stack;
-    display: inline-block;
-    vertical-align: top;
-    height: 24px;
-    line-height: 23px;
-    padding: 0 9px;
-    color: #466173;
-    text-decoration: none;
-    background: #fff;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    border-radius: 13px;
-}
-.event-slider .slide .know-more:hover,
-.event-slider .slide .know-more:active {
-    color: #cd3b23;
-    text-decoration: none;
-}
 .event-slider .btn-prev {
     position: absolute;
     left: 4%;
@@ -871,9 +851,6 @@ input[type="submit"] {
 .event-nav .wrap-inner {
     max-width: 1400px;
     margin: 0 auto;
-}
-.event-head-text div.button-take-part {
-    padding-top: 12px;
 }
 .event-nav ul {
     float: left;
@@ -1447,8 +1424,21 @@ table.event-program .epe-presenter-company {
 
 /* кнопки принять участие и узнать больше */
 /* на странице события */
-.event-head-text a.button-take-part:link,
-.event-head-text a.button-take-part:visited {
+.event-head-text div.button {
+    padding-top: 10px;
+    font-size: 16px;
+}
+.event-head-text div.button a {
+    text-decoration: none;
+}
+.event-head-text div.take-part {
+    padding-top: 12px;
+}
+.event-head-text div.button a.event-not-paid-yet {
+    color: #bd2727;
+}
+.event-head-text div.button a.take-part:link,
+.event-head-text div.button a.take-part:visited {
     display: block;
     width: 150px;
     height: 26px;
@@ -1471,45 +1461,51 @@ table.event-program .epe-presenter-company {
     border-bottom: 1px solid #02788f;
     background: url(/images/sprite-main.jpg) left -413px repeat-x;
 }
-.event-head-text a.button-take-part:hover {
+.event-head-text div.button a.take-part:hover {
     text-shadow: #33bcd6 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     background-position: left -439px;
 }
-.event-head-text a.button-take-part:active {
+.event-head-text div.button a.take-part:active {
     text-shadow: #048da7 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0;
     box-shadow: 0px 1px 1px #a4bbc0;
     background-position: left -465px;
 }
+
 /* на главной странице */
-.event-slider .slide div.button-take-part {
+.event-slider .slide div.button {
     float: left;
 }
-.event-slider .slide a.button-take-part:link,
-.event-slider .slide a.button-take-part:visited {
+.event-slider .slide div.button a:link,
+.event-slider .slide div.button a:visited {
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
     height: 24px;
     line-height: 23px;
     padding: 0 10px;
+    color: #466173;
     margin-right: 9px;
-    font-weight: bold;
-    color: #008ea9;
     text-decoration: none;
     background: #fff;
     -webkit-border-radius: 13px;
     -moz-border-radius: 13px;
     border-radius: 13px;
 }
-.event-slider .slide a.button-take-part:hover,
-.event-slider .slide a.button-take-part:active {
+.event-slider .slide div.button a.take-part { /* кнопка "принять участие" */
+    font-weight: bold;
+    color: #008ea9;
+}
+.event-slider .slide div.button a.event-not-paid-yet { /* кнопка "участие еще не оплачено" */
+    color: #bd2727;
+}
+.event-slider .slide div.button a:hover,
+.event-slider .slide div.button a:active {
     color: #cd3b23;
-    text-decoration: none;
 }
 
 /* фиксы стилей для виджета комментариев от disqus */
