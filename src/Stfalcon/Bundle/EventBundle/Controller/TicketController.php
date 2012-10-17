@@ -10,6 +10,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
+
 /**
  * Ticket controller
  */
@@ -32,18 +33,14 @@ class TicketController extends BaseController
         $em    = $this->getDoctrine()->getManager();
         $event = $this->getEventBySlug($event_slug);
 
-        $user = $this->get('security.context')->getToken()->getUser();
+        // проверяем или у него нет билетов на этот ивент
+        $ticket = $this->_findTicketForEventByCurrentUser($event);
 
-        if (is_object($user) && $user instanceof UserInterface) {
-            // проверяем или у него нет билетов на этот ивент
-            $ticket = $this->_findTicketForEventByCurrentUser($event);
-
-            // если нет, тогда создаем билет
-            if (is_null($ticket)) {
-                $ticket = new Ticket($event, $user);
-                $em->persist($ticket);
-                $em->flush();
-            }
+        // если нет, тогда создаем билет
+        if (is_null($ticket)) {
+            $ticket = new Ticket($event, $this->get('security.context')->getToken()->getUser());
+            $em->persist($ticket);
+            $em->flush();
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -149,7 +146,7 @@ class TicketController extends BaseController
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = null;
-        if (is_object($user) && $user instanceof UserInterface) {
+        if (is_object($user) && $user instanceof \FOS\UserBundle\Model\UserInterface) {
             // проверяем или у пользователя есть билеты на этот ивент
             $ticket = $this->getDoctrine()->getManager()
                 ->getRepository('StfalconEventBundle:Ticket')
