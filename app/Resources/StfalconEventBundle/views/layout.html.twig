@@ -14,20 +14,20 @@
             </div><!-- div.logo -->
             <div class="event-head-text">
                 {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
+
+                {% if event.receivePayments %}
+                    <div class="reg-button-hold">
+                        <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
+                            Принять участие
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </header><!-- #header-->
 
     <nav class="event-nav">
         <div class="wrap">
-            {% if event.receivePayments %}
-                <div class="reg-button-hold">
-                    <a class="reg-button" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
-                        Принять участие
-                    </a>
-                </div>
-            {% endif %}
-
             {{ knp_menu_render('event_sub') }}
         </div>
     </nav>
