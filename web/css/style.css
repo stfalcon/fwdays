@@ -735,28 +735,6 @@ input[type="submit"] {
     color: #cd3b23;
     text-decoration: none;
 }
-.event-slider .slide .register:link,
-.event-slider .slide .register:visited {
-    display: -moz-inline-stack;
-    display: inline-block;
-    vertical-align: top;
-    height: 24px;
-    line-height: 23px;
-    padding: 0 10px;
-    margin-right: 9px;
-    font-weight: bold;
-    color: #008ea9;
-    text-decoration: none;
-    background: #fff;
-    -webkit-border-radius: 13px;
-    -moz-border-radius: 13px;
-    border-radius: 13px;
-}
-.event-slider .slide .register:hover,
-.event-slider .slide .register:active {
-    color: #cd3b23;
-    text-decoration: none;
-}
 .event-slider .btn-prev {
     position: absolute;
     left: 4%;
@@ -894,8 +872,7 @@ input[type="submit"] {
     max-width: 1400px;
     margin: 0 auto;
 }
-.reg-button-hold {
-    float: left;
+.event-head-text div.button-take-part {
     padding-top: 12px;
 }
 .event-nav ul {
@@ -1468,8 +1445,10 @@ table.event-program .epe-presenter-company {
     margin: 0 2px 0 0;
 }
 
-a.reg-button:link,
-a.reg-button:visited {
+/* кнопки принять участие и узнать больше */
+/* на странице события */
+.event-head-text a.button-take-part:link,
+.event-head-text a.button-take-part:visited {
     display: block;
     width: 150px;
     height: 26px;
@@ -1492,38 +1471,45 @@ a.reg-button:visited {
     border-bottom: 1px solid #02788f;
     background: url(/images/sprite-main.jpg) left -413px repeat-x;
 }
-a.reg-button:hover {
+.event-head-text a.button-take-part:hover {
     text-shadow: #33bcd6 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     background-position: left -439px;
 }
-a.reg-button:active {
+.event-head-text a.button-take-part:active {
     text-shadow: #048da7 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0;
     box-shadow: 0px 1px 1px #a4bbc0;
     background-position: left -465px;
 }
-
-.btn-brown{
-    font-size: 13px;
-    text-shadow: 0 1px 0 #fff;
-    padding: 0 15px;
+/* на главной странице */
+.event-slider .slide div.button-take-part {
+    float: left;
+}
+.event-slider .slide a.button-take-part:link,
+.event-slider .slide a.button-take-part:visited {
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
     height: 24px;
-    line-height: 24px;
-    border: 1px solid #989589;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    cursor: pointer;
-    background-color: #eeede9;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#fdfdfd), to(#e8e7e0)); /* Safari 4+, Chrome */
-    background-image: -webkit-linear-gradient(top, #fdfdfd, #e8e7e0); /* Chrome 10+, Safari 5.1+, iOS 5+ */
-    background-image:    -moz-linear-gradient(top, #fdfdfd, #e8e7e0); /* Firefox 3.6-15 */
-    background-image:      -o-linear-gradient(top, #fdfdfd, #e8e7e0); /* Opera 11.10-12.00 */
-    background-image:         linear-gradient(to bottom, #fdfdfd, #e8e7e0);
+    line-height: 23px;
+    padding: 0 10px;
+    margin-right: 9px;
+    font-weight: bold;
+    color: #008ea9;
+    text-decoration: none;
+    background: #fff;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    border-radius: 13px;
+}
+.event-slider .slide a.button-take-part:hover,
+.event-slider .slide a.button-take-part:active {
+    color: #cd3b23;
+    text-decoration: none;
 }
 
 /* фиксы стилей для виджета комментариев от disqus */
