@@ -15,7 +15,7 @@
 
             {% render "StfalconEventBundle:Ticket:status" with { 'event': event } %}
 
-            <div class="button">
+            <div class="status">
                 <a href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
             </div>
         </div>
