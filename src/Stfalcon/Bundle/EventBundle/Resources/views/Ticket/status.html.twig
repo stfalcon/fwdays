@@ -1,21 +1,21 @@
 {% if event.active %}
     <div class="status">
         {% if ticket and ticket.paid %}
-                <a class="event-paid" href="{{ path('events_my') }}">
-                    Участие оплачено
-                </a>
+            <a class="event-paid" href="{{ path('events_my') }}">
+                Участие оплачено
+            </a>
         {% elseif ticket and event.receivePayments %}
-                <a class="event-not-paid" href="{{ path('events_my') }}">
-                    Участие еще не оплачено
-                </a>
+            <a class="event-pay" href="{{ path('event_pay', {'event_slug': event.slug}) }}">
+                Оплатить участие
+            </a>
         {% elseif ticket and not event.receivePayments %}
-                <a href="{{ path('events_my') }}">
-                    Событие добавлено
-                </a>
+            <a href="{{ path('events_my') }}">
+                Событие добавлено
+            </a>
         {% else %}
-                <a class="take-part" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
-                    Принять участие
-                </a>
+            <a class="take-part" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
+                Принять участие
+            </a>
         {% endif %}
     </div>
 {% endif %}

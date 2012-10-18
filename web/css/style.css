@@ -150,23 +150,6 @@ input {
     vertical-align: middle;
 }
 
-.ticket-status {
-    padding: 6px 13px;
-    margin-bottom: 15px;
-    overflow: hidden;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-}
-.ticket-status-new {
-    color: #e11111;
-    margin-right: 18px;
-}
-.ticket-status-paid {
-    color: #0091AD;
-}
-
 .info-msg-block,
 .error-msg-block {
     padding: 16px 20px;
@@ -1144,9 +1127,6 @@ table.conferences-list .conf-info-h {
 table.conferences-list .conf-info p {
     padding-bottom: 9px;
 }
-table.conferences-list .conf-info-links a {
-    margin-right: 10px;
-}
 table.conferences-list-past .conf-info {
     color: #4d4d4d;
 }
@@ -1424,26 +1404,26 @@ table.event-program .epe-presenter-company {
 
 /* кнопки принять участие и узнать больше */
 /* на странице события */
-.event-head-text div.status {
+.event-head-text .status {
     padding-top: 10px;
     font-size: 16px;
 }
-.event-head-text div.status a {
+.event-head-text .status a {
     color: #414950;
     text-decoration: none;
 }
 .event-head-text div.take-part {
     padding-top: 12px;
 }
-.event-head-text div.status a.event-not-paid { /* кнопка "участие еще не оплачено" */
+.event-head-text .status a.event-not-paid { /* кнопка "участие еще не оплачено" */
     color: #bd2727;
 }
-.event-head-text div.status a.event-paid { /* кнопка "участие еще оплачено" */
+.event-head-text .status a.event-paid { /* кнопка "участие еще оплачено" */
     background: url('/images/check-big.png') no-repeat left;
     padding-left: 17px;
 }
-.event-head-text div.status a.take-part:link,
-.event-head-text div.status a.take-part:visited {
+.event-head-text .status a.event-pay,
+.event-head-text .status a.take-part {
     display: block;
     width: 150px;
     height: 26px;
@@ -1466,14 +1446,16 @@ table.event-program .epe-presenter-company {
     border-bottom: 1px solid #02788f;
     background: url(/images/sprite-main.jpg) left -413px repeat-x;
 }
-.event-head-text div.status a.take-part:hover {
+.event-head-text .status a.event-pay:hover,
+.event-head-text .status a.take-part:hover {
     text-shadow: #33bcd6 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #a0fcff;
     background-position: left -439px;
 }
-.event-head-text div.status a.take-part:active {
+.event-head-text .status a.event-pay:active,
+.event-head-text .status a.take-part:active {
     text-shadow: #048da7 0 -1px 0px;
     -moz-box-shadow: 0px 1px 1px #a4bbc0;
     -webkit-box-shadow: 0px 1px 1px #a4bbc0;
@@ -1482,11 +1464,10 @@ table.event-program .epe-presenter-company {
 }
 
 /* на главной странице */
-.event-slider .slide div.status {
+.event-slider .slide .status {
     float: left;
 }
-.event-slider .slide div.status a:link,
-.event-slider .slide div.status a:visited {
+.event-slider .slide .status a {
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
@@ -1501,14 +1482,12 @@ table.event-program .epe-presenter-company {
     -moz-border-radius: 13px;
     border-radius: 13px;
 }
-.event-slider .slide div.status a.take-part { /* кнопка "принять участие" */
+.event-slider .slide .status a.event-pay,
+.event-slider .slide .status a.take-part { /* кнопка "принять участие" */
     font-weight: bold;
     color: #008ea9;
 }
-.event-slider .slide div.status a.event-not-paid { /* кнопка "участие еще не оплачено" */
-    color: #bd2727;
-}
-.event-slider .slide div.status a.event-paid { /* кнопка "участие оплачено" */
+.event-slider .slide .status a.event-paid { /* кнопка "участие оплачено" */
     background-image: url('/images/check-small.png');
     background-repeat: no-repeat;
     background-position: 9px;
@@ -1516,10 +1495,46 @@ table.event-program .epe-presenter-company {
     color: #000;
 }
 
-.event-slider .slide div.status a:hover,
-.event-slider .slide div.status a:active {
+.event-slider .slide .status a:hover,
+.event-slider .slide .status a:active {
     color: #cd3b23;
 }
+
+/* на странице ивентов */
+.conferences-list .status {
+    float: left;
+    margin-right: 15px;
+}
+.conferences-list .status .event-paid { /* статус "участие оплачено" */
+    background: url('/images/check-small.png') no-repeat left;
+    padding-left: 15px;
+}
+.conferences-list .status a.event-pay, /* кнопка "оплатить" */
+.conferences-list .status a.take-part { /* кнопка "принять участие" */
+    margin-top: -2px;
+    width: 128px;
+    height: 20px;
+    line-height: 19px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    color: #fff;
+    text-shadow: #23acc7 0 -1px 0px;
+    text-align: center;
+    text-decoration: none;
+    -moz-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #5be3f8;
+    -webkit-box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #5be3f8;
+    box-shadow: 0px 1px 1px #a4bbc0, inset 0px 1px 1px #5be3f8;
+    border: 1px solid #22a2ba;
+    border-top: 1px solid #3ccce8;
+    border-bottom: 1px solid #02788f;
+    background: url(/images/sprite-main.jpg) left -413px repeat-x;
+}
+.conferences-list .status a.take-part {
+    width: 124px;
+}
+
 
 /* фиксы стилей для виджета комментариев от disqus */
 

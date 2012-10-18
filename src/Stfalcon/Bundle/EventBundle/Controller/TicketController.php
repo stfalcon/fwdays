@@ -118,7 +118,7 @@ class TicketController extends BaseController
     }
 
     /**
-     * Show event status for current user
+     * Show event ticket status (for current user)
      *
      * @param Event $event
      * @return array

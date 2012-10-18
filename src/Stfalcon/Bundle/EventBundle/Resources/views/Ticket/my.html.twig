@@ -20,18 +20,9 @@
                             {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
                         </div>
 
-                        <div class="ticket-status">
-                            {% if ticket.paid %}
-                                <span class="ticket-status-paid">Участие оплачено</span>
-                            {% else %}
-                                <span class="ticket-status-new">Участие не оплачено</span>
-                                {% if event.receivePayments %}
-                                    <input type="submit" value="Оплатить" onclick="location.href='{{ path('event_pay', {'event_slug': event.slug}) }}'" />
-                                {% endif %}
-                            {% endif %}
-                        </div>
-
                         <p>{{ event.description }}</p>
+
+                        {% render "StfalconEventBundle:Ticket:status" with { 'event': event } %}
 
                         <div class="conf-info-links">
                             <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
