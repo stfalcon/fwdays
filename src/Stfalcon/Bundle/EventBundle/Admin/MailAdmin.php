@@ -89,7 +89,7 @@ class MailAdmin extends Admin
                 // @todo refact
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
-                ->setBody($text);
+                ->setBody($text, 'text/html');
 
             // @todo каждый вызов отнимает память
             $mailer->send($message);
