@@ -28,6 +28,7 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setAbout("Описание события");
         $event->setDate(new \DateTime("2012-04-19", new \DateTimeZone('Europe/Kiev')));
         $event->setReceivePayments(true);
+        $event->setCost(100);
 
         $manager->persist($event);
         $this->addReference('event-zfday', $event);
@@ -43,6 +44,7 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setPlace('Пока неизвестно');
         $event->setAbout("Описание события");
         $event->setDate(new \DateTime("2012-11-18", new \DateTimeZone('Europe/Kiev')));
+        $event->setCost(100);
 
         $manager->persist($event);
         $this->addReference('event-phpday', $event);
@@ -59,6 +61,7 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setAbout("Описание события");
         $event->setActive(false);
         $event->setDate(new \DateTime("2012-12-12", new \DateTimeZone('Europe/Kiev')));
+        $event->setCost(100);
 
         $manager->persist($event);
         $this->addReference('event-not-active', $event);
