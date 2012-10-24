@@ -9,6 +9,10 @@
         <parameter key="stfalcon_event.admin.event.entity">Stfalcon\Bundle\EventBundle\Entity\Event</parameter>
         <parameter key="stfalcon_event.admin.event.controller">SonataAdminBundle:CRUD</parameter>
 
+        <parameter key="stfalcon_event.admin.event_sponsor.class">Stfalcon\Bundle\EventBundle\Admin\EventSponsorAdmin</parameter>
+        <parameter key="stfalcon_event.admin.event_sponsor.entity">Stfalcon\Bundle\EventBundle\Entity\EventSponsor</parameter>
+        <parameter key="stfalcon_event.admin.event_sponsor.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_event.admin.speaker.class">Stfalcon\Bundle\EventBundle\Admin\SpeakerAdmin</parameter>
         <parameter key="stfalcon_event.admin.speaker.entity">Stfalcon\Bundle\EventBundle\Entity\Speaker</parameter>
         <parameter key="stfalcon_event.admin.speaker.controller">SonataAdminBundle:CRUD</parameter>
@@ -38,6 +42,13 @@
             <argument />
             <argument>%stfalcon_event.admin.event.entity%</argument>
             <argument>%stfalcon_event.admin.event.controller%</argument>
+        </service>
+
+        <service id="stfalcon_event.admin.event_sponsor" class="%stfalcon_event.admin.event_sponsor.class%">
+            <tag name="sonata.admin" manager_type="orm"  show_in_dashboard="false" />
+            <argument />
+            <argument>%stfalcon_event.admin.event_sponsor.entity%</argument>
+            <argument>%stfalcon_event.admin.event_sponsor.controller%</argument>
         </service>
 
         <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">

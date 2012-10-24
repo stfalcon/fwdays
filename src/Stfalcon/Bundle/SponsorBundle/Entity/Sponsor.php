@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
+
 /**
  * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
  *
@@ -76,15 +78,11 @@ class Sponsor
     protected $about;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
-     * @ORM\JoinTable(name="event__events_sponsors",
-     *   joinColumns={@ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventSponsor",
+     *     mappedBy="sponsor", cascade={"persist", "remove"}, orphanRemoval=true
      * )
      */
-    protected $events;
+    protected $sponsorEvents;
 
     /**
      * @var \DateTime $created
@@ -107,7 +105,7 @@ class Sponsor
      */
     public function __construct()
     {
-        $this->events = new ArrayCollection();
+        $this->sponsorEvents = new ArrayCollection();
     }
 
     /**
@@ -256,24 +254,32 @@ class Sponsor
         return $this->about;
     }
 
+
     /**
-     * Get event
-     *
-     * @return array
+     * @param EventSponsor $sponsorEvent
      */
-    public function getEvents()
+    public function addSponsorEvents(EventSponsor $sponsorEvent)
     {
-        return $this->events;
+        $this->sponsorEvents[] = $sponsorEvent;
     }
 
     /**
-     * Set event
-     *
-     * @param array $events
+     * @param $sponsorEvents
      */
-    public function setEvents($events)
+    public function setSponsorEvents($sponsorEvents)
     {
-        $this->events = $events;
+        foreach($sponsorEvents as $sponsorEvent){
+            $sponsorEvent->setSponsor($this);
+        }
+        $this->sponsorEvents = $sponsorEvents;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSponsorEvents()
+    {
+        return $this->sponsorEvents;
     }
 
     /**
