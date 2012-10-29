@@ -18,20 +18,18 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        // ePochta
         $category = new Category();
         $category->setName('Golden');
 
         $manager->persist($category);
-
+        $this->addReference('sponsor-category-golden', $category);
         unset($category);
 
-        // Magento
         $category = new Category();
         $category->setName('Wooden');
 
         $manager->persist($category);
-
+        $this->addReference('sponsor-category-wooden', $category);
         unset($category);
 
         // Smart Me
