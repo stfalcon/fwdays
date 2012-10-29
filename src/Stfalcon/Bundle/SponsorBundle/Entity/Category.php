@@ -28,6 +28,13 @@ class Category
      */
     private $name;
 
+    /**
+     * Get title
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     /**
      * Get id
@@ -43,12 +50,10 @@ class Category
      * Set name
      *
      * @param string $name
-     * @return Category
      */
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     /**

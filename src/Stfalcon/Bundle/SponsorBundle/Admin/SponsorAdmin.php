@@ -44,12 +44,15 @@ class SponsorAdmin extends Admin
                     )
                 ))
             ->with('Events')
-                ->add('events', 'sonata_type_model',
-                    array(
-                         'expanded' => true,
-                         'multiple' => true
-                    )
+            ->add('sponsorEvents', 'sonata_type_collection',
+                array(
+                    'label' => 'Events',
+                    'by_reference' => false
+                ), array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
                 )
+            )
             ->end();
     }
 

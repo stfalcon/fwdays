@@ -117,6 +117,11 @@ class Event
     protected $speakers;
 
     /**
+     * @ORM\OneToMany(targetEntity="EventSponsor", mappedBy="event")
+     */
+    protected $eventSponsors;
+
+    /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      */
@@ -134,8 +139,8 @@ class Event
      */
     public function __construct()
     {
-        $this->speakers = new ArrayCollection();
-        $this->sponsors = new ArrayCollection();
+        $this->speakers      = new ArrayCollection();
+        $this->eventSponsors = new ArrayCollection();
     }
 
     /**
@@ -424,5 +429,25 @@ class Event
     public function getCost()
     {
         return $this->cost;
+    }
+
+    /**
+     * Set event sponsors
+     *
+     * @param $eventSponsors
+     */
+    public function setEventSponsors($eventSponsors)
+    {
+        $this->eventSponsors = $eventSponsors;
+    }
+
+    /**
+     * Get event sponsors
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getEventSponsors()
+    {
+        return $this->eventSponsors;
     }
 }
