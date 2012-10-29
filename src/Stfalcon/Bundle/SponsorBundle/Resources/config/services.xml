@@ -8,6 +8,10 @@
         <parameter key="stfalcon_sponsor.admin.sponsor.class">Stfalcon\Bundle\SponsorBundle\Admin\SponsorAdmin</parameter>
         <parameter key="stfalcon_sponsor.admin.sponsor.entity">Stfalcon\Bundle\SponsorBundle\Entity\Sponsor</parameter>
         <parameter key="stfalcon_sponsor.admin.sponsor.controller">SonataAdminBundle:CRUD</parameter>
+
+        <parameter key="stfalcon_sponsor.admin.category.class">Stfalcon\Bundle\SponsorBundle\Admin\CategoryAdmin</parameter>
+        <parameter key="stfalcon_sponsor.admin.category.entity">Stfalcon\Bundle\SponsorBundle\Entity\Category</parameter>
+        <parameter key="stfalcon_sponsor.admin.category.controller">SonataAdminBundle:CRUD</parameter>
     </parameters>
 
     <services>
@@ -18,6 +22,12 @@
             <argument />
             <argument>%stfalcon_sponsor.admin.sponsor.entity%</argument>
             <argument>%stfalcon_sponsor.admin.sponsor.controller%</argument>
+        </service>
+        <service id="stfalcon_sponsor.admin.category" class="%stfalcon_sponsor.admin.category.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Спонсоры" label="Категории"/>
+            <argument />
+            <argument>%stfalcon_sponsor.admin.category.entity%</argument>
+            <argument>%stfalcon_sponsor.admin.category.controller%</argument>
         </service>
     </services>
 
