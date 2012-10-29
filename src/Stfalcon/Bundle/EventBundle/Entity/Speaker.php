@@ -86,7 +86,7 @@ class Speaker
     private $events;
 
     /**
-     * @var Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
      */

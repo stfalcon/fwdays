@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
+use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
 
 /**
  * Load Sponsor fixtures to database
@@ -18,6 +19,10 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $evSponsor = new EventSponsor();
+        $evSponsor->setCategory('Wooden');
+        $evSponsor->setEvent('ZF days');
+
         // ePochta
         $sponsor = new Sponsor();
         $sponsor->setName('ePochta');
@@ -26,8 +31,9 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
         $sponsor->setAbout('About ePochta');
         $sponsor->setSortOrder(10);
-        $sponsor->setEvents(array($manager->merge($this->getReference('event-zfday'))));
+        $sponsor->addSponsorEvents($evSponsor);
         $manager->persist($sponsor);
+
 
         unset($sponsor);
 
@@ -39,12 +45,6 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/magento.png');
         $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
         $sponsor->setSortOrder(100);
-        $sponsor->setEvents(
-            array(
-                 $manager->merge($this->getReference('event-zfday')),
-                 $manager->merge($this->getReference('event-phpday'))
-            )
-        );
         $manager->persist($sponsor);
 
         unset($sponsor);
@@ -57,12 +57,6 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/symfonycamp.png');
         $sponsor->setAbout('About Symfony Camp');
         $sponsor->setSortOrder(1);
-        $sponsor->setEvents(
-            array(
-                 $manager->merge($this->getReference('event-zfday')),
-                 $manager->merge($this->getReference('event-phpday'))
-            )
-        );
         $manager->persist($sponsor);
         unset($sponsor);
 
@@ -74,7 +68,6 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/smartme.png');
         $sponsor->setAbout('About Smart Me');
         $sponsor->setSortOrder(1000);
-        $sponsor->setEvents(array($manager->merge($this->getReference('event-phpday'))));
         $manager->persist($sponsor);
 
         $manager->flush();
