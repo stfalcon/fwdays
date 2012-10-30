@@ -24,13 +24,17 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 
         $manager->persist($category);
 
+        $this->addReference('golden-sponsor',$category);
+
         unset($category);
 
         // Magento
         $category = new Category();
-        $category->setName('Wooden');
+        $category->setName('Silver');
 
         $manager->persist($category);
+
+        $this->addReference('silver-sponsor',$category);
 
         unset($category);
 
