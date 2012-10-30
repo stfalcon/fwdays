@@ -22,14 +22,18 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $category->setName('Golden');
 
         $manager->persist($category);
-        $this->addReference('sponsor-category-golden', $category);
+
+        $this->addReference('golden-sponsor',$category);
+
+
         unset($category);
 
         $category = new Category();
-        $category->setName('Wooden');
+        $category->setName('Silver');
 
         $manager->persist($category);
-        $this->addReference('sponsor-category-wooden', $category);
+        $this->addReference('silver-sponsor',$category);
+
         unset($category);
 
         // Smart Me
