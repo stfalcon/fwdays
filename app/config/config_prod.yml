@@ -20,3 +20,11 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+        gelf:
+           type: service
+           id: monolog.gelf_handler
+           level: debug
+
+parameters:
+     graylog.hostname: localhost
+     graylog.port: 12201 #стандартный порт
