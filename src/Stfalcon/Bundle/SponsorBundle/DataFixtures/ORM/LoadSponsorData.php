@@ -7,7 +7,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
-use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
 
 /**
  * Load Sponsor fixtures to database
@@ -19,9 +18,6 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $evSponsor = new EventSponsor();
-        $evSponsor->setCategory('Wooden');
-        $evSponsor->setEvent('ZF days');
 
         // ePochta
         $sponsor = new Sponsor();
@@ -31,9 +27,9 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
         $sponsor->setAbout('About ePochta');
         $sponsor->setSortOrder(10);
-        $sponsor->addSponsorEvents($evSponsor);
         $manager->persist($sponsor);
 
+        $this->addReference('sponsor-ePochta', $sponsor);
 
         unset($sponsor);
 
@@ -46,6 +42,8 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
         $sponsor->setSortOrder(100);
         $manager->persist($sponsor);
+
+        $this->addReference('sponsor-Magento', $sponsor);
 
         unset($sponsor);
 
