@@ -29,6 +29,13 @@ class Category
     private $name;
 
     /**
+     * @var int $sortOrder
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false)
+     */
+    protected $sortOrder = 1;
+
+    /**
      * Get title
      */
     public function __toString()
@@ -65,4 +72,25 @@ class Category
     {
         return $this->name;
     }
+
+    /**
+     * Set sortOrder
+     *
+     * @param int $sortOrder
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * Get sortOrder
+     *
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
 }

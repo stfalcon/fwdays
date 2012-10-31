@@ -20,6 +20,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $category = new Category();
         $category->setName('Golden');
+        $category->setSortOrder(10);
 
         $manager->persist($category);
 
@@ -30,6 +31,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 
         $category = new Category();
         $category->setName('Silver');
+        $category->setSortOrder(20);
 
         $manager->persist($category);
         $this->addReference('silver-sponsor',$category);

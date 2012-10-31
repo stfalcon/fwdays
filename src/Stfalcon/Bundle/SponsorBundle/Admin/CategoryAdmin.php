@@ -18,7 +18,8 @@ class CategoryAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name');
+            ->add('name')
+            ->add('sortOrder');
     }
 
     /**
@@ -29,6 +30,7 @@ class CategoryAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('name')
+                ->add('sortOrder')
             ->end();
     }
 
