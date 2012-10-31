@@ -51,8 +51,7 @@ class SponsorAdmin extends Admin
                 ), array(
                     'edit' => 'inline',
                     'inline' => 'table',
-                )
-            )
+                ))
             ->end();
     }
 

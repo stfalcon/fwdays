@@ -10,7 +10,7 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Category;
  * Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor
  *
  * @ORM\Table(name="event__events_sponsors")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventSponsorRepository")
  */
 class EventSponsor
 {
@@ -46,6 +46,13 @@ class EventSponsor
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
+
+    /**
+     * @var boolean onMain
+     *
+     * @ORM\Column(name="on_main", type="boolean")
+     */
+    protected $onMain = false;
 
     /**
      * Get title
@@ -117,5 +124,21 @@ class EventSponsor
     public function getSponsor()
     {
         return $this->sponsor;
+    }
+
+    /**
+     * @param boolean $onMain
+     */
+    public function setOnMain($onMain)
+    {
+        $this->onMain = $onMain;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOnMain()
+    {
+        return $this->onMain;
     }
 }

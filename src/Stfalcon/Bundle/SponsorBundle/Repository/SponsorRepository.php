@@ -33,4 +33,20 @@ class SponsorRepository extends EntityRepository
             ->setParameter('eventId', $event->getId())
             ->getResult();
     }
+
+    public function getCheckedSponsorsOfActiveEvents()
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT s
+                FROM StfalconSponsorBundle:Sponsor s
+                  JOIN s.sponsorEvents es
+                  JOIN es.event e
+                  JOIN es.category c
+                WHERE e.active = true
+                  AND es.onMain = true
+                ORDER BY c.sortOrder DESC
+            ')
+            ->getResult();
+    }
 }
