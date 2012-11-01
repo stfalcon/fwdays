@@ -39,12 +39,25 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader = new Loader();
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $purger = new ORMPurger();
+        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $connection = $em->getConnection();
+
+        $connection->beginTransaction();
+
+        $connection->query('SET FOREIGN_KEY_CHECKS=0');
+        $connection->commit();
+
+        $purger   = new ORMPurger();
+        $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
+
+        $connection->beginTransaction();
+        $connection->query('SET FOREIGN_KEY_CHECKS=1');
+        $connection->commit();
+
         $executor->execute($loader->getFixtures(), true);
     }
 }
