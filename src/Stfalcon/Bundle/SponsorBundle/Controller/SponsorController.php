@@ -30,4 +30,23 @@ class SponsorController extends Controller
 
         return array('sponsors' => $sponsors);
     }
+
+    /**
+     * Show main sponsors of active events
+     *
+     * @param Event $event
+     *
+     * @return array List of sponsors
+     *
+     * @Template()
+     */
+    public function mainWidgetAction()
+    {
+        /** @var $sponsorRepository \Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository */
+        $sponsorRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconSponsorBundle:Sponsor');
+        $sponsors = $sponsorRepository->getCheckedSponsorsOfActiveEvents();
+
+        return array('sponsors' => $sponsors);
+    }
 }

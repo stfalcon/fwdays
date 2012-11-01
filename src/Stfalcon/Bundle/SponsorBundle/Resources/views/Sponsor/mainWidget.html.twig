@@ -1,5 +1,5 @@
 {% if sponsors %}
-    <h2>Спонсоры</h2>
+    <h2>Спонсоры и партнеры</h2>
 
     {% for sponsor in sponsors %}
         <div class="partner sort-order-{{ loop.index }}">
@@ -9,9 +9,3 @@
         </div>
     {% endfor %}
 {% endif %}
-
-<div class="become-partner">
-    <a href="{{ path('page_show', {'slug': 'partners'}) }}#become-partner">
-        Здесь может<br> быть ваш логотип
-    </a>
-</div>
