@@ -26,7 +26,8 @@ class SponsorRepository extends EntityRepository
             ->createQuery('
                 SELECT s
                 FROM StfalconSponsorBundle:Sponsor s
-                JOIN s.sponsorEvents e
+                JOIN s.sponsorEvents se
+                JOIN se.event e
                 WHERE e.id = :eventId
                 ORDER BY s.sortOrder DESC, s.name ASC
             ')
