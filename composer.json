@@ -18,6 +18,7 @@
         "jms/security-extra-bundle": "1.2.0",
         "jms/di-extra-bundle": "1.1.0",
 
+
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
 
         "kriswallsmith/assetic": "1.1.*",
@@ -37,7 +38,10 @@
         "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
 
         "zendframework/zend-feed": "2.0.*",
-        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e"
+        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
+        "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
+        "knplabs/gaufrette" : "dev-master#0628ac151f6326e8a1c97f531a5bb891d9a0ab6f",
+        "knplabs/knp-gaufrette-bundle" : "dev-master#60bf97cb661c49474d2bf5bc62e99bfe982aa1cb"
     },
     "repositories": [
         {
