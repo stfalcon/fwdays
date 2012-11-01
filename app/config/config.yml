@@ -121,3 +121,11 @@ sonata_block:
         #sonata.media.block.media:
         #sonata.media.block.gallery:
         #sonata.media.block.feature_media:
+
+services:
+     gelf.publisher:
+         class: Gelf\MessagePublisher
+         arguments: [%graylog.hostname%, %graylog.port%]
+     monolog.gelf_handler:
+         class: Monolog\Handler\GelfHandler
+         arguments: [@gelf.publisher]

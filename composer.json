@@ -36,7 +36,8 @@
         "doctrine/doctrine-migrations-bundle": "dev-master#3792aa78445773387754c6853bbd7f4dcb31f486",
         "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
 
-        "zendframework/zend-feed": "2.0.*"
+        "zendframework/zend-feed": "2.0.*",
+        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e"
     },
     "repositories": [
         {
