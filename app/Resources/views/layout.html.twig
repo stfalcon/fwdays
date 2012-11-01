@@ -91,8 +91,14 @@
                 </aside><!-- #side-left -->
 
                 <aside id="side-right">
-                    {% block sidebar_right %}
-                    {% endblock %}
+                    <div class="side-right-wrap">
+                        <div class="side-right-holder">
+                            <div class="partners">
+                                {% block sidebar_right %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
                 </aside><!-- #side-right -->
 
             </section><!-- #middle-->

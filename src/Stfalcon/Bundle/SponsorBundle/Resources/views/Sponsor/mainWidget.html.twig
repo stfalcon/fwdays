@@ -1,36 +1,11 @@
-<div class="side-right-wrap">
-    <div class="side-right-holder">
-        <div class="partners">
-            <h2>Спонсоры</h2>
-            {% if sponsors %}
-                {% for sponsor in sponsors %}
-                    {% if sponsor.logo %}
-                        <div class="partner sort-order-{{ loop.index }}">
-                            {# Если у спонсора есть сайт, то выводим картинку как ссылку #}
-                            {% if sponsor.site %}
-                                <a href="{{ sponsor.site }}">
-                                    <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
-                                </a>
-                                {# В другом случае - просто картинку #}
-                            {% else %}
-                                <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
-                            {% endif %}
-                        </div>
-                    {% else %}
-                        <div class="sort-order-{{ loop.index }}">
-                            {# Аналогичная проверка только без картинок, только текст #}
-                            {% if sponsor.site %}
-                                    <a href="{{ sponsor.site }}" title="{{ sponsor.name }}" />{{ sponsor.name }}</a>
-                            {% else %}
-                                {{ sponsor.name }}
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            <div class="become-partner">
-                <a href="/page/partners#become-partner">Здесь может<br> быть ваш логотип</a>
-            </div>
+{% if sponsors %}
+    <h2>Спонсоры и партнеры</h2>
+
+    {% for sponsor in sponsors %}
+        <div class="partner sort-order-{{ loop.index }}">
+            <a href="{{ sponsor.site }}">
+                <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+            </a>
         </div>
-    </div>
-</div>
+    {% endfor %}
+{% endif %}

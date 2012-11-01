@@ -13,6 +13,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event as Event;
  */
 class SponsorRepository extends EntityRepository
 {
+
     /**
      * Get all sponsors of event
      *
@@ -24,11 +25,16 @@ class SponsorRepository extends EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery('
-                SELECT s
-                FROM StfalconSponsorBundle:Sponsor s
-                JOIN s.sponsorEvents e
-                WHERE e.id = :eventId
-                ORDER BY s.sortOrder DESC, s.name ASC
+                SELECT
+                    s
+                FROM
+                    StfalconSponsorBundle:Sponsor s
+                    JOIN s.sponsorEvents se
+                    JOIN se.event e
+                WHERE
+                    e.id = :eventId
+                ORDER BY
+                    s.sortOrder DESC, s.name ASC
             ')
             ->setParameter('eventId', $event->getId())
             ->getResult();
@@ -38,14 +44,18 @@ class SponsorRepository extends EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery('
-                SELECT s
-                FROM StfalconSponsorBundle:Sponsor s
-                  JOIN s.sponsorEvents es
-                  JOIN es.event e
-                  JOIN es.category c
-                WHERE e.active = true
-                  AND es.onMain = true
-                ORDER BY c.sortOrder DESC
+                SELECT
+                    s
+                FROM
+                    StfalconSponsorBundle:Sponsor s
+                    JOIN s.sponsorEvents es
+                    JOIN es.event e
+                    JOIN es.category c
+                WHERE
+                    e.active = true
+                    AND es.onMain = true
+                ORDER BY
+                    c.sortOrder DESC
             ')
             ->getResult();
     }

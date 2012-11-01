@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Doctrine\Common\Util\Debug;
 
 /**
  * Sponsor controller
@@ -33,7 +32,7 @@ class SponsorController extends Controller
     }
 
     /**
-     * List of sponsors of event
+     * Show main sponsors of active events
      *
      * @param Event $event
      *
@@ -47,7 +46,7 @@ class SponsorController extends Controller
         $sponsorRepository = $this->getDoctrine()->getManager()
             ->getRepository('StfalconSponsorBundle:Sponsor');
         $sponsors = $sponsorRepository->getCheckedSponsorsOfActiveEvents();
-        //Debug::dump($sponsors);exit;
+
         return array('sponsors' => $sponsors);
     }
 }
