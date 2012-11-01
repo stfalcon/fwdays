@@ -18,7 +18,6 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        // ePochta
         $category = new Category();
         $category->setName('Golden');
         $category->setSortOrder(10);
@@ -27,15 +26,14 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 
         $this->addReference('golden-sponsor',$category);
 
+
         unset($category);
 
-        // Magento
         $category = new Category();
         $category->setName('Silver');
         $category->setSortOrder(20);
 
         $manager->persist($category);
-
         $this->addReference('silver-sponsor',$category);
 
         unset($category);
