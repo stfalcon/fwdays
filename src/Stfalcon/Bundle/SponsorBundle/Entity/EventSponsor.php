@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Entity;
+namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,7 +10,8 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Category;
  * Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor
  *
  * @ORM\Table(name="event__events_sponsors")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventSponsorRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
+ *
  */
 class EventSponsor
 {
@@ -34,7 +35,7 @@ class EventSponsor
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     protected $event;

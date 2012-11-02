@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
+use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
 
 /**
  * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
@@ -78,7 +78,7 @@ class Sponsor
     protected $about;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventSponsor",
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor",
      *     mappedBy="sponsor", cascade={"persist", "remove"}, orphanRemoval=true
      * )
      */
