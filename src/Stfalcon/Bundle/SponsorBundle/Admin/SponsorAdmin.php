@@ -23,6 +23,7 @@ class SponsorAdmin extends Admin
             ->add('name')
             ->add('site')
             ->add('about')
+            ->add('onMain')
             ->add('sortOrder');
     }
 
@@ -43,6 +44,7 @@ class SponsorAdmin extends Admin
                         'min' => 1
                     )
                 ))
+                ->add('onMain', null, array('required' => false))
             ->with('Events')
             ->add('sponsorEvents', 'sonata_type_collection',
                 array(

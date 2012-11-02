@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Admin;
+namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -17,7 +17,6 @@ class EventSponsorAdmin extends Admin
     {
         $formMapper
             ->add('event')
-            ->add('category')
-            ->add('onMain', null, array('required' => false));
+            ->add('category');
     }
 }

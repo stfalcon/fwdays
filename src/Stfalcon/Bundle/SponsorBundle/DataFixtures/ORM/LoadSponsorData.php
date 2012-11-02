@@ -26,6 +26,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setSite('http://www.epochta.ru/');
         $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
         $sponsor->setAbout('About ePochta');
+        $sponsor->setOnMain(1);
         $sponsor->setSortOrder(10);
         $manager->persist($sponsor);
 
@@ -41,6 +42,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $sponsor->setLogo('/bundles/stfalconsponsor/images/magento.png');
         $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
         $sponsor->setSortOrder(100);
+        $sponsor->setOnMain(1);
         $manager->persist($sponsor);
 
         $this->addReference('sponsor-Magento', $sponsor);

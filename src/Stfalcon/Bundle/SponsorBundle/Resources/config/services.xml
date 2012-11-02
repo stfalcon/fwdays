@@ -9,12 +9,25 @@
         <parameter key="stfalcon_sponsor.admin.sponsor.entity">Stfalcon\Bundle\SponsorBundle\Entity\Sponsor</parameter>
         <parameter key="stfalcon_sponsor.admin.sponsor.controller">SonataAdminBundle:CRUD</parameter>
 
+
+        <parameter key="stfalcon_sponsor.admin.event_sponsor.class">Stfalcon\Bundle\SponsorBundle\Admin\EventSponsorAdmin</parameter>
+        <parameter key="stfalcon_sponsor.admin.event_sponsor.entity">Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor</parameter>
+        <parameter key="stfalcon_sponsor.admin.event_sponsor.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_sponsor.admin.category.class">Stfalcon\Bundle\SponsorBundle\Admin\CategoryAdmin</parameter>
         <parameter key="stfalcon_sponsor.admin.category.entity">Stfalcon\Bundle\SponsorBundle\Entity\Category</parameter>
         <parameter key="stfalcon_sponsor.admin.category.controller">SonataAdminBundle:CRUD</parameter>
     </parameters>
 
     <services>
+
+        <service id="stfalcon_sponsor.admin.event_sponsor" class="%stfalcon_sponsor.admin.event_sponsor.class%">
+            <tag name="sonata.admin" manager_type="orm"  show_in_dashboard="false" />
+            <argument />
+            <argument>%stfalcon_sponsor.admin.event_sponsor.entity%</argument>
+            <argument>%stfalcon_sponsor.admin.event_sponsor.controller%</argument>
+        </service>
+
         <service id="stfalcon_sponsor.current_sponsor" class="%stfalcon_sponsor.admin.sponsor.entity%" />
 
         <service id="stfalcon_sponsor.admin.sponsor" class="%stfalcon_sponsor.admin.sponsor.class%">
