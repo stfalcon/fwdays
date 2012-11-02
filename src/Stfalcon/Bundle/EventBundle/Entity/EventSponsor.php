@@ -48,13 +48,6 @@ class EventSponsor
     protected $category;
 
     /**
-     * @var boolean onMain
-     *
-     * @ORM\Column(name="on_main", type="boolean")
-     */
-    protected $onMain = false;
-
-    /**
      * Get title
      */
     public function __toString()
@@ -124,21 +117,5 @@ class EventSponsor
     public function getSponsor()
     {
         return $this->sponsor;
-    }
-
-    /**
-     * @param boolean $onMain
-     */
-    public function setOnMain($onMain)
-    {
-        $this->onMain = $onMain;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getOnMain()
-    {
-        return $this->onMain;
     }
 }

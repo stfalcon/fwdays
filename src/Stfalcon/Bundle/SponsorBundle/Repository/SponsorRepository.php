@@ -23,18 +23,20 @@ class SponsorRepository extends EntityRepository
      */
     public function getSponsorsOfEvent(Event $event)
     {
-        return $this->getEntityManager()
+        return  $this->getEntityManager()
             ->createQuery('
                 SELECT
-                    s
+                    s as sponsor,
+                    c.name as category_name
                 FROM
                     StfalconSponsorBundle:Sponsor s
                     JOIN s.sponsorEvents se
                     JOIN se.event e
+                    JOIN se.category c
                 WHERE
                     e.id = :eventId
                 ORDER BY
-                    s.sortOrder DESC, s.name ASC
+                    c.sortOrder DESC
             ')
             ->setParameter('eventId', $event->getId())
             ->getResult();
@@ -48,14 +50,13 @@ class SponsorRepository extends EntityRepository
                     s
                 FROM
                     StfalconSponsorBundle:Sponsor s
-                    JOIN s.sponsorEvents es
-                    JOIN es.event e
-                    JOIN es.category c
+                    JOIN s.sponsorEvents se
+                    JOIN se.event e
                 WHERE
                     e.active = true
-                    AND es.onMain = true
+                    AND s.onMain = true
                 ORDER BY
-                    c.sortOrder DESC
+                    s.sortOrder DESC
             ')
             ->getResult();
     }

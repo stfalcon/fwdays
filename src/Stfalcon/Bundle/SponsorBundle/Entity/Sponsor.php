@@ -100,6 +100,14 @@ class Sponsor
      */
     protected $updatedAt;
 
+
+    /**
+     * @var boolean onMain
+     *
+     * @ORM\Column(name="on_main", type="boolean")
+     */
+    protected $onMain = false;
+
     /**
      * Constructor
      */
@@ -330,5 +338,22 @@ class Sponsor
     public function __toString()
     {
         return $this->name;
+    }
+
+
+    /**
+     * @param boolean $onMain
+     */
+    public function setOnMain($onMain)
+    {
+        $this->onMain = $onMain;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOnMain()
+    {
+        return $this->onMain;
     }
 }

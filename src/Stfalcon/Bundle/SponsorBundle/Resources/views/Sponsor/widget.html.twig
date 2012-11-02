@@ -1,12 +1,14 @@
 {% if sponsors %}
     <h2>Спонсоры</h2>
-
-    {% for sponsor in sponsors %}
-        <div class="partner sort-order-{{ loop.index }}">
-            <a href="{{ sponsor.site }}">
-                <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
-            </a>
-        </div>
+    {% for category, csponsors in sponsors %}
+         <h4>{{ category }} </h4>
+         {% for sponsor in csponsors %}
+            <div class="partner sort-order-{{ loop.index }}">
+                <a href="{{ sponsor.site }}">
+                    <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                </a>
+            </div>
+         {% endfor %}
     {% endfor %}
 {% endif %}
 

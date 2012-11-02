@@ -17,7 +17,6 @@ class EventSponsorAdmin extends Admin
     {
         $formMapper
             ->add('event')
-            ->add('category')
-            ->add('onMain', null, array('required' => false));
+            ->add('category');
     }
 }
