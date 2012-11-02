@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\OrderedFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
-use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
+use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
 
 /**
  * Load Sponsor fixtures to database
