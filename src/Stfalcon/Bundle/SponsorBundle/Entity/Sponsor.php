@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
+use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
 
 /**
  * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
@@ -78,7 +78,7 @@ class Sponsor
     protected $about;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventSponsor",
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor",
      *     mappedBy="sponsor", cascade={"persist", "remove"}, orphanRemoval=true
      * )
      */
@@ -99,6 +99,14 @@ class Sponsor
      * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
+
+
+    /**
+     * @var boolean onMain
+     *
+     * @ORM\Column(name="on_main", type="boolean")
+     */
+    protected $onMain = false;
 
     /**
      * Constructor
@@ -330,5 +338,22 @@ class Sponsor
     public function __toString()
     {
         return $this->name;
+    }
+
+
+    /**
+     * @param boolean $onMain
+     */
+    public function setOnMain($onMain)
+    {
+        $this->onMain = $onMain;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOnMain()
+    {
+        return $this->onMain;
     }
 }
