@@ -26,5 +26,5 @@ monolog:
            level: debug
 
 parameters:
-     graylog.hostname: localhost
+     graylog.hostname: 10.0.0.1
      graylog.port: 12201 #стандартный порт
