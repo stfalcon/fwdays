@@ -37,26 +37,10 @@
         "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
 
         "zendframework/zend-feed": "2.0.*",
-        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e"
+        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
+        "stfalcon/page-bundle": "*"
     },
     "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "stfalcon/page-bundle",
-                "version": "dev-master",
-                "dist": {
-                    "url": "https://github.com/stfalcon/PageBundle/zipball/master",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "git://github.com/stfalcon/PageBundle.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "target-dir": "../../../src/Stfalcon/Bundle/PageBundle"
-            }
-        },
         {
             "type": "package",
             "package": {
