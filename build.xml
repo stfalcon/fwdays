@@ -45,7 +45,7 @@
         <mkdir dir="${logsdir}/reports" />
         <mkdir dir="${logsdir}/reports/coverage" />
          <exec command="php app/console doctrine:schema:update --env=test --force" escape="false" />
-        <exec command="phpunit -c ./app/ --log-junit ${logsdir}/reports/testsuites.xml --coverage-clover ${logsdir}/reports/coverage/clover.xml -c ./app/ " escape="false" />
+        <exec command="phpunit -c ./app/ --log-junit ${logsdir}/reports/phpunit/testsuites.xml --coverage-clover ${logsdir}/reports/coverage/clover.xml -c ./app/ " escape="false" />
         <exec command="./bin/run-all-features ci /var/lib/jenkins/jobs/frameworksdays.com/workspace/build/logs/reports/" escape="false" />
     </target>
 
