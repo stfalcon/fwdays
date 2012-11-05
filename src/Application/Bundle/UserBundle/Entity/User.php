@@ -101,7 +101,7 @@ class User extends BaseUser
      */
     public function setFullname($fullname)
     {
-        $this->fullname = $fullname;
+        $this->fullname =  strip_tags($fullname);
     }
 
     /**
@@ -121,7 +121,7 @@ class User extends BaseUser
      */
     public function setCompany($company)
     {
-        $this->company = $company;
+        $this->company =  strip_tags($company);
     }
 
     /**
@@ -141,7 +141,7 @@ class User extends BaseUser
      */
     public function setPost($post)
     {
-        $this->post = $post;
+        $this->post = strip_tags($post);
     }
 
     /**
@@ -191,7 +191,7 @@ class User extends BaseUser
      */
     public function setCity($city)
     {
-        $this->city = $city;
+        $this->city =  strip_tags($city);
     }
 
     /**
@@ -211,7 +211,7 @@ class User extends BaseUser
      */
     public function setCountry($country)
     {
-        $this->country = $country;
+        $this->country =  strip_tags($country);
     }
 
     /**
