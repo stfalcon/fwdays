@@ -10,7 +10,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
-
 /**
  * Ticket controller
  */
@@ -179,5 +178,70 @@ class TicketController extends BaseController
         }
 
         return $ticket;
+    }
+
+    /**
+     * @Route("/generate/")
+     *
+    */
+    //public function getTicketQRAction(Ticket $ticket){
+    public function getTicketQRAction(){
+        //$user   = $ticket->getUser();
+        //$fio    = $user->getFullname();
+        //$hash   = md5($ticket->getId().$ticket->getCreatedAt());
+        //$userId->$user->getId();
+        //$eventId    = $ticket->getEvent();
+        $eventId = 1;
+        $userId = 2;
+        $fio = 'Makuhin Vital Vitalivick';
+        $hash = md5($fio);
+        $qrCode = $this->get('stfalcon_event.qr_code');
+        $qrCode->setText('http://frameworksdays.com/verify/'.$eventId.'/'.$userId.'/'.$hash);
+        $qrCode = $qrCode->get();
+        //$ticketPrint = imagecreatetruecolor(320,240);
+
+        //imagestring ($ticketPrint, 50, 5, 5,"A Simple Text String", 1);
+
+        //ImageTTFtext($ticketPrint, 26, 0, 200, 40, 0, "Times", "Simona");
+
+        //imagecopy($ticketPrint, $qrCode, 50, 50, 0, 0, 100, 100);
+        //imagepng($ticketPrint);
+
+        return new \Symfony\Component\HttpFoundation\Response($qrCode, 200, array('Content-Type' => 'image/png'));
+    }
+
+    /**
+     * @Route("/verify/{hash}")
+     *
+     */
+    public function verifyQRAction ($eventId, $userId, $hash){
+
+        $em     = $this->getDoctrine()->getManager();
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(
+            array(
+                'event' => $eventId,
+                'user' => $userId
+            )
+        );
+
+        if ($ticket->isUsed()) throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('ticked is used at'.$ticket->getUpdateAt());
+
+        $ticketHash = md5($ticket->getId().$ticket->getCreatedAt());
+
+        if ($ticketHash == $hash){
+
+             if (false){//if admin
+
+                  $ticket->setUsed();
+                 //set registration date
+                 $em->flush();
+             }
+             else {
+                // show information about user and Event
+             }
+        }
+        else throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User or ticked not found');
+
     }
 }
