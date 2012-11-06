@@ -6,12 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
 
 /**
  * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
  *
+ * @Vich\Uploadable
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
  */
@@ -67,6 +69,8 @@ class Sponsor
      *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
+     *
+     * @Vich\UploadableField(mapping="product_image", fileNameProperty="logo")
      */
     protected $file;
 

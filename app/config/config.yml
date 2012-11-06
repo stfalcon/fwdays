@@ -131,8 +131,9 @@ services:
          arguments: [@gelf.publisher]
 
 vich_uploader:
-    db_driver: orm
+     db_driver: orm
      mappings:
           product_image:
               uri_prefix: /images/products
-              upload_destination: %kernel.root_dir%/../web/images/products
+              upload_destination: %kernel.root_dir%/../web/images/partners
+              namer: stfalcon.namer.sponsor
