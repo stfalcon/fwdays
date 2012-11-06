@@ -135,3 +135,4 @@ vich_uploader:
      mappings:
           sponsor_image:
               upload_destination: %kernel.root_dir%/../web/uploads/sponsors
+              inject_on_load: false

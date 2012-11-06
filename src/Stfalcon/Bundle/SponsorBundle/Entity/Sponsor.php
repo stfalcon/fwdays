@@ -236,6 +236,10 @@ class Sponsor
     public function setFile($file)
     {
         $this->file = $file;
+
+        if ($file instanceof UploadedFile) {
+            $this->setUpdatedAt(new \DateTime());
+        }
     }
 
     /**
