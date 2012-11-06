@@ -133,7 +133,5 @@ services:
 vich_uploader:
      db_driver: orm
      mappings:
-          product_image:
-              uri_prefix: /images/products
-              upload_destination: %kernel.root_dir%/../web/images/partners
-              namer: stfalcon.namer.sponsor
+          sponsor_image:
+              upload_destination: %kernel.root_dir%/../web/uploads/sponsors

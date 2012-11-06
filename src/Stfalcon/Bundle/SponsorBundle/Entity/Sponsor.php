@@ -70,7 +70,7 @@ class Sponsor
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      *
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="logo")
+     * @Vich\UploadableField(mapping="sponsor_image", fileNameProperty="logo")
      */
     protected $file;
 

@@ -37,7 +37,7 @@ class SponsorAdmin extends Admin
                 ->add('slug')
                 ->add('site')
                 ->add('about')
-                ->add('file', 'file', array('required' => false))
+                ->add('file', 'file', array('required' => false, 'data_class' => 'Symfony\Component\HttpFoundation\File\File'))
                 ->add('sortOrder', null, array(
                     'attr' => array(
                         'min' => 1
