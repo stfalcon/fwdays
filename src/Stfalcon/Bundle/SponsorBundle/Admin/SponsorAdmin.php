@@ -58,4 +58,56 @@ class SponsorAdmin extends Admin
                 ))
             ->end();
     }
+
+    /**
+     * Saves an uploaded logo of sponsor
+     *
+     * @param \Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
+     *
+     * @return void
+     */
+    public function uploadLogo($sponsor)
+    {
+       //echo "1111";exit;
+        if (null === $sponsor->getFile()) {
+            return;
+        }
+
+        $uploadDir     = '/uploads/sponsors';
+        $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
+        $newFileName   = $sponsor->getSlug() . '.' . pathinfo($sponsor->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
+
+        $sponsor->getFile()->move($pathToUploads, $newFileName);
+        $sponsor->setLogo($uploadDir . '/' . $newFileName);
+
+        $sponsor->setFile(null);
+    }
+
+    /**
+     * @param mixed $sponsor
+     *
+     * @return mixed|void
+     */
+    public function prePersist($sponsor)
+    {
+        $this->uploadLogo($sponsor);
+    }
+
+    /**
+     * @param mixed $sponsor
+     *
+     * @return mixed|void
+     */
+    public function preUpdate($sponsor)
+    {
+        $this->uploadLogo($sponsor);
+    }
+
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
+    {
+        $actions = array();
+    }
 }

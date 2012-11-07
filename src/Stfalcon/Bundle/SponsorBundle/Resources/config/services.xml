@@ -29,6 +29,10 @@
             <argument>%stfalcon_sponsor.admin.category.entity%</argument>
             <argument>%stfalcon_sponsor.admin.category.controller%</argument>
         </service>
+
+        <service id="stfalcon.namer.sponsor" class="Stfalcon\Bundle\SponsorBundle\Naming\SponsorNaming">
+        </service>
+
     </services>
 
 </container>

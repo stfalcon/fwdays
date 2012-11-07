@@ -4,7 +4,7 @@
     {% for sponsor in sponsors %}
         <div class="partner sort-order-{{ loop.index }}">
             <a href="{{ sponsor.site }}">
-                <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
             </a>
         </div>
     {% endfor %}

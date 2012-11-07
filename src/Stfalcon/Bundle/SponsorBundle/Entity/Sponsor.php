@@ -162,15 +162,6 @@ class Sponsor
         return $this->name;
     }
 
-    /**
-     * Set logo
-     *
-     * @param string $logo
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-    }
 
     /**
      * Get logo
