@@ -34,5 +34,4 @@ class TicketRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getResult();
     }
-
 }

@@ -29,6 +29,10 @@
         <parameter key="stfalcon_event.admin.mails.class">Stfalcon\Bundle\EventBundle\Admin\MailAdmin</parameter>
         <parameter key="stfalcon_event.admin.mails.entity">Stfalcon\Bundle\EventBundle\Entity\Mail</parameter>
         <parameter key="stfalcon_event.admin.mails.controller">SonataAdminBundle:CRUD</parameter>
+
+        <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
+        <parameter key="stfalcon_event.qr_code.size">300</parameter>
+        <parameter key="stfalcon_event.qr_code.extension">png</parameter>
     </parameters>
 
     <services>
@@ -74,6 +78,12 @@
             <argument />
             <argument>%stfalcon_event.admin.mails.entity%</argument>
             <argument>%stfalcon_event.admin.mails.controller%</argument>
+        </service>
+
+        <service id="stfalcon_event.qr_code" class="%stfalcon_event.qr_code.class%">
+            <argument>%stfalcon_event.admin.mails.controller%</argument>
+            <argument>%stfalcon_event.qr_code.size%</argument>
+            <argument>%stfalcon_event.qr_code.extension%</argument>
         </service>
     </services>
 
