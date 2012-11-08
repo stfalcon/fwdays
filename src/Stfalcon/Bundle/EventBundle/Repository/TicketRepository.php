@@ -34,17 +34,4 @@ class TicketRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getResult();
     }
-
-    /**
-     * Return ticket by ticket_id
-     *
-     * @param ticketId $id
-     *
-     * @return object
-     */
-    public function getTicketById($ticketId)
-    {
-        return $this->findOneBy(array('id' => $ticketId));
-    }
-
 }

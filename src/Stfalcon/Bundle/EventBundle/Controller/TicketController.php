@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template,
     Symfony\Component\HttpFoundation\RedirectResponse,
     JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
@@ -181,58 +183,55 @@ class TicketController extends BaseController
     }
 
     /**
-     * @Route("/generate/{ticketId}")
+     * Generating QR-code for ticket
      *
+     * @Route("/generate/{ticket}")
+     * @param Ticket $ticket
+     *
+     * @return array
+     *
+     * @Template()
      */
-    public function getTicketQRAction($ticketId)
+    public function getTicketQRAction(Ticket $ticket)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $ticket     = $em->getRepository('StfalconEventBundle:Ticket')->getTicketById($ticketId);
-        $user       = $ticket->getUser();
+        $user = $ticket->getUser();
 
-        if (($user->getUsername() != $this->getUser()) && !$this->get('security.context')->isGranted('ROLE_ADMIN')){
-             throw  new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('You are bad user');
+        if (($user->getUsername() != $this->getUser()) && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw  new NotFoundHttpException('You are bad user');
         }
 
-        $fullName   = $user->getFullname();
-        $hash       = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
+        $hash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
+        $url = $this->generateUrl(
+            'check_route', array(
+            'ticket' => $ticket->getId(),
+            'hash' => $hash), true);
+        $qrCode = $this->get('stfalcon_event.qr_code');
+        $qrCode->setText($url);
+        $qrCode = base64_encode($qrCode->get());
 
-        $baseHost   = $this->getRequest()->getHttpHost();
-        $qrCode     = $this->get('stfalcon_event.qr_code');
-        $qrCode->setText($baseHost . '/verify/' . $ticketId . '/' . $hash);
-        $qrCode     = $qrCode->get();
-
-        $ticketPrint = imagecreatefrompng('images/blank.png');
-        imagestring($ticketPrint, 50, 20, 170, $fullName, 1);
-
-        $qrCode = imagecreatefromstring($qrCode);
-        imagecopy($ticketPrint, $qrCode, 215, 10, 10, 10, 145, 145);
-
-        ob_start();
-        imagepng($ticketPrint);
-        $ticketPrint = ob_get_contents();
-        ob_end_clean();
-
-        return new \Symfony\Component\HttpFoundation\Response($ticketPrint, 200, array('Content-Type' => 'image/png'));
+        return array(
+            'qrcode' => $qrCode,
+            'fullname' => $user->getFullname(),
+            'id' => $user->getId()
+        );
     }
 
     /**
-     * @Route("/verify/{ticketId}/{hash}")
+     * Check that QR-code is valid, and register ticket
      *
+     * @Route("/verify/{ticket}/{hash}", name="check_route")
+     * @param Ticket $ticket
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function verifyQRAction($ticketId, $hash)
+    public function verifyQRAction(Ticket $ticket, $hash)
     {
         $em = $this->getDoctrine()->getManager();
-        $ticketRepository = $em->getRepository('StfalconEventBundle:Ticket');
-
-        //find ticket
-        $ticket = $ticketRepository->getTicketById($ticketId);
-
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
 
         if ($ticket->isUsed()) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException(
+            throw new NotFoundHttpException(
                 'Ticked was used at ' . $ticket->getUpdatedAt()->format('Y-m-d H:i:s') .
                     '. Are you ' . $user->getFullname() . '?'
             );
@@ -242,30 +241,33 @@ class TicketController extends BaseController
 
         //check hash sum
         if ($ticketHash != $hash) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException(
+            throw new NotFoundHttpException(
                 'Ticket found, but wrong hash sum. ' .
                     'Are you ' . $user->getFullname() . '?'
             );
         }
 
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+
             //mark Ticket as used
-            $ticket->setUsed();
+            $ticket->setUsed(true);
+
             //set registration dateTime
             $updateAt = new \DateTime();
             $ticket->setUpdatedAt($updateAt);
+
             //update Ticket in database
             $em->flush();
-            return new \Symfony\Component\HttpFoundation\Response(
+            return new Response(
                 'Success <br />' . $user->getFullname()
             );
         } else { // Ticket right, but it just user
 
             //return information about event and user
-            return new \Symfony\Component\HttpFoundation\Response(
+            return new Response(
                 'Hi, ' . $user->getFullname() .
                     '<br /> ' . $event->getName() .
-                    'Start at ' . $event->getDate()->format('Y-m-d').
+                    'Start at ' . $event->getDate()->format('Y-m-d') .
                     ' not oversleep :)'
             );
         }

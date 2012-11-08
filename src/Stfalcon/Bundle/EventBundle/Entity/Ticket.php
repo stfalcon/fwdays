@@ -71,7 +71,7 @@ class Ticket
      * @var boolean $used
      * @ORM\Column(name="used", type="boolean")
      */
-    private $used = 0;
+    private $used = false;
 
     public function __construct(Event $event, User $user) {
         $this->setEvent($event);
@@ -159,7 +159,7 @@ class Ticket
         return (bool) ($this->getPayment() != null && $this->getPayment()->isPaid());
     }
 
-    public function setUsed($used = 1){
+    public function setUsed($used){
         $this->used = $used;
     }
 
