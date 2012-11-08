@@ -190,13 +190,12 @@ class TicketController extends BaseController
         $ticket     = $em->getRepository('StfalconEventBundle:Ticket')->getTicketById($ticketId);
         $user       = $ticket->getUser();
 
-        if ($user->getUsername() != $this->getUser()){
+        if (($user->getUsername() != $this->getUser()) && !$this->get('security.context')->isGranted('ROLE_ADMIN')){
              throw  new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('You are bad user');
         }
 
         $fullName   = $user->getFullname();
         $hash       = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
-        $ticketId   = $ticket->getId();
 
         $baseHost   = $this->getRequest()->getHttpHost();
         $qrCode     = $this->get('stfalcon_event.qr_code');
