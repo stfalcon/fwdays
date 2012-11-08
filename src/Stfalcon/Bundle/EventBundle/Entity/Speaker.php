@@ -96,6 +96,7 @@ class Speaker
     {
         $this->events = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->photo = null;
     }
 
     /**
