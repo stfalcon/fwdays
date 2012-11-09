@@ -23,12 +23,18 @@ class SponsorController extends Controller
      */
     public function widgetAction(Event $event)
     {
+
         /** @var $sponsorRepository \Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository */
         $sponsorRepository = $this->getDoctrine()->getManager()
             ->getRepository('StfalconSponsorBundle:Sponsor');
         $sponsors = $sponsorRepository->getSponsorsOfEvent($event);
 
-        return array('sponsors' => $sponsors);
+        $sortedSponsors = array();
+        foreach ($sponsors as $sponsor){
+            $sortedSponsors[$sponsor['category_name']][] = $sponsor['sponsor'];
+        }
+
+        return array('sponsors' => $sortedSponsors);
     }
 
     /**

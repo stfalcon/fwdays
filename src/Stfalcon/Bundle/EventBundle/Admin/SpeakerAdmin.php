@@ -30,7 +30,7 @@ class SpeakerAdmin extends Admin
                 ->add('email')
                 ->add('company')
                 ->add('about')
-                ->add('file', 'file', array('required' => false))
+                ->add('file', 'file', array('required' => true))
                 ->add('events', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true, 'expanded' => true,

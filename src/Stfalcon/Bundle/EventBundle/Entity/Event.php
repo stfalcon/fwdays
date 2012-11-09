@@ -117,7 +117,7 @@ class Event
     protected $speakers;
 
     /**
-     * @ORM\OneToMany(targetEntity="EventSponsor", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor", mappedBy="event")
      */
     protected $eventSponsors;
 

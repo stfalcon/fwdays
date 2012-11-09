@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\OrderedFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
-use Stfalcon\Bundle\EventBundle\Entity\EventSponsor;
+use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
 
 /**
  * Load Sponsor fixtures to database
@@ -22,7 +22,6 @@ class LoadEventSponsor extends AbstractFixture implements OrderedFixtureInterfac
         $evSponsor->setCategory($manager->merge($this->getReference('golden-sponsor')));
         $evSponsor->setEvent($manager->merge($this->getReference('event-phpday')));
         $evSponsor->setSponsor($manager->merge($this->getReference('sponsor-ePochta')));
-        $evSponsor->setOnMain(1);
 
         $manager->persist($evSponsor);
         unset($evSponsor);
@@ -32,7 +31,6 @@ class LoadEventSponsor extends AbstractFixture implements OrderedFixtureInterfac
         $evSponsor->setCategory($manager->merge($this->getReference('silver-sponsor')));
         $evSponsor->setEvent($manager->merge($this->getReference('event-zfday')));
         $evSponsor->setSponsor($manager->merge($this->getReference('sponsor-Magento')));
-        $evSponsor->setOnMain(1);
 
         $manager->persist($evSponsor);
         unset($evSponsor);
