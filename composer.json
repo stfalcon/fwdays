@@ -40,8 +40,6 @@
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
         "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
-        "knplabs/gaufrette" : "dev-master#0628ac151f6326e8a1c97f531a5bb891d9a0ab6f",
-        "knplabs/knp-gaufrette-bundle" : "dev-master#60bf97cb661c49474d2bf5bc62e99bfe982aa1cb"
     },
     "repositories": [
         {
