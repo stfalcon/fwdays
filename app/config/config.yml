@@ -129,3 +129,11 @@ services:
      monolog.gelf_handler:
          class: Monolog\Handler\GelfHandler
          arguments: [@gelf.publisher]
+
+vich_uploader:
+     db_driver: orm
+     mappings:
+          sponsor_image:
+              uri_prefix: /uploads/sponsors
+              upload_destination: %kernel.root_dir%/../web/uploads/sponsors
+              inject_on_load: false
