@@ -37,7 +37,11 @@ class SponsorAdmin extends Admin
                 ->add('slug')
                 ->add('site')
                 ->add('about')
-                ->add('file', 'file', array('required' => false))
+                ->add('file', 'file', array(
+                      'required' => false,
+                      'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                      'property_path' => 'file')
+                      )
                 ->add('sortOrder', null, array(
                     'attr' => array(
                         'min' => 1
@@ -53,49 +57,6 @@ class SponsorAdmin extends Admin
                     'inline' => 'table',
                 ))
             ->end();
-    }
-
-    /**
-     * Saves an uploaded logo of sponsor
-     *
-     * @param \Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
-     *
-     * @return void
-     */
-    public function uploadLogo($sponsor)
-    {
-        if (null === $sponsor->getFile()) {
-            return;
-        }
-
-        $uploadDir     = '/uploads/sponsors';
-        $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName   = $sponsor->getSlug() . '.' . pathinfo($sponsor->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
-
-        $sponsor->getFile()->move($pathToUploads, $newFileName);
-        $sponsor->setLogo($uploadDir . '/' . $newFileName);
-
-        $sponsor->setFile(null);
-    }
-
-    /**
-     * @param mixed $sponsor
-     *
-     * @return mixed|void
-     */
-    public function prePersist($sponsor)
-    {
-        $this->uploadLogo($sponsor);
-    }
-
-    /**
-     * @param mixed $sponsor
-     *
-     * @return mixed|void
-     */
-    public function preUpdate($sponsor)
-    {
-        $this->uploadLogo($sponsor);
     }
 
     /**

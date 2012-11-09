@@ -29,6 +29,7 @@
             <argument>%stfalcon_sponsor.admin.category.entity%</argument>
             <argument>%stfalcon_sponsor.admin.category.controller%</argument>
         </service>
+
     </services>
 
 </container>
