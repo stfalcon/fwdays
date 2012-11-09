@@ -1,13 +1,13 @@
 {% if sponsors %}
     {% for category, csponsors in sponsors %}
-         <h2>{{ category }} </h2>
-         {% for sponsor in csponsors %}
+        <h2>{{ category }} </h2>
+        {% for sponsor in csponsors %}
             <div class="partner sort-order-{{ loop.index }}">
                 <a href="{{ sponsor.site }}">
-                    <img src="{{ asset(sponsor.logo) }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
                 </a>
             </div>
-         {% endfor %}
+        {% endfor %}
     {% endfor %}
 {% endif %}
 
