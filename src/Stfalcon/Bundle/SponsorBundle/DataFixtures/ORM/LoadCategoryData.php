@@ -18,27 +18,19 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $category = new Category();
-        $category->setName('Golden');
-        $category->setSortOrder(10);
+        $golden = new Category();
+        $golden->setName('Golden sponsor');
+        $golden->setSortOrder(30);
+        $manager->persist($golden);
 
-        $manager->persist($category);
+        $this->addReference('golden-sponsor',$golden);
 
-        $this->addReference('golden-sponsor',$category);
+        $silver = new Category();
+        $silver->setName('Silver sponsor');
+        $silver->setSortOrder(20);
+        $manager->persist($silver);
 
-
-        unset($category);
-
-        $category = new Category();
-        $category->setName('Silver');
-        $category->setSortOrder(20);
-
-        $manager->persist($category);
-        $this->addReference('silver-sponsor',$category);
-
-        unset($category);
-
-        // Smart Me
+        $this->addReference('silver-sponsor',$silver);
 
         $manager->flush();
     }

@@ -1,18 +1,24 @@
-{% if sponsors %}
-    {% for category, csponsors in sponsors %}
-        <h2>{{ category }} </h2>
-        {% for sponsor in csponsors %}
-            <div class="partner sort-order-{{ loop.index }}">
-                <a href="{{ sponsor.site }}">
-                    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+<div class="side-right-wrap">
+    <div class="side-right-holder">
+        <div class="partners">
+            {% if sponsors %}
+                {% for category, csponsors in sponsors %}
+                    <h2 class="sort-order-{{ loop.index }}">{{ category }}</h2>
+                    {% for sponsor in csponsors %}
+                        <div class="partner sort-order-{{ loop.index }}">
+                            <a href="{{ sponsor.site }}">
+                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="become-partner">
+                <a href="{{ path('page_show', {'slug': 'partners'}) }}#become-partner">
+                    Здесь может<br> быть ваш логотип
                 </a>
             </div>
-        {% endfor %}
-    {% endfor %}
-{% endif %}
-
-<div class="become-partner">
-    <a href="{{ path('page_show', {'slug': 'partners'}) }}#become-partner">
-        Здесь может<br> быть ваш логотип
-    </a>
+        </div>
+    </div>
 </div>

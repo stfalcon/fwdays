@@ -172,13 +172,23 @@ class Sponsor
 
 
     /**
-     * Get logo
+     * Get logo filename
      *
      * @return string
      */
     public function getLogo()
     {
         return $this->logo;
+    }
+
+    /**
+     * Set logo filename
+     *
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
     }
 
     /**

@@ -47,6 +47,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
         $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
+        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadEventSponsorData());
+        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadCategoryData());
         $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
@@ -58,62 +60,40 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Check that document contains image from some source
-     *
-     * @param string $src
-     *
-     * @Given /^я должен видеть картинку с исходником "([^"]*)"$/
-     */
-    public function documentContainsImageWithSrc($src)
-    {
-        $rawImages = $this->getSession()->getPage()->findAll('css', 'div.partner img');
-
-        $founded = false;
-        foreach ($rawImages as $rawImage) {
-            if ($rawImage->getAttribute('src') == $src) {
-                $founded = true;
-                break;
-            }
-        }
-        assertTrue($founded);
-    }
-
-    /**
      * Check that some element contains image from some source
      *
      * @param string $src     Source of image
      * @param string $element Selector enginen name
      *
-     * @Given /^я должен видеть картинку с исходником "([^"]*)" внутри элемента "([^"]*)"$/
+     * @Given /^я должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
     public function elementContainsImageWithSrc($src, $element)
     {
-        $rawImage = $this->getSession()->getPage()->find('css', $element);
-        $founded = false;
-        if ($rawImage->getAttribute('src') == $src) {
-            $founded = true;
-        }
-        assertTrue($founded);
+        assertTrue($this->_findImageWithSrc($src, $element));
     }
 
     /**
-     * Check that document not contains image from some source
+     * Check that some element not contains image from some source
      *
      * @param string $src
      *
-     * @Given /^я не должен видеть картинку с исходником "([^"]*)"$/
+     * @Given /^я не должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
-    public function documentNotContainsImageWithSrc($src)
+    public function documentNotContainsImageWithSrc($src, $element)
     {
-        $rawImages = $this->getSession()->getPage()->findAll('css', 'div.partner img');
+        assertTrue(!$this->_findImageWithSrc($src, $element));
+    }
 
-        $founded = false;
+    private function _findImageWithSrc($src, $element)
+    {
+        $rawImages = $this->getSession()->getPage()->findAll('css', $element);
+
         foreach ($rawImages as $rawImage) {
             if ($rawImage->getAttribute('src') == $src) {
-                $founded = true;
-                break;
+                return true;
             }
         }
-        assertFalse($founded);
+        return false;
     }
+
 }

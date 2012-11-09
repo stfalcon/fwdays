@@ -1,11 +1,17 @@
-{% if sponsors %}
-    <h2>Спонсоры и партнеры</h2>
+<div class="side-right-wrap">
+    <div class="side-right-holder">
+        <div class="partners">
+            {% if sponsors %}
+                <h2>Спонсоры и партнеры</h2>
 
-    {% for sponsor in sponsors %}
-        <div class="partner sort-order-{{ loop.index }}">
-            <a href="{{ sponsor.site }}">
-                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
-            </a>
+                {% for sponsor in sponsors %}
+                    <div class="partner sort-order-{{ loop.index }}">
+                        <a href="{{ sponsor.site }}">
+                            <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+                        </a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
-    {% endfor %}
-{% endif %}
+    </div>
+</div>

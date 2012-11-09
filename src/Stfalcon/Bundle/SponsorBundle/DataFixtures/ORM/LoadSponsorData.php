@@ -18,57 +18,43 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        // Magento
+        $magento = new Sponsor();
+        $magento->setName('Magento');
+        $magento->setSlug('magento');
+        $magento->setSite('http://ua.magento.com/');
+        $magento->setLogo('magento.png');
+        $magento->setAbout('The Magento eCommerce platform serves more than 125,000 merchants worldwide and is supported by a global ecosystem of solution partners and third-party developers.');
+        $magento->setSortOrder(10);
+        $magento->setOnMain(true);
+        $manager->persist($magento);
+
+        $this->addReference('sponsor-magento', $magento);
+
+        // oDesk
+        $odesk = new Sponsor();
+        $odesk->setName('oDesk');
+        $odesk->setSlug('odesk');
+        $odesk->setSite('http://odesk.com/');
+        $odesk->setLogo('odesk.jpg');
+        $odesk->setAbout('About Smart Me');
+        $odesk->setSortOrder(20);
+        $odesk->setOnMain(true);
+        $manager->persist($odesk);
+
+        $this->addReference('sponsor-odesk', $odesk);
 
         // ePochta
-        $sponsor = new Sponsor();
-        $sponsor->setName('ePochta');
-        $sponsor->setSlug('epochta');
-        $sponsor->setSite('http://www.epochta.ru/');
-        $sponsor->setLogo('/bundles/stfalconsponsor/images/epochta.png');
-        $sponsor->setAbout('About ePochta');
-        $sponsor->setOnMain(1);
-        $sponsor->setSortOrder(10);
-        $manager->persist($sponsor);
+        $epochta = new Sponsor();
+        $epochta->setName('ePochta');
+        $epochta->setSlug('epochta');
+        $epochta->setSite('http://www.epochta.ru/');
+        $epochta->setLogo('epochta.png');
+        $epochta->setOnMain(false);
+        $epochta->setSortOrder(15);
+        $manager->persist($epochta);
 
-        $this->addReference('sponsor-ePochta', $sponsor);
-
-        unset($sponsor);
-
-        // Magento
-        $sponsor = new Sponsor();
-        $sponsor->setName('Magento');
-        $sponsor->setSlug('magento');
-        $sponsor->setSite('http://ua.magento.com/');
-        $sponsor->setLogo('/bundles/stfalconsponsor/images/magento.png');
-        $sponsor->setAbout('Magento – це компанія №1 в світі в сегменті Open Source рішень для електронної комерції.');
-        $sponsor->setSortOrder(100);
-        $sponsor->setOnMain(1);
-        $manager->persist($sponsor);
-
-        $this->addReference('sponsor-Magento', $sponsor);
-
-        unset($sponsor);
-
-        // Symfony Camp
-        $sponsor = new Sponsor();
-        $sponsor->setName('Symfony Camp');
-        $sponsor->setSlug('symfony-camp');
-        $sponsor->setSite('http://2011.symfonycamp.org.ua/');
-        $sponsor->setLogo('/bundles/stfalconsponsor/images/symfonycamp.png');
-        $sponsor->setAbout('About Symfony Camp');
-        $sponsor->setSortOrder(1);
-        $manager->persist($sponsor);
-        unset($sponsor);
-
-        // Smart Me
-        $sponsor = new Sponsor();
-        $sponsor->setName('SmartMe');
-        $sponsor->setSlug('smart-me');
-        $sponsor->setSite('http://www.smartme.com.ua/');
-        $sponsor->setLogo('/bundles/stfalconsponsor/images/smartme.png');
-        $sponsor->setAbout('About Smart Me');
-        $sponsor->setSortOrder(1000);
-        $manager->persist($sponsor);
+        $this->addReference('sponsor-epochta', $epochta);
 
         $manager->flush();
     }
