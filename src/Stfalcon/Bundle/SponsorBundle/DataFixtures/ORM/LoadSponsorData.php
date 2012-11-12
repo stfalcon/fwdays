@@ -24,9 +24,11 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $magento->setSlug('magento');
         $magento->setSite('http://ua.magento.com/');
         $magento->setLogo('magento.png');
+
         $source  = realpath(dirname(__FILE__) .'/../Images/magento.png');
         $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/sponsors/') . '/magento.png';
         copy($source, $dest);
+
         $magento->setAbout('The Magento eCommerce platform serves more than 125,000 merchants worldwide and is supported by a global ecosystem of solution partners and third-party developers.');
         $magento->setSortOrder(10);
         $magento->setOnMain(true);
@@ -40,9 +42,11 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $odesk->setSlug('odesk');
         $odesk->setSite('http://odesk.com/');
         $odesk->setLogo('odesk.jpg');
+
         $source  = realpath(dirname(__FILE__) .'/../Images/odesk.jpg');
         $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/sponsors/') . '/odesk.jpg';
         copy($source, $dest);
+
         $odesk->setAbout('About Smart Me');
         $odesk->setSortOrder(20);
         $odesk->setOnMain(true);
@@ -56,9 +60,11 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $epochta->setSlug('epochta');
         $epochta->setSite('http://www.epochta.ru/');
         $epochta->setLogo('epochta.png');
+
         $source  = realpath(dirname(__FILE__) .'/../Images/epochta.png');
         $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/sponsors/') . '/epochta.png';
         copy($source, $dest);
+
         $epochta->setOnMain(false);
         $epochta->setSortOrder(15);
         $manager->persist($epochta);

@@ -22,7 +22,12 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('Zend Framework Day');
         $event->setSlug('zend-framework-day-2011');
         $event->setDescription('Zend Framework Day посвящен популярному PHP фреймворку Zend Framework и является наследником конференции ZFConf Ukraine 2010.');
-        $event->setLogo('/bundles/stfalconevent/images/events/zend-framework-day.png');
+
+        $source  = realpath(dirname(__FILE__) .'/../Images/events/zend-framework-day.png');
+        $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/events/') . '/zend-framework-day.png';
+        copy($source, $dest);
+
+        $event->setLogo('zend-framework-day.png');
         $event->setCity('Киев');
         $event->setPlace('отель "Казацкий"');
         $event->setAbout("Описание события");
@@ -39,7 +44,12 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('PHP Frameworks Day');
         $event->setSlug('php-frameworks-day-2012');
         $event->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)');
-        $event->setLogo('/bundles/stfalconevent/images/events/php-frameworks-day-2012.png');
+
+        $source  = realpath(dirname(__FILE__) .'/../Images/events/php-frameworks-day-2012.png');
+        $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/events/') . '/php-frameworks-day-2012.png';
+        copy($source, $dest);
+
+        $event->setLogo('php-frameworks-day-2012.png');
         $event->setCity('Киев');
         $event->setPlace('Пока неизвестно');
         $event->setAbout("Описание события");
@@ -55,7 +65,12 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('Not Active Frameworks Day');
         $event->setSlug('not-active-frameworks-day');
         $event->setDescription('Это событие тестовое, но должно быть неактивным');
-        $event->setLogo('/bundles/stfalconevent/images/events/smile-lol-icon.png');
+
+        $source  = realpath(dirname(__FILE__) .'/../Images/events/smile-lol-icon.png');
+        $dest    = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/events/') . '/smile-lol-icon.png';
+        copy($source, $dest);
+
+        $event->setLogo('smile-lol-icon.png');
         $event->setCity('Где-то там');
         $event->setPlace('Пока неизвестно');
         $event->setAbout("Описание события");

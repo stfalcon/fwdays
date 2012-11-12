@@ -5,10 +5,12 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Speaker
  *
+ * @Vich\Uploadable
  * @ORM\Table(name="event__speakers")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
  */
@@ -67,6 +69,7 @@ class Speaker
 
     /**
      * @Assert\File(maxSize="6000000")
+     * @Vich\UploadableField(mapping="speaker_photo", fileNameProperty="photo")
      */
     private $file;
 
@@ -233,6 +236,10 @@ class Speaker
 
     public function setFile($file) {
         $this->file = $file;
+
+        if ($file instanceof UploadedFile) {
+            $this->setUpdatedAt(new \DateTime());
+        }
     }
 
     public function getEvents() {
