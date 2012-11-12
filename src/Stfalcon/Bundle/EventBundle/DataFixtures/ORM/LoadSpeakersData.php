@@ -63,6 +63,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
      * copy image from fixtures location to web folder
      * @param $image
      */
+    // @todo remake without this method
     public function copyImage($image){
         $source = realpath(dirname(__FILE__) .'/../Images/speakers/' . $image);
         $dest = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/speakers') . '/' . $image;

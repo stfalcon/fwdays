@@ -9,8 +9,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
 
-use Stfalcon\Bundle\EventBundle\Entity\Speaker;
-
 class SpeakerAdmin extends Admin
 {
     protected function configureListFields(ListMapper $listMapper)
@@ -30,6 +28,7 @@ class SpeakerAdmin extends Admin
                 ->add('email')
                 ->add('company')
                 ->add('about')
+                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                         'required' => true,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',

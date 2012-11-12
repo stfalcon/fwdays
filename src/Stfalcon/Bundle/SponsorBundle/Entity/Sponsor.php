@@ -246,6 +246,7 @@ class Sponsor
     {
         $this->file = $file;
 
+        // @todo rm this hack https://github.com/dustin10/VichUploaderBundle/issues/8
         if ($file instanceof UploadedFile) {
             $this->setUpdatedAt(new \DateTime());
         }
