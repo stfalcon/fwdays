@@ -183,71 +183,75 @@ class TicketController extends BaseController
     }
 
     /**
-     * Generating QR-code for ticket
+     * Generating ticket with  QR-code
+     * to event
      *
-     * @Route("/generate/{ticket}")
-     * @param Ticket $ticket
+     * @Secure(roles="ROLE_USER")
+     *
+     * @Route("/event/{event_slug}/ticket")
+     * @param string $event_slug
      *
      * @return array
      *
      * @Template()
      */
-    public function getTicketQRAction(Ticket $ticket)
+    public function getTicketQRAction($event_slug)
     {
-        $user = $ticket->getUser();
+        $event = $this->getEventBySlug($event_slug);
+        $ticket = $this->_findTicketForEventByCurrentUser($event);
 
-        if (($user->getUsername() != $this->getUser()) && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw  new NotFoundHttpException('You are bad user');
+        if ($ticket){
+            $user = $ticket->getUser();
+
+            $hash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
+            $url = $this->generateUrl(
+                 'verify_route', array(
+                 'ticket' => $ticket->getId(),
+                 'hash' => $hash), true);
+            $qrCode = $this->get('stfalcon_event.qr_code');
+            $qrCode->setText($url);
+            $qrCode = base64_encode($qrCode->get());
+
+            return array(
+                 'qrcode' => $qrCode,
+                 'fullname' => $user->getFullname(),
+                 'id' => $user->getId()
+            );
+        }else{
+            return new Response('You do not have Ticket');
         }
-
-        $hash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
-        $url = $this->generateUrl(
-            'check_route', array(
-            'ticket' => $ticket->getId(),
-            'hash' => $hash), true);
-        $qrCode = $this->get('stfalcon_event.qr_code');
-        $qrCode->setText($url);
-        $qrCode = base64_encode($qrCode->get());
-
-        return array(
-            'qrcode' => $qrCode,
-            'fullname' => $user->getFullname(),
-            'id' => $user->getId()
-        );
     }
 
     /**
      * Check that QR-code is valid, and register ticket
      *
-     * @Route("/verify/{ticket}/{hash}", name="check_route")
+     * @Secure(roles="ROLE_USER")
+     * @Route("/verify/{ticket}/{hash}", name="verify_route")
      * @param Ticket $ticket
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function verifyQRAction(Ticket $ticket, $hash)
     {
-        $em = $this->getDoctrine()->getManager();
+
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
-
-        if ($ticket->isUsed()) {
-            throw new NotFoundHttpException(
-                'Ticked was used at ' . $ticket->getUpdatedAt()->format('Y-m-d H:i:s') .
-                    '. Are you ' . $user->getFullname() . '?'
-            );
-        }
 
         $ticketHash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
 
         //check hash sum
         if ($ticketHash != $hash) {
-            throw new NotFoundHttpException(
-                'Ticket found, but wrong hash sum. ' .
-                    'Are you ' . $user->getFullname() . '?'
-            );
+            throw new NotFoundHttpException();
         }
 
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($ticket->isUsed()) {
+                throw new NotFoundHttpException(
+                    'Ticked was used at ' . $ticket->getUpdatedAt()->format('Y-m-d H:i:s')
+                );
+            }
 
             //mark Ticket as used
             $ticket->setUsed(true);
