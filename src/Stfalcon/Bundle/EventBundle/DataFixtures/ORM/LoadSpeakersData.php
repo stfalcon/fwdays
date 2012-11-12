@@ -24,7 +24,8 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Andrew');
         $speaker->setSlug('andrew-shkodyak');
-        $speaker->setPhoto('/bundles/stfalconevent/images/speakers/andrew.png');
+        $this->copyImage('andrew.png');
+        $speaker->setPhoto('andrew.png');
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -43,7 +44,8 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Valeriy');
         $speaker->setSlug('valeriy-rabievskiy');
-        $speaker->setPhoto('/bundles/stfalconevent/images/speakers/valeriy.png');
+        $this->copyImage('valeriy.png');
+        $speaker->setPhoto('valeriy.png');
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -55,6 +57,16 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('speaker-rabievskiy', $speaker);
 
         $manager->flush();
+    }
+
+    /**
+     * copy image from fixtures location to web folder
+     * @param $image
+     */
+    public function copyImage($image){
+        $source = realpath(dirname(__FILE__) .'/../Images/speakers/' . $image);
+        $dest = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/speakers') . '/' . $image;
+        copy($source, $dest);
     }
 
     /**

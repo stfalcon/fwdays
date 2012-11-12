@@ -20,7 +20,7 @@ class SpeakerAdmin extends Admin
             ->add('name')
         ;
     }
-    
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -30,43 +30,16 @@ class SpeakerAdmin extends Admin
                 ->add('email')
                 ->add('company')
                 ->add('about')
-                ->add('file', 'file', array('required' => true))
+                ->add('file', 'file', array(
+                        'required' => true,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'file'
+                ))
                 ->add('events', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true, 'expanded' => true,
-                ))                
+                ))
             ->end()
         ;
-    }
-    
-    /**
-     * Saves an uploaded photo of speakers
-     * 
-     * @param Speaker $speaker
-     * @return void 
-     */
-    public function uploadLogo($speaker)
-    {
-        if (null === $speaker->getFile()) {
-            return;
-        }
-        
-        $uploadDir = '/uploads/speakers';
-        $pathToUploads = realpath($this->getConfigurationPool()->getContainer()->get('kernel')->getRootDir() . '/../web' . $uploadDir);
-        $newFileName = $speaker->getSlug() . '.' . pathinfo($speaker->getFile()->getClientOriginalName(), PATHINFO_EXTENSION);
-        
-        $speaker->getFile()->move($pathToUploads, $newFileName);
-        $speaker->setPhoto($uploadDir . '/' . $newFileName);
-        
-        $speaker->setFile(null);
-    }
-    
-    public function prePersist($speaker)
-    {
-        $this->uploadLogo($speaker);
-    }
-    
-    public function preUpdate($speaker) {
-        $this->uploadLogo($speaker);
     }
 }

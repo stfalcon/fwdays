@@ -6,10 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
+ * @Vich\Uploadable
  * @ORM\Table(name="event__events")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventRepository")
  */
@@ -124,6 +126,7 @@ class Event
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
      */
     protected $file;
 
@@ -377,6 +380,10 @@ class Event
     public function setFile($file)
     {
         $this->file = $file;
+
+        if ($file instanceof UploadedFile) {
+            $this->setUpdatedAt(new \DateTime());
+        }
     }
 
     /**

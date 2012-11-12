@@ -24,6 +24,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $magento->setSlug('magento');
         $magento->setSite('http://ua.magento.com/');
         $magento->setLogo('magento.png');
+        $this->copyImage('magento.png');
         $magento->setAbout('The Magento eCommerce platform serves more than 125,000 merchants worldwide and is supported by a global ecosystem of solution partners and third-party developers.');
         $magento->setSortOrder(10);
         $magento->setOnMain(true);
@@ -37,6 +38,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $odesk->setSlug('odesk');
         $odesk->setSite('http://odesk.com/');
         $odesk->setLogo('odesk.jpg');
+        $this->copyImage('odesk.jpg');
         $odesk->setAbout('About Smart Me');
         $odesk->setSortOrder(20);
         $odesk->setOnMain(true);
@@ -50,6 +52,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $epochta->setSlug('epochta');
         $epochta->setSite('http://www.epochta.ru/');
         $epochta->setLogo('epochta.png');
+        $this->copyImage('epochta.png');
         $epochta->setOnMain(false);
         $epochta->setSortOrder(15);
         $manager->persist($epochta);
@@ -57,6 +60,16 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('sponsor-epochta', $epochta);
 
         $manager->flush();
+    }
+
+    /**
+     * copy image from fixtures location to web folder
+     * @param $image
+     */
+    public function copyImage($image){
+        $source = realpath(dirname(__FILE__) .'/../Images/' . $image);
+        $dest = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/sponsors') . '/' . $image;
+        copy($source, $dest);
     }
 
     /**

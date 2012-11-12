@@ -1,7 +1,7 @@
 <tr>
     <td class="conf-logo">
         <a href="{{ path('event_show', {'event_slug': event.slug } )}}">
-            <img src="{{ event.logo }}" width="82" height="87" alt="{{ event.name }}">
+            <img src="{{ vich_uploader_asset(event, 'file') }}" width="82" height="87" alt="{{ event.name }}">
         </a>
     </td>
     <td class="conf-info">

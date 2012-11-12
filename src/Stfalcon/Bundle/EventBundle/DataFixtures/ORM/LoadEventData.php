@@ -22,7 +22,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('Zend Framework Day');
         $event->setSlug('zend-framework-day-2011');
         $event->setDescription('Zend Framework Day посвящен популярному PHP фреймворку Zend Framework и является наследником конференции ZFConf Ukraine 2010.');
-        $event->setLogo('/bundles/stfalconevent/images/events/zend-framework-day.png');
+        $this->copyImage('zend-framework-day.png');
+        $event->setLogo('zend-framework-day.png');
         $event->setCity('Киев');
         $event->setPlace('отель "Казацкий"');
         $event->setAbout("Описание события");
@@ -39,7 +40,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('PHP Frameworks Day');
         $event->setSlug('php-frameworks-day-2012');
         $event->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)');
-        $event->setLogo('/bundles/stfalconevent/images/events/php-frameworks-day-2012.png');
+        $this->copyImage('php-frameworks-day-2012.png');
+        $event->setLogo('php-frameworks-day-2012.png');
         $event->setCity('Киев');
         $event->setPlace('Пока неизвестно');
         $event->setAbout("Описание события");
@@ -55,7 +57,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setName('Not Active Frameworks Day');
         $event->setSlug('not-active-frameworks-day');
         $event->setDescription('Это событие тестовое, но должно быть неактивным');
-        $event->setLogo('/bundles/stfalconevent/images/events/smile-lol-icon.png');
+        $this->copyImage('smile-lol-icon.png');
+        $event->setLogo('smile-lol-icon.png');
         $event->setCity('Где-то там');
         $event->setPlace('Пока неизвестно');
         $event->setAbout("Описание события");
@@ -67,6 +70,16 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('event-not-active', $event);
 
         $manager->flush();
+    }
+
+    /**
+     * copy image from fixtures location to web folder
+     * @param $image
+     */
+    public function copyImage($image){
+        $source = realpath(dirname(__FILE__) .'/../Images/events/' . $image);
+        $dest = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/events') . '/' . $image;
+        copy($source, $dest);
     }
 
     /**
