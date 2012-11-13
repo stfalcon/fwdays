@@ -6,10 +6,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template,
     Symfony\Component\HttpFoundation\RedirectResponse,
     JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
-
 
 /**
  * Ticket controller
@@ -179,5 +180,101 @@ class TicketController extends BaseController
         }
 
         return $ticket;
+    }
+
+    /**
+     * Generating ticket with  QR-code
+     * to event
+     *
+     * @Secure(roles="ROLE_USER")
+     *
+     * @Route("/event/{event_slug}/ticket")
+     * @param string $event_slug
+     *
+     * @return array
+     *
+     * @Template()
+     */
+    public function getTicketQRAction($event_slug)
+    {
+        $event = $this->getEventBySlug($event_slug);
+        $ticket = $this->_findTicketForEventByCurrentUser($event);
+
+        if ($ticket){
+            $user = $ticket->getUser();
+
+            $hash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
+            $url = $this->generateUrl(
+                 'verify_route', array(
+                 'ticket' => $ticket->getId(),
+                 'hash' => $hash), true);
+            $qrCode = $this->get('stfalcon_event.qr_code');
+            $qrCode->setText($url);
+            $qrCode = base64_encode($qrCode->get());
+
+            return array(
+                 'qrcode' => $qrCode,
+                 'fullname' => $user->getFullname(),
+                 'id' => $user->getId()
+            );
+        }else{
+            return new Response('You do not have Ticket');
+        }
+    }
+
+    /**
+     * Check that QR-code is valid, and register ticket
+     *
+     * @Secure(roles="ROLE_USER")
+     * @Route("/verify/{ticket}/{hash}", name="verify_route")
+     * @param Ticket $ticket
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function verifyQRAction(Ticket $ticket, $hash)
+    {
+
+        $event = $ticket->getEvent();
+        $user = $ticket->getUser();
+
+        $ticketHash = md5($ticket->getId() . $ticket->getCreatedAt()->format('Y-m-d H:i:s'));
+
+        //check hash sum
+        if ($ticketHash != $hash) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($ticket->isUsed()) {
+                throw new NotFoundHttpException(
+                    'Ticked was used at ' . $ticket->getUpdatedAt()->format('Y-m-d H:i:s')
+                );
+            }
+
+            //mark Ticket as used
+            $ticket->setUsed(true);
+
+            //set registration dateTime
+            $updateAt = new \DateTime();
+            $ticket->setUpdatedAt($updateAt);
+
+            //update Ticket in database
+            $em->flush();
+            return new Response(
+                'Success <br />' . $user->getFullname()
+            );
+        } else { // Ticket right, but it just user
+
+            //return information about event and user
+            return new Response(
+                'Hi, ' . $user->getFullname() .
+                    '<br /> ' . $event->getName() .
+                    'Start at ' . $event->getDate()->format('Y-m-d') .
+                    ' not oversleep :)'
+            );
+        }
+
     }
 }
