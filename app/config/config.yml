@@ -136,12 +136,9 @@ vich_uploader:
           sponsor_image:
               uri_prefix: /uploads/sponsors
               upload_destination: %kernel.root_dir%/../web/uploads/sponsors
-              inject_on_load: false
           speaker_photo:
               uri_prefix: /uploads/speakers
               upload_destination: %kernel.root_dir%/../web/uploads/speakers
-              inject_on_load: false
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
-              inject_on_load: false

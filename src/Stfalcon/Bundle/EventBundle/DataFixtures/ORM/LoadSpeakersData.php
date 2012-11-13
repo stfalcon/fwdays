@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\OrderedFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
@@ -24,8 +25,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Andrew');
         $speaker->setSlug('andrew-shkodyak');
-        $this->copyImage('andrew.png');
-        $speaker->setPhoto('andrew.png');
+        $speaker->setPhoto($this->_generateUploadedFile('andrew.png'));
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -44,8 +44,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setCompany('Stfalcon');
         $speaker->setAbout('About Valeriy');
         $speaker->setSlug('valeriy-rabievskiy');
-        $this->copyImage('valeriy.png');
-        $speaker->setPhoto('valeriy.png');
+        $speaker->setPhoto($this->_generateUploadedFile('valeriy.png'));
         $speaker->setEvents(
             array(
                  $manager->merge($this->getReference('event-zfday')),
@@ -60,14 +59,16 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * copy image from fixtures location to web folder
-     * @param $image
+     * Generate UploadedFile object from local file. For VichUploader
+     *
+     * @param string $filename
      */
-    // @todo remake without this method
-    public function copyImage($image){
-        $source = realpath(dirname(__FILE__) .'/../Images/speakers/' . $image);
-        $dest = realpath(dirname(__FILE__) .'/../../../../../../web/uploads/speakers') . '/' . $image;
-        copy($source, $dest);
+    private function _generateUploadedFile($filename)
+    {
+        return new UploadedFile(
+            realpath(dirname(__FILE__) . '/images/speakers/' . $filename),
+            $filename, null, null, null, true
+        );
     }
 
     /**
