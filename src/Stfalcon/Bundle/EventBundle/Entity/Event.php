@@ -106,22 +106,11 @@ class Event
     protected $pages;
 
     /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="event")
-     * @ORM\OrderBy({"created_at" = "DESC"})
-     */
-    protected $news;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      */
     protected $speakers;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor", mappedBy="event")
-     */
-    protected $eventSponsors;
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -143,7 +132,6 @@ class Event
     public function __construct()
     {
         $this->speakers      = new ArrayCollection();
-        $this->eventSponsors = new ArrayCollection();
     }
 
     /**
@@ -394,17 +382,6 @@ class Event
     }
 
     /**
-     * @todo remove this method (and try remove property)
-     * Get event news
-     *
-     * @return ArrayCollection
-     */
-    public function getNews()
-    {
-        return $this->news;
-    }
-
-    /**
      * Set cost
      *
      * @param float $cost
@@ -424,23 +401,4 @@ class Event
         return $this->cost;
     }
 
-    /**
-     * Set event sponsors
-     *
-     * @param $eventSponsors
-     */
-    public function setEventSponsors($eventSponsors)
-    {
-        $this->eventSponsors = $eventSponsors;
-    }
-
-    /**
-     * Get event sponsors
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getEventSponsors()
-    {
-        return $this->eventSponsors;
-    }
 }
