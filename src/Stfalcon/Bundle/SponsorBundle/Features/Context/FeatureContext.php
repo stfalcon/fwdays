@@ -89,7 +89,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $rawImages = $this->getSession()->getPage()->findAll('css', $element);
 
         foreach ($rawImages as $rawImage) {
-            if ($rawImage->getAttribute('src') == $src) {
+            if (strstr($rawImage->getAttribute('src'), $src)) {
                 return true;
             }
         }

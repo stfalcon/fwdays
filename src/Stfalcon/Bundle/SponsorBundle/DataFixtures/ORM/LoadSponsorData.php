@@ -37,7 +37,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $odesk->setName('oDesk');
         $odesk->setSlug('odesk');
         $odesk->setSite('http://odesk.com/');
-        $magento->setFile($this->_generateUploadedFile('odesk.jpg'));
+        $odesk->setFile($this->_generateUploadedFile('odesk.jpg'));
         $odesk->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.');
         $odesk->setSortOrder(20);
         $odesk->setOnMain(true);
@@ -50,7 +50,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $epochta->setName('ePochta');
         $epochta->setSlug('epochta');
         $epochta->setSite('http://www.epochta.ru/');
-        $magento->setFile($this->_generateUploadedFile('epochta.png'));
+        $epochta->setFile($this->_generateUploadedFile('epochta.png'));
         $epochta->setOnMain(false);
         $epochta->setSortOrder(15);
 
@@ -67,8 +67,11 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
      */
     private function _generateUploadedFile($filename)
     {
-        return new UploadedFile(
-            realpath(dirname(__FILE__) . '/images/' . $filename),
+        $fullPath = realpath(dirname(__FILE__) . '/images/' . $filename);
+        $tmpFile = tempnam(sys_get_temp_dir(), 'sponsor');
+        copy($fullPath, $tmpFile);
+
+        return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
     }

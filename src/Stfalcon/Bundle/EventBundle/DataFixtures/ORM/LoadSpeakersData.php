@@ -65,8 +65,11 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
      */
     private function _generateUploadedFile($filename)
     {
-        return new UploadedFile(
-            realpath(dirname(__FILE__) . '/images/speakers/' . $filename),
+        $fullPath = realpath(dirname(__FILE__) . '/images/speakers/' . $filename);
+        $tmpFile = tempnam(sys_get_temp_dir(), 'speaker');
+        copy($fullPath, $tmpFile);
+
+        return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
     }

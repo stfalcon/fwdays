@@ -77,8 +77,11 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
      */
     private function _generateUploadedFile($filename)
     {
-        return new UploadedFile(
-            realpath(dirname(__FILE__) . '/images/events/' . $filename),
+        $fullPath = realpath(dirname(__FILE__) . '/images/events/' . $filename);
+        $tmpFile = tempnam(sys_get_temp_dir(), 'event');
+        copy($fullPath, $tmpFile);
+
+        return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
     }
