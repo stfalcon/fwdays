@@ -104,12 +104,6 @@ class Event
     protected $pages;
 
     /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="event")
-     * @ORM\OrderBy({"created_at" = "DESC"})
-     */
-    protected $news;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
@@ -398,17 +392,6 @@ class Event
     public function getPages()
     {
         return $this->pages;
-    }
-
-    /**
-     * @todo remove this method (and try remove property)
-     * Get event news
-     *
-     * @return ArrayCollection
-     */
-    public function getNews()
-    {
-        return $this->news;
     }
 
     /**

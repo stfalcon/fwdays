@@ -6,20 +6,11 @@
     <h2>Новости и анонсы</h2>
 
     <div class="news-list">
-        {% for one_news in event.news %}
+        {% for one_news in news %}
             {% include 'StfalconEventBundle:News:_one-news-preview.html.twig' with {'one_news': one_news} %}
         {% endfor %}
-
-        {#<div class="prev-next-links"><a href="# ">← <u>предыдущая</u></a> <a href="# "><u>следующая</u> →</a></div>
-        <div class="paginator">
-            <a href="# ">1</a>
-            <span class="current">2</span>
-            <a href="# ">3</a>
-            <a href="# ">4</a>
-            <a href="# ">5</a>
-            <span class="placeholder">...</span>
-            <a href="# ">11</a>
-            <a href="# ">12</a>
-        </div>#}
     </div>
+{% endblock %}
+
+{% block event_news_widget %}
 {% endblock %}

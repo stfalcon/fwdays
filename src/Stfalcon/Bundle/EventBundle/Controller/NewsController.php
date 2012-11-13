@@ -23,8 +23,9 @@ class NewsController extends BaseController
     public function indexAction($event_slug)
     {
         $event = $this->getEventBySlug($event_slug);
-        // @todo refact. добавить пагинатор
-        $news = $event->getNews();
+        $news = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:News')
+            ->getLastNewsForEvent($event);
 
         return array('event' => $event, 'news' => $news);
     }
