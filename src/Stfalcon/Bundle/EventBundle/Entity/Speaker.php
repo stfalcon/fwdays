@@ -69,6 +69,7 @@ class Speaker
 
     /**
      * @Assert\File(maxSize="6000000")
+     * @Assert\Image
      * @Vich\UploadableField(mapping="speaker_photo", fileNameProperty="photo")
      */
     private $file;
@@ -219,15 +220,6 @@ class Speaker
      */
     public function getPhoto() {
         return $this->photo;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param type $photo
-     */
-    public function setPhoto($photo) {
-        $this->photo = $photo;
     }
 
     public function getFile() {

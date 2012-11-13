@@ -343,16 +343,6 @@ class Event
     }
 
     /**
-     * Set path to logo
-     *
-     * @param string $logo
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-    }
-
-    /**
      * Get path to logo
      *
      * @return string

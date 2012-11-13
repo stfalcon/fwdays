@@ -3,6 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Speaker,
+    Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * ReviewRepository
@@ -15,26 +17,26 @@ class ReviewRepository extends EntityRepository
     /**
      * Find reviews of speaker for event
      *
-     * @param int    $speakerId
-     * @param string $eventSlug
+     * @param Speaker $speaker
+     * @param Event $event
      *
      * @return array
      */
-    public function findReviewsOfSpeakerForEvent($speakerId, $eventSlug)
+    public function findReviewsOfSpeakerForEvent(Speaker $speaker, Event $event)
     {
         return $this->getEntityManager()
             ->createQuery('
                 SELECT r
                 FROM StfalconEventBundle:Review r
                 JOIN r.speakers s
-                JOIN r.event e
-                WHERE s.id = :speakerId
-                    AND e.slug = :eventSlug
+                WHERE
+                    s.id = :speakerId
+                    AND r.event = :eventId
             ')
             ->setParameters(
                 array(
-                     'speakerId' => $speakerId,
-                     'eventSlug' => $eventSlug
+                     'speakerId' => $speaker->getId(),
+                     'eventId' => $event->getId()
                 )
             )
             ->getArrayResult();

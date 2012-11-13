@@ -182,16 +182,6 @@ class Sponsor
     }
 
     /**
-     * Set logo filename
-     *
-     * @param string $logo
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-    }
-
-    /**
      * Set sortOrder
      *
      * @param int $sortOrder

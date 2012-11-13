@@ -15,5 +15,5 @@ for feature_path in `find src/ -path '*/Features'`; do
        opts=' '
    fi;
    echo "Running suite for $bundle";
-       ./bin/behat $opts "@$bundle";
+       ./bin/behat -f progress $opts "@$bundle";
 done

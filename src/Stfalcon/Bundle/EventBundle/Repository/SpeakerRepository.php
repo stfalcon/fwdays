@@ -29,6 +29,6 @@ class SpeakerRepository extends EntityRepository
                 WHERE e.slug = :eventSlug
             ')
             ->setParameter('eventSlug', $eventSlug)
-            ->getArrayResult();
+            ->getResult();
     }
 }
