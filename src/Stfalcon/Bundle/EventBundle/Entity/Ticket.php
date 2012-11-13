@@ -154,17 +154,41 @@ class Ticket
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * Checking if ticket is "paid"
+     *
+     * @return bool
+     */
     public function isPaid()
     {
         return (bool) ($this->getPayment() != null && $this->getPayment()->isPaid());
     }
 
+    /**
+     * Mark ticket as "used"
+     *
+     * @param bool $used
+     */
     public function setUsed($used){
         $this->used = $used;
     }
 
+    /**
+     * Checking if ticket is "used"
+     *
+     * @return bool
+     */
     public function isUsed(){
         return $this->used;
+    }
+
+    /**
+     * Generate unique md5 hash for ticket
+     * @return string
+     */
+    public function getHash()
+    {
+        return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
 }
