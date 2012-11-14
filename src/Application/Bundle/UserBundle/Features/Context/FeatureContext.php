@@ -65,13 +65,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Активация профиля пользователя
      *
-     * @Given /^я активирую свой профиль$/
+     * @Given /^я активирую свой "([^"]*)" профиль$/
      */
-    public function profileActivation()
+    public function profileActivation($mail)
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
         $user = $em->getRepository('ApplicationUserBundle:User')
-                   ->findOneBy(array('username' => 'test@fwdays.com' ));
+                   ->findOneBy(array('username' => $mail ));
 
         if (!$user) {
             throw new \Behat\Gherkin\Exception\Exception('user not found');
@@ -101,28 +101,28 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /**
      * @param string $mail
-     * @Given /^обязательные поля должны быть заполнены$/
+     * @Given /^обязательные поля должны быть заполнены у "([^"]*)"$/
      */
-    public function requireFieldsMustBeFilled()
+    public function requireFieldsMustBeFilled($mail)
     {
-        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
+        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail($mail);
 
-        assertContains($user->getFullname(),'Jack Smith');
-        assertContains($user->getEmail(),'test@fwdays.com');
+        assertTrue(count($user->getFullname()) > 0);
+        assertContains($user->getEmail(),$mail);
 
     }
 
     /**
      * @param string $mail
-     * @Given /^не обязательные поля должны быть заполнены$/
+     * @Given /^не обязательные поля должны быть заполнены у "([^"]*)"$/
      */
-    public function AllFieldsMustBeFilled()
+    public function AllFieldsMustBeFilled($mail)
     {
-        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
+        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail($mail);
 
-        assertContains($user->getCompany(),'Stfalcon');
-        assertContains($user->getCity(),'Kiev');
-        assertContains($user->getPost(),'developer');
-        assertContains($user->getCountry(),'Ukraine');
+        assertTrue(count($user->getCompany()) > 0);
+        assertTrue(count($user->getCity()) > 0);
+        assertTrue(count($user->getPost()) > 0);
+        assertTrue(count($user->getCountry()) > 0);
     }
 }
