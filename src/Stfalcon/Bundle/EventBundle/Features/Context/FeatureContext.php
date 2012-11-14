@@ -96,6 +96,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->visit($this->getTicketUrl($mail) . 'fffuu');
     }
 
+    /*
+     * Generate URL for register ticket
+     * @param string $mail  E-mail Ticket owner
+     * @return string
+     */
     public function getTicketUrl($mail)
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
