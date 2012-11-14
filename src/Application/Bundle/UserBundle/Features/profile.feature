@@ -28,7 +28,7 @@
     Допустим я на странице "/profile/edit"
     Тогда код ответа сервера должен быть 200
     И я должен видеть "Электронная почта:"
-    И я должен видеть "test@fwdays.com" внутри идентификатора "fos_user_profile_form_email"
-    И я должен видеть "Jack Smith" внутри идентификатора "fos_user_profile_form_fullname"
-    И я должен видеть "Stfalcon" внутри идентификатора "fos_user_profile_form_company"
-    И я должен видеть "developer" внутри идентификатора "fos_user_profile_form_post"
+    И поле "fos_user_profile_form_email" должно содержать "test@fwdays.com"
+    И поле "fos_user_profile_form_fullname" должно содержать "Jack Smith"
+    И поле "fos_user_profile_form_company" должно содержать "Stfalcon"
+    И поле "fos_user_profile_form_post" должно содержать "developer"

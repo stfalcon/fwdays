@@ -50,18 +50,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor->execute($loader->getFixtures(), true);
     }
 
-
-    /**
-     * @Given /^я должен видеть "([^"]*)" внутри идентификатора "([^"]*)"$/
-     */
-    public function iMustSeeInside($value, $field)
-    {
-        $el = $this->getSession()->getPage()->find('css', '#'.$field.'');
-        $selectedValue = $el->getValue();
-        assertEquals($value, $selectedValue);
-
-    }
-
     /**
      * Активация профиля пользователя
      *
