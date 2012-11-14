@@ -50,6 +50,39 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor->execute($loader->getFixtures(), true);
     }
 
+
+    /**
+     * @Given /^я должен видеть "([^"]*)" внутри идентификатора "([^"]*)"$/
+     */
+    public function iMustSeeInside($value, $field)
+    {
+        $el = $this->getSession()->getPage()->find('css', '#'.$field.'');
+        $selectedValue = $el->getValue();
+        assertEquals($value, $selectedValue);
+
+    }
+
+    /**
+     * Активация профиля пользователя
+     *
+     * @Given /^я активирую свой профиль$/
+     */
+    public function profileActivation()
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $user = $em->getRepository('ApplicationUserBundle:User')
+                   ->findOneBy(array('username' => 'test@fwdays.com' ));
+
+        if (!$user) {
+            throw new \Behat\Gherkin\Exception\Exception('user not found');
+        }
+
+        $user   ->setEnabled(true);
+        $em     ->persist($user);
+        $em     ->flush();
+    }
+
+
     /**
      * @Given /^у меня должна быть подписка на все активные ивенты$/
      */
@@ -64,5 +97,32 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
         assertEquals(count($tickets), count($activeEvents));
+    }
+
+    /**
+     * @param string $mail
+     * @Given /^обязательные поля должны быть заполнены$/
+     */
+    public function requireFieldsMustBeFilled()
+    {
+        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
+
+        assertContains($user->getFullname(),'Jack Smith');
+        assertContains($user->getEmail(),'test@fwdays.com');
+
+    }
+
+    /**
+     * @param string $mail
+     * @Given /^не обязательные поля должны быть заполнены$/
+     */
+    public function AllFieldsMustBeFilled()
+    {
+        $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
+
+        assertContains($user->getCompany(),'Stfalcon');
+        assertContains($user->getCity(),'Kiev');
+        assertContains($user->getPost(),'developer');
+        assertContains($user->getCountry(),'Ukraine');
     }
 }
