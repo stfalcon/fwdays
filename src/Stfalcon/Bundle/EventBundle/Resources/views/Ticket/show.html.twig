@@ -1,13 +1,15 @@
+{% set event = ticket.event %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <title>{{ ticket.event.name }}</title>
+    <title>Билет участника "{{ ticket.event.name }}"</title>
 
     {%block stylesheets%}
-        {% stylesheets '@StfalconEventBundle/Resources/web/css/style.css' %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% stylesheets '@StfalconEventBundle/Resources/web/css/ticket.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
         {% endstylesheets %}
     {%endblock stylesheets%}
 </head>
@@ -19,37 +21,43 @@
             <div class="main">
                 <div class="time_and_place">
                     <div class="time">
-                        <strong>Время</strong>
-                        <span>24 ноября 2012</span>
+                        {% if event.date %}
+                            <strong>Время</strong>
+                            <span>
+                                {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
+                            </span>
+                        {% endif %}
                     </div>
                     <div class="place">
-                        <strong>Место проведение</strong>
-							<span>Отель “Казацкий”<br>
-								г. Киев, ул. Михайловская, 1/3<br>
-								(Площадь Независимости)</span>
+                        <strong>Место проведения</strong>
+                            <span>
+                                г. {{ event.city }}<br>
+                                {% if event.place %}
+                                    {{ event.place }}
+                                {% endif %}
+                            </span>
                     </div>
                     <div class="clear"></div>
                 </div>
                 <div class="name_studio_bilet-number">
-                    <strong>{{ ticket.user.fullname }}</strong>
+                    <strong>
+                        {{ ticket.user.fullname }}
+                    </strong>
                     {% if ticket.user.company %}
-                        <span> {{ ticket.user.company }} </span>
+                        <span>
+                            {{ ticket.user.company }}
+                        </span>
                     {% endif %}
-                    <small>№ билета: <em>{{ ticket.id }}</em></small>
+                    <small>
+                        № билета: <em>{{ ticket.id }}</em>
+                    </small>
                     <div class="clear"></div>
                 </div>
             </div>
             <div class="side">
-                <a href="" class="logo">
-                    {% image '@StfalconEventBundle/Resources/web/images/logo.png' %}
-                         <img src="{{ asset_url }}" >
-                    {% endimage %}
+                <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}" class="logo">
+                    <img src="{{ vich_uploader_asset(event, 'file') }}" width="95">
                 </a>
-                <div class="event_name">
-                    <strong></strong>
-                    <span></span>
-                    <div class="clear"></div>
-                </div>
                 <img src="data:image/png;base64,{{ qrCodeBase64 }}" alt="">
             </div>
             <div class="clear"></div>
