@@ -18,6 +18,7 @@ set :user,       "fwdays-com"
 set :use_sudo,   false
 
 set :use_composer, true
+set :update_vendors, true
 
 set :shared_files,	["app/config/parameters.ini"]
 set :shared_children,	[app_path + "/logs", web_path + "/uploads"]
