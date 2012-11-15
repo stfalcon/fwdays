@@ -18,7 +18,6 @@
         "jms/security-extra-bundle": "1.2.0",
         "jms/di-extra-bundle": "1.1.0",
 
-
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
 
         "kriswallsmith/assetic": "1.1.*",
@@ -40,48 +39,10 @@
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
         "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
-        "endroid/qrcode": "v1.0"
+        "endroid/qrcode": "v1.0",
+        "stfalcon/page-bundle": "dev-master",
+        "stfalcon/news-bundle": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "stfalcon/page-bundle",
-                "version": "dev-master",
-                "dist": {
-                    "url": "https://github.com/stfalcon/PageBundle/zipball/master",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "git://github.com/stfalcon/PageBundle.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "target-dir": "../../../src/Stfalcon/Bundle/PageBundle"
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "stfalcon/news-bundle",
-                "version": "dev-master",
-                "dist": {
-                    "url": "https://github.com/stfalcon/NewsBundle/zipball/master",
-                    "type": "zip"
-                },
-                "source": {
-                    "url": "git://github.com/stfalcon/NewsBundle.git",
-                    "type": "git",
-                    "reference": "master"
-                },
-                "target-dir": "../../../src/Stfalcon/Bundle/NewsBundle"
-            }
-        },
-        {
-            "type": "composer",
-            "url": "http://packages.zendframework.com/"
-        }
-    ],
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
