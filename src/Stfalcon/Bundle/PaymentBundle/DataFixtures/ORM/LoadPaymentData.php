@@ -19,13 +19,11 @@ class LoadPaymentData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $payment = new Payment(
-
             $manager->merge($this->getReference('user-default')),
             100500
         );
         $payment->setAmountWithoutDiscount(100500);
         $payment->setStatus(Payment::STATUS_PAID);
-
         $manager->persist($payment);
         $this->addReference('payment', $payment);
 
@@ -39,6 +37,6 @@ class LoadPaymentData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 5; // the order in which fixtures will be loaded
+        return 2; // the order in which fixtures will be loaded
     }
 }

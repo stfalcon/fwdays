@@ -36,16 +36,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function beforeScen()
     {
+
         $loader = new Loader();
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakersData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
         $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
         $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
         $loader->addFixture(new \Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData());
+        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
@@ -56,7 +57,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^я оплачиваю билет для "([^"]*)"$/
+     * @Given /^я оплатил билет для "([^"]*)"$/
      */
     public function iPayTicket($mail)
     {
@@ -64,6 +65,23 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $payment->setStatus('paid');
+        $ticket->setPayment($payment);
+
+        $em->persist($ticket);
+        $em->flush();
+    }
+
+    /**
+     * @Given /^я не оплатил билет для "([^"]*)"$/
+     */
+    public function iDontPayTicket($mail)
+    {
+        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $payment->setStatus('pending');
         $ticket->setPayment($payment);
 
         $em->persist($ticket);
