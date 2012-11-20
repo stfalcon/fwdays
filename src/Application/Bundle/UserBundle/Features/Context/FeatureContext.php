@@ -53,6 +53,32 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Loads the profiler's profile.
+     *
+     * If no token has been given, the debug token of the last request will
+     * be used.
+     *
+     * @param string $token
+     *
+     * @throws \RuntimeException
+     *
+     * @return \Symfony\Component\HttpKernel\Profiler\Profile
+     */
+    public function loadProfile($token = null)
+    {
+        if (null === $token) {
+            $headers = $this->getSession()->getResponseHeaders();
+
+            if (!isset($headers['X-Debug-Token']) && !isset($headers['x-debug-token'])) {
+                throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
+            }
+            $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
+        }
+
+        return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
+    }
+
+    /**
      * @Given /^у меня должна быть подписка на все активные ивенты$/
      */
     public function iMustHaveTicketForAllEvents()
@@ -85,7 +111,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * @param string $email    Email
      * @param string $password Password
      *
-     * @Given /^я заполняю обязательные поля формы: имя - "([^"]*)", имейл - "([^"]*)", пароль - "([^"]*)"$/
+     * @Given /^я заполняю обязательные поля формы: имя - "([^"]*)", e-mail - "([^"]*)", пароль - "([^"]*)"$/
      */
     public function fillRequiredFields($name, $email, $password)
     {
@@ -152,15 +178,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^я должен быть на главной странице$/
-     */
-    public function iShouldBeOnTheMainPage()
-    {
-        $this->assertPageAddress('/');
-        $this->assertResponseStatus(200);
-    }
-
-    /**
      * Вход в учетную запись по логину и паролю
      *
      * В этом методе заполняются поля: логин и пароль, после чего нажимается кнопка "Вход"
@@ -192,7 +209,59 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->iAmOnLoginPage();
         $this->login($username, $password);
-        $this->iShouldBeOnTheMainPage();
+        $this->iAmOnHomepage();
+    }
+
+    /**
+     * @param string $sendTo
+     *
+     * @Given /^письмо для подтверждения регистрации должно быть выслано на e-mail "([^"]*)"$/
+     */
+    public function emailWithSubjectShouldHaveBeenSent($sendTo)
+    {
+        $mailer = $this->loadProfile()->getCollector('swiftmailer');
+        $this->getSession()->getDriver()->getClient()->followRedirects(true);
+
+        if (0 === $mailer->getMessageCount()) {
+            throw new \RuntimeException('No emails have been sent.');
+        }
+
+        $subject= "Добро пожаловать {$sendTo}!";
+
+        $foundToAddresses = null;
+        $foundSubjects = array();
+        foreach ($mailer->getMessages() as $message) {
+            $foundSubjects[] = $message->getSubject();
+
+            if ($subject === trim($message->getSubject())) {
+                $foundToAddresses = implode(', ', array_keys($message->getTo()));
+
+                if (null !== $sendTo) {
+                    $toAddresses = $message->getTo();
+                    if (array_key_exists($sendTo, $toAddresses)) {
+                        // found, and to address matches
+                        return;
+                    }
+
+                    // check next message
+                    continue;
+                } else {
+                    // found, and to email isn't checked
+                    return;
+                }
+            }
+        }
+
+        if (!$foundToAddresses) {
+            if (!empty($foundSubjects)) {
+                throw new \RuntimeException(sprintf('Subject "%s" was not found, but only these subjects: "%s"', $subject, implode('", "', $foundSubjects)));
+            }
+
+            // not found
+            throw new \RuntimeException(sprintf('No message with subject "%s" found.', $subject));
+        }
+
+        throw new \RuntimeException(sprintf('Subject found, but "%s" is not among to-addresses: %s', $sendTo, $foundToAddresses));
     }
 
     /**
@@ -293,5 +362,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         assertEmpty($city->getText(), 'Поле "Город" непустое');
         assertEmpty($company->getText(), 'Поле "Компания" непустое');
         assertEmpty($post->getText(), 'Поле "Должность" непустое');
+    }
+
+    /**
+     * Отключаем редирект страниц
+     *
+     * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
+     *
+     * @Given /^редирект страниц отключен$/
+     */
+    public function followRedirectsFalse()
+    {
+        $this->getSession()->getDriver()->getClient()->followRedirects(false);
     }
 }
