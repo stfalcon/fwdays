@@ -38,12 +38,10 @@ class SponsorAdmin extends Admin
                 ->add('slug')
                 ->add('site')
                 ->add('about')
-                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
+                // @todo rm required options https://github.com/dustin10/VichUploaderBundle/issues/27
                 ->add('file', 'file', array(
-                      'required' => false,
-                      'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                      'property_path' => 'file')
-                      )
+                      'required' => false
+                      ))
                 ->add('sortOrder', null, array(
                     'attr' => array(
                         'min' => 1

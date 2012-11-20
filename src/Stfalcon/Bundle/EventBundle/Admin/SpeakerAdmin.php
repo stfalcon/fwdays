@@ -28,11 +28,9 @@ class SpeakerAdmin extends Admin
                 ->add('email')
                 ->add('company')
                 ->add('about')
-                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
+                // @todo rm required options https://github.com/dustin10/VichUploaderBundle/issues/27
                 ->add('file', 'file', array(
-                        'required' => true,
-                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                        'property_path' => 'file'
+                        'required' => false
                 ))
                 ->add('events', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
