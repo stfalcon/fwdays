@@ -46,24 +46,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $userDefault->setLocked(false);
         $manager->persist($userDefault);
         $manager->flush();
-        $this->addReference('user-jordan', $userDefault);
-
-        $userDefault = new User();
-        $userDefault->setUsername('Пользователь');
-        $userDefault->setFullname('Rajon Rondo');
-        $userDefault->setEmail('rondo@fwdays.com');
-        $userDefault->setPlainPassword('qwerty');
-        $userDefault->addRole('ROLE_USER');
-        $userDefault->setCountry('USA');
-        $userDefault->setCity('Boston');
-        $userDefault->setCompany('NBA');
-        $userDefault->setPost('Point Guard');
-        $userDefault->setEnabled(true);
-        $userDefault->setExpired(false);
-        $userDefault->setLocked(false);
-        $manager->persist($userDefault);
-        $manager->flush();
-        $this->addReference('user-rondo', $userDefault);
+        $this->addReference('user-default', $userDefault);
     }
 
     /**

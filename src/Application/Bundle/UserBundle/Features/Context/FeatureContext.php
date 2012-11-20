@@ -308,63 +308,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $country
-     *
-     * @Given /^я должен видеть название своей страны "([^"]*)"$/
-     */
-    public function iShouldSeeMyCountry($country)
-    {
-        $this->assertFieldContains('fos_user_profile_form_country', $country);
-    }
-
-    /**
-     * @param string $city
-     *
-     * @Given /^я должен видеть название своего города "([^"]*)"$/
-     */
-    public function iShouldSeeMyCity($city)
-    {
-        $this->assertFieldContains('fos_user_profile_form_city', $city);
-    }
-
-    /**
-     * @param string $company
-     *
-     * @Given /^я должен видеть название своей компании "([^"]*)"$/
-     */
-    public function iShouldSeeMyCompany($company)
-    {
-        $this->assertFieldContains('fos_user_profile_form_company', $company);
-    }
-
-    /**
-     * @param string $post
-     *
-     * @Given /^я должен видеть название своей должности "([^"]*)"$/
-     */
-    public function iShouldSeeMyPost($post)
-    {
-        $this->assertFieldContains('fos_user_profile_form_post', $post);
-    }
-
-    /**
-     * @Given /^дополнительные поля должны быть пустыми$/
-     */
-    public function additionalFieldsShouldBeEmpty()
-    {
-        // Find fields on page
-        $country = $this->getSession()->getPage()->find('css', '#fos_user_profile_form_country');
-        $city    = $this->getSession()->getPage()->find('css', '#fos_user_profile_form_city');
-        $company = $this->getSession()->getPage()->find('css', '#fos_user_profile_form_company');
-        $post    = $this->getSession()->getPage()->find('css', '#fos_user_profile_form_post');
-        // Check that they are empty
-        assertEmpty($country->getText(), 'Поле "Страна" непустое');
-        assertEmpty($city->getText(), 'Поле "Город" непустое');
-        assertEmpty($company->getText(), 'Поле "Компания" непустое');
-        assertEmpty($post->getText(), 'Поле "Должность" непустое');
-    }
-
-    /**
      * Отключаем редирект страниц
      *
      * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.

@@ -20,7 +20,7 @@ class LoadTicketData extends AbstractFixture implements OrderedFixtureInterface
     {
         $ticket = new Ticket(
             $manager->merge($this->getReference('event-zfday')),
-            $manager->merge($this->getReference('user-jordan'))
+            $manager->merge($this->getReference('user-default'))
         );
 
         $manager->persist($ticket);
@@ -30,7 +30,7 @@ class LoadTicketData extends AbstractFixture implements OrderedFixtureInterface
 
         $ticket = new Ticket(
             $manager->merge($this->getReference('event-phpday')),
-            $manager->merge($this->getReference('user-jordan'))
+            $manager->merge($this->getReference('user-default'))
         );
 
         $manager->persist($ticket);
@@ -40,7 +40,7 @@ class LoadTicketData extends AbstractFixture implements OrderedFixtureInterface
 
         $ticket = new Ticket(
             $manager->merge($this->getReference('event-not-active')),
-            $manager->merge($this->getReference('user-jordan'))
+            $manager->merge($this->getReference('user-default'))
         );
 
         $manager->persist($ticket);
