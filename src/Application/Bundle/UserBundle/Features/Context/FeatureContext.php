@@ -122,7 +122,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^я должен видеть сообщение, чтоб пользователь успешно создан$/
+     * @Given /^я должен видеть сообщение, что пользователь успешно создан$/
      */
     public function iShouldSeeMessageThatUserCreatedSuccessfully()
     {
