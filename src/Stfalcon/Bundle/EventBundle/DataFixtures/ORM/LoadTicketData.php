@@ -21,7 +21,7 @@ class LoadTicketData extends AbstractFixture implements OrderedFixtureInterface
         $ticket = new Ticket(
             $manager->merge($this->getReference('event-zfday')),
             $manager->merge($this->getReference('user-default')));
-        $ticket->setPayment($this->getReference('payment'));
+        $ticket->setPayment($manager->merge($this->getReference('payment')));
 
         $manager->persist($ticket);
         $this->addReference('ticket-1', $ticket);
