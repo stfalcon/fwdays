@@ -79,7 +79,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^у меня должна быть подписка на все активные ивенты$/
+     * @Then /^у меня должна быть подписка на все активные ивенты$/
      */
     public function iMustHaveTicketForAllEvents()
     {
@@ -139,7 +139,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^я должен быть на странице подтверждения имейла$/
+     * @Then /^я должен быть на странице подтверждения имейла$/
      */
     public function checkThatCurrentPageIsCheckMailPage()
     {
@@ -148,7 +148,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Given /^я должен видеть сообщение, что пользователь успешно создан$/
+     * @Then /^я должен видеть сообщение, что пользователь успешно создан$/
      */
     public function iShouldSeeMessageThatUserCreatedSuccessfully()
     {
@@ -158,7 +158,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @param string $emailToConfirm
      *
-     * @Given /^я должен видеть сообщение, что на почту "([^"]*)" выслано письмо для подтверждения регистрации$/
+     * @Then /^я должен видеть сообщение, что на почту "([^"]*)" выслано письмо для подтверждения регистрации$/
      */
     public function iShouldSeeMessageThatConfirmationMailWasSent($emailToConfirm)
     {
@@ -215,7 +215,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @param string $sendTo
      *
-     * @Given /^письмо для подтверждения регистрации должно быть выслано на e-mail "([^"]*)"$/
+     * @Then /^письмо для подтверждения регистрации должно быть выслано на e-mail "([^"]*)"$/
      */
     public function emailWithSubjectShouldHaveBeenSent($sendTo)
     {
@@ -269,7 +269,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @param string $username
      *
-     * @Given /^я должен видеть меню для пользователя "([^"]*)"$/
+     * @Then /^я должен видеть меню для пользователя "([^"]*)"$/
      */
     public function iShouldSeeMenuForUser($username)
     {
@@ -290,7 +290,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @param string $email
      *
-     * @Given /^я должен видеть свой имейл "([^"]*)"$/
+     * @Then /^я должен видеть свой имейл "([^"]*)"$/
      */
     public function iShouldSeeMyEmail($email)
     {
@@ -300,7 +300,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @param string $username
      *
-     * @Given /^я должен видеть свое имя "([^"]*)"$/
+     * @Then /^я должен видеть свое имя "([^"]*)"$/
      */
     public function iShouldSeeMyName($username)
     {
