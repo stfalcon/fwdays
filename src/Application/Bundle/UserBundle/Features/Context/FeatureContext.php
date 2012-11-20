@@ -196,6 +196,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Проверка, что отображается меню для авторизированого пользователя
+     *
+     * @param string $username
+     *
+     * @Given /^я должен видеть меню для пользователя "([^"]*)"$/
+     */
+    public function iShouldSeeMenuForUser($username)
+    {
+        $this->assertElementOnPage('div.user-nav');
+        $this->assertElementContainsText('div.user-menu a.username', $username);
+    }
+
+    /**
      * @Given /^я перехожу на страницу редактирования профиля$/
      */
     public function goToTheProfileEditPage()
