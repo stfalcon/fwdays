@@ -41,6 +41,10 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $userDefault->setEmail('jordan@fwdays.com');
         $userDefault->setPlainPassword('qwerty');
         $userDefault->addRole('ROLE_USER');
+        $userDefault->setCountry('USA');
+        $userDefault->setCity('Boston');
+        $userDefault->setCompany('NBA');
+        $userDefault->setPost('Point Guard');
         $userDefault->setEnabled(true);
         $userDefault->setExpired(false);
         $userDefault->setLocked(false);

@@ -318,4 +318,44 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->getSession()->getDriver()->getClient()->followRedirects(false);
     }
+
+    /**
+     * @param string $country
+     *
+     * @Given /^я должен видеть название своей страны "([^"]*)"$/
+     */
+    public function iShouldSeeMyCountry($country)
+    {
+        $this->assertFieldContains('fos_user_profile_form_country', $country);
+    }
+
+    /**
+     * @param string $city
+     *
+     * @Given /^я должен видеть название своего города "([^"]*)"$/
+     */
+    public function iShouldSeeMyCity($city)
+    {
+        $this->assertFieldContains('fos_user_profile_form_city', $city);
+    }
+
+    /**
+     * @param string $company
+     *
+     * @Given /^я должен видеть название своей компании "([^"]*)"$/
+     */
+    public function iShouldSeeMyCompany($company)
+    {
+        $this->assertFieldContains('fos_user_profile_form_company', $company);
+    }
+
+    /**
+     * @param string $post
+     *
+     * @Given /^я должен видеть название своей должности "([^"]*)"$/
+     */
+    public function iShouldSeeMyPost($post)
+    {
+        $this->assertFieldContains('fos_user_profile_form_post', $post);
+    }
 }
