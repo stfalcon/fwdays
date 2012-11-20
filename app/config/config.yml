@@ -129,6 +129,10 @@ services:
      monolog.gelf_handler:
          class: Monolog\Handler\GelfHandler
          arguments: [@gelf.publisher]
+     monolog.processor.session_request:
+             class: Application\Bundle\DefaultBundle\GreyLogHostProcessor
+             tags:
+                 - { name: monolog.processor, method: processRecord }
 
 vich_uploader:
      db_driver: orm
