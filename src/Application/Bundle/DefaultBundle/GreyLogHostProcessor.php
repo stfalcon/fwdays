@@ -11,7 +11,7 @@ class GreyLogHostProcessor
 {
     public function processRecord(array $record)
     {
-        $record['extra']['host'] = $_SERVER['HTTP_HOST'];
+        $record['extra']['host'] = isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST']:'console';
 
         return $record;
     }
