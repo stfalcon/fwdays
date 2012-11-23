@@ -239,7 +239,7 @@ class TicketController extends BaseController
         if ($ticket->isUsed()) {
             $timeNow = new \DateTime();
             $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 403);
+            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
         }
 
         $em = $this->getDoctrine()->getManager();
