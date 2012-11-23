@@ -249,4 +249,26 @@ class TicketController extends BaseController
 
         return new Response('<h1 style="color:green">Все ок. Билет №' . $ticket->getId() .' отмечаем как использованный</h1>');
     }
+
+    /**
+     * Check that QR-code is valid, and register ticket
+     *
+     * @Secure(roles="ROLE_ADMIN")
+     * @Route("/check/{ticket}", name="check_ticket_num")
+
+     * @param Ticket $ticket
+     */
+    public function checkByNumAction(Ticket $ticket)
+    {
+        if (!$ticket){
+            return new NotFoundHttpException();
+        }
+            $url = $this->generateUrl('event_ticket_check',
+                array(
+                    'ticket' => $ticket->getId(),
+                    'hash' => $ticket->getHash()
+                ), true);
+
+           return $this->redirect($url);
+    }
 }
