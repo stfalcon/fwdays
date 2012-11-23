@@ -251,17 +251,17 @@ class TicketController extends BaseController
     }
 
     /**
-     * Check that QR-code is valid, and register ticket
+     * Check that Ticket NUmber is valid
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/{ticketId}", name="check_ticket_num")
      * @Route("/check/", name="check")
      * @Template()
-
      * @param int $ticketId
      */
-    public function checkByNumAction($ticketId = null)
+    public function checkByNumAction()
     {
+        $ticketId = $this->getRequest()->get('id');
+
         if (!$ticketId) {
             return array(
                 'action' => $this->generateUrl('check')
@@ -285,10 +285,10 @@ class TicketController extends BaseController
             );
 
         } else {
-           return array(
-             'message' => 'Not Found',
-             'action' => $this->generateUrl('check')
-           );
+            return array(
+                'message' => 'Not Found',
+                'action' => $this->generateUrl('check')
+            );
         }
     }
 }
