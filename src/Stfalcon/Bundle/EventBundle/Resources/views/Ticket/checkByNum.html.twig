@@ -1,0 +1,13 @@
+{% if message is defined %}
+    <p style="color:red">{{ message }}</p>
+{% endif %}
+<form action="{{ action }}">
+    <input type="text" name="id" value="">
+    <input type="submit">
+</form>
+
+{% if ticketUrl is defined %}
+    <div>
+        <iframe src="{{ ticketUrl }}">FUCK</iframe>
+    </div>
+{% endif %}
