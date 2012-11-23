@@ -254,21 +254,41 @@ class TicketController extends BaseController
      * Check that QR-code is valid, and register ticket
      *
      * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/{ticket}", name="check_ticket_num")
+     * @Route("/check/{ticketId}", name="check_ticket_num")
+     * @Route("/check/", name="check")
+     * @Template()
 
-     * @param Ticket $ticket
+     * @param int $ticketId
      */
-    public function checkByNumAction(Ticket $ticket)
+    public function checkByNumAction($ticketId = null)
     {
-        if (!$ticket){
-            return new NotFoundHttpException();
+        if (!$ticketId) {
+            return array(
+                'action' => $this->generateUrl('check')
+            );
         }
+
+        $ticket = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(array('id' => $ticketId));
+
+        if (is_object($ticket)) {
             $url = $this->generateUrl('event_ticket_check',
                 array(
                     'ticket' => $ticket->getId(),
                     'hash' => $ticket->getHash()
                 ), true);
 
-           return $this->redirect($url);
+            return array(
+                'action' => $this->generateUrl('check'),
+                'ticketUrl' => $url
+            );
+
+        } else {
+           return array(
+             'message' => 'Not Found',
+             'action' => $this->generateUrl('check')
+           );
+        }
     }
 }
