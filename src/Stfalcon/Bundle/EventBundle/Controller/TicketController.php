@@ -239,7 +239,7 @@ class TicketController extends BaseController
         if ($ticket->isUsed()) {
             $timeNow = new \DateTime();
             $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 403);
+            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -248,5 +248,47 @@ class TicketController extends BaseController
         $em->flush();
 
         return new Response('<h1 style="color:green">Все ок. Билет №' . $ticket->getId() .' отмечаем как использованный</h1>');
+    }
+
+    /**
+     * Check that Ticket NUmber is valid
+     *
+     * @Secure(roles="ROLE_ADMIN")
+     * @Route("/check/", name="check")
+     * @Template()
+     * @param int $ticketId
+     */
+    public function checkByNumAction()
+    {
+        $ticketId = $this->getRequest()->get('id');
+
+        if (!$ticketId) {
+            return array(
+                'action' => $this->generateUrl('check')
+            );
+        }
+
+        $ticket = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(array('id' => $ticketId));
+
+        if (is_object($ticket)) {
+            $url = $this->generateUrl('event_ticket_check',
+                array(
+                    'ticket' => $ticket->getId(),
+                    'hash' => $ticket->getHash()
+                ), true);
+
+            return array(
+                'action' => $this->generateUrl('check'),
+                'ticketUrl' => $url
+            );
+
+        } else {
+            return array(
+                'message' => 'Not Found',
+                'action' => $this->generateUrl('check')
+            );
+        }
     }
 }

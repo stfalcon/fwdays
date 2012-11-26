@@ -1,0 +1,87 @@
+﻿/*------------------ RESET STYLE----------------*/
+* {vertical-align:baseline; font-weight:inherit; font-family:inherit; font-style:inherit; font-size:100%; padding:0; margin:0;}
+fieldset, figcaption, figure, font, footer, form,
+h1, h2, h3, h4, h5, h6, header, hgroup, html,
+i, iframe, img, ins,
+kbd,
+keygen,
+label, legend, li,
+meter,
+nav,
+object, ol, output,
+p, pre, progress,
+q,
+s, samp, section, small, span, source, strike, strong, sub, sup,
+table, tbody, tfoot, thead, th, tr, tdvideo, tt,
+u, ul,
+var{
+    background: transparent;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: top; }
+
+ol, ul {
+    list-style-position: inside;
+}
+blockquote, q {
+    quotes: none;
+}
+table, table td {
+    padding:0;
+    border-collapse:collapse;
+}
+img {
+    vertical-align:top;
+}
+embed {
+    vertical-align:top;
+}
+/*html5 fix*/
+header, content, footer, nav, article, section, figure, aside {
+    display: block;
+}
+/*clearfix*/
+.clear {clear:both; padding:0 !important; margin:0 !important; height:0 !important;}
+.clearfix {display: inline-block;}
+.clearfix:before , .clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+html[xmlns] .clearfix {
+    display: block;
+}
+* html .clearfix {
+    height: 1%;
+}
+.hidden{display:none;}
+
+/*------------------ MAIN STYLE----------------*/
+
+body {background:white; font-family: Arial, Trebuchet MS, helvetica, arial, sans-serif; font-size:13px; color:#000; line-height: 1;}
+
+.container{width:960px; margin:0 auto;}
+
+.ticket{width: 560px; margin: 0 auto; padding-top: 18px;}
+.ticket .logo{float:left; width: 95px; height: 103px; margin-bottom: 48px; /*background: url(images/logo.png) no-repeat;*/ margin-left: -5px;}
+.ticket .side{float:left; width: 200px;}
+.ticket .side img{float:left;}
+.ticket .main{float:right; width: 355px; padding-top: 50px;}
+.ticket .main .time_and_place{width: 100%; padding-bottom: 21px; border-bottom: solid 1px #bfbfbf;}
+.ticket .main .time_and_place .time{float: right; width: 105px; line-height: 20px;}
+.ticket .main .time_and_place .time strong{display: block; font-size: 14px; font-weight: bold; color: #000;}
+.ticket .main .time_and_place .time span{display: block; font-size: 14px; color: #000;}
+.ticket .main .time_and_place .place{float: left; line-height: 20px;}
+.ticket .main .time_and_place .place strong{display: block; font-size: 14px; font-weight: bold; color: #000;}
+.ticket .main .time_and_place .place span{display: block; font-size: 14px; color: #000;}
+.ticket .main .name_studio_bilet-number{width: 100%; line-height: 30px; padding: 18px 0 19px 0; border-bottom: solid 1px #bfbfbf;}
+.ticket .main .name_studio_bilet-number strong{display: block; font-size: 20px; font-weight: bold; color: #000;}
+.ticket .main .name_studio_bilet-number span{display: block; font-size: 20px; color: #000; margin-bottom: 21px;}
+.ticket .main .name_studio_bilet-number small{display: block; font-size: 14px; color: #000;}
+.ticket .main .name_studio_bilet-number small em{font-weight: bold;}

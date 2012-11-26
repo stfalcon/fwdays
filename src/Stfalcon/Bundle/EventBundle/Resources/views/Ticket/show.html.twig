@@ -1,4 +1,68 @@
-<img src="data:image/png;base64,{{ qrCodeBase64 }}" align="left">
-<h2>{{ ticket.event.name }}</h2>
+{% set event = ticket.event %}
 
-<h1>{{ app.user.fullname }}</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <title>Билет участника "{{ ticket.event.name }}"</title>
+
+    {%block stylesheets%}
+        {% stylesheets '@StfalconEventBundle/Resources/web/css/ticket.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        {% endstylesheets %}
+    {%endblock stylesheets%}
+</head>
+<body>
+<content>
+    <div class="container">
+        <div class="ticket">
+            <div class="clear"></div>
+            <div class="main">
+                <div class="time_and_place">
+                    <div class="time">
+                        {% if event.date %}
+                            <strong>Время</strong>
+                            <span>
+                                {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="place">
+                        <strong>Место проведения</strong>
+                            <span>
+                                г. {{ event.city }}<br>
+                                {% if event.place %}
+                                    {{ event.place }}
+                                {% endif %}
+                            </span>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="name_studio_bilet-number">
+                    <strong>
+                        {{ ticket.user.fullname }}
+                    </strong>
+                    {% if ticket.user.company %}
+                        <span>
+                            {{ ticket.user.company }}
+                        </span>
+                    {% endif %}
+                    <small>
+                        № билета: <em>{{ ticket.id }}</em>
+                    </small>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="side">
+                <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}" class="logo">
+                    <img src="{{ vich_uploader_asset(event, 'file') }}" width="95">
+                </a>
+                <img src="data:image/png;base64,{{ qrCodeBase64 }}" alt="">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</content>
+</body>
+</html>

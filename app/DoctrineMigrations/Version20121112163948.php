@@ -15,14 +15,14 @@ class Version20121112163948 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 
         $this->addSql("UPDATE event__events SET logo = TRIM(LEADING '/uploads/events/' FROM logo)");
-        $this->addSql("UPDATE event__speakers SET photo = TRIM(LEADING '/uploads/events/' FROM photo)");
+        $this->addSql("UPDATE event__speakers SET photo = TRIM(LEADING '/uploads/speakers/' FROM photo)");
     }
 
     public function down(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 
-        $this->addSql("UPDATE event__events SET logo = CONCAT('/uploads/speakers/', logo)");
+        $this->addSql("UPDATE event__events SET logo = CONCAT('/uploads/events/', logo)");
         $this->addSql("UPDATE event__speakers SET photo = CONCAT('/uploads/speakers/', photo)");
     }
 }
