@@ -7,5 +7,6 @@ default:
                 debug: true
         Behat\MinkExtension\Extension:
             default_session: 'symfony2'
+            show_cmd: 'firefox %s'
     paths:
         features:  features

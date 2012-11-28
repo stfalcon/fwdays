@@ -12,6 +12,8 @@ fos_user_registration_form_comment: "Комментарий, пожелания,
 fos_user_registration_form_subscribe: "Я согласен получать важные новости на e-mail:"
 
 fos_user_profile_form_fullname: "Фамилия и имя:"
+fos_user_profile_form_country: "Страна:"
+fos_user_profile_form_city: "Город:"
 fos_user_profile_form_company: "Компания:"
 fos_user_profile_form_post: "Должность:"
 fos_user_profile_form_comment: "Комментарий, пожелания, доп. информация:"

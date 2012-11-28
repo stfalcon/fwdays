@@ -28,6 +28,7 @@
         "behat/symfony2-extension": "*",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
+        "behat/common-contexts": "*",
 
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
         "sonata-project/intl-bundle": "dev-master",
