@@ -43,7 +43,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakersData());
+        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakerData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
         $loader->addFixture(new \Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData());
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
@@ -64,7 +64,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * Check that some element contains image from some source
      *
      * @param string $src     Source of image
-     * @param string $element Selector enginen name
+     * @param string $element Selector engine name
      *
      * @Given /^я должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
@@ -76,7 +76,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Check that some element not contains image from some source
      *
-     * @param string $src
+     * @param string $src     Source of image
+     * @param string $element Selector engine name
      *
      * @Given /^я не должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
@@ -94,6 +95,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 return true;
             }
         }
+
         return false;
     }
 

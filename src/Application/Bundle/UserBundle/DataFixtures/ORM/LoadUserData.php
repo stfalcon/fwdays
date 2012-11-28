@@ -2,16 +2,15 @@
 
 namespace Application\Bundle\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture,
+    Doctrine\Common\Persistence\ObjectManager;
 
 use Application\Bundle\UserBundle\Entity\User;
 
 /**
- * Users fixtures
+ * LoadUserData class
  */
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
+class LoadUserData extends AbstractFixture
 {
     /**
      * Create and load user fixtures to database
@@ -32,7 +31,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $userAdmin->setExpired(false);
         $userAdmin->setLocked(false);
         $manager->persist($userAdmin);
-        $manager->flush();
         $this->addReference('user-admin', $userAdmin);
 
         $userDefault = new User();
@@ -49,17 +47,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $userDefault->setExpired(false);
         $userDefault->setLocked(false);
         $manager->persist($userDefault);
-        $manager->flush();
         $this->addReference('user-default', $userDefault);
-    }
 
-    /**
-     * Get the number for sorting fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 1; // the order in which fixtures will be loaded
+        $manager->flush();
     }
 }

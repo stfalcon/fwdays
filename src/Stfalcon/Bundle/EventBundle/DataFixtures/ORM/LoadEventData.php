@@ -3,8 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
@@ -12,7 +12,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 /**
  * LoadEventData Class
  */
-class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
+class LoadEventData extends AbstractFixture
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
@@ -30,11 +30,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setDate(new \DateTime("2012-04-19", new \DateTimeZone('Europe/Kiev')));
         $event->setReceivePayments(true);
         $event->setCost(100);
-
         $manager->persist($event);
         $this->addReference('event-zfday', $event);
-
-        unset($event);
 
         $event = new Event();
         $event->setName('PHP Frameworks Day');
@@ -46,11 +43,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setAbout("Описание события");
         $event->setDate(new \DateTime("2012-11-18", new \DateTimeZone('Europe/Kiev')));
         $event->setCost(100);
-
         $manager->persist($event);
         $this->addReference('event-phpday', $event);
-
-        unset($event);
 
         $event = new Event();
         $event->setName('Not Active Frameworks Day');
@@ -63,7 +57,6 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         $event->setActive(false);
         $event->setDate(new \DateTime("2012-12-12", new \DateTimeZone('Europe/Kiev')));
         $event->setCost(100);
-
         $manager->persist($event);
         $this->addReference('event-not-active', $event);
 
@@ -74,6 +67,8 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
      * Generate UploadedFile object from local file. For VichUploader
      *
      * @param string $filename
+     *
+     * @return UploadedFile
      */
     private function _generateUploadedFile($filename)
     {
@@ -84,13 +79,5 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
         return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrder()
-    {
-        return 1; // the order in which fixtures will be loaded
     }
 }
