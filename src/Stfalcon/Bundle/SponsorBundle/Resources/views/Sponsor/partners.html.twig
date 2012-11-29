@@ -1,0 +1,36 @@
+{% extends '::layout.html.twig' %}
+{% block title %}Партнеры / {{ parent() }}{% endblock %}
+{% block content %}
+    {% if sponsors %}
+            <h2>
+                Партнеры
+            </h2>
+            <table class="sponsors-partners-list">
+                <tbody>
+                {% for sponsor in sponsors %}
+                    <tr>
+                        <td class="sp-logo">
+                            {% if sponsor.site %}
+                            <a href="{{ sponsor.site }}">
+                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                            </a>
+                            {% else %}
+                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                            {% endif %}
+                        </td>
+                        <td class="sp-info">
+                            <div class="sp-info-h">{{ sponsor.name }}</div>
+                            <p>{{ sponsor.about }}</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    {% endif %}
+{% endblock %}

@@ -23,6 +23,11 @@ ApplicationDefaultBundle:
     type:     annotation
     prefix:   /
 
+StfalconSponsorBundle:
+    resource: "@StfalconSponsorBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 #ApplicationUserBundle:
 #    resource: "@ApplicationDefaultBundle/Controller/"
 #    type:     annotation
