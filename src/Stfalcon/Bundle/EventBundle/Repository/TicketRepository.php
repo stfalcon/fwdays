@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * EventRepository
@@ -33,5 +34,28 @@ class TicketRepository extends EntityRepository
             ')
             ->setParameter('user', $user)
             ->getResult();
+    }
+
+    /**
+     * Find all paid tickets for event
+     *
+     * @param Event $event
+     *
+     * @return mixed
+     */
+    public function findPaidTicketsByEvent(Event $event)
+    {
+        $query = $this
+            ->createQueryBuilder('t')
+            ->leftJoin('t.payment', 'p')
+            ->andWhere('p.status = :status')
+            ->andWhere('t.event = :event')
+            ->setParameters(array(
+            'event' => $event,
+            'status' => \Stfalcon\Bundle\PaymentBundle\Entity\Payment::STATUS_PAID
+            ))
+            ->getQuery();
+
+        return $query->execute();
     }
 }

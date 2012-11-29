@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Event controller
@@ -56,4 +58,33 @@ class EventController extends BaseController
 
         return array('event' => $event);
     }
+
+    /**
+     * Export Users paid for ticket
+     *
+     * @param Event $event
+     *
+     * @Secure(roles="ROLE_ADMIN")
+     * @Route("/event/{event}/export", name="export_users")
+     */
+    public function exportAction(Event $event)
+    {
+        $repo = $this->getDoctrine()
+            ->getEntityManagerForClass('StfalconEventBundle:Ticket')
+            ->getRepository('StfalconEventBundle:Ticket');
+
+        $tickets = $repo->findPaidTicketsByEvent($event);
+
+        $csv = '';
+        foreach ($tickets as $ticket) {
+            $csv .=  $ticket->getUser()->getFullname() . ",\n";
+        }
+        $filename = 'filename="' . $event->getName(). '-paid_users.csv"';
+        $response = new Response();
+        $response->setContent($csv);
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment;' . $filename);
+        return $response;
+    }
+
 }

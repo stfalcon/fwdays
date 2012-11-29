@@ -19,6 +19,11 @@ class EventAdmin extends Admin
             ->add('active')
             ->add('receivePayments')
             ->add('cost')
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'export' => array('template' => 'StfalconEventBundle:Admin:action_export.html.twig')
+                    )
+            ))
         ;
     }
 
