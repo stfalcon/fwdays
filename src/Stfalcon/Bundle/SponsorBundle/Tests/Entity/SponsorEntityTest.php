@@ -37,19 +37,6 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for logo
-     */
-    public function testSetAndGetSponsorLogo()
-    {
-        $slug = "logo.jpg";
-
-        $sponsor = new Sponsor();
-        $sponsor->setLogo($slug);
-
-        $this->assertEquals($sponsor->getLogo(), $slug);
-    }
-
-    /**
      * Test setter and getter methods for site
      */
     public function testSetAndGetSponsorSite()
