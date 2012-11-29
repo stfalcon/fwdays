@@ -77,14 +77,15 @@ class EventController extends BaseController
 
         $csv = '';
         foreach ($tickets as $ticket) {
-            $csv .=  $ticket->getUser()->getFullname() . ",\n";
+            $csv .= $ticket->getUser()->getFullname() . ",\n";
         }
-        $filename = 'filename="' . $event->getName(). '-paid_users.csv"';
-        $response = new Response();
-        $response->setContent($csv);
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment;' . $filename);
-        return $response;
+        $filename = 'filename="' . $event->getName() . '-paid_users.csv"';
+
+        return new Response($csv, 200, array(
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment;' . $filename
+            )
+        );
     }
 
 }
