@@ -3,22 +3,38 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
+    Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 /**
- * LoadSpeakersData Class
+ * LoadSpeakerData Class
  */
-class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterface
+class LoadSpeakerData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * Return fixture classes fixture is dependent on
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+        );
+    }
+
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
+        // Get references for event fixtures
+        $eventZFDay  = $manager->merge($this->getReference('event-zfday'));
+        $eventPHPDay = $manager->merge($this->getReference('event-phpday'));
+
         $speaker = new Speaker();
         $speaker->setName('Андрей Шкодяк');
         $speaker->setEmail('a_s@test.com');
@@ -26,17 +42,9 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setAbout('About Andrew');
         $speaker->setSlug('andrew-shkodyak');
         $speaker->setFile($this->_generateUploadedFile('andrew.png'));
-        $speaker->setEvents(
-            array(
-                 $manager->merge($this->getReference('event-zfday')),
-                 $manager->merge($this->getReference('event-phpday')),
-            )
-        );
-
+        $speaker->setEvents(array($eventZFDay, $eventPHPDay));
         $manager->persist($speaker);
         $this->addReference('speaker-shkodyak', $speaker);
-
-        unset($speaker);
 
         $speaker = new Speaker();
         $speaker->setName('Валерий Рабиевский');
@@ -45,13 +53,7 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         $speaker->setAbout('About Valeriy');
         $speaker->setSlug('valeriy-rabievskiy');
         $speaker->setFile($this->_generateUploadedFile('valeriy.png'));
-        $speaker->setEvents(
-            array(
-                 $manager->merge($this->getReference('event-zfday')),
-                 $manager->merge($this->getReference('event-phpday')),
-            )
-        );
-
+        $speaker->setEvents(array($eventZFDay, $eventPHPDay));
         $manager->persist($speaker);
         $this->addReference('speaker-rabievskiy', $speaker);
 
@@ -62,6 +64,8 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
      * Generate UploadedFile object from local file. For VichUploader
      *
      * @param string $filename
+     *
+     * @return UploadedFile
      */
     private function _generateUploadedFile($filename)
     {
@@ -72,13 +76,5 @@ class LoadSpeakersData extends AbstractFixture implements OrderedFixtureInterfac
         return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrder()
-    {
-        return 5; // the order in which fixtures will be loaded
     }
 }

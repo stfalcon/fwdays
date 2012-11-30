@@ -3,13 +3,31 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
+    Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
 use Stfalcon\Bundle\EventBundle\Entity\News;
 
-class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
+/**
+ * LoadNewsData Class
+ */
+class LoadNewsData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * Return fixture classes fixture is dependent on
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+        );
+    }
+
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $news = new News();
@@ -22,10 +40,5 @@ class LoadNewsData extends AbstractFixture implements OrderedFixtureInterface
 
         $manager->persist($news);
         $manager->flush();
-    }
-
-    public function getOrder()
-    {
-        return 2; // the order in which fixtures will be loaded
     }
 }
