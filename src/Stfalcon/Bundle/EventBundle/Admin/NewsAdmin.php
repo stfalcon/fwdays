@@ -27,5 +27,10 @@ class NewsAdmin extends BaseNewsAdmin
             ->end()
         ;
     }
-    
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('event');
+    }
 }
