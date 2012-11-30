@@ -10,12 +10,17 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface,
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
 
 /**
  * Feature context for StfalconEventBundle
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    public function __construct() {
+        $this->useContext('LoadFixturesContext', new LoadFixturesContext());
+    }
+
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
@@ -36,17 +41,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function beforeScen()
     {
-
         $loader = new Loader();
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakersData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
-        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
-        $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
-        $loader->addFixture(new \Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
+        $this->getMainContext()
+            ->getSubcontext('LoadFixturesContext')
+            ->loadFixtureClass($loader, array(
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+        ));
+
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
@@ -57,13 +61,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $mail E-mail Ticket owner
+     *
      * @Given /^я оплатил билет для "([^"]*)"$/
      */
     public function iPayTicket($mail)
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
         $ticket->setPayment($payment);
@@ -73,13 +79,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $mail E-mail Ticket owner
+     *
      * @Given /^я не оплатил билет для "([^"]*)"$/
      */
     public function iDontPayTicket($mail)
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
         $ticket->setPayment($payment);
@@ -89,6 +97,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $mail E-mail Ticket owner
+     *
      * @Given /^я должен видеть полное имя для "([^"]*)"$/
      */
     public function iMustSeeFullname($mail)
@@ -99,6 +109,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $mail E-mail Ticket owner
+     *
      * @Given /^я перехожу на страницу регистрации для "([^"]*)"$/
      */
     public function goToTicketRegistrationPage($mail)
@@ -107,6 +119,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $mail E-mail Ticket owner
+     *
      * @Given /^я перехожу на страницу регистрации для "([^"]*)" с битым хешем$/
      */
     public function goToTicketRegistrationPageWithWrongHash($mail)
@@ -114,23 +128,25 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->visit($this->getTicketUrl($mail) . 'fffuu');
     }
 
-    /*
+    /**
      * Generate URL for register ticket
-     * @param string $mail  E-mail Ticket owner
+     *
+     * @param string $mail E-mail Ticket owner
+     *
      * @return string
      */
     public function getTicketUrl($mail)
     {
         $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user   = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
 
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_check',
             array(
                 'ticket' => $ticket->getId(),
-                'hash' => $ticket->getHash()
-            ), true);
+                'hash'   => $ticket->getHash()
+            ),
+            true
+        );
     }
-
-
 }
