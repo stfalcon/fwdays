@@ -245,4 +245,14 @@ class Payment
     {
         return $this->amountWithoutDiscount;
     }
+
+    /**
+     * Get status of payment
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->status;
+    }
 }
