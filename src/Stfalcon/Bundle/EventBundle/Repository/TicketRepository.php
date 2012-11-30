@@ -45,8 +45,7 @@ class TicketRepository extends EntityRepository
      */
     public function findPaidTicketsByEvent(Event $event)
     {
-        $query = $this
-            ->createQueryBuilder('t')
+        $query = $this->createQueryBuilder('t')
             ->leftJoin('t.payment', 'p')
             ->andWhere('p.status = :status')
             ->andWhere('t.event = :event')
