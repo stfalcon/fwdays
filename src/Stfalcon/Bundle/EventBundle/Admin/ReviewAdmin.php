@@ -32,5 +32,10 @@ class ReviewAdmin extends BasePageAdmin
             ->end()
         ;
     }
-    
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('event');
+    }
 }
