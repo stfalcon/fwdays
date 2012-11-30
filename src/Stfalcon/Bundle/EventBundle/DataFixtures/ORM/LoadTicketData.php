@@ -23,6 +23,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         return array(
             'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
             'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+            'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
         );
     }
 

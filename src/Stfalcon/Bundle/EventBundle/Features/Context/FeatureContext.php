@@ -10,12 +10,17 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface,
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
 
 /**
  * Feature context for StfalconEventBundle
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    public function __construct() {
+        $this->useContext('LoadFixturesContext', new LoadFixturesContext());
+    }
+
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
@@ -37,15 +42,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function beforeScen()
     {
         $loader = new Loader();
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakerData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
-        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
-        $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
-        $loader->addFixture(new \Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
+        $this->getMainContext()
+            ->getSubcontext('LoadFixturesContext')
+            ->loadFixtureClass($loader, array(
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+        ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');

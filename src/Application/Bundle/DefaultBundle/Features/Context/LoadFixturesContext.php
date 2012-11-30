@@ -2,7 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
-use Behat\Behat\Context\BehatContext;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface,
+    Behat\Behat\Context\BehatContext;
 /**
  * Provides some steps/methods which are useful for recursive loading Depended Fixtures
  */
@@ -16,7 +17,6 @@ class LoadFixturesContext extends BehatContext
      */
     public function loadFixtureClass($loader, $className)
     {
-
         if (is_array($className)) {
             foreach ($className as $class) {
                 $this->loadFixtureClass($loader, $class);
@@ -29,14 +29,13 @@ class LoadFixturesContext extends BehatContext
                 unset($fixture);
                 return;
             }
-
-            $loader->addFixture($fixture);
-
             if ($fixture instanceof DependentFixtureInterface) {
+
                 foreach ($fixture->getDependencies() as $dependency) {
                     $this->loadFixtureClass($loader, $dependency);
                 }
             }
+            $loader->addFixture($fixture);
         }
     }
 
