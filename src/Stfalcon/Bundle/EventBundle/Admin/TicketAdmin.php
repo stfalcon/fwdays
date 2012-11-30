@@ -14,8 +14,9 @@ class TicketAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id')
             ->addIdentifier('event')
-            ->add('user')
+            ->add('user.fullname',null, array('label' => 'Fullname'))
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')
@@ -30,5 +31,18 @@ class TicketAdmin extends Admin
             ->add('used')
             ->add('payment')
         ;
+    }
+
+    public function getExportFields()
+    {
+        return array(
+            'id',
+            'event',
+            'user.fullname',
+            'payment',
+            'createdAt',
+            'updatedAt',
+            'used'
+        );
     }
 }

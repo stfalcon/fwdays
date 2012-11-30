@@ -134,6 +134,14 @@ class Ticket
         return $this->user;
     }
 
+//    /**
+//     * @return string UserFullname
+//     */
+//    public function getUserFullName()
+//    {
+//        return $this->user->getFullname();
+//    }
+
     public function getCreatedAt()
     {
         return $this->createdAt;
