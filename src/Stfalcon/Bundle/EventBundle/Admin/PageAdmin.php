@@ -47,4 +47,9 @@ class PageAdmin extends BasePageAdmin
         ;
     }
 
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('event');
+    }
 }
