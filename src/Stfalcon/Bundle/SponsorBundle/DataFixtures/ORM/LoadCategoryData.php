@@ -3,15 +3,14 @@
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
 use Stfalcon\Bundle\SponsorBundle\Entity\Category;
 
 /**
- * Load Sponsor fixtures to database
+ * LoadCategoryData class
  */
-class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterface
+class LoadCategoryData extends AbstractFixture
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
@@ -22,26 +21,14 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $golden->setName('Golden sponsor');
         $golden->setSortOrder(30);
         $manager->persist($golden);
-
-        $this->addReference('golden-sponsor',$golden);
+        $this->addReference('golden-sponsor', $golden);
 
         $silver = new Category();
         $silver->setName('Silver sponsor');
         $silver->setSortOrder(20);
         $manager->persist($silver);
-
-        $this->addReference('silver-sponsor',$silver);
+        $this->addReference('silver-sponsor', $silver);
 
         $manager->flush();
-    }
-
-    /**
-     * Return the order in which fixtures will be loaded
-     *
-     * @return integer The order in which fixtures will be loaded
-     */
-    public function getOrder()
-    {
-        return 2;
     }
 }
