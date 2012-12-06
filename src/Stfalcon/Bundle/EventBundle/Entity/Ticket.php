@@ -46,7 +46,7 @@ class Ticket
     /**
      * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
+     * @ORM\OneToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment", inversedBy="ticket")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $payment;
@@ -190,5 +190,8 @@ class Ticket
     {
         return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
+
+
+
 
 }

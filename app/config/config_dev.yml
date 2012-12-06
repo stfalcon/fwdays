@@ -29,3 +29,4 @@ swiftmailer:
 parameters:
      graylog.hostname: localhost
      graylog.port: 12201
+
