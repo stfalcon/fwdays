@@ -1,10 +1,6 @@
 <?php
-
-
 namespace Application\Bundle\UserBundle\Entity;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use FOS\UserBundle\Model\UserInterface;
@@ -13,19 +9,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
- * Doctrine ORM listener subscribe user to event
- *
- *
+ * Doctrine ORM listener
  */
-class UserListener implements EventSubscriber
+class UserListener
 {
-    /**
-     * @var \FOS\UserBundle\Model\UserManagerInterface
-     */
-    private $userManager;
-
-    private $eventRepository;
-
     /**
      * @var ContainerInterface
      */
@@ -41,34 +28,37 @@ class UserListener implements EventSubscriber
         $this->container = $container;
     }
 
-    public function getSubscribedEvents()
-    {
-        return array(
-            Events::postPersist
-        );
-    }
-
-    public function postPersist(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $this->handleEvent($args);
     }
 
-    private function handleEvent(LifecycleEventArgs $args)
+    private function handleEvent(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
         if ($entity instanceof UserInterface) {
-            $activeEvents = $this->container->get('doctrine')->getEntityManager()
-                ->getRepository('StfalconEventBundle:Event')
-                ->findBy(array('active' => true ));
+            $session = $this->container->get('session');
+            //$session->setFlash($session->getFlash());
 
-            $em = $this->container->get('doctrine')->getEntityManagerForClass('StfalconEventBundle:Ticket');
-            // Подписуем пользователя на все активные евенты
-            foreach ($activeEvents as $activeEvent) {
-                $ticket = new Ticket($activeEvent, $entity);
-                $em->persist($ticket);
-                $em->flush();
+            if ($args->hasChangedField('confirmationToken') &&
+                $args->hasChangedField('enabled') &&
+                $args->getNewValue('confirmationToken') == null &&
+                $args->getNewValue('enabled') == 1 &&
+                $session->get('activ') != 1
+            ) {
+                $session->set('activ', 1);
+                $activeEvents = $this->container->get('doctrine')->getEntityManager()
+                    ->getRepository('StfalconEventBundle:Event')
+                    ->findBy(array('active' => true));
+
+                $em = $this->container->get('doctrine')->getEntityManager();
+                // Подписуем пользователя на все активные евенты
+                foreach ($activeEvents as $activeEvent) {
+                    $ticket = new Ticket($activeEvent, $entity);
+                    $em->persist($ticket);
+                    $em->flush();
+                }
             }
-
         }
     }
 }

@@ -38,7 +38,7 @@
         </service>
 
         <service id="application_user.user_listener" class="Application\Bundle\UserBundle\Entity\UserListener" public="false">
-            <tag name="doctrine.event_listener" event="postPersist" />
+            <tag name="doctrine.event_listener" event="preUpdate" />
             <argument type="service" id="service_container" />
         </service>
 

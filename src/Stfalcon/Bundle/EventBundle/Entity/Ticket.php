@@ -191,4 +191,7 @@ class Ticket
         return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
+
+
+
 }
