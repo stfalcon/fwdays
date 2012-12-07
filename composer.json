@@ -42,7 +42,8 @@
         "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
         "endroid/qrcode": "v1.0",
         "stfalcon/page-bundle": "dev-master",
-        "stfalcon/news-bundle": "dev-master"
+        "stfalcon/news-bundle": "dev-master",
+        "mlpz/mailchimp-bundle": "dev-master#d095ecc3269a067f47240982a10206837e664f3c"
     },
     "scripts": {
         "post-install-cmd": [
