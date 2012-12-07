@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
  * Stfalcon\Bundle\PaymentBundle\Entity\Payment
@@ -92,6 +93,12 @@ class Payment
      * @ORM\Column(name="has_discount", type="boolean")
      */
     private $hasDiscount = false;
+
+    /**
+     * @var Ticket
+     * @ORM\OneToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     */
+    private $ticket;
 
     /**
      * Constructor. Set default status to new payment.
@@ -254,5 +261,23 @@ class Payment
     public function __toString()
     {
         return $this->status;
+    }
+
+    /**
+     * Get ticket for this payment
+     * @return int
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Set ticket for this payment
+     * @param int $ticket
+     */
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
     }
 }
