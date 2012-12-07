@@ -10,6 +10,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface,
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -19,6 +20,10 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    public function __construct() {
+        $this->useContext('LoadFixturesContext', new LoadFixturesContext());
+    }
+
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
      */
@@ -40,17 +45,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function beforeScen()
     {
         $loader = new Loader();
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadSpeakersData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData());
-        $loader->addFixture(new \Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData());
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData());
-        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadSponsorData());
-        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadEventSponsorData());
-        $loader->addFixture(new \Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadCategoryData());
-        $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
+        $this->getMainContext()
+            ->getSubcontext('LoadFixturesContext')
+            ->loadFixtureClass($loader, 'Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadEventSponsorData');
+
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
@@ -64,7 +62,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * Check that some element contains image from some source
      *
      * @param string $src     Source of image
-     * @param string $element Selector enginen name
+     * @param string $element Selector engine name
      *
      * @Given /^я должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
@@ -76,7 +74,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Check that some element not contains image from some source
      *
-     * @param string $src
+     * @param string $src     Source of image
+     * @param string $element Selector engine name
      *
      * @Given /^я не должен видеть картинку "([^"]*)" внутри элемента "([^"]*)"$/
      */
@@ -94,6 +93,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 return true;
             }
         }
+
         return false;
     }
 
