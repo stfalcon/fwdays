@@ -146,3 +146,8 @@ vich_uploader:
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
+
+mz_mail_chimp:
+  api_key: %mailchimp_api%
+  default_list: %mailchimp_list% #default list id
+  ssl: false #option to use http or https
