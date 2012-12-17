@@ -10,15 +10,20 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface,
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
+
+use StfalconStudio\Behat\CommonContexts\DoctrineFixturesContext;
 
 /**
  * Feature context for StfalconEventBundle
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    public function __construct() {
-        $this->useContext('LoadFixturesContext', new LoadFixturesContext());
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
     }
 
     /**
@@ -43,13 +48,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $loader = new Loader();
         $this->getMainContext()
-            ->getSubcontext('LoadFixturesContext')
-            ->loadFixtureClass($loader, array(
+            ->getSubcontext('DoctrineFixturesContext')
+            ->loadFixtureClasses($loader, array(
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-        ));
+            ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
