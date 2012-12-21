@@ -5,8 +5,9 @@ namespace Application\Bundle\UserBundle\Features\Context;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\SymfonyMailerContext;
+    Behat\MinkExtension\Context\MinkContext;
+
+use StfalconStudio\Behat\CommonContexts\SymfonyMailerContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
