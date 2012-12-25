@@ -5,7 +5,8 @@ namespace Stfalcon\Bundle\SponsorBundle\Features\Context;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext;
+    Behat\MinkExtension\Context\MinkContext,
+    Behat\CommonContexts\DoctrineFixturesContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
@@ -20,8 +21,12 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    public function __construct() {
-        $this->useContext('LoadFixturesContext', new LoadFixturesContext());
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
     }
 
     /**
@@ -46,7 +51,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $loader = new Loader();
         $this->getMainContext()
-            ->getSubcontext('LoadFixturesContext')
+            ->getSubcontext('DoctrineFixturesContext')
             ->loadFixtureClass($loader, 'Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadEventSponsorData');
 
         /** @var $em \Doctrine\ORM\EntityManager */
