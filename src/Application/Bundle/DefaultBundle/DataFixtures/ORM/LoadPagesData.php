@@ -25,14 +25,14 @@ class LoadPagesData extends AbstractFixture
 
                     <div class="contacts-page-email">
                         <h3>Электронная почта:</h3>
-                        <a href="# ">orgs@fwdays.com</a>
+                        <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a>
                         <div class="contacts-page-email-hint">предпочтительный способ связи</div>
                     </div>
 
                     <ul class="contacts-page-social">
-                        <li><a href="# "><img src="/images/img-contacts-page-rss.png" width="92" height="41" alt=""></a></li>
-                        <li><a href="# "><img src="/images/img-contacts-page-facebook.png" width="92" height="41" alt=""></a></li>
-                        <li><a href="# "><img src="/images/img-contacts-page-twitter.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="http://frameworksdays.com/rss"><img src="/images/img-contacts-page-rss.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="http://www.facebook.com/fwdays"><img src="/images/img-contacts-page-facebook.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="http://twitter.com/fwdays"><img src="/images/img-contacts-page-twitter.png" width="92" height="41" alt=""></a></li>
                     </ul>
 
                     <div class="contacts-page-orgs">
@@ -74,9 +74,7 @@ class LoadPagesData extends AbstractFixture
 
                 </div>';
         $page->setText($text);
-        $page->setTitle('Контактная информация');
-        $page->setMetaKeywords('contact information');
-        $page->setMetaDescription('contact information');
+        $page->setTitle('Контакты');
         $manager->persist($page);
 
         $manager->flush();
