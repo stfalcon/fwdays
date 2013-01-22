@@ -160,3 +160,10 @@
     display: inline;
     zoom: 1;
 }
+
+.contacts-page-social li,
+.contacts-page-orgs-list .vcard .photo,
+.contacts-page-orgs-list .vcard .contacts {
+    display: inline;
+    zoom: 1;
+}
