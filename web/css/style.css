@@ -1628,3 +1628,101 @@ div.amount {
     padding-top: 15px;
     padding-bottom: 5px;
 }
+
+.contacts-page {
+    margin-top: -2px;
+}
+.contacts-page h3 {
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 0;
+}
+.contacts-page-email {
+    margin-bottom: 21px;
+    line-height: 20px;
+}
+.contacts-page-email h3 {
+    line-height: 20px;
+}
+.contacts-page-email a:link {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00a0d1;
+}
+.contacts-page-email a:visited {
+    color: #0c768a;
+}
+.contacts-page-email a:hover,
+.contacts-page-email a:active {
+    color: #cd3b23;
+}
+.contacts-page-email-hint {
+    font-size: 12px;
+    line-height: 18px;
+    color: #a6a6a6;
+}
+.contacts-page-social {
+    margin-bottom: 8px;
+    list-style: none;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: -1px;
+    vertical-align: top;
+}
+.contacts-page-social li {
+    display: -moz-inline-stack;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: normal;
+    letter-spacing: normal;
+    vertical-align: top;
+    background: none;
+}
+.contacts-page-orgs h3 {
+    line-height: 18px;
+}
+.contacts-page-orgs-hint {
+    line-height: 18px;
+    color: #a6a6a6;
+}
+.contacts-page-orgs-list {
+    margin-top: 12px;
+    list-style: none;
+}
+.contacts-page-orgs-list .vcard {
+    margin: 0 0 12px 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: -1px;
+    background: none;
+}
+.contacts-page-orgs-list .vcard .photo {
+    display: -moz-inline-stack;
+    display: inline-block;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+.contacts-page-orgs-list .vcard .contacts {
+    display: -moz-inline-stack;
+    display: inline-block;
+    font-size: 15px;
+    line-height: 22px;
+    letter-spacing: normal;
+    vertical-align: middle;
+}
+.contacts-page-orgs-list .vcard .name {
+    font-weight: bold;
+}
+.contacts-page-orgs-list .vcard .email a:link {
+    color: #00a0d1;
+}
+.contacts-page-orgs-list .vcard .email a:visited {
+    color: #0c768a;
+}
+.contacts-page-orgs-list .vcard .email a:hover,
+.contacts-page-orgs-list .vcard .email a:active {
+    color: #cd3b23;
+}
