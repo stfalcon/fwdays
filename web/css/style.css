@@ -1541,20 +1541,7 @@ table.event-program .epe-presenter-company {
     width: 124px;
 }
 
-
-/* фиксы стилей для виджета комментариев от disqus */
-
-#disqus_thread ul {
-    list-style: none;
-}
-#disqus_thread ul li {
-    background: transparent;
-}
-#dsq-toolbar-dropdown-wrap ul {
-    width: 210px;
-}
-
-/* верстка для кастомной формы регистрации */
+/* стили для кастомной формы регистрации */
 .fos_user_registration_register {
     background: url(/images/key.jpg) 100% 1px no-repeat;
     display: block;
@@ -1629,6 +1616,7 @@ div.amount {
     padding-bottom: 5px;
 }
 
+/* стили для кастомной страницы контактов */
 .contacts-page {
     margin-top: -2px;
 }
