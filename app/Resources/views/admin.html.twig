@@ -1,0 +1,24 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('vendor/markitup/skins/markitup/style.css') }}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('vendor/markitup/sets/html/style.css') }}" />
+
+    <style>
+        textarea.sonata-medium {
+            width: 98%;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/markItUpSettings.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" >
+    $(document).ready(function() {
+            $("textarea").markItUp(mySettings);
+    });
+    </script>
+{% endblock %}
