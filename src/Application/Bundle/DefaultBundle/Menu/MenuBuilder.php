@@ -40,7 +40,7 @@ class MenuBuilder
         $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
         $menu->addChild('События', array('route' => 'events'));
         $menu->addChild('Контакты', array('route' => 'page_show', 'routeParameters' => array('slug' => 'contacts')));
-        $menu->addChild('Спонсоры и партнеры', array('route' => 'partners_page'));
+        $menu->addChild('Партнеры', array('route' => 'partners_page'));
 
         return $menu;
     }
