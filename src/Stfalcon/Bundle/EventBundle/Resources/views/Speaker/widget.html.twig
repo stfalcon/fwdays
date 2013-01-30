@@ -2,7 +2,11 @@
     {% for speaker in speakers %}
     <li>
         <div class="presenter-photo">
+            {% if speaker.file != null %}
             <img src="{{ vich_uploader_asset(speaker, 'file')|apply_filter('speaker_thumb') }}" width="64" height="64" alt="{{ speaker.name }}" />
+            {% else %}
+             <img src="/images/empty.png" width="64" height="64" alt="{{ speaker.name }}" />
+            {% endif %}
         </div>
         <div class="presenter-info">
             <a href="{{ path('event_speakers', {'event_slug': event.slug}) }}#speaker-{{ speaker.id }}">{{ speaker.name }}</a>
