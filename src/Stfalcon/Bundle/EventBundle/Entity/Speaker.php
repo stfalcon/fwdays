@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Speaker
@@ -95,6 +96,14 @@ class Speaker
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
      */
     private $reviews;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
 
     public function __construct()
     {
@@ -228,6 +237,8 @@ class Speaker
 
     public function setFile($file) {
         $this->file = $file;
+
+       $this->setUpdatedAt(new \DateTime());
     }
 
     public function getEvents() {
@@ -244,6 +255,10 @@ class Speaker
 
     public function setReviews($reviews) {
         $this->reviews = $reviews;
+    }
+
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
 
     public function __toString() { return $this->name; }
