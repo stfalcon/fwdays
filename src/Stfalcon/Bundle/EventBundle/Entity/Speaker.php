@@ -64,7 +64,7 @@ class Speaker
     /**
      * @var string $photo
      *
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+     * @ORM\Column(name="photo", type="string", length=255)
      */
     private $photo;
 
@@ -109,7 +109,7 @@ class Speaker
     {
         $this->events = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-        $this->photo = null;
+        $this->photo = 'empty.png';
     }
 
     /**
@@ -257,7 +257,7 @@ class Speaker
         $this->reviews = $reviews;
     }
 
-    public function setUpdatedAt($updatedAt) {
+    public function setUpdatedAt(\DateTime $updatedAt) {
         $this->updatedAt = $updatedAt;
     }
 
