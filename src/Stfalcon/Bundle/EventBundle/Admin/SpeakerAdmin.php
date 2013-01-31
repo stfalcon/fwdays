@@ -30,7 +30,7 @@ class SpeakerAdmin extends Admin
                 ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
-                        'required' => true,
+                        'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file'
                 ))

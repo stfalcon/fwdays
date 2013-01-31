@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Speaker
@@ -65,7 +66,7 @@ class Speaker
      *
      * @ORM\Column(name="photo", type="string", length=255)
      */
-    private $photo;
+    private $photo = 'empty.png';
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -96,11 +97,18 @@ class Speaker
      */
     private $reviews;
 
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-        $this->photo = null;
     }
 
     /**
@@ -228,6 +236,8 @@ class Speaker
 
     public function setFile($file) {
         $this->file = $file;
+
+       $this->setUpdatedAt(new \DateTime());
     }
 
     public function getEvents() {
@@ -244,6 +254,10 @@ class Speaker
 
     public function setReviews($reviews) {
         $this->reviews = $reviews;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
 
     public function __toString() { return $this->name; }
