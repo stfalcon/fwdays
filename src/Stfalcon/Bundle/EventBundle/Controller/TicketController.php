@@ -133,10 +133,12 @@ class TicketController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay', array(
-            'user'    => $user,
-            'payment' => $payment
-        ));
+        return $this->forward('StfalconPaymentBundle:Interkassa:pay',
+            array(
+                'event' => $event,
+                'user' => $user,
+                'payment' => $payment
+            ));
     }
 
     /**

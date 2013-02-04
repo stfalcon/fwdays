@@ -69,7 +69,7 @@ class DefaultController extends Controller {
 
 ---
 С уважением,
-Орг. Комитет \"Zend Framework Day\"";
+Команда Frameworks Days";
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject("Регистрация на сайте Frameworks Days")

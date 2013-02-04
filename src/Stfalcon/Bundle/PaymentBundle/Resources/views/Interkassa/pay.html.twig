@@ -1,8 +1,7 @@
 {% extends 'StfalconPaymentBundle::layout.html.twig' %}
 
 {% block content %}
-    {# todo название и стоимость должны тянуться с события/билета #}
-    <h2>Оплата участия в конференции Zend Framework Day</h2>
+    <h2>Оплата участия в конференции {{ event.name }}</h2>
 
     <div class="info-msg-block">
         <p>
@@ -24,7 +23,7 @@
         <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
         <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
         <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
-        <input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc }}">
+        <input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc|escape }}">
         <input type="hidden" name="ik_paysystem_alias" value="">
         <input type="hidden" name="ik_baggage_fields" value="">
         <input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">
