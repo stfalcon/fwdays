@@ -21,6 +21,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        speaker_default_image : %speaker_default_image%
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
@@ -121,7 +123,7 @@ sonata_block:
         #sonata.media.block.media:
         #sonata.media.block.gallery:
         #sonata.media.block.feature_media:
-          
+
 sonata_admin:
     templates:
         layout: "::admin.html.twig"
@@ -147,6 +149,7 @@ vich_uploader:
           speaker_photo:
               uri_prefix: /uploads/speakers
               upload_destination: %kernel.root_dir%/../web/uploads/speakers
+              delete_on_update: true
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
