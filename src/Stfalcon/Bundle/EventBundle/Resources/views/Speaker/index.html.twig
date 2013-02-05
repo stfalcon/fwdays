@@ -11,11 +11,7 @@
         {% for speaker in speakers %}
         <div class="presenter">
             <div class="presenter-photo">
-                {% if speaker.file != null %}
-                <img src="{{ vich_uploader_asset(speaker, 'file') }}" width="120" alt="{{ speaker.name }}" />
-                {% else %}
-                <img src="{{ asset(speaker_default_image) }}" width="120" alt="{{ speaker.name }}" />
-                {% endif %}
+                {% include "StfalconEventBundle::_speaker-photo.html.twig" with {'speaker': speaker, 'size': 120} %}
             </div>
             <div class="presenter-info">
                 <div class="presenter-name">

@@ -21,8 +21,6 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-    globals:
-        speaker_default_image : %speaker_default_image%
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
