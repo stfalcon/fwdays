@@ -102,8 +102,11 @@ class TicketController extends BaseController
             // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
             // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
             // может не соответствовать цене
-//            $payment->setAmount($event->getAmount());
-//            $em->persist($payment);
+
+            // @fixme После дискуссии решили раскомментировать две строчки ниже. Так как не нашли простого решения с
+            // обновлением цены pending платежа. Все возникшые проблемные ситуации с платежами придется обрабатывать вручную
+            $payment->setAmount($event->getCost());
+            $em->persist($payment);
         } else {
             // Find paid payments for current user
             $paidPayments = $this->getDoctrine()->getManager()
