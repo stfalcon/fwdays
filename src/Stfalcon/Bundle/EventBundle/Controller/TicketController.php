@@ -97,25 +97,32 @@ class TicketController extends BaseController
 
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
+        // Вытягиваем скидку из конфига
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discount = (float) $paymentsConfig['discount'];
+
         // создаем проплату или апдейтим стоимость уже существующей
+        /** @var $payment \Stfalcon\Bundle\PaymentBundle\Entity\Payment */
         if ($payment = $ticket->getPayment()) {
             // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
             // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
             // может не соответствовать цене
 
-            // @fixme После дискуссии решили раскомментировать две строчки ниже. Так как не нашли простого решения с
+            // @fixme После дискуссии решили раскомментировать следующий код. Так как не нашли простого решения с
             // обновлением цены pending платежа. Все возникшые проблемные ситуации с платежами придется обрабатывать вручную
-            $payment->setAmount($event->getCost());
+            $payment->setAmountWithoutDiscount($event->getCost());
+            if ($payment->getHasDiscount()) {
+                $payment->setAmount($payment->getAmountWithoutDiscount() - $payment->getAmountWithoutDiscount() * $discount);
+            } else {
+                $payment->setAmount($payment->getAmountWithoutDiscount());
+            }
+
             $em->persist($payment);
         } else {
             // Find paid payments for current user
             $paidPayments = $this->getDoctrine()->getManager()
                 ->getRepository('StfalconPaymentBundle:Payment')
                 ->findPaidPaymentsForUser($user);
-
-            // Вытягиваем скидку из конфига
-            $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
-            $discount = (float) $paymentsConfig['discount'];
 
             // Если пользователь имеет оплаченные события, то он получает скидку
             if (count($paidPayments) > 0) {
