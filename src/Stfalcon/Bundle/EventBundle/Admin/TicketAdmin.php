@@ -16,7 +16,7 @@ class TicketAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('event')
-            ->add('user.fullname',null, array('label' => 'Fullname'))
+            ->add('user.fullname', null, array('label' => 'Fullname'))
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')
@@ -29,8 +29,17 @@ class TicketAdmin extends Admin
         $datagridMapper
             ->add('event')
             ->add('used')
-            ->add('payment')
-        ;
+            ->add('payment.status', 'doctrine_orm_choice',
+                array(
+                    'field_options' => array(
+                        'choices' => array(
+                            'paid'    => 'Paid',
+                            'pending' => 'Pending'
+                        ),
+                    ),
+                    'field_type' => 'choice'
+                )
+            );
     }
 
     public function getExportFields()
