@@ -31,6 +31,8 @@
     {% block event_speakers_widget %}
         <h2>Докладчики</h2>
         {% render "StfalconEventBundle:Speaker:widget" with { 'event': event, 'count': 3 } %}
+        <h2>Участники</h2>
+        {% render "StfalconEventBundle:Participant:widget" with { 'event': event, 'count': 3 } %}
     {% endblock %}
 
     {% block event_news_widget %}

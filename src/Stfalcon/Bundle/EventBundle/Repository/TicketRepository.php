@@ -34,4 +34,25 @@ class TicketRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getResult();
     }
+
+    /**
+     * Find tickets by event
+     *
+     * @param Event $event
+     *
+     * @return array
+     */
+    public function findTicketsByEvent(Event $event)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT t
+                FROM StfalconEventBundle:Ticket t
+                JOIN t.event e
+                WHERE e.active = TRUE
+                    AND t.event = :event
+            ')
+            ->setParameter('event', $event)
+            ->getResult();
+    }
 }

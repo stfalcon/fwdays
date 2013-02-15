@@ -121,7 +121,7 @@ sonata_block:
         #sonata.media.block.media:
         #sonata.media.block.gallery:
         #sonata.media.block.feature_media:
-          
+
 sonata_admin:
     templates:
         layout: "::admin.html.twig"
@@ -150,3 +150,5 @@ vich_uploader:
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
+
+ornicar_gravatar: ~
