@@ -1,5 +1,59 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
+{% block javascripts %}
+    {% javascripts
+        'js/jquery-1.8.2.min.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script type="text/javascript">
+        var count = $("div.event-slider div.slide").length;
+        var currentSlide = 0;
+        var enabledOpacity  = 1;
+        var removedOpacity = 0.4;
+
+        $('.btn-prev').css({'opacity':removedOpacity});        
+        $('.btn').click(function () {
+            if($(this).hasClass("disabled")) {
+                return;
+            }
+
+            if ($(this).hasClass("btn-next") && currentSlide < count - 1) {
+                currentSlide++;
+            } else if ($(this).hasClass("btn-prev") && currentSlide > 0) {
+                currentSlide--;
+            }
+
+            $("div.event-slider div.slide").hide().animate({
+                opacity: removedOpacity
+            }, "slow");
+            $("div.event-slider div.slide:eq(" + currentSlide + ")").show().animate({
+                opacity: enabledOpacity
+            }, "slow");
+
+            if (currentSlide == 0) {
+                $('.btn-prev').css({
+                    'opacity': removedOpacity
+                }).addClass("disabled");
+            } else {
+                $('.btn-prev').css({
+                    'opacity': enabledOpacity
+                }).removeClass("disabled");
+            }
+
+            if (currentSlide == count - 1) {
+                $('.btn-next').css({
+                    'opacity': removedOpacity
+                }).addClass("disabled");
+            } else {
+                $('.btn-next').css({
+                    'opacity': enabledOpacity
+                }).removeClass("disabled");
+            }
+        });
+    </script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
     {% render "ApplicationDefaultBundle:News:last" with { 'count': 10 } %}
 {% endblock %}
