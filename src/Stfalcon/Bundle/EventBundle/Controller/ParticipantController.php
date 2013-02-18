@@ -28,7 +28,7 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $participants = $ticketRepository->findBy(array('event' => $event->getId()));
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event);
 
         return array(
             'event' => $event,
