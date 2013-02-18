@@ -28,4 +28,19 @@ class EventController extends Controller
         return array('events' => $events);
     }
 
+    /**
+     * Switching panel
+     *
+     * @Template()
+     * @return array
+     */
+    public function switchAction()
+    {
+        $events = $this->getDoctrine()->getEntityManager()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(array('active' => true ));
+
+        return array('events' => $events);
+    }
+
 }

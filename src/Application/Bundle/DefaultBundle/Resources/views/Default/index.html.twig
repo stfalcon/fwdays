@@ -2,25 +2,34 @@
 
 {% block javascripts %}
     {% javascripts
-        'js/jquery-1.8.2.min.js'
-    %}
+    'js/jquery-1.8.2.min.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     <script type="text/javascript">
         var count = $("div.event-slider div.slide").length;
         var currentSlide = 0;
-        var enabledOpacity  = 1;
+        var enabledOpacity = 1;
         var removedOpacity = 0.4;
+        var is_automatic = true;
 
-        $('.btn-prev').css({'opacity':removedOpacity});        
+        $("div#wrapper div.events-switches ul li:eq(0) a").css('color', '#cd3b23');
+
         $('.btn').click(function () {
-            if($(this).hasClass("disabled")) {
-                return;
+            is_automatic = false;
+
+            if ($(this).hasClass("btn-next")) {
+                if (currentSlide < count - 1) {
+                    currentSlide++;
+                } else {
+                    currentSlide = 0;
+                }
             }
 
-            if ($(this).hasClass("btn-next") && currentSlide < count - 1) {
-                currentSlide++;
-            } else if ($(this).hasClass("btn-prev") && currentSlide > 0) {
-                currentSlide--;
+            if ($(this).hasClass("btn-prev")) {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                } else {
+                    currentSlide = count - 1;
+                }
             }
 
             $("div.event-slider div.slide").hide().animate({
@@ -30,26 +39,52 @@
                 opacity: enabledOpacity
             }, "slow");
 
-            if (currentSlide == 0) {
-                $('.btn-prev').css({
-                    'opacity': removedOpacity
-                }).addClass("disabled");
-            } else {
-                $('.btn-prev').css({
-                    'opacity': enabledOpacity
-                }).removeClass("disabled");
+            $("div.events-switches div.wrap ul li a").css('color', '#0091ad');
+
+            $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").css('color', '#cd3b23');
+        });
+
+        $('div#wrapper div.events-switches ul li').click(function(event) {
+            is_automatic = false;
+            var index = $(this).index();
+            currentSlide = index;
+
+            $("div.event-slider div.slide").hide().animate({
+                opacity: removedOpacity
+            }, "slow");
+            $("div.event-slider div.slide:eq(" + currentSlide + ")").show().animate({
+                opacity: enabledOpacity
+            }, "slow");
+
+            $("div.events-switches div.wrap ul li a").css('color', '#0091ad');
+
+            $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").css('color', '#cd3b23');
+        });
+
+        window.setInterval(automatic, 5000);
+
+        function automatic() {
+            if (!is_automatic) {
+                return;
             }
 
-            if (currentSlide == count - 1) {
-                $('.btn-next').css({
-                    'opacity': removedOpacity
-                }).addClass("disabled");
+            if (currentSlide < count - 1) {
+                currentSlide++;
             } else {
-                $('.btn-next').css({
-                    'opacity': enabledOpacity
-                }).removeClass("disabled");
+                currentSlide = 0;
             }
-        });
+
+            $("div.event-slider div.slide").hide().animate({
+                opacity: removedOpacity
+            }, "slow");
+            $("div.event-slider div.slide:eq(" + currentSlide + ")").show().animate({
+                opacity: enabledOpacity
+            }, "slow");
+
+            $("div.events-switches div.wrap ul li a").css('color', '#0091ad');
+
+            $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").css('color', '#cd3b23');
+        }
     </script>
     {% endjavascripts %}
 {% endblock %}
@@ -60,6 +95,10 @@
 
 {% block slider %}
     {% render "ApplicationDefaultBundle:Event:slider" %}
+{% endblock %}
+
+{% block switch %}
+    {% render "ApplicationDefaultBundle:Event:switch" %}
 {% endblock %}
 
 {% block sidebar_right %}
