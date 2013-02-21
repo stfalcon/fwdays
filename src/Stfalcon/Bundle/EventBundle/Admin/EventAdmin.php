@@ -39,6 +39,11 @@ class EventAdmin extends Admin
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file'
                 ))
+                ->add('bgFile', 'file', array(
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'bgFile'
+                ))
                 ->add('active', null, array('required' => false))
                 ->add('receivePayments', null, array('required' => false))
                 ->add('cost', null, array('required' => true))

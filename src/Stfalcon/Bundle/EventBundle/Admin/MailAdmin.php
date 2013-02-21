@@ -71,25 +71,34 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
-        $mailer = $container->get('mailer');
+        $mailer          = $container->get('mailer');
+        $twig            = $container->get('twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.txt.twig');
+
         foreach ($users as $user) {
             if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                 continue;
             }
 
-            $text = $mail->replace(
+            $bodyData['text'] = $mail->replace(
                 array(
                     '%fullname%' => $user->getFullname(),
                     '%user_id%' => $user->getId(),
                 )
             );
 
+            $bodyData['logo'] = $mail->getEvent()->getLogo();
+            $bodyData['background_image'] = $mail->getEvent()->getBackgroundImage();
+            $bodyData['user'] = $user->getFullname();
+
+            $body = $templateContent->render($bodyData);
+
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
                 // @todo refact
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
-                ->setBody($text, 'text/html');
+                ->setBody($body, 'text/html');
 
             // @todo каждый вызов отнимает память
             $mailer->send($message);
