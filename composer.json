@@ -41,6 +41,7 @@
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
         "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
         "endroid/qrcode": "v1.0",
+        "knplabs/knp-snappy-bundle": "dev-master",
         "stfalcon/page-bundle": "dev-master",
         "stfalcon/news-bundle": "dev-master"
     },

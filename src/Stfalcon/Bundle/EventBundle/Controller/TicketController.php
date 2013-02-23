@@ -224,9 +224,26 @@ class TicketController extends BaseController
         $qrCode->setText($url);
         $qrCodeBase64 = base64_encode($qrCode->get());
 
-        return array(
+        $twig = $this->get('twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:showPdf.html.twig');
+        $html = $templateContent->render(array(
             'ticket' => $ticket,
             'qrCodeBase64' => $qrCodeBase64,
+        ));
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
+                'margin-bottom' => 0,
+                'margin-left' => 0,
+                'margin-right' => 0,
+                'margin-top' => 0,
+                'page-size' => 'A4',
+                'orientation'=>'Landscape')),
+            200,
+            array(
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'inline; filename="ticket.pdf"'
+            )
         );
     }
 

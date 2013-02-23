@@ -150,3 +150,13 @@ vich_uploader:
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     C:\Dev\wkhtmltopdf\wkhtmltopdf.exe
+        options:    []
+    image:
+        enabled:    true
+        binary:     C:\Dev\wkhtmltopdf\wkhtmltoimage.exe
+        options:    []
