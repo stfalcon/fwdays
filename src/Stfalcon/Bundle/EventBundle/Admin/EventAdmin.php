@@ -35,11 +35,13 @@ class EventAdmin extends Admin
                 ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
+                        'label' => 'Logo',
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file'
                 ))
                 ->add('bgFile', 'file', array(
+                        'label' => 'Background image',
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'bgFile'
