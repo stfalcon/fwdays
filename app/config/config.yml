@@ -121,7 +121,7 @@ sonata_block:
         #sonata.media.block.media:
         #sonata.media.block.gallery:
         #sonata.media.block.feature_media:
-          
+
 sonata_admin:
     templates:
         layout: "::admin.html.twig"
@@ -154,9 +154,9 @@ vich_uploader:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     C:\Dev\wkhtmltopdf\wkhtmltopdf.exe
+        binary:     /usr/local/bin/wkhtmltopdf
         options:    []
     image:
         enabled:    true
-        binary:     C:\Dev\wkhtmltopdf\wkhtmltoimage.exe
+        binary:     /usr/local/bin/wkhtmltoimage
         options:    []
