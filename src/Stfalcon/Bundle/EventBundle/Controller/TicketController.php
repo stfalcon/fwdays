@@ -237,12 +237,12 @@ class TicketController extends BaseController
                 'margin-left' => 0,
                 'margin-right' => 0,
                 'margin-top' => 0,
-                'page-size' => 'A4',
+                'page-size' => 'A5',
                 'orientation'=>'Landscape')),
             200,
             array(
                 'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'inline; filename="ticket.pdf"'
+                'Content-Disposition'   => 'attach; filename="ticket-'.$event->getSlug().'.pdf"'
             )
         );
     }
