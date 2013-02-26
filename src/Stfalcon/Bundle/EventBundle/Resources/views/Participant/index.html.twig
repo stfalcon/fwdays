@@ -1,0 +1,46 @@
+{% extends 'StfalconEventBundle::layout.html.twig' %}
+
+{% block title %}Докладчики / {{ parent() }}{% endblock %}
+
+{% block event_speakers_widget %}{% endblock %}
+
+{% block content %}
+<div id="content">
+
+    <!-- Контент участников -->
+    <h2>Участники</h2>
+
+    <ul class="participants">
+        {% for participant in participants %}
+            <li>
+                <div class="part-wrap">
+                    <div class="part-block">
+                        <img src="{{ gravatar(participant.user.email) }}" width="76" height="76"
+                             alt="{{ participant.user.fullname }}" title="{{ participant.user.fullname }}">
+
+                        <div class="part-name" title="{{ participant.user.fullname }}">{{ participant.user.fullname }}</div>
+                        {% if participant.user.post is not null %}
+                            <div class="part-occupation">{{ participant.user.post }}</div>
+                        {% endif %}
+                        <div class="part-location">
+                            {% if participant.user.city is not null and participant.user.country is not null %}
+                                {{participant.user.city}}, {{ participant.user.country }}.
+                            {% else %}
+                                {% if participant.user.city is not null %}
+                                    {{participant.user.city}}.
+                                {% endif %}
+
+                                {% if participant.user.country is not null %}
+                                    {{participant.user.country}}.
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <!-- /Контент участников -->
+
+</div><!-- #content-->
+{% endblock %}

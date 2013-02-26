@@ -1008,7 +1008,8 @@ article p img[align="right"] {
     background: #faebe9;
 }
 .allnews-link:before,
-.allpresenters-link:before {
+.allpresenters-link:before,
+.allparticipants-link:before {
     content: '.';
     display: block;
     width: 17px;
@@ -1615,6 +1616,209 @@ div.amount {
     padding-top: 15px;
     padding-bottom: 5px;
 }
+
+
+/* Side participants block
+----------------------------------------------------------------------------- */
+
+.side-participants {
+    margin-bottom: 0;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: -1px;
+    vertical-align: top;
+}
+.side-participants li {
+    display: -moz-inline-stack;
+    display: inline-block;
+    margin-bottom: 18px;
+    padding-left: 0;
+    width: 33.3%;
+    font-size: 9px;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #466173;
+    vertical-align: top;
+    background: none;
+}
+.side-participants .part-block {
+    width: 53px;
+    text-align: center;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.side-participants .part-block img {
+    margin-bottom: 3px;
+}
+.allparticipants-link {
+    margin: -3px 0 34px;
+}
+
+/* Participants block
+----------------------------------------------------------------------------- */
+
+.participants {
+    position: relative;
+    margin: 2px -5px 15px;
+    font-size: 0;
+    line-height: 0;
+    letter-spacing: -1px;
+    vertical-align: top;
+}
+.participants li {
+    display: -moz-inline-stack;
+    display: inline-block;
+    margin-bottom: 21px;
+    padding-left: 0;
+    width: 25%;
+    height: 120px;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: normal;
+    color: #466173;
+    vertical-align: top;
+    background: none;
+}
+.participants .part-wrap {
+    margin: 0 5px;
+    cursor: pointer;
+}
+.participants .part-block {
+    text-align: center;
+    background: #fff;
+}
+.participants .part-block img {
+    margin-bottom: 3px;
+}
+.participants .part-name {
+    margin-bottom: 6px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.participants .part-occupation,
+.participants .part-location {
+    display: none;
+    margin-bottom: 5px;
+    font-size: 11px;
+    line-height: 15px;
+    color: #727272;
+}
+.participants .part-wrap:hover {
+    position: relative;
+}
+.participants .part-wrap:hover .part-block {
+    position: absolute;
+    left: -1px;
+    top: -17px;
+    padding-top: 16px;
+    width: 100%;
+    border: 1px solid #c5c5c5;
+    border-top-color: #e3e3e3;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.participants .part-wrap:hover .part-occupation,
+.participants .part-wrap:hover .part-location {
+    display: block;
+}
+
+
+/* New user profile edit form
+----------------------------------------------------------------------------- */
+
+.fos_user_profile_edit {
+    display: block !important;
+}
+.fos_user_profile_edit #fos_user_profile_form {
+    overflow: hidden;
+}
+.fos_user_profile_edit input[type="text"],
+.fos_user_profile_edit input[type="email"] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+.fos_user_profile_edit label {
+    margin-bottom: 4px;
+    font-size: 15px;
+}
+.fos_user_profile_form_subscribe {
+    margin-top: -7px;
+    padding: 15px 0;
+    border-top: 1px solid #e5e5e5;
+}
+.fos_user_profile_edit input[type="checkbox"] {
+    position: relative;
+    top: 1px;
+    margin-right: 6px;
+    vertical-align: baseline;
+}
+.fos_user_profile_edit input[type="checkbox"]  label {
+    display: inline;
+    float: none;
+}
+.fos_user_profile_edit input[type="submit"] {
+    height: 26px;
+    padding-right: 20px;
+    padding-left: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 22px;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    border: 1px solid #989589;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* User profile edit form photo */
+
+.fos_user_profile_form_photo {
+    float: right;
+    width: 145px;
+    padding: 24px 0 0 20px;
+    text-align: center;
+}
+.fos_user_profile_form_photo_img {
+    margin-bottom: 26px;
+    padding: 0;
+}
+.fos_user_profile_form_photo_btn {
+    margin-bottom: 8px;
+    padding: 0 20px;
+    width: 103px;
+    height: 24px;
+    font-size: 13px;
+    line-height: 24px;
+    text-shadow: 0 1px 0 #fff;
+    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    border: 1px solid #989589;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.fos_user_profile_form_photo_hint {
+    margin-bottom: 14px;
+    padding: 0;
+    font-size: 11px;
+    line-height: 18px;
+    color: #a29b87;
+}
+.fos_user_profile_form_photo_delete a {
+    color: #e00000;
+}
+
 
 /* стили для кастомной страницы контактов */
 .contacts-page {
