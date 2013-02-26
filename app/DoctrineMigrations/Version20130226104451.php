@@ -8,14 +8,14 @@ use Doctrine\DBAL\Migrations\AbstractMigration,
 /**
  * Auto-generated Migration: Please modify to your need!
  */
-class Version20130221160130 extends AbstractMigration
+class Version20130226104451 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events CHANGE backgroundimage background_image VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE event__events ADD background_image VARCHAR(255) NOT NULL");
     }
 
     public function down(Schema $schema)
@@ -23,6 +23,6 @@ class Version20130221160130 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events CHANGE background_image backgroundImage VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE event__events DROP background_image");
     }
 }
