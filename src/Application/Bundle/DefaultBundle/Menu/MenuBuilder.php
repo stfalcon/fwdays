@@ -15,12 +15,15 @@ class MenuBuilder
      */
     private $factory;
 
+    private $em;
+
     /**
      * @param \Knp\Menu\FactoryInterface $factory
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(FactoryInterface $factory, $em)
     {
         $this->factory = $factory;
+        $this->em = $em;
     }
 
     /**
@@ -72,6 +75,10 @@ class MenuBuilder
      */
     public function createEventSubMenu(Request $request, $event)
     {
+        $ticketRepository = $this->em->getRepository('StfalconEventBundle:Ticket');
+
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event);
+
         $menu = $this->factory->createItem('root');
 
         $menu->setCurrentUri($request->getRequestUri());
@@ -81,6 +88,10 @@ class MenuBuilder
         /** @var $event \Stfalcon\Bundle\EventBundle\Entity\Event */
         if ($event->getSpeakers()) {
             $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
+        }
+
+        if (count($participants) > 0) {
+            $menu->addChild("Участники", array('route' => 'event_participants', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
         // ссылки на страницы ивента
