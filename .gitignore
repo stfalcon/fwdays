@@ -1,18 +1,11 @@
-# Bootstrap
-app/bootstrap*
+# Symfony
+/app/bootstrap.php.cache
+/app/logs/*
+/app/cache/*
+/vendor/
+/web/bundles/*
+/composer.phar
 
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
-
-# Application directories
-.rsync_cache/
-web/tmp/*
-composer.lock
+# Application
+/web/tmp/*
+/web/uploads/*

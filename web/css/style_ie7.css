@@ -103,10 +103,14 @@
     vertical-align: baseline;
     top: 4px;
 }
-*+html .allnews-link {
+*+html .allnews-link,
+*+html .allpresenters-link,
+*+html .allparticipants-link {
     z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('afterBegin', '<div class="before"></div>'));
 }
-*+html .allnews-link .before {
+*+html .allnews-link .before,
+*+html .allpresenters-link .before,
+*+html .allparticipants-link .before {
     width: 17px;
     height: 9px;
     overflow: hidden;
@@ -156,9 +160,22 @@
     zoom: 1;
 }
 
-*+ html #footer .stfalcon .icon {
+*+html #footer .stfalcon .icon {
     display: inline;
     zoom: 1;
+}
+
+*+html .side-participants li,
+*+html .participants li {
+    display: inline;
+    zoom: 1;
+}
+.fos_user_profile_edit #fos_user_profile_form {
+    zoom: 1;
+}
+*+html .fos_user_profile_edit input[type="text"],
+*+html .fos_user_profile_edit input[type="email"] {
+    width: expression((this.parentNode.clientWidth - parseInt(this.currentStyle['paddingLeft']) - parseInt(this.currentStyle['paddingRight']) - 2) + 'px');
 }
 
 .contacts-page-social li,
