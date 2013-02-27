@@ -73,25 +73,21 @@ class MailAdmin extends Admin
 
         $mailer          = $container->get('mailer');
         $twig            = $container->get('twig');
-        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.txt.twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
 
         foreach ($users as $user) {
             if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                 continue;
             }
 
-            $bodyData['text'] = $mail->replace(
+            $text = $mail->replace(
                 array(
                     '%fullname%' => $user->getFullname(),
                     '%user_id%' => $user->getId(),
                 )
             );
 
-            $bodyData['logo'] = $mail->getEvent()->getLogo();
-            $bodyData['background_image'] = $mail->getEvent()->getBackgroundImage();
-            $bodyData['user'] = $user->getFullname();
-
-            $body = $templateContent->render($bodyData);
+            $body = $templateContent->render(array('mail' => $mail, 'user' => $user, 'text' => $text));
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
