@@ -931,7 +931,7 @@ input[type="submit"] {
     font-weight: normal;
     color: #000;
 }
-.partners img.partner {
+div.partners div.partner img {
     max-width: 140px;
 }
 .partner,
@@ -1150,7 +1150,7 @@ table.conferences-list-past .conf-logo img {
 table.conferences-list-past tr:last-child td {
     padding-bottom: 0;
 }
-table.sponsors-partners-list .sp-logo img.partner {
+table.sponsors-partners-list .sp-logo img {
     max-width: 120px;
 }
 
