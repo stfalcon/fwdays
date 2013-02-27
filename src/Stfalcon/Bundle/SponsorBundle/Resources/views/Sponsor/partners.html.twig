@@ -11,11 +11,19 @@
                     <tr>
                         <td class="sp-logo">
                             {% if sponsor.site %}
-                            <a href="{{ sponsor.site }}">
-                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
-                            </a>
+                                <a href="{{ sponsor.site }}">
+                                    {% if sponsor.file %}
+                                        <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                                    {% else %}
+                                        {{ sponsor.name }}
+                                    {% endif %}
+                                </a>
                             {% else %}
-                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                                {% if sponsor.file %}
+                                    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                                {% else %}
+                                    {{ sponsor.name }}
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td class="sp-info">
