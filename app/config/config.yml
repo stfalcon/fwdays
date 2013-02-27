@@ -155,7 +155,14 @@ knp_snappy:
     pdf:
         enabled:    true
         binary:     /usr/local/bin/wkhtmltopdf
-        options:    []
+        options:
+            margin-bottom: 0
+            margin-left:   0
+            margin-right:  0
+            margin-top:    0
+            page-size:     A5
+            orientation:   Landscape
+
     image:
         enabled:    true
         binary:     /usr/local/bin/wkhtmltoimage
