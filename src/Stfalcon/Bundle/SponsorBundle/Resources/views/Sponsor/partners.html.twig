@@ -11,9 +11,9 @@
                     <tr>
                         <td class="sp-logo">
                             {% if sponsor.site %}
-                                <a href="{{ sponsor.site }}">
-                                    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
-                                </a>
+                            <a href="{{ sponsor.site }}">
+                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                            </a>
                             {% else %}
                                 <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
                             {% endif %}
