@@ -1,0 +1,15 @@
+<ul class="side-participants">
+{% for participant in participants %}
+    <li>
+        <div class="part-block" title="{{ participant.user.fullname }}">
+            {% if gravatar_exists(participant.user.email) %}
+                <img src="{{ gravatar(participant.user.email) }}" width="53" height="53" alt="{{ participant.user.fullname }}">
+            {% else %}
+                <img src="{{ asset('images/img-user-nophoto.png') }}" width="53" height="53" alt="{{ participant.user.fullname }}">
+            {% endif %}
+            {{ participant.user.fullname }}
+        </div>
+    </li>
+{% endfor %}
+</ul>
+<div class="allparticipants-link"><a href="{{ path('event_participants', {'event_slug': event.slug}) }} ">все участники</a></div>

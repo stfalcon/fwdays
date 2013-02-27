@@ -160,3 +160,4 @@ knp_snappy:
         enabled:    true
         binary:     /usr/local/bin/wkhtmltoimage
         options:    []
+ornicar_gravatar: ~
