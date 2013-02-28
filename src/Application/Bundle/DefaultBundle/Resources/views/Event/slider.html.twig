@@ -3,7 +3,7 @@
     <div class="slide" {% if loop.index != 1 %}style="display: none"{% endif %}>
         <div class="icon">
             <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
-                <img src="{{ vich_uploader_asset(event, 'file') }}" width="175" height="172" alt="{{ event.name }}" />
+                <img src="{{ vich_uploader_asset(event, 'logoFile') }}" width="175" height="172" alt="{{ event.name }}" />
             </a>
         </div>
         <div class="text">

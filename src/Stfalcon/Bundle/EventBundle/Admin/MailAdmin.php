@@ -71,7 +71,10 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
-        $mailer = $container->get('mailer');
+        $mailer          = $container->get('mailer');
+        $twig            = $container->get('twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+
         foreach ($users as $user) {
             if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                 continue;
@@ -84,12 +87,14 @@ class MailAdmin extends Admin
                 )
             );
 
+            $body = $templateContent->render(array('mail' => $mail, 'user' => $user, 'text' => $text));
+
             $message = \Swift_Message::newInstance()
                 ->setSubject($mail->getTitle())
                 // @todo refact
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
-                ->setBody($text, 'text/html');
+                ->setBody($body, 'text/html');
 
             // @todo каждый вызов отнимает память
             $mailer->send($message);

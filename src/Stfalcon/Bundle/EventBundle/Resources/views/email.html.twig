@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head><title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<table width="95%" border="0" cellpadding="0" cellspacing="0" style="min-width: 800px;">
+    <tr>
+        <td valign="top" align="center">
+            <table width="800" border="0" cellpadding="0" cellspacing="0" bgcolor="#dcdfe6">
+                <tr>
+                    <td height="45"></td>
+                    <td height="45"></td>
+                    <td height="45"></td>
+                </tr>
+
+                <!-- middle -->
+                <tr>
+                    <td width="80"></td>
+                    <td width="640" valign="top" align="left" bgcolor="#ffffff">
+
+                        <!-- head table (logo & background) -->
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
+                                    {% if mail.event is defined and mail.event is not null %}
+                                       <a href="{{ app.request.uriForPath('/event/' ~ mail.event.slug) }}">
+                                           <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.logo) }}"
+                                                width="143" height="131" alt="{{ mail.event.name }}"/></a>
+                                    {% else %}
+                                        <a href="{{ app.request.uriForPath('/') }}"
+                                           style="display: block;
+                                                  width: 113px;
+                                                  height: 92px;
+                                                  margin: 0 0 8px -7px;
+                                                  text-indent: -9999px;
+                                                  overflow: hidden;
+                                                  cursor: pointer;
+                                                  background: url({{ app.request.uriForPath('/images/sprite-objects.png') }}) left top no-repeat;">
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td valign="top" align="right">
+                                    {% if mail.event is defined and mail.event is not null %}
+                                        <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/></td>
+                                    {% else %}
+                                        <img src="{{ app.request.uriForPath('/images/bg-all.png') }}" alt=""/></td>
+                                    {% endif %}
+                            </tr>
+                        </table>
+                        <!-- END head table -->
+
+                        <!-- main body -->
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                            <tr>
+                                <td width="40"></td>
+                                <td valign="top" align="left">
+
+                                    <p style="font-family: Arial; font-size: 15px; line-height: 22px; font-weight: normal; color: #000000; padding-right: 20px; padding-bottom: 20px; margin-top: 0; margin-bottom: 0;">{{ text }}</p>
+
+                                </td>
+                                <td width="40"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- END main body -->
+
+                    </td>
+                    <td width="80"></td>
+                </tr>
+                <!-- END middle -->
+
+                <!-- footer -->
+                <tr>
+                    <td width="80"></td>
+                    <td valign="top" align="left" style="padding-top: 25px; padding-left: 20px; padding-bottom: 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="top" align="left" width="360">
+                                    <div style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">
+                                        Следите за новостями:
+                                    </div>
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td valign="top" align="left"
+                                                style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
+                                                <a href="https://twitter.com/fwdays"><img
+                                                            src="{{ app.request.uriForPath('/images/icon-twitter.png') }}"
+                                                            width="16" height="16" alt="@fwdays"
+                                                            style="vertical-align: middle;"/></a> <a href="https://twitter.com/fwdays"
+                                                                                                     style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">@fwdays</a>
+                                            </td>
+                                            <td valign="top" align="left"
+                                                style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
+                                                <a href="www.facebook.com/fwdays"><img
+                                                            src="{{ app.request.uriForPath('/images/icon-facebook.png') }}"
+                                                            width="16" height="16" alt="Facebook"
+                                                            style="vertical-align: middle;"/></a> <a href="www.facebook.com/fwdays"
+                                                                                                     style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">Facebook</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td valign="top" align="left"
+                                    style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">
+                                    С уважением, <br/>
+                                    команда Frameworks Days <br/>
+                                    <a href="http://fwdays.com"
+                                       style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">fwdays.com</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="80"></td>
+                </tr>
+                <!-- END footer -->
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
