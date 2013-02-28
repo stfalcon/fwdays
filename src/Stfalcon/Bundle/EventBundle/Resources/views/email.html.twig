@@ -26,23 +26,25 @@
                             <tr>
                                 <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
                                     {% if mail.event is defined and mail.event is not null %}
-                                    <a href="{{ app.request.uriForPath('/event/' ~ mail.event.slug) }}"><img
-                                                src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.logo) }}"
+                                       <a href="{{ app.request.uriForPath('/event/' ~ mail.event.slug) }}">
+                                           <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.logo) }}"
                                                 width="143" height="131" alt="{{ mail.event.name }}"/></a>
                                     {% else %}
-                                        <a href="{{ app.request.uriForPath('/') }}" style="
-                                                display: block;
-                                                width: 113px;
-                                                height: 92px;
-                                                margin: 0 0 8px -7px;
-                                                text-indent: -9999px;
-                                                overflow: hidden;
-                                                cursor: pointer;background: url({{ app.request.uriForPath('/images/sprite-objects.png') }}) left top no-repeat;"></a>
+                                        <a href="{{ app.request.uriForPath('/') }}"
+                                           style="display: block;
+                                                  width: 113px;
+                                                  height: 92px;
+                                                  margin: 0 0 8px -7px;
+                                                  text-indent: -9999px;
+                                                  overflow: hidden;
+                                                  cursor: pointer;
+                                                  background: url({{ app.request.uriForPath('/images/sprite-objects.png') }}) left top no-repeat;">
+                                        </a>
                                     {% endif %}
                                 </td>
                                 <td valign="top" align="right">
                                     {% if mail.event is defined and mail.event is not null %}
-                                    <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/></td>
+                                        <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/></td>
                                     {% else %}
                                         <img src="{{ app.request.uriForPath('/images/bg-all.png') }}" alt=""/></td>
                                     {% endif %}
