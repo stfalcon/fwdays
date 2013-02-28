@@ -12,18 +12,10 @@
                         <td class="sp-logo">
                             {% if sponsor.site %}
                                 <a href="{{ sponsor.site }}">
-                                    {% if sponsor.file %}
-                                        <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
-                                    {% else %}
-                                        {{ sponsor.name }}
-                                    {% endif %}
+                                    {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
                                 </a>
                             {% else %}
-                                {% if sponsor.file %}
-                                    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
-                                {% else %}
-                                    {{ sponsor.name }}
-                                {% endif %}
+                                {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
                             {% endif %}
                         </td>
                         <td class="sp-info">
