@@ -11,11 +11,11 @@
                     <tr>
                         <td class="sp-logo">
                             {% if sponsor.site %}
-                            <a href="{{ sponsor.site }}">
-                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
-                            </a>
+                                <a href="{{ sponsor.site }}">
+                                    {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
+                                </a>
                             {% else %}
-                                <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}">
+                                {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
                             {% endif %}
                         </td>
                         <td class="sp-info">

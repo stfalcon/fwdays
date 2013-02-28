@@ -1,0 +1,5 @@
+{% if sponsor.file %}
+    <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
+{% else %}
+    {{ sponsor.name }}
+{% endif %}
