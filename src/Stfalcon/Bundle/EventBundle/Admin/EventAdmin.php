@@ -34,17 +34,29 @@ class EventAdmin extends Admin
                 ->add('description')
                 ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
-                ->add('file', 'file', array(
+                ->add('logoFile', 'file', array(
                         'label' => 'Logo',
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                        'property_path' => 'file'
+                        'property_path' => 'logoFile'
                 ))
                 ->add('bgFile', 'file', array(
                         'label' => 'Background image',
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'bgFile'
+                ))
+                ->add('emailBackgroundFile', 'file', array(
+                        'label' => 'Email background',
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'emailBackgroundFile'
+                ))
+                ->add('sliderBackgroundFile', 'file', array(
+                        'label' => 'Slider background',
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'sliderBackgroundFile'
                 ))
                 ->add('active', null, array('required' => false))
                 ->add('receivePayments', null, array('required' => false))

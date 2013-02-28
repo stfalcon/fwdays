@@ -86,11 +86,18 @@ class Event
     protected $logo;
 
     /**
-     * @var string $backgroundImage
+     * @var string $emailBackground
      *
-     * @ORM\Column(name="background_image", type="string")
+     * @ORM\Column(name="email_background", type="string")
      */
-    protected $backgroundImage;
+    protected $emailBackground;
+
+    /**
+     * @var string $sliderBackground
+     *
+     * @ORM\Column(name="slider_background", type="string")
+     */
+    protected $sliderBackground;
 
     /**
      * @var boolean $active
@@ -124,14 +131,21 @@ class Event
      * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
      */
-    protected $file;
+    protected $logoFile;
 
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="emailBackground")
      */
-    protected $bgFile;
+    protected $emailBackgroundFile;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="sliderBackground")
+     */
+    protected $sliderBackgroundFile;
 
     /**
      * @var float $cost
@@ -355,13 +369,23 @@ class Event
     }
 
     /**
-     * Get path to backgroundImage
+     * Get path to emailBackground
      *
      * @return string
      */
-    public function getBackgroundImage()
+    public function getEmailBackground()
     {
-        return $this->backgroundImage;
+        return $this->emailBackground;
+    }
+
+    /**
+     * Get path to sliderBackground
+     *
+     * @return string
+     */
+    public function getSliderBackground()
+    {
+        return $this->sliderBackground;
     }
 
     /**
@@ -375,43 +399,63 @@ class Event
     }
 
     /**
-     * Set file
+     * Set logoFile
      *
-     * @param UploadedFile|null $file
+     * @param UploadedFile|null $logoFile
      */
-    public function setFile($file)
+    public function setLogoFile($logoFile)
     {
-        $this->file = $file;
+        $this->logoFile = $logoFile;
     }
 
     /**
-     * Get file
+     * Get logoFile
      *
      * @return UploadedFile
      */
-    public function getFile()
+    public function getLogoFile()
     {
-        return $this->file;
+        return $this->logoFile;
     }
 
     /**
-     * Set bgFile
+     * Set emailBackgroundFile
      *
-     * @param UploadedFile|null $bgFile
+     * @param UploadedFile|null $emailBackgroundFile
      */
-    public function setBgFile($bgFile)
+    public function setEmailBackgroundFile($emailBackgroundFile)
     {
-        $this->bgFile = $bgFile;
+        $this->emailBackgroundFile = $emailBackgroundFile;
     }
 
     /**
-     * Get bgFile
+     * Get emailBackgroundFile
      *
      * @return UploadedFile
      */
-    public function getBgFile()
+    public function getEmailBackgroundFile()
     {
-        return $this->bgFile;
+        return $this->emailBackgroundFile;
+    }
+
+    /**
+     * Set sliderBackgroundFile
+     *
+     * @param UploadedFile|null $sliderBackgroundFile
+     */
+    public function setSliderBackgroundFile($sliderBackgroundFile)
+    {
+        $this->sliderBackgroundFile = $sliderBackgroundFile;
+    }
+
+    /**
+     * Get sliderBackgroundFile
+     *
+     * @return UploadedFile
+     */
+    public function getSliderBackgroundFile()
+    {
+        return $this->sliderBackgroundFile;
     }
 
     /**
