@@ -24,12 +24,28 @@
                         <!-- head table (logo & background) -->
                         <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;"><a
-                                            href="http://fwdays.com"><img
+                                <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
+                                    {% if mail.event is defined and mail.event is not null %}
+                                    <a href="{{ app.request.uriForPath('/event/' ~ mail.event.slug) }}"><img
                                                 src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.logo) }}"
-                                                width="143" height="131" alt="JavaScript frameworks day"/></a></td>
-                                <td valign="top" align="right"><img
-                                            src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/></td>
+                                                width="143" height="131" alt="{{ mail.event.name }}"/></a>
+                                    {% else %}
+                                        <a href="{{ app.request.uriForPath('/') }}" style="
+                                                display: block;
+                                                width: 113px;
+                                                height: 92px;
+                                                margin: 0 0 8px -7px;
+                                                text-indent: -9999px;
+                                                overflow: hidden;
+                                                cursor: pointer;background: url({{ app.request.uriForPath('/images/sprite-objects.png') }}) left top no-repeat;"></a>
+                                    {% endif %}
+                                </td>
+                                <td valign="top" align="right">
+                                    {% if mail.event is defined and mail.event is not null %}
+                                    <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/></td>
+                                    {% else %}
+                                        <img src="{{ app.request.uriForPath('/images/bg-all.png') }}" alt=""/></td>
+                                    {% endif %}
                             </tr>
                         </table>
                         <!-- END head table -->
@@ -40,9 +56,6 @@
                             <tr>
                                 <td width="40"></td>
                                 <td valign="top" align="left">
-
-                                    <h1 style="font-family: Arial; font-size: 18px; line-height: 22px; font-weight: normal; color: #000000; padding-bottom: 20px; margin-top: 0; margin-bottom: 0;">
-                                        Привет, <br>{{ user.fullname }}.</h1>
 
                                     <p style="font-family: Arial; font-size: 15px; line-height: 22px; font-weight: normal; color: #000000; padding-right: 20px; padding-bottom: 20px; margin-top: 0; margin-bottom: 0;">{{ text }}</p>
 
