@@ -32,17 +32,36 @@ class TicketController extends BaseController
      */
     public function takePartAction($event_slug)
     {
-        $em    = $this->getDoctrine()->getManager();
-        $event = $this->getEventBySlug($event_slug);
+        $em     = $this->getDoctrine()->getManager();
+        $event  = $this->getEventBySlug($event_slug);
+        $mailer = $this->container->get('mailer');
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $this->_findTicketForEventByCurrentUser($event);
+        $user = $this->get('security.context')->getToken()->getUser();
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
-            $ticket = new Ticket($event, $this->get('security.context')->getToken()->getUser());
+            $ticket = new Ticket($event, $user);
             $em->persist($ticket);
             $em->flush();
+
+            $body = $this->_ticketTemplate($ticket);
+
+            $fileLocation = 'uploads/tickets/ticket-'.md5($ticket->getUser()->getUsername()).'-'.$event->getSlug().'.pdf';
+
+            $this->get('knp_snappy.pdf')->generateFromHtml($body,
+                $fileLocation,
+                array(),
+                true);
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Приглашение на '.$event->getName())
+                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                ->setTo($user->getEmail())
+                ->attach(\Swift_Attachment::fromPath($fileLocation));
+
+            $mailer->send($message);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -214,19 +233,15 @@ class TicketController extends BaseController
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
-        $url = $this->generateUrl('event_ticket_check',
+        $body = $this->_ticketTemplate($ticket);
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($body, array()),
+            200,
             array(
-                'ticket' => $ticket->getId(),
-                'hash' => $ticket->getHash()
-            ), true);
-
-        $qrCode = $this->get('stfalcon_event.qr_code');
-        $qrCode->setText($url);
-        $qrCodeBase64 = base64_encode($qrCode->get());
-
-        return array(
-            'ticket' => $ticket,
-            'qrCodeBase64' => $qrCodeBase64,
+                'Content-Type'          => 'application/pdf',
+                'Content-Disposition'   => 'attach; filename="ticket-'.$event->getSlug().'.pdf"'
+            )
         );
     }
 
@@ -302,5 +317,32 @@ class TicketController extends BaseController
                 'action' => $this->generateUrl('check')
             );
         }
+    }
+
+    /**
+     * Create template for ticket invitation
+     *
+     * @param Ticket $ticket
+     */
+    private function _ticketTemplate($ticket)
+    {
+        $twig   = $this->get('twig');
+
+        $url = $this->generateUrl('event_ticket_check',
+            array(
+                'ticket' => $ticket->getId(),
+                'hash' => $ticket->getHash()
+            ), true);
+
+        $qrCode = $this->get('stfalcon_event.qr_code');
+        $qrCode->setText($url);
+        $qrCodeBase64 = base64_encode($qrCode->get());
+        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:showPdf.html.twig');
+        $body = $templateContent->render(array(
+                'ticket' => $ticket,
+                'qrCodeBase64' => $qrCodeBase64,
+            ));
+
+        return $body;
     }
 }
