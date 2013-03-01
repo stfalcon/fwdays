@@ -29,7 +29,7 @@ class EventController extends Controller
     }
 
     /**
-     * Switching panel
+     * Panel for managing event slider's slide switching
      *
      * @Template()
      * @return array
