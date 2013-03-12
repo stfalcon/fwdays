@@ -33,6 +33,7 @@ class MailAdmin extends Admin
                 ->add('paymentStatus', 'choice', array(
                     'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
                     'required' => false))
+                ->add('startAdmin',null, array('required' => false,'label' => 'Start for admin'))
                 ->end()
         ;
     }
