@@ -53,6 +53,13 @@ class Mail
     private $start = false;
 
     /**
+     * @var boolean $startAdmin
+     *
+     * @ORM\Column(name="start_admin", type="boolean")
+     */
+    private $startAdmin = false;
+
+    /**
      * @var boolean $complete
      *
      * @ORM\Column(name="complete", type="boolean")
@@ -140,4 +147,19 @@ class Mail
         $this->paymentStatus = $paymentStatus;
     }
 
+    /**
+     * @param boolean $startAdmin
+     */
+    public function setStartAdmin($startAdmin)
+    {
+        $this->startAdmin = $startAdmin;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getStartAdmin()
+    {
+        return $this->startAdmin;
+    }
 }
