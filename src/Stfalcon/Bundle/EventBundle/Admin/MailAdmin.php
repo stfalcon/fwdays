@@ -74,6 +74,11 @@ class MailAdmin extends Admin
 
         $mailer = $container->get('mailer');
         foreach ($users as $user) {
+
+            if (!$user->hasRole('ROLE_SUPER_ADMIN') && $mail->getStartAdmin()){
+                continue;
+            }
+
             if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                 continue;
             }
