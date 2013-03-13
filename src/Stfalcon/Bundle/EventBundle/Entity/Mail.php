@@ -139,4 +139,5 @@ class Mail
     public function setPaymentStatus($paymentStatus) {
         $this->paymentStatus = $paymentStatus;
     }
+
 }

@@ -41,8 +41,9 @@ class MailAdmin extends Admin
     public function postUpdate($mail)
     {
 
+        $isAdminOnly=(bool)$this->getRequest()->get($this->getUniqid().'[startAdmin]',false,true);
 
-        if (!$mail->getStart()) {
+        if (!$mail->getStart() || !$isAdminOnly) {
             return false;
         }
 
@@ -54,7 +55,7 @@ class MailAdmin extends Admin
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getEntityManager();
 
-        if ($mail->getEvent()) {
+        if ($mail->getEvent() && $isAdminOnly===false) {
             // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
             $tickets = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findBy(array('event' => $mail->getEvent()->getId()));
@@ -74,10 +75,12 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
+
         $mailer = $container->get('mailer');
+
         foreach ($users as $user) {
 
-            if (!$user->hasRole('ROLE_SUPER_ADMIN') && (bool)$this->getRequest()->get($this->getUniqid().'[startAdmin]',false,true)){
+            if (!$user->hasRole('ROLE_SUPER_ADMIN') && $isAdminOnly){
                 continue;
             }
 
@@ -103,7 +106,9 @@ class MailAdmin extends Admin
             $mailer->send($message);
         }
 
-        $mail->setComplete(true);
+        if ($isAdminOnly===false){
+           $mail->setComplete(true);
+        }
 
         $em->persist($mail);
         $em->flush();
