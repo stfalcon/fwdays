@@ -43,7 +43,7 @@ class MailAdmin extends Admin
 
         $isAdminOnly=(bool)$this->getRequest()->get($this->getUniqid().'[startAdmin]',false,true);
 
-        if (!$mail->getStart() || !$isAdminOnly) {
+        if (!($mail->getStart() || $isAdminOnly)) {
             return false;
         }
 
@@ -77,7 +77,6 @@ class MailAdmin extends Admin
 
 
         $mailer = $container->get('mailer');
-
         foreach ($users as $user) {
 
             if (!$user->hasRole('ROLE_SUPER_ADMIN') && $isAdminOnly){
