@@ -33,13 +33,15 @@ class MailAdmin extends Admin
                 ->add('paymentStatus', 'choice', array(
                     'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
                     'required' => false))
-                ->add('startAdmin',null, array('required' => false,'label' => 'Start for admin'))
+                ->add('startAdmin','checkbox', array('required' => false,'label' => 'Start for admin','property_path'=>false))
                 ->end()
         ;
     }
 
     public function postUpdate($mail)
     {
+
+
         if (!$mail->getStart()) {
             return false;
         }
@@ -75,7 +77,7 @@ class MailAdmin extends Admin
         $mailer = $container->get('mailer');
         foreach ($users as $user) {
 
-            if (!$user->hasRole('ROLE_SUPER_ADMIN') && $mail->getStartAdmin()){
+            if (!$user->hasRole('ROLE_SUPER_ADMIN') && (bool)$this->getRequest()->get($this->getUniqid().'[startAdmin]',false,true)){
                 continue;
             }
 
