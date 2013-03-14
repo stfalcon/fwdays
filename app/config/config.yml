@@ -147,6 +147,8 @@ vich_uploader:
           speaker_photo:
               uri_prefix: /uploads/speakers
               upload_destination: %kernel.root_dir%/../web/uploads/speakers
+              #all images in upload folder could be deleted
+              delete_on_update: true
           event_image:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events

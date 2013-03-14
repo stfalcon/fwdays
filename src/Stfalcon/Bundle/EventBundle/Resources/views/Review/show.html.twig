@@ -11,7 +11,7 @@
         {% for speaker in review.speakers %}
             <div class="presenter">
                 <div class="presenter-photo">
-                    <img src="{{ vich_uploader_asset(speaker, 'file') }}" width="120" alt="{{ speaker.name }}" />
+                    {% include "StfalconEventBundle::_speaker-photo.html.twig" with {'speaker': speaker, 'size': 120} %}
                 </div>
                 <div class="presenter-info">
                     <div class="presenter-name">{{ speaker.name }}</div>
