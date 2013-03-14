@@ -6,9 +6,7 @@
 
                 {% for sponsor in sponsors %}
                     <div class="partner sort-order-{{ loop.index }}">
-                        <a href="{{ sponsor.site }}">
-                            {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
-                        </a>
+                        {% include 'StfalconSponsorBundle:Sponsor:_sponsor.html.twig' %}
                     </div>
                 {% endfor %}
             {% endif %}

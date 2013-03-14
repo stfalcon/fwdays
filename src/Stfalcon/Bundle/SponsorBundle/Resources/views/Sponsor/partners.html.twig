@@ -10,13 +10,7 @@
                 {% for sponsor in sponsors %}
                     <tr>
                         <td class="sp-logo">
-                            {% if sponsor.site %}
-                                <a href="{{ sponsor.site }}">
-                                    {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
-                                </a>
-                            {% else %}
-                                {% include 'StfalconSponsorBundle:Sponsor:part/sponsor_image_or_name.html.twig' %}
-                            {% endif %}
+                            {% include 'StfalconSponsorBundle:Sponsor:_sponsor.html.twig' %}
                         </td>
                         <td class="sp-info">
                             <div class="sp-info-h">{{ sponsor.name }}</div>
