@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
+use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 class MailAdmin extends Admin
 {
@@ -15,47 +16,45 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title')
+            ->add('start', 'boolean', array(
+                'template' => 'StfalconEventBundle:Event:sonata_list_boolean.html.twig',
+                'editable' => true,
+                'label' => 'Mail active'
+            ))
+            ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
             ->add('event')
-        ;
+            ->add('_action', 'actions', array(
+                'label' => 'Show mail queue',
+                'actions' => array(
+                    'view' => array(),
+                )
+            ));
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('General')
-                ->add('title')
-                ->add('text')
-                ->add('event', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple' => false, 'expanded' => false, 'required' => false
-                ))
-                ->add('start', null, array('required' => false))
-                ->add('paymentStatus', 'choice', array(
-                    'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
-                    'required' => false))
-                ->add('startAdmin','checkbox', array('required' => false,'label' => 'Start for admin','property_path'=>false))
-                ->end()
-        ;
+            ->add('title')
+            ->add('text')
+            ->add('event', 'entity', array(
+                'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                'multiple' => false, 'expanded' => false, 'required' => false
+            ))
+            ->add('start', null, array('required' => false))
+            ->add('paymentStatus', 'choice', array(
+                'choices' => array('paid' => 'Оплачено', 'pending' => 'Не оплачено'),
+                'required' => false))
+            ->end();
     }
 
-    public function postUpdate($mail)
+    public function postPersist($mail)
     {
-
-        $isAdminOnly=(bool)$this->getRequest()->get($this->getUniqid().'[startAdmin]',false,true);
-
-        if (!($mail->getStart() || $isAdminOnly)) {
-            return false;
-        }
-
-        // @todo refact
-        if ($mail->getComplete()) {
-            throw new \Exception('Эта рассылка уже разослана');
-        }
 
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getEntityManager();
 
-        if ($mail->getEvent() && $isAdminOnly===false) {
+        if ($mail->getEvent()) {
             // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
             $tickets = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findBy(array('event' => $mail->getEvent()->getId()));
@@ -63,7 +62,7 @@ class MailAdmin extends Admin
             foreach ($tickets as $ticket) {
                 // @todo тяжелая цепочка
                 // нужно сделать выборку билетов с платежами определенного статуса
-                if($mail->getPaymentStatus()) {
+                if ($mail->getPaymentStatus()) {
                     if ($ticket->getPayment() && $ticket->getPayment()->getStatus() == $mail->getPaymentStatus()) {
                         $users[] = $ticket->getUser();
                     }
@@ -75,44 +74,21 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
+        if (isset($users)) {
 
-        $mailer = $container->get('mailer');
-        foreach ($users as $user) {
+            $mail->setTotalMessages(count($users));
+            $em->persist($mail);
 
-            if (!$user->hasRole('ROLE_SUPER_ADMIN') && $isAdminOnly){
-                continue;
+            foreach ($users as $user) {
+                $mailQueue = new MailQueue();
+                $mailQueue->setUser($user);
+                $mailQueue->setMail($mail);
+                $em->persist($mailQueue);
             }
-
-            if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
-                continue;
-            }
-
-            $text = $mail->replace(
-                array(
-                    '%fullname%' => $user->getFullname(),
-                    '%user_id%' => $user->getId(),
-                )
-            );
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject($mail->getTitle())
-                // @todo refact
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->setBody($text, 'text/html');
-
-            // @todo каждый вызов отнимает память
-            $mailer->send($message);
         }
 
-        if ($isAdminOnly===false){
-           $mail->setComplete(true);
-        }
-
-        $em->persist($mail);
         $em->flush();
 
-        return true;
     }
 
 }

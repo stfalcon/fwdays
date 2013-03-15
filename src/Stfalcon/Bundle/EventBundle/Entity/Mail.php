@@ -53,19 +53,61 @@ class Mail
     private $start = false;
 
     /**
-     * @var boolean $complete
-     *
-     * @ORM\Column(name="complete", type="boolean")
-     */
-    private $complete = false;
-
-    /**
      * @todo refact. это костыльное и временное решение
-     * @var string $text
+     * @var string $paymentStatus
      *
      * @ORM\Column(name="payment_status", type="string", nullable=true)
      */
     private $paymentStatus = null;
+
+    /**
+     *
+     * @var int $totalMessages
+     *
+     * @ORM\Column(name="total_messages", type="integer")
+     */
+    private $totalMessages = 0;
+
+    /**
+     *
+     * @var int $sentMessages
+     *
+     * @ORM\Column(name="sent_messages", type="integer")
+     */
+    private $sentMessages = 0;
+
+    /**
+     * @param int $sentMessages
+     */
+    public function setSentMessages($sentMessages)
+    {
+        $this->sentMessages = $sentMessages;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSentMessages()
+    {
+        return $this->sentMessages;
+    }
+
+    /**
+     * @param int $totalMessages
+     */
+    public function setTotalMessages($totalMessages)
+    {
+        $this->totalMessages = $totalMessages;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalMessages()
+    {
+        return $this->totalMessages;
+    }
+
 
     /**
      * Get id
@@ -116,14 +158,6 @@ class Mail
         $this->start = $start;
     }
 
-    public function getComplete() {
-        return $this->complete;
-    }
-
-    public function setComplete($complete) {
-        $this->complete = $complete;
-    }
-
     public function replace($data) {
         $text = $this->getText();
         foreach ($data as $key => $value) {
@@ -140,4 +174,7 @@ class Mail
         $this->paymentStatus = $paymentStatus;
     }
 
+    public function getStatistic(){
+        return $this->sentMessages.'/'.$this->totalMessages;
+    }
 }

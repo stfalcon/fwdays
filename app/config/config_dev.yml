@@ -23,7 +23,7 @@ assetic:
     use_controller: true
 
 swiftmailer:
-    transport: mail
+    transport: smtp
     host:      localhost
 
 parameters:

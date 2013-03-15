@@ -34,6 +34,10 @@
         <parameter key="stfalcon_event.admin.tickets.entity">Stfalcon\Bundle\EventBundle\Entity\Ticket</parameter>
         <parameter key="stfalcon_event.admin.tickets.controller">SonataAdminBundle:CRUD</parameter>
 
+        <parameter key="stfalcon_event.admin.mail_queue.class">Stfalcon\Bundle\EventBundle\Admin\QueueAdmin</parameter>
+        <parameter key="stfalcon_event.admin.mail_queue.entity">Stfalcon\Bundle\EventBundle\Entity\MailQueue</parameter>
+        <parameter key="stfalcon_event.admin.mail_queue.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
     </parameters>
 
@@ -87,6 +91,13 @@
             <argument />
             <argument>%stfalcon_event.admin.tickets.entity%</argument>
             <argument>%stfalcon_event.admin.tickets.controller%</argument>
+        </service>
+
+        <service id="stfalcon_event.admin.mail_queue" class="%stfalcon_event.admin.mail_queue.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Очередь рассылки" label="Очередь"/>
+            <argument />
+            <argument>%stfalcon_event.admin.mail_queue.entity%</argument>
+            <argument>%stfalcon_event.admin.mail_queue.controller%</argument>
         </service>
 
         <service id="stfalcon_event.qr_code" class="%stfalcon_event.qr_code.class%">
