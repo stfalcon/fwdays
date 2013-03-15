@@ -44,7 +44,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         /** @var $queueRepository MailQueueRepository */
         $queueRepository=$em->getRepository('StfalconEventBundle:MailQueue');
-        $mailsQueue = $queueRepository->findBy(array('isSent' => 0),array(),$limit);
+        $mailsQueue = $queueRepository->getMessages($limit);
 
         /** @var $mail Mail */
         foreach($mailsQueue as $item){

@@ -19,6 +19,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
  *
  * @ORM\Table(name="event__mails_queues")
  * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository")
  */
 class MailQueue
 {
