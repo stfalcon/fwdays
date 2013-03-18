@@ -11,6 +11,9 @@ use Knp\Bundle\MenuBundle\MenuItem;
 
 class QueueAdmin extends Admin
 {
+
+    protected $parentAssociationMapping = 'mail';
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

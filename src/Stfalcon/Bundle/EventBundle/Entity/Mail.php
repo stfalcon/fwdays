@@ -76,6 +76,12 @@ class Mail
      */
     private $sentMessages = 0;
 
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+
     /**
      * @param int $sentMessages
      */
@@ -175,6 +181,6 @@ class Mail
     }
 
     public function getStatistic(){
-        return $this->sentMessages.'/'.$this->totalMessages;
+        return $this->sentMessages.'/'.$this->totalMessages.(($this->sentMessages==$this->totalMessages) ? ' - complete' : '' );
     }
 }

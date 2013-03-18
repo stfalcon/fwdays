@@ -84,6 +84,9 @@
             <argument />
             <argument>%stfalcon_event.admin.mails.entity%</argument>
             <argument>%stfalcon_event.admin.mails.controller%</argument>
+            <call method="addChild">
+                <argument type="service" id="stfalcon_event.admin.mail_queue" />
+            </call>
         </service>
 
         <service id="stfalcon_event.admin.tickets" class="%stfalcon_event.admin.tickets.class%">
