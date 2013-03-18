@@ -13,7 +13,8 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class MailAdminController extends CRUDController {
+class MailAdminController extends CRUDController
+{
 
     public function adminSendAction(Request $request)
     {
@@ -30,38 +31,36 @@ class MailAdminController extends CRUDController {
         }
 
 
-
-
-
         if ($object->getId()) {
 
 
-            $em =$this->get('doctrine')->getEntityManager('default');
+            $em = $this->get('doctrine')->getEntityManager('default');
             $mailer = $this->get('mailer');
 
-            $mail=$object;
-            $users=$em->getRepository('ApplicationUserBundle:User')->findAll();
-foreach($users as $user){
-            $text = $mail->replace(
-                array(
-                    '%fullname%' => $user->getFullname(),
-                    '%user_id%' => $user->getId(),
-                )
-            );
+            $mail = $object;
+            $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject($mail->getTitle())
-                // @todo refact
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->setBody($text, 'text/html');
+            foreach ($users as $user) {
+                $text = $mail->replace(
+                    array(
+                        '%fullname%' => $user->getFullname(),
+                        '%user_id%' => $user->getId(),
+                    )
+                );
 
-            if (!$mailer->send($message)){
-                $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
-                return new RedirectResponse($this->admin->generateUrl('list'));
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($mail->getTitle())
+                    // @todo refact
+                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                    ->setTo($user->getEmail())
+                    ->setBody($text, 'text/html');
+
+                if (!$mailer->send($message)) {
+                    $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
+                    return new RedirectResponse($this->admin->generateUrl('list'));
+                }
             }
-}
-            }
+        }
         $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
         return new RedirectResponse($this->admin->generateUrl('list'));
 
