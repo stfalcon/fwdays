@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
@@ -16,6 +17,14 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 class MailAdmin extends Admin
 {
+    public function getBatchActions()
+    {
+        return array();
+    }
+
+    protected function configureRoutes(RouteCollection $collection) {
+       $collection->add('admin_send', $this->getRouterIdParameter().'/admin-send');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -23,18 +32,19 @@ class MailAdmin extends Admin
             ->addIdentifier('title')
             ->add('start', 'boolean', array(
                 'editable' => true,
-                'label' => 'Mail active'
+                'label' => 'Mail active',
+                'template'=>'StfalconEventBundle:Admin:list_boolean.html.twig'
             ))
             ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
             ->add('event')
             ->add('_action', 'actions', array(
-                'label' => 'Show mail queue',
                 'actions' => array(
                     'edit' => array(),
+                    'delete'=>array(),
+                    'ispremium'=>array('template'=>'StfalconEventBundle:Admin:list__action_adminsend.html.twig'),
                 ),
             ));
     }
-
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -68,8 +78,7 @@ class MailAdmin extends Admin
 
         if ($mail->getEvent()) {
             // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
-            $tickets = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findBy(array('event' => $mail->getEvent()->getId()));
+            $tickets = $em->getRepository('StfalconEventBundle:Ticket')->findTicketsByEvent($mail->getEvent());
 
             foreach ($tickets as $ticket) {
                 // @todo тяжелая цепочка

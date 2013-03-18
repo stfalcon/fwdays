@@ -28,7 +28,7 @@
 
         <parameter key="stfalcon_event.admin.mails.class">Stfalcon\Bundle\EventBundle\Admin\MailAdmin</parameter>
         <parameter key="stfalcon_event.admin.mails.entity">Stfalcon\Bundle\EventBundle\Entity\Mail</parameter>
-        <parameter key="stfalcon_event.admin.mails.controller">SonataAdminBundle:CRUD</parameter>
+        <parameter key="stfalcon_event.admin.mails.controller">StfalconEventBundle:MailAdmin</parameter>
 
         <parameter key="stfalcon_event.admin.tickets.class">Stfalcon\Bundle\EventBundle\Admin\TicketAdmin</parameter>
         <parameter key="stfalcon_event.admin.tickets.entity">Stfalcon\Bundle\EventBundle\Entity\Ticket</parameter>
@@ -42,6 +42,14 @@
     </parameters>
 
     <services>
+
+        <service id="stfalcon_event.admin.mail_admin" class="%stfalcon_event.admin.mails.class%">
+            <tag name="mail_admin" manager_type="orm" />
+            <argument />
+            <argument>%stfalcon_event.admin.mails.entity%</argument>
+            <argument>%stfalcon_event.admin.mails.controller%</argument>
+        </service>
+
         <service id="stfalcon_event.current_event" class="%stfalcon_event.admin.event.entity%" />
 
         <service id="stfalcon_event.admin.event" class="%stfalcon_event.admin.event.class%">

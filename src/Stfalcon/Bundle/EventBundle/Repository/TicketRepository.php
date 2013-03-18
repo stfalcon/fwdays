@@ -52,6 +52,7 @@ class TicketRepository extends EntityRepository
                 JOIN t.event e
                 WHERE e.active = TRUE
                     AND t.event = :event
+                GROUP BY t.user
             ')
             ->setParameter('event', $event)
             ->getResult();

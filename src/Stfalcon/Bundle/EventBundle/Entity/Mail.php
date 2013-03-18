@@ -40,7 +40,7 @@ class Mail
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Event",  cascade={"remove"})
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;

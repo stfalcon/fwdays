@@ -76,6 +76,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $mail->setSentMessages($mail->getSentMessages()+1);
                 $item->setIsSent(true);
 
+                if ($mail->getSentMessages()==$mail->getTotalMessages()){
+                    $mail->setStart(false);
+                }
+
                 $em->persist($mail);
                 $em->persist($item);
                 $em->flush();
