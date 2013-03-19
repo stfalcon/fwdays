@@ -1,0 +1,12 @@
+{% if events is defined and events is not null %}
+<div class="events-switches">
+    <div class="wrap">
+        <ul>
+            {% for event in events %}
+            <li><a class="switch" href="#">{{ event.name }}</a></li>
+            {% endfor %}
+            <li class="past-events"><a href="# ">Прошедшие</a></li>
+        </ul>
+    </div>
+</div>
+{% endif %}
