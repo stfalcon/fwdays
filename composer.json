@@ -38,7 +38,7 @@
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
         "vich/uploader-bundle": "dev-master",
-        "endroid/qrcode": "v1.0",
+        "endroid/qrcode": "1.1.1",
         "ornicar/gravatar-bundle" : "dev-master",
 
         "stfalcon/page-bundle": "dev-master",
