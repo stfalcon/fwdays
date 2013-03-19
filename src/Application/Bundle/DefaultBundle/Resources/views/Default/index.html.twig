@@ -1,10 +1,8 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block javascripts %}
-    {% javascripts
-    'js/jquery-1.8.2.min.js'
-    'js/simpleSlider.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts 'js/jquery-1.8.2.min.js' 'js/simple-slider.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
@@ -17,7 +15,7 @@
 {% endblock %}
 
 {% block switch %}
-    {% render "ApplicationDefaultBundle:Event:switch" %}
+    {% render controller('ApplicationDefaultBundle:Event:switch') %}
 {% endblock %}
 
 {% block sidebar_right %}

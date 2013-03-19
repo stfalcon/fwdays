@@ -1,4 +1,3 @@
-{% if events is defined and events is not null %}
 <div class="event-slider">
     {% for event in events %}
     <div class="slide" {% if loop.index != 1 %}style="display: none"{% endif %}>
@@ -28,4 +27,3 @@
         <div class="btn btn-next"><a href="# " title="next">next</a></div>
     {% endif %}
 </div><!-- div.event-slider -->
-{% endif %}

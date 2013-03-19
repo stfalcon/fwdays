@@ -62,8 +62,8 @@ $(document).ready(function () {
             opacity: enabledOpacity
         }, "slow");
 
+        // @todo refact. mv harcode colors to css
         $("div.events-switches div.wrap ul li a").css('color', '#0091ad');
-
         $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").css('color', '#cd3b23');
     }
 });
