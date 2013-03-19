@@ -43,9 +43,9 @@ class NewsController extends BaseController
     {
         $event = $this->getEventBySlug($event_slug);
 
-        $oneNews = $this->getDoctrine()->getEntityManager()
-                        ->getRepository('StfalconEventBundle:News')
-                        ->findOneBy(array('event' => $event->getId(), 'slug' => $news_slug));
+        $oneNews = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:News')
+            ->findOneBy(array('event' => $event->getId(), 'slug' => $news_slug));
 
         if (!$oneNews) {
             throw $this->createNotFoundException('Unable to find News entity.');
@@ -65,8 +65,8 @@ class NewsController extends BaseController
      */
     public function widgetAction(Event $event, $count)
     {
-        $news = $this->getDoctrine()->getEntityManager()
-                ->getRepository('StfalconEventBundle:News')->getLastNewsForEvent($event, $count);
+        $news = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:News')->getLastNewsForEvent($event, $count);
 
         return array('event' => $event, 'news' => $news);
     }

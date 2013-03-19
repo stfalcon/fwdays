@@ -21,9 +21,9 @@ class EventController extends Controller
      */
     public function sliderAction()
     {
-        $events = $this->getDoctrine()->getEntityManager()
-                     ->getRepository('StfalconEventBundle:Event')
-                     ->findBy(array('active' => true ));
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(array('active' => true));
 
         return array('events' => $events);
     }

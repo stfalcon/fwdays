@@ -1,15 +1,15 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
-    {% render "ApplicationDefaultBundle:News:last" with { 'count': 10 } %}
+    {% render controller('ApplicationDefaultBundle:News:last', { 'count': 10 }) %}
 {% endblock %}
 
 {% block slider %}
-    {% render "ApplicationDefaultBundle:Event:slider" %}
+    {% render controller('ApplicationDefaultBundle:Event:slider') %}
 {% endblock %}
 
 {% block sidebar_right %}
-    {% render "StfalconSponsorBundle:Sponsor:mainWidget" %}
+    {% render controller('StfalconSponsorBundle:Sponsor:mainWidget') %}
 {% endblock %}
 
 {% block div_wrapper_class %}{% endblock %}

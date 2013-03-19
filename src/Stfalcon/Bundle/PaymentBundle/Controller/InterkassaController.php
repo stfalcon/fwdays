@@ -44,14 +44,14 @@ class InterkassaController extends Controller
     {
 //        $params = $this->getRequest()->request->all();
         $params = $_POST;
-        $payment = $this->getDoctrine()->getEntityManager()
+        $payment = $this->getDoctrine()
                      ->getRepository('StfalconPaymentBundle:Payment')
                      ->findOneBy(array('id' => $params['ik_payment_id']));
 
         if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
             $payment->setStatus(Payment::STATUS_PAID);
             /** @var $em \Doctrine\ORM\EntityManager */
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($payment);
             $em->flush();
             $message = 'Проверка контрольной подписи данных о платеже успешно пройдена!';

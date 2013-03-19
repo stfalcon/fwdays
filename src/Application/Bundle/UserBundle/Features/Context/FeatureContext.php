@@ -53,7 +53,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader = new Loader();
         $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
         /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
         $purger   = new ORMPurger();
         $executor = new ORMExecutor($em, $purger);
@@ -66,12 +66,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iMustHaveTicketForAllEvents()
     {
-        $activeEvents = $this->kernel->getContainer()->get('doctrine')->getEntityManager()
+        $activeEvents = $this->kernel->getContainer()->get('doctrine')->getManager()
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(array('active' => true ));
 
         $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
-        $tickets = $this->kernel->getContainer()->get('doctrine')->getEntityManager()
+        $tickets = $this->kernel->getContainer()->get('doctrine')->getManager()
             ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
         assertEquals(count($tickets), count($activeEvents));

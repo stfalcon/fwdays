@@ -22,7 +22,7 @@
 
                         <p>{{ event.description }}</p>
 
-                        {% render "StfalconEventBundle:Ticket:status" with { 'event': event } %}
+                        {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
 
                         <div class="conf-info-links">
                             <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>

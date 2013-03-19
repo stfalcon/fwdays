@@ -15,7 +15,7 @@
             <div class="event-head-text">
                 {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
 
-                {% render "StfalconEventBundle:Ticket:status" with { 'event' : event } %}
+                {% render controller("StfalconEventBundle:Ticket:status", { 'event' : event }) %}
             </div>
         </div>
     </header><!-- #header-->
@@ -30,22 +30,23 @@
 {% block sidebar_left %}
     {% block event_speakers_widget %}
         <h2>Докладчики</h2>
-        {% render "StfalconEventBundle:Speaker:widget" with { 'event': event, 'count': 3 } %}
+        {% render controller("StfalconEventBundle:Speaker:widget", { 'event': event, 'count': 3 }) %}
+
         {% if event.active == true %}
-        <h2>Участники</h2>
-        {% render "StfalconEventBundle:Participant:widget" with { 'event': event, 'count': 3 } %}
+            <h2>Участники</h2>
+            {% render controller("StfalconEventBundle:Participant:widget", { 'event': event, 'count': 3 }) %}
         {% endif %}
     {% endblock %}
 
     {% block event_news_widget %}
         <h2>Новости</h2>
-        {% render "StfalconEventBundle:News:widget" with { 'event': event, 'count': 7 } %}
+        {% render controller("StfalconEventBundle:News:widget", { 'event': event, 'count': 7 }) %}
     {% endblock %}
 
 {% endblock %}
 
 {% block sidebar_right %}
     {% block event_sponsors_widget %}
-        {% render "StfalconSponsorBundle:Sponsor:widget" with { 'event': event } %}
+        {% render controller("StfalconSponsorBundle:Sponsor:widget", { 'event': event }) %}
     {% endblock %}
 {% endblock %}
