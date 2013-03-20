@@ -13,13 +13,12 @@
             <li>
                 <div class="part-wrap">
                     <div class="part-block">
-                            {% set avatar = asset('images/img-user-nophoto.png') %}
 
                         {% if gravatar_exists(participant.user.email) %}
                             {% set avatar = gravatar(participant.user.email) %}
                         {% endif %}
 
-                        <img src="{{ avatar }}" width="76" height="76"
+                        <img src="{{ avatar|default(asset('images/img-user-nophoto.png')) }}" width="76" height="76"
                              alt="{{ participant.user.fullname }}">
 
                         <div class="part-name">{{ participant.user.fullname }}</div>
