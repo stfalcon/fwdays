@@ -1,18 +1,22 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: zion
- * Date: 18.03.13
- * Time: 17:33
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Application\Bundle\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class UserRepository extends EntityRepository {
+/**
+ * Class UserRepository
+ *
+ * @package Application\Bundle\UserBundle\Repository
+ */
+class UserRepository extends EntityRepository
+{
 
+    /**
+     * Get users admin
+     *
+     * @return array()
+     */
     public function getAdmins()
     {
         $qb = $this->createQueryBuilder('mq');
@@ -22,4 +26,5 @@ class UserRepository extends EntityRepository {
         return $query->execute();
 
     }
+
 }

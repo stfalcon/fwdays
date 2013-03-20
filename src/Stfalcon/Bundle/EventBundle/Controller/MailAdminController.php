@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: zion
- * Date: 18.03.13
- * Time: 15:59
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
@@ -13,9 +6,18 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class MailAdminController
+ * @package Stfalcon\Bundle\EventBundle\Controller
+ */
 class MailAdminController extends CRUDController
 {
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
     public function adminSendAction(Request $request)
     {
         $id = $request->get($this->admin->getIdParameter());

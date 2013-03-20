@@ -70,30 +70,23 @@ class MailAdmin extends Admin
             ->end();
     }
 
+    /**
+     * @param mixed $mail
+     *
+     * @return mixed|void
+     */
     public function postPersist($mail)
     {
 
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getEntityManager();
 
-        if ($mail->getEvent()) {
-            // @todo сделать в репо метод для выборки пользователей, которые отметили ивент
-            $tickets = $em->getRepository('StfalconEventBundle:Ticket')->findTicketsByEvent($mail->getEvent());
-
-            foreach ($tickets as $ticket) {
-                // @todo тяжелая цепочка
-                // нужно сделать выборку билетов с платежами определенного статуса
-                if ($mail->getPaymentStatus()) {
-                    if ($ticket->getPayment() && $ticket->getPayment()->getStatus() == $mail->getPaymentStatus()) {
-                        $users[] = $ticket->getUser();
-                    }
-                } else {
-                    $users[] = $ticket->getUser();
-                }
-            }
-        } else {
+        if ($mail->getEvent() || $mail->getPaymentStatus()) {
+            $users = $em->getRepository('StfalconEventBundle:Ticket')->findUsersByEventAndStatus($mail->getEvent(),$mail->getPaymentStatus());
+        }else{
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
+
 
         if (isset($users)) {
 

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: zion
- * Date: 15.03.13
- * Time: 15:02
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Stfalcon\Bundle\EventBundle\Command;
 
@@ -18,40 +11,55 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
+/**
+ * Class StfalconMailerCommand
+ *
+ * @package Stfalcon\Bundle\EventBundle\Command
+ */
 class StfalconMailerCommand extends ContainerAwareCommand
 {
+    /**
+     * Set options
+     */
     protected function configure()
     {
         $this
             ->setName('stfalcon:mailer')
             ->setDescription('Send message from queue')
-            ->addOption('amount', null, InputOption::VALUE_NONE, 'Amount of mails which will send per operation. Default 10.')
-        ;
+            ->addOption('amount', null, InputOption::VALUE_NONE, 'Amount of mails which will send per operation. Default 10.');
     }
 
+    /**
+     * Execute command
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $limit=10;
+        $limit = 10;
 
         if ($input->getOption('amount')) {
-            $limit=(int)$input->getOption('amount');
+            $limit = (int)$input->getOption('amount');
         }
 
 
-        $em =$this->getContainer()->get('doctrine')->getEntityManager('default');
+        $em = $this->getContainer()->get('doctrine')->getEntityManager('default');
         $mailer = $this->getContainer()->get('mailer');
 
         /** @var $queueRepository MailQueueRepository */
-        $queueRepository=$em->getRepository('StfalconEventBundle:MailQueue');
+        $queueRepository = $em->getRepository('StfalonEventBundle:MailQueue');
         $mailsQueue = $queueRepository->getMessages($limit);
 
         /** @var $mail Mail */
-        foreach($mailsQueue as $item){
-            $user=$item->getUser();
-            $mail=$item->getMail();
+        foreach ($mailsQueue as $item) {
+            $user = $item->getUser();
+            $mail = $item->getMail();
 
-            if (!($user && $mail)){
+            if (!($user && $mail)) {
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -71,12 +79,12 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 ->setTo($user->getEmail())
                 ->setBody($text, 'text/html');
 
-            if ($mailer->send($message)){
+            if ($mailer->send($message)) {
 
-                $mail->setSentMessages($mail->getSentMessages()+1);
+                $mail->setSentMessages($mail->getSentMessages() + 1);
                 $item->setIsSent(true);
 
-                if ($mail->getSentMessages()==$mail->getTotalMessages()){
+                if ($mail->getSentMessages() == $mail->getTotalMessages()) {
                     $mail->setStart(false);
                 }
 
@@ -86,5 +94,5 @@ class StfalconMailerCommand extends ContainerAwareCommand
             }
 
         }
-}
+    }
 }
