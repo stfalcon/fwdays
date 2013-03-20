@@ -1923,3 +1923,7 @@ div.amount {
 .contacts-page-orgs-list .vcard .email a:active {
     color: #cd3b23;
 }
+
+a.selected-switch {
+    color: #cd3b23 !important;
+}

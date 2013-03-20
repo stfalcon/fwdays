@@ -6,7 +6,7 @@ $(document).ready(function () {
     var animationInterval = 5000;
     var isAutomatic = true;
 
-    $("div#wrapper div.events-switches ul li:eq(0) a").css('color', '#cd3b23');
+    $("div#wrapper div.events-switches ul li:eq(0) a").addClass('selected-switch');
 
     $('.btn').click(function () {
         isAutomatic = false;
@@ -62,8 +62,7 @@ $(document).ready(function () {
             opacity: enabledOpacity
         }, "slow");
 
-        // @todo refact. mv harcode colors to css
-        $("div.events-switches div.wrap ul li a").css('color', '#0091ad');
-        $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").css('color', '#cd3b23');
+        $("div.events-switches div.wrap ul li a").removeClass('selected-switch');
+        $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").addClass('selected-switch');
     }
 });
