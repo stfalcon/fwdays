@@ -1725,12 +1725,13 @@ div.amount {
     width: 100%;
     border: 1px solid #c5c5c5;
     border-top-color: #e3e3e3;
+    border-bottom-color: #9C9C9C;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    -webkit-box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.4);
 }
 .participants .part-wrap:hover .part-occupation,
 .participants .part-wrap:hover .part-location {
