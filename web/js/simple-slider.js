@@ -6,8 +6,6 @@ $(document).ready(function () {
     var animationInterval = 5000;
     var isAutomatic = true;
 
-    $("div#wrapper div.events-switches ul li:eq(0) a").addClass('selected-switch');
-
     $('.btn').click(function () {
         isAutomatic = false;
 
@@ -55,14 +53,15 @@ $(document).ready(function () {
     }
 
     function slide() {
-        $("div.event-slider div.slide").hide().animate({
-            opacity: removedOpacity
-        }, "slow");
-        $("div.event-slider div.slide:eq(" + currentSlide + ")").show().animate({
-            opacity: enabledOpacity
-        }, "slow");
+        // hide current slide
+        $("div.event-slider div.slide").hide()
+            .animate({ opacity: removedOpacity }, "slow");
+        // show next slide
+        $("div.event-slider div.slide:eq(" + currentSlide + ")").show()
+            .animate({ opacity: enabledOpacity }, "slow");
 
-        $("div.events-switches div.wrap ul li a").removeClass('selected-switch');
-        $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ") a").addClass('selected-switch');
+        // change active link in nav switcher
+        $("div.events-switches div.wrap ul li").removeClass("active");
+        $("div#wrapper div.events-switches ul li:eq(" + currentSlide + ")").addClass('active');
     }
 });

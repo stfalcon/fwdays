@@ -1,25 +1,25 @@
 <div class="event-slider">
     {% for event in events %}
-    <div class="slide" {% if loop.index != 1 %}style="display: none"{% endif %}>
-        <div class="icon">
-            <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
-                <img src="{{ vich_uploader_asset(event, 'file') }}" width="175" height="172" alt="{{ event.name }}" />
-            </a>
-        </div>
-        <div class="text">
-            <h2>
-                {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
-            </h2>
+        <div class="slide" {% if loop.index != 1 %}style="display: none"{% endif %}>
+            <div class="icon">
+                <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
+                    <img src="{{ vich_uploader_asset(event, 'file') }}" width="175" height="172" alt="{{ event.name }}" />
+                </a>
+            </div>
+            <div class="text">
+                <h2>
+                    {% include "StfalconEventBundle:Event:_event_place_block.html.twig" with { 'event': event } %}
+                </h2>
 
-            <p>{{ event.description }}</p>
+                <p>{{ event.description }}</p>
 
-            {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
+                {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
 
-            <div class="status">
-                <a href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+                <div class="status">
+                    <a href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
 
     {% if events|length > 1 %}
