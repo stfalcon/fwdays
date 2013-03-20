@@ -57,11 +57,11 @@ class UserListener implements EventSubscriber
     {
         $entity = $args->getEntity();
         if ($entity instanceof UserInterface) {
-            $activeEvents = $this->container->get('doctrine')->getEntityManager()
+            $activeEvents = $this->container->get('doctrine')->getManager()
                 ->getRepository('StfalconEventBundle:Event')
                 ->findBy(array('active' => true ));
 
-            $em = $this->container->get('doctrine')->getEntityManagerForClass('StfalconEventBundle:Ticket');
+            $em = $this->container->get('doctrine')->getManagerForClass('StfalconEventBundle:Ticket');
             // Подписуем пользователя на все активные евенты
             foreach ($activeEvents as $activeEvent) {
                 $ticket = new Ticket($activeEvent, $entity);

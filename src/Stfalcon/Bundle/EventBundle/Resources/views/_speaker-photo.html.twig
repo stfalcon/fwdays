@@ -1,0 +1,5 @@
+{% if speaker.file is not empty %}
+<img src="{{ vich_uploader_asset(speaker, 'file') }}" width="{{size}}" height="{{size}}" alt="{{ speaker.name }}" />
+{% else %}
+<img src="{{ asset('images/empty.png') }}" width="{{size}}" height="{{size}}" alt="{{ speaker.name }}" />
+{% endif %}

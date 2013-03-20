@@ -3,5 +3,5 @@
 {% block title %}Новости / {{ parent() }}{% endblock %}
 
 {% block content %}
-    {% render "ApplicationDefaultBundle:News:last" with { 'count': 10 } %}
+    {% render controller("ApplicationDefaultBundle:News:last", { 'count': 10 }) %}
 {% endblock %}

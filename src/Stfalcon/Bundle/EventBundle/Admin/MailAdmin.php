@@ -79,7 +79,7 @@ class MailAdmin extends Admin
     {
 
         $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getEntityManager();
+        $em = $container->get('doctrine')->getManager();
 
         if ($mail->getEvent() || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')->findUsersByEventAndStatus($mail->getEvent(),$mail->getPaymentStatus());

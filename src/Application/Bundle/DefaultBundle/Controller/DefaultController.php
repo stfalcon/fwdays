@@ -29,7 +29,7 @@ class DefaultController extends Controller {
      */
     public function addUsersAction(Event $event) {
     // @todo удалить этот метод. одноразовый харкод
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         if (isset($_POST['users'])) {
             $users = explode("\r\n", $_POST['users']);

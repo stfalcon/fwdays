@@ -20,7 +20,7 @@ class PageController extends BaseController
     {
         $event = $this->getEventBySlug($event_slug);
 
-        $page = $this->getDoctrine()->getEntityManager()
+        $page = $this->getDoctrine()
                      ->getRepository('StfalconEventBundle:Page')
                      ->findOneBy(array('event' => $event->getId(), 'slug' => $page_slug));
 

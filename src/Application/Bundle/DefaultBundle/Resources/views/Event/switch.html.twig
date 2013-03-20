@@ -1,0 +1,14 @@
+{% if events|length > 1 %}
+    <div class="events-switches">
+        <div class="wrap">
+            <ul>
+                {% for event in events %}
+                    <li {% if loop.index == 1 %}class="active"{% endif %}>
+                        <a href="#">{{ event.name }}</a>
+                    </li>
+                {% endfor %}
+                <li class="past-events"><a href="{{ path('events') }}#past-events">Прошедшие</a></li>
+            </ul>
+        </div>
+    </div>
+{% endif %}

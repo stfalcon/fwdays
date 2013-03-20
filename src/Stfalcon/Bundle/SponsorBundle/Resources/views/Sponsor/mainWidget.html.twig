@@ -6,9 +6,7 @@
 
                 {% for sponsor in sponsors %}
                     <div class="partner sort-order-{{ loop.index }}">
-                        <a href="{{ sponsor.site }}">
-                            <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
-                        </a>
+                        {% include 'StfalconSponsorBundle:Sponsor:_sponsor.html.twig' %}
                     </div>
                 {% endfor %}
             {% endif %}

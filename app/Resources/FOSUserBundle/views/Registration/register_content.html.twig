@@ -1,9 +1,6 @@
 {% block javascripts %}
-    {% javascripts
-        'js/jquery-1.8.2.min.js'
-        'js/password-field-eye.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts 'js/jquery-1.8.2.min.js' 'js/password-field-eye.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 

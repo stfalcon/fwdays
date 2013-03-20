@@ -3,9 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-//use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Application event controller
@@ -21,11 +19,32 @@ class EventController extends Controller
      */
     public function sliderAction()
     {
-        $events = $this->getDoctrine()->getEntityManager()
-                     ->getRepository('StfalconEventBundle:Event')
-                     ->findBy(array('active' => true ));
+        return array('events' => $this->_getActiveEvents());
+    }
 
-        return array('events' => $events);
+    /**
+     * Panel for managing event slider's slide switching
+     *
+     * @Template()
+     * @return array
+     */
+    public function switchAction()
+    {
+        return array('events' => $this->_getActiveEvents());
+    }
+
+    /**
+     * Get array of active events
+     *
+     * @return array
+     */
+    private function _getActiveEvents()
+    {
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(array('active' => true ));
+
+        return $events;
     }
 
 }

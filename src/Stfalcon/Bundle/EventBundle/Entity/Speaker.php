@@ -64,9 +64,9 @@ class Speaker
     /**
      * @var string $photo
      *
-     * @ORM\Column(name="photo", type="string", length=255)
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
-    private $photo = 'empty.png';
+    private $photo;
 
     /**
      * @Assert\File(maxSize="6000000")
