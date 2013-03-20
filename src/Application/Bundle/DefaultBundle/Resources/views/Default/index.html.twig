@@ -1,15 +1,25 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
+{% block javascripts %}
+    {% javascripts 'js/jquery-1.8.2.min.js' 'js/simple-slider.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
 {% block content %}
-    {% render "ApplicationDefaultBundle:News:last" with { 'count': 10 } %}
+    {% render controller('ApplicationDefaultBundle:News:last', { 'count': 10 }) %}
 {% endblock %}
 
 {% block slider %}
-    {% render "ApplicationDefaultBundle:Event:slider" %}
+    {% render controller('ApplicationDefaultBundle:Event:slider') %}
+{% endblock %}
+
+{% block switch %}
+    {% render controller('ApplicationDefaultBundle:Event:switch') %}
 {% endblock %}
 
 {% block sidebar_right %}
-    {% render "StfalconSponsorBundle:Sponsor:mainWidget" %}
+    {% render controller('StfalconSponsorBundle:Sponsor:mainWidget') %}
 {% endblock %}
 
 {% block div_wrapper_class %}{% endblock %}

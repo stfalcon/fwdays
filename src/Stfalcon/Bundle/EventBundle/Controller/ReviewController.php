@@ -21,8 +21,7 @@ class ReviewController extends BaseController
     {
         $event = $this->getEventBySlug($event_slug);
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $review = $em->getRepository('StfalconEventBundle:Review')->findOneBy(array('slug' => $review_slug));
+        $review = $this->getDoctrine()->getRepository('StfalconEventBundle:Review')->findOneBy(array('slug' => $review_slug));
 
         if (!$review) {
             throw $this->createNotFoundException('Unable to find Review entity.');

@@ -20,7 +20,7 @@ class BaseController extends Controller
      */
     public function getEventBySlug($slug) 
     {
-        $event = $this->getDoctrine()->getEntityManager()
+        $event = $this->getDoctrine()
                       ->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $slug));
 
         if (!$event) {

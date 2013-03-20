@@ -66,18 +66,10 @@
                 </header><!-- #header-->
             {% endblock %}
 
-            {#<div class="events-switches">
-                <div class="wrap">
-                    <ul>
-                        <li class="active"><a href="# ">Zend Framework Day</a></li>
-                        <li><a href="# ">PHP Frameworks Day</a></li>
-                        <li class="past-events"><a href="# ">Прошедшие</a></li>
-                    </ul>
-                </div>
-            </div>#}
+            <!-- nav for events switcher -->
+            {% block switch %}{% endblock %}
 
             <section id="middle">
-
                 <div id="container">
                     <div id="content">
                         {% block content %}{% endblock %}

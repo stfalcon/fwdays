@@ -71,7 +71,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iPayTicket($mail)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
@@ -89,7 +89,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iDontPayTicket($mail)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
@@ -107,7 +107,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iMustSeeFullname($mail)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $this->assertPageContainsText($user->getFullname());
     }
@@ -141,7 +141,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getTicketUrl($mail)
     {
-        $em = $this->kernel->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user   = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
 
