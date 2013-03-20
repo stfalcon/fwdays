@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 
 /**
  * Class StfalconMailerCommand
@@ -65,21 +66,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $text = $mail->replace(
-                array(
-                    '%fullname%' => $user->getFullname(),
-                    '%user_id%' => $user->getId(),
-                )
-            );
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject($mail->getTitle())
-                // @todo refact
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->setBody($text, 'text/html');
-
-            if ($mailer->send($message)) {
+            if ($mailer->send(StfalconMailerHelper::formatMessage($user,$mail))) {
 
                 $mail->setSentMessages($mail->getSentMessages() + 1);
                 $item->setIsSent(true);

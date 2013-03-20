@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Controller;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 
 /**
  * Class MailAdminController
@@ -18,7 +19,7 @@ class MailAdminController extends CRUDController
      *
      * @return RedirectResponse
      */
-    public function adminSendAction(Request $request)
+    public function adminSendAction (Request $request)
     {
         $id = $request->get($this->admin->getIdParameter());
 
@@ -43,32 +44,21 @@ class MailAdminController extends CRUDController
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
             foreach ($users as $user) {
-                $text = $mail->replace(
-                    array(
-                        '%fullname%' => $user->getFullname(),
-                        '%user_id%' => $user->getId(),
-                    )
-                );
 
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($mail->getTitle())
-                    // @todo refact
-                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                    ->setTo($user->getEmail())
-                    ->setBody($text, 'text/html');
-
-                if (!$mailer->send($message)) {
+                if (!$mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
                     $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
+
                     return new RedirectResponse($this->admin->generateUrl('list'));
                 }
             }
         }
         $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
+
         return new RedirectResponse($this->admin->generateUrl('list'));
 
     }
 
-    private function getContainer()
+    private function getContainer ()
     {
     }
 }
