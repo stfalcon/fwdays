@@ -10,19 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\ProcessBuilder;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class MailAdminController
+ *
  * @package Stfalcon\Bundle\EventBundle\Controller
  */
 class MailAdminController extends CRUDController
 {
 
     /**
+     * Action for Behat test. Send mail to user
+     *
      * @return Response
      */
     public function userSendAction()
     {
+        if(!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
+            throw new NotFoundHttpException("Page not found");
+        }
+
        $command = $this->get('user_mail_command_service');
        $output = new ConsoleOutput();
 
@@ -33,7 +41,7 @@ class MailAdminController extends CRUDController
         $input = new ArrayInput($arguments);
         $command->run($input, $output);
 
-        return new Response('');
+        return new Response('complete');
     }
 
     /**
