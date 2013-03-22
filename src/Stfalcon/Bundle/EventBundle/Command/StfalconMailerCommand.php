@@ -52,7 +52,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
         $mailer = $this->getContainer()->get('mailer');
 
         /** @var $queueRepository MailQueueRepository */
-        $queueRepository = $em->getRepository('StfalonEventBundle:MailQueue');
+        $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
         $mailsQueue = $queueRepository->getMessages($limit);
 
         /** @var $mail Mail */

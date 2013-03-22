@@ -66,8 +66,7 @@ class TicketRepository extends EntityRepository
                 ->setParameter(':status', $status);
         }
 
-        $query = $query->groupBy('u.id')
-                 ->getQuery();
+        $query = $query->getQuery();
 
 
         $users = array();

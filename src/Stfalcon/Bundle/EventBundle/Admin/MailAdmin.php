@@ -24,6 +24,7 @@ class MailAdmin extends Admin
 
     protected function configureRoutes(RouteCollection $collection) {
        $collection->add('admin_send', $this->getRouterIdParameter().'/admin-send');
+       $collection->add('user_send', 'user-send');
     }
 
     protected function configureListFields(ListMapper $listMapper)
