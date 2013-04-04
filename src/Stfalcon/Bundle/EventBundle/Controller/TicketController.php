@@ -48,12 +48,14 @@ class TicketController extends BaseController
 
             $body = $this->_ticketTemplate($ticket);
 
-            $fileLocation = 'uploads/tickets/ticket-'.md5($ticket->getUser()->getUsername()).'-'.$event->getSlug().'.pdf';
+            $fileLocation = 'uploads/tickets/ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
 
-            $this->get('knp_snappy.pdf')->generateFromHtml($body,
+            $this->get('knp_snappy.pdf')->generateFromHtml(
+                $body,
                 $fileLocation,
                 array(),
-                true);
+                true
+            );
 
             $message = \Swift_Message::newInstance()
                 ->setSubject('Приглашение на '.$event->getName())
@@ -192,6 +194,7 @@ class TicketController extends BaseController
      * Find ticket for event by current user
      *
      * @param Event $event
+     *
      * @return Ticket|null
      */
     private function _findTicketForEventByCurrentUser(Event $event)
@@ -204,11 +207,11 @@ class TicketController extends BaseController
             $ticket = $this->getDoctrine()->getManager()
                 ->getRepository('StfalconEventBundle:Ticket')
                 ->findOneBy(
-                array(
-                    'event' => $event->getId(),
-                    'user' => $user->getId()
-                )
-            );
+                    array(
+                        'event' => $event->getId(),
+                        'user'  => $user->getId()
+                    )
+                );
         }
 
         return $ticket;
@@ -217,12 +220,13 @@ class TicketController extends BaseController
     /**
      * Generating ticket with QR-code to event
      *
+     * @param string $event_slug
+     *
+     * @return array
+     *
      * @Secure(roles="ROLE_USER")
      * @Route("/event/{event_slug}/ticket", name="event_ticket_show")
      * @Template()
-     *
-     * @param string $event_slug
-     * @return array
      */
     public function showAction($event_slug)
     {
@@ -239,8 +243,8 @@ class TicketController extends BaseController
             $this->get('knp_snappy.pdf')->getOutputFromHtml($body, array()),
             200,
             array(
-                'Content-Type'          => 'application/pdf',
-                'Content-Disposition'   => 'attach; filename="ticket-'.$event->getSlug().'.pdf"'
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'attach; filename="ticket-' . $event->getSlug() . '.pdf"'
             )
         );
     }
@@ -248,11 +252,13 @@ class TicketController extends BaseController
     /**
      * Check that QR-code is valid, and register ticket
      *
+     * @param Ticket $ticket
+     * @param string $hash
+     *
+     * @return Response
+     *
      * @Secure(roles="ROLE_ADMIN")
      * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_check")
-
-     * @param Ticket $ticket
-     * @return array()
      */
     public function checkAction(Ticket $ticket, $hash)
     {
@@ -266,6 +272,7 @@ class TicketController extends BaseController
         if ($ticket->isUsed()) {
             $timeNow = new \DateTime();
             $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
+
             return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
         }
 
@@ -278,12 +285,13 @@ class TicketController extends BaseController
     }
 
     /**
-     * Check that Ticket NUmber is valid
+     * Check that ticket number is valid
+     *
+     * @return array
      *
      * @Secure(roles="ROLE_ADMIN")
      * @Route("/check/", name="check")
      * @Template()
-     * @param int $ticketId
      */
     public function checkByNumAction()
     {
@@ -295,26 +303,27 @@ class TicketController extends BaseController
             );
         }
 
-        $ticket = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Ticket')
+        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(array('id' => $ticketId));
 
         if (is_object($ticket)) {
-            $url = $this->generateUrl('event_ticket_check',
+            $url = $this->generateUrl(
+                'event_ticket_check',
                 array(
                     'ticket' => $ticket->getId(),
-                    'hash' => $ticket->getHash()
-                ), true);
-
-            return array(
-                'action' => $this->generateUrl('check'),
-                'ticketUrl' => $url
+                    'hash'   => $ticket->getHash()
+                ),
+                true
             );
 
+            return array(
+                'action'    => $this->generateUrl('check'),
+                'ticketUrl' => $url
+            );
         } else {
             return array(
                 'message' => 'Not Found',
-                'action' => $this->generateUrl('check')
+                'action'  => $this->generateUrl('check')
             );
         }
     }
@@ -323,25 +332,30 @@ class TicketController extends BaseController
      * Create template for ticket invitation
      *
      * @param Ticket $ticket
+     *
+     * @return string
      */
     private function _ticketTemplate($ticket)
     {
-        $twig   = $this->get('twig');
+        $twig = $this->get('twig');
 
-        $url = $this->generateUrl('event_ticket_check',
+        $url = $this->generateUrl(
+            'event_ticket_check',
             array(
                 'ticket' => $ticket->getId(),
-                'hash' => $ticket->getHash()
-            ), true);
+                'hash'   => $ticket->getHash()
+            ),
+            true
+        );
 
         $qrCode = $this->get('stfalcon_event.qr_code');
         $qrCode->setText($url);
         $qrCodeBase64 = base64_encode($qrCode->get());
-        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:showPdf.html.twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
         $body = $templateContent->render(array(
-                'ticket' => $ticket,
-                'qrCodeBase64' => $qrCodeBase64,
-            ));
+            'ticket'       => $ticket,
+            'qrCodeBase64' => $qrCodeBase64,
+        ));
 
         return $body;
     }

@@ -1,109 +1,137 @@
-*{margin:0;padding:0}
-html, body {width:1000px;}
-body{
-	font:15px/21px 'Open Sans', sans-serif;
-	color:#000;
-	background:#fff;
+* {
+    margin:  0;
+    padding: 0
 }
+
+html, body {
+    width: 1000px;
+}
+
+body {
+    font:       15px/21px 'Open Sans', sans-serif;
+    color:      #000;
+    background: #fff;
+}
+
 /* =Misc(links)
 ----------------------------------------------------------------------------- */
-a img,fieldset{border:none}
-a{color:#0375bc}
-a:visited{color:#8ab1ca;}
-a:hover{color:#009dff}
-.clr{
-	clear:both;
-	height:0;
-	font-size:0px;
-	line-height:0px;
-	overflow: hidden;
+a img, fieldset {
+    border: none
+}
+
+a {
+    color: #0375bc
+}
+
+a:visited {
+    color: #8ab1ca;
+}
+
+a:hover {
+    color: #009dff
+}
+
+.clr {
+    clear:       both;
+    height:      0;
+    font-size:   0px;
+    line-height: 0px;
+    overflow:    hidden;
 }
 
 /* =Main styles
 ----------------------------------------------------------------------------- */
 
 .top {
-	position: relative;
+    position: relative;
 }
 
-	.left-element {
-		position: absolute;
-		left: 0;
-		top: 0;
-	}
+.left-element {
+    position: absolute;
+    left:     0;
+    top:      0;
+}
 
-	.logo {
-		float: right;
-		padding: 48px 82px 0 0;
-	}
+.logo {
+    float:   right;
+    padding: 48px 82px 0 0;
+}
 
-	.dear-user {
-		position: relative;
-		margin-bottom: 50px;
-		padding: 108px 0 0 233px;
-		font-size: 20px;
-		letter-spacing: .015em;
-	}
+.dear-user {
+    position:       relative;
+    margin-bottom:  50px;
+    padding:        108px 0 0 233px;
+    font-size:      20px;
+    letter-spacing: .015em;
+}
 
-	.date-n-address {
-		position: relative;
-		padding-left: 233px;
-	}
-		.wait-for-you {
-			float: left;
-			margin-left: -138px;
-			padding-top: 12px;
-			width: 138px;
-			font-size: 20px;
-		}
-		.date-addr {
-			margin-bottom: 30px;
-			font-size: 36px;
-			line-height: 48px;
-			font-weight: bold;
-			color: #0375bc;
-		}
-		.registration-begins {
-			font-size: 30px;
-			letter-spacing: .01em;
-		}
+.date-n-address {
+    position:     relative;
+    padding-left: 233px;
+}
 
+.wait-for-you {
+    float:       left;
+    margin-left: -138px;
+    padding-top: 12px;
+    width:       138px;
+    font-size:   20px;
+}
+
+.date-addr {
+    margin-bottom: 30px;
+    font-size:     36px;
+    line-height:   48px;
+    font-weight:   bold;
+    color:         #0375bc;
+}
+
+.registration-begins {
+    font-size:      30px;
+    letter-spacing: .01em;
+}
 
 .bottom {
-	padding: 80px 0 0 95px;
-	overflow: hidden;
+    padding:  80px 0 0 95px;
+    overflow: hidden;
 }
-	.qr-code {
-		float: left;
-		padding-right: 20px;
-		width: 120px;
-	}
-		.qr-code-h {
-			margin-bottom: 22px;
-            margin-left: 15px;
-		}
-		.qr-code-num {
-			font-size: 13px;
-            margin-left: 15px;
-		}
 
-	.invitation-text {
-		float: left;
-		padding-left: 60px;
-		width: 335px;
-	}
-		.invitation-text p {
-			margin-bottom: 9px;
-		}
-		p.main-text {
-			margin-bottom: 34px;
-			width: 255px;
-		}
+.qr-code {
+    float:         left;
+    padding-right: 20px;
+    width:         120px;
+}
 
-	.links {
-		float: left;
-		list-style: none;
-	}
-		.links li {
-			margin-bottom: 10px;
-		}
+.qr-code-h {
+    margin-bottom: 22px;
+    margin-left:   15px;
+}
+
+.qr-code-num {
+    font-size:   13px;
+    margin-left: 15px;
+}
+
+.invitation-text {
+    float:        left;
+    padding-left: 60px;
+    width:        335px;
+}
+
+.invitation-text p {
+    margin-bottom: 9px;
+}
+
+p.main-text {
+    margin-bottom: 34px;
+    width:         255px;
+}
+
+.links {
+    float:      left;
+    list-style: none;
+}
+
+.links li {
+    margin-bottom: 10px;
+}
