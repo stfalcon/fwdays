@@ -37,14 +37,10 @@
 
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
-<<<<<<< HEAD
+
         "vich/uploader-bundle": "dev-master",
         "endroid/qrcode": "1.1.1",
-=======
-        "vich/uploader-bundle": "dev-master#619d5694a8e2d6c63d4a314ae96bf40dd8199c0b",
-        "endroid/qrcode": "v1.0",
         "knplabs/knp-snappy-bundle": "dev-master",
->>>>>>> remotes/Mutuh/feature-ticket-html2pdf
         "ornicar/gravatar-bundle" : "dev-master",
 
         "stfalcon/page-bundle": "dev-master",
