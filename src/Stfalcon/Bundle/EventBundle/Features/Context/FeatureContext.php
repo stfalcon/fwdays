@@ -6,7 +6,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\DoctrineFixturesContext;
+    Behat\CommonContexts\DoctrineFixturesContext,
+    Behat\CommonContexts\SymfonyMailerContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
@@ -23,6 +24,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct()
     {
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
+        $this->useContext('symfony_mailer_context', new SymfonyMailerContext());
     }
 
     /**
@@ -53,6 +55,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
             ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -152,5 +155,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ),
             true
         );
+    }
+
+    /**
+     * Отключаем редирект страниц
+     *
+     * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
+     *
+     * @Given /^редирект страниц отключен$/
+     */
+    public function followRedirectsFalse()
+    {
+        $this->getSession()->getDriver()->getClient()->followRedirects(false);
     }
 }

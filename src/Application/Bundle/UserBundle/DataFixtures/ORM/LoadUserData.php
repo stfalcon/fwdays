@@ -35,6 +35,22 @@ class LoadUserData extends AbstractFixture
 
         $userDefault = new User();
         $userDefault->setUsername('Пользователь');
+        $userDefault->setFullname('Jack Reacher');
+        $userDefault->setEmail('user2@fwdays.com');
+        $userDefault->setPlainPassword('qwerty');
+        $userDefault->addRole('ROLE_USER');
+        $userDefault->setCountry('USA');
+        $userDefault->setCity('California');
+        $userDefault->setCompany('None');
+        $userDefault->setPost('Point Guard');
+        $userDefault->setEnabled(true);
+        $userDefault->setExpired(false);
+        $userDefault->setLocked(false);
+        $manager->persist($userDefault);
+        $this->addReference('user2', $userDefault);
+
+        $userDefault = new User();
+        $userDefault->setUsername('Пользователь');
         $userDefault->setFullname('Michael Jordan');
         $userDefault->setEmail('user@fwdays.com');
         $userDefault->setPlainPassword('qwerty');

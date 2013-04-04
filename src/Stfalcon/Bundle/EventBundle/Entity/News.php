@@ -21,7 +21,7 @@ class News extends BaseNews {
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
-    
+
     public function getEvent() {
         return $this->event;
     }
