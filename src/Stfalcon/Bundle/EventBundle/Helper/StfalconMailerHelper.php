@@ -2,17 +2,26 @@
 
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
-
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
-class  StfalconMailerHelper {
+/**
+ * Class StfalconMailerHelper
+ */
+class StfalconMailerHelper {
 
-    public static function formatMessage(User $user,Mail $mail){
+    /**
+     * @param User $user
+     * @param Mail $mail
+     *
+     * @return \Swift_Mime_MimePart
+     */
+    public static function formatMessage(User $user,Mail $mail)
+    {
         $text = $mail->replace(
             array(
                 '%fullname%' => $user->getFullname(),
-                '%user_id%' => $user->getId(),
+                '%user_id%'  => $user->getId(),
             )
         );
 

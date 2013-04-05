@@ -16,9 +16,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
  */
 class MailQueue
 {
-
     /**
-     * @var integer $id
+     * @var int $id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,13 +35,14 @@ class MailQueue
 
     /**
      * @var Mail
+     *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", cascade={"remove"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id",  onDelete="CASCADE")
      */
     private $mail;
 
     /**
-     * @var boolean $isSent
+     * @var bool $isSent
      *
      * @ORM\Column(name="is_sent", type="boolean")
      */
@@ -56,9 +56,8 @@ class MailQueue
         return $this->id;
     }
 
-
     /**
-     * @param boolean $isSent
+     * @param bool $isSent
      */
     public function setIsSent($isSent)
     {
@@ -66,7 +65,7 @@ class MailQueue
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIsSent()
     {
@@ -74,7 +73,7 @@ class MailQueue
     }
 
     /**
-     * @param int $mail
+     * @param Mail $mail
      */
     public function setMail($mail)
     {
@@ -82,7 +81,7 @@ class MailQueue
     }
 
     /**
-     * @return int
+     * @return Mail
      */
     public function getMail()
     {
@@ -104,5 +103,4 @@ class MailQueue
     {
         return $this->user;
     }
-
 }

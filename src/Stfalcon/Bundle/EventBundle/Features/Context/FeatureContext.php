@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
     Behat\CommonContexts\DoctrineFixturesContext,
+    Behat\CommonContexts\MinkRedirectContext,
     Behat\CommonContexts\SymfonyMailerContext;
 
 use Doctrine\Common\DataFixtures\Loader,
@@ -24,7 +25,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct()
     {
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
-        $this->useContext('symfony_mailer_context', new SymfonyMailerContext());
+        $this->useContext('MinkRedirectContext', new MinkRedirectContext());
+        $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
     }
 
     /**
@@ -157,15 +159,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         );
     }
 
-    /**
-     * Отключаем редирект страниц
-     *
-     * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
-     *
-     * @Given /^редирект страниц отключен$/
-     */
-    public function followRedirectsFalse()
-    {
-        $this->getSession()->getDriver()->getClient()->followRedirects(false);
-    }
+//    /**
+//     * Отключаем редирект страниц
+//     *
+//     * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
+//     *
+//     * @Given /^редирект страниц отключен$/
+//     */
+//    public function followRedirectsFalse()
+//    {
+//        $this->getSession()->getDriver()->getClient()->followRedirects(false);
+//    }
 }

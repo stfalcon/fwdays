@@ -2,15 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\Command;
 
-
-use Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
+
+use Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Input\InputInterface,
+    Symfony\Component\Console\Input\InputOption,
+    Symfony\Component\Console\Output\OutputInterface;
+
+use Stfalcon\Bundle\EventBundle\Entity\Mail,
+    Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 
 /**
  * Class StfalconMailerCommand
@@ -33,25 +33,26 @@ class StfalconMailerCommand extends ContainerAwareCommand
     /**
      * Execute command
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface  $input  Input
+     * @param OutputInterface $output Output
      *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $limit = 10;
 
         if ($input->getOption('amount')) {
-            $limit = (int)$input->getOption('amount');
+            $limit = (int) $input->getOption('amount');
         }
 
-
-        $em = $this->getContainer()->get('doctrine')->getEntityManager('default');
+//        /** @var $em */
+//        $em = $this->getContainer()->get('doctrine')->getEntityManager('default');
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $mailer = $this->getContainer()->get('mailer');
 
-        /** @var $queueRepository MailQueueRepository */
+        /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
         $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
         $mailsQueue = $queueRepository->getMessages($limit);
 
@@ -66,8 +67,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 continue;
             }
 
-            if ($mailer->send(StfalconMailerHelper::formatMessage($user,$mail))) {
-
+            if ($mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);
                 $item->setIsSent(true);
 
@@ -79,7 +79,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $em->persist($item);
                 $em->flush();
             }
-
         }
     }
 }

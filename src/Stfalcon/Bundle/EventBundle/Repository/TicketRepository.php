@@ -16,7 +16,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class TicketRepository extends EntityRepository
 {
-
     /**
      * Find tickets of active events for some user
      *
@@ -40,14 +39,13 @@ class TicketRepository extends EntityRepository
 
 
     /**
-     * @param Event $event
-     * @param null  $status
+     * @param Event $event  Event
+     * @param null  $status Status
      *
      * @return array
      */
-    public function findUsersByEventAndStatus (Event $event = null, $status = null)
+    public function findUsersByEventAndStatus(Event $event = null, $status = null)
     {
-
         $query = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('u', 't', 'p')
@@ -68,12 +66,10 @@ class TicketRepository extends EntityRepository
 
         $query = $query->getQuery();
 
-
         $users = array();
         foreach ($query->execute() as $result) {
             $users[] = $result->getUser();
         }
-
 
         return $users;
     }

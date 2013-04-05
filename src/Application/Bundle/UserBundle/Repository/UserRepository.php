@@ -6,12 +6,9 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class UserRepository
- *
- * @package Application\Bundle\UserBundle\Repository
  */
 class UserRepository extends EntityRepository
 {
-
     /**
      * Get users admin
      *
@@ -19,12 +16,6 @@ class UserRepository extends EntityRepository
      */
     public function getAdmins()
     {
-        $qb = $this->createQueryBuilder('mq');
-
-        $query = $qb->where("mq.roles LIKE '%ROLE_SUPER_ADMIN%'")->getQuery();
-
-        return $query->execute();
-
+        return $this->createQueryBuilder('mq')->where("mq.roles LIKE '%ROLE_SUPER_ADMIN%'")->getQuery()->getResult();
     }
-
 }

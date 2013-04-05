@@ -9,11 +9,19 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
 
+/**
+ * Class QueueAdmin
+ */
 class QueueAdmin extends Admin
 {
-
+    /**
+     * @var string
+     */
     protected $parentAssociationMapping = 'mail';
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -23,11 +31,12 @@ class QueueAdmin extends Admin
             ->add('mail.title');
     }
 
-
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('mail.id', null, array('label' => 'Рассылка'));
     }
-
 }

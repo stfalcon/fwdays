@@ -18,7 +18,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket,
  */
 class TicketController extends BaseController
 {
-
     /**
      * Take part in the event. Create new ticket for user
      *
@@ -50,12 +49,7 @@ class TicketController extends BaseController
 
             $fileLocation = 'uploads/tickets/ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
 
-            $this->get('knp_snappy.pdf')->generateFromHtml(
-                $body,
-                $fileLocation,
-                array(),
-                true
-            );
+            $this->get('knp_snappy.pdf')->generateFromHtml($body, $fileLocation, array(), true);
 
             $message = \Swift_Message::newInstance()
                 ->setSubject('Приглашение на '.$event->getName())
@@ -88,9 +82,7 @@ class TicketController extends BaseController
             ->getRepository('StfalconEventBundle:Ticket');
         $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
 
-        return array(
-            'tickets' => $tickets
-        );
+        return array('tickets' => $tickets);
     }
 
     /**
@@ -99,6 +91,7 @@ class TicketController extends BaseController
      * @param string $event_slug
      *
      * @return array
+     *
      * @throws \Exception
      *
      * @Secure(roles="ROLE_USER")
@@ -164,18 +157,21 @@ class TicketController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay',
+        return $this->forward(
+            'StfalconPaymentBundle:Interkassa:pay',
             array(
                 'event' => $event,
                 'user' => $user,
                 'payment' => $payment
-            ));
+            )
+        );
     }
 
     /**
      * Show event ticket status (for current user)
      *
      * @param Event $event
+     *
      * @return array
      *
      * @Template()
@@ -185,7 +181,7 @@ class TicketController extends BaseController
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
         return array(
-            'event' => $event,
+            'event'  => $event,
             'ticket' => $ticket
         );
     }
@@ -230,7 +226,7 @@ class TicketController extends BaseController
      */
     public function showAction($event_slug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event  = $this->getEventBySlug($event_slug);
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
         if (!$ticket || !$ticket->isPaid()) {
@@ -273,7 +269,7 @@ class TicketController extends BaseController
             $timeNow = new \DateTime();
             $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
 
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
+            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
         }
 
         $em = $this->getDoctrine()->getManager();
