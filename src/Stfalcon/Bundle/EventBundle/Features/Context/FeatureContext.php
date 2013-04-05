@@ -70,14 +70,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $user E-mail Ticket owner
      *
      * @Given /^я оплатил билет для "([^"]*)"$/
      */
-    public function iPayTicket($mail)
+    public function iPayTicket($user)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
@@ -88,14 +89,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $user E-mail Ticket owner
      *
      * @Given /^я не оплатил билет для "([^"]*)"$/
      */
-    public function iDontPayTicket($mail)
+    public function iDontPayTicket($user)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
@@ -112,6 +114,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iMustSeeFullname($mail)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $this->assertPageContainsText($user->getFullname());
@@ -146,6 +149,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getTicketUrl($mail)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user   = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
@@ -158,16 +162,4 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             true
         );
     }
-
-//    /**
-//     * Отключаем редирект страниц
-//     *
-//     * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
-//     *
-//     * @Given /^редирект страниц отключен$/
-//     */
-//    public function followRedirectsFalse()
-//    {
-//        $this->getSession()->getDriver()->getClient()->followRedirects(false);
-//    }
 }
