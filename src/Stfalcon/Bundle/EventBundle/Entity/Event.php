@@ -32,7 +32,7 @@ class Event
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string $slug
@@ -371,7 +371,7 @@ class Event
      */
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->getName() ?: '-';
     }
 
     /**
@@ -444,5 +444,4 @@ class Event
     {
         return $this->cost;
     }
-
 }

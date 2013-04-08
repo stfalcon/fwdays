@@ -79,7 +79,7 @@ class Mail
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return (string) $this->getTitle() ?: '';
     }
 
     /**

@@ -38,7 +38,7 @@ class Speaker
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var string $email
@@ -105,6 +105,9 @@ class Speaker
      */
     private $updatedAt;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -260,6 +263,11 @@ class Speaker
         $this->updatedAt = $updatedAt;
     }
 
-    public function __toString() { return $this->name; }
-
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName() ?: '-';
+    }
 }
