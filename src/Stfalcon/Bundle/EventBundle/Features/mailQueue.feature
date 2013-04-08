@@ -24,7 +24,6 @@
         Тогда код ответа сервера должен быть 200
         И я должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
         И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
-        И я должен видеть "Jack Reacher" внутри элемента ".table.table-bordered.table-striped"
 
     Сценарий: Проверяем создание рассылки по евенту и статусу оплаты для несуществующих данных
         Допустим я на странице "/login"
@@ -71,8 +70,7 @@
         Если я кликаю по ссылке "Line items"
         Тогда код ответа сервера должен быть 200
         И я не должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
-        И я не должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
-        И я должен видеть "Jack Reacher" внутри элемента ".table.table-bordered.table-striped"
+        И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
 
     Сценарий: Отправка e-mail для пользователей
         Допустим я на странице "/login"
@@ -96,10 +94,8 @@
         Тогда код ответа сервера должен быть 200
         И я должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
         И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
-        И я должен видеть "Jack Reacher" внутри элемента ".table.table-bordered.table-striped"
         И я перехожу на "http://zf.work/admin/bundle/event/mail/user-send"
         Тогда email with subject "Тестовый заголовок" should have been sent to "admin@fwdays.com"
-        Тогда email with subject "Тестовый заголовок" should have been sent to "user2@fwdays.com"
         Тогда email with subject "Тестовый заголовок" should have been sent to "user@fwdays.com"
 
     Сценарий: Отправка e-mail для админа

@@ -248,8 +248,8 @@ class TicketController extends BaseController
     /**
      * Check that QR-code is valid, and register ticket
      *
-     * @param Ticket $ticket
-     * @param string $hash
+     * @param Ticket $ticket Ticket
+     * @param string $hash   Hash
      *
      * @return Response
      *

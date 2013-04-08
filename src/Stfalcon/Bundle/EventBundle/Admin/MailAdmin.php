@@ -37,6 +37,9 @@ class MailAdmin extends Admin
         $collection->add('user_send', 'user-send');
     }
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

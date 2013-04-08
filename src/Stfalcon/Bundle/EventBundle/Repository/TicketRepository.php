@@ -4,8 +4,6 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\UserBundle\Entity\User;
-use Doctrine\Tests\Models\DDC869\DDC869ChequePayment;
-use Proxies\__CG__\Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**

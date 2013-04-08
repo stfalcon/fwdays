@@ -46,8 +46,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $limit = (int) $input->getOption('amount');
         }
 
-//        /** @var $em */
-//        $em = $this->getContainer()->get('doctrine')->getEntityManager('default');
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $mailer = $this->getContainer()->get('mailer');

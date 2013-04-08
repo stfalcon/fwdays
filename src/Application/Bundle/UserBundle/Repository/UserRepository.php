@@ -16,6 +16,9 @@ class UserRepository extends EntityRepository
      */
     public function getAdmins()
     {
-        return $this->createQueryBuilder('mq')->where("mq.roles LIKE '%ROLE_SUPER_ADMIN%'")->getQuery()->getResult();
+        return $this->createQueryBuilder('mq')
+            ->where("mq.roles LIKE '%ROLE_SUPER_ADMIN%'")
+            ->getQuery()
+            ->getResult();
     }
 }

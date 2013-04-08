@@ -60,11 +60,11 @@ class MailAdminController extends CRUDController
         if (!$mail) {
             $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
 
-            // Redirect to edit mode
-            return new RedirectResponse($this->admin->generateUrl('list'));
+            return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
 
         if ($mail->getId()) {
+            /** @var $em \Doctrine\ORM\EntityManager */
             $em     = $this->get('doctrine')->getEntityManager('default');
             $mailer = $this->get('mailer');
 

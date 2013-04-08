@@ -8,15 +8,15 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 /**
  * Class StfalconMailerHelper
  */
-class StfalconMailerHelper {
-
+class StfalconMailerHelper
+{
     /**
      * @param User $user
      * @param Mail $mail
      *
      * @return \Swift_Mime_MimePart
      */
-    public static function formatMessage(User $user,Mail $mail)
+    public static function formatMessage(User $user, Mail $mail)
     {
         $text = $mail->replace(
             array(
@@ -27,7 +27,6 @@ class StfalconMailerHelper {
 
         $message = \Swift_Message::newInstance()
             ->setSubject($mail->getTitle())
-            // @todo refact
             ->setFrom('orgs@fwdays.com', 'Frameworks Days')
             ->setTo($user->getEmail())
             ->setBody($text, 'text/html');

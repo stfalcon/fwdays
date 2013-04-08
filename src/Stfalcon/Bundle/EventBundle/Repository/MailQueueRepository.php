@@ -19,8 +19,8 @@ class MailQueueRepository extends EntityRepository
     {
         return $this->createQueryBuilder('mq')
                 ->join('mq.mail', 'm')
-                ->andWhere('m.start = 1')
-                ->andWhere('mq.isSent = 0')
+                ->where('m.start = 1')
+                    ->andWhere('mq.isSent = 0')
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();

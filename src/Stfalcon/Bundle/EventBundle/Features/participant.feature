@@ -13,6 +13,4 @@
         Тогда код ответа сервера должен быть 200
         И я должен быть на странице "/event/zend-framework-day-2011/participants"
         И я должен видеть "Участники" внутри элемента "#content h2"
-        И я должен видеть "Jack Reacher" внутри элемента ".participants"
         И я должен видеть "Point Guard" внутри элемента ".participants"
-        И я должен видеть "California, USA" внутри элемента ".participants"
