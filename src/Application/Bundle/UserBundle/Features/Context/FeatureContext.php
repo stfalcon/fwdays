@@ -12,6 +12,8 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
+use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
+
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
@@ -41,6 +43,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct()
     {
         $this->useContext('symfony_mailer_context', new SymfonyMailerContext());
+        $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
     }
 
     /**
@@ -109,23 +112,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->fillField('fos_user_registration_form_city', $city);
         $this->fillField('fos_user_registration_form_company', $company);
         $this->fillField('fos_user_registration_form_post', $post);
-    }
-
-    /**
-     * Вход в учетную запись по логину и паролю
-     *
-     * В этом методе заполняются поля: логин и пароль, после чего нажимается кнопка "Вход"
-     *
-     * @param string $username Имя пользователя
-     * @param string $password Пароль учетной записи
-     *
-     * @Given /^я вхожу в учетную запись с именем "([^"]*)" и паролем "([^"]*)"$/
-     */
-    public function login($username, $password)
-    {
-        $this->fillField('username', $username);
-        $this->fillField('password', $password);
-        $this->pressButton('Войти');
     }
 
     /**

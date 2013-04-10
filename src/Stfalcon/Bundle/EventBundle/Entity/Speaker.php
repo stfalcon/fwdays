@@ -38,7 +38,7 @@ class Speaker
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var string $email
@@ -98,13 +98,16 @@ class Speaker
     private $reviews;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updated
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -260,6 +263,11 @@ class Speaker
         $this->updatedAt = $updatedAt;
     }
 
-    public function __toString() { return $this->name; }
-
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getName() ?: '-';
+    }
 }

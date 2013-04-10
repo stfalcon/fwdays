@@ -18,7 +18,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket,
  */
 class TicketController extends BaseController
 {
-
     /**
      * Take part in the event. Create new ticket for user
      *
@@ -32,17 +31,33 @@ class TicketController extends BaseController
      */
     public function takePartAction($event_slug)
     {
-        $em    = $this->getDoctrine()->getManager();
-        $event = $this->getEventBySlug($event_slug);
+        $em     = $this->getDoctrine()->getManager();
+        $event  = $this->getEventBySlug($event_slug);
+        $mailer = $this->container->get('mailer');
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $this->_findTicketForEventByCurrentUser($event);
+        $user = $this->get('security.context')->getToken()->getUser();
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
-            $ticket = new Ticket($event, $this->get('security.context')->getToken()->getUser());
+            $ticket = new Ticket($event, $user);
             $em->persist($ticket);
             $em->flush();
+
+            $body = $this->_ticketTemplate($ticket);
+
+            $fileLocation = 'uploads/tickets/ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
+
+            $this->get('knp_snappy.pdf')->generateFromHtml($body, $fileLocation, array(), true);
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Приглашение на '.$event->getName())
+                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                ->setTo($user->getEmail())
+                ->attach(\Swift_Attachment::fromPath($fileLocation));
+
+            $mailer->send($message);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -67,9 +82,7 @@ class TicketController extends BaseController
             ->getRepository('StfalconEventBundle:Ticket');
         $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
 
-        return array(
-            'tickets' => $tickets
-        );
+        return array('tickets' => $tickets);
     }
 
     /**
@@ -78,6 +91,7 @@ class TicketController extends BaseController
      * @param string $event_slug
      *
      * @return array
+     *
      * @throws \Exception
      *
      * @Secure(roles="ROLE_USER")
@@ -143,18 +157,21 @@ class TicketController extends BaseController
 
         $em->flush();
 
-        return $this->forward('StfalconPaymentBundle:Interkassa:pay',
+        return $this->forward(
+            'StfalconPaymentBundle:Interkassa:pay',
             array(
                 'event' => $event,
                 'user' => $user,
                 'payment' => $payment
-            ));
+            )
+        );
     }
 
     /**
      * Show event ticket status (for current user)
      *
      * @param Event $event
+     *
      * @return array
      *
      * @Template()
@@ -164,7 +181,7 @@ class TicketController extends BaseController
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
         return array(
-            'event' => $event,
+            'event'  => $event,
             'ticket' => $ticket
         );
     }
@@ -173,6 +190,7 @@ class TicketController extends BaseController
      * Find ticket for event by current user
      *
      * @param Event $event
+     *
      * @return Ticket|null
      */
     private function _findTicketForEventByCurrentUser(Event $event)
@@ -185,11 +203,11 @@ class TicketController extends BaseController
             $ticket = $this->getDoctrine()->getManager()
                 ->getRepository('StfalconEventBundle:Ticket')
                 ->findOneBy(
-                array(
-                    'event' => $event->getId(),
-                    'user' => $user->getId()
-                )
-            );
+                    array(
+                        'event' => $event->getId(),
+                        'user'  => $user->getId()
+                    )
+                );
         }
 
         return $ticket;
@@ -198,46 +216,45 @@ class TicketController extends BaseController
     /**
      * Generating ticket with QR-code to event
      *
+     * @param string $event_slug
+     *
+     * @return array
+     *
      * @Secure(roles="ROLE_USER")
      * @Route("/event/{event_slug}/ticket", name="event_ticket_show")
      * @Template()
-     *
-     * @param string $event_slug
-     * @return array
      */
     public function showAction($event_slug)
     {
-        $event = $this->getEventBySlug($event_slug);
+        $event  = $this->getEventBySlug($event_slug);
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
         if (!$ticket || !$ticket->isPaid()) {
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
-        $url = $this->generateUrl('event_ticket_check',
+        $body = $this->_ticketTemplate($ticket);
+
+        return new Response(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($body, array()),
+            200,
             array(
-                'ticket' => $ticket->getId(),
-                'hash' => $ticket->getHash()
-            ), true);
-
-        $qrCode = $this->get('stfalcon_event.qr_code');
-        $qrCode->setText($url);
-        $qrCodeBase64 = base64_encode($qrCode->get());
-
-        return array(
-            'ticket' => $ticket,
-            'qrCodeBase64' => $qrCodeBase64,
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'attach; filename="ticket-' . $event->getSlug() . '.pdf"'
+            )
         );
     }
 
     /**
      * Check that QR-code is valid, and register ticket
      *
+     * @param Ticket $ticket Ticket
+     * @param string $hash   Hash
+     *
+     * @return Response
+     *
      * @Secure(roles="ROLE_ADMIN")
      * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_check")
-
-     * @param Ticket $ticket
-     * @return array()
      */
     public function checkAction(Ticket $ticket, $hash)
     {
@@ -251,7 +268,8 @@ class TicketController extends BaseController
         if ($ticket->isUsed()) {
             $timeNow = new \DateTime();
             $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() .' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
+
+            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -263,12 +281,13 @@ class TicketController extends BaseController
     }
 
     /**
-     * Check that Ticket NUmber is valid
+     * Check that ticket number is valid
+     *
+     * @return array
      *
      * @Secure(roles="ROLE_ADMIN")
      * @Route("/check/", name="check")
      * @Template()
-     * @param int $ticketId
      */
     public function checkByNumAction()
     {
@@ -280,27 +299,60 @@ class TicketController extends BaseController
             );
         }
 
-        $ticket = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Ticket')
+        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(array('id' => $ticketId));
 
         if (is_object($ticket)) {
-            $url = $this->generateUrl('event_ticket_check',
+            $url = $this->generateUrl(
+                'event_ticket_check',
                 array(
                     'ticket' => $ticket->getId(),
-                    'hash' => $ticket->getHash()
-                ), true);
-
-            return array(
-                'action' => $this->generateUrl('check'),
-                'ticketUrl' => $url
+                    'hash'   => $ticket->getHash()
+                ),
+                true
             );
 
+            return array(
+                'action'    => $this->generateUrl('check'),
+                'ticketUrl' => $url
+            );
         } else {
             return array(
                 'message' => 'Not Found',
-                'action' => $this->generateUrl('check')
+                'action'  => $this->generateUrl('check')
             );
         }
+    }
+
+    /**
+     * Create template for ticket invitation
+     *
+     * @param Ticket $ticket
+     *
+     * @return string
+     */
+    private function _ticketTemplate($ticket)
+    {
+        $twig = $this->get('twig');
+
+        $url = $this->generateUrl(
+            'event_ticket_check',
+            array(
+                'ticket' => $ticket->getId(),
+                'hash'   => $ticket->getHash()
+            ),
+            true
+        );
+
+        $qrCode = $this->get('stfalcon_event.qr_code');
+        $qrCode->setText($url);
+        $qrCodeBase64 = base64_encode($qrCode->get());
+        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
+        $body = $templateContent->render(array(
+            'ticket'       => $ticket,
+            'qrCodeBase64' => $qrCodeBase64,
+        ));
+
+        return $body;
     }
 }

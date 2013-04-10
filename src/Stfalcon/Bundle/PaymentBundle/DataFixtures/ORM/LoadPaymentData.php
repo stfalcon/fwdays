@@ -38,6 +38,12 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
         $manager->persist($payment);
         $this->addReference('payment', $payment);
 
+        $payment = new Payment($userDefault, 100500);
+        $payment->setAmountWithoutDiscount(100500);
+        $payment->setStatus(Payment::STATUS_PENDING);
+        $manager->persist($payment);
+        $this->addReference('pending', $payment);
+
         $manager->flush();
     }
 }

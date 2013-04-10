@@ -42,11 +42,12 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
 
         // Ticket 2
         $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $userDefault);
+        $ticket->setPayment($manager->merge($this->getReference('pending')));
         $manager->persist($ticket);
         $this->addReference('ticket-2', $ticket);
 
         // Ticket 3
-        $ticket = new Ticket($manager->merge($this->getReference('event-not-active')), $userDefault);
+        $ticket = new Ticket($manager->merge($this->getReference('event-not-active')), $manager->merge($this->getReference('user-admin')));
         $manager->persist($ticket);
         $this->addReference('ticket-3', $ticket);
 

@@ -49,6 +49,7 @@ class AppKernel extends Kernel
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
 
             new Vich\UploaderBundle\VichUploaderBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
         );
 
