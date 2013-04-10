@@ -14,6 +14,8 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
+use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
+
 /**
  * Feature context for StfalconEventBundle
  */
@@ -27,6 +29,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
         $this->useContext('MinkRedirectContext', new MinkRedirectContext());
         $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
+        $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
     }
 
     /**
