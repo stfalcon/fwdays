@@ -37,16 +37,18 @@ class Category
 
     /**
      * Get title
+     *
+     * @return string
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName() ?: '-';
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,7 +68,7 @@ class Category
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -92,5 +94,4 @@ class Category
     {
         return $this->sortOrder;
     }
-
 }

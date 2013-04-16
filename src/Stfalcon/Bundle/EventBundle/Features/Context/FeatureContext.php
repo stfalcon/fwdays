@@ -6,11 +6,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\DoctrineFixturesContext;
+    Behat\CommonContexts\DoctrineFixturesContext,
+    Behat\CommonContexts\MinkRedirectContext,
+    Behat\CommonContexts\SymfonyMailerContext;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
+
+use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
 
 /**
  * Feature context for StfalconEventBundle
@@ -23,6 +27,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct()
     {
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
+        $this->useContext('MinkRedirectContext', new MinkRedirectContext());
+        $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
+        $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
     }
 
     /**
@@ -53,6 +60,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
             ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -65,14 +73,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $user E-mail Ticket owner
      *
      * @Given /^я оплатил билет для "([^"]*)"$/
      */
-    public function iPayTicket($mail)
+    public function iPayTicket($user)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
@@ -83,14 +92,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $user E-mail Ticket owner
      *
      * @Given /^я не оплатил билет для "([^"]*)"$/
      */
-    public function iDontPayTicket($mail)
+    public function iDontPayTicket($user)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
@@ -107,6 +117,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iMustSeeFullname($mail)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $this->assertPageContainsText($user->getFullname());
@@ -141,6 +152,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getTicketUrl($mail)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user   = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));

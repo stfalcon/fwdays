@@ -2,9 +2,10 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
-use Stfalcon\Bundle\NewsBundle\Entity\BaseNews;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Stfalcon\Bundle\NewsBundle\Entity\BaseNews,
+    Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
@@ -12,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="event__news")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\NewsRepository")
  */
-class News extends BaseNews {
-    
+class News extends BaseNews
+{
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -21,13 +22,20 @@ class News extends BaseNews {
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
-    
-    public function getEvent() {
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setEvent($event) {
+    /**
+     * @param Event $event
+     */
+    public function setEvent($event)
+    {
         $this->event = $event;
     }
-
 }

@@ -53,9 +53,9 @@ class EventSponsor
      */
     public function __toString()
     {
-        $title = $this->getEvent()->getName();
+        $title = (string) $this->getEvent()->getName() ?: '-';
 
-        if($this->getCategory() instanceof Category){
+        if ($this->getCategory() instanceof Category) {
             $title .=  ' / ' . $this->getCategory()->getName();
         }
 
@@ -65,7 +65,7 @@ class EventSponsor
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

@@ -1,0 +1,67 @@
+{% set event = ticket.event %}
+
+<!DOCTYPE HTML>
+<html lang="ru-RU">
+    <head>
+        <meta charset="UTF-8">
+        <title>template</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link href="{{ app.request.schemeAndHttpHost ~ asset('css/ticket.css')  }}" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="top">
+            <div class="left-element">
+                {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
+                    <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(event, 'bgFile') }}" width="250" height="196" alt="">
+                {% endif %}
+            </div>
+
+            <div class="logo">
+                <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
+                    {% if event.logo is defined and event.logo is not empty %}
+                        <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(event, 'file') }}" width="132" height="130" alt="{{ event.name }}" title="{{ event.name }}">
+                    {% endif %}
+                </a>
+            </div>
+
+            <div class="dear-user">Уважаемый участник <b>{{ ticket.user.fullname }}</b>,</div>
+
+            <div class="date-n-address">
+                <div class="wait-for-you">ждем тебя:</div>
+                <div class="date-addr">
+                    {% if event.date %}
+                        {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
+                    {% endif %}
+                    <br>
+                    в
+                     г. {{ event.city }},
+                    {% if event.place %}
+                        {{ event.place }}
+                    {% endif %}
+                </div>
+                <div class="registration-begins">Регистрация начинается в 9:30.</div>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="qr-code">
+                <div class="qr-code-h">Программа конференции:</div>
+                <div class="qr-code-img"><img src="data:image/png;base64,{{ qrCodeBase64 }}" alt=""></div>
+                <div class="qr-code-num">№{{ ticket.id }}</div>
+            </div>
+
+            <div class="invitation-text">
+                <p class="main-text">Пожалуйста, распечатай это приглашение и возьми его с собой — это твой входной билет на JavaScript Frameworks Day.</p>
+                <p>С нетерпением ждем встречи!</p>
+                <p>С уважением,<br> Организаторы {{ event.name }}</p>
+            </div>
+
+            <ul class="links">
+                <li>Сайт: <a href="http://fwdays.com">fwdays.com</a></li>
+                <li>Facebook: <a href="http://www.facebook.com/fwdays">facebook.com/fwdays</a></li>
+                <li>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search/realtime?q=%23fwdays&src=hash">#fwdays</a>)</li>
+            </ul>
+        </div>
+    </body>
+</html>

@@ -15,7 +15,6 @@ use Application\Bundle\UserBundle\Entity\User;
  */
 class Ticket
 {
-
     /**
      * @var integer $id
      *
@@ -73,7 +72,14 @@ class Ticket
      */
     private $used = false;
 
-    public function __construct(Event $event, User $user) {
+    /**
+     * Constructor
+     *
+     * @param Event $event Event
+     * @param User  $user  User
+     */
+    public function __construct(Event $event, User $user)
+    {
         $this->setEvent($event);
         $this->setUser($user);
     }

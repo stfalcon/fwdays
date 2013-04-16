@@ -342,9 +342,8 @@ class Sponsor
      */
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->getName() ?: '-';
     }
-
 
     /**
      * @param boolean $onMain

@@ -32,7 +32,7 @@ class Event
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string $slug
@@ -86,6 +86,13 @@ class Event
     protected $logo;
 
     /**
+     * @var string $backgroundImage
+     *
+     * @ORM\Column(name="background_image", type="string")
+     */
+    protected $backgroundImage;
+
+    /**
      * @var boolean $active
      *
      * @ORM\Column(type="boolean")
@@ -118,6 +125,13 @@ class Event
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
      */
     protected $file;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
+     */
+    protected $bgFile;
 
     /**
      * @var float $cost
@@ -341,13 +355,23 @@ class Event
     }
 
     /**
+     * Get path to backgroundImage
+     *
+     * @return string
+     */
+    public function getBackgroundImage()
+    {
+        return $this->backgroundImage;
+    }
+
+    /**
      * Get event name if object treated like a string
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->getName() ?: '-';
     }
 
     /**
@@ -368,6 +392,26 @@ class Event
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Set bgFile
+     *
+     * @param UploadedFile|null $bgFile
+     */
+    public function setBgFile($bgFile)
+    {
+        $this->bgFile = $bgFile;
+    }
+
+    /**
+     * Get bgFile
+     *
+     * @return UploadedFile
+     */
+    public function getBgFile()
+    {
+        return $this->bgFile;
     }
 
     /**
@@ -400,5 +444,4 @@ class Event
     {
         return $this->cost;
     }
-
 }

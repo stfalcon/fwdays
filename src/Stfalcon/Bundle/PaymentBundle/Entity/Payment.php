@@ -59,7 +59,7 @@ class Payment
      *
      * @ORM\Column(name="status", type="string")
      */
-    private $status;
+    private $status = '';
 
     /**
      * @var string $gate
@@ -98,7 +98,8 @@ class Payment
      *
      * @return void
      */
-    public function __construct(User $user, $amount, $hasDiscount = false) {
+    public function __construct(User $user, $amount, $hasDiscount = false)
+    {
         $this->setUser($user);
         $this->setAmount($amount);
         $this->setHasDiscount($hasDiscount);
@@ -253,6 +254,6 @@ class Payment
      */
     public function __toString()
     {
-        return $this->status;
+        return (string) $this->getStatus() ?: '-';
     }
 }
