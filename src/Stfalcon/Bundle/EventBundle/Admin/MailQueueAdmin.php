@@ -10,9 +10,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Knp\Bundle\MenuBundle\MenuItem;
 
 /**
- * Class QueueAdmin
+ * Class MailQueueAdmin
  */
-class QueueAdmin extends Admin
+class MailQueueAdmin extends Admin
 {
     /**
      * @var string
@@ -38,5 +38,18 @@ class QueueAdmin extends Admin
     {
         $datagridMapper
             ->add('mail.id', null, array('label' => 'Рассылка'));
+    }
+
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->with('General')
+                ->add('user')
+                ->add('mail')
+                ->add('isSent', null, array('required' => false))
+            ->end();
     }
 }
