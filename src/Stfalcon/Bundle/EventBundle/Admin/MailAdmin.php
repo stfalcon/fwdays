@@ -98,6 +98,7 @@ class MailAdmin extends Admin
     public function postPersist($mail)
     {
         $container = $this->getConfigurationPool()->getContainer();
+        /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
 
         if ($mail->getEvent() || $mail->getPaymentStatus()) {
@@ -106,10 +107,6 @@ class MailAdmin extends Admin
         } else {
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
-
-        $mailer          = $container->get('mailer');
-        $twig            = $container->get('twig');
-        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
 
         if (isset($users)) {
             $mail->setTotalMessages(count($users));
@@ -126,30 +123,8 @@ class MailAdmin extends Admin
                     $mailQueue->setMail($mail);
                     $em->persist($mailQueue);
                 }
-
-
-//                $text = $mail->replace(
-//                    array(
-//                        '%fullname%' => $user->getFullname(),
-//                        '%user_id%' => $user->getId(),
-//                    )
-//                );
-//
-//                $body = $templateContent->render(array('mail' => $mail, 'user' => $user, 'text' => $text));
-//
-//                $message = \Swift_Message::newInstance()
-//                    ->setSubject($mail->getTitle())
-//                    // @todo refact
-//                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-//                    ->setTo($user->getEmail())
-//                    ->setBody($body, 'text/html');
-//
-//                // @todo каждый вызов отнимает память
-//                $mailer->send($message);
             }
         }
-
-        $mail->setComplete(true);
 
         $em->persist($mail);
         $em->flush();
