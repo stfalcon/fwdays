@@ -107,19 +107,54 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
+        $mailer          = $container->get('mailer');
+        $twig            = $container->get('twig');
+        $templateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+
         if (isset($users)) {
             $mail->setTotalMessages(count($users));
             $em->persist($mail);
 
             foreach ($users as $user) {
-                $mailQueue = new MailQueue();
-                $mailQueue->setUser($user);
-                $mailQueue->setMail($mail);
-                $em->persist($mailQueue);
+                if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
+                    continue;
+                }
+
+                foreach ($users as $user) {
+                    $mailQueue = new MailQueue();
+                    $mailQueue->setUser($user);
+                    $mailQueue->setMail($mail);
+                    $em->persist($mailQueue);
+                }
+
+
+//                $text = $mail->replace(
+//                    array(
+//                        '%fullname%' => $user->getFullname(),
+//                        '%user_id%' => $user->getId(),
+//                    )
+//                );
+//
+//                $body = $templateContent->render(array('mail' => $mail, 'user' => $user, 'text' => $text));
+//
+//                $message = \Swift_Message::newInstance()
+//                    ->setSubject($mail->getTitle())
+//                    // @todo refact
+//                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+//                    ->setTo($user->getEmail())
+//                    ->setBody($body, 'text/html');
+//
+//                // @todo каждый вызов отнимает память
+//                $mailer->send($message);
             }
         }
 
+        $mail->setComplete(true);
+
+        $em->persist($mail);
         $em->flush();
+
+        return true;
     }
 
     /**
