@@ -98,9 +98,11 @@ class MailAdmin extends Admin
     public function postPersist($mail)
     {
         $container = $this->getConfigurationPool()->getContainer();
+
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
 
+        /** @var $users \Application\Bundle\UserBundle\Entity\User[] */
         if ($mail->getEvent() || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findUsersByEventAndStatus($mail->getEvent(), $mail->getPaymentStatus());
