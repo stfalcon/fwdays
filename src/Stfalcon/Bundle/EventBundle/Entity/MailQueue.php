@@ -49,6 +49,16 @@ class MailQueue
     private $isSent = false;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getUser() && $this->getMail()
+            ? $this->getMail() . ' => ' . $this->getUser()
+            : '';
+    }
+
+    /**
      * @return int
      */
     public function getId()
