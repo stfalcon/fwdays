@@ -69,24 +69,24 @@ class MailAdmin extends Admin
 
         $formMapper
             ->with('General')
-            ->add('title')
-            ->add('text')
-            ->add('event', 'entity', array(
-                'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                'multiple'  => false,
-                'expanded'  => false,
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
-            ->add('start', null, array('required' => false))
-            ->add('paymentStatus', 'choice', array(
-                'choices'   => array(
-                  'paid'    => 'Оплачено',
-                  'pending' => 'Не оплачено'
-                ),
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
+                ->add('title')
+                ->add('text')
+                ->add('event', 'entity', array(
+                    'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple'  => false,
+                    'expanded'  => false,
+                    'required'  => false,
+                    'read_only' => $isEdit
+                ))
+                ->add('start', null, array('required' => false))
+                ->add('paymentStatus', 'choice', array(
+                    'choices'   => array(
+                      'paid'    => 'Оплачено',
+                      'pending' => 'Не оплачено'
+                    ),
+                    'required'  => false,
+                    'read_only' => $isEdit
+                ))
             ->end();
     }
 
