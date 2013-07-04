@@ -57,29 +57,33 @@ class MailAdminController extends CRUDController
 
         $mail = $this->admin->getObject($id);
 
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $this->get('session');
+
         if (!$mail) {
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
+            $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
 
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
 
         if ($mail->getId()) {
             /** @var $em \Doctrine\ORM\EntityManager */
-            $em     = $this->get('doctrine')->getEntityManager('default');
+            $em = $this->get('doctrine')->getEntityManager('default');
+            /** @var \Swift_Mailer $mailer */
             $mailer = $this->get('mailer');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
             foreach ($users as $user) {
                 if (!$mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
-                    $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
+                    $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки случилась ошибка');
 
                     return new RedirectResponse($this->admin->generateUrl('list'));
                 }
             }
         }
 
-        $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
+        $this->get('session')->setFlash('sonata_flash_success', 'Почтовая рассылка успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
