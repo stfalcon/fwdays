@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Constraints\File;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
@@ -70,6 +71,29 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
+    }
+
+    /**
+     * Проверка или файл является PDF-файлом
+     *
+     * @Then /^это PDF-файл$/
+     */
+    public function thisIsPdfFile()
+    {
+        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . uniqid() . '.html';
+        file_put_contents($filename, $this->getSession()->getPage()->getContent());
+
+        $pdfFileConstraint = new File();
+        $pdfFileConstraint->mimeTypes = array("application/pdf", "application/x-pdf");
+
+        /** @var \Symfony\Component\Validator\Validator $validator */
+        $validator = $this->kernel->getContainer()->get('validator');
+        $errorList = $validator->validateValue(
+            $filename,
+            $pdfFileConstraint
+        );
+
+        assertCount(0, $errorList, "Это не PDF-файл");
     }
 
     /**

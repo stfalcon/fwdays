@@ -351,6 +351,7 @@ class TicketController extends BaseController
         $body = $templateContent->render(array(
             'ticket'       => $ticket,
             'qrCodeBase64' => $qrCodeBase64,
+            'path'         => realpath($this->container->get('kernel')->getRootDir() . '/../web') . '/'
         ));
 
         return $body;
