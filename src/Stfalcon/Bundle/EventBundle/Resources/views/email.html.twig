@@ -26,7 +26,7 @@
                                         <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
                                             {% if mail.event is defined and mail.event is not null %}
                                                <a href="{{ path('event_show', {'event_slug': mail.event.slug}) }}">
-                                                   <img src="{{ '/uploads/events/' ~ mail.event.logo }}" width="143" height="131" alt="{{ mail.event.name }}"/>
+                                                   <img src="{{ url('homepage') ~ 'uploads/events/' ~ mail.event.logo }}" width="143" height="131" alt="{{ mail.event.name }}"/>
                                                </a>
                                             {% else %}
                                                 <a href="{{ path('homepage') }}"
@@ -43,9 +43,9 @@
                                         </td>
                                         <td valign="top" align="right">
                                             {% if mail.event is defined and mail.event is not null %}
-                                                <img src="{{ '/uploads/events/' ~ mail.event.emailBackground }}" alt=""/>
+                                                <img src="{{ url('homepage') ~ 'uploads/events/' ~ mail.event.emailBackground }}" alt=""/>
                                             {% else %}
-                                                <img src="/images/bg-all.png" alt=""/>
+                                                <img src="{{ url('homepage') ~ 'images/bg-all.png' }}" alt=""/>
                                             {% endif %}
                                         </td>
                                     </tr>

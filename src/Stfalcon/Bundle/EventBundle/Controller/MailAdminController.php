@@ -15,8 +15,6 @@ use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 
 /**
  * Class MailAdminController
- *
- * @package Stfalcon\Bundle\EventBundle\Controller
  */
 class MailAdminController extends CRUDController
 {
@@ -69,11 +67,13 @@ class MailAdminController extends CRUDController
         }
 
         if ($mail->getId()) {
-            /** @var $em \Doctrine\ORM\EntityManager */
+            /**
+             * @var \Doctrine\ORM\EntityManager $em
+             * @var \Swift_Mailer $mailer
+             * @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper
+             */
             $em = $this->get('doctrine')->getEntityManager('default');
-            /** @var \Swift_Mailer $mailer */
             $mailer = $this->get('mailer');
-            /** @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper */
             $mailerHelper = $this->get('stfalcon_event.mailer_helper');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
