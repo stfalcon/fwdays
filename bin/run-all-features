@@ -1,6 +1,8 @@
 #!/bin/bash
 
 reporting=$1;
+code=0
+
 if [ -z $reporting ]; then
    reporting='false'
 fi;
@@ -16,4 +18,9 @@ for feature_path in `find src/ -path '*/Features'`; do
    fi;
    echo "Running suite for $bundle";
        ./bin/behat -f progress $opts "@$bundle";
+       behat_exit_code=$?
+       if [ $behat_exit_code -ne 0 ]; then
+           code='2'
 done
+
+exit $code

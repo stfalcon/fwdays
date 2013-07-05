@@ -25,7 +25,7 @@
                                     <tr>
                                         <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
                                             {% if mail.event is defined and mail.event is not null %}
-                                               <a href="{{ path('event_show', {'event_slug': mail.event.slug}) }}">
+                                               <a href="{{ url('event_show', {'event_slug': mail.event.slug}) }}">
                                                    <img src="{{ url('homepage') ~ 'uploads/events/' ~ mail.event.logo }}" width="143" height="131" alt="{{ mail.event.name }}"/>
                                                </a>
                                             {% else %}
