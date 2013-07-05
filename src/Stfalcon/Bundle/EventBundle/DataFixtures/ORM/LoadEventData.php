@@ -24,8 +24,8 @@ class LoadEventData extends AbstractFixture
         $event->setSlug('zend-framework-day-2011');
         $event->setDescription('Zend Framework Day посвящен популярному PHP фреймворку Zend Framework и является наследником конференции ZFConf Ukraine 2010.');
         $event->setLogoFile($this->_generateUploadedFile('zend-framework-day.png'));
-        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-all.png'));
-        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-all.png'));
+        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
+        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
         $event->setBgFile($this->_generateUploadedFile('left-element.png'));
         $event->setCity('Киев');
         $event->setPlace('отель "Казацкий"');
@@ -41,8 +41,8 @@ class LoadEventData extends AbstractFixture
         $event->setSlug('php-frameworks-day-2012');
         $event->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)');
         $event->setLogoFile($this->_generateUploadedFile('php-frameworks-day-2012.png'));
-        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-all.png'));
-        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-all.png'));
+        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
+        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
         $event->setBgFile($this->_generateUploadedFile('left-element.png'));
         $event->setCity('Киев');
         $event->setPlace('Пока неизвестно');
@@ -57,8 +57,8 @@ class LoadEventData extends AbstractFixture
         $event->setSlug('not-active-frameworks-day');
         $event->setDescription('Это событие тестовое, но должно быть неактивным');
         $event->setLogoFile($this->_generateUploadedFile('smile-lol-icon.png'));
-        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-all.png'));
-        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-all.png'));
+        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
+        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
         $event->setBgFile($this->_generateUploadedFile('left-element.png'));
         $event->setCity('Где-то там');
         $event->setPlace('Пока неизвестно');

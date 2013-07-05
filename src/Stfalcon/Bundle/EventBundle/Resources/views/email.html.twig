@@ -45,7 +45,7 @@
                                             {% if mail.event is defined and mail.event is not null %}
                                                 <img src="{{ url('homepage') ~ 'uploads/events/' ~ mail.event.emailBackground }}" alt=""/>
                                             {% else %}
-                                                <img src="{{ url('homepage') ~ 'images/bg-all.png' }}" alt=""/>
+                                                <img src="{{ url('homepage') ~ 'images/bg-common.png' }}" alt=""/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -62,6 +62,12 @@
                                             </td>
                                             <td width="40"></td>
                                         </tr>
+                                        {# Add padding from the bottom if it is a mail for default event #}
+                                        {% if mail.event is not defined %}
+                                            <tr style="height: 40px;">
+                                                <td></td>
+                                            </tr>
+                                        {% endif %}
                                     </tbody>
                                 </table>
                                 <!-- END main body -->
