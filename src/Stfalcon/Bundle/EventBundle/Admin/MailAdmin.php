@@ -69,24 +69,24 @@ class MailAdmin extends Admin
 
         $formMapper
             ->with('General')
-            ->add('title')
-            ->add('text')
-            ->add('event', 'entity', array(
-                'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                'multiple'  => false,
-                'expanded'  => false,
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
-            ->add('start', null, array('required' => false))
-            ->add('paymentStatus', 'choice', array(
-                'choices'   => array(
-                  'paid'    => 'Оплачено',
-                  'pending' => 'Не оплачено'
-                ),
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
+                ->add('title')
+                ->add('text')
+                ->add('event', 'entity', array(
+                    'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple'  => false,
+                    'expanded'  => false,
+                    'required'  => false,
+                    'read_only' => $isEdit
+                ))
+                ->add('start', null, array('required' => false))
+                ->add('paymentStatus', 'choice', array(
+                    'choices'   => array(
+                      'paid'    => 'Оплачено',
+                      'pending' => 'Не оплачено'
+                    ),
+                    'required'  => false,
+                    'read_only' => $isEdit
+                ))
             ->end();
     }
 
@@ -98,8 +98,11 @@ class MailAdmin extends Admin
     public function postPersist($mail)
     {
         $container = $this->getConfigurationPool()->getContainer();
+
+        /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
 
+        /** @var $users \Application\Bundle\UserBundle\Entity\User[] */
         if ($mail->getEvent() || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findUsersByEventAndStatus($mail->getEvent(), $mail->getPaymentStatus());
@@ -112,14 +115,23 @@ class MailAdmin extends Admin
             $em->persist($mail);
 
             foreach ($users as $user) {
-                $mailQueue = new MailQueue();
-                $mailQueue->setUser($user);
-                $mailQueue->setMail($mail);
-                $em->persist($mailQueue);
+                if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
+                    continue;
+                }
+
+                foreach ($users as $user) {
+                    $mailQueue = new MailQueue();
+                    $mailQueue->setUser($user);
+                    $mailQueue->setMail($mail);
+                    $em->persist($mailQueue);
+                }
             }
         }
 
+        $em->persist($mail);
         $em->flush();
+
+        return true;
     }
 
     /**

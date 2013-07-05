@@ -7,20 +7,20 @@
         <title>template</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-        <link href="{{ app.request.schemeAndHttpHost ~ asset('css/ticket.css')  }}" type="text/css" rel="stylesheet" />
+        <link href="{{ path ~ asset('css/ticket.css')  }}" type="text/css" rel="stylesheet" />
     </head>
     <body>
         <div class="top">
             <div class="left-element">
                 {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
-                    <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(event, 'bgFile') }}" width="250" height="196" alt="">
+                    <img src="{{ path ~ vich_uploader_asset(event, 'bgFile') }}" width="250" height="196" alt="">
                 {% endif %}
             </div>
 
             <div class="logo">
                 <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
                     {% if event.logo is defined and event.logo is not empty %}
-                        <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(event, 'file') }}" width="132" height="130" alt="{{ event.name }}" title="{{ event.name }}">
+                        <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="132" height="130" alt="{{ event.name }}" title="{{ event.name }}">
                     {% endif %}
                 </a>
             </div>

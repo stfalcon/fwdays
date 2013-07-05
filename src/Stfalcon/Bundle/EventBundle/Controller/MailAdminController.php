@@ -15,13 +15,11 @@ use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 
 /**
  * Class MailAdminController
- *
- * @package Stfalcon\Bundle\EventBundle\Controller
  */
 class MailAdminController extends CRUDController
 {
     /**
-     * Action for Behat test. Send mail to user
+     * Send messages for all users in mail queue (using console command)
      *
      * @return Response
      *
@@ -47,6 +45,8 @@ class MailAdminController extends CRUDController
     }
 
     /**
+     * Send messages only for admins
+     *
      * @param Request $request
      *
      * @return RedirectResponse
@@ -57,29 +57,41 @@ class MailAdminController extends CRUDController
 
         $mail = $this->admin->getObject($id);
 
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $this->get('session');
+
         if (!$mail) {
-            $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
+            $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
 
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
 
         if ($mail->getId()) {
-            /** @var $em \Doctrine\ORM\EntityManager */
-            $em     = $this->get('doctrine')->getEntityManager('default');
+            /**
+             * @var \Doctrine\ORM\EntityManager $em
+             * @var \Swift_Mailer $mailer
+             * @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper
+             */
+            $em = $this->get('doctrine')->getEntityManager('default');
             $mailer = $this->get('mailer');
+            $mailerHelper = $this->get('stfalcon_event.mailer_helper');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
+            $error = false;
             foreach ($users as $user) {
-                if (!$mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
-                    $this->get('session')->setFlash('sonata_flash_error', 'flash_edit_success');
-
-                    return new RedirectResponse($this->admin->generateUrl('list'));
+                if (!$mailer->send($mailerHelper->formatMessage($user, $mail))) {
+                    $error = true;
                 }
+            }
+            if ($error) {
+                $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+
+                return new RedirectResponse($this->admin->generateUrl('list'));
             }
         }
 
-        $this->get('session')->setFlash('sonata_flash_success', 'flash_edit_success');
+        $this->get('session')->setFlash('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }

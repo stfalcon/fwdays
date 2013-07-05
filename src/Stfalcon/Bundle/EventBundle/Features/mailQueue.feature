@@ -74,7 +74,7 @@
         Тогда код ответа сервера должен быть 200
         И я должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
         И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
-        И я перехожу на "http://zf.work/admin/bundle/event/mail/user-send"
+        И я перехожу на "/admin/bundle/event/mail/user-send"
         Тогда email with subject "Тестовый заголовок" should have been sent to "admin@fwdays.com"
         Тогда email with subject "Тестовый заголовок" should have been sent to "user@fwdays.com"
 
@@ -85,3 +85,4 @@
         И I do not follow redirects
         Если я кликаю по ссылке "Отправить Админам"
         Тогда email with subject "test" should have been sent to "admin@fwdays.com"
+        Тогда email with subject "test" should have not been sent to "user@fwdays.com"

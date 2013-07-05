@@ -15,7 +15,6 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
  */
 class EventController extends BaseController
 {
-
     /**
      * List of active and past events
      *
