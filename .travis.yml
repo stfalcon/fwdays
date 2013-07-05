@@ -3,8 +3,10 @@ php:
   - 5.3
   - 5.4
 before_script:
+  - sudo apt-get install xvfb
+  - /usr/bin/Xvfb :0 -screen 0 1024x768x24 -fbdir /var/run -ac
   - mysql -e 'create database fwdays_com_testing;'
-  - curl -s https://getcomposer.org/installer | php -- --quiet 
+  - curl -s https://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
   - app/console --env=test doctrine:schema:create
 script:
