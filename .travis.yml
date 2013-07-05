@@ -4,7 +4,7 @@ php:
   - 5.4
 before_script:
   - sudo apt-get install xvfb
-  - sudo /usr/bin/Xvfb :0 -screen 0 1024x768x24 -fbdir /var/run -ac
+  - sudo /usr/bin/Xvfb :0 -screen 0 1024x768x24 -fbdir /var/run -ac &
   - mysql -e 'create database fwdays_com_testing;'
   - curl -s https://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
