@@ -71,19 +71,21 @@ class MailAdminController extends CRUDController
             $em = $this->get('doctrine')->getEntityManager('default');
             /** @var \Swift_Mailer $mailer */
             $mailer = $this->get('mailer');
+            /** @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper */
+            $mailerHelper = $this->get('stfalcon_event.mailer_helper');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
             foreach ($users as $user) {
-                if (!$mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
-                    $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки случилась ошибка');
+                if (!$mailer->send($mailerHelper->formatMessage($user, $mail))) {
+                    $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
 
                     return new RedirectResponse($this->admin->generateUrl('list'));
                 }
             }
         }
 
-        $this->get('session')->setFlash('sonata_flash_success', 'Почтовая рассылка успешно выполнена');
+        $this->get('session')->setFlash('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }

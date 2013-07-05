@@ -48,10 +48,13 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        /** @var $mailer \Swift_Mailer */
         $mailer = $this->getContainer()->get('mailer');
-
+        /** @var $mailerHelper \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper */
+        $mailerHelper = $this->getContainer()->get('stfalcon_event.mailer_helper');
         /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
         $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
+
         $mailsQueue = $queueRepository->getMessages($limit);
 
         /** @var $mail Mail */
@@ -65,7 +68,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 continue;
             }
 
-            if ($mailer->send(StfalconMailerHelper::formatMessage($user, $mail))) {
+            if ($mailer->send($mailerHelper->formatMessage($user, $mail))) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);
                 $item->setIsSent(true);
 
