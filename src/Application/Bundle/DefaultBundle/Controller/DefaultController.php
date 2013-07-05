@@ -16,10 +16,15 @@ class DefaultController extends Controller {
 
     /**
      * @Route("/", name="homepage")
-     * @Template()
+     * @Template("StfalconEventBundle::email.html.twig")
      */
     public function indexAction() {
-        return array();
+        $user = $this->getDoctrine()->getRepository('ApplicationUserBundle:User')->find(6);
+        $mail = $this->getDoctrine()->getRepository('StfalconEventBundle:Mail')->find(5);
+        return array(
+            'text' => 'sdfs',
+            'mail' => $mail
+        );
     }
 
     /**

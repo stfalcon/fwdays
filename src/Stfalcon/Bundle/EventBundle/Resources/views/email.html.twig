@@ -25,27 +25,27 @@
                                     <tr>
                                         <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
                                             {% if mail.event is defined and mail.event is not null %}
-                                               <a href="{{ app.request.uriForPath('/event/' ~ mail.event.slug) }}">
-                                                   <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.logo) }}" width="143" height="131" alt="{{ mail.event.name }}"/>
+                                               <a href="{{ path('event_show', {'event_slug': mail.event.slug}) }}">
+                                                   <img src="{{ asset('/uploads/events/' ~ mail.event.logo) }}" width="143" height="131" alt="{{ mail.event.name }}"/>
                                                </a>
                                             {% else %}
-                                                <a href="{{ app.request.uriForPath('/') }}"
-                                                   style="display: block;
-                                                          width: 113px;
-                                                          height: 92px;
-                                                          margin: 0 0 8px -7px;
-                                                          text-indent: -9999px;
-                                                          overflow: hidden;
-                                                          cursor: pointer;
-                                                          background: url({{ app.request.uriForPath('/images/sprite-objects.png') }}) left top no-repeat;">
+                                                <a href="{{ path('homepage') }}"
+                                                    style="display: block;
+                                                        width: 113px;
+                                                        height: 92px;
+                                                        margin: 0 0 8px -7px;
+                                                        text-indent: -9999px;
+                                                        overflow: hidden;
+                                                        cursor: pointer;
+                                                        background: url({{ asset('/images/sprite-objects.png') }}) left top no-repeat;">
                                                 </a>
                                             {% endif %}
                                         </td>
                                         <td valign="top" align="right">
                                             {% if mail.event is defined and mail.event is not null %}
-                                                <img src="{{ app.request.uriForPath('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/>
+                                                <img src="{{ asset('/uploads/events/' ~ mail.event.emailBackground) }}" alt=""/>
                                             {% else %}
-                                                <img src="{{ app.request.uriForPath('/images/bg-all.png') }}" alt=""/>
+                                                <img src="{{ asset('/images/bg-all.png') }}" alt=""/>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -84,11 +84,11 @@
                                             <table border="0" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
-                                                        <a href="https://twitter.com/fwdays"><img src="{{ app.request.uriForPath('/images/icon-twitter.png') }}" width="16" height="16" alt="@fwdays" style="vertical-align: middle;"/></a>
+                                                        <a href="https://twitter.com/fwdays"><img src="{{ asset('/images/icon-twitter.png') }}" width="16" height="16" alt="@fwdays" style="vertical-align: middle;"/></a>
                                                         <a href="https://twitter.com/fwdays" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">@fwdays</a>
                                                     </td>
                                                     <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
-                                                        <a href="http://www.facebook.com/fwdays"><img src="{{ app.request.uriForPath('/images/icon-facebook.png') }}" width="16" height="16" alt="Facebook" style="vertical-align: middle;"/></a>
+                                                        <a href="http://www.facebook.com/fwdays"><img src="{{ asset('/images/icon-facebook.png') }}" width="16" height="16" alt="Facebook" style="vertical-align: middle;"/></a>
                                                         <a href="http://www.facebook.com/fwdays" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">Facebook</a>
                                                     </td>
                                                 </tr>
@@ -97,7 +97,7 @@
                                         <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">
                                             С уважением, <br/>
                                             команда Frameworks Days <br/>
-                                            <a href="http://fwdays.com" style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">fwdays.com</a>
+                                            <a href="http://frameworksdays.com/" style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">frameworksdays.com</a>
                                         </td>
                                     </tr>
                                 </table>
