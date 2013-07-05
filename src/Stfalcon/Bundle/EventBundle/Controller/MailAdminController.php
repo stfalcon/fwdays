@@ -78,12 +78,16 @@ class MailAdminController extends CRUDController
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
 
+            $error = false;
             foreach ($users as $user) {
                 if (!$mailer->send($mailerHelper->formatMessage($user, $mail))) {
-                    $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
-
-                    return new RedirectResponse($this->admin->generateUrl('list'));
+                    $error = true;
                 }
+            }
+            if ($error) {
+                $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+
+                return new RedirectResponse($this->admin->generateUrl('list'));
             }
         }
 

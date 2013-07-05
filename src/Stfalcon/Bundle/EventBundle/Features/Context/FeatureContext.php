@@ -189,4 +189,57 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             true
         );
     }
+
+    /**
+     * Проверка что имейл не был отправлен тем, кому не положено (т.е. не админам)
+     *
+     * @param string $subject Subject
+     * @param string $to      Receiver
+     *
+     * @Then /^email with subject "([^"]*)" should have not been sent(?: to "([^"]+)")?$/
+     *
+     * @throws \RuntimeException
+     */
+    public function emailWithSubjectShouldHaveBeenSent($subject, $to)
+    {
+        /** @var \Swift_Mailer $mailer */
+        $mailer = $this->loadProfile()->getCollector('swiftmailer');
+        if ($mailer->getMessageCount() > 0) {
+            foreach ($mailer->getMessages() as $message) {
+                if (trim($subject) === trim($message->getSubject())) {
+                    if (array_key_exists($to, $message->getTo())) {
+                        throw new \RuntimeException(sprintf('Message with subject "%s" and receiver "%s" was sent, but should not', $subject, $to));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Loads the profiler's profile.
+     *
+     * If no token has been given, the debug token of the last request will be used
+     *
+     * @param string $token
+     *
+     * @return \Symfony\Component\HttpKernel\Profiler\Profile
+     *
+     * @throws \RuntimeException
+     */
+    public function loadProfile($token = null)
+    {
+        if (null === $token) {
+            $headers = $this->getSession()->getResponseHeaders();
+
+            if (!isset($headers['X-Debug-Token']) && !isset($headers['x-debug-token'])) {
+                throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
+            }
+            $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
+            if (is_array($token)) {
+                $token = end($token);
+            }
+        }
+
+        return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
+    }
 }
