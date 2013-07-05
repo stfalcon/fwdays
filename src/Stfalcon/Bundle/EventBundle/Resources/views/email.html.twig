@@ -63,7 +63,7 @@
                                             <td width="40"></td>
                                         </tr>
                                         {# Add padding from the bottom if it is a mail for default event #}
-                                        {% if mail.event is not defined %}
+                                        {% if mail.event is not defined or mail.event is null %}
                                             <tr style="height: 40px;">
                                                 <td></td>
                                             </tr>
