@@ -39,7 +39,7 @@ vich_uploader:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
+        binary:     "export DISPLAY=:0;/bin/wkhtmltopdf"
         options:
             margin-bottom: 0
             margin-left:   0
