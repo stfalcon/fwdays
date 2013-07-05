@@ -21,7 +21,7 @@ use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
 class MailAdminController extends CRUDController
 {
     /**
-     * Action for Behat test. Send mail to user
+     * Send messages for all users in mail queue (using console command)
      *
      * @return Response
      *
@@ -47,6 +47,8 @@ class MailAdminController extends CRUDController
     }
 
     /**
+     * Send messages only for admins
+     *
      * @param Request $request
      *
      * @return RedirectResponse
