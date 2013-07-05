@@ -46,7 +46,10 @@ class StfalconMailerHelper
             )
         );
 
-        $body = $templateContent->render(array('text' => $text));
+        $body = $templateContent->render(array(
+            'text' => $text,
+            'mail' => $mail
+        ));
 
         $message = \Swift_Message::newInstance()
             ->setSubject($mail->getTitle())
