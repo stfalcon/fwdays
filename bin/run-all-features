@@ -1,6 +1,8 @@
 #!/bin/bash
 
 reporting=$1;
+code=0
+
 if [ -z $reporting ]; then
    reporting='false'
 fi;
@@ -10,10 +12,16 @@ reports_dir=$2;
 for feature_path in `find src/ -path '*/Features'`; do
    bundle=$(echo $feature_path | sed -e 's/^[^\/]\+\/\([^\/]\+\)\/Bundle\/\([^\/]\+\)\/.*/\1\2/');
    if [ $reporting == "ci" ]; then
-       opts="--format=junit --out=$reports_dir/$bundle"
+       opts="--format=junit --out=$reports_dir/$bundle --strict"
    else
        opts=' '
    fi;
    echo "Running suite for $bundle";
        ./bin/behat -f progress $opts "@$bundle";
+       behat_exit_code=$?
+       if [ $behat_exit_code -ne 0 ]; then
+           code='2'
+       fi;
 done
+
+exit $code

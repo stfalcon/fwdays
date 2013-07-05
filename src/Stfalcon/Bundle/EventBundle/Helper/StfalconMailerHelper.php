@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Twig_Environment;
 
 /**
  * Class StfalconMailerHelper
@@ -11,13 +12,33 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class StfalconMailerHelper
 {
     /**
+     * @var Twig_Environment
+     */
+    protected $twig;
+
+    /**
+     * Constructor
+     *
+     * @param Twig_Environment $twig
+     */
+    public function __construct(Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
+    /**
+     * Format message
+     *
      * @param User $user
      * @param Mail $mail
      *
      * @return \Swift_Mime_MimePart
      */
-    public static function formatMessage(User $user, Mail $mail)
+    public function formatMessage(User $user, Mail $mail)
     {
+        // Get base template for email
+        $templateContent = $this->twig->loadTemplate('StfalconEventBundle::email.html.twig');
+
         $text = $mail->replace(
             array(
                 '%fullname%' => $user->getFullname(),
@@ -25,11 +46,16 @@ class StfalconMailerHelper
             )
         );
 
+        $body = $templateContent->render(array(
+            'text' => $text,
+            'mail' => $mail
+        ));
+
         $message = \Swift_Message::newInstance()
             ->setSubject($mail->getTitle())
             ->setFrom('orgs@fwdays.com', 'Frameworks Days')
             ->setTo($user->getEmail())
-            ->setBody($text, 'text/html');
+            ->setBody($body, 'text/html');
 
         return $message;
     }

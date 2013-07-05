@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Constraints\File;
 
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
@@ -70,6 +71,29 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
+    }
+
+    /**
+     * Проверка или файл является PDF-файлом
+     *
+     * @Then /^это PDF-файл$/
+     */
+    public function thisIsPdfFile()
+    {
+        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . uniqid() . '.html';
+        file_put_contents($filename, $this->getSession()->getPage()->getContent());
+
+        $pdfFileConstraint = new File();
+        $pdfFileConstraint->mimeTypes = array("application/pdf", "application/x-pdf");
+
+        /** @var \Symfony\Component\Validator\Validator $validator */
+        $validator = $this->kernel->getContainer()->get('validator');
+        $errorList = $validator->validateValue(
+            $filename,
+            $pdfFileConstraint
+        );
+
+        assertCount(0, $errorList, "Это не PDF-файл");
     }
 
     /**
@@ -164,5 +188,58 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ),
             true
         );
+    }
+
+    /**
+     * Проверка что имейл не был отправлен тем, кому не положено (т.е. не админам)
+     *
+     * @param string $subject Subject
+     * @param string $to      Receiver
+     *
+     * @Then /^email with subject "([^"]*)" should have not been sent(?: to "([^"]+)")?$/
+     *
+     * @throws \RuntimeException
+     */
+    public function emailWithSubjectShouldHaveBeenSent($subject, $to)
+    {
+        /** @var \Swift_Mailer $mailer */
+        $mailer = $this->loadProfile()->getCollector('swiftmailer');
+        if ($mailer->getMessageCount() > 0) {
+            foreach ($mailer->getMessages() as $message) {
+                if (trim($subject) === trim($message->getSubject())) {
+                    if (array_key_exists($to, $message->getTo())) {
+                        throw new \RuntimeException(sprintf('Message with subject "%s" and receiver "%s" was sent, but should not', $subject, $to));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Loads the profiler's profile.
+     *
+     * If no token has been given, the debug token of the last request will be used
+     *
+     * @param string $token
+     *
+     * @return \Symfony\Component\HttpKernel\Profiler\Profile
+     *
+     * @throws \RuntimeException
+     */
+    public function loadProfile($token = null)
+    {
+        if (null === $token) {
+            $headers = $this->getSession()->getResponseHeaders();
+
+            if (!isset($headers['X-Debug-Token']) && !isset($headers['x-debug-token'])) {
+                throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
+            }
+            $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
+            if (is_array($token)) {
+                $token = end($token);
+            }
+        }
+
+        return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
     }
 }

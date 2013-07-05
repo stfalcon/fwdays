@@ -36,8 +36,8 @@ class MailQueue
     /**
      * @var Mail
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", cascade={"remove"})
-     * @ORM\JoinColumn(name="mail_id", referencedColumnName="id",  onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail")
+     * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $mail;
 
@@ -47,6 +47,16 @@ class MailQueue
      * @ORM\Column(name="is_sent", type="boolean")
      */
     private $isSent = false;
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getUser() && $this->getMail()
+            ? $this->getMail() . ' => ' . $this->getUser()
+            : '';
+    }
 
     /**
      * @return int
