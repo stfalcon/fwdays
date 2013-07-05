@@ -14,8 +14,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail,
 
 /**
  * Class StfalconMailerCommand
- *
- * @package Stfalcon\Bundle\EventBundle\Command
  */
 class StfalconMailerCommand extends ContainerAwareCommand
 {

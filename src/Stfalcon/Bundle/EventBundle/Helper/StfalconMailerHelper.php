@@ -27,6 +27,8 @@ class StfalconMailerHelper
     }
 
     /**
+     * Format message
+     *
      * @param User $user
      * @param Mail $mail
      *
@@ -34,6 +36,7 @@ class StfalconMailerHelper
      */
     public function formatMessage(User $user, Mail $mail)
     {
+        // Get base template for email
         $templateContent = $this->twig->loadTemplate('StfalconEventBundle::email.html.twig');
 
         $text = $mail->replace(
