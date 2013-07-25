@@ -45,14 +45,23 @@ class TicketController extends BaseController
             $em->persist($ticket);
             $em->flush();
 
-            $body = $this->_ticketTemplate($ticket);
+            $html = $this->_ticketTemplate($ticket);
 
-            $fileLocation = 'uploads/tickets/ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
+            $fileName = 'ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
+            $pdfFile = $this->generatePdfFile($html, $fileName);
 
-            $this->get('knp_snappy.pdf')->generateFromHtml($body, $fileLocation, array(), true);
+            $directory = $fileLocation = realpath($this->container->get('kernel')->getRootDir() . '/../web') . '/uploads/tickets';
+
+            if (!is_dir($directory)) {
+                mkdir($directory);
+            }
+
+            $fileLocation = $directory . '/' . $fileName;
+
+            file_put_contents($fileLocation, $pdfFile);
 
             $message = \Swift_Message::newInstance()
-                ->setSubject('Приглашение на '.$event->getName())
+                ->setSubject('Приглашение на ' . $event->getName())
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
                 ->attach(\Swift_Attachment::fromPath($fileLocation));
@@ -234,30 +243,14 @@ class TicketController extends BaseController
         }
 
         $html = $this->_ticketTemplate($ticket);
-
-        $mPDF = $this->get('tfox.mpdfport');
-        $mPDF->setAddDefaultConstructorArgs(false);
-        $arguments = array(
-            'constructorArgs' => array(
-                'mode'          => 'BLANK',
-                'format'        => 'A5-L',
-                'margin_left'   => 0,
-                'margin_right'  => 0,
-                'margin_top'    => 0,
-                'margin_bottom' => 0,
-                'margin_header' => 0,
-                'margin_footer' => 0
-            ),
-            'outputFilename' => 'ticket-' . $event->getSlug() . '.pdf',
-            'outputDest'     => 'S'
-        );
+        $fileName = 'ticket-' . $event->getSlug() . '.pdf';
 
         return new Response(
-            $mPDF->generatePdf($html, $arguments),
+            $this->generatePdfFile($html, $fileName),
             200,
             array(
                 'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'attach; filename="ticket-' . $event->getSlug() . '.pdf"'
+                'Content-Disposition' => 'attach; filename="' . $fileName . '"'
             )
         );
     }
@@ -372,5 +365,37 @@ class TicketController extends BaseController
         ));
 
         return $body;
+    }
+
+    /**
+     * Generate PDF-file of ticket
+     *
+     * @param string $html       HTML to generate pdf
+     * @param string $outputFile Name of output file
+     *
+     * @return mixed
+     */
+    private function generatePdfFile($html, $outputFile)
+    {
+        $mPDF = $this->get('tfox.mpdfport');
+
+        $mPDF->setAddDefaultConstructorArgs(false);
+
+        $arguments = array(
+            'constructorArgs' => array(
+                'mode'          => 'BLANK',
+                'format'        => 'A5-L',
+                'margin_left'   => 0,
+                'margin_right'  => 0,
+                'margin_top'    => 0,
+                'margin_bottom' => 0,
+                'margin_header' => 0,
+                'margin_footer' => 0
+            ),
+            'outputFilename' => $outputFile,
+            'outputDest'     => 'S'
+        );
+
+        return $mPDF->generatePdf($html, $arguments);
     }
 }

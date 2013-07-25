@@ -40,7 +40,6 @@
 
         "vich/uploader-bundle": "dev-master",
         "endroid/qrcode": "1.1.1",
-        "knplabs/knp-snappy-bundle": "dev-master",
         "ornicar/gravatar-bundle" : "dev-master",
 
         "tfox/mpdf-port-bundle": "1.1.*",
