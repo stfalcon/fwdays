@@ -33,40 +33,16 @@ class TicketController extends BaseController
     {
         $em     = $this->getDoctrine()->getManager();
         $event  = $this->getEventBySlug($event_slug);
-        $mailer = $this->container->get('mailer');
+        $user = $this->get('security.context')->getToken()->getUser();
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $this->_findTicketForEventByCurrentUser($event);
-        $user = $this->get('security.context')->getToken()->getUser();
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
             $ticket = new Ticket($event, $user);
             $em->persist($ticket);
             $em->flush();
-
-            $html = $this->_ticketTemplate($ticket);
-
-            $fileName = 'ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
-            $pdfFile = $this->generatePdfFile($html, $fileName);
-
-            $directory = $fileLocation = realpath($this->container->get('kernel')->getRootDir() . '/../web') . '/uploads/tickets';
-
-            if (!is_dir($directory)) {
-                mkdir($directory);
-            }
-
-            $fileLocation = $directory . '/' . $fileName;
-
-            file_put_contents($fileLocation, $pdfFile);
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Приглашение на ' . $event->getName())
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->attach(\Swift_Attachment::fromPath($fileLocation));
-
-            $mailer->send($message);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
