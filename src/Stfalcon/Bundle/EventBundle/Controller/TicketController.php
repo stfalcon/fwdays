@@ -233,10 +233,27 @@ class TicketController extends BaseController
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
-        $body = $this->_ticketTemplate($ticket);
+        $html = $this->_ticketTemplate($ticket);
+
+        $mPDF = $this->get('tfox.mpdfport');
+        $mPDF->setAddDefaultConstructorArgs(false);
+        $arguments = array(
+            'constructorArgs' => array(
+                'mode'          => 'BLANK',
+                'format'        => 'A5-L',
+                'margin_left'   => 0,
+                'margin_right'  => 0,
+                'margin_top'    => 0,
+                'margin_bottom' => 0,
+                'margin_header' => 0,
+                'margin_footer' => 0
+            ),
+            'outputFilename' => 'ticket-' . $event->getSlug() . '.pdf',
+            'outputDest'     => 'S'
+        );
 
         return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($body, array()),
+            $mPDF->generatePdf($html, $arguments),
             200,
             array(
                 'Content-Type'        => 'application/pdf',

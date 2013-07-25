@@ -43,6 +43,8 @@
         "knplabs/knp-snappy-bundle": "dev-master",
         "ornicar/gravatar-bundle" : "dev-master",
 
+        "tfox/mpdf-port-bundle": "1.1.*",
+
         "stfalcon/page-bundle": "dev-master",
         "stfalcon/news-bundle": "dev-master"
     },

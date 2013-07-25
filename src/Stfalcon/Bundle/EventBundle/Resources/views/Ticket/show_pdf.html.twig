@@ -3,39 +3,160 @@
 <!DOCTYPE HTML>
 <html lang="ru-RU">
     <head>
-        <meta charset="UTF-8">
-        <title>template</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-        <link href="{{ path ~ asset('css/ticket.css')  }}" type="text/css" rel="stylesheet" />
+        <meta charset="UTF-8" />
+        <title>{{ event.name }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <style media="print">
+            *{margin:0;padding:0}
+            html, body {width:1000px;}
+            body{
+                font:15px/21px 'Opensans', sans-serif;
+                color:#000;
+                background:#fff;
+            }
+            /* =Misc(links)----------------------------------------------------------------------------- */
+            a img,fieldset{border:none}
+            a{color:#0375bc}
+            a:visited{color:#8ab1ca;}
+            a:hover{color:#009dff}
+            .clr{
+                clear:both;
+                height:0;
+                font-size:0px;
+                line-height:0px;
+                overflow: hidden;
+            }
+            /* =Main styles----------------------------------------------------------------------------- */
+            .left-element {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 199px;
+                height: 156px;
+                overflow: visible;
+                z-index: 1;
+            }
+            .logo {
+                position: fixed;
+                right: 0;
+                top: 0;
+                padding: 39px 66px 0 0;
+                width: 105px;
+                height: 103px;
+                overflow: visible;
+                z-index: 1;
+            }
+            .top,
+            .bottom {
+                position: fixed;
+                z-index: 2;
+            }
+            .top {
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .dear-user {
+                padding: 85px 0 0 185px;
+                font-size: 16px;
+                letter-spacing: .015em;
+            }
+            .date-n-address {
+                padding: 38px 0 0 185px;
+            }
+            .wait-for-you {
+                float: left;
+                margin-left: -110px;
+                padding-top: 5px;
+                width: 110px;
+                font-size: 16px;
+                letter-spacing: .015em;
+            }
+            .date-addr {
+                font-size: 32px;
+                line-height: 38px;
+                font-weight: bold;
+                letter-spacing: -2px;
+                color: #0375bc;
+            }
+            .registration-begins {
+                padding-top: 20px;
+                font-size: 24px;
+                letter-spacing: .01em;
+            }
+            .bottom {
+                left: 0;
+                bottom: 65px;
+                padding: 80px 0 0 75px;
+                overflow: hidden;
+            }
+            .qr-code {
+                float: left;
+                padding-right: 20px;
+                width: 95px;
+                font-size: 12px;
+                line-height: 17px;
+            }
+            .qr-code-h {
+                padding-bottom: 19px;
+            }
+            .qr-code-num {
+                padding-top: 4px;
+                font-size: 11px;
+            }
+            .invitation-text {
+                float: left;
+                padding-left: 118px;
+                width: 281px;
+                font-size: 12px;
+                line-height: 17px;
+            }
+            .invitation-text p {
+                margin: 0;
+                padding-bottom: 7px;
+            }
+            .invitation-text p.main-text {
+                padding-bottom: 26px;
+                width: 200px;
+            }
+            .links {
+                float: left;
+                font-size: 12px;
+                line-height: 17px;
+            }
+            .links p {
+                margin: 0;
+                padding: 0 0 7px 0;
+            }
+        </style>
     </head>
+
     <body>
-        <div class="top">
-            <div class="left-element">
-                {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
-                    <img src="{{ path ~ vich_uploader_asset(event, 'bgFile') }}" width="250" height="196" alt="">
+        <div class="left-element">
+            {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
+                <img src="{{ path ~ vich_uploader_asset(event, 'bgFile') }}" width="199" height="156" />
+            {% endif %}
+        </div>
+        <div class="logo">
+            <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
+                {% if event.logo is defined and event.logo is not empty %}
+                    <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
                 {% endif %}
-            </div>
+            </a>
+        </div>
 
-            <div class="logo">
-                <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
-                    {% if event.logo is defined and event.logo is not empty %}
-                        <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="132" height="130" alt="{{ event.name }}" title="{{ event.name }}">
-                    {% endif %}
-                </a>
-            </div>
-
+        <div class="top">
             <div class="dear-user">Уважаемый участник <b>{{ ticket.user.fullname }}</b>,</div>
-
             <div class="date-n-address">
                 <div class="wait-for-you">ждем тебя:</div>
                 <div class="date-addr">
                     {% if event.date %}
                         {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
                     {% endif %}
-                    <br>
+                    <br />
                     в
-                     г. {{ event.city }},
+                    г. {{ event.city }},
                     {% if event.place %}
                         {{ event.place }}
                     {% endif %}
@@ -47,21 +168,21 @@
         <div class="bottom">
             <div class="qr-code">
                 <div class="qr-code-h">Программа конференции:</div>
-                <div class="qr-code-img"><img src="data:image/png;base64,{{ qrCodeBase64 }}" alt=""></div>
+                <div class="qr-code-img">
+                    <img src="data:image/png;base64,{{ qrCodeBase64 }}" width="94" height="94" />
+                </div>
                 <div class="qr-code-num">№{{ ticket.id }}</div>
             </div>
-
             <div class="invitation-text">
-                <p class="main-text">Пожалуйста, распечатай это приглашение и возьми его с собой — это твой входной билет на JavaScript Frameworks Day.</p>
+                <p class="main-text">Пожалуйста, распечатай это приглашение и возьми его с собой — это твой входной билет на {{ event.name }}.</p>
                 <p>С нетерпением ждем встречи!</p>
                 <p>С уважением,<br> Организаторы {{ event.name }}</p>
             </div>
-
-            <ul class="links">
-                <li>Сайт: <a href="http://fwdays.com">fwdays.com</a></li>
-                <li>Facebook: <a href="http://www.facebook.com/fwdays">facebook.com/fwdays</a></li>
-                <li>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search/realtime?q=%23fwdays&src=hash">#fwdays</a>)</li>
-            </ul>
+            <div class="links">
+                <p>Сайт: <a href="http://fwdays.com">fwdays.com</a></p>
+                <p>Facebook: <a href="http://www.facebook.com/fwdays">facebook.com/fwdays</a></p>
+                <p>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search?q=fwdays&src=hash">#fwdays</a>)</p>
+            </div>
         </div>
     </body>
 </html>
