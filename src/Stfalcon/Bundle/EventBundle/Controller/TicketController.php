@@ -380,15 +380,16 @@ class TicketController extends BaseController
             'I'  => 'OpenSans-Italic.ttf',
             'BI' => 'OpenSans-BoldItalic.ttf',
         );
-        $mPDF->available_unifonts[]      = 'opensans';
-        $mPDF->default_available_fonts[] = 'opensans';
-        $mPDF->available_unifonts[]      = 'opensansI';
-        $mPDF->default_available_fonts[] = 'opensansI';
-        $mPDF->available_unifonts[]      = 'opensansB';
-        $mPDF->default_available_fonts[] = 'opensansB';
-        $mPDF->available_unifonts[]      = 'opensansBI';
-        $mPDF->default_available_fonts[] = 'opensansBI';
         $mPDF->sans_fonts[]              = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensansI';
+        $mPDF->available_unifonts[]      = 'opensansB';
+        $mPDF->available_unifonts[]      = 'opensansBI';
+        $mPDF->default_available_fonts[] = 'opensans';
+        $mPDF->default_available_fonts[] = 'opensansI';
+        $mPDF->default_available_fonts[] = 'opensansB';
+        $mPDF->default_available_fonts[] = 'opensansBI';
+
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
         $pdfFile = $mPDF->Output($outputFile, 'S');
