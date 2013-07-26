@@ -353,25 +353,46 @@ class TicketController extends BaseController
      */
     private function generatePdfFile($html, $outputFile)
     {
-        $mPDF = $this->get('tfox.mpdfport');
+        // Override default fonts directory for mPDF
+        define('_MPDF_SYSTEM_TTFONTS', realpath($this->container->get('kernel')->getRootDir() . '/../web/fonts/open-sans/') . '/');
 
-        $mPDF->setAddDefaultConstructorArgs(false);
+        /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
+        $mPDFService = $this->get('tfox.mpdfport');
+        $mPDFService->setAddDefaultConstructorArgs(false);
 
-        $arguments = array(
-            'constructorArgs' => array(
-                'mode'          => 'BLANK',
-                'format'        => 'A5-L',
-                'margin_left'   => 0,
-                'margin_right'  => 0,
-                'margin_top'    => 0,
-                'margin_bottom' => 0,
-                'margin_header' => 0,
-                'margin_footer' => 0
-            ),
-            'outputFilename' => $outputFile,
-            'outputDest'     => 'S'
+        $constructorArgs = array(
+            'mode'          => 'BLANK',
+            'format'        => 'A5-L',
+            'margin_left'   => 0,
+            'margin_right'  => 0,
+            'margin_top'    => 0,
+            'margin_bottom' => 0,
+            'margin_header' => 0,
+            'margin_footer' => 0
         );
 
-        return $mPDF->generatePdf($html, $arguments);
+        $mPDF = $mPDFService->getMpdf($constructorArgs);
+
+        // Open Sans font settings
+        $mPDF->fontdata['opensans'] = array(
+            'R'  => 'OpenSans-Regular.ttf',
+            'B'  => 'OpenSans-Bold.ttf',
+            'I'  => 'OpenSans-Italic.ttf',
+            'BI' => 'OpenSans-BoldItalic.ttf',
+        );
+        $mPDF->available_unifonts[]      = 'opensans';
+        $mPDF->default_available_fonts[] = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensansI';
+        $mPDF->default_available_fonts[] = 'opensansI';
+        $mPDF->available_unifonts[]      = 'opensansB';
+        $mPDF->default_available_fonts[] = 'opensansB';
+        $mPDF->available_unifonts[]      = 'opensansBI';
+        $mPDF->default_available_fonts[] = 'opensansBI';
+        $mPDF->sans_fonts[]              = 'opensans';
+        $mPDF->SetDisplayMode('fullpage');
+        $mPDF->WriteHTML($html);
+        $pdfFile = $mPDF->Output($outputFile, 'S');
+
+        return $pdfFile;
     }
 }
