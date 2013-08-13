@@ -10,6 +10,14 @@
     {% render controller('ApplicationDefaultBundle:News:last', { 'count': 10 }) %}
 {% endblock %}
 
+{% block photo_slider %}
+    <ul class="photo-slider">
+        <li><img src="/images/slider/slide-1.jpg" alt=""></li>
+        <li><img src="/images/slider/slide-2.jpg" alt=""></li>
+        <li><img src="/images/slider/slide-3.jpg" alt=""></li>
+    </ul>
+{% endblock %}
+
 {% block slider %}
     {% render controller('ApplicationDefaultBundle:Event:slider') %}
 {% endblock %}

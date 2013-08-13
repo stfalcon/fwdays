@@ -11,7 +11,7 @@
         <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
         <title>{% block title %}Frameworks Days{% endblock %}</title>
 
-        {% block metatags %}{% endblock %}
+        {% q metatags %}{% endblock %}
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
@@ -54,11 +54,7 @@
 
             {% block header %}
                 <header id="header">
-                    <ul class="photo-slider">
-                        <li><img src="/images/slider/slide-1.jpg" alt=""></li>
-                        <li><img src="/images/slider/slide-2.jpg" alt=""></li>
-                        <li><img src="/images/slider/slide-3.jpg" alt=""></li>
-                    </ul>
+                    {% block photo_slider %}{% endblock %}
                     <div class="wrap">
                         <div class="logo">
                             <div>
