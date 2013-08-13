@@ -1927,3 +1927,55 @@ div.amount {
 .contacts-page-orgs-list .vcard .email a:active {
     color: #cd3b23;
 }
+
+/* header photo-slider */
+#header {
+    background: none transparent;
+}
+#header:before,
+#header:after {
+    display: none;
+}
+#header .photo-slider {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 377px;
+    overflow: hidden;
+    z-index: -1;
+}
+#header .photo-slider li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 377px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+#header .photo-slider li img {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 1024px;
+    min-height: 378px;
+    vertical-align: middle;
+}
+.event-slider .slide .register:link,
+.event-slider .slide .register:visited {
+    color: #0091ad;
+}
+.event-slider .slide .register:hover,
+.event-slider .slide .register:active {
+    color: #cd3b23;
+}
+.event-slider .slide .text p,
+.event-slider .slide .text h2 {
+    color: #000000;
+}
