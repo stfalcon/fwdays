@@ -33,31 +33,16 @@ class TicketController extends BaseController
     {
         $em     = $this->getDoctrine()->getManager();
         $event  = $this->getEventBySlug($event_slug);
-        $mailer = $this->container->get('mailer');
+        $user = $this->get('security.context')->getToken()->getUser();
 
         // проверяем или у него нет билетов на этот ивент
         $ticket = $this->_findTicketForEventByCurrentUser($event);
-        $user = $this->get('security.context')->getToken()->getUser();
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
             $ticket = new Ticket($event, $user);
             $em->persist($ticket);
             $em->flush();
-
-            $body = $this->_ticketTemplate($ticket);
-
-            $fileLocation = 'uploads/tickets/ticket-' . md5($ticket->getUser()->getUsername()) . '-' . $event->getSlug() . '.pdf';
-
-            $this->get('knp_snappy.pdf')->generateFromHtml($body, $fileLocation, array(), true);
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Приглашение на '.$event->getName())
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->attach(\Swift_Attachment::fromPath($fileLocation));
-
-            $mailer->send($message);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -233,14 +218,15 @@ class TicketController extends BaseController
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
-        $body = $this->_ticketTemplate($ticket);
+        $html = $this->_ticketTemplate($ticket);
+        $fileName = 'ticket-' . $event->getSlug() . '.pdf';
 
         return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($body, array()),
+            $this->generatePdfFile($html, $fileName),
             200,
             array(
                 'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'attach; filename="ticket-' . $event->getSlug() . '.pdf"'
+                'Content-Disposition' => 'attach; filename="' . $fileName . '"'
             )
         );
     }
@@ -346,6 +332,8 @@ class TicketController extends BaseController
 
         $qrCode = $this->get('stfalcon_event.qr_code');
         $qrCode->setText($url);
+        $qrCode->setSize(105);
+        $qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($qrCode->get());
         $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
         $body = $templateContent->render(array(
@@ -355,5 +343,59 @@ class TicketController extends BaseController
         ));
 
         return $body;
+    }
+
+    /**
+     * Generate PDF-file of ticket
+     *
+     * @param string $html       HTML to generate pdf
+     * @param string $outputFile Name of output file
+     *
+     * @return mixed
+     */
+    private function generatePdfFile($html, $outputFile)
+    {
+        // Override default fonts directory for mPDF
+        define('_MPDF_SYSTEM_TTFONTS', realpath($this->container->get('kernel')->getRootDir() . '/../web/fonts/open-sans/') . '/');
+
+        /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
+        $mPDFService = $this->get('tfox.mpdfport');
+        $mPDFService->setAddDefaultConstructorArgs(false);
+
+        $constructorArgs = array(
+            'mode'          => 'BLANK',
+            'format'        => 'A5-L',
+            'margin_left'   => 0,
+            'margin_right'  => 0,
+            'margin_top'    => 0,
+            'margin_bottom' => 0,
+            'margin_header' => 0,
+            'margin_footer' => 0
+        );
+
+        $mPDF = $mPDFService->getMpdf($constructorArgs);
+
+        // Open Sans font settings
+        $mPDF->fontdata['opensans'] = array(
+            'R'  => 'OpenSans-Regular.ttf',
+            'B'  => 'OpenSans-Bold.ttf',
+            'I'  => 'OpenSans-Italic.ttf',
+            'BI' => 'OpenSans-BoldItalic.ttf',
+        );
+        $mPDF->sans_fonts[]              = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensansI';
+        $mPDF->available_unifonts[]      = 'opensansB';
+        $mPDF->available_unifonts[]      = 'opensansBI';
+        $mPDF->default_available_fonts[] = 'opensans';
+        $mPDF->default_available_fonts[] = 'opensansI';
+        $mPDF->default_available_fonts[] = 'opensansB';
+        $mPDF->default_available_fonts[] = 'opensansBI';
+
+        $mPDF->SetDisplayMode('fullpage');
+        $mPDF->WriteHTML($html);
+        $pdfFile = $mPDF->Output($outputFile, 'S');
+
+        return $pdfFile;
     }
 }
