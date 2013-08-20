@@ -61,6 +61,10 @@ class EventAdmin extends Admin
                     'label' => 'Slider background',
                     'required' => false,
                 ))
+                ->add('logoWhiteFile', 'file', array(
+                'label' => 'White logo',
+                'required' => false,
+        ))
             ->end();
     }
 

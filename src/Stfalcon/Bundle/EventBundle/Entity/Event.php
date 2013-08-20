@@ -141,6 +141,16 @@ class Event
     protected $logoFile;
 
     /**
+     * @var UploadedFile
+     *
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="logoWhite")
+     *
+     */
+    protected $logoWhiteFile;
+
+    /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="emailBackground")
@@ -167,6 +177,13 @@ class Event
      * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
      */
     protected $cost;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo_white", type="string")
+     */
+    protected $logoWhite;
 
     /**
      * Constructor
@@ -532,4 +549,41 @@ class Event
     {
         return $this->cost;
     }
+
+    /**
+     * @param string $logoWhite
+     */
+    public function setLogoWhite($logoWhite)
+    {
+        $this->logoWhite = $logoWhite;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoWhite()
+    {
+        return $this->logoWhite;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $logoWhiteFile
+     */
+    public function setLogoWhiteFile($logoWhiteFile)
+    {
+        $this->logoWhiteFile = $logoWhiteFile;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+     */
+    public function getLogoWhiteFile()
+    {
+        return $this->logoWhiteFile;
+    }
+
+
+
+
+
 }

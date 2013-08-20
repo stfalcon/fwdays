@@ -309,7 +309,7 @@ input[type="submit"] {
     z-index: 1;
     height: 377px;
     border-bottom: 2px solid #466274;
-    background: #ebf7d9 url(/images/sprite-main.jpg) left -36px repeat-x;
+    /*background: #ebf7d9 url(/images/sprite-main.jpg) left -36px repeat-x;*/
 }
 #header .wrap,
 #footer .wrap {
@@ -321,32 +321,7 @@ input[type="submit"] {
 #wrapper.sidebars-right #header {
     height: 180px;
 }
-#header:before {
-    content: '.';
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    text-indent: -9999px;
-    overflow: hidden;
-    width: 430px;
-    height: 300px;
-    z-index: 0;
-    background: url(/images/sprite-header-footer.jpg) left -2px no-repeat;
-}
-#header:after {
-    content: '.';
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    text-indent: -9999px;
-    overflow: hidden;
-    width: 285px;
-    height: 215px;
-    z-index: 0;
-    background: url(/images/sprite-header-footer.jpg) -430px -2px no-repeat;
-}
+
 #wrapper.wide-content #header:before,
 #wrapper.sidebars-right #header:before {
     width: 402px;
@@ -698,16 +673,7 @@ input[type="submit"] {
     font-size: 14px;
     padding: 3px 0 13px;
 }
-.event-slider .btn-prev {
-    position: absolute;
-    left: 4%;
-    top: 211px;
-}
-.event-slider .btn-next {
-    position: absolute;
-    right: 4%;
-    top: 211px;
-}
+
 .event-slider .btn-prev a,
 .event-slider .btn-next a {
     display: block;
@@ -1926,4 +1892,56 @@ div.amount {
 .contacts-page-orgs-list .vcard .email a:hover,
 .contacts-page-orgs-list .vcard .email a:active {
     color: #cd3b23;
+}
+
+/* header photo-slider */
+#header {
+    background: none transparent;
+}
+#header:before,
+#header:after {
+    display: none;
+}
+#header .photo-slider {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 377px;
+    overflow: hidden;
+    z-index: -1;
+}
+#header .photo-slider li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 377px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+#header .photo-slider li img {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 1024px;
+    min-height: 378px;
+    vertical-align: middle;
+}
+.event-slider .slide .register:link,
+.event-slider .slide .register:visited {
+    color: #0091ad;
+}
+.event-slider .slide .register:hover,
+.event-slider .slide .register:active {
+    color: #cd3b23;
+}
+.event-slider .slide .text p,
+.event-slider .slide .text h2 {
+    color: #ffffff;
 }
