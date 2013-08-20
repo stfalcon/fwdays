@@ -93,8 +93,8 @@
             }
             .qr-code {
                 float: left;
-                padding-right: 20px;
-                width: 95px;
+                padding-right: 10px;
+                width: 105px;
                 font-size: 12px;
                 line-height: 17px;
             }
@@ -102,7 +102,7 @@
                 padding-bottom: 19px;
             }
             .qr-code-num {
-                padding-top: 4px;
+                padding-top: 2px;
                 font-size: 11px;
             }
             .invitation-text {
@@ -169,7 +169,7 @@
             <div class="qr-code">
                 <div class="qr-code-h">Программа конференции:</div>
                 <div class="qr-code-img">
-                    <img src="data:image/png;base64,{{ qrCodeBase64 }}" width="94" height="94" />
+                    <img src="data:image/png;base64,{{ qrCodeBase64 }}" />
                 </div>
                 <div class="qr-code-num">№{{ ticket.id }}</div>
             </div>

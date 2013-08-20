@@ -332,6 +332,8 @@ class TicketController extends BaseController
 
         $qrCode = $this->get('stfalcon_event.qr_code');
         $qrCode->setText($url);
+        $qrCode->setSize(105);
+        $qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($qrCode->get());
         $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
         $body = $templateContent->render(array(
