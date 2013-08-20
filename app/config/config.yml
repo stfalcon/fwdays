@@ -153,20 +153,4 @@ vich_uploader:
               uri_prefix: /uploads/events
               upload_destination: %kernel.root_dir%/../web/uploads/events
 
-knp_snappy:
-    pdf:
-        enabled:    true
-        binary:     /usr/local/bin/wkhtmltopdf
-        options:
-            margin-bottom: 0
-            margin-left:   0
-            margin-right:  0
-            margin-top:    0
-            page-size:     A5
-            orientation:   Landscape
-
-    image:
-        enabled:    true
-        binary:     /usr/local/bin/wkhtmltoimage
-        options:    []
 ornicar_gravatar: ~
