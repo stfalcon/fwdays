@@ -25,7 +25,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
         $this
             ->setName('stfalcon:mailer')
             ->setDescription('Send message from queue')
-            ->addOption('amount', null, InputOption::VALUE_NONE, 'Amount of mails which will send per operation. Default 10.');
+            ->addOption('amount', null, InputOption::VALUE_OPTIONAL, 'Amount of mails which will send per operation. Default 10.');
     }
 
     /**
