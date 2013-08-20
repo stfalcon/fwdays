@@ -1941,7 +1941,3 @@ div.amount {
 .event-slider .slide .register:active {
     color: #cd3b23;
 }
-.event-slider .slide .text p,
-.event-slider .slide .text h2 {
-    color: #ffffff;
-}
