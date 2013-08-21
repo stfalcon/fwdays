@@ -5,7 +5,6 @@ $(document).ready(function () {
     var removedOpacity = 0.1;
     var animationInterval = 5000;
     var isAutomatic;
-
     // Check events count
     (count > 1) ? isAutomatic = true : isAutomatic = false;
 
