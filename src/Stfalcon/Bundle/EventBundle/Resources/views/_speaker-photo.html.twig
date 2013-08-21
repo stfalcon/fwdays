@@ -1,5 +1,16 @@
+{% set width_attr = '' %}
+{% set height_attr = '' %}
+
+{% if width is defined and width is not empty %}
+    {% set width_attr = "width=" ~ width %}
+{% endif %}
+
+{% if height is defined and height is not empty %}
+    {% set height_attr = "height=" ~ height %}
+{% endif %}
+
 {% if speaker.file is not empty %}
-<img src="{{ vich_uploader_asset(speaker, 'file') }}" width="{{size}}" height="{{size}}" alt="{{ speaker.name }}" />
+    <img src="{{ vich_uploader_asset(speaker, 'file') }}" {{ width_attr }} {{ height_attr }} alt="{{ speaker.name }}" />
 {% else %}
-<img src="{{ asset('images/empty.png') }}" width="{{size}}" height="{{size}}" alt="{{ speaker.name }}" />
+    <img src="{{ asset('images/empty.png') }}" {{ width_attr }} {{ height_attr }} alt="{{ speaker.name }}" />
 {% endif %}
