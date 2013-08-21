@@ -4,7 +4,9 @@ $(document).ready(function () {
     var enabledOpacity = 1;
     var removedOpacity = 0.1;
     var animationInterval = 5000;
-    var isAutomatic = true;
+    var isAutomatic;
+    // Check events count
+    (count > 1) ? isAutomatic = true : isAutomatic = false;
 
     // automatic scrolling slide
     window.setInterval(function () {
