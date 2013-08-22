@@ -56,17 +56,17 @@ class InterkassaController extends Controller
             $em->flush();
             $message = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
 
-            $payment->getUser();
+            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
+            $ticket = $this->getDoctrine()
+                ->getRepository('StfalconEventBundle:Ticket')
+                ->findByPayment($payment);
 
-            $user = $this->get('security.context')->getToken()->getUser();
-
-            $event = $this->getDoctrine()
-                ->getRepository('StfalconEventBundle:Event')
-                ->find(1);
+            $user = $ticket->getUser();
+            $event = $ticket->getEvent();
 
             $mail = new \Stfalcon\Bundle\EventBundle\Entity\Mail();
             $mail->setText('Доброго времени суток, %fullname%. <br />
-                            Благодарим Вас, за оплату участия в конференции %conferencia%.
+                            Благодарим Вас, за оплату участия в конференции %event%.
                             Напоминаем, что конференция состоится %date% года, в %place%.');
 
             $dateFormatter = new \IntlDateFormatter(
@@ -82,7 +82,7 @@ class InterkassaController extends Controller
                 array(
                     '%user_id%' => $user->getId(),
                     '%fullname%' => $user->getFullName(),
-                    '%conferencia%'  => $event->getName(),
+                    '%event%'  => $event->getName(),
                     '%date%' => $dateFormatter->format($event->getDate()),
                     '%place%' => $event->getPlace(),
                 )
@@ -94,7 +94,6 @@ class InterkassaController extends Controller
                 ->setTo($user->getEmail())
                 ->setBody($mail->getText());
 
-            // @todo каждый вызов отнимает память
             $this->get('mailer')->send($message);
         } else {
             $message = 'Проверка контрольной подписи данных о платеже провалена!';
