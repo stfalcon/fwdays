@@ -98,21 +98,21 @@ class TicketRepository extends EntityRepository
      * Find tickets by event group by user
      *
      * @param Event $event
+     * @param int   $count
      *
      * @return array
      */
-    public function findTicketsByEventGroupByUser(Event $event)
+    public function findTicketsByEventGroupByUser(Event $event, $count = 9)
     {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT t
-                FROM StfalconEventBundle:Ticket t
-                JOIN t.event e
-                WHERE e.active = TRUE
-                    AND t.event = :event
-                GROUP BY t.user
-            ')
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->join('t.event', 'e')
+            ->where('e.active = true')
+            ->andWhere('t.event = :event')
+            ->groupBy('t.user')
+            ->setMaxResults($count)
             ->setParameter('event', $event)
+            ->getQuery()
             ->getResult();
     }
 }
