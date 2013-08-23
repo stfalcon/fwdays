@@ -337,7 +337,7 @@ input[type="submit"] {
 @-moz-document url-prefix() {
    #header:before {position: static; z-index: 0; right: auto; top: auto; width: auto; height: 377px; background: url(/images/bg-header-before.jpg) right top no-repeat;}
    #header:after {position: static; z-index: 0; left: auto; top: auto; width: auto; height: 377px; margin-top: -377px; background: url(/images/bg-header-after.jpg) left bottom no-repeat;}
-   #header .wrap {position: relative; z-index: 1; height: 377px; margin-top: -377px;}
+   #header .wrap {position: relative; z-index: 1; height: 377px;}
    #wrapper.wide-content #header:before,
    #wrapper.sidebars-right #header:before {position: static; z-index: 0; right: auto; top: auto; width: auto; height: 180px; background: url(/images/bg-header-before2.jpg) right top no-repeat;}
    #wrapper.wide-content #header:after,
