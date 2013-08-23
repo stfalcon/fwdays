@@ -21,6 +21,16 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class MailAdmin extends Admin
 {
     /**
+     * Default values to the datagrid
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_sort_by'    => 'id',
+        '_sort_order' => 'DESC'
+    );
+
+    /**
      * @return array
      */
     public function getBatchActions()
