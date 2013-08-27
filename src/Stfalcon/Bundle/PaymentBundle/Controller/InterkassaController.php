@@ -55,6 +55,46 @@ class InterkassaController extends Controller
             $em->persist($payment);
             $em->flush();
             $message = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+
+            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
+            $ticket = $this->getDoctrine()
+                ->getRepository('StfalconEventBundle:Ticket')
+                ->findByPayment($payment);
+
+            $user = $ticket->getUser();
+            $event = $ticket->getEvent();
+
+            $mail = new \Stfalcon\Bundle\EventBundle\Entity\Mail();
+            $mail->setText('Доброго времени суток, %fullname%. <br />
+                            Благодарим Вас, за оплату участия в конференции %event%.
+                            Напоминаем, что конференция состоится %date% года, в %place%.');
+
+            $dateFormatter = new \IntlDateFormatter(
+                'ru-RU',
+                \IntlDateFormatter::NONE,
+                \IntlDateFormatter::NONE,
+                date_default_timezone_get(),
+                \IntlDateFormatter::GREGORIAN,
+                'd MMMM Y'
+            );
+
+            $text = $mail->replace(
+                array(
+                    '%user_id%' => $user->getId(),
+                    '%fullname%' => $user->getFullName(),
+                    '%event%'  => $event->getName(),
+                    '%date%' => $dateFormatter->format($event->getDate()),
+                    '%place%' => $event->getPlace(),
+                )
+            );
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject($event->getName())
+                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                ->setTo($user->getEmail())
+                ->setBody($mail->getText());
+
+            $this->get('mailer')->send($message);
         } else {
             $message = 'Проверка контрольной подписи данных о платеже провалена!';
         }
