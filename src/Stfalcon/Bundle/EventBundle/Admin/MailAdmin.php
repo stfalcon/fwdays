@@ -63,9 +63,9 @@ class MailAdmin extends Admin
             ->add('event')
             ->add('_action', 'actions', array(
                 'actions'   => array(
-                'edit'      => array(),
-                'delete'    => array(),
-                'ispremium' => array('template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig'),
+                    'edit'      => array(),
+                    'delete'    => array(),
+                    'ispremium' => array('template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig'),
                 ),
             ));
     }
@@ -129,12 +129,10 @@ class MailAdmin extends Admin
                     continue;
                 }
 
-                foreach ($users as $user) {
-                    $mailQueue = new MailQueue();
-                    $mailQueue->setUser($user);
-                    $mailQueue->setMail($mail);
-                    $em->persist($mailQueue);
-                }
+                $mailQueue = new MailQueue();
+                $mailQueue->setUser($user);
+                $mailQueue->setMail($mail);
+                $em->persist($mailQueue);
             }
         }
 
