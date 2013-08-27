@@ -63,7 +63,7 @@
                                             <td width="40"></td>
                                         </tr>
                                         {# Add padding from the bottom if it is a mail for default event #}
-                                        {% if mail.event is not defined or mail.event is null %}
+                                        {% if mail.event is not defined or mail.event is null or (add_bottom_padding is defined and add_bottom_padding) %}
                                             <tr>
                                                 <td>
                                                     <div style="height: 40px;">&nbsp;</div>
