@@ -129,6 +129,21 @@
                 margin: 0;
                 padding: 0 0 7px 0;
             }
+            .border-frame,
+            .border-frame2 {
+                position: absolute;
+                left:     0;
+                top:      0;
+                width:    100%;
+                height:   100%;
+                border:   1px dashed #676767;
+            }
+            .border-frame2 {
+                left:   auto;
+                top:    auto;
+                right:  0;
+                bottom: 0;
+            }
         </style>
     </head>
 
@@ -155,7 +170,6 @@
                         {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
                     {% endif %}
                     <br />
-                    в
                     г. {{ event.city }},
                     {% if event.place %}
                         {{ event.place }}
@@ -184,5 +198,8 @@
                 <p>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search?q=fwdays&src=hash">#fwdays</a>)</p>
             </div>
         </div>
+
+        <div class="border-frame"></div>
+        <div class="border-frame2"></div>
     </body>
 </html>
