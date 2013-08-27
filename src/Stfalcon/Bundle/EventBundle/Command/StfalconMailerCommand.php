@@ -38,6 +38,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var \Symfony\Component\Routing\RequestContext $context */
+        $context = $this->getContainer()->get('router')->getContext();
+        $context->setHost('frameworksdays.com');
+        $context->setScheme('http');
+
         $limit = 10;
 
         if ($input->getOption('amount')) {
