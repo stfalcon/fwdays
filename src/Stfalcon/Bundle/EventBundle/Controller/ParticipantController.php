@@ -63,11 +63,11 @@ class ParticipantController extends BaseController
         $stmt->bindValue('event_id', $event->getId());
         $stmt->bindValue('lim', $count, 'integer');
         $stmt->execute();
-        $tmp_ids = $stmt->fetchAll();
+        $tmpIDs = $stmt->fetchAll();
 
         $ids = array();
 
-        foreach ($tmp_ids as $id) {
+        foreach ($tmpIDs as $id) {
             $ids[] = $id['user_id'];
         }
 
