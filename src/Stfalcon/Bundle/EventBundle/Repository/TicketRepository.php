@@ -99,11 +99,11 @@ class TicketRepository extends EntityRepository
      *
      * @param Event $event
      * @param int   $count
-     * @param array $ids
+     * @param array $usersIDs
      *
      * @return array
      */
-    public function findTicketsByEventGroupByUser(Event $event, $count = null, $ids = null)
+    public function findTicketsByEventGroupByUser(Event $event, $count = null, $usersIDs = null)
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -114,15 +114,15 @@ class TicketRepository extends EntityRepository
             ->groupBy('t.user')
             ->setParameter('event', $event);
 
-        if (!is_null($ids) && is_array($ids)) {
+        if (!is_null($usersIDs) && is_array($usersIDs)) {
             $qb->andWhere($qb->expr()->in('t.user', ':ids'))
-               ->setParameter('ids', $ids);
+               ->setParameter('ids', $usersIDs);
         }
 
         if (isset($count) && $count > 0) {
             $qb->setMaxResults($count);
         }
 
-        return $qb->getQuery() ->getResult();
+        return $qb->getQuery()->getResult();
     }
 }

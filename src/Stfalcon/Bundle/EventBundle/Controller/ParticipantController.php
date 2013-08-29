@@ -65,7 +65,7 @@ class ParticipantController extends BaseController
         $stmt->execute();
         $tmp_ids = $stmt->fetchAll();
 
-        $ids = [];
+        $ids = array();
 
         foreach ($tmp_ids as $id) {
             $ids[] = $id['user_id'];
