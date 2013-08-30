@@ -56,6 +56,7 @@
         Тогда код ответа сервера должен быть 200
         И я не должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
         И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
+        И пользователь "Michael Jordan" должен быть в списке только один раз
 
     Сценарий: Отправка e-mail для пользователей
         Допустим я вхожу в учетную запись с именем "admin@fwdays.com" и паролем "qwerty"
