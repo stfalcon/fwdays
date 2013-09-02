@@ -125,4 +125,35 @@ class TicketRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Find random users by event
+     *
+     * @param Event $event Event
+     * @param int $count Count
+     *
+     * @return array
+     */
+    public function findRandomUsersByEvent($event, $count)
+    {
+        $conn = $this->getEntityManager()->getConnection('default');
+
+        $sql = "SELECT user_id
+                FROM event__tickets
+                WHERE event_id = :event_id
+                ORDER BY RAND() LIMIT :lim";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('event_id', $event->getId());
+        $stmt->bindValue('lim', $count, 'integer');
+        $stmt->execute();
+        $tmpIDs = $stmt->fetchAll();
+
+        $ids = array();
+
+        foreach ($tmpIDs as $id) {
+            $ids[] = $id['user_id'];
+        }
+
+        return $ids;
+    }
 }

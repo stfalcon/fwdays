@@ -53,25 +53,10 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $conn = $this->getDoctrine()->getConnection('default');
+        $usersIDs = $ticketRepository->findRandomUsersByEvent($event, $count);
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count, $usersIDs);
 
-        $sql = "SELECT user_id
-                FROM event__tickets
-                WHERE event_id = :event_id
-                ORDER BY RAND() LIMIT :lim";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue('event_id', $event->getId());
-        $stmt->bindValue('lim', $count, 'integer');
-        $stmt->execute();
-        $tmpIDs = $stmt->fetchAll();
-
-        $ids = array();
-
-        foreach ($tmpIDs as $id) {
-            $ids[] = $id['user_id'];
-        }
-
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count, $ids);
+        shuffle($participants);
 
         return array(
             'event' => $event,
