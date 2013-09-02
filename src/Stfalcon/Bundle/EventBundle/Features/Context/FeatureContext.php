@@ -249,10 +249,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function singleUser($userName)
     {
         $result = $this->getSession()->getPage()->find('css', '.table.table-bordered.table-striped');
-
-        if (mb_substr_count($result->getHtml(), $userName) != 1) {
-            assertEquals(1 ,mb_substr_count($result->getHtml(), $userName));
-        }
+        assertEquals(1 ,mb_substr_count($result->getHtml(), $userName));
     }
 
 }
