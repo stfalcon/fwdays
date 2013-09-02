@@ -250,12 +250,22 @@ class TicketController extends BaseController
             return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
         }
 
-        // проверяем или билет ещё не отмечен как использованный
-        if ($ticket->isUsed()) {
-            $timeNow = new \DateTime();
-            $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
+        // проверяем существует ли оплата
+        if ($ticket->getPayment() instanceof Payment) {
+            // проверяем оплочен ли билет
+            if ($ticket->getPayment()->isPaid()) {
+                // проверяем или билет ещё не отмечен как использованный
+                if ($ticket->isUsed()) {
+                    $timeNow = new \DateTime();
+                    $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
 
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
+                    return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>');
+                }
+            } else {
+                return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' не оплочен ' . '</h1>');
+            }
+        } else {
+            return new Response('<h1 style="color:orange"> оплата не существует </h1>');
         }
 
         $em = $this->getDoctrine()->getManager();
