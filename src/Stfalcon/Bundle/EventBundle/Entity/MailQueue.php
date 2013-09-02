@@ -36,7 +36,7 @@ class MailQueue
     /**
      * @var Mail
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", cascade={"persist"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $mail;
