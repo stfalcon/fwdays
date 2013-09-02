@@ -49,6 +49,22 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userDefault);
         $this->addReference('user-default', $userDefault);
 
+        $userDefault2 = new User();
+        $userDefault2->setUsername('Pirate');
+        $userDefault2->setFullname('Jack Sparrow');
+        $userDefault2->setEmail('jack.sparrow@fwdays.com');
+        $userDefault2->setPlainPassword('qwerty');
+        $userDefault2->addRole('ROLE_USER');
+        $userDefault2->setCountry('Haiti');
+        $userDefault2->setCity('Tortuga');
+        $userDefault2->setCompany('Pirates of the Caribbean');
+        $userDefault2->setPost('Captain');
+        $userDefault2->setEnabled(true);
+        $userDefault2->setExpired(false);
+        $userDefault2->setLocked(false);
+        $manager->persist($userDefault2);
+        $this->addReference('user-default2', $userDefault2);
+
         $manager->flush();
     }
 }
