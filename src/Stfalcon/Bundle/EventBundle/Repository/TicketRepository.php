@@ -99,23 +99,61 @@ class TicketRepository extends EntityRepository
      *
      * @param Event $event
      * @param int   $count
+     * @param array $usersIDs
      *
      * @return array
      */
-    public function findTicketsByEventGroupByUser(Event $event, $count = null)
+    public function findTicketsByEventGroupByUser(Event $event, $count = null, $usersIDs = null)
     {
-        $qb = $this->createQueryBuilder('t')
-            ->select('t')
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->select('t')
             ->join('t.event', 'e')
             ->where('e.active = true')
             ->andWhere('t.event = :event')
             ->groupBy('t.user')
             ->setParameter('event', $event);
 
+        if (!is_null($usersIDs) && is_array($usersIDs)) {
+            $qb->andWhere($qb->expr()->in('t.user', ':ids'))
+               ->setParameter('ids', $usersIDs);
+        }
+
         if (isset($count) && $count > 0) {
             $qb->setMaxResults($count);
         }
 
-        return $qb->getQuery() ->getResult();
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find random users by event
+     *
+     * @param Event $event Event
+     * @param int $count Count
+     *
+     * @return array
+     */
+    public function findRandomUsersByEvent($event, $count)
+    {
+        $conn = $this->getEntityManager()->getConnection('default');
+
+        $sql = "SELECT user_id
+                FROM event__tickets
+                WHERE event_id = :event_id
+                ORDER BY RAND() LIMIT :lim";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue('event_id', $event->getId());
+        $stmt->bindValue('lim', $count, 'integer');
+        $stmt->execute();
+        $tmpIDs = $stmt->fetchAll();
+
+        $ids = array();
+
+        foreach ($tmpIDs as $id) {
+            $ids[] = $id['user_id'];
+        }
+
+        return $ids;
     }
 }
