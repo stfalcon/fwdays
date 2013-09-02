@@ -51,28 +51,27 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $manager->persist($ticket);
         $this->addReference('ticket-3', $ticket);
 
-        // Ticket 4 inactive - no payment
+        // Ticket 4: not used without payment
         $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
         $ticket->setUsed(false);
-//        $ticket->setPayment(null);
         $manager->persist($ticket);
         $this->addReference('ticket-4', $ticket);
 
-        // Ticket 5 inactive - have payment
+        // Ticket 5: not used with paid payment
         $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
         $ticket->setUsed(false);
         $ticket->setPayment($manager->merge($this->getReference('payment')));
         $manager->persist($ticket);
         $this->addReference('ticket-5', $ticket);
 
-        // Ticket 6 inactive - pending
+        // Ticket 6: used with pending payment
         $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('pending')));
         $manager->persist($ticket);
         $this->addReference('ticket-6', $ticket);
 
-        // Ticket 7 active - have payment
+        // Ticket 7: used with paid payment
         $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('payment')));
