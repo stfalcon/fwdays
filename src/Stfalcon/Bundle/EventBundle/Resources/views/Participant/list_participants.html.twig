@@ -11,14 +11,14 @@
                 {% endif %}
                 <div class="part-location">
                     {% if participant.user.city is not null and participant.user.country is not null %}
-                        {{participant.user.city}}, {{ participant.user.country }}.
+                        {{ participant.user.city }}, {{ participant.user.country }}.
                     {% else %}
                         {% if participant.user.city is not null %}
-                            {{participant.user.city}}.
+                            {{ participant.user.city }}.
                         {% endif %}
 
                         {% if participant.user.country is not null %}
-                            {{participant.user.country}}.
+                            {{ participant.user.country }}.
                         {% endif %}
                     {% endif %}
                 </div>

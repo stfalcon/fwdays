@@ -7,16 +7,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-const COUNT_PARTICIPANTS = 20;
 /**
  * Participant controller
  */
 class ParticipantController extends BaseController
 {
     /**
+     * Count participants
+     */
+    const COUNT_PARTICIPANTS = 20;
+
+    /**
      * Lists all speakers for event
      *
-     * @param string $event_slug
+     * @param string $event_slug Event slug
      *
      * @return array
      *
@@ -30,7 +34,7 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, COUNT_PARTICIPANTS);
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, self::COUNT_PARTICIPANTS);
 
         return array(
             'event' => $event,
@@ -41,13 +45,13 @@ class ParticipantController extends BaseController
     /**
      * List of participants
      *
-     * @param string $event_slug
-     * @param int $offset
+     * @param string $event_slug Event slug
+     * @param int    $offset     Offset
      *
      * @return array
      *
      * @Route("/event/{event_slug}/participants/{offset}", name="event_list_participants")
-     * @Template()
+     * @Template("StfalconEventBundle:Participant:list_participants.html.twig")
      */
     public function listParticipantsAction($event_slug, $offset)
     {
@@ -56,7 +60,7 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, COUNT_PARTICIPANTS, $offset);
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, self::COUNT_PARTICIPANTS, $offset);
 
         return array(
             'event' => $event,
