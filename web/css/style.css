@@ -1970,3 +1970,7 @@ div.amount {
 .event-slider .slide .register:active {
     color: #cd3b23;
 }
+.preloader {
+    display: none;
+    text-align: center;
+}

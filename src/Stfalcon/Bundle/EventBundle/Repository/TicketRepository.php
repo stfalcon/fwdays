@@ -99,13 +99,15 @@ class TicketRepository extends EntityRepository
      *
      * @param Event $event
      * @param int   $count
+     * @param int   $offset
      *
      * @return array
      */
-    public function findTicketsByEventGroupByUser(Event $event, $count = null)
+    public function findTicketsByEventGroupByUser(Event $event, $count = null, $offset = null)
     {
-        $qb = $this->createQueryBuilder('t')
-            ->select('t')
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->select('t')
             ->join('t.event', 'e')
             ->where('e.active = true')
             ->andWhere('t.event = :event')
@@ -116,6 +118,10 @@ class TicketRepository extends EntityRepository
             $qb->setMaxResults($count);
         }
 
-        return $qb->getQuery() ->getResult();
+        if (isset($offset) && $offset > 0) {
+            $qb->setFirstResult($offset);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

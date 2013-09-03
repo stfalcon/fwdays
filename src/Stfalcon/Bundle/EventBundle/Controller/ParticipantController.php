@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-
+const COUNT_PARTICIPANTS = 20;
 /**
  * Participant controller
  */
@@ -30,7 +30,33 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event);
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, COUNT_PARTICIPANTS);
+
+        return array(
+            'event' => $event,
+            'participants' => $participants
+        );
+    }
+
+    /**
+     * List of participants
+     *
+     * @param string $event_slug
+     * @param int $offset
+     *
+     * @return array
+     *
+     * @Route("/event/{event_slug}/participants/{offset}", name="event_list_participants")
+     * @Template()
+     */
+    public function listParticipantsAction($event_slug, $offset)
+    {
+        $event = $this->getEventBySlug($event_slug);
+
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
+
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, COUNT_PARTICIPANTS, $offset);
 
         return array(
             'event' => $event,
