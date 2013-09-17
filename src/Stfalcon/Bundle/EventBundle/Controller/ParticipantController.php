@@ -12,10 +12,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class ParticipantController extends BaseController
 {
-    /**
-     * Count participants
-     */
-    const COUNT_PARTICIPANTS = 20;
 
     /**
      * Lists all speakers for event
@@ -65,6 +61,11 @@ class ParticipantController extends BaseController
 
         $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count);
 
+        if ($count > 1) {
+            shuffle($participants);
+            $participants = array_slice($participants, 0, $count);
+        }
+
         return array(
             'event' => $event,
             'participants' => $participants
@@ -86,12 +87,7 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, self::COUNT_PARTICIPANTS, $offset);
-
-        if ($count > 1) {
-            shuffle($participants);
-            $participants = array_slice($participants, 0, $count);
-        }
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, 20, $offset);
 
         return array(
             'event' => $event,
