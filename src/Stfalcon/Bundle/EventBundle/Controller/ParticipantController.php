@@ -53,10 +53,12 @@ class ParticipantController extends BaseController
         /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
         $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
 
-        $usersIDs = $ticketRepository->findRandomUsersByEvent($event, $count);
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count, $usersIDs);
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count);
 
-        shuffle($participants);
+        if ($count > 1) {
+            shuffle($participants);
+            $participants = array_slice($participants, 0, $count);
+        }
 
         return array(
             'event' => $event,
