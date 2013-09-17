@@ -119,11 +119,17 @@ class InterkassaController extends Controller
                 'add_bottom_padding' => true
             ));
 
+            /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\StfalconPdfGenerator */
+            $pdfGen = $this->get('stfalcon_service.pdf_generator');
+            $html = $pdfGen->generateHTML($ticket);
+            $outputFile = 'ticket-' . $event->getSlug() . '.pdf';
+
             $message = \Swift_Message::newInstance()
                 ->setSubject($event->getName())
                 ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                 ->setTo($user->getEmail())
-                ->setBody($body, 'text/html');
+                ->setBody($body, 'text/html')
+                ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile)));
 
             $this->get('mailer')->send($message);
         } else {
