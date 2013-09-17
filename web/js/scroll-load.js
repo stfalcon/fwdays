@@ -1,39 +1,23 @@
 $(document).ready(function (){
-    /**
-     * Participants wrapper
-     *
-     * @type {*|jQuery|HTMLElement}
-     */
     var $participantsWrapper = $('ul.participants');
 
-    /**
-     * Preloader element
-     *
-     * @type {*|jQuery|HTMLElement}
-     */
+    /** Get preloader element */
     var $preLoader = $('.preloader');
     $(window).scroll(function () {
-        /**
-         * Footer top offset
-         *
-         * @type {Function|jQuery.offset.top|jQuery}
-         */
+
+        /** Get Footer top offset */
         var footerOffsetTop = $('#footer').offset().top;
         if ($(window).scrollTop() >= (footerOffsetTop-$(window).height() - 100)) {
-            /**
-             * Count of showed participants
-             *
-             * @type {Number|jQuery}
-             */
+
+            /** Count of showed participants */
             var offset = $('ul.participants li').length;
-            /**
-             * Sent AJAX request for get next part of participants
-             */
+
+            /** Sent AJAX request for get next part of participants */
             $.ajax({
                 cache: false,
                 async: false,
                 url: window.location.href + '/' + offset,
-                beforeSend: function (xhr) {
+                beforeSend: function () {
                     $preLoader.show();
                 },
                 success: function (data) {
