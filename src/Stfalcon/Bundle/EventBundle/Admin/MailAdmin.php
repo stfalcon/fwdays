@@ -121,9 +121,7 @@ class MailAdmin extends Admin
         }
 
         if (isset($users)) {
-            $mail->setTotalMessages(count($users));
-            $em->persist($mail);
-
+            $countSubscribers = 0;
             foreach ($users as $user) {
                 if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                     continue;
@@ -133,7 +131,9 @@ class MailAdmin extends Admin
                 $mailQueue->setUser($user);
                 $mailQueue->setMail($mail);
                 $em->persist($mailQueue);
+                $countSubscribers++;
             }
+            $mail->setTotalMessages($countSubscribers);
         }
 
         $em->persist($mail);
