@@ -104,8 +104,9 @@ class TicketRepository extends EntityRepository
      */
     public function findTicketsByEventGroupByUser(Event $event, $count = null)
     {
-        $qb = $this->createQueryBuilder('t')
-            ->select('t')
+        $qb = $this->createQueryBuilder('t');
+
+        $qb->select('t')
             ->join('t.event', 'e')
             ->where('e.active = true')
             ->andWhere('t.event = :event')
@@ -116,6 +117,6 @@ class TicketRepository extends EntityRepository
             $qb->setMaxResults($count);
         }
 
-        return $qb->getQuery() ->getResult();
+        return $qb->getQuery()->getResult();
     }
 }

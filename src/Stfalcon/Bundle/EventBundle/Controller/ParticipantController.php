@@ -55,6 +55,11 @@ class ParticipantController extends BaseController
 
         $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count);
 
+        if ($count > 1) {
+            shuffle($participants);
+            $participants = array_slice($participants, 0, $count);
+        }
+
         return array(
             'event' => $event,
             'participants' => $participants
