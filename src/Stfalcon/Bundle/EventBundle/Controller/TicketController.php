@@ -262,7 +262,7 @@ class TicketController extends BaseController
                     return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>');
                 }
             } else {
-                return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' не оплочен' . '</h1>');
+                return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' не оплачен' . '</h1>');
             }
         } else {
             return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' оплата не существует' . '</h1>');
