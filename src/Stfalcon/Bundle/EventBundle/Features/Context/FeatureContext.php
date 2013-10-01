@@ -151,38 +151,44 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $mail      E-mail Ticket owner
+     * @param string $eventSlug Event slug
      *
-     * @Given /^я перехожу на страницу регистрации для "([^"]*)"$/
+     * @Given /^я перехожу на страницу регистрации билета для пользователя "([^"]*)" для события "([^"]*)"$/
      */
-    public function goToTicketRegistrationPage($mail)
+    public function goToTicketRegistrationPage($mail, $eventSlug)
     {
-        $this->visit($this->getTicketUrl($mail));
+        $this->visit($this->getTicketUrl($mail, $eventSlug));
     }
 
     /**
-     * @param string $mail E-mail Ticket owner
+     * @param string $mail      E-mail Ticket owner
+     * @param string $eventSlug Event slug
      *
-     * @Given /^я перехожу на страницу регистрации для "([^"]*)" с битым хешем$/
+     * @Given /^я перехожу на страницу регистрации билета с битым хешем для пользователя "([^"]*)" для события "([^"]*)"$/
      */
-    public function goToTicketRegistrationPageWithWrongHash($mail)
+    public function goToTicketRegistrationPageWithWrongHash($mail, $eventSlug)
     {
-        $this->visit($this->getTicketUrl($mail) . 'fffuu');
+        $this->visit($this->getTicketUrl($mail, $eventSlug) . 'fffuu');
     }
 
     /**
      * Generate URL for register ticket
      *
-     * @param string $mail E-mail Ticket owner
+     * @param string $mail      E-mail Ticket owner
+     * @param string $eventSlug Event slug
      *
      * @return string
      */
-    public function getTicketUrl($mail)
+    public function getTicketUrl($mail, $eventSlug)
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user   = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+
+        $user  = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $eventSlug));
+
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
 
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_check',
             array(
