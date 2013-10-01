@@ -32,7 +32,14 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $userDefault = $manager->merge($this->getReference('user-default'));
+        /**
+         * @var \Application\Bundle\UserBundle\Entity\User $userDefault
+         * @var \Application\Bundle\UserBundle\Entity\User $userDefault2
+         * @var \Application\Bundle\UserBundle\Entity\User $userAdmin
+         */
+        $userDefault  = $manager->merge($this->getReference('user-default'));
+        $userDefault2 = $manager->merge($this->getReference('user-default2'));
+        $userAdmin    = $manager->merge($this->getReference('user-admin'));
 
         // Ticket 1
         $ticket = new Ticket($manager->merge($this->getReference('event-zfday')), $userDefault);
@@ -47,49 +54,33 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $this->addReference('ticket-2', $ticket);
 
         // Ticket 3
-        $ticket = new Ticket($manager->merge($this->getReference('event-not-active')), $manager->merge($this->getReference('user-admin')));
+        $ticket = new Ticket($manager->merge($this->getReference('event-not-active')), $userAdmin);
         $manager->persist($ticket);
         $this->addReference('ticket-3', $ticket);
 
         // Ticket 4: not used without payment
-<<<<<<< HEAD
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
-=======
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-default2')));
+        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $userDefault2);
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
->>>>>>> Refactoring
         $ticket->setUsed(false);
         $manager->persist($ticket);
 
         // Ticket 5: not used with paid payment
-<<<<<<< HEAD
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
-=======
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-default2')));
+        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $userDefault2);
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
->>>>>>> Refactoring
         $ticket->setUsed(false);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
 
         // Ticket 6: used with pending payment
-<<<<<<< HEAD
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
-=======
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-default2')));
+        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $userDefault2);
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
->>>>>>> Refactoring
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('pending2')));
         $manager->persist($ticket);
 
         // Ticket 7: used with paid payment
-<<<<<<< HEAD
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-admin')));
-=======
-        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $manager->merge($this->getReference('user-default2')));
+        $ticket = new Ticket($manager->merge($this->getReference('event-phpday')), $userDefault2);
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
->>>>>>> Refactoring
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
