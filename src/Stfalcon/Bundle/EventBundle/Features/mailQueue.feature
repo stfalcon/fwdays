@@ -29,7 +29,7 @@
         И я на странице "admin/bundle/event/mail/create"
         И я заполняю поле "Title *" значением "Тестовый заголовок"
         И я заполняю поле "Text *" значением "Текст сообщение"
-        И я выбираю "PHP Frameworks Day" в поле "Event"
+        И я выбираю "Javascript Frameworks Day" в поле "Event"
         И я выбираю "Оплачено" в поле "Payment Status"
         Если я нажимаю "btn_create_and_edit"
         Тогда код ответа сервера должен быть 200
@@ -54,8 +54,9 @@
         Тогда я должен видеть "Элемент создан успешно"
         Если я кликаю по ссылке "Line items"
         Тогда код ответа сервера должен быть 200
-        И я не должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
+        И я должен видеть "Jack Sparrow" внутри элемента ".table.table-bordered.table-striped"
         И я должен видеть "Michael Jordan" внутри элемента ".table.table-bordered.table-striped"
+        И пользователь "Jack Sparrow" должен быть в списке только один раз
         И пользователь "Michael Jordan" должен быть в списке только один раз
 
     Сценарий: Отправка e-mail для пользователей

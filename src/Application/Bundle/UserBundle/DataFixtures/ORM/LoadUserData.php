@@ -23,7 +23,7 @@ class LoadUserData extends AbstractFixture
     {
         $userAdmin = new User();
         $userAdmin->setUsername('Администратор');
-        $userAdmin->setFullname('Jack Sparrow');
+        $userAdmin->setFullname('Super Admin');
         $userAdmin->setEmail('admin@fwdays.com');
         $userAdmin->setPlainPassword('qwerty');
         $userAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
