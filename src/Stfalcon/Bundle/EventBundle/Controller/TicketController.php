@@ -259,7 +259,7 @@ class TicketController extends BaseController
                     $timeNow = new \DateTime();
                     $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
 
-                    return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>');
+                    return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
                 }
             } else {
                 return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' не оплачен' . '</h1>');
