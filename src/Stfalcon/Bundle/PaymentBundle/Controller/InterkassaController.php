@@ -61,8 +61,8 @@ class InterkassaController extends Controller
         $params = $_POST;
         /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
         $payment = $this->getDoctrine()
-            ->getRepository('StfalconPaymentBundle:Payment')
-            ->findOneBy(array('id' => $params['ik_payment_id']));
+                     ->getRepository('StfalconPaymentBundle:Payment')
+                     ->findOneBy(array('id' => $params['ik_payment_id']));
 
         $dateFormatter = new \IntlDateFormatter(
             'ru-RU',
@@ -77,13 +77,13 @@ class InterkassaController extends Controller
             && $this->_checkPaymentStatus($params)
             && $payment->getAmount() == $params['ik_payment_amount']
         ) {
-            $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
-
             $payment->setStatus(Payment::STATUS_PAID);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($payment);
             $em->flush();
+
+            $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
 
             // Render and send email
             /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
