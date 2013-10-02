@@ -75,7 +75,7 @@ class InterkassaController extends Controller
 
         if ($payment->getStatus() == Payment::STATUS_PENDING
             && $this->_checkPaymentStatus($params)
-            && $payment->getAmount() != $params['ik_payment_amount']
+            && $payment->getAmount() == $params['ik_payment_amount']
         ) {
             $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
 
