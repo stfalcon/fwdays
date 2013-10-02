@@ -75,6 +75,7 @@ class InterkassaController extends Controller
 
         if ($payment->getStatus() == Payment::STATUS_PENDING
             && $this->_checkPaymentStatus($params)
+            // @todo временнный фикс бага с Интеркассой. они не проверяют ik_sign_hash
             && $payment->getAmount() == $params['ik_payment_amount']
         ) {
             $payment->setStatus(Payment::STATUS_PAID);
