@@ -59,9 +59,10 @@ class InterkassaController extends Controller
     {
 //        $params = $this->getRequest()->request->all();
         $params = $_POST;
+        /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
         $payment = $this->getDoctrine()
-                     ->getRepository('StfalconPaymentBundle:Payment')
-                     ->findOneBy(array('id' => $params['ik_payment_id']));
+            ->getRepository('StfalconPaymentBundle:Payment')
+            ->findOneBy(array('id' => $params['ik_payment_id']));
 
         $dateFormatter = new \IntlDateFormatter(
             'ru-RU',
@@ -73,59 +74,69 @@ class InterkassaController extends Controller
         );
 
         if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
-            $payment->setStatus(Payment::STATUS_PAID);
+            // Проверяем или сумма которая была оплачена через Интеркассу совпадает с суммой указаной в платеже
+            // Если не совпадает - выдаем сообщение. Если совпадает - проводим дальше проверку.
+            if ($payment->getAmount() != $params['ik_payment_amount']) {
+                $resultMessage = sprintf(
+                    'Сумма которая оплачена через Интеркассу %0.2f не совпадает с суммой указаной в платеже %0.2f. Платеж провален!',
+                    $params['ik_payment_amount'],
+                    $payment->getAmount()
+                );
+            } else {
+                $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($payment);
-            $em->flush();
+                $payment->setStatus(Payment::STATUS_PAID);
 
-            $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($payment);
+                $em->flush();
 
-            // Render and send email
-            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
-            $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
-                'payment' => $payment
-            ));
-
-            $user  = $ticket->getUser();
-            $event = $ticket->getEvent();
-
-            $twig = $this->get('twig');
-
-            $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
-                ->render(array(
-                    'event_slug' => $event->getSlug()
+                // Render and send email
+                /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
+                $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
+                    'payment' => $payment
                 ));
 
-            $mail = new Mail();
-            $mail->setEvent($event);
-            $mail->setText($successPaymentTemplateContent);
+                $user  = $ticket->getUser();
+                $event = $ticket->getEvent();
 
-            // Get base template for email
-            $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+                $twig = $this->get('twig');
 
-            $text = $mail->replace(
-                array(
-                    '%fullname%' => $user->getFullName(),
-                    '%event%'    => $event->getName(),
-                    '%date%'     => $dateFormatter->format($event->getDate()),
-                    '%place%'    => $event->getPlace(),
-                )
-            );
+                $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
+                    ->render(array(
+                        'event_slug' => $event->getSlug()
+                    ));
 
-            $body = $emailTemplateContent->render(array(
-                'text'               => $text,
-                'mail'               => $mail,
-                'add_bottom_padding' => true
-            ));
+                $mail = new Mail();
+                $mail->setEvent($event);
+                $mail->setText($successPaymentTemplateContent);
 
-            $message = \Swift_Message::newInstance()
-                ->setSubject($event->getName())
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->setBody($body, 'text/html');
+                // Get base template for email
+                $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
 
-            $this->get('mailer')->send($message);
+                $text = $mail->replace(
+                    array(
+                        '%fullname%' => $user->getFullName(),
+                        '%event%'    => $event->getName(),
+                        '%date%'     => $dateFormatter->format($event->getDate()),
+                        '%place%'    => $event->getPlace(),
+                    )
+                );
+
+                $body = $emailTemplateContent->render(array(
+                    'text'               => $text,
+                    'mail'               => $mail,
+                    'add_bottom_padding' => true
+                ));
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($event->getName())
+                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                    ->setTo($user->getEmail())
+                    ->setBody($body, 'text/html');
+
+                $this->get('mailer')->send($message);
+            }
         } else {
             $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
         }
@@ -144,40 +155,40 @@ class InterkassaController extends Controller
      */
     private function _checkPaymentStatus($params)
     {
-        if (!array_key_exists('ik_shop_id', $params) ||
-            !array_key_exists('ik_payment_amount', $params) ||
-            !array_key_exists('ik_payment_id', $params) ||
-            !array_key_exists('ik_paysystem_alias', $params) ||
-            !array_key_exists('ik_baggage_fields', $params) ||
-            !array_key_exists('ik_payment_state', $params) ||
-            !array_key_exists('ik_trans_id', $params) ||
-            !array_key_exists('ik_currency_exch', $params) ||
-            !array_key_exists('ik_fees_payer', $params)) {
-            return false;
-        }
-
-        $config = $this->container->getParameter('stfalcon_payment.config');
-
-        $crc = md5(
-            $params['ik_shop_id'] . ':' .
-            $params['ik_payment_amount'] . ':' .
-            $params['ik_payment_id'] . ':' .
-            $params['ik_paysystem_alias'] . ':' .
-            $params['ik_baggage_fields'] . ':' .
-            $params['ik_payment_state'] . ':' .
-            $params['ik_trans_id'] . ':' .
-            $params['ik_currency_exch'] . ':' .
-            $params['ik_fees_payer'] . ':' .
-            $config['interkassa']['secret']
-        );
-
-        $paymentIsSuccess = ('success' == $params['ik_payment_state']);
-
-        if (strtoupper($params['ik_sign_hash']) === strtoupper($crc) && $paymentIsSuccess) {
+//        if (!array_key_exists('ik_shop_id', $params) ||
+//            !array_key_exists('ik_payment_amount', $params) ||
+//            !array_key_exists('ik_payment_id', $params) ||
+//            !array_key_exists('ik_paysystem_alias', $params) ||
+//            !array_key_exists('ik_baggage_fields', $params) ||
+//            !array_key_exists('ik_payment_state', $params) ||
+//            !array_key_exists('ik_trans_id', $params) ||
+//            !array_key_exists('ik_currency_exch', $params) ||
+//            !array_key_exists('ik_fees_payer', $params)) {
+//            return false;
+//        }
+//
+//        $config = $this->container->getParameter('stfalcon_payment.config');
+//
+//        $crc = md5(
+//            $params['ik_shop_id'] . ':' .
+//            $params['ik_payment_amount'] . ':' .
+//            $params['ik_payment_id'] . ':' .
+//            $params['ik_paysystem_alias'] . ':' .
+//            $params['ik_baggage_fields'] . ':' .
+//            $params['ik_payment_state'] . ':' .
+//            $params['ik_trans_id'] . ':' .
+//            $params['ik_currency_exch'] . ':' .
+//            $params['ik_fees_payer'] . ':' .
+//            $config['interkassa']['secret']
+//        );
+//
+//        $paymentIsSuccess = ('success' == $params['ik_payment_state']);
+//
+//        if (strtoupper($params['ik_sign_hash']) === strtoupper($crc) && $paymentIsSuccess) {
             return true;
-        } else {
-            return false;
-        }
+//        } else {
+//            return false;
+//        }
     }
 
     /**
