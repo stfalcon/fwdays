@@ -73,70 +73,63 @@ class InterkassaController extends Controller
             'd MMMM Y'
         );
 
-        if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
-            // Проверяем или сумма которая была оплачена через Интеркассу совпадает с суммой указаной в платеже
-            // Если не совпадает - выдаем сообщение. Если совпадает - проводим дальше проверку.
-            if ($payment->getAmount() != $params['ik_payment_amount']) {
-                $resultMessage = sprintf(
-                    'Сумма которая оплачена через Интеркассу %0.2f не совпадает с суммой указаной в платеже %0.2f. Платеж провален!',
-                    $params['ik_payment_amount'],
-                    $payment->getAmount()
-                );
-            } else {
-                $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+        if ($payment->getStatus() == Payment::STATUS_PENDING
+            && $this->_checkPaymentStatus($params)
+            && $payment->getAmount() != $params['ik_payment_amount']
+        ) {
+            $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
 
-                $payment->setStatus(Payment::STATUS_PAID);
+            $payment->setStatus(Payment::STATUS_PAID);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($payment);
-                $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($payment);
+            $em->flush();
 
-                // Render and send email
-                /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
-                $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
-                    'payment' => $payment
+            // Render and send email
+            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
+            $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
+                'payment' => $payment
+            ));
+
+            $user  = $ticket->getUser();
+            $event = $ticket->getEvent();
+
+            $twig = $this->get('twig');
+
+            $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
+                ->render(array(
+                    'event_slug' => $event->getSlug()
                 ));
 
-                $user  = $ticket->getUser();
-                $event = $ticket->getEvent();
+            $mail = new Mail();
+            $mail->setEvent($event);
+            $mail->setText($successPaymentTemplateContent);
 
-                $twig = $this->get('twig');
+            // Get base template for email
+            $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
 
-                $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
-                    ->render(array(
-                        'event_slug' => $event->getSlug()
-                    ));
+            $text = $mail->replace(
+                array(
+                    '%fullname%' => $user->getFullName(),
+                    '%event%'    => $event->getName(),
+                    '%date%'     => $dateFormatter->format($event->getDate()),
+                    '%place%'    => $event->getPlace(),
+                )
+            );
 
-                $mail = new Mail();
-                $mail->setEvent($event);
-                $mail->setText($successPaymentTemplateContent);
+            $body = $emailTemplateContent->render(array(
+                'text'               => $text,
+                'mail'               => $mail,
+                'add_bottom_padding' => true
+            ));
 
-                // Get base template for email
-                $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+            $message = \Swift_Message::newInstance()
+                ->setSubject($event->getName())
+                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                ->setTo($user->getEmail())
+                ->setBody($body, 'text/html');
 
-                $text = $mail->replace(
-                    array(
-                        '%fullname%' => $user->getFullName(),
-                        '%event%'    => $event->getName(),
-                        '%date%'     => $dateFormatter->format($event->getDate()),
-                        '%place%'    => $event->getPlace(),
-                    )
-                );
-
-                $body = $emailTemplateContent->render(array(
-                    'text'               => $text,
-                    'mail'               => $mail,
-                    'add_bottom_padding' => true
-                ));
-
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($event->getName())
-                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                    ->setTo($user->getEmail())
-                    ->setBody($body, 'text/html');
-
-                $this->get('mailer')->send($message);
-            }
+            $this->get('mailer')->send($message);
         } else {
             $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
         }
