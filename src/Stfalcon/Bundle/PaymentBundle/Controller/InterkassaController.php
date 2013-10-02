@@ -59,6 +59,7 @@ class InterkassaController extends Controller
     {
 //        $params = $this->getRequest()->request->all();
         $params = $_POST;
+        /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
         $payment = $this->getDoctrine()
                      ->getRepository('StfalconPaymentBundle:Payment')
                      ->findOneBy(array('id' => $params['ik_payment_id']));
@@ -72,7 +73,10 @@ class InterkassaController extends Controller
             'd MMMM Y'
         );
 
-        if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
+        if ($payment->getStatus() == Payment::STATUS_PENDING
+            && $this->_checkPaymentStatus($params)
+            && $payment->getAmount() == $params['ik_payment_amount']
+        ) {
             $payment->setStatus(Payment::STATUS_PAID);
 
             $em = $this->getDoctrine()->getManager();
