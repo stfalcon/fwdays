@@ -164,7 +164,7 @@
         <div class="top">
             <div class="dear-user">Уважаемый участник <b>{{ ticket.user.fullname }}</b>,</div>
             <div class="date-n-address">
-                <div class="wait-for-you">ждем тебя:</div>
+                <div class="wait-for-you">ждем Вас:</div>
                 <div class="date-addr">
                     {% if event.date %}
                         {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
@@ -175,7 +175,7 @@
                         {{ event.place }}
                     {% endif %}
                 </div>
-                <div class="registration-begins">Регистрация начинается в 9:30.</div>
+                <div class="registration-begins">Регистрация начинается в {{ event.date|format_date('HH:mm', 'ru', 'Europe/Kiev') }}.</div>
             </div>
         </div>
 
@@ -188,7 +188,7 @@
                 <div class="qr-code-num">№{{ ticket.id }}</div>
             </div>
             <div class="invitation-text">
-                <p class="main-text">Пожалуйста, распечатай это приглашение и возьми его с собой — это твой входной билет на {{ event.name }}.</p>
+                <p class="main-text">Пожалуйста, распечатайте это приглашение и возьмите его с собой — это Ваш входной билет на {{ event.name }}.</p>
                 <p>С нетерпением ждем встречи!</p>
                 <p>С уважением,<br> Организаторы {{ event.name }}</p>
             </div>
