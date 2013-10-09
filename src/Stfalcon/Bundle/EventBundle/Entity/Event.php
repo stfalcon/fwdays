@@ -93,13 +93,6 @@ class Event
     protected $emailBackground;
 
     /**
-     * @var string $sliderBackground
-     *
-     * @ORM\Column(name="slider_background", type="string")
-     */
-    protected $sliderBackground;
-
-    /**
      * @var string $backgroundImage
      *
      * @ORM\Column(name="background_image", type="string")
@@ -150,13 +143,6 @@ class Event
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="sliderBackground")
-     */
-    protected $sliderBackgroundFile;
-
-    /**
-     * @Assert\File(maxSize="6000000")
-     * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
      */
     protected $bgFile;
@@ -173,7 +159,7 @@ class Event
      */
     public function __construct()
     {
-        $this->speakers      = new ArrayCollection();
+        $this->speakers = new ArrayCollection();
     }
 
     /**
@@ -443,26 +429,6 @@ class Event
     }
 
     /**
-     * Set sliderBackgroundFile
-     *
-     * @param UploadedFile|null $sliderBackgroundFile
-     */
-    public function setSliderBackgroundFile($sliderBackgroundFile)
-    {
-        $this->sliderBackgroundFile = $sliderBackgroundFile;
-    }
-
-    /**
-     * Get sliderBackgroundFile
-     *
-     * @return UploadedFile
-     */
-    public function getSliderBackgroundFile()
-    {
-        return $this->sliderBackgroundFile;
-    }
-
-    /**
      * Get path to emailBackground
      *
      * @return string
@@ -473,17 +439,7 @@ class Event
     }
 
     /**
-     * Get path to sliderBackground
-     *
-     * @return string
-     */
-    public function getSliderBackground()
-    {
-        return $this->sliderBackground;
-    }
-
-    /**
-     * Set bgFile
+     * Set bgFile (used in tickets PDF)
      *
      * @param UploadedFile|null $bgFile
      */
@@ -506,7 +462,7 @@ class Event
      * @todo remove this method (and try remove property)
      * Get event pages
      *
-     * @return type
+     * @return ArrayCollection
      */
     public function getPages()
     {
