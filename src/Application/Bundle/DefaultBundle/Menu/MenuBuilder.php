@@ -91,7 +91,7 @@ class MenuBuilder
         }
 
         if (count($participants) > 0) {
-            $menu->addChild("Участники", array('route' => 'event_participants', 'routeParameters' => array('event_slug' => $event->getSlug())));
+            $menu->addChild("Участники", array('route' => 'event_participants', 'routeParameters' => array('slug' => $event->getSlug())));
         }
 
         // ссылки на страницы ивента

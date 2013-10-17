@@ -7,35 +7,41 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-
 /**
  * Participant controller
  */
 class ParticipantController extends BaseController
 {
+
     /**
      * Lists all speakers for event
      *
-     * @param string $event_slug
+     * @param Event $event
      *
      * @return array
      *
-     * @Route("/event/{event_slug}/participants", name="event_participants")
+     * @Route("/event/{slug}/participants", name="event_participants")
      * @Template()
      */
-    public function indexAction($event_slug)
+    public function indexAction(Event $event)
     {
-        $event = $this->getEventBySlug($event_slug);
+        return $this->getParticipants($event);
+    }
 
-        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
-        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
-
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event);
-
-        return array(
-            'event' => $event,
-            'participants' => $participants
-        );
+    /**
+     * List of participants ajax
+     *
+     * @param Event $event
+     * @param int   $offset
+     *
+     * @return array
+     *
+     * @Route("/event/{slug}/participants/{offset}", name="event_list_participants")
+     * @Template("StfalconEventBundle:Participant:list_participants.html.twig")
+     */
+    public function listParticipantsAction(Event $event, $offset)
+    {
+        return $this->getParticipants($event, $offset);
     }
 
     /**
@@ -59,6 +65,29 @@ class ParticipantController extends BaseController
             shuffle($participants);
             $participants = array_slice($participants, 0, $count);
         }
+
+        return array(
+            'event' => $event,
+            'participants' => $participants
+        );
+    }
+
+    /**
+     * Get participants
+     *
+     * @param Event $event
+     * @param int   $offset
+     *
+     * @return array
+     */
+    protected function getParticipants(Event $event, $offset = null)
+    {
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
+
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, 20, $offset);
+
+        $this->container->set('stfalcon_event.current_event', $event);
 
         return array(
             'event' => $event,
