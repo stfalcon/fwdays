@@ -9,13 +9,14 @@
     <h2>Участники</h2>
 
     <ul class="participants">
-        {% include "StfalconEventBundle:Participant:list_participants.html.twig" with { "participants": participants } %}
+        {% block ajax_content %}{% endblock %}
     </ul>
     <div class="preloader">
         <img src="{{ asset('/images/preloader.gif') }}" alt="" />
     </div>
     <!-- /Контент участников -->
 {% endblock %}
+
 {% block javascripts %}
     {% javascripts 'js/jquery-1.8.2.min.js' 'js/scroll-load.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

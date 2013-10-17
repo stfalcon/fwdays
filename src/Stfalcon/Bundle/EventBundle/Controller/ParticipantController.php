@@ -20,28 +20,23 @@ class ParticipantController extends BaseController
      *
      * @return array
      *
-     * @Route("/event/{event_slug}/participants", name="event_participants")
-     * @Template()
+     * @Route("/event/{event_slug}/participants/{offset}", name="event_participants", defaults={"offset"=0})
+     * @Template("StfalconEventBundle:Participant:_list_of_participants.html.twig")
      */
-    public function indexAction($event_slug)
+    public function indexAction($event_slug, $offset)
     {
-        return $this->getParticipants($event_slug);
-    }
+        $event = $this->getEventBySlug($event_slug);
 
-    /**
-     * List of participants
-     *
-     * @param string $event_slug Event slug
-     * @param int    $offset     Offset
-     *
-     * @return array
-     *
-     * @Route("/event/{event_slug}/participants/{offset}", name="event_list_participants")
-     * @Template("StfalconEventBundle:Participant:list_participants.html.twig")
-     */
-    public function listParticipantsAction($event_slug, $offset)
-    {
-        return $this->getParticipants($event_slug, $offset);
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
+
+        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, 20, $offset);
+
+        return array(
+            'request' => $this->getRequest(),
+            'event' => $event,
+            'participants' => $participants
+        );
     }
 
     /**
@@ -56,38 +51,13 @@ class ParticipantController extends BaseController
      */
     public function widgetAction(Event $event, $count)
     {
-        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
-        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
+        $participants = $event->getTickets()->getValues();
 
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, $count);
-
+        // @todo якось не так...
         if ($count > 1) {
             shuffle($participants);
             $participants = array_slice($participants, 0, $count);
         }
-
-        return array(
-            'event' => $event,
-            'participants' => $participants
-        );
-    }
-
-    /**
-     * Get participants
-     *
-     * @param string $event_slug Event slug
-     * @param int    $offset     Offset
-     *
-     * @return array
-     */
-    protected function getParticipants($event_slug, $offset = null)
-    {
-        $event = $this->getEventBySlug($event_slug);
-
-        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
-        $ticketRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket');
-
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event, 20, $offset);
 
         return array(
             'event' => $event,

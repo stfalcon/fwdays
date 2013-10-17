@@ -26,6 +26,7 @@ class SpeakerController extends BaseController
     {
         $event = $this->getEventBySlug($event_slug);
 
+        // @todo почему нельзя просто взять $event->getSpeakers?
         /** @var $speakerRepository \Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository */
         $speakerRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Speaker');
 

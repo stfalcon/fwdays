@@ -72,6 +72,8 @@ class Event
     protected $description;
 
     /**
+     * Краткий текст в слайдере
+     *
      * @var string $about
      *
      * @ORM\Column(type="text", nullable=true)
@@ -93,6 +95,8 @@ class Event
     protected $emailBackground;
 
     /**
+     * Фон для PDF билетов @todo обозвать по человечески переменную
+     *
      * @var string $backgroundImage
      *
      * @ORM\Column(name="background_image", type="string")
@@ -105,6 +109,13 @@ class Event
      * @ORM\Column(type="boolean")
      */
     protected $active = true;
+
+    /**
+     * @var float $cost
+     *
+     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    protected $cost;
 
     /**
      * @var boolean $receivePayments
@@ -127,6 +138,11 @@ class Event
     protected $speakers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
+     */
+    protected $tickets;
+
+    /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
@@ -146,13 +162,6 @@ class Event
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
      */
     protected $bgFile;
-
-    /**
-     * @var float $cost
-     *
-     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
-     */
-    protected $cost;
 
     /**
      * Constructor
@@ -356,6 +365,16 @@ class Event
     public function getSpeakers()
     {
         return $this->speakers;
+    }
+
+    /**
+     * Get tickets for event
+     *
+     * @return ArrayCollection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
     }
 
     /**

@@ -5,6 +5,8 @@ namespace Application\Bundle\DefaultBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+
 /**
  * MenuBuilder Class
  */
@@ -15,15 +17,12 @@ class MenuBuilder
      */
     private $factory;
 
-    private $em;
-
     /**
      * @param \Knp\Menu\FactoryInterface $factory
      */
-    public function __construct(FactoryInterface $factory, $em)
+    public function __construct(FactoryInterface $factory)
     {
         $this->factory = $factory;
-        $this->em = $em;
     }
 
     /**
@@ -68,29 +67,24 @@ class MenuBuilder
     /**
      * Event page submenu
      *
-     * @param Request                                   $request Request
-     * @param \Stfalcon\Bundle\EventBundle\Entity\Event $event   Event
+     * @param Request $request Request
+     * @param Event   $event   Event
      *
      * @return \Knp\Menu\MenuItem
      */
-    public function createEventSubMenu(Request $request, $event)
+    public function createEventSubMenu(Request $request, Event $event)
     {
-        $ticketRepository = $this->em->getRepository('StfalconEventBundle:Ticket');
-
-        $participants = $ticketRepository->findTicketsByEventGroupByUser($event);
-
         $menu = $this->factory->createItem('root');
 
         $menu->setCurrentUri($request->getRequestUri());
 
         $menu->addChild("О событии", array('route' => 'event_show', 'routeParameters' => array('event_slug' => $event->getSlug())));
 
-        /** @var $event \Stfalcon\Bundle\EventBundle\Entity\Event */
         if ($event->getSpeakers()) {
             $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
-        if (count($participants) > 0) {
+        if ($event->getTickets()) {
             $menu->addChild("Участники", array('route' => 'event_participants', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
