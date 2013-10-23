@@ -38,12 +38,12 @@ class Mail
     protected $text;
 
     /**
-     * @var Event
+     * @var Events
      *
-     * @ORM\ManyToOne(targetEntity="Event", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $event;
+    protected $events;
 
     /**
      * @var bool $start
@@ -73,6 +73,23 @@ class Mail
      * @ORM\Column(name="sent_messages", type="integer")
      */
     protected $sentMessages = 0;
+
+    /**
+     * @var Array $mailQueues
+     *
+     * @ORM\OneToMany(targetEntity="MailQueue", mappedBy="mail", cascade={"remove", "persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $mailQueues;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->mailQueues = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -157,21 +174,21 @@ class Mail
     }
 
     /**
-     * @return Event
+     * @return Event[]|ArrayCollection
      */
-    public function getEvent()
+    public function getEvents()
     {
-        return $this->event;
+        return $this->events;
     }
 
     /**
-     * @param Event|null $event
+     * @param Event|null $events
      *
      * @return void
      */
-    public function setEvent($event)
+    public function setEvents($events)
     {
-        $this->event = $event;
+        $this->events = $events;
     }
 
     /**
@@ -227,5 +244,63 @@ class Mail
     public function getStatistic()
     {
         return $this->sentMessages . '/' . $this->totalMessages . (($this->sentMessages == $this->totalMessages) ? ' - complete' : '');
+    }
+
+    /**
+     * Add event
+     *
+     * @param \Stfalcon\Bundle\EventBundle\Entity\Event $event
+     *
+     * @return Mail
+     */
+    public function addEvent(\Stfalcon\Bundle\EventBundle\Entity\Event $event)
+    {
+        $this->event->add($event);
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \Stfalcon\Bundle\EventBundle\Entity\Event $events
+     */
+    public function removeEvent(\Stfalcon\Bundle\EventBundle\Entity\Event $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Add mailQueue
+     *
+     * @param \Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue
+     *
+     * @return Mail
+     */
+    public function addMailQueue(\Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue)
+    {
+        $this->mailQueues->add($mailQueue);
+
+        return $this;
+    }
+
+    /**
+     * Remove mailQueue
+     *
+     * @param \Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue
+     */
+    public function removeMailQueue(\Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue)
+    {
+        $this->mailQueue->removeElement($mailQueue);
+    }
+
+    /**
+     * Get mailQueues
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMailQueues()
+    {
+        return $this->mailQueues;
     }
 }
