@@ -14,8 +14,6 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
 /**
  * Class PaymentAdmin
- *
- * @package Stfalcon\Bundle\PaymentBundle\Admin
  */
 class PaymentAdmin extends Admin
 {

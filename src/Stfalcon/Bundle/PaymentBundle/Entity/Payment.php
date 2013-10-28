@@ -87,7 +87,7 @@ class Payment
     private $updatedAt;
 
     /**
-     * @var Ticket $tickets
+     * @var Ticket[]|ArrayCollection $tickets
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
      */
@@ -112,13 +112,18 @@ class Payment
     /**
      * Get ticket number for payment
      *
-     * @return mixed
+     * @return int|void
      */
     public function getTicketNumber()
     {
-        $ticket = $this->getTickets();
+        /** @var ArrayCollection $tickets */
+        $tickets = $this->getTickets();
 
-        return $ticket[0]->getId();
+        if (!$tickets->isEmpty()) {
+            return $tickets->first()->getId();
+        }
+
+        return ;
     }
 
     /**
@@ -133,9 +138,9 @@ class Payment
     /**
      * Constructor. Set default status to new payment.
      *
-     * @param User  $user
-     * @param float $amount
-     * @param bool  $hasDiscount
+     * @param User  $user        Owner of a payment
+     * @param float $amount      Amount of a payment
+     * @param bool  $hasDiscount Presence of discount
      */
     public function __construct(User $user, $amount, $hasDiscount = false)
     {
@@ -143,7 +148,7 @@ class Payment
         $this->setAmount($amount);
         $this->setHasDiscount($hasDiscount);
         $this->setStatus(self::STATUS_PENDING);
-        $this->ticket = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
     }
 
     /**
