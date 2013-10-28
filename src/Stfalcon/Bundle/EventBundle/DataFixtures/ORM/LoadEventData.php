@@ -72,7 +72,6 @@ class LoadEventData extends AbstractFixture
         $event->setDescription('JavaScript Frameworks Day 2013 — международная конференция посвященная популярным JavaScript фреймворкам.');
         $event->setLogoFile($this->_generateUploadedFile('jsfwday-logo-web.png'));
         $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
-        $event->setSliderBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
         $event->setBgFile($this->_generateUploadedFile('left-element.png'));
         $event->setCity('Киев');
         $event->setPlace('отель "Казацкий"');
