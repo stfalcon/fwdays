@@ -72,6 +72,47 @@ class TicketRepository extends EntityRepository
     }
 
     /**
+     * Find users by event and status
+     *
+     * @param Array $events  Events
+     * @param null  $status Status
+     *
+     * @return array
+     */
+    public function findUsersByEventsAndStatus($events = null, $status = null)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('u')
+            ->addSelect('t')
+            ->from('StfalconEventBundle:Ticket', 't')
+            ->join('t.user', 'u')
+            ->join('t.event', 'e')
+            ->join('t.payment', 'p')
+            ->andWhere('e.active = :eventStatus')
+            ->setParameter(':eventStatus', true)
+            ->groupBy('u');
+
+        if ($events != null) {
+            $qb->andWhere($qb->expr()->in('t.event', ':events'))
+                ->setParameter(':events', $events->toArray());
+        }
+        if ($status != null) {
+            $qb->andWhere('p.status = :status')
+                ->setParameter(':status', $status);
+        }
+
+        $qb = $qb->getQuery();
+
+        $users = array();
+        foreach ($qb->execute() as $result) {
+            $users[] = $result->getUser();
+        }
+
+        return $users;
+    }
+
+    /**
      * Find tickets by event
      *
      * @param Event $event
@@ -98,10 +139,11 @@ class TicketRepository extends EntityRepository
      *
      * @param Event $event
      * @param int   $count
+     * @param int   $offset
      *
      * @return array
      */
-    public function findTicketsByEventGroupByUser(Event $event, $count = null)
+    public function findTicketsByEventGroupByUser(Event $event, $count = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -114,6 +156,10 @@ class TicketRepository extends EntityRepository
 
         if (isset($count) && $count > 0) {
             $qb->setMaxResults($count);
+        }
+
+        if (isset($offset) && $offset > 0) {
+            $qb->setFirstResult($offset);
         }
 
         return $qb->getQuery()->getResult();
