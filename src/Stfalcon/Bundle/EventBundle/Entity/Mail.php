@@ -38,7 +38,7 @@ class Mail
     protected $text;
 
     /**
-     * @var Events
+     * @var Event[]
      *
      * @ORM\ManyToMany(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
@@ -249,13 +249,13 @@ class Mail
     /**
      * Add event
      *
-     * @param \Stfalcon\Bundle\EventBundle\Entity\Event $event
+     * @param Event $event
      *
      * @return Mail
      */
-    public function addEvent(\Stfalcon\Bundle\EventBundle\Entity\Event $event)
+    public function addEvent(Event $event)
     {
-        $this->event->add($event);
+        $this->events->add($event);
 
         return $this;
     }
@@ -263,11 +263,11 @@ class Mail
     /**
      * Remove events
      *
-     * @param \Stfalcon\Bundle\EventBundle\Entity\Event $events
+     * @param Event $event
      */
-    public function removeEvent(\Stfalcon\Bundle\EventBundle\Entity\Event $events)
+    public function removeEvent(Event $event)
     {
-        $this->events->removeElement($events);
+        $this->events->removeElement($event);
     }
 
     /**
@@ -277,7 +277,7 @@ class Mail
      *
      * @return Mail
      */
-    public function addMailQueue(\Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue)
+    public function addMailQueue(MailQueue $mailQueue)
     {
         $this->mailQueues->add($mailQueue);
 
@@ -289,15 +289,15 @@ class Mail
      *
      * @param \Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue
      */
-    public function removeMailQueue(\Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue)
+    public function removeMailQueue(MailQueue $mailQueue)
     {
-        $this->mailQueue->removeElement($mailQueue);
+        $this->mailQueues->removeElement($mailQueue);
     }
 
     /**
      * Get mailQueues
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMailQueues()
     {
