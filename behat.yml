@@ -8,5 +8,9 @@ default:
         Behat\MinkExtension\Extension:
             default_session: 'symfony2'
             show_cmd: 'firefox %s'
+        PSS\Behat\Symfony2MockerExtension\Extension: ~
     paths:
         features:  features
+    context:
+        parameters:
+            base_url: 'http://fwdays.work/'

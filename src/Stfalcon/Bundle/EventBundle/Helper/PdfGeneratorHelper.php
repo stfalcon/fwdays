@@ -3,16 +3,35 @@ namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Twig_Environment;
+use Symfony\Component\Routing\Router;
+use Endroid\QrCode\QrCode;
+use Symfony\Component\HttpKernel\Kernel;
+use Container;
 
 /**
- * Class StfalconPdfGenerator
+ * Class PdfGeneratorHelper
  */
-class StfalconPdfGenerator
+class PdfGeneratorHelper
 {
     /**
-     * @var EngineInterface $templating
+     * @var Twig_Environment $templating
      */
     protected $templating;
+
+    /**
+     * @var Router $router
+     */
+    protected $router;
+
+    /**
+     * @var QrCode $qrCode
+     */
+    protected $qrCode;
+
+    /**
+     * @var Kernel $kernel
+     */
+    protected $kernel;
 
     /**
      * @var Container $container
@@ -23,11 +42,17 @@ class StfalconPdfGenerator
      * Constructor
      *
      * @param Twig_Environment $templating Twig
-     * @param                  $container  Container
+     * @param Router           $router     Router
+     * @param QrCode           $qrCode     QrCode generator
+     * @param Kernel           $kernel     Kernel
+     * @param Container        $container
      */
-    public function __construct(Twig_Environment $templating, $container)
+    public function __construct($templating, $router, $qrCode, $kernel, $container)
     {
         $this->templating = $templating;
+        $this->router = $router;
+        $this->qrCode = $qrCode;
+        $this->kernel = $kernel;
         $this->container = $container;
     }
 
@@ -42,7 +67,7 @@ class StfalconPdfGenerator
     {
         $twig = $this->templating;
 
-        $url = $this->container->get('router')->generate(
+        $url = $this->router->generate(
             'event_ticket_check',
             array(
                 'ticket' => $ticket->getId(),
@@ -51,16 +76,15 @@ class StfalconPdfGenerator
             true
         );
 
-        $qrCode = $this->container->get('stfalcon_event.qr_code');
-        $qrCode->setText($url);
-        $qrCode->setSize(105);
-        $qrCode->setPadding(0);
-        $qrCodeBase64 = base64_encode($qrCode->get());
+        $this->qrCode->setText($url);
+        $this->qrCode->setSize(105);
+        $this->qrCode->setPadding(0);
+        $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
         $body = $templateContent->render(array(
                 'ticket'       => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
-                'path'         => realpath($this->container->get('kernel')->getRootDir() . '/../web') . '/'
+                'path'         => realpath($this->kernel->getRootDir() . '/../web') . '/'
             ));
 
         return $body;
@@ -77,7 +101,8 @@ class StfalconPdfGenerator
     public function generatePdfFile($html, $outputFile)
     {
         // Override default fonts directory for mPDF
-        define('_MPDF_SYSTEM_TTFONTS', realpath($this->container->get('kernel')->getRootDir() . '/../web/fonts/open-sans/') . '/');
+        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/open-sans/') . '/');
+
 
         /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
         $mPDFService = $this->container->get('tfox.mpdfport');

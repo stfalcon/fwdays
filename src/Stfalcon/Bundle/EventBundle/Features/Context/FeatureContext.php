@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
+use Behat\CommonContexts\WebApiContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -10,6 +11,9 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\CommonContexts\DoctrineFixturesContext,
     Behat\CommonContexts\MinkRedirectContext,
     Behat\CommonContexts\SymfonyMailerContext;
+
+use PSS\Behat\Symfony2MockerExtension\Context\ServiceMockerAwareInterface;
+use PSS\Behat\Symfony2MockerExtension\ServiceMocker;
 
 use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
@@ -20,17 +24,33 @@ use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUse
 /**
  * Feature context for StfalconEventBundle
  */
-class FeatureContext extends MinkContext implements KernelAwareInterface
+class FeatureContext extends MinkContext implements KernelAwareInterface, ServiceMockerAwareInterface
 {
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(array $parameters)
     {
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
         $this->useContext('MinkRedirectContext', new MinkRedirectContext());
         $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
         $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
+        $this->useContext('WebApiContext', new WebApiContext($parameters['base_url']));
+    }
+
+    /**
+     * @var ServiceMocker $mocker
+     */
+    private $mocker = null;
+
+    /**
+     * @param ServiceMocker $mocker
+     *
+     * @return null|void
+     */
+    public function setServiceMocker(ServiceMocker $mocker)
+    {
+        $this->mocker = $mocker;
     }
 
     /**
@@ -241,5 +261,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
+    }
+
+    /**
+     * Mock InterkassaService method checkPaymentStatus
+     *
+     * @Given /^I mock InterkassaService method checkPaymentStatus$/
+     */
+    public function mockIntercassa()
+    {
+        $this->mocker->mockService('stfalcon_payment.intercassa.service', 'Stfalcon\Bundle\PaymentBundle\Service\InterkassaService')
+            ->shouldReceive('checkPaymentStatus')
+            ->once()
+            ->andReturn(true);
     }
 }

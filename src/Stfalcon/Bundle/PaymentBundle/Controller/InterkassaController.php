@@ -11,6 +11,7 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Stfalcon\Bundle\PaymentBundle\Service\IntercassaService;
 
 /**
  * Class InterkassaController
@@ -34,10 +35,13 @@ class InterkassaController extends Controller
         $description = 'Оплата участия в конференции ' . $event->getName()
                        . '. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ')';
 
+        /** @var IntercassaService $intercassa */
+        $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
+
         $data = array(
             'ik_shop_id'      => $config['interkassa']['shop_id'],
             'ik_payment_desc' => $description,
-            'ik_sign_hash'    => $this->_getSignHash($payment->getId(), $payment->getAmount())
+            'ik_sign_hash'    => $intercassa->getSignHash($payment->getId(), $payment->getAmount())
         );
 
         return array(
@@ -72,7 +76,10 @@ class InterkassaController extends Controller
             'd MMMM Y'
         );
 
-        if ($payment->getStatus() == Payment::STATUS_PENDING && $this->_checkPaymentStatus($params)) {
+        /** @var IntercassaService $intercassa */
+        $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
+
+        if ($payment->getStatus() == Payment::STATUS_PENDING && $intercassa->checkPaymentStatus($params)) {
             $payment->setStatus(Payment::STATUS_PAID);
 
             $em = $this->getDoctrine()->getManager();
@@ -119,8 +126,8 @@ class InterkassaController extends Controller
                 'add_bottom_padding' => true
             ));
 
-            /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\StfalconPdfGenerator */
-            $pdfGen = $this->get('stfalcon_service.pdf_generator');
+            /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
+            $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
             $html = $pdfGen->generateHTML($ticket);
             $outputFile = 'ticket-' . $event->getSlug() . '.pdf';
 
@@ -139,80 +146,5 @@ class InterkassaController extends Controller
         return array(
             'message' => $resultMessage
         );
-    }
-
-    /**
-     * Проверяет валидность и статус платежа
-     *
-     * @param array $params Array of parameters
-     *
-     * @return boolean
-     */
-    private function _checkPaymentStatus($params)
-    {
-        if (!array_key_exists('ik_shop_id', $params) ||
-            !array_key_exists('ik_payment_amount', $params) ||
-            !array_key_exists('ik_payment_id', $params) ||
-            !array_key_exists('ik_paysystem_alias', $params) ||
-            !array_key_exists('ik_baggage_fields', $params) ||
-            !array_key_exists('ik_payment_state', $params) ||
-            !array_key_exists('ik_trans_id', $params) ||
-            !array_key_exists('ik_currency_exch', $params) ||
-            !array_key_exists('ik_fees_payer', $params)) {
-            return false;
-        }
-
-        $config = $this->container->getParameter('stfalcon_payment.config');
-
-        $crc = md5(
-            $params['ik_shop_id'] . ':' .
-            $params['ik_payment_amount'] . ':' .
-            $params['ik_payment_id'] . ':' .
-            $params['ik_paysystem_alias'] . ':' .
-            $params['ik_baggage_fields'] . ':' .
-            $params['ik_payment_state'] . ':' .
-            $params['ik_trans_id'] . ':' .
-            $params['ik_currency_exch'] . ':' .
-            $params['ik_fees_payer'] . ':' .
-            $config['interkassa']['secret']
-        );
-
-        $paymentIsSuccess = ('success' == $params['ik_payment_state']);
-
-        if (strtoupper($params['ik_sign_hash']) === strtoupper($crc) && $paymentIsSuccess) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * CRC-подпись для запроса на шлюз
-     *
-     * @param int   $paymentId Payment ID
-     * @param float $sum       Sum
-     *
-     * @return string
-     */
-    protected function _getSignHash($paymentId, $sum)
-    {
-        $config = $this->container->getParameter('stfalcon_payment.config');
-
-        $params['ik_shop_id']         = $config['interkassa']['shop_id'];
-        $params['ik_payment_amount']  = $sum;
-        $params['ik_payment_id']      = $paymentId;
-        $params['ik_paysystem_alias'] = '';
-        $params['ik_baggage_fields']  = '';
-
-        $hash = md5(
-            $params['ik_shop_id'] . ':' .
-            $params['ik_payment_amount'] . ':' .
-            $params['ik_payment_id'] . ':' .
-            $params['ik_paysystem_alias'] . ':' .
-            $params['ik_baggage_fields'] . ':' .
-            $config['interkassa']['secret']
-        );
-
-        return $hash;
     }
 }

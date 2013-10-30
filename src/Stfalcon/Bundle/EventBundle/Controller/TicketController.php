@@ -211,8 +211,8 @@ class TicketController extends BaseController
      */
     public function showAction($event_slug)
     {
-        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\StfalconPdfGenerator */
-        $pdfGen = $this->get('stfalcon_service.pdf_generator');
+        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
+        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
 
         $event  = $this->getEventBySlug($event_slug);
         $ticket = $this->_findTicketForEventByCurrentUser($event);
