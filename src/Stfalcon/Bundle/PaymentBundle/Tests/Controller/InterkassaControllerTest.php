@@ -21,7 +21,7 @@ class InterkassaControllerTest extends WebTestCase
             ->will($this->returnValue(true));
         $client = static::createClient();
         $client->enableProfiler();
-        $client->request('POST', '/payments/interkassa/status', array('name[name]' => 'product'));
+        $client->request('POST', '/payments/interkassa/status', array('ik_payment_id' => '2'));
 
 
         if ($profiler = $client->getProfile()) {
