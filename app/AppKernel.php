@@ -80,16 +80,4 @@ class AppKernel extends Kernel
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
-
-    /**
-     * @return string
-     */
-    protected function getContainerBaseClass()
-    {
-        if ('test' == $this->environment) {
-            return '\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer';
-        }
-
-        return parent::getContainerBaseClass();
-    }
 }

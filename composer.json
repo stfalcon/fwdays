@@ -27,9 +27,6 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
         "behat/common-contexts": "*",
-        "sensio/buzz-bundle": "1.0.*@dev",
-        "kriswallsmith/buzz": "v0.10",
-        "polishsymfonycommunity/symfony2-mocker-extension": "v1.0.2",
 
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
         "sonata-project/intl-bundle": "dev-master",

@@ -36,9 +36,3 @@
         И я перехожу на страницу регистрации для "user@fwdays.com" с битым хешем
         Тогда код ответа сервера должен быть 403
         И я должен видеть "Невалидный хеш для билета"
-
-    Сценарий: Проверяем не созданный или неоплаченный билет
-        Допустим I mock InterkassaService method checkPaymentStatus
-        Допустим I send a POST request to "/payments/interkassa/status" with values:
-          | ik_payment_id | 47 |
-        Тогда email with subject "Добро пожаловать test@fwdays.com!" should have been sent to "user@fwdays.com"
