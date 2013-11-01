@@ -245,4 +245,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         return $this->kernel->getContainer()->get('profiler')->loadProfile($token);
     }
+
+    /**
+     * @Given /^пользователь "([^"]*)" должен быть в списке только один раз$/
+     */
+    public function singleUser($userName)
+    {
+        $result = $this->getSession()->getPage()->find('css', '.table.table-bordered.table-striped');
+        assertEquals(1 ,mb_substr_count($result->getHtml(), $userName));
+    }
 }
