@@ -60,7 +60,7 @@ class MailAdmin extends Admin
                 'template' => 'StfalconEventBundle:Admin:list_boolean.html.twig'
             ))
             ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
-            ->add('event')
+            ->add('events')
             ->add('_action', 'actions', array(
                 'actions'   => array(
                     'edit'      => array(),
@@ -81,9 +81,9 @@ class MailAdmin extends Admin
             ->with('General')
                 ->add('title')
                 ->add('text')
-                ->add('event', 'entity', array(
+                ->add('events', 'entity', array(
                     'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple'  => false,
+                    'multiple'  => true,
                     'expanded'  => false,
                     'required'  => false,
                     'read_only' => $isEdit
@@ -101,7 +101,7 @@ class MailAdmin extends Admin
     }
 
     /**
-     * @param mixed $mail
+     * @param Mail $mail
      *
      * @return mixed|void
      */
@@ -113,17 +113,15 @@ class MailAdmin extends Admin
         $em = $container->get('doctrine')->getManager();
 
         /** @var $users \Application\Bundle\UserBundle\Entity\User[] */
-        if ($mail->getEvent() || $mail->getPaymentStatus()) {
+        if ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findUsersByEventAndStatus($mail->getEvent(), $mail->getPaymentStatus());
+                ->findUsersByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
         } else {
             $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
         }
 
         if (isset($users)) {
-            $mail->setTotalMessages(count($users));
-            $em->persist($mail);
-
+            $countSubscribers = 0;
             foreach ($users as $user) {
                 if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
                     continue;
@@ -133,7 +131,9 @@ class MailAdmin extends Admin
                 $mailQueue->setUser($user);
                 $mailQueue->setMail($mail);
                 $em->persist($mailQueue);
+                $countSubscribers++;
             }
+            $mail->setTotalMessages($countSubscribers);
         }
 
         $em->persist($mail);

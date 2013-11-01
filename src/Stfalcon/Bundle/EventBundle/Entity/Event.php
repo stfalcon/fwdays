@@ -72,6 +72,8 @@ class Event
     protected $description;
 
     /**
+     * Краткий текст в слайдере
+     *
      * @var string $about
      *
      * @ORM\Column(type="text", nullable=true)
@@ -93,13 +95,8 @@ class Event
     protected $emailBackground;
 
     /**
-     * @var string $sliderBackground
+     * Фон для PDF билетов @todo обозвать по человечески переменную
      *
-     * @ORM\Column(name="slider_background", type="string")
-     */
-    protected $sliderBackground;
-
-    /**
      * @var string $backgroundImage
      *
      * @ORM\Column(name="background_image", type="string")
@@ -112,6 +109,13 @@ class Event
      * @ORM\Column(type="boolean")
      */
     protected $active = true;
+
+    /**
+     * @var float $cost
+     *
+     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    protected $cost;
 
     /**
      * @var boolean $receivePayments
@@ -134,6 +138,11 @@ class Event
     protected $speakers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
+     */
+    protected $tickets;
+
+    /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
@@ -150,30 +159,16 @@ class Event
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="sliderBackground")
-     */
-    protected $sliderBackgroundFile;
-
-    /**
-     * @Assert\File(maxSize="6000000")
-     * @Assert\Image
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
      */
     protected $bgFile;
-
-    /**
-     * @var float $cost
-     *
-     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
-     */
-    protected $cost;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->speakers      = new ArrayCollection();
+        $this->speakers = new ArrayCollection();
     }
 
     /**
@@ -373,6 +368,16 @@ class Event
     }
 
     /**
+     * Get tickets for event
+     *
+     * @return ArrayCollection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
      * Get path to logo
      *
      * @return string
@@ -443,26 +448,6 @@ class Event
     }
 
     /**
-     * Set sliderBackgroundFile
-     *
-     * @param UploadedFile|null $sliderBackgroundFile
-     */
-    public function setSliderBackgroundFile($sliderBackgroundFile)
-    {
-        $this->sliderBackgroundFile = $sliderBackgroundFile;
-    }
-
-    /**
-     * Get sliderBackgroundFile
-     *
-     * @return UploadedFile
-     */
-    public function getSliderBackgroundFile()
-    {
-        return $this->sliderBackgroundFile;
-    }
-
-    /**
      * Get path to emailBackground
      *
      * @return string
@@ -473,17 +458,7 @@ class Event
     }
 
     /**
-     * Get path to sliderBackground
-     *
-     * @return string
-     */
-    public function getSliderBackground()
-    {
-        return $this->sliderBackground;
-    }
-
-    /**
-     * Set bgFile
+     * Set bgFile (used in tickets PDF)
      *
      * @param UploadedFile|null $bgFile
      */
@@ -506,7 +481,7 @@ class Event
      * @todo remove this method (and try remove property)
      * Get event pages
      *
-     * @return type
+     * @return ArrayCollection
      */
     public function getPages()
     {

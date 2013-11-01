@@ -57,10 +57,6 @@ class EventAdmin extends Admin
                     'label' => 'Email background',
                     'required' => false,
                 ))
-                ->add('sliderBackgroundFile', 'file', array(
-                    'label' => 'Slider background',
-                    'required' => false,
-                ))
             ->end();
     }
 

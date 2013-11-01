@@ -47,6 +47,8 @@
 
         "tfox/mpdf-port-bundle": "1.1.*",
 
+        "phpunit/phpunit": "3.7.*",
+
         "stfalcon/page-bundle": "dev-master",
         "stfalcon/news-bundle": "dev-master"
     },
