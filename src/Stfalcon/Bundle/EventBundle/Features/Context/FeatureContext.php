@@ -67,10 +67,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
+        $em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
         $purger = new ORMPurger();
+        $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
+        $em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
     }
 
     /**
@@ -251,5 +254,4 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $result = $this->getSession()->getPage()->find('css', '.table.table-bordered.table-striped');
         assertEquals(1 ,mb_substr_count($result->getHtml(), $userName));
     }
-
 }
