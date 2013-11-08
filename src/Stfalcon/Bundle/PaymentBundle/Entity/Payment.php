@@ -5,6 +5,8 @@ namespace Stfalcon\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
  * Stfalcon\Bundle\PaymentBundle\Entity\Payment
@@ -85,6 +87,46 @@ class Payment
     private $updatedAt;
 
     /**
+     * @var Ticket[]|ArrayCollection $tickets
+     *
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     */
+    private $tickets;
+
+    /**
+     * @param mixed $tickets
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * Get ticket number for payment
+     *
+     * @return int|void
+     */
+    public function getTicketNumber()
+    {
+        /** @var ArrayCollection $tickets */
+        $tickets = $this->getTickets();
+
+        if (!$tickets->isEmpty()) {
+            return $tickets->first()->getId();
+        }
+
+        return ;
+    }
+
+    /**
      * Указываем или платеж учитывал скидку
      *
      * @var bool
@@ -96,7 +138,9 @@ class Payment
     /**
      * Constructor. Set default status to new payment.
      *
-     * @return void
+     * @param User  $user        Owner of a payment
+     * @param float $amount      Amount of a payment
+     * @param bool  $hasDiscount Presence of discount
      */
     public function __construct(User $user, $amount, $hasDiscount = false)
     {
@@ -104,6 +148,7 @@ class Payment
         $this->setAmount($amount);
         $this->setHasDiscount($hasDiscount);
         $this->setStatus(self::STATUS_PENDING);
+        $this->tickets = new ArrayCollection();
     }
 
     /**
