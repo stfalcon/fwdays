@@ -1,8 +1,12 @@
 {
     "name": "stfalcon/fwdays",
+    "type": "project",
+    "description": "Site for conference 'Frameworks Days'",
+
     "autoload": {
         "psr-0": { "": "src/" }
     },
+
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.2.3",
@@ -23,12 +27,6 @@
 
         "friendsofsymfony/user-bundle": "v1.3.1",
 
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*",
-        "behat/common-contexts": "*",
-
-        "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
         "sonata-project/intl-bundle": "dev-master",
 
         "doctrine/doctrine-fixtures-bundle": "dev-master#186d605aa6b592bd577e07e0e9a2c420b02b2492",
@@ -44,11 +42,19 @@
 
         "tfox/mpdf-port-bundle": "1.1.*",
 
-        "phpunit/phpunit": "3.7.*",
-
         "stfalcon/page-bundle": "dev-master",
         "stfalcon/news-bundle": "dev-master"
     },
+
+    "require-dev": {
+        "behat/symfony2-extension": "*",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*",
+        "behat/common-contexts": "*",
+        "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
+        "phpunit/phpunit": "3.7.*"
+    },
+
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -61,10 +67,13 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ]
     },
+
     "config": {
         "bin-dir": "bin"
     },
+
     "minimum-stability": "dev",
+
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
