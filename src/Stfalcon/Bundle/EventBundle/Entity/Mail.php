@@ -182,7 +182,7 @@ class Mail
     }
 
     /**
-     * @param Event|null $events
+     * @param ArrayCollection $events
      *
      * @return void
      */

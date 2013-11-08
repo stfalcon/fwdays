@@ -41,6 +41,8 @@
         <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
 
         <parameter key="stfalcon_event.mailer_helper.class">Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper</parameter>
+
+        <parameter key="stfalcon_event.pdf_generator.helper.class">Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper</parameter>
     </parameters>
 
     <services>
@@ -124,6 +126,14 @@
 
         <service id="stfalcon_event.mailer_helper" class="%stfalcon_event.mailer_helper.class%">
             <argument type="service" id="twig"/>
+        </service>
+
+        <service id="stfalcon_event.pdf_generator.helper" class="%stfalcon_event.pdf_generator.helper.class%">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="stfalcon_event.qr_code"/>
+            <argument type="service" id="kernel"/>
+            <argument type="service" id="service_container"/>
         </service>
     </services>
 
