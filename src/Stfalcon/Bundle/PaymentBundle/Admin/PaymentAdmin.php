@@ -24,7 +24,8 @@ class PaymentAdmin extends Admin
             ->add('amount')
             ->add('status')
             ->add('user')
-            ->add('ticketNumber');
+            ->add('tickets')
+            ->add('gate');
 
         return $listMapper;
     }
@@ -40,6 +41,7 @@ class PaymentAdmin extends Admin
                 array(
                     'choices' => array(
                         'interkassa' => 'interkassa',
+                        'admin' => 'admin',
                     ),
                     'required' => false,
                 )
