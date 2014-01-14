@@ -35,10 +35,12 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         /**
          * @var \Application\Bundle\UserBundle\Entity\User $userDefault
          * @var \Application\Bundle\UserBundle\Entity\User $userDefault2
+         * @var \Application\Bundle\UserBundle\Entity\User $userDefault3
          * @var \Application\Bundle\UserBundle\Entity\User $userAdmin
          */
         $userDefault  = $manager->merge($this->getReference('user-default'));
         $userDefault2 = $manager->merge($this->getReference('user-default2'));
+        $userDefault3 = $manager->merge($this->getReference('user-default3'));
         $userAdmin    = $manager->merge($this->getReference('user-admin'));
 
         // Ticket 1
@@ -83,6 +85,12 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
+        $manager->persist($ticket);
+
+        // Ticket 8: not used without payment
+        $ticket = new Ticket($manager->merge($this->getReference('event-zfday')), $userDefault3);
+        $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
+        $ticket->setUsed(false);
         $manager->persist($ticket);
 
         for ($i = 1; $i <= 100; $i++) {

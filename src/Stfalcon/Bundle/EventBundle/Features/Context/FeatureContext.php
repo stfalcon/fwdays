@@ -253,11 +253,29 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param string $userName
+     *
      * @Given /^пользователь "([^"]*)" должен быть в списке только один раз$/
      */
     public function singleUser($userName)
     {
         $result = $this->getSession()->getPage()->find('css', '.table.table-bordered.table-striped');
-        assertEquals(1 ,mb_substr_count($result->getHtml(), $userName));
+        assertEquals(1, mb_substr_count($result->getHtml(), $userName));
+    }
+
+    /**
+     * @Given /^я перехожу на страницу со списком рассылок$/
+     */
+    public function iGoToTheMailListPage()
+    {
+        $this->visit('/admin/stfalcon/event/mail/list');
+    }
+
+    /**
+     * @Then /^я на странице создания рассылки$/
+     */
+    public function iAmOnTheMailCreatePage()
+    {
+        $this->visit('/admin/stfalcon/event/mail/create');
     }
 }

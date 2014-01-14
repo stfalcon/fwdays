@@ -65,17 +65,33 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userDefault2);
         $this->addReference('user-default2', $userDefault2);
 
+        $userDefault3 = new User();
+        $userDefault3->setUsername('Spiderman');
+        $userDefault3->setFullname('Peter Parker');
+        $userDefault3->setEmail('peter.parker@fwdays.com');
+        $userDefault3->setPlainPassword('qwerty');
+        $userDefault3->addRole('ROLE_USER');
+        $userDefault3->setCountry('USA');
+        $userDefault3->setCity('New-York');
+        $userDefault3->setCompany('The New-York Times');
+        $userDefault3->setPost('Journalist');
+        $userDefault3->setEnabled(true);
+        $userDefault3->setExpired(false);
+        $userDefault3->setLocked(false);
+        $manager->persist($userDefault3);
+        $this->addReference('user-default3', $userDefault3);
+
         for ($i = 1; $i <= 100; $i++) {
             $userDefault = new User();
             $userDefault->setUsername('Пользователь ' . $i);
-            $userDefault->setFullname('Michael Jordan ' . $i);
+            $userDefault->setFullname('Default User ' . $i);
             $userDefault->setEmail('user' . $i . '@fwdays.com');
             $userDefault->setPlainPassword('qwerty');
             $userDefault->addRole('ROLE_USER');
-            $userDefault->setCountry('USA');
-            $userDefault->setCity('Boston');
-            $userDefault->setCompany('NBA');
-            $userDefault->setPost('Point Guard');
+            $userDefault->setCountry('Ukraine');
+            $userDefault->setCity('Khmelnytskyi');
+            $userDefault->setCompany('Anonumous');
+            $userDefault->setPost('Tester');
             $userDefault->setEnabled(true);
             $userDefault->setExpired(false);
             $userDefault->setLocked(false);
