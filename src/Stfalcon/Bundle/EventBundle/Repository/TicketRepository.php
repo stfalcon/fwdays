@@ -35,7 +35,6 @@ class TicketRepository extends EntityRepository
             ->getResult();
     }
 
-
     /**
      * @param Event $event  Event
      * @param null  $status Status
@@ -164,5 +163,28 @@ class TicketRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find ticket for some user and event with not null payment
+     *
+     * @param User  $user  User
+     * @param Event $event Event
+     *
+     * @return array
+     */
+    public function findOneByUserAndEvent($user, $event)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        return $qb->select('t')
+            ->where('t.event = :event')
+            ->andWhere('t.user = :user')
+            ->andWhere($qb->expr()->isNotNull('t.payment'))
+            ->setParameter('event', $event)
+            ->setParameter('user', $user)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

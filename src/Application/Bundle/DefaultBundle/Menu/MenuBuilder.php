@@ -36,7 +36,7 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->setCurrentUri($request->getRequestUri());
+        $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'nav');
 
         $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
@@ -76,7 +76,7 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->setCurrentUri($request->getRequestUri());
+        $menu->setUri($request->getRequestUri());
 
         $menu->addChild("О событии", array('route' => 'event_show', 'routeParameters' => array('event_slug' => $event->getSlug())));
 
