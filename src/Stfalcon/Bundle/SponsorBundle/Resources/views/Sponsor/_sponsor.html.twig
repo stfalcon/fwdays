@@ -2,7 +2,7 @@
     <a href="{{ sponsor.site }}">
 {% endif %}
 
-    {% if sponsor.file %}
+    {% if sponsor.logo is defined and sponsor.logo is not null %}
         <img src="{{ vich_uploader_asset(sponsor, 'file') }}" alt="{{ sponsor.name }}" title="{{ sponsor.name }}" />
     {% else %}
         {{ sponsor.name }}
