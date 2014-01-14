@@ -85,6 +85,16 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
 
+        for ($i = 1; $i <= 100; $i++) {
+            $ticket = new Ticket(
+                $manager->merge($this->getReference('event-zfday')),
+                $manager->merge($this->getReference('user-default-' . $i))
+            );
+            $ticket->setPayment($manager->merge($this->getReference('payment')));
+            $manager->persist($ticket);
+            $this->addReference('ticket-' . ($i + 3), $ticket);
+        }
+
         $manager->flush();
     }
 }

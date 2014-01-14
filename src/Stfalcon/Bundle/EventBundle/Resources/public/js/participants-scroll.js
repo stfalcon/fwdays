@@ -5,9 +5,9 @@ $(document).ready(function (){
     var $preLoader = $('.preloader');
     $(window).scroll(function () {
 
-        /** Get Footer top offset */
-        var footerOffsetTop = $('#footer').offset().top;
-        if ($(window).scrollTop() >= (footerOffsetTop-$(window).height() - 100)) {
+        /** Get ul.participants bottom offset */
+        var participantsWrapperOffsetBottom = ($participantsWrapper.offset().top + $participantsWrapper.height()) - $(window).height();
+        if ($(window).scrollTop() >= (participantsWrapperOffsetBottom)) {
 
             /** Count of showed participants */
             var offset = $('ul.participants li').length;

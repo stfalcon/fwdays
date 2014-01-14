@@ -1,4 +1,4 @@
-{% extends request.isXmlHttpRequest ? "ajax.html" : "StfalconEventBundle:Participant:index.html.twig" %}
+{% extends request.isXmlHttpRequest ? "::ajax.html.twig" : "StfalconEventBundle:Participant:index.html.twig" %}
 
 {% block ajax_content %}
     {% for participant in participants %}
