@@ -73,18 +73,6 @@ class Ticket
     private $used = false;
 
     /**
-     * Constructor
-     *
-     * @param Event $event Event
-     * @param User  $user  User
-     */
-    public function __construct(Event $event, User $user)
-    {
-        $this->setEvent($event);
-        $this->setUser($user);
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -97,37 +85,43 @@ class Ticket
     /**
      * @return Event
      */
-    public function getEvent() {
+    public function getEvent()
+    {
         return $this->event;
     }
 
     /**
      * @param Event $event
+     *
      * @return void
      */
-    private function setEvent(Event $event) {
+    public function setEvent(Event $event)
+    {
         $this->event = $event;
     }
 
     /**
      * @return Payment
      */
-    public function getPayment() {
+    public function getPayment()
+    {
         return $this->payment;
     }
 
     /**
      * @param Payment $payment
+     *
      * @return void
      */
-    public function setPayment(Payment $payment) {
+    public function setPayment(Payment $payment)
+    {
         $this->payment = $payment;
     }
 
     /**
      * @param User $user
      */
-    private function setUser(User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }

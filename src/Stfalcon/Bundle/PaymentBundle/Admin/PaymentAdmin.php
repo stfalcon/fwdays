@@ -20,7 +20,7 @@ class PaymentAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->addIdentifier('id')
             ->add('amount')
             ->add('status')
             ->add('user')
@@ -80,9 +80,45 @@ class PaymentAdmin extends Admin
             );
     }
 
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->with('General')
+                ->add('amount', 'money', array(
+                    'currency' => 'UAH'
+                ))
+                ->add('amount_without_discount', 'money', array(
+                    'currency' => 'UAH'
+                ))
+                ->add('status', 'choice', array(
+                    'choices'   => array(
+                        'pending'   => 'pending',
+                        'paid' => 'paid'
+                    )
+                ))
+                ->add('gate', 'choice', array(
+                    'choices'   => array(
+                        'interkassa'   => 'interkassa',
+                        'admin' => 'admin'
+                    )
+                ))
+                ->add('has_discount', 'checkbox', array(
+                    'label'     => 'Has discount?',
+                    'required'  => false,
+                ))
+                ->add('user')
+                ->add('tickets')
+            ->end();
+    }
+
+    /**
+     * @return array|void
+     */
     public function getBatchActions()
     {
         $actions = array();
     }
-
 }
