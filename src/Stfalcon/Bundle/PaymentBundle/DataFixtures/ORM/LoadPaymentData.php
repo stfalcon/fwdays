@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
@@ -30,29 +31,39 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
+        /** @var User $userDefault */
         $userDefault = $manager->merge($this->getReference('user-default'));
 
-        $payment = new Payment($userDefault, 100500);
+        $payment = new Payment();
+        $payment->setUser($userDefault);
+        $payment->setAmount(100500);
         $payment->setAmountWithoutDiscount(100500);
         $payment->setStatus(Payment::STATUS_PAID);
         $manager->persist($payment);
         $this->addReference('payment', $payment);
 
-        $payment = new Payment($userDefault, 100500);
+        $payment = new Payment();
+        $payment->setUser($userDefault);
+        $payment->setAmount(100500);
         $payment->setAmountWithoutDiscount(100500);
         $payment->setStatus(Payment::STATUS_PENDING);
         $manager->persist($payment);
         $this->addReference('pending', $payment);
 
+        /** @var User $userDefault2 */
         $userDefault2 = $manager->merge($this->getReference('user-default2'));
 
-        $payment = new Payment($userDefault2, 100500);
+        $payment = new Payment();
+        $payment->setUser($userDefault2);
+        $payment->setAmount(100500);
         $payment->setAmountWithoutDiscount(100500);
         $payment->setStatus(Payment::STATUS_PAID);
         $manager->persist($payment);
         $this->addReference('payment2', $payment);
 
-        $payment = new Payment($userDefault2, 100500);
+        $payment = new Payment();
+        $payment->setUser($userDefault2);
+        $payment->setAmount(100500);
         $payment->setAmountWithoutDiscount(100500);
         $payment->setStatus(Payment::STATUS_PENDING);
         $manager->persist($payment);

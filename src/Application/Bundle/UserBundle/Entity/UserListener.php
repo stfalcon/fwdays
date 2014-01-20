@@ -55,6 +55,7 @@ class UserListener implements EventSubscriber
 
     private function handleEvent(LifecycleEventArgs $args)
     {
+        /** @var User $entity */
         $entity = $args->getEntity();
         if ($entity instanceof UserInterface) {
             $activeEvents = $this->container->get('doctrine')->getManager()
@@ -64,7 +65,9 @@ class UserListener implements EventSubscriber
             $em = $this->container->get('doctrine')->getManagerForClass('StfalconEventBundle:Ticket');
             // Подписуем пользователя на все активные евенты
             foreach ($activeEvents as $activeEvent) {
-                $ticket = new Ticket($activeEvent, $entity);
+                $ticket = new Ticket();
+                $ticket->setEvent($activeEvent);
+                $ticket->setUser($entity);
                 $em->persist($ticket);
                 $em->flush();
             }

@@ -137,16 +137,10 @@ class Payment
 
     /**
      * Constructor. Set default status to new payment.
-     *
-     * @param User  $user        Owner of a payment
-     * @param float $amount      Amount of a payment
-     * @param bool  $hasDiscount Presence of discount
      */
-    public function __construct(User $user, $amount, $hasDiscount = false)
+    public function __construct()
     {
-        $this->setUser($user);
-        $this->setAmount($amount);
-        $this->setHasDiscount($hasDiscount);
+        $this->setHasDiscount(false);
         $this->setStatus(self::STATUS_PENDING);
         $this->tickets = new ArrayCollection();
     }

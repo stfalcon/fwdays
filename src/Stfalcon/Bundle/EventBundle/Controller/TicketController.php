@@ -40,7 +40,9 @@ class TicketController extends BaseController
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
-            $ticket = new Ticket($event, $user);
+            $ticket = new Ticket();
+            $ticket->setEvent($event);
+            $ticket->setUser($user);
             $em->persist($ticket);
             $em->flush();
         }
@@ -132,8 +134,10 @@ class TicketController extends BaseController
                 $hasDiscount = false;
             }
 
-            $payment = new Payment($user, $cost, $hasDiscount);
-            $payment->getUser();
+            $payment = new Payment();
+            $payment->setUser($user);
+            $payment->setAmount($cost);
+            $payment->setHasDiscount($hasDiscount);
             $payment->setAmountWithoutDiscount($event->getCost());
             $em->persist($payment);
             $ticket->setPayment($payment);

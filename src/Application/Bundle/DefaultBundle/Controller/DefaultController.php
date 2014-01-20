@@ -96,11 +96,14 @@ class DefaultController extends Controller {
                 $em->persist($user);
 
                 // проверяем или у него нет билетов на этот ивент
+                /** @var Ticket $ticket */
                 $ticket = $em->getRepository('StfalconEventBundle:Ticket')
                         ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
                 if (!$ticket) {
-                    $ticket = new Ticket($event, $user);
+                    $ticket = new Ticket();
+                    $ticket->setEvent($event);
+                    $ticket->setUser($user);
                     $em->persist($ticket);
                 }
 
@@ -119,7 +122,10 @@ class DefaultController extends Controller {
                         $payment->setHasDiscount($data['discount']);
                     } else {
                         echo "создаем новый платеж<br>";
-                        $payment = new Payment($user, $amount, $data['discount']);
+                        $payment = new Payment();
+                        $payment->setUser($user);
+                        $payment->setAmount($amount);
+                        $payment->setHasDiscount($data['discount']);
                     }
                     $payment->setAmountWithoutDiscount($_POST['amount']);
 
