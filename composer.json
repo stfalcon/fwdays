@@ -22,13 +22,13 @@
         "sensio/generator-bundle": "2.2.3",
         "jms/security-extra-bundle": "1.4.0",
 
-        "sonata-project/doctrine-orm-admin-bundle": "dev-master",
+        "sonata-project/doctrine-orm-admin-bundle": "dev-master#bcbcfaf6c18f76b460c9f011809904611a8a618a",
 
         "avalanche123/imagine-bundle": "dev-master#eb03645887f732410127a2b3d992befe0f175277",
 
         "friendsofsymfony/user-bundle": "v1.3.1",
 
-        "sonata-project/intl-bundle": "dev-master",
+        "sonata-project/intl-bundle": "dev-master#723d12b06d0c4649adeab5c9df29f7814b78f183",
 
         "doctrine/doctrine-fixtures-bundle": "dev-master#186d605aa6b592bd577e07e0e9a2c420b02b2492",
         "doctrine/doctrine-migrations-bundle": "dev-master#3792aa78445773387754c6853bbd7f4dcb31f486",
@@ -37,14 +37,14 @@
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
 
-        "vich/uploader-bundle": "dev-master",
+        "vich/uploader-bundle": "v0.9.0",
         "endroid/qrcode": "1.1.1",
-        "ornicar/gravatar-bundle" : "dev-master",
+        "ornicar/gravatar-bundle" : "dev-master#f681200f5b50d0626618c51c5f6b088bc2c6ba24",
 
         "tfox/mpdf-port-bundle": "1.1.*",
 
-        "stfalcon/page-bundle": "dev-master",
-        "stfalcon/news-bundle": "dev-master"
+        "stfalcon/page-bundle": "dev-master#479e3a7370a7e97faddc038913e5afde90923f70",
+        "stfalcon/news-bundle": "dev-master#ae6615894e346611df1dbbc3ee562fa6e585df19"
     },
 
     "require-dev": {
