@@ -83,7 +83,7 @@ class Event
     /**
      * @var string $logo
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string")
      */
     protected $logo;
 
@@ -169,7 +169,6 @@ class Event
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
-        $this->logo = '';
         $this->backgroundImage = '';
         $this->emailBackground = '';
     }

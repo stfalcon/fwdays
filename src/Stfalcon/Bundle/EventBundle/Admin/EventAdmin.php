@@ -46,8 +46,7 @@ class EventAdmin extends Admin
             ->end()
             ->with('Images')
                 ->add('logoFile', 'file', array(
-                    'label' => 'Logo',
-                    'required' => false,
+                    'label' => 'Logo'
                 ))
                 ->add('bgFile', 'file', array(
                     'label' => 'Background image',

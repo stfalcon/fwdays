@@ -8,14 +8,14 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20140225163142 extends AbstractMigration
+class Version20140225175044 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events DROP slider_background, CHANGE logo logo VARCHAR(255) DEFAULT NULL, CHANGE background_image background_image VARCHAR(255) DEFAULT NULL, CHANGE email_background email_background VARCHAR(255) DEFAULT NULL");
+        $this->addSql("ALTER TABLE event__events DROP slider_background, CHANGE background_image background_image VARCHAR(255) DEFAULT NULL, CHANGE email_background email_background VARCHAR(255) DEFAULT NULL");
     }
 
     public function down(Schema $schema)
@@ -23,6 +23,6 @@ class Version20140225163142 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events ADD slider_background VARCHAR(255) NOT NULL, CHANGE logo logo VARCHAR(255) NOT NULL, CHANGE email_background email_background VARCHAR(255) NOT NULL, CHANGE background_image background_image VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE event__events ADD slider_background VARCHAR(255) NOT NULL, CHANGE email_background email_background VARCHAR(255) NOT NULL, CHANGE background_image background_image VARCHAR(255) NOT NULL");
     }
 }
