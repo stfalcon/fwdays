@@ -21,6 +21,7 @@
         "sensio/framework-extra-bundle": "2.2.3",
         "sensio/generator-bundle": "2.2.3",
         "jms/security-extra-bundle": "1.4.0",
+        "sonata-project/admin-bundle": "2.2.11 as dev-master",
 
         "sonata-project/doctrine-orm-admin-bundle": "dev-master#bcbcfaf6c18f76b460c9f011809904611a8a618a",
 
