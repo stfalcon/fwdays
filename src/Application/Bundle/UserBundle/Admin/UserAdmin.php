@@ -15,18 +15,20 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
         $datagrid
-            ->add('email')
             ->add('fullname')
+            ->add('email')
+            ->add('company')
+            ->add('enabled')
         ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('email')
-            ->add('enabled')
             ->add('fullname')
+            ->addIdentifier('email')
             ->add('company')
+            ->add('enabled')
             ->add('createdAt')
         ;
     }
@@ -51,27 +53,4 @@ class UserAdmin extends Admin
         ;
     }
 
-    public function getBatchActions()
-    {
-        return array();
-    }
-
-//    public function preUpdate($user)
-//    {
-//        $this->getUserManager()->updateCanonicalFields($user);
-//        $this->getUserManager()->updatePassword($user);
-//    }
-//
-//    public function setUserManager(UserManagerInterface $userManager)
-//    {
-//        $this->userManager = $userManager;
-//    }
-//
-//    /**
-//     * @return UserManagerInterface
-//     */
-//    public function getUserManager()
-//    {
-//        return $this->userManager;
-//    }
 }
