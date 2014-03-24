@@ -38,11 +38,17 @@
         <parameter key="stfalcon_event.admin.mail_queue.entity">Stfalcon\Bundle\EventBundle\Entity\MailQueue</parameter>
         <parameter key="stfalcon_event.admin.mail_queue.controller">SonataAdminBundle:CRUD</parameter>
 
+        <parameter key="stfalcon_event.admin.promo_code.class">Stfalcon\Bundle\EventBundle\Admin\PromoCodeAdmin</parameter>
+        <parameter key="stfalcon_event.admin.promo_code.entity">Stfalcon\Bundle\EventBundle\Entity\PromoCode</parameter>
+        <parameter key="stfalcon_event.admin.promo_code.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
 
         <parameter key="stfalcon_event.mailer_helper.class">Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper</parameter>
 
         <parameter key="stfalcon_event.pdf_generator.helper.class">Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper</parameter>
+
+        <parameter key="stfalcon_event.promo_code.form.type.class">Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType</parameter>
     </parameters>
 
     <services>
@@ -121,6 +127,13 @@
             <argument>%stfalcon_event.admin.mail_queue.controller%</argument>
         </service>
 
+        <service id="stfalcon_event.admin.promo_code" class="%stfalcon_event.admin.promo_code.class%">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Промо коды"/>
+            <argument />
+            <argument>%stfalcon_event.admin.promo_code.entity%</argument>
+            <argument>%stfalcon_event.admin.promo_code.controller%</argument>
+        </service>
+
         <service id="stfalcon_event.qr_code" class="%stfalcon_event.qr_code.class%">
         </service>
 
@@ -134,6 +147,11 @@
             <argument type="service" id="stfalcon_event.qr_code"/>
             <argument type="service" id="kernel"/>
             <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="stfalcon_event.promo_code.form.type" class="Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType">
+            <tag name="form.type" alias="stfalcon_event_promo_code" />
+            <argument>%stfalcon_event.promo_code.form.type.class%</argument>
         </service>
     </services>
 

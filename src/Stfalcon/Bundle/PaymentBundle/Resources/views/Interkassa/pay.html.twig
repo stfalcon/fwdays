@@ -8,17 +8,38 @@
             Если вам нужно оплатить безналом участие 5ти и больше человек, тогда пишите нам на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a>. В письме укажите "Фамилия Имя e-mail" каждого участника и ваши реквизиты.
         </p>
     </div>
+    {% if not payment.getPromoCodeFromTickets %}
+        <div>
+            <form action="{{ path('event_pay', {'event_slug': event.slug}) }}" method="post">
+                {{ form_widget(promoCodeForm) }}
+                <input type="submit" value="Ок">
+            </form>
+        </div>
+    {% else %}
+        <div class="info-msg-block">
+            <p>
+                Промокод: {{ promoCode.code }} - {{ promoCode.discountAmount }}%
+            </p>
+        </div>
+    {% endif %}
 
     <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
         <div>
-            {% if payment.hasDiscount %}
-                Цена без скидки: {{ payment.amountWithoutDiscount }} грн.<br />
-                <div class="amount">
-                    Сумма к оплате <b>{{ payment.amount }} грн.</b> (с учетом скидки 20%)
-                </div>
-            {% else %}
-                Сумма к оплате: <b>{{ payment.amount }} грн.</b>
-            {% endif %}
+            {% for ticket in payment.tickets %}
+                {% set discountAmount = 20 %}
+                {% if (ticket.promoCode) %}
+                    {% set discountAmount = ticket.promoCode.discountAmount %}
+                {% endif %}
+                <div>Билет #{{ ticket.id }}</div>
+                {% if ticket.hasDiscount %}
+                    Цена без скидки: {{ ticket.amountWithoutDiscount }} грн.<br />
+                    <div class="amount">
+                        Сумма к оплате <b>{{ ticket.amount }} грн.</b> (с учетом скидки {{ discountAmount }}%)
+                    </div>
+                {% else %}
+                    Сумма к оплате: <b>{{ ticket.amount }} грн.</b>
+                {% endif %}
+            {% endfor %}
         </div>
         <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
         <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
