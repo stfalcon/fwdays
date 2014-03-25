@@ -268,6 +268,8 @@ class Ticket
     public function setPromoCode($promoCode)
     {
         $this->setHasDiscount(true);
+        $amountWithDiscount = $this->amountWithoutDiscount - ($this->amountWithoutDiscount * ($promoCode->getDiscountAmount() / 100));
+        $this->setAmount($amountWithDiscount);
         $this->promoCode = $promoCode;
     }
 

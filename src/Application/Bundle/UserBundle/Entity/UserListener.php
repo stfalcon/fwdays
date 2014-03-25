@@ -63,15 +63,17 @@ class UserListener implements EventSubscriber
                 ->findBy(array('active' => true ));
 
             $em = $this->container->get('doctrine')->getManagerForClass('StfalconEventBundle:Ticket');
+
             // Подписуем пользователя на все активные евенты
             foreach ($activeEvents as $activeEvent) {
                 $ticket = new Ticket();
                 $ticket->setEvent($activeEvent);
                 $ticket->setUser($entity);
+                $ticket->setAmountWithoutDiscount($activeEvent->getCost());
+                $ticket->setAmount($activeEvent->getCost());
                 $em->persist($ticket);
-                $em->flush();
             }
-
+            $em->flush();
         }
     }
 }

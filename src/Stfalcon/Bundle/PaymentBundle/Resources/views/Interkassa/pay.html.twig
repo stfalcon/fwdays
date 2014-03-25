@@ -23,24 +23,33 @@
         </div>
     {% endif %}
 
-    <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
-        <div>
+        <form action="{{ path('add_participants_to_payment', {'slug': event.slug, 'id': payment.id}) }}"  method="POST" class="participants-form">
+        <div id="participants-form">
+            <div class="pay-for-other-participants">
+                <a href="#">Оплатить других участников</a>
+            </div>
+
             {% for ticket in payment.tickets %}
-                {% set discountAmount = 20 %}
-                {% if (ticket.promoCode) %}
-                    {% set discountAmount = ticket.promoCode.discountAmount %}
-                {% endif %}
-                <div>Билет #{{ ticket.id }}</div>
-                {% if ticket.hasDiscount %}
-                    Цена без скидки: {{ ticket.amountWithoutDiscount }} грн.<br />
-                    <div class="amount">
-                        Сумма к оплате <b>{{ ticket.amount }} грн.</b> (с учетом скидки {{ discountAmount }}%)
+                <div class="added-participant">
+                    <div class="added-participant-name">
+                        {{ ticket.user.fullname }} — {{ ticket.isPaid?0:ticket.amount }} грн.
+                        <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}" class="remove-participant" title="Удалить">Удалить</a>
                     </div>
-                {% else %}
-                    Сумма к оплате: <b>{{ ticket.amount }} грн.</b>
-                {% endif %}
+                    <div class="added-participant-email">{{ ticket.user.email }}</div>
+                </div>
             {% endfor %}
+            <div class="wrap" style="display:none;">
+                {{ form_widget(ticketForm.participants) }}
+                <div>
+                    <input type="submit" value="Закончить список и посчитать сумму">
+                    <a class="add-new-participant" href="#">Еще участники</a>
+                </div>
+            </div>
+            <!-- /.wrap -->
         </div>
+    </form>
+
+    <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
         <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
         <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
         <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
@@ -48,9 +57,17 @@
         <input type="hidden" name="ik_paysystem_alias" value="">
         <input type="hidden" name="ik_baggage_fields" value="">
         <input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">
+
+        <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
         <div>
             <input type="submit" value="Оплатить участие" />
         </div>
     </form>
 
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/jquery-1.8.2.min.js' 'bundles/stfalconevent/js/ticket-form.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

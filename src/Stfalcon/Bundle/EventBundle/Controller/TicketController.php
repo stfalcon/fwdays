@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template,
     Symfony\Component\HttpFoundation\RedirectResponse,
@@ -41,31 +42,7 @@ class TicketController extends BaseController
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
-            // Вытягиваем скидку из конфига
-            $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
-            $discount = (float) $paymentsConfig['discount'];
-
-            $ticket = new Ticket();
-            $ticket->setEvent($event);
-            $ticket->setUser($user);
-            $ticket->setAmountWithoutDiscount($event->getCost());
-            $paidPayments = $this->getDoctrine()->getManager()
-                ->getRepository('StfalconPaymentBundle:Payment')
-                ->findPaidPaymentsForUser($user);
-
-            // Если пользователь имеет оплаченные события, то он получает скидку
-            if (count($paidPayments) > 0) {
-                $cost = $event->getCost() - $event->getCost() * $discount;
-                $hasDiscount = true;
-            } else {
-                $cost = $event->getCost();
-                $hasDiscount = false;
-            }
-            $ticket->setAmount($cost);
-            $ticket->setHasDiscount($hasDiscount);
-
-            $em->persist($ticket);
-            $em->flush();
+            $this->createTicket($event, $user);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -146,6 +123,8 @@ class TicketController extends BaseController
             }
         }
 
+        $ticketForm = $this->createForm('stfalcon_event_ticket');
+
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
@@ -154,11 +133,123 @@ class TicketController extends BaseController
                 'user' => $user,
                 'payment' => $payment,
                 'promoCodeFormView' => $promoCodeForm->createView(),
-                'promoCode' => $promoCode
+                'promoCode' => $promoCode,
+                'ticketFormView' => $ticketForm->createView()
             )
         );
     }
 
+    /**
+     * @param string  $slug
+     * @param Payment $payment
+     *
+     * @return RedirectResponse
+     *
+     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
+     */
+    public function addParticipantsToPaymentAction($slug, Payment $payment)
+    {
+        $event = $this->getEventBySlug($slug);
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $ticketForm = $this->createForm('stfalcon_event_ticket');
+        $ticketForm->bind($request);
+
+        $participants = $ticketForm->get('participants')->getData();
+
+        foreach ($participants as $participant) {
+            $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
+
+            // создаем нового пользователя
+            if (!$user) {
+                $user = $this->get('fos_user.user_manager')->createUser();
+                $user->setEmail($participant['email']);
+                $user->setFullname($participant['name']);
+
+                // генерация временного пароля
+                $password = substr(str_shuffle(md5(time())), 5, 8);
+                $user->setPlainPassword($password);
+                $user->setEnabled(true);
+
+                $this->get('fos_user.user_manager')->updateUser($user);
+
+                // отправляем сообщение о регистрации
+                $text = "Приветствуем " . $user->getFullname() ."!
+
+Вы были автоматически зарегистрированы на сайте Frameworks Days.
+
+Ваш временный пароль: " . $password . "
+Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
+
+
+---
+С уважением,
+Команда Frameworks Days";
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject("Регистрация на сайте Frameworks Days")
+                    // @todo refact
+                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                    ->setTo($user->getEmail())
+                    ->setBody($text);
+
+                // @todo каждый вызов отнимает память
+                $this->get('mailer')->send($message);
+            }
+            // проверяем или у него нет билетов на этот ивент
+            /** @var Ticket $ticket */
+            $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+
+            if (!$ticket) {
+                $ticket = $this->createTicket($event, $user);
+            }
+
+            if (!$ticket->isPaid()) {
+                if ($promoCode = $payment->getPromoCodeFromTickets()) {
+                    if (!$ticket->getHasDiscount()) {
+                        $ticket->setPromoCode($promoCode);
+                    }
+                }
+                $ticket->setPayment($payment);
+            } else {
+                $payment->addTicket($ticket);
+            }
+            $em->persist($payment);
+            $em->persist($ticket);
+        }
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
+    }
+
+    /**
+     * @param string $event_slug
+     * @param int    $payment_id
+     * @param Ticket $ticket
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     *
+     * @Route("/event/{event_slug}/payment/{payment_id}/ticket/remove/{id}", name="remove_ticket_from_payment")
+     */
+    public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
+    {
+        $event = $this->getEventBySlug($event_slug);
+
+        $em = $this->getDoctrine()->getManager();
+        $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
+        $payment = $paymentRepository->find($payment_id);
+        if (!$payment) {
+            throw $this->createNotFoundException('Unable to find Payment entity.');
+        }
+
+        $payment->removeTicket($ticket);
+        $em->remove($ticket);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
+    }
     /**
      * Show event ticket status (for current user)
      *
@@ -328,5 +419,42 @@ class TicketController extends BaseController
                 'action'  => $this->generateUrl('check')
             );
         }
+    }
+
+    /**
+     * @param Event $event
+     * @param User  $user
+     *
+     * @return Ticket
+     */
+    private function createTicket($event, $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Вытягиваем скидку из конфига
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discount = (float) $paymentsConfig['discount'];
+
+        $ticket = new Ticket();
+        $ticket->setEvent($event);
+        $ticket->setUser($user);
+        $ticket->setAmountWithoutDiscount($event->getCost());
+        $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
+            ->findPaidPaymentsForUser($user);
+
+        // Если пользователь имеет оплаченные события, то он получает скидку
+        if (count($paidPayments) > 0) {
+            $cost = $event->getCost() - $event->getCost() * $discount;
+            $hasDiscount = true;
+        } else {
+            $cost = $event->getCost();
+            $hasDiscount = false;
+        }
+        $ticket->setAmount($cost);
+        $ticket->setHasDiscount($hasDiscount);
+
+        $em->persist($ticket);
+        $em->flush();
+
+        return $ticket;
     }
 }

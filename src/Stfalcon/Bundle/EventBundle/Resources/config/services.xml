@@ -151,7 +151,10 @@
 
         <service id="stfalcon_event.promo_code.form.type" class="Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType">
             <tag name="form.type" alias="stfalcon_event_promo_code" />
-            <argument>%stfalcon_event.promo_code.form.type.class%</argument>
+        </service>
+
+        <service id="stfalcon_event.ticket.form.type" class="Stfalcon\Bundle\EventBundle\Form\Type\TicketFormType">
+            <tag name="form.type" alias="stfalcon_event_ticket" />
         </service>
     </services>
 

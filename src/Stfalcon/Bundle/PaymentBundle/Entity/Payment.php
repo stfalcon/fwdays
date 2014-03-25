@@ -106,8 +106,12 @@ class Payment
      */
     public function addTicket(Ticket $ticket)
     {
-        $this->amount += $ticket->getAmount();
-        $this->tickets->add($ticket);
+        if (!$this->tickets->contains($ticket)) {
+            if (!$ticket->isPaid()) {
+                $this->amount += $ticket->getAmount();
+            }
+            $this->tickets->add($ticket);
+        }
     }
 
     /**
@@ -118,8 +122,6 @@ class Payment
         foreach ($this->tickets as $ticket) {
             if (!$ticket->getHasDiscount()) {
                 $ticket->setPromoCode($promoCode);
-                $amountWithDiscount = $ticket->getAmountWithoutDiscount() - ($ticket->getAmountWithoutDiscount() * ($promoCode->getDiscountAmount() / 100));
-                $ticket->setAmount($amountWithDiscount);
             }
         }
         $this->recalculateAmount();
@@ -133,6 +135,19 @@ class Payment
         $this->amount = 0;
         foreach ($this->tickets as $ticket) {
             $this->amount += $ticket->getAmount();
+        }
+    }
+
+    /**
+     * @param Ticket $ticket
+     */
+    public function removeTicket(Ticket $ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            if (!$ticket->isPaid()) {
+                $this->amount -= $ticket->getAmount();
+            }
+            $this->tickets->removeElement($ticket);
         }
     }
 
