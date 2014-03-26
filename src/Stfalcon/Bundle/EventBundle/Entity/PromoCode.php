@@ -70,10 +70,14 @@ class PromoCode
 
     /**
      * @param string $code
+     *
+     * @return $this
      */
     public function setCode($code)
     {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
@@ -86,10 +90,14 @@ class PromoCode
 
     /**
      * @param int $discountAmount
+     *
+     * @return $this
      */
     public function setDiscountAmount($discountAmount)
     {
         $this->discountAmount = $discountAmount;
+
+        return $this;
     }
 
     /**
@@ -102,10 +110,14 @@ class PromoCode
 
     /**
      * @param \DateTime $endDate
+     *
+     * @return $this
      */
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
+
+        return $this;
     }
 
     /**
@@ -118,10 +130,14 @@ class PromoCode
 
     /**
      * @param \Stfalcon\Bundle\EventBundle\Entity\Event $event
+     *
+     * @return $this
      */
     public function setEvent($event)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -134,10 +150,14 @@ class PromoCode
 
     /**
      * @param int $id
+     *
+     * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -150,10 +170,14 @@ class PromoCode
 
     /**
      * @param string $title
+     *
+     * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
