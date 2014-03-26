@@ -6,6 +6,7 @@ before_script:
   - curl -s https://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
   - app/console --env=test doctrine:schema:create
+  - sleep 2
 script:
   - phpunit -c app/
   - bin/run-all-features
