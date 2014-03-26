@@ -1974,3 +1974,78 @@ div.amount {
     display: none;
     text-align: center;
 }
+/*==================payment form =================*/
+form.payment-form label {
+    font-size: 15px;
+}
+form.payment-form .wrap {
+    padding:20px 0 12px;
+    border-top:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
+    margin:0 0 15px
+}
+input[type="button"] {
+    height: 26px;
+}
+.pay-for-other-participants {
+    float: right;
+    padding-right: 45px;
+}
+.pay-for-other-participants a {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.added-participant {
+    padding-bottom: 20px;
+}
+.added-participant-name {
+    padding-bottom: 0;
+    font-size: 15px;
+}
+.added-participant-email {
+    padding-bottom: 0;
+    font-size: 11px;
+    color: #727272;
+}
+
+.remove-participant {
+    display: inline-block;
+    margin-left: 5px;
+    width: 13px;
+    height: 13px;
+    overflow: hidden;
+    text-indent: -999px;
+    vertical-align: middle;
+    background: left top no-repeat url(../../images/icon-add-remove-participant.png);
+}
+
+a.add-new-participant {
+    display: inline-block;
+    margin-left: 37px;
+    vertical-align: middle;
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+a.add-new-participant:before {
+    display: inline-block;
+    content: '';
+    position: relative;
+    margin-left: -15px;
+    margin-right: 6px;
+    width: 9px;
+    height: 9px;
+    vertical-align: baseline;
+    background: 0 -13px no-repeat url(../../images/icon-add-remove-participant.png);
+}
+a.add-new-participant:hover:before {
+    background-position: 0 -22px;
+
+}
+
+.pay-sum {
+    font-size: 15px;
+}
+.pay-sum .sum {
+    font-weight: bold;
+}
