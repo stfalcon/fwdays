@@ -156,6 +156,7 @@ class TicketController extends BaseController
         $ticketForm->bind($request);
 
         $participants = $ticketForm->get('participants')->getData();
+        $alreadyPaidTickets = array();
 
         foreach ($participants as $participant) {
             $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
@@ -213,12 +214,15 @@ class TicketController extends BaseController
                 }
                 $ticket->setPayment($payment);
             } else {
-                $payment->addTicket($ticket);
+                $alreadyPaidTickets[] = $user->getFullname();
             }
             $em->persist($payment);
             $em->persist($ticket);
         }
         $em->flush();
+        if (!empty($alreadyPaidTickets)) {
+            $this->get('session')->getFlashBag()->add('already_paid_tickets', implode(', ', $alreadyPaidTickets));
+        }
 
         return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
     }

@@ -5,9 +5,52 @@
 
     <div class="info-msg-block">
         <p>
-            Если вам нужно оплатить безналом участие 5ти и больше человек, тогда пишите нам на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a>. В письме укажите "Фамилия Имя e-mail" каждого участника и ваши реквизиты.
+            Если вам нужно оплатить безналом участие 5ти и больше человек, тогда пишите нам на <a
+                    href="mailto:orgs@fwdays.com">orgs@fwdays.com</a>. В письме укажите "Фамилия Имя e-mail" каждого
+            участника и ваши реквизиты.
         </p>
     </div>
+    <form action="{{ path('add_participants_to_payment', {'slug': event.slug, 'id': payment.id}) }}" method="POST"
+          class="participants-form">
+        <div id="participants-form">
+            <div class="pay-for-other-participants">
+                <a href="#">Оплатить других участников</a>
+            </div>
+
+            {% for ticket in payment.tickets %}
+                <div class="added-participant">
+                    <div class="added-participant-name">
+                        {{ ticket.user.fullname }} —
+                        {% if ticket.hasDiscount %}
+                            <span class="old-price" style="text-decoration: line-through;">
+                                {{ ticket.amountWithoutDiscount }} грн
+                            </span>
+                        {% endif %} {{ ticket.amount }} грн.
+                        {% if ticket.user != app.user %}
+                            <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}"
+                               class="remove-participant" title="Удалить">Удалить</a>
+                        {% endif %}
+                    </div>
+                    <div class="added-participant-email">{{ ticket.user.email }}</div>
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('already_paid_tickets') %}
+                <div class="info-msg-block">
+                    Участники, которые уже оплатили участие:<br>
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            <div class="wrap" style="display:none;">
+                {{ form_widget(ticketForm.participants) }}
+                <div>
+                    <input type="submit" value="Закончить список и посчитать сумму">
+                    <a class="add-new-participant" href="#">Еще участники</a>
+                </div>
+            </div>
+            <!-- /.wrap -->
+        </div>
+    </form>
+
     {% if not payment.getPromoCodeFromTickets %}
         <div>
             <form action="{{ path('event_pay', {'event_slug': event.slug}) }}" method="post">
@@ -23,33 +66,8 @@
         </div>
     {% endif %}
 
-        <form action="{{ path('add_participants_to_payment', {'slug': event.slug, 'id': payment.id}) }}"  method="POST" class="participants-form">
-        <div id="participants-form">
-            <div class="pay-for-other-participants">
-                <a href="#">Оплатить других участников</a>
-            </div>
-
-            {% for ticket in payment.tickets %}
-                <div class="added-participant">
-                    <div class="added-participant-name">
-                        {{ ticket.user.fullname }} — {{ ticket.isPaid?0:ticket.amount }} грн.
-                        <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}" class="remove-participant" title="Удалить">Удалить</a>
-                    </div>
-                    <div class="added-participant-email">{{ ticket.user.email }}</div>
-                </div>
-            {% endfor %}
-            <div class="wrap" style="display:none;">
-                {{ form_widget(ticketForm.participants) }}
-                <div>
-                    <input type="submit" value="Закончить список и посчитать сумму">
-                    <a class="add-new-participant" href="#">Еще участники</a>
-                </div>
-            </div>
-            <!-- /.wrap -->
-        </div>
-    </form>
-
-    <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
+    <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded"
+          accept-charset="cp1251">
         <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
         <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
         <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
@@ -60,7 +78,7 @@
 
         <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
         <div>
-            <input type="submit" value="Оплатить участие" />
+            <input type="submit" value="Оплатить участие"/>
         </div>
     </form>
 
