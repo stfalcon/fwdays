@@ -49,8 +49,7 @@ class TicketController extends BaseController
             $ticket->setEvent($event);
             $ticket->setUser($user);
             $ticket->setAmountWithoutDiscount($event->getCost());
-            $paidPayments = $this->getDoctrine()->getManager()
-                ->getRepository('StfalconPaymentBundle:Payment')
+            $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
                 ->findPaidPaymentsForUser($user);
 
             // Если пользователь имеет оплаченные события, то он получает скидку
@@ -136,7 +135,7 @@ class TicketController extends BaseController
         $request = $this->getRequest();
         if ($request->isMethod('post')) {
             $promoCodeForm->bind($request);
-            $code = strtoupper($promoCodeForm->get('code')->getData());
+            $code = $promoCodeForm->get('code')->getData();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
             if ($promoCode) {
                 $payment->addPromoCodeForTickets($promoCode);
