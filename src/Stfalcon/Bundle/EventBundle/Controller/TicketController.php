@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
 use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Symfony\Component\Form\FormError;
 
 /**
  * Ticket controller
@@ -40,9 +41,28 @@ class TicketController extends BaseController
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
+            // Вытягиваем скидку из конфига
+            $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+            $discount = (float) $paymentsConfig['discount'];
+
             $ticket = new Ticket();
             $ticket->setEvent($event);
             $ticket->setUser($user);
+            $ticket->setAmountWithoutDiscount($event->getCost());
+            $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
+                ->findPaidPaymentsForUser($user);
+
+            // Если пользователь имеет оплаченные события, то он получает скидку
+            if (count($paidPayments) > 0) {
+                $cost = $event->getCost() - $event->getCost() * $discount;
+                $hasDiscount = true;
+            } else {
+                $cost = $event->getCost();
+                $hasDiscount = false;
+            }
+            $ticket->setAmount($cost);
+            $ticket->setHasDiscount($hasDiscount);
+
             $em->persist($ticket);
             $em->flush();
         }
@@ -98,47 +118,11 @@ class TicketController extends BaseController
 
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
-        // Вытягиваем скидку из конфига
-        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
-        $discount = (float) $paymentsConfig['discount'];
-
         // создаем проплату или апдейтим стоимость уже существующей
         /** @var $payment \Stfalcon\Bundle\PaymentBundle\Entity\Payment */
-        if ($payment = $ticket->getPayment()) {
-            // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
-            // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
-            // может не соответствовать цене
-
-            // @fixme После дискуссии решили раскомментировать следующий код. Так как не нашли простого решения с
-            // обновлением цены pending платежа. Все возникшые проблемные ситуации с платежами придется обрабатывать вручную
-            $payment->setAmountWithoutDiscount($event->getCost());
-            if ($payment->getHasDiscount()) {
-                $payment->setAmount($payment->getAmountWithoutDiscount() - $payment->getAmountWithoutDiscount() * $discount);
-            } else {
-                $payment->setAmount($payment->getAmountWithoutDiscount());
-            }
-
-            $em->persist($payment);
-        } else {
-            // Find paid payments for current user
-            $paidPayments = $this->getDoctrine()->getManager()
-                ->getRepository('StfalconPaymentBundle:Payment')
-                ->findPaidPaymentsForUser($user);
-
-            // Если пользователь имеет оплаченные события, то он получает скидку
-            if (count($paidPayments) > 0) {
-                $cost = $event->getCost() - $event->getCost() * $discount;
-                $hasDiscount = true;
-            } else {
-                $cost = $event->getCost();
-                $hasDiscount = false;
-            }
-
+        if (!$payment = $ticket->getPayment()) {
             $payment = new Payment();
             $payment->setUser($user);
-            $payment->setAmount($cost);
-            $payment->setHasDiscount($hasDiscount);
-            $payment->setAmountWithoutDiscount($event->getCost());
             $em->persist($payment);
             $ticket->setPayment($payment);
             $em->persist($ticket);
@@ -146,12 +130,30 @@ class TicketController extends BaseController
 
         $em->flush();
 
+        $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
+        $promoCode = $payment->getPromoCodeFromTickets();
+        $request = $this->getRequest();
+        if ($request->isMethod('post')) {
+            $promoCodeForm->bind($request);
+            $code = $promoCodeForm->get('code')->getData();
+            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
+            if ($promoCode) {
+                $payment->addPromoCodeForTickets($promoCode);
+                $em->flush();
+            } else {
+                $promoCodeForm->get('code')->addError(new FormError('Такой промокод не найден'));
+            }
+        }
+
+
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
             array(
                 'event' => $event,
                 'user' => $user,
-                'payment' => $payment
+                'payment' => $payment,
+                'promoCodeFormView' => $promoCodeForm->createView(),
+                'promoCode' => $promoCode
             )
         );
     }
