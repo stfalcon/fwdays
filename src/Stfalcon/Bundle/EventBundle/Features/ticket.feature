@@ -41,8 +41,19 @@
     Сценарий: Selenium
         Допустим я вхожу в учетную запись с именем "peter.parker@fwdays.com" и паролем "qwerty"
         Допустим я на странице "/event/zend-framework-day-2011/pay"
-        И я кликаю по ссылке "Оплатить других участников"
         Тогда я должен видеть "Оплата участия в конференции Zend Framework Day"
+#        Тогда я должен видеть "Peter Parker — 100.00 грн." // розкоментировать, цсс бан в фаерфоксе!!!
+        И я кликаю по ссылке "Оплатить других участников"
         Тогда я заполняю поле "stfalcon_event_ticket_participants_0_name" значением "jack.sparrow@fwdays.com"
         Тогда я заполняю поле "stfalcon_event_ticket_participants_0_email" значением "jack.sparrow@fwdays.com"
+        И я кликаю по ссылке "Еще участники"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_1_name" значением "user@fwdays.com"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_1_email" значением "user@fwdays.com"
+        И я кликаю по ссылке "Еще участники"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_2_name" значением "user@fwdays.com"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_2_email" значением "user@fwdays.com"
+        И я нажимаю "Закончить список и посчитать сумму"
+        И я должен видеть "Peter Parker — 100.00 грн."
+        И я должен видеть "Jack Sparrow — 100.00 грн 80.00 грн."
+        И я должен видеть "Сумма к оплате: 180.00 грн."
         И я жду
