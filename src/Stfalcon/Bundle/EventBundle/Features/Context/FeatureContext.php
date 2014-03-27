@@ -2,6 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
+use Behat\Behat\Event\StepEvent;
+use Behat\Mink\Driver\Selenium2Driver;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -74,6 +76,41 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
         $em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        /** Maximize browser window */
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $driver->maximizeWindow();
+        }
+    }
+
+    /**
+     * Wait while jQuery finished on page
+     * Works only with Selenium2Driver.
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep
+     */
+    public function checkFinishJS(StepEvent $event)
+    {
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $currentUrl = $this->getSession()->getCurrentUrl();
+            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
+                $this->getSession()->wait(
+                    10000,
+                    '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^я жду$/
+     */
+    public function iWait()
+    {
+        $this->getSession()->wait(5000);
     }
 
     /**

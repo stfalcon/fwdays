@@ -36,3 +36,13 @@
         И я перехожу на страницу регистрации билета с битым хешем для пользователя "user@fwdays.com" для события "zend-framework-day-2011"
         Тогда код ответа сервера должен быть 403
         И я должен видеть "Невалидный хеш для билета"
+
+    @mink:selenium2
+    Сценарий: Selenium
+        Допустим я вхожу в учетную запись с именем "peter.parker@fwdays.com" и паролем "qwerty"
+        Допустим я на странице "/event/zend-framework-day-2011/pay"
+        И я кликаю по ссылке "Оплатить других участников"
+        Тогда я должен видеть "Оплата участия в конференции Zend Framework Day"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_0_name" значением "jack.sparrow@fwdays.com"
+        Тогда я заполняю поле "stfalcon_event_ticket_participants_0_email" значением "jack.sparrow@fwdays.com"
+        И я жду
