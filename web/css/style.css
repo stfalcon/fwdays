@@ -1,4 +1,4 @@
-/* css reset */
+/* css reset  */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -157,9 +157,13 @@ input {
     overflow: hidden;
     min-height: 23px;
     border: 1px solid #e5e5e5;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
+}
+.msg-block {
+    margin-bottom: 20px;
+    padding: 13px 18px 16px;
+    background: #ffe5e5;
+    line-height: 18px;
 }
 .info-msg-block p,
 .error-msg-block p {
@@ -194,7 +198,7 @@ input {
     }
 }
 
-form {
+form, .form-wrapper {
     display: -moz-inline-stack;
     display: inline-block;
     padding: 17px 20px 7px;
@@ -1979,17 +1983,90 @@ form.payment-form label {
     font-size: 15px;
 }
 form.payment-form .wrap {
-    padding:20px 0 12px;
-    border-top:1px solid #e5e5e5;
-    border-bottom:1px solid #e5e5e5;
-    margin:0 0 15px
+    padding: 8px 0 0px;
+    border-top: 1px solid #e5e5e5;
+    margin: 17px 0 0;
 }
+
+form.payment-form .wrap-footer {
+    margin-top: -14px;
+}
+
+.payment-form.checkout-form {
+    margin-bottom: 0;
+}
+
+form.payment-form .wrap div {
+    padding-bottom: 0;
+}
+
+form.payment-form .wrap div div > div {
+    margin-bottom: 12px;
+}
+
+form.payment-form .wrap div div {
+    margin-bottom: 30px;
+}
+
 input[type="button"] {
     height: 26px;
 }
+
+.form-wrapper {
+    width: 500px;
+}
+
+.form-wrapper form {
+    border: none;
+    padding: 0;
+}
+
+.form-wrapper label {
+    margin-bottom: 6px;
+}
+
+.form-wrapper hr {
+    border: none;
+    margin: 0 0 16px;
+    height: 1px;
+    background: #E5E5E5;
+}
+
+.form-wrapper div {
+    overflow: visible;
+}
+
+.form-wrapper input[type="text"] {
+    display: block;
+    float: none;
+}
+
+.participants-form > div {
+    padding-bottom: 0;
+}
+
+form.promo-code input[type="text"] {
+    display: inline-block;
+    width: 189px;
+}
+
+form.promo-code label {
+    float: none;
+    margin-bottom: 4px;
+}
+div.promo-code {
+    margin-bottom: 28px;
+    font-size: 15px;
+}
+
+.promo-code b {
+    display: block;
+    margin-top: 9px;
+}
+
 .pay-for-other-participants {
     float: right;
-    padding-right: 45px;
+    padding-right: 0;
 }
 .pay-for-other-participants a {
     text-decoration: none;
@@ -1999,6 +2076,11 @@ input[type="button"] {
 .added-participant {
     padding-bottom: 20px;
 }
+
+.added-participant:last-child {
+    padding-bottom: 2px;
+}
+
 .added-participant-name {
     padding-bottom: 0;
     font-size: 15px;
@@ -2048,4 +2130,9 @@ a.add-new-participant:hover:before {
 }
 .pay-sum .sum {
     font-weight: bold;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #727272;
 }
