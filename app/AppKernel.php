@@ -38,8 +38,6 @@ class AppKernel extends Kernel
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-            new Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
-
             new Sonata\IntlBundle\SonataIntlBundle(),
 
             new Sonata\BlockBundle\SonataBlockBundle(),
@@ -67,6 +65,9 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+        }
+        if ($this->getEnvironment() == 'test') {
+            $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
         }
 
         return $bundles;

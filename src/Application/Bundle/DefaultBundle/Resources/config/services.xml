@@ -23,16 +23,6 @@
             <argument type="service" id="request" />
         </service>
 
-        <!-- main menu on pages of event -->
-        <service id="application_default.menu.event_main"
-                 class="Knp\Menu\MenuItem"
-                 scope="request"
-                 factory-service="application_default.menu_builder"
-                 factory-method="createEventMainMenu">
-            <tag name="knp_menu.menu" alias="event_main" />
-            <argument type="service" id="request" />
-        </service>
-
         <!-- sub menu on pages of event -->
         <service id="application_default.menu.event_sub"
                  class="Knp\Menu\MenuItem"

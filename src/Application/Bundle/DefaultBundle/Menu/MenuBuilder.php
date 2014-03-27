@@ -39,27 +39,14 @@ class MenuBuilder
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'nav');
 
+        if ($request->getPathInfo() != '/') {
+            $menu->addChild('← На главную', array('route' => 'homepage'))
+                ->moveToFirstPosition();
+        }
         $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
         $menu->addChild('События', array('route' => 'events'));
         $menu->addChild('Контакты', array('route' => 'page_show', 'routeParameters' => array('slug' => 'contacts')));
         $menu->addChild('Партнеры', array('route' => 'partners_page'));
-
-        return $menu;
-    }
-
-    /**
-     * Event page top menu
-     *
-     * @param Request $request
-     *
-     * @return \Knp\Menu\MenuItem
-     */
-    public function createEventMainMenu(Request $request)
-    {
-        $menu = $this->createMainMenu($request);
-
-        $menu->addChild('← На главную', array('route' => 'homepage'))
-             ->moveToFirstPosition();
 
         return $menu;
     }
