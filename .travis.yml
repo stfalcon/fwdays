@@ -6,7 +6,11 @@ before_script:
   - curl -s https://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
   - app/console --env=test doctrine:schema:create
-  - sleep 2
+  - sh -e /etc/init.d/xvfb start
+  - export DISPLAY=:99
+  - wget http://selenium.googlecode.com/files/selenium-server-standalone-2.35.0.jar
+  - java -jar selenium-server-standalone-2.35.0.jar > /dev/null &
+  - sleep 5
 script:
   - phpunit -c app/
   - bin/run-all-features
