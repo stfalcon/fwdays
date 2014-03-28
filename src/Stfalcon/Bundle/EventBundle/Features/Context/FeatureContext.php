@@ -68,6 +68,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
             ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -319,4 +320,34 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->visit('/admin/stfalcon/event/mail/create');
     }
+
+    /**
+     * @Given /^я перехожу на страницу со списком промо кодов$/
+     */
+    public function iGoToThePromoCodesListPage()
+    {
+        $this->visit('/admin/stfalcon/event/promocode/list');
+    }
+
+    /**
+     * @Then /^я на странице создания промо кодов$/
+     */
+    public function iAmOnThePromoCodeCreatePage()
+    {
+        $this->visit('/admin/stfalcon/event/promocode/create');
+    }
+
+    /**
+     * Проверяем дату по формату
+     *
+     * @Then /^я должен видеть в елементе "([^"]*)" дату "([^"]*)" в формате "([^"]*)"$/
+     */
+    public function iShouldSeeDateInFormat($elem, $date, $format)
+    {
+        $date = new \DateTime($date);
+
+        $this->assertFieldContains($elem, $date->format($format));
+    }
+
+
 }

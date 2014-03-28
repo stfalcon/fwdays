@@ -115,6 +115,10 @@ class Payment
     }
 
     /**
+     * Add promo code for all tickets in payment
+     * if ticket already not have discount and
+     * recalculate payment amount
+     *
      * @param PromoCode $promoCode
      */
     public function addPromoCodeForTickets($promoCode)
@@ -152,6 +156,8 @@ class Payment
     }
 
     /**
+     * Get promo code from tickets if it have
+     *
      * @return null|PromoCode
      */
     public function getPromoCodeFromTickets()
