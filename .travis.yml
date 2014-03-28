@@ -15,6 +15,7 @@ before_script:
   - export DISPLAY=:99
   - wget http://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar
   - java -jar selenium-server-standalone-2.40.0.jar > /dev/null &
+  - wget -S http://fwdays.work -O /dev/null
   - sleep 10
 script:
   - phpunit -c app/

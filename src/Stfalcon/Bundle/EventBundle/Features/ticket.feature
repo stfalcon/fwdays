@@ -42,7 +42,7 @@
         Допустим я вхожу в учетную запись с именем "peter.parker@fwdays.com" и паролем "qwerty"
         Допустим я на странице "/event/zend-framework-day-2011/pay"
         Тогда я должен видеть "Оплата участия в конференции Zend Framework Day"
-        Тогда я должен видеть "Peter Parker — 100.00 грн."
+        Тогда я должен видеть "Pddeter Parker — 100.00 грн."
         И я кликаю по ссылке "Оплатить других участников"
         Тогда я заполняю поле "stfalcon_event_ticket_participants_0_name" значением "jack.sparrow@fwdays.com"
         Тогда я заполняю поле "stfalcon_event_ticket_participants_0_email" значением "jack.sparrow@fwdays.com"
