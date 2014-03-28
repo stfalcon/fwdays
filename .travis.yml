@@ -8,6 +8,7 @@ before_script:
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl
   - sudo sed -i -e "/DocumentRoot/i\ServerName fwdays.work" /etc/apache2/sites-available/default
   - echo "127.0.0.1 fwdays.work" | sudo tee -a /etc/hosts
+  - export MINK_EXTENSION_PARAMS='base_url=http://fwdays.work:8000/app_test.php'
   - sudo /etc/init.d/apache2 restart
   - mysql -e 'create database fwdays_com_testing;'
   - curl -s https://getcomposer.org/installer | php -- --quiet
