@@ -113,7 +113,7 @@ class TicketController extends BaseController
         $request = $this->getRequest();
         if ($request->isMethod('post')) {
             $promoCodeForm->bind($request);
-            $code = strtoupper($promoCodeForm->get('code')->getData());
+            $code = $promoCodeForm->get('code')->getData();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
             if ($promoCode) {
                 $payment->addPromoCodeForTickets($promoCode);
@@ -124,7 +124,6 @@ class TicketController extends BaseController
         }
 
         $ticketForm = $this->createForm('stfalcon_event_ticket');
-
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
