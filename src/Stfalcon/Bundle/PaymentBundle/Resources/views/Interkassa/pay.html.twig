@@ -60,6 +60,7 @@
                 <form action="{{ path('event_pay', {'event_slug': event.slug}) }}" method="post" class="payment-form promo-code">
                     {{ form_label(promoCodeForm.code) }}
                     {{ form_widget(promoCodeForm.code) }}
+                    {{ form_errors(promoCodeForm.code) }}
                     <input type="submit" value="Применить">
                     {{ form_rest(promoCodeForm) }}
                 </form>

@@ -65,6 +65,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPromoCodeData',
                 'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
