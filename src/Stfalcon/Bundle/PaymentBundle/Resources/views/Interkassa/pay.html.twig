@@ -37,7 +37,9 @@
                 {% endfor %}
             </div>
             <div class="wrap" style="display:none;">
-                {{ form_widget(ticketForm.participants) }}
+                <div id="stfalcon_event_ticket_participants" data-prototype="{% filter escape %}{% include 'StfalconEventBundle:Form:ticketPrototype.html.twig' with {'form': ticketForm.participants.get('prototype')} %}{% endfilter %}">
+                </div>
+                {#{{ form_widget(ticketForm.participants) }}#}
                 <div class="wrap-footer">
                     <input type="submit" value="Закончить список и посчитать сумму">
                     <a class="add-new-participant" href="#">Еще участники</a>

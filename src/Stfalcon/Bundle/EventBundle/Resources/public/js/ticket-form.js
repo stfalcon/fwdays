@@ -3,13 +3,24 @@ $(document).ready(function (){
     var $collectionHolder = $participantForm.find('#stfalcon_event_ticket_participants');
     var $participantFormWrapper = $participantForm.find('.wrap');
     var $addTagLink = $participantForm.find('a.add-new-participant');
+    var $payOtherParticipants = $('.pay-for-other-participants a');
 
-    $('.pay-for-other-participants a').on('click', function(e) {
+    $payOtherParticipants.on('click', function(e) {
         e.preventDefault();
         addParticipantForm($collectionHolder);
         $participantFormWrapper.show();
 
-        $(this).remove();
+        $(this).hide();
+    });
+
+    $(document).on('click', '.remove-participant-form', function(e) {
+        e.preventDefault();
+        $(this).parents('.participant-form').remove();
+        if (!$collectionHolder.find('.participant-form').length) {
+            $participantFormWrapper.hide();
+            $payOtherParticipants.show();
+            $collectionHolder.data('index', 0);
+        }
     });
     $collectionHolder.data('index', 0);
 
