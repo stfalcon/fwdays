@@ -2,6 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
+use Behat\Behat\Event\StepEvent;
+use Behat\Mink\Driver\Selenium2Driver;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -60,6 +62,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
+                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPromoCodeData',
+                'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
             ));
@@ -74,6 +82,41 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
         $em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        /** Maximize browser window */
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $driver->maximizeWindow();
+        }
+    }
+
+    /**
+     * Wait while jQuery finished on page
+     * Works only with Selenium2Driver.
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep
+     */
+    public function checkFinishJS(StepEvent $event)
+    {
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $currentUrl = $this->getSession()->getCurrentUrl();
+            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
+                $this->getSession()->wait(
+                    10000,
+                    '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^я жду$/
+     */
+    public function iWait()
+    {
+        $this->getSession()->wait(5000);
     }
 
     /**
@@ -278,4 +321,34 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $this->visit('/admin/stfalcon/event/mail/create');
     }
+
+    /**
+     * @Given /^я перехожу на страницу со списком промо кодов$/
+     */
+    public function iGoToThePromoCodesListPage()
+    {
+        $this->visit('/admin/stfalcon/event/promocode/list');
+    }
+
+    /**
+     * @Then /^я на странице создания промо кодов$/
+     */
+    public function iAmOnThePromoCodeCreatePage()
+    {
+        $this->visit('/admin/stfalcon/event/promocode/create');
+    }
+
+    /**
+     * Проверяем дату по формату
+     *
+     * @Then /^я должен видеть в елементе "([^"]*)" дату "([^"]*)" в формате "([^"]*)"$/
+     */
+    public function iShouldSeeDateInFormat($elem, $date, $format)
+    {
+        $date = new \DateTime($date);
+
+        $this->assertFieldContains($elem, $date->format($format));
+    }
+
+
 }

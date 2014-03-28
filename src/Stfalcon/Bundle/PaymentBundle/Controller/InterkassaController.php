@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\PaymentBundle\Controller;
 
+use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,6 +13,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Stfalcon\Bundle\PaymentBundle\Service\IntercassaService;
+use Symfony\Component\Form\FormView;
 
 /**
  * Class InterkassaController
@@ -19,16 +21,19 @@ use Stfalcon\Bundle\PaymentBundle\Service\IntercassaService;
 class InterkassaController extends Controller
 {
     /**
-     * @param Event   $event   Event
-     * @param User    $user    User
-     * @param Payment $payment Payment
+     * @param Event     $event             Event
+     * @param User      $user              User
+     * @param Payment   $payment           Payment
+     * @param FormView  $promoCodeFormView Promo code form view
+     * @param PromoCode $promoCode         Promo code
+     * @param FormView  $ticketFormView    Ticket form view
      *
      * @return array
      *
      * @Template()
      * @Secure(roles="ROLE_USER")
      */
-    public function payAction($event, $user, $payment)
+    public function payAction($event, $user, $payment, $promoCodeFormView, $promoCode, $ticketFormView)
     {
         $config = $this->container->getParameter('stfalcon_payment.config');
 
@@ -45,9 +50,12 @@ class InterkassaController extends Controller
         );
 
         return array(
-            'data'    => $data,
-            'event'   => $event,
-            'payment' => $payment
+            'data'          => $data,
+            'event'         => $event,
+            'payment'       => $payment,
+            'promoCodeForm' => $promoCodeFormView,
+            'promoCode'     => $promoCode,
+            'ticketForm'    => $ticketFormView
         );
     }
 

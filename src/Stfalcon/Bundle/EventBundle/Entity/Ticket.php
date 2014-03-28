@@ -25,6 +25,32 @@ class Ticket
     private $id;
 
     /**
+     * Сумма для оплаты
+     *
+     * @var float $amount
+     *
+     * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
+     */
+    private $amount;
+
+    /**
+     * Сумма без учета скидки
+     *
+     * @var float $amountWithoutDiscount
+     *
+     * @ORM\Column(name="amount_without_discount", type="decimal", precision=10, scale=2)
+     */
+    private $amountWithoutDiscount;
+
+    /**
+     * @var PromoCode
+     *
+     * @ORM\ManyToOne(targetEntity="PromoCode")
+     * @ORM\JoinColumn(name="promo_code_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $promoCode;
+
+    /**
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
@@ -73,6 +99,13 @@ class Ticket
     private $used = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="has_discount", type="boolean")
+     */
+    private $hasDiscount = false;
+
+    /**
      * Get id
      *
      * @return integer
@@ -115,6 +148,7 @@ class Ticket
      */
     public function setPayment(Payment $payment)
     {
+        $payment->addTicket($this);
         $this->payment = $payment;
     }
 
@@ -193,7 +227,81 @@ class Ticket
 
     public function __toString()
     {
-        return (string)$this->getId();
+        return (string) $this->getId();
     }
 
+    /**
+     * @param float $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param float $amountWithoutDiscount
+     */
+    public function setAmountWithoutDiscount($amountWithoutDiscount)
+    {
+        $this->amountWithoutDiscount = $amountWithoutDiscount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountWithoutDiscount()
+    {
+        return $this->amountWithoutDiscount;
+    }
+
+    /**
+     * @param \Stfalcon\Bundle\EventBundle\Entity\PromoCode $promoCode
+     */
+    public function setPromoCode($promoCode)
+    {
+        $this->setHasDiscount(true);
+        $amountWithDiscount = $this->amountWithoutDiscount - ($this->amountWithoutDiscount * ($promoCode->getDiscountAmount() / 100));
+        $this->setAmount($amountWithDiscount);
+        $this->promoCode = $promoCode;
+    }
+
+    /**
+     * @return \Stfalcon\Bundle\EventBundle\Entity\PromoCode
+     */
+    public function getPromoCode()
+    {
+        return $this->promoCode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPromoCode()
+    {
+        return !empty($this->promoCode);
+    }
+
+    /**
+     * @param boolean $hasDiscount
+     */
+    public function setHasDiscount($hasDiscount)
+    {
+        $this->hasDiscount = $hasDiscount;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasDiscount()
+    {
+        return $this->hasDiscount;
+    }
 }

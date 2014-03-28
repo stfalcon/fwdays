@@ -50,13 +50,14 @@
 
     "require-dev": {
         "behat/behat":  "2.5.*",
-        "behat/mink":   "1.4.*",
+        "behat/mink": "v1.5.0",
         "behat/symfony2-extension": "*",
         "behat/mink-extension": "*",
         "behat/common-contexts": "*",
         "behat/mink-browserkit-driver": "*",
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "3.7.*",
+        "behat/mink-selenium2-driver": "1.2.*@dev"
     },
 
     "scripts": {

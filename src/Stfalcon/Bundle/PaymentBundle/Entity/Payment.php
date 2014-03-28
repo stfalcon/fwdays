@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
@@ -46,15 +47,6 @@ class Payment
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
-
-    /**
-     * Сумма без учета скидки
-     *
-     * @var float $amountWithoutDiscount
-     *
-     * @ORM\Column(name="amount_without_discount", type="decimal", precision=10, scale=2)
-     */
-    private $amountWithoutDiscount;
 
     /**
      * @var string $status
@@ -110,6 +102,77 @@ class Payment
     }
 
     /**
+     * @param Ticket $ticket
+     */
+    public function addTicket(Ticket $ticket)
+    {
+        if (!$this->tickets->contains($ticket)) {
+            if (!$ticket->isPaid()) {
+                $this->amount += $ticket->getAmount();
+            }
+            $this->tickets->add($ticket);
+        }
+    }
+
+    /**
+     * Add promo code for all tickets in payment
+     * if ticket already not have discount and
+     * recalculate payment amount
+     *
+     * @param PromoCode $promoCode
+     */
+    public function addPromoCodeForTickets($promoCode)
+    {
+        foreach ($this->tickets as $ticket) {
+            if (!$ticket->getHasDiscount()) {
+                $ticket->setPromoCode($promoCode);
+            }
+        }
+        $this->recalculateAmount();
+    }
+
+    /**
+     * Recalculate amount of payment
+     */
+    public function recalculateAmount()
+    {
+        $this->amount = 0;
+        foreach ($this->tickets as $ticket) {
+            $this->amount += $ticket->getAmount();
+        }
+    }
+
+    /**
+     * @param Ticket $ticket
+     */
+    public function removeTicket(Ticket $ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            if (!$ticket->isPaid()) {
+                $this->amount -= $ticket->getAmount();
+            }
+            $this->tickets->removeElement($ticket);
+        }
+    }
+
+    /**
+     * Get promo code from tickets if it have
+     *
+     * @return null|PromoCode
+     */
+    public function getPromoCodeFromTickets()
+    {
+        $promoCode = null;
+        foreach ($this->tickets as $ticket) {
+            if ($promoCode = $ticket->getPromoCode()) {
+                return $promoCode;
+            }
+        }
+
+        return $promoCode;
+    }
+
+    /**
      * Get ticket number for payment
      *
      * @return int|void
@@ -127,20 +190,10 @@ class Payment
     }
 
     /**
-     * Указываем или платеж учитывал скидку
-     *
-     * @var bool
-     *
-     * @ORM\Column(name="has_discount", type="boolean")
-     */
-    private $hasDiscount = false;
-
-    /**
      * Constructor. Set default status to new payment.
      */
     public function __construct()
     {
-        $this->setHasDiscount(false);
         $this->setStatus(self::STATUS_PENDING);
         $this->tickets = new ArrayCollection();
     }
@@ -244,46 +297,6 @@ class Payment
     public function setGate($gate)
     {
         $this->gate = $gate;
-    }
-
-    /**
-     * Set hasDiscount
-     *
-     * @param boolean $hasDiscount
-     */
-    public function setHasDiscount($hasDiscount)
-    {
-        $this->hasDiscount = $hasDiscount;
-    }
-
-    /**
-     * Get hasDiscount
-     *
-     * @return boolean
-     */
-    public function getHasDiscount()
-    {
-        return $this->hasDiscount;
-    }
-
-    /**
-     * Set amountWithoutDiscount
-     *
-     * @param float $amountWithoutDiscount
-     */
-    public function setAmountWithoutDiscount($amountWithoutDiscount)
-    {
-        $this->amountWithoutDiscount = $amountWithoutDiscount;
-    }
-
-    /**
-     * Get amountWithoutDiscount
-     *
-     * @return float
-     */
-    public function getAmountWithoutDiscount()
-    {
-        return $this->amountWithoutDiscount;
     }
 
     /**
