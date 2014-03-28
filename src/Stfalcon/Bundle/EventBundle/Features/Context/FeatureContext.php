@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -18,6 +19,7 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
+use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
  * Feature context for StfalconEventBundle
@@ -107,6 +109,40 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     10000,
                     '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
                 );
+            }
+        }
+    }
+
+    /**
+     * Take screenshot when step fails. Works only with Selenium2Driver.
+     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep @mink:selenium2
+     */
+    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    {
+        if ($event->getResult() === StepEvent::FAILED) {
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                $step = $event->getStep();
+                $path = array(
+                    'date' => date("Ymd-Hi"),
+                    'feature' => $step->getParent()->getFeature()->getTitle(),
+                    'scenario' => $step->getParent()->getTitle(),
+                    'step' => $step->getType() . ' ' . $step->getText()
+                );
+                $dir = $this->kernel->getContainer()->getParameter('behat_screenshot_dir');
+                $path = preg_replace('/[^\-\.\w]/', '_', $path);
+                $filename = $dir .  implode('/', $path) . '.png';
+                //@todo Заюзать симфонивский FS
+                // Create directories if needed
+                if (!@is_dir(dirname($filename))) {
+                    @mkdir(dirname($filename), 0775, true);
+                }
+
+                file_put_contents($filename, $driver->getScreenshot());
             }
         }
     }

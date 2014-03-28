@@ -10,7 +10,6 @@ before_script:
   - mysql -e 'create database fwdays_com_testing;'
   - curl -s https://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
-  - php composer.phar self-update
   - app/console --env=test doctrine:schema:create
   - sh -e /etc/init.d/xvfb start
   - export DISPLAY=:99
