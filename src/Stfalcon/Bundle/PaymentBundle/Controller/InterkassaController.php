@@ -44,9 +44,9 @@ class InterkassaController extends Controller
         $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
 
         $data = array(
-            'ik_shop_id'      => $config['interkassa']['shop_id'],
-            'ik_payment_desc' => $description,
-            'ik_sign_hash'    => $intercassa->getSignHash($payment->getId(), $payment->getAmount())
+            'ik_co_id' => $config['interkassa']['shop_id'],
+            'ik_desc'  => $description,
+            'ik_sign'  => $intercassa->getSignHash($payment->getId(), $payment->getAmount(), $description)
         );
 
         return array(
