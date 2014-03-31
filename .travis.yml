@@ -27,7 +27,8 @@ script:
 after_script:
 #  - tail -n=50 app/logs/test.log
   - ls tmp/behat/fwdays -la
-  - sh tmp/behat/fwdays/ex_cat.sh
+  - cd tmp/behat/fwdays
+  - sh ex_cat.sh
 notifications:
   email:
       - stepan.tanasiychuk@gmail.com
