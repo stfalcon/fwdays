@@ -25,7 +25,8 @@ script:
   - phpunit -c app/
   - bin/run-all-features
 after_script:
-  - cat app/logs/test.log
+  - tail -n=50 app/logs/test.log
+  - sh tmp/behat/fwdays/ex_cat.sh
 notifications:
   email:
       - stepan.tanasiychuk@gmail.com
