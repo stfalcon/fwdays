@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\PaymentBundle\Controller;
 
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -79,14 +80,13 @@ class InterkassaController extends Controller
                      ->getRepository('StfalconPaymentBundle:Payment')
                      ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
-        var_dump('test');
-        var_dump($payment->getId());
-        var_dump($payment->getAmount());
-        var_dump($payment->getStatus());
-        var_dump($request->get('ik_pm_no'));
-        var_dump($request->get('ik_inv_st'));
-        var_dump($request->get('ik_co_id'));
-        var_dump($request->get('ik_am'));
+        /** @var Logger $logger */
+        $logger = $this->get('logger');
+        $logger->info('Status action' . $request->get('ik_pm_no'));
+        $logger->info('Status action' . $request->get('ik_inv_st'));
+        $logger->info('Status action' . $request->get('ik_co_id'));
+        $logger->info('Status action' . $request->get('ik_am'));
+        $logger->info('Payment: ' . $payment->getId() . ' ' . $payment->getAmount());
         if ($payment->getStatus() == Payment::STATUS_PAID) {
             $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
         } else {
@@ -110,6 +110,9 @@ class InterkassaController extends Controller
      */
     public function changeStatusAction(Request $request)
     {
+        /** @var Logger $logger */
+        $logger = $this->get('logger');
+        $logger->info('changeStatusAction ' . $request->get('ik_pm_no'));
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconPaymentBundle:Payment')
@@ -123,9 +126,13 @@ class InterkassaController extends Controller
         /** @var IntercassaService $intercassa */
         $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
         $signHash = $intercassa->getSignHash($payment, $request->get('ik_desc'));
-
+        $logger->info('changeStatusAction ' . $signHash);
         $config = $this->container->getParameter('stfalcon_payment.config');
 
+        $logger->info('changeStatusAction ' . $request->get('ik_pm_no'));
+        $logger->info('changeStatusAction ' . $request->get('ik_inv_st'));
+        $logger->info('changeStatusAction ' . $request->get('ik_co_id'));
+        $logger->info('changeStatusAction ' . $request->get('ik_am'));
         if ($payment->getStatus() == Payment::STATUS_PENDING &&
             $request->get('ik_sign') == $signHash &&
             $request->get('ik_inv_st') == 'success' &&
@@ -133,7 +140,7 @@ class InterkassaController extends Controller
             $request->get('ik_am') == $payment->getAmount()
         ) {
             $payment->setStatus(Payment::STATUS_PAID);
-
+            $logger->info('changeStatusAction payment status changed');
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
