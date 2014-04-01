@@ -79,6 +79,11 @@ class InterkassaController extends Controller
                      ->getRepository('StfalconPaymentBundle:Payment')
                      ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
+        var_dump($payment);
+        var_dump($request->get('ik_pm_no'));
+        var_dump($request->get('ik_inv_st'));
+        var_dump($request->get('ik_co_id'));
+        var_dump($request->get('ik_am'));
         if ($payment->getStatus() == Payment::STATUS_PAID) {
             $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
         } else {
