@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\PaymentBundle\Controller;
 
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -138,66 +139,63 @@ class InterkassaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            // Render and send email
-            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
-            $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
-                    'payment' => $payment
-                ));
+            /** @var Ticket  $ticket */
+            foreach ($payment->getTickets() as $ticket) {
+                $user  = $ticket->getUser();
+                $event = $ticket->getEvent();
 
-            $user  = $ticket->getUser();
-            $event = $ticket->getEvent();
+                $twig = $this->get('twig');
 
-            $twig = $this->get('twig');
+                $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
+                    ->render(array(
+                            'event_slug' => $event->getSlug()
+                        ));
 
-            $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
-                ->render(array(
-                        'event_slug' => $event->getSlug()
+                $mail = new Mail();
+                $mail->addEvent($event);
+                $mail->setText($successPaymentTemplateContent);
+
+                // Get base template for email
+                $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+
+                $dateFormatter = new \IntlDateFormatter(
+                    'ru-RU',
+                    \IntlDateFormatter::NONE,
+                    \IntlDateFormatter::NONE,
+                    date_default_timezone_get(),
+                    \IntlDateFormatter::GREGORIAN,
+                    'd MMMM Y'
+                );
+
+                $text = $mail->replace(
+                    array(
+                        '%fullname%' => $user->getFullName(),
+                        '%event%'    => $event->getName(),
+                        '%date%'     => $dateFormatter->format($event->getDate()),
+                        '%place%'    => $event->getPlace(),
+                    )
+                );
+
+                $body = $emailTemplateContent->render(array(
+                        'text'               => $text,
+                        'mail'               => $mail,
+                        'add_bottom_padding' => true
                     ));
 
-            $mail = new Mail();
-            $mail->addEvent($event);
-            $mail->setText($successPaymentTemplateContent);
+                /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
+                $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
+                $html = $pdfGen->generateHTML($ticket);
+                $outputFile = 'ticket-' . $event->getSlug() . '.pdf';
 
-            // Get base template for email
-            $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($event->getName())
+                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                    ->setTo($user->getEmail())
+                    ->setBody($body, 'text/html')
+                    ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile)));
 
-            $dateFormatter = new \IntlDateFormatter(
-                'ru-RU',
-                \IntlDateFormatter::NONE,
-                \IntlDateFormatter::NONE,
-                date_default_timezone_get(),
-                \IntlDateFormatter::GREGORIAN,
-                'd MMMM Y'
-            );
-
-            $text = $mail->replace(
-                array(
-                    '%fullname%' => $user->getFullName(),
-                    '%event%'    => $event->getName(),
-                    '%date%'     => $dateFormatter->format($event->getDate()),
-                    '%place%'    => $event->getPlace(),
-                )
-            );
-
-            $body = $emailTemplateContent->render(array(
-                    'text'               => $text,
-                    'mail'               => $mail,
-                    'add_bottom_padding' => true
-                ));
-
-            /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
-            $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-            $html = $pdfGen->generateHTML($ticket);
-            $outputFile = 'ticket-' . $event->getSlug() . '.pdf';
-
-            $message = \Swift_Message::newInstance()
-                ->setSubject($event->getName())
-                ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                ->setTo($user->getEmail())
-                ->setBody($body, 'text/html')
-                ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile)));
-
-            $this->get('mailer')->send($message);
+                $this->get('mailer')->send($message);
+            }
 
             return new Response('OK');
         }
