@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\PaymentBundle\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Stfalcon\Bundle\PaymentBundle\Form\Payments\Interkassa\PayType;
@@ -97,6 +98,7 @@ class InterkassaController extends Controller
      * @return array
      *
      * @Route("/payments/interkassa/change-status")
+     * @Method({"POST"})
      */
     public function changeStatusAction(Request $request)
     {
