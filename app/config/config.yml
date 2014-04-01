@@ -100,8 +100,8 @@ fos_user:
 
 stfalcon_payment:
     interkassa:
-        shop_id: "24C1AF18-3D1A-44FC-9C32-210336A4B231"
-        secret: %interkassa_secret%
+        shop_id: "533958fbbf4efc736a13bea5"
+        secret: %interkassa_secret_test%
     discount: 0.2
 
 sonata_block:
