@@ -52,8 +52,6 @@ class InterkassaController extends Controller
         $params['ik_am']    = $payment->getAmount();
         $params['ik_pm_no'] = $payment->getId();
         $params['ik_desc']  = $description;
-        /** @todo delete! this is for test */
-        $params['ik_pw_via'] = 'test_interkassa_test_xts';
 
         $data = array(
             'ik_co_id' => $config['interkassa']['shop_id'],

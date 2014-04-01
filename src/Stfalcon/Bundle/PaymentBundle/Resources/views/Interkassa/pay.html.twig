@@ -82,8 +82,6 @@
             <input type="hidden" name="ik_am" value="{{ payment.amount }}" />
             <input type="hidden" name="ik_desc" value="{{ data.ik_desc|escape }}" />
             <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
-            {# @todo delete!!!! for testing #}
-            <input type="hidden" name="ik_pw_via" value="test_interkassa_test_xts" />
 
             <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
             <div>
