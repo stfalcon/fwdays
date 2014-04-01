@@ -80,7 +80,9 @@ class InterkassaController extends Controller
                      ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
         var_dump('test');
-        var_dump($payment);
+        var_dump($payment->getId());
+        var_dump($payment->getAmount());
+        var_dump($payment->getStatus());
         var_dump($request->get('ik_pm_no'));
         var_dump($request->get('ik_inv_st'));
         var_dump($request->get('ik_co_id'));
