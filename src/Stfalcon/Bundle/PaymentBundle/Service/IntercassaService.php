@@ -72,21 +72,13 @@ class IntercassaService
     /**
      * CRC-подпись для запроса на шлюз
      *
-     * @param Payment $payment     Payment ID
-     * @param string  $description Payment description
+     * @param Payment $params Параметры на основвание которых строим подпись
      *
      * @return string
      */
-    public function getSignHash($payment, $description)
+    public function getSignHash($params)
     {
         $config = $this->container->getParameter('stfalcon_payment.config');
-
-        $params['ik_co_id'] = $config['interkassa']['shop_id'];
-        $params['ik_am']    = $payment->getAmount();
-        $params['ik_pm_no'] = $payment->getId();
-        $params['ik_desc']  = $description;
-        /** @todo delete! this is for test */
-        $params['ik_pw_via'] = 'test_interkassa_test_xts';
 
         // сортируем по ключам в алфавитном порядке элементы массива
         ksort($params, SORT_STRING);

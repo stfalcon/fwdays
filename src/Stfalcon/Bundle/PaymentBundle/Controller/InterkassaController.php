@@ -47,10 +47,17 @@ class InterkassaController extends Controller
         /** @var IntercassaService $intercassa */
         $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
 
+        $params['ik_co_id'] = $config['interkassa']['shop_id'];
+        $params['ik_am']    = $payment->getAmount();
+        $params['ik_pm_no'] = $payment->getId();
+        $params['ik_desc']  = $description;
+        /** @todo delete! this is for test */
+        $params['ik_pw_via'] = 'test_interkassa_test_xts';
+
         $data = array(
             'ik_co_id' => $config['interkassa']['shop_id'],
             'ik_desc'  => $description,
-            'ik_sign'  => $intercassa->getSignHash($payment, $description)
+            'ik_sign'  => $intercassa->getSignHash($params)
         );
 
         return array(
@@ -71,7 +78,6 @@ class InterkassaController extends Controller
      * @return array
      *
      * @Route("/payments/interkassa/status")
-     * @Template()
      */
     public function statusAction(Request $request)
     {
@@ -80,22 +86,15 @@ class InterkassaController extends Controller
                      ->getRepository('StfalconPaymentBundle:Payment')
                      ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
-        /** @var Logger $logger */
-        $logger = $this->get('logger');
-        $logger->info('Status action ' . $request->get('ik_pm_no'));
-        $logger->info('Status action ' . $request->get('ik_inv_st'));
-        $logger->info('Status action ' . $request->get('ik_co_id'));
-        $logger->info('Status action ' . $request->get('ik_am'));
-        $logger->info('Payment: ' . $payment->getId() . ' ' . $payment->getAmount());
         if ($payment->getStatus() == Payment::STATUS_PAID) {
             $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
         } else {
             $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
         }
 
-        return array(
+        return $this->render('StfalconPaymentBundle:Payment:success.html.twig', array(
             'message' => $resultMessage
-        );
+        ));
     }
 
     /**
@@ -110,9 +109,6 @@ class InterkassaController extends Controller
      */
     public function changeStatusAction(Request $request)
     {
-        /** @var Logger $logger */
-        $logger = $this->get('logger');
-        $logger->info('changeStatusAction ' . $request->get('ik_pm_no'));
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconPaymentBundle:Payment')
@@ -122,17 +118,16 @@ class InterkassaController extends Controller
         if (!$payment instanceof Payment) {
             return new Response('ik_pm_no not found', 404);
         }
-
         /** @var IntercassaService $intercassa */
         $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
-        $signHash = $intercassa->getSignHash($payment, $request->get('ik_desc'));
-        $logger->info('changeStatusAction ' . $signHash);
+        /** Выбераем все параментры которые нам прислала Интеркасса */
+        $params = $request->request->all();
+        /** Исключаем из параментров подпись */
+        unset($params['ik_sign']);
+        /** Генерируем подпись для проверки данных */
+        $signHash = $intercassa->getSignHash($params);
         $config = $this->container->getParameter('stfalcon_payment.config');
 
-        $logger->info('changeStatusAction ' . $request->get('ik_pm_no'));
-        $logger->info('changeStatusAction ' . $request->get('ik_inv_st'));
-        $logger->info('changeStatusAction ' . $request->get('ik_co_id'));
-        $logger->info('changeStatusAction ' . $request->get('ik_am'));
         if ($payment->getStatus() == Payment::STATUS_PENDING &&
             $request->get('ik_sign') == $signHash &&
             $request->get('ik_inv_st') == 'success' &&
@@ -140,7 +135,6 @@ class InterkassaController extends Controller
             $request->get('ik_am') == $payment->getAmount()
         ) {
             $payment->setStatus(Payment::STATUS_PAID);
-            $logger->info('changeStatusAction payment status changed');
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -161,7 +155,7 @@ class InterkassaController extends Controller
                     ));
 
             $mail = new Mail();
-            $mail->setEvent($event);
+            $mail->addEvent($event);
             $mail->setText($successPaymentTemplateContent);
 
             // Get base template for email
