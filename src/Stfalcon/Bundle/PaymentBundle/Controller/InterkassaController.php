@@ -82,10 +82,10 @@ class InterkassaController extends Controller
 
         /** @var Logger $logger */
         $logger = $this->get('logger');
-        $logger->info('Status action' . $request->get('ik_pm_no'));
-        $logger->info('Status action' . $request->get('ik_inv_st'));
-        $logger->info('Status action' . $request->get('ik_co_id'));
-        $logger->info('Status action' . $request->get('ik_am'));
+        $logger->info('Status action ' . $request->get('ik_pm_no'));
+        $logger->info('Status action ' . $request->get('ik_inv_st'));
+        $logger->info('Status action ' . $request->get('ik_co_id'));
+        $logger->info('Status action ' . $request->get('ik_am'));
         $logger->info('Payment: ' . $payment->getId() . ' ' . $payment->getAmount());
         if ($payment->getStatus() == Payment::STATUS_PAID) {
             $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
