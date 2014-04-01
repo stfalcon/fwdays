@@ -139,12 +139,8 @@ class InterkassaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            /** @var $ticket \Stfalcon\Bundle\EventBundle\Entity\Ticket */
-            $ticket = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->findOneBy(array(
-               'payment' => $payment
-            ));
-//            /** @var Ticket  $ticket */
-//            foreach ($payment->getTickets() as $ticket) {
+            /** @var Ticket  $ticket */
+            foreach ($payment->getTickets() as $ticket) {
                 $user  = $ticket->getUser();
                 $event = $ticket->getEvent();
 
@@ -199,7 +195,7 @@ class InterkassaController extends Controller
                     ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile)));
 
                 $this->get('mailer')->send($message);
-//            }
+            }
 
             return new Response('OK');
         }
