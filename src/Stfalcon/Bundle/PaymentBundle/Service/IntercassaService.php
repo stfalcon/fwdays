@@ -2,7 +2,9 @@
 
 namespace Stfalcon\Bundle\PaymentBundle\Service;
 
+use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\Container;
+use Zend\Validator\File\Md5;
 
 /**
  * Class IntercassaService
@@ -70,30 +72,31 @@ class IntercassaService
     /**
      * CRC-подпись для запроса на шлюз
      *
-     * @param int   $paymentId Payment ID
-     * @param float $sum       Sum
+     * @param Payment $payment     Payment ID
+     * @param string  $description Payment description
      *
      * @return string
      */
-    public function getSignHash($paymentId, $sum)
+    public function getSignHash($payment, $description)
     {
         $config = $this->container->getParameter('stfalcon_payment.config');
 
-        $params['ik_shop_id']         = $config['interkassa']['shop_id'];
-        $params['ik_payment_amount']  = $sum;
-        $params['ik_payment_id']      = $paymentId;
-        $params['ik_paysystem_alias'] = '';
-        $params['ik_baggage_fields']  = '';
+        $params['ik_co_id'] = $config['interkassa']['shop_id'];
+        $params['ik_am']    = $payment->getAmount();
+        $params['ik_pm_no'] = $payment->getId();
+        $params['ik_desc']  = $description;
+        /** @todo delete! this is for test */
+        $params['ik_pw_via'] = 'test_interkassa_test_xts';
 
-        $hash = md5(
-            $params['ik_shop_id'] . ':' .
-            $params['ik_payment_amount'] . ':' .
-            $params['ik_payment_id'] . ':' .
-            $params['ik_paysystem_alias'] . ':' .
-            $params['ik_baggage_fields'] . ':' .
-            $config['interkassa']['secret']
-        );
+        // сортируем по ключам в алфавитном порядке элементы массива
+        ksort($params, SORT_STRING);
+        // добавляем в конец массива "секретный ключ"
+        array_push($params, $config['interkassa']['secret']);
+        // конкатенируем значения через символ ":"
+        $signString = implode(':', $params);
+        // берем MD5 хэш в бинарном виде по сформированной строке и кодируем в BASE64
+        $sign = base64_encode(md5($signString, true));
 
-        return $hash;
+        return $sign;
     }
 }

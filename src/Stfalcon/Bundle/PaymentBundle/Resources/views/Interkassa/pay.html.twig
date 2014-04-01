@@ -76,21 +76,39 @@
 
         <hr>
 
-        <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" class="payment-form checkout-form"
-              accept-charset="cp1251">
-            <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
-            <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
-            <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
-            <input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc|escape }}">
-            <input type="hidden" name="ik_paysystem_alias" value="">
-            <input type="hidden" name="ik_baggage_fields" value="">
-            <input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">
+        {# old intercassa form #}
+        {#<form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" class="payment-form checkout-form"#}
+              {#accept-charset="cp1251">#}
+            {#<input type="hidden" name="ik_payment_id" value="{{ payment.id }}">#}
+            {#<input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">#}
+            {#<input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">#}
+            {#<input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc|escape }}">#}
+            {#<input type="hidden" name="ik_paysystem_alias" value="">#}
+            {#<input type="hidden" name="ik_baggage_fields" value="">#}
+            {#<input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">#}
+
+            {#<div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>#}
+            {#<div>#}
+                {#<input type="submit" value="Оплатить участие"/>#}
+            {#</div>#}
+        {#</form>#}
+
+        {# new intercassa form #}
+        <form name="payment" method="post" action="https://sci.interkassa.com/" accept-charset="UTF-8">
+            <input type="hidden" name="ik_co_id" value="{{ data.ik_co_id }}" />
+            <input type="hidden" name="ik_pm_no" value="{{ payment.id }}" />
+            <input type="hidden" name="ik_am" value="{{ payment.amount }}" />
+            <input type="hidden" name="ik_desc" value="{{ data.ik_desc|escape }}" />
+            <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
+            {# @todo delete!!!! for testing #}
+            <input type="hidden" name="ik_pw_via" value="test_interkassa_test_xts" />
 
             <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
             <div>
-                <input type="submit" value="Оплатить участие"/>
+            <input type="submit" value="Оплатить участие"/>
             </div>
         </form>
+
     </div>
 
 {% endblock %}
