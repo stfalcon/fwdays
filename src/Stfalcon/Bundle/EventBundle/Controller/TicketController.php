@@ -85,6 +85,9 @@ class TicketController extends BaseController
      */
     public function payAction($event_slug)
     {
+        // @todo WTF? був маленький акуратний екшн
+        // https://github.com/stfalcon/fwdays/blob/7f1be58c4c7d33d8fe6dd4765a35a0733a55dd5a/src/Stfalcon/Bundle/EventBundle/Controller/TicketController.php#L85
+
         $event = $this->getEventBySlug($event_slug);
 
         if (!$event->getReceivePayments()) {
@@ -151,6 +154,7 @@ class TicketController extends BaseController
      */
     public function addParticipantsToPaymentAction($slug, Payment $payment)
     {
+        // @todo це мало порефакторитись а не тупо перенести кусок гавнокоду з одного місця в інше
         $event = $this->getEventBySlug($slug);
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
@@ -241,6 +245,7 @@ class TicketController extends BaseController
      */
     public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
     {
+        // @todo що за метод і нафіга? чому нема коментарів?
         $event = $this->getEventBySlug($event_slug);
 
         $em = $this->getDoctrine()->getManager();
@@ -256,6 +261,7 @@ class TicketController extends BaseController
 
         return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
     }
+
     /**
      * Show event ticket status (for current user)
      *
@@ -284,6 +290,7 @@ class TicketController extends BaseController
      */
     private function _findTicketForEventByCurrentUser(Event $event)
     {
+        // @todo в сервіс
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = null;
@@ -315,9 +322,6 @@ class TicketController extends BaseController
      */
     public function showAction($event_slug)
     {
-        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
-        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-
         $event  = $this->getEventBySlug($event_slug);
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
@@ -325,6 +329,9 @@ class TicketController extends BaseController
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
+        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
+        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
+        // @todo чому зразу не передати ticket в generatePdfFile? і не генерувати html в екшені
         $html = $pdfGen->generateHTML($ticket);
         $fileName = 'ticket-' . $event->getSlug() . '.pdf';
 
@@ -351,6 +358,7 @@ class TicketController extends BaseController
      */
     public function checkAction(Ticket $ticket, $hash)
     {
+        // @todo ця вся (майже вся) логіка чудно виноситься в вьюшку
         // проверяем хеш
         if ($ticket->getHash() != $hash) {
             // не совпадает хеш билета и хеш в урле
@@ -359,7 +367,7 @@ class TicketController extends BaseController
 
         // проверяем существует ли оплата
         if ($ticket->getPayment() instanceof Payment) {
-            // проверяем оплочен ли билет
+            // проверяем оплачен ли билет
             if ($ticket->getPayment()->isPaid()) {
                 // проверяем или билет ещё не отмечен как использованный
                 if ($ticket->isUsed()) {
@@ -394,6 +402,7 @@ class TicketController extends BaseController
      */
     public function checkByNumAction()
     {
+        // @todo це було тимчасове рішення для адміна. треба винести в адмінку
         $ticketId = $this->getRequest()->get('id');
 
         if (!$ticketId) {
@@ -435,6 +444,7 @@ class TicketController extends BaseController
      */
     private function createTicket($event, $user)
     {
+        // @todo це в сервісі мало б бути
         $em = $this->getDoctrine()->getManager();
         // Вытягиваем скидку из конфига
         $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
@@ -470,7 +480,7 @@ class TicketController extends BaseController
      */
     private function checkTicketsPricesInPayment($payment, $newPrice)
     {
-
+        // @todo це що за хрєнь? де коментарі з яких все має бути зрозуміло?
         $em = $this->getDoctrine()->getManager();
         // Вытягиваем скидку из конфига
         $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');

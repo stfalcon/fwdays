@@ -15,7 +15,7 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Stfalcon\Bundle\PaymentBundle\Service\IntercassaService;
+use Stfalcon\Bundle\PaymentBundle\Service\InterkassaService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,8 +45,8 @@ class InterkassaController extends Controller
         $description = 'Оплата участия в конференции ' . $event->getName()
                        . '. Плательщик ' . $user->getFullname() . ' (#' . $user->getId() . ')';
 
-        /** @var IntercassaService $intercassa */
-        $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
+        /** @var InterkassaService $interkassa */
+        $interkassa = $this->container->get('stfalcon_payment.interkassa.service');
 
         $params['ik_co_id'] = $config['interkassa']['shop_id'];
         $params['ik_am']    = $payment->getAmount();
@@ -56,7 +56,7 @@ class InterkassaController extends Controller
         $data = array(
             'ik_co_id' => $config['interkassa']['shop_id'],
             'ik_desc'  => $description,
-            'ik_sign'  => $intercassa->getSignHash($params)
+            'ik_sign'  => $interkassa->getSignHash($params)
         );
 
         return array(
@@ -98,16 +98,6 @@ class InterkassaController extends Controller
             }
         }
 
-        $params = $request->request->all();
-        $message = \Swift_Message::newInstance()
-            ->setSubject('test')
-            ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-            ->setTo('olexandr.karataev@stfalcon.com')
-            ->setBody(print_r($params, true) . ' ===' . $payment->getStatus() . '===' . print_r(\Doctrine\Common\Util\Debug::dump($payment, 2, true, false), true), 'text/html');
-
-        $this->get('mailer')->send($message);
-
-
         return $this->render('StfalconPaymentBundle:Payment:success.html.twig', array(
             'message' => $resultMessage
         ));
@@ -134,14 +124,14 @@ class InterkassaController extends Controller
         if (!$payment instanceof Payment) {
             return new Response('ik_pm_no not found', 404);
         }
-        /** @var IntercassaService $intercassa */
-        $intercassa = $this->container->get('stfalcon_payment.intercassa.service');
+        /** @var InterkassaService $interkassa */
+        $interkassa = $this->container->get('stfalcon_payment.interkassa.service');
         /** Выбераем все параментры которые нам прислала Интеркасса */
         $params = $request->request->all();
         /** Исключаем из параментров подпись */
         unset($params['ik_sign']);
         /** Генерируем подпись для проверки данных */
-        $signHash = $intercassa->getSignHash($params);
+        $signHash = $interkassa->getSignHash($params);
         $config = $this->container->getParameter('stfalcon_payment.config');
 
         if ($payment->getStatus() == Payment::STATUS_PENDING &&

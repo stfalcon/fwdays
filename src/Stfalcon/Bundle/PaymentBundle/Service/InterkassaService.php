@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\Container;
 use Zend\Validator\File\Md5;
 
 /**
- * Class IntercassaService
+ * Class InterkassaService
  */
-class IntercassaService
+class InterkassaService
 {
     /**
      * @var Container $container
