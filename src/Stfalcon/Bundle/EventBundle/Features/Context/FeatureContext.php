@@ -91,28 +91,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
     }
 
-//    /**
-//     * Wait while jQuery finished on page
-//     * Works only with Selenium2Driver.
-//     *
-//     * @param StepEvent $event
-//     *
-//     * @AfterStep
-//     */
-//    public function checkFinishJS(StepEvent $event)
-//    {
-//        $driver = $this->getSession()->getDriver();
-//        if ($driver instanceof Selenium2Driver) {
-//            $currentUrl = $this->getSession()->getCurrentUrl();
-//            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
-//                $this->getSession()->wait(
-//                    10000,
-//                    '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
-//                );
-//            }
-//        }
-//    }
-
     /**
      * Wait jQuery ready after each step
      * Take screenshot|html when step fails.
@@ -154,9 +132,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
             $fileSystem = new Filesystem();
             $fileSystem->mkdir(dirname($filenameHtml), 0775);
-
+            $url = $this->getSession()->getCurrentUrl();
             /** @todo update Symfony and change it to dumpFile method */
-            file_put_contents($filenameHtml, $contentHtml);
+            file_put_contents($filenameHtml, $url . ' ' . $contentHtml);
             /** saving screenshot files */
 //            if (!is_null($filenameScreenshot)) {
 //                file_put_contents($filenameScreenshot, $contentScreenshot);
