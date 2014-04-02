@@ -1782,7 +1782,7 @@ div.amount {
     line-height: 22px;
     color: #000;
     text-shadow: 0 1px 0 #fff;
-    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    background: #edece7 url(/images/sprite-main.jpg) left -726px repeat-x;
     border: 1px solid #989589;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1810,7 +1810,7 @@ div.amount {
     font-size: 13px;
     line-height: 24px;
     text-shadow: 0 1px 0 #fff;
-    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    background: #edece7 url(/images/sprite-main.jpg) left -726px repeat-x;
     border: 1px solid #989589;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -2100,7 +2100,7 @@ div.promo-code {
     overflow: hidden;
     text-indent: -999px;
     vertical-align: middle;
-    background: left top no-repeat url(../../images/icon-add-remove-participant.png);
+    background: left top no-repeat url(/images/icon-add-remove-participant.png);
 }
 
 a.add-new-participant {
@@ -2119,7 +2119,7 @@ a.add-new-participant:before {
     width: 9px;
     height: 9px;
     vertical-align: baseline;
-    background: 0 -13px no-repeat url(../../images/icon-add-remove-participant.png);
+    background: 0 -13px no-repeat url(/images/icon-add-remove-participant.png);
 }
 a.add-new-participant:hover:before {
     background-position: 0 -22px;
