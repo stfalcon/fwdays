@@ -5,10 +5,6 @@ namespace Stfalcon\Bundle\PaymentBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-//use JMS\SecurityExtraBundle\Annotation\Secure;
-
-//use Stfalcon\Bundle\PaymentBundle\Form\Payments\Interkassa\PayType;
-//use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
 /**
  * Здесь собраны общие для всех платежей экшены
@@ -24,10 +20,9 @@ class PaymentController extends Controller {
      * @param string $message
      * @return array
      */
-    public function successAction($message = 'Спасибо за оплату!')
+    public function successAction()
     {
-        // @todo: refact
-        return array('message' => $message);
+        return array();
     }
 
     /**
@@ -39,10 +34,9 @@ class PaymentController extends Controller {
      * @param string $message
      * @return array
      */
-    public function failAction($message = 'Платеж не выполен!')
+    public function failAction()
     {
-        // @todo: refact
-        return array('message' => $message);
+        return array();
     }
 
 }
