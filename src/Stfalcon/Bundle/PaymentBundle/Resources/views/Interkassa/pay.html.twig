@@ -21,19 +21,14 @@
 
             <div id="participants-form">
                 {% for ticket in payment.tickets %}
-                    <div class="added-participant">
-                        <div class="added-participant-name">
-                            {{ ticket.user.fullname }} —
-                            {% if ticket.hasDiscount %}
-                                <span class="old-price">{{ ticket.amountWithoutDiscount }} грн</span>
-                            {% endif %} {{ ticket.amount }} грн.
-                            {% if ticket.user != app.user %}
-                                <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}"
-                                   class="remove-participant" title="Удалить">Удалить</a>
-                            {% endif %}
-                        </div>
-                        <div class="added-participant-email">{{ ticket.user.email }}</div>
-                    </div>
+                    {% if ticket.user == app.user %}
+                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                    {% endif %}
+                {% endfor %}
+                {% for ticket in payment.tickets %}
+                    {% if ticket.user != app.user %}
+                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="wrap" style="display:none;">
