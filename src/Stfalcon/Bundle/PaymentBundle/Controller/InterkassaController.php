@@ -52,6 +52,7 @@ class InterkassaController extends Controller
         $params['ik_am']    = $payment->getAmount();
         $params['ik_pm_no'] = $payment->getId();
         $params['ik_desc']  = $description;
+        $params['ik_loc']   = 'ru';
 
         $data = array(
             'ik_co_id' => $config['interkassa']['shop_id'],
@@ -80,26 +81,27 @@ class InterkassaController extends Controller
      */
     public function statusAction(Request $request)
     {
-
+        $paymentStatus = $request->request->get('ik_inv_st');
         $paymentId = $request->request->get('ik_pm_no');
-        if (!isset($paymentId)) {
-            $resultMessage = 'Проверка контрольной подписи данных о платеже провалена! Неправильный ответ от интеркассы.';
+        $template = 'StfalconPaymentBundle:Payment:status.html.twig';
+        if (!isset($paymentId) || !isset($paymentStatus) || $paymentStatus == 'canceled' || $paymentStatus == 'fail') {
+            $resultMessage = 'Платеж не выполен!';
         } else {
             /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
             $payment = $this->getDoctrine()
                          ->getRepository('StfalconPaymentBundle:Payment')
-                         ->findOneBy(array('id' => $request->request->get('ik_pm_no')));
-
-            if ($payment instanceof Payment &&
-                $payment->getStatus() == Payment::STATUS_PAID) {
-                $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+                         ->findOneBy(array('id' => $paymentId));
+            if ($payment instanceof Payment) {
+                $template = 'StfalconPaymentBundle:Payment:pending.html.twig';
+                $resultMessage = 'Пожалуйста подождите. Ваш платеж в обработке. Не закрывайте эту страницу.';
             } else {
-                $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
+                $resultMessage = 'Проверка данных о платеже провалена! Такой платеж не найден.';
             }
         }
 
-        return $this->render('StfalconPaymentBundle:Payment:success.html.twig', array(
-            'message' => $resultMessage
+        return $this->render($template, array(
+            'message' => $resultMessage,
+            'paymentId' => $paymentId
         ));
     }
 
@@ -108,7 +110,7 @@ class InterkassaController extends Controller
      *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      *
      * @Route("/payments/interkassa/change-status")
      * @Method({"POST"})
@@ -206,5 +208,30 @@ class InterkassaController extends Controller
         }
 
         return new Response('One of the parameters is bad', 400);
+    }
+
+    /**
+     * Дла ajax запроса, проверяем или не изменилса статус платежа на оплаченый
+     *
+     * @param Integer $paymentId Id of payment that need to be checked
+     *
+     * @Route("/payments/interkassa/check-stastus/{paymentId}", defaults={"paymentId" = 0}, name="check-status")
+     *
+     * @return Response
+     */
+    public function checkPaymentStatusAjax($paymentId)
+    {
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest() && $paymentId) {
+            $payment = $this->getDoctrine()
+                ->getRepository('StfalconPaymentBundle:Payment')
+                ->findOneBy(array('id' => $paymentId));
+
+            if ($payment instanceof Payment && $payment->getStatus() == Payment::STATUS_PAID) {
+                return new Response('ok');
+            }
+        }
+
+        return new Response('fail', 400);
     }
 }
