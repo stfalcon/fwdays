@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\Util\MenuManipulator;
 use Symfony\Component\HttpFoundation\Request;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
@@ -36,12 +37,13 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
+        $mm = new MenuManipulator();
+
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'nav');
 
         if ($request->getPathInfo() != '/') {
-            $menu->addChild('← На главную', array('route' => 'homepage'))
-                ->moveToFirstPosition();
+            $mm->moveToFirstPosition($menu->addChild('← На главную', array('route' => 'homepage')));
         }
         $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
         $menu->addChild('События', array('route' => 'events'));
