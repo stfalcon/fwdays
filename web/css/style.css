@@ -1981,6 +1981,8 @@ div.amount {
 /*==================payment form =================*/
 form.payment-form label {
     font-size: 15px;
+    display: block;
+    float: none;
 }
 form.payment-form .wrap {
     padding: 8px 0 0px;
@@ -2022,7 +2024,7 @@ input[type="button"] {
 }
 
 .form-wrapper label {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .form-wrapper hr {
@@ -2037,7 +2039,6 @@ input[type="button"] {
 }
 
 .form-wrapper input[type="text"] {
-    display: block;
     float: none;
 }
 
