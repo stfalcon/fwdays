@@ -80,16 +80,33 @@ class InterkassaController extends Controller
      */
     public function statusAction(Request $request)
     {
-        /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
-        $payment = $this->getDoctrine()
-                     ->getRepository('StfalconPaymentBundle:Payment')
-                     ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
-        if ($payment->getStatus() == Payment::STATUS_PAID) {
-            $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+        $paymentId = $request->request->get('ik_pm_no');
+        if (!isset($paymentId)) {
+            $resultMessage = 'Проверка контрольной подписи данных о платеже провалена! Неправильный ответ от интеркассы.';
         } else {
-            $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
+            /** @var \Stfalcon\Bundle\PaymentBundle\Entity\Payment $payment */
+            $payment = $this->getDoctrine()
+                         ->getRepository('StfalconPaymentBundle:Payment')
+                         ->findOneBy(array('id' => $request->request->get('ik_pm_no')));
+
+            if ($payment instanceof Payment &&
+                $payment->getStatus() == Payment::STATUS_PAID) {
+                $resultMessage = 'Проверка контрольной подписи данных о платеже успешно пройдена!';
+            } else {
+                $resultMessage = 'Проверка контрольной подписи данных о платеже провалена!';
+            }
         }
+
+        $params = $request->request->all();
+        $message = \Swift_Message::newInstance()
+            ->setSubject('test')
+            ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+            ->setTo('olexandr.karataev@stfalcon.com')
+            ->setBody(print_r($params, true) . ' ===' . $payment->getStatus() . '===' . print_r(\Doctrine\Common\Util\Debug::dump($payment, 2, true, false), true), 'text/html');
+
+        $this->get('mailer')->send($message);
+
 
         return $this->render('StfalconPaymentBundle:Payment:success.html.twig', array(
             'message' => $resultMessage
