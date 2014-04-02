@@ -16,7 +16,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Stfalcon\Bundle\PaymentBundle\Service\IntercassaService;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
