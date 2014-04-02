@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -18,6 +19,7 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
+use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
  * Feature context for StfalconEventBundle
@@ -90,23 +92,71 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Wait while jQuery finished on page
-     * Works only with Selenium2Driver.
+     * Wait jQuery ready after each step
+     * Take screenshot|html when step fails.
+     * Screenshot is saved at [Date]/[Feature]/[Scenario]/[Step].jpg
      *
+    /**
      * @param StepEvent $event
      *
      * @AfterStep
+     *
+     * @throws \Behat\Behat\Exception\PendingException
      */
-    public function checkFinishJS(StepEvent $event)
+    public function afterStepActions(StepEvent $event)
     {
-        $driver = $this->getSession()->getDriver();
-        if ($driver instanceof Selenium2Driver) {
-            $currentUrl = $this->getSession()->getCurrentUrl();
-            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
-                $this->getSession()->wait(
-                    10000,
-                    '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
-                );
+        /**
+         * Save screenshot or html on fail
+         */
+        if ($event->getResult() === StepEvent::FAILED) {
+            $driver = $this->getSession()->getDriver();
+
+            $step = $event->getStep();
+            $path = array(
+//                'date' => date("Ymd-Hi"),
+//                'feature' => $step->getParent()->getFeature()->getTitle(),
+//                'scenario' => $step->getParent()->getTitle(),
+                'step' => $step->getType() . ' ' . $step->getLine()
+            );
+            $dir = $this->kernel->getContainer()->getParameter('behat_screenshot_dir');
+
+            $path = preg_replace('/[^\-\.\w]/', '_', $path);
+
+            $filenameHtml = $dir . implode('/', $path) . '.html';
+            $contentHtml = $this->getSession()->getPage()->getHtml();
+            $filenameScreenshot = null;
+            if ($driver instanceof Selenium2Driver) {
+                $filenameScreenshot = $dir . implode('/', $path) . '.png';
+                $contentScreenshot = $driver->getScreenshot();
+            }
+
+            $fileSystem = new Filesystem();
+            $fileSystem->mkdir(dirname($filenameHtml), 0775);
+            $url = $this->getSession()->getCurrentUrl();
+            /** @todo update Symfony and change it to dumpFile method */
+            file_put_contents($filenameHtml, $url . ' ' . $contentHtml);
+            /** saving screenshot files */
+//            if (!is_null($filenameScreenshot)) {
+//                file_put_contents($filenameScreenshot, $contentScreenshot);
+//            }
+        } else {
+            // jQuery wait
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                try {
+                    $currentUrl = $this->getSession()->getCurrentUrl();
+                    if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
+                        $this->getSession()->wait(100);
+                        $this->getSession()->wait(
+                            10000,
+                            'typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length'
+                        );
+                    }
+                } catch (UnexpectedAlertOpen $e) {
+//                    $alertText = $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+//                    throw new PendingException($alertText);
+//                    throw new PendingException('Test in completed');
+                }
             }
         }
     }

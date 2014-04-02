@@ -23,7 +23,7 @@
         "jms/security-extra-bundle": "1.4.0",
         "sonata-project/admin-bundle": "2.2.11 as dev-master",
 
-        "sonata-project/doctrine-orm-admin-bundle": "dev-master#bcbcfaf6c18f76b460c9f011809904611a8a618a",
+        "sonata-project/doctrine-orm-admin-bundle": "2.2.7 as dev-master",
 
         "avalanche123/imagine-bundle": "dev-master#eb03645887f732410127a2b3d992befe0f175277",
 
