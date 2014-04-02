@@ -104,9 +104,12 @@ class TicketController extends BaseController
             $em->persist($payment);
             $ticket->setPayment($payment);
             $em->persist($ticket);
+            $em->flush();
         }
 
-        $em->flush();
+        if (!$payment->isPaid()) {
+            $this->checkTicketsPricesInPayment($payment, $event->getCost());
+        }
 
         $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
         $promoCode = $payment->getPromoCodeFromTickets();
@@ -459,5 +462,38 @@ class TicketController extends BaseController
         $em->flush();
 
         return $ticket;
+    }
+
+    /**
+     * @param Payment $payment
+     * @param float   $newPrice
+     */
+    private function checkTicketsPricesInPayment($payment, $newPrice)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        // Вытягиваем скидку из конфига
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discount = (float) $paymentsConfig['discount'];
+        /** @var Ticket $ticket */
+        foreach ($payment->getTickets() as $ticket) {
+            if ($ticket->getAmountWithoutDiscount() != $newPrice) {
+                $ticket->setAmountWithoutDiscount($newPrice);
+                if ($ticket->getHasDiscount()) {
+                    if ($promoCode = $ticket->getPromoCode()) {
+                        $cost = $newPrice - ($newPrice * ($promoCode->getDiscountAmount() / 100));
+                    } else {
+                        $cost = $newPrice - ($newPrice * $discount);
+                    }
+                    $ticket->setAmount($cost);
+                } else {
+                    $ticket->setAmount($newPrice);
+                }
+                $em->merge($ticket);
+            }
+        }
+        $payment->recalculateAmount();
+        $em->merge($payment);
+        $em->flush();
     }
 }
