@@ -89,6 +89,8 @@ class TicketController extends BaseController
         // https://github.com/stfalcon/fwdays/blob/7f1be58c4c7d33d8fe6dd4765a35a0733a55dd5a/src/Stfalcon/Bundle/EventBundle/Controller/TicketController.php#L85
 
         $event = $this->getEventBySlug($event_slug);
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         if (!$event->getReceivePayments()) {
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
@@ -122,14 +124,18 @@ class TicketController extends BaseController
             $code = $promoCodeForm->get('code')->getData();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
             if ($promoCode) {
-                $payment->addPromoCodeForTickets($promoCode);
+                $notUsedPromoCode = $payment->addPromoCodeForTickets($promoCode, $discountAmount);
                 $em->flush();
+                if (!empty($notUsedPromoCode)) {
+                    $this->get('session')->getFlashBag()->add('not_used_promocode', implode(', ', $notUsedPromoCode));
+                }
             } else {
                 $promoCodeForm->get('code')->addError(new FormError('Такой промокод не найден'));
             }
         }
 
         $ticketForm = $this->createForm('stfalcon_event_ticket');
+
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
@@ -139,7 +145,8 @@ class TicketController extends BaseController
                 'payment' => $payment,
                 'promoCodeFormView' => $promoCodeForm->createView(),
                 'promoCode' => $promoCode,
-                'ticketFormView' => $ticketForm->createView()
+                'ticketFormView' => $ticketForm->createView(),
+                'discountAmount' => $discountAmount
             )
         );
     }
