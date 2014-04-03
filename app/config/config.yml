@@ -128,13 +128,13 @@ sonata_admin:
 
 services:
      gelf.publisher:
-         class: Gelf\MessagePublisher
-         arguments: [%graylog.hostname%, %graylog.port%]
+         class: Application\Bundle\DefaultBundle\Publisher\MessagePublisher
+         arguments: [%graylog.fromname%, %graylog.hostname%, %graylog.port%]
      monolog.gelf_handler:
          class: Monolog\Handler\GelfHandler
          arguments: [@gelf.publisher]
      monolog.processor.added_host:
-             class: Application\Bundle\DefaultBundle\Processor\HttpHostProcessor
+             class: Monolog\Processor\WebProcessor
              tags:
                  - { name: monolog.processor, method: __invoke }
 
