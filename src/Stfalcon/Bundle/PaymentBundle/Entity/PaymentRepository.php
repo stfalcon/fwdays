@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * PaymentsRepository
@@ -35,5 +36,24 @@ class PaymentRepository extends EntityRepository
                  'user'   => $user
             ))
             ->getResult();
+    }
+
+    /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return Payment|null
+     */
+    public function findPaymentByUserAndEvent(User $user, Event $event)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->leftJoin('p.tickets', 't')
+            ->where('t.event = :event')
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $user)
+            ->setParameter('event', $event)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
     }
 }

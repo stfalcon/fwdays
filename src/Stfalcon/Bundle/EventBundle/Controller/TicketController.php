@@ -494,7 +494,18 @@ class TicketController extends BaseController
         $discount = (float) $paymentsConfig['discount'];
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            if ($ticket->getAmountWithoutDiscount() != $newPrice) {
+            // получаем оплаченые платежи пользователя
+            $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
+                ->findPaidPaymentsForUser($ticket->getUser());
+            // если цена билета без скидки не ровна новой цене на ивент
+            // или неверно указан флаг наличия скидки
+            if ($ticket->getAmountWithoutDiscount() != $newPrice ||
+                ($ticket->getHasDiscount() != (count($paidPayments) > 0))
+            ) {
+                // если не правильна установлен флаг налиция скидки, тогда устанавливаем его заново
+                if ($ticket->getHasDiscount() != (count($paidPayments) > 0)) {
+                    $ticket->setHasDiscount(count($paidPayments) > 0);
+                }
                 $ticket->setAmountWithoutDiscount($newPrice);
                 if ($ticket->getHasDiscount()) {
                     if ($promoCode = $ticket->getPromoCode()) {

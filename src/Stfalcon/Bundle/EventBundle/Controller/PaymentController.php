@@ -144,19 +144,29 @@ class PaymentController extends Controller {
     /**
      * Оплата не завершена. Ожидаем ответ шлюза
      *
+     * @param Request $request
+     *
      * @Route("/payment/pending", name="payment_pending")
      * @Template()
      *
      * @return array
      */
-    public function pendingAction(Request $request) {
+    public function pendingAction(Request $request)
+    {
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconPaymentBundle:Payment')
             ->findOneBy(array('id' => $request->get('ik_pm_no')));
 
         if (!$payment) {
-            throw new Exception('Платеж №' . $request->get('ik_pm_no') . ' не найден!');
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $event = $em->getRepository('StfalconEventBundle:Event')->find(6);
+            $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
+            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
+            if (!$payment) {
+                return $this->forward('StfalconEventBundle:Payment:fail');
+            }
         }
 
         if ($payment->isPaid()) {
