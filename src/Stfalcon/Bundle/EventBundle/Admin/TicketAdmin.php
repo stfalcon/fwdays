@@ -17,6 +17,13 @@ class TicketAdmin extends Admin
             ->addIdentifier('id')
             ->addIdentifier('event')
             ->add('user.fullname', null, array('label' => 'Fullname'))
+            ->add('amount', 'money', array(
+                'currency' => 'UAH'
+            ))
+            ->add('amountWithoutDiscount', 'money', array(
+                'currency' => 'UAH'
+            ))
+            ->add('promoCode')
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')

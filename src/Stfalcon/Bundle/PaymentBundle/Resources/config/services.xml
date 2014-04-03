@@ -8,7 +8,7 @@
         <parameter key="stfalcon_payment.admin.payment.class">Stfalcon\Bundle\PaymentBundle\Admin\PaymentAdmin</parameter>
         <parameter key="stfalcon_payment.admin.payment.entity">Stfalcon\Bundle\PaymentBundle\Entity\Payment</parameter>
         <parameter key="stfalcon_payment.admin.payment.controller">SonataAdminBundle:CRUD</parameter>
-        <parameter key="stfalcon_payment.intercassa.service.class">Stfalcon\Bundle\PaymentBundle\Service\IntercassaService</parameter>
+        <parameter key="stfalcon_payment.interkassa.service.class">Stfalcon\Bundle\PaymentBundle\Service\InterkassaService</parameter>
     </parameters>
 
     <services>
@@ -19,7 +19,7 @@
             <argument>%stfalcon_payment.admin.payment.controller%</argument>
         </service>
 
-        <service id="stfalcon_payment.intercassa.service" class="%stfalcon_payment.intercassa.service.class%">
+        <service id="stfalcon_payment.interkassa.service" class="%stfalcon_payment.interkassa.service.class%">
             <argument type="service" id="service_container"/>
         </service>
     </services>

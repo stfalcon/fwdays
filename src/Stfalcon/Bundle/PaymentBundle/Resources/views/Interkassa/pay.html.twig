@@ -2,34 +2,87 @@
 
 {% block content %}
     <h2>Оплата участия в конференции {{ event.name }}</h2>
+    <div class="form-wrapper">
 
-    <div class="info-msg-block">
-        <p>
-            Если вам нужно оплатить безналом участие 5ти и больше человек, тогда пишите нам на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a>. В письме укажите "Фамилия Имя e-mail" каждого участника и ваши реквизиты.
-        </p>
+        <div class="pay-for-other-participants">
+            <a href="#">Оплатить других участников</a>
+        </div>
+
+        <form action="{{ path('add_participants_to_payment', {'slug': event.slug, 'id': payment.id}) }}" method="POST"
+              class="payment-form participants-form">
+
+            <div id="participants-form">
+                {% for ticket in payment.tickets %}
+                    {% if ticket.user == app.user %}
+                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                    {% endif %}
+                {% endfor %}
+                {% for ticket in payment.tickets %}
+                    {% if ticket.user != app.user %}
+                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="wrap" style="display:none;">
+                <div id="stfalcon_event_ticket_participants" data-prototype="{% filter escape %}{% include 'StfalconEventBundle:Form:ticketPrototype.html.twig' with {'form': ticketForm.participants.get('prototype')} %}{% endfilter %}">
+                </div>
+                {#{{ form_widget(ticketForm.participants) }}#}
+                <div class="wrap-footer">
+                    <input type="submit" value="Закончить список и посчитать сумму">
+                    <a class="add-new-participant" href="#">Еще участники</a>
+                </div>
+            </div>
+            <!-- /.wrap -->
+        </form>
+
+        {% for flashMessage in app.session.flashbag.get('already_paid_tickets') %}
+        <div class="msg-block">
+            Участники, которые уже оплатили участие:<br>
+            {{ flashMessage }}
+        </div>
+        {% endfor %}
+
+        <hr>
+
+        {% if not payment.getPromoCodeFromTickets %}
+            <div>
+                <form action="{{ path('event_pay', {'event_slug': event.slug}) }}" method="post" class="payment-form promo-code">
+                    {{ form_label(promoCodeForm.code) }}
+                    {{ form_widget(promoCodeForm.code) }}
+                    {{ form_errors(promoCodeForm.code) }}
+                    <input type="submit" value="Применить">
+                    {{ form_rest(promoCodeForm) }}
+                </form>
+            </div>
+        {% else %}
+            <div class="promo-code">
+                Купон на скидку:
+                <b class="code">{{ promoCode.code }}</b>
+            </div>
+        {% endif %}
+
+        <hr>
+
+        <form name="payment" method="post" action="https://sci.interkassa.com/" accept-charset="UTF-8">
+            <input type="hidden" name="ik_co_id" value="{{ data.ik_co_id }}" />
+            <input type="hidden" name="ik_pm_no" value="{{ payment.id }}" />
+            <input type="hidden" name="ik_am" value="{{ payment.amount }}" />
+            <input type="hidden" name="ik_desc" value="{{ data.ik_desc|escape }}" />
+            <input type="hidden" name="ik_loc" value="ru" />
+            <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
+
+            <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
+            <div>
+            <input type="submit" value="Оплатить участие"/>
+            </div>
+        </form>
+
     </div>
 
-    <form action="https://interkassa.com/lib/payment.php" method="post" enctype="application/x-www-form-urlencoded" accept-charset="cp1251">
-        <div>
-            {% if payment.hasDiscount %}
-                Цена без скидки: {{ payment.amountWithoutDiscount }} грн.<br />
-                <div class="amount">
-                    Сумма к оплате <b>{{ payment.amount }} грн.</b> (с учетом скидки 20%)
-                </div>
-            {% else %}
-                Сумма к оплате: <b>{{ payment.amount }} грн.</b>
-            {% endif %}
-        </div>
-        <input type="hidden" name="ik_payment_id" value="{{ payment.id }}">
-        <input type="hidden" name="ik_shop_id" value="{{ data.ik_shop_id }}">
-        <input type="hidden" name="ik_payment_amount" value="{{ payment.amount }}">
-        <input type="hidden" name="ik_payment_desc" value="{{ data.ik_payment_desc|escape }}">
-        <input type="hidden" name="ik_paysystem_alias" value="">
-        <input type="hidden" name="ik_baggage_fields" value="">
-        <input type="hidden" name="ik_sign_hash" value="{{ data.ik_sign_hash }}">
-        <div>
-            <input type="submit" value="Оплатить участие" />
-        </div>
-    </form>
+{% endblock %}
 
+{% block javascripts %}
+    {% javascripts 'js/jquery-1.8.2.min.js' 'bundles/stfalconevent/js/ticket-form.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

@@ -90,9 +90,6 @@ class PaymentAdmin extends Admin
                 ->add('amount', 'money', array(
                     'currency' => 'UAH'
                 ))
-                ->add('amount_without_discount', 'money', array(
-                    'currency' => 'UAH'
-                ))
                 ->add('status', 'choice', array(
                     'choices'   => array(
                         'pending'   => 'pending',
@@ -104,10 +101,6 @@ class PaymentAdmin extends Admin
                         'interkassa'   => 'interkassa',
                         'admin' => 'admin'
                     )
-                ))
-                ->add('has_discount', 'checkbox', array(
-                    'label'     => 'Has discount?',
-                    'required'  => false,
                 ))
                 ->add('user')
                 ->add('tickets')

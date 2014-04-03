@@ -1,4 +1,4 @@
-/* css reset */
+/* css reset  */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -157,9 +157,13 @@ input {
     overflow: hidden;
     min-height: 23px;
     border: 1px solid #e5e5e5;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
+}
+.msg-block {
+    margin-bottom: 20px;
+    padding: 13px 18px 16px;
+    background: #ffe5e5;
+    line-height: 18px;
 }
 .info-msg-block p,
 .error-msg-block p {
@@ -194,7 +198,7 @@ input {
     }
 }
 
-form {
+form, .form-wrapper {
     display: -moz-inline-stack;
     display: inline-block;
     padding: 17px 20px 7px;
@@ -1778,7 +1782,7 @@ div.amount {
     line-height: 22px;
     color: #000;
     text-shadow: 0 1px 0 #fff;
-    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    background: #edece7 url(/images/sprite-main.jpg) left -726px repeat-x;
     border: 1px solid #989589;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1806,7 +1810,7 @@ div.amount {
     font-size: 13px;
     line-height: 24px;
     text-shadow: 0 1px 0 #fff;
-    background: #edece7 url(images/sprite-main.jpg) left -726px repeat-x;
+    background: #edece7 url(/images/sprite-main.jpg) left -726px repeat-x;
     border: 1px solid #989589;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1973,4 +1977,163 @@ div.amount {
 .preloader {
     display: none;
     text-align: center;
+}
+/*==================payment form =================*/
+form.payment-form label {
+    font-size: 15px;
+    display: block;
+    float: none;
+}
+form.payment-form .wrap {
+    padding: 8px 0 0px;
+    border-top: 1px solid #e5e5e5;
+    margin: 17px 0 0;
+}
+
+form.payment-form .wrap-footer {
+    margin-top: -14px;
+}
+
+.payment-form.checkout-form {
+    margin-bottom: 0;
+}
+
+form.payment-form .wrap div {
+    padding-bottom: 0;
+}
+
+form.payment-form .wrap div div > div {
+    margin-bottom: 12px;
+}
+
+form.payment-form .wrap div div {
+    margin-bottom: 30px;
+}
+
+input[type="button"] {
+    height: 26px;
+}
+
+.form-wrapper {
+    width: 500px;
+}
+
+.form-wrapper form {
+    border: none;
+    padding: 0;
+}
+
+.form-wrapper label {
+    margin-bottom: 4px;
+}
+
+.form-wrapper hr {
+    border: none;
+    margin: 0 0 16px;
+    height: 1px;
+    background: #E5E5E5;
+}
+
+.form-wrapper div {
+    overflow: visible;
+}
+
+.form-wrapper input[type="text"] {
+    float: none;
+}
+
+.participants-form > div {
+    padding-bottom: 0;
+}
+
+form.promo-code input[type="text"] {
+    display: inline-block;
+    width: 189px;
+}
+
+form.promo-code label {
+    float: none;
+    margin-bottom: 4px;
+}
+div.promo-code {
+    margin-bottom: 28px;
+    font-size: 15px;
+}
+
+.promo-code b {
+    display: block;
+    margin-top: 9px;
+}
+
+.pay-for-other-participants {
+    float: right;
+    padding-right: 0;
+}
+.pay-for-other-participants a {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.added-participant {
+    padding-bottom: 20px;
+}
+
+.added-participant:last-child {
+    padding-bottom: 2px;
+}
+
+.added-participant-name {
+    padding-bottom: 0;
+    font-size: 15px;
+}
+.added-participant-email {
+    padding-bottom: 0;
+    font-size: 11px;
+    color: #727272;
+}
+
+.remove-participant {
+    display: inline-block;
+    margin-left: 5px;
+    width: 13px;
+    height: 13px;
+    overflow: hidden;
+    text-indent: -999px;
+    vertical-align: middle;
+    background: left top no-repeat url(/images/icon-add-remove-participant.png);
+}
+
+a.add-new-participant {
+    display: inline-block;
+    margin-left: 37px;
+    vertical-align: middle;
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+a.add-new-participant:before {
+    display: inline-block;
+    content: '';
+    position: relative;
+    margin-left: -15px;
+    margin-right: 6px;
+    width: 9px;
+    height: 9px;
+    vertical-align: baseline;
+    background: 0 -13px no-repeat url(/images/icon-add-remove-participant.png);
+}
+a.add-new-participant:hover:before {
+    background-position: 0 -22px;
+
+}
+
+.pay-sum {
+    font-size: 15px;
+}
+.pay-sum .sum {
+    font-weight: bold;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #727272;
 }

@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template,
     Symfony\Component\HttpFoundation\RedirectResponse,
@@ -12,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
 use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Symfony\Component\Form\FormError;
 
 /**
  * Ticket controller
@@ -40,11 +42,7 @@ class TicketController extends BaseController
 
         // если нет, тогда создаем билет
         if (is_null($ticket)) {
-            $ticket = new Ticket();
-            $ticket->setEvent($event);
-            $ticket->setUser($user);
-            $em->persist($ticket);
-            $em->flush();
+            $this->createTicket($event, $user);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -87,6 +85,9 @@ class TicketController extends BaseController
      */
     public function payAction($event_slug)
     {
+        // @todo WTF? був маленький акуратний екшн
+        // https://github.com/stfalcon/fwdays/blob/7f1be58c4c7d33d8fe6dd4765a35a0733a55dd5a/src/Stfalcon/Bundle/EventBundle/Controller/TicketController.php#L85
+
         $event = $this->getEventBySlug($event_slug);
 
         if (!$event->getReceivePayments()) {
@@ -98,62 +99,167 @@ class TicketController extends BaseController
 
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
-        // Вытягиваем скидку из конфига
-        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
-        $discount = (float) $paymentsConfig['discount'];
-
         // создаем проплату или апдейтим стоимость уже существующей
         /** @var $payment \Stfalcon\Bundle\PaymentBundle\Entity\Payment */
-        if ($payment = $ticket->getPayment()) {
-            // здесь может быть проблема. например клиент проплатил через банк и платеж идет к
-            // шлюзу несколько дней. если обновить цену в этот момент, то сума платежа
-            // может не соответствовать цене
-
-            // @fixme После дискуссии решили раскомментировать следующий код. Так как не нашли простого решения с
-            // обновлением цены pending платежа. Все возникшые проблемные ситуации с платежами придется обрабатывать вручную
-            $payment->setAmountWithoutDiscount($event->getCost());
-            if ($payment->getHasDiscount()) {
-                $payment->setAmount($payment->getAmountWithoutDiscount() - $payment->getAmountWithoutDiscount() * $discount);
-            } else {
-                $payment->setAmount($payment->getAmountWithoutDiscount());
-            }
-
-            $em->persist($payment);
-        } else {
-            // Find paid payments for current user
-            $paidPayments = $this->getDoctrine()->getManager()
-                ->getRepository('StfalconPaymentBundle:Payment')
-                ->findPaidPaymentsForUser($user);
-
-            // Если пользователь имеет оплаченные события, то он получает скидку
-            if (count($paidPayments) > 0) {
-                $cost = $event->getCost() - $event->getCost() * $discount;
-                $hasDiscount = true;
-            } else {
-                $cost = $event->getCost();
-                $hasDiscount = false;
-            }
-
+        if (!$payment = $ticket->getPayment()) {
             $payment = new Payment();
             $payment->setUser($user);
-            $payment->setAmount($cost);
-            $payment->setHasDiscount($hasDiscount);
-            $payment->setAmountWithoutDiscount($event->getCost());
             $em->persist($payment);
             $ticket->setPayment($payment);
             $em->persist($ticket);
+            $em->flush();
         }
 
-        $em->flush();
+        if (!$payment->isPaid()) {
+            $this->checkTicketsPricesInPayment($payment, $event->getCost());
+        }
+
+        $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
+        $promoCode = $payment->getPromoCodeFromTickets();
+        $request = $this->getRequest();
+        if ($request->isMethod('post')) {
+            $promoCodeForm->bind($request);
+            $code = $promoCodeForm->get('code')->getData();
+            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
+            if ($promoCode) {
+                $payment->addPromoCodeForTickets($promoCode);
+                $em->flush();
+            } else {
+                $promoCodeForm->get('code')->addError(new FormError('Такой промокод не найден'));
+            }
+        }
+
+        $ticketForm = $this->createForm('stfalcon_event_ticket');
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
             array(
                 'event' => $event,
                 'user' => $user,
-                'payment' => $payment
+                'payment' => $payment,
+                'promoCodeFormView' => $promoCodeForm->createView(),
+                'promoCode' => $promoCode,
+                'ticketFormView' => $ticketForm->createView()
             )
         );
+    }
+
+    /**
+     * @param string  $slug
+     * @param Payment $payment
+     *
+     * @return RedirectResponse
+     *
+     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
+     */
+    public function addParticipantsToPaymentAction($slug, Payment $payment)
+    {
+        // @todo це мало порефакторитись а не тупо перенести кусок гавнокоду з одного місця в інше
+        $event = $this->getEventBySlug($slug);
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $ticketForm = $this->createForm('stfalcon_event_ticket');
+        $ticketForm->bind($request);
+
+        $participants = $ticketForm->get('participants')->getData();
+        $alreadyPaidTickets = array();
+
+        foreach ($participants as $participant) {
+            $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
+
+            // создаем нового пользователя
+            if (!$user) {
+                $user = $this->get('fos_user.user_manager')->createUser();
+                $user->setEmail($participant['email']);
+                $user->setFullname($participant['name']);
+
+                // генерация временного пароля
+                $password = substr(str_shuffle(md5(time())), 5, 8);
+                $user->setPlainPassword($password);
+                $user->setEnabled(true);
+
+                $this->get('fos_user.user_manager')->updateUser($user);
+
+                // отправляем сообщение о регистрации
+                $text = "Приветствуем " . $user->getFullname() ."!
+
+Вы были автоматически зарегистрированы на сайте Frameworks Days.
+
+Ваш временный пароль: " . $password . "
+Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
+
+
+---
+С уважением,
+Команда Frameworks Days";
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject("Регистрация на сайте Frameworks Days")
+                    // @todo refact
+                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                    ->setTo($user->getEmail())
+                    ->setBody($text);
+
+                // @todo каждый вызов отнимает память
+                $this->get('mailer')->send($message);
+            }
+            // проверяем или у него нет билетов на этот ивент
+            /** @var Ticket $ticket */
+            $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+
+            if (!$ticket) {
+                $ticket = $this->createTicket($event, $user);
+            }
+
+            if (!$ticket->isPaid()) {
+                if ($promoCode = $payment->getPromoCodeFromTickets()) {
+                    if (!$ticket->getHasDiscount()) {
+                        $ticket->setPromoCode($promoCode);
+                    }
+                }
+                $ticket->setPayment($payment);
+            } else {
+                $alreadyPaidTickets[] = $user->getFullname();
+            }
+            $em->persist($payment);
+            $em->persist($ticket);
+        }
+        $em->flush();
+        if (!empty($alreadyPaidTickets)) {
+            $this->get('session')->getFlashBag()->add('already_paid_tickets', implode(', ', $alreadyPaidTickets));
+        }
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
+    }
+
+    /**
+     * @param string $event_slug
+     * @param int    $payment_id
+     * @param Ticket $ticket
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     *
+     * @Route("/event/{event_slug}/payment/{payment_id}/ticket/remove/{id}", name="remove_ticket_from_payment")
+     */
+    public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
+    {
+        // @todo що за метод і нафіга? чому нема коментарів?
+        $event = $this->getEventBySlug($event_slug);
+
+        $em = $this->getDoctrine()->getManager();
+        $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
+        $payment = $paymentRepository->find($payment_id);
+        if (!$payment) {
+            throw $this->createNotFoundException('Unable to find Payment entity.');
+        }
+
+        $payment->removeTicket($ticket);
+        $em->remove($ticket);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
     }
 
     /**
@@ -184,6 +290,7 @@ class TicketController extends BaseController
      */
     private function _findTicketForEventByCurrentUser(Event $event)
     {
+        // @todo в сервіс
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         $ticket = null;
@@ -215,9 +322,6 @@ class TicketController extends BaseController
      */
     public function showAction($event_slug)
     {
-        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
-        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-
         $event  = $this->getEventBySlug($event_slug);
         $ticket = $this->_findTicketForEventByCurrentUser($event);
 
@@ -225,6 +329,9 @@ class TicketController extends BaseController
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
         }
 
+        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
+        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
+        // @todo чому зразу не передати ticket в generatePdfFile? і не генерувати html в екшені
         $html = $pdfGen->generateHTML($ticket);
         $fileName = 'ticket-' . $event->getSlug() . '.pdf';
 
@@ -251,6 +358,7 @@ class TicketController extends BaseController
      */
     public function checkAction(Ticket $ticket, $hash)
     {
+        // @todo ця вся (майже вся) логіка чудно виноситься в вьюшку
         // проверяем хеш
         if ($ticket->getHash() != $hash) {
             // не совпадает хеш билета и хеш в урле
@@ -259,7 +367,7 @@ class TicketController extends BaseController
 
         // проверяем существует ли оплата
         if ($ticket->getPayment() instanceof Payment) {
-            // проверяем оплочен ли билет
+            // проверяем оплачен ли билет
             if ($ticket->getPayment()->isPaid()) {
                 // проверяем или билет ещё не отмечен как использованный
                 if ($ticket->isUsed()) {
@@ -294,6 +402,7 @@ class TicketController extends BaseController
      */
     public function checkByNumAction()
     {
+        // @todo це було тимчасове рішення для адміна. треба винести в адмінку
         $ticketId = $this->getRequest()->get('id');
 
         if (!$ticketId) {
@@ -325,5 +434,76 @@ class TicketController extends BaseController
                 'action'  => $this->generateUrl('check')
             );
         }
+    }
+
+    /**
+     * @param Event $event
+     * @param User  $user
+     *
+     * @return Ticket
+     */
+    private function createTicket($event, $user)
+    {
+        // @todo це в сервісі мало б бути
+        $em = $this->getDoctrine()->getManager();
+        // Вытягиваем скидку из конфига
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discount = (float) $paymentsConfig['discount'];
+
+        $ticket = new Ticket();
+        $ticket->setEvent($event);
+        $ticket->setUser($user);
+        $ticket->setAmountWithoutDiscount($event->getCost());
+        $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
+            ->findPaidPaymentsForUser($user);
+
+        // Если пользователь имеет оплаченные события, то он получает скидку
+        if (count($paidPayments) > 0) {
+            $cost = $event->getCost() - $event->getCost() * $discount;
+            $hasDiscount = true;
+        } else {
+            $cost = $event->getCost();
+            $hasDiscount = false;
+        }
+        $ticket->setAmount($cost);
+        $ticket->setHasDiscount($hasDiscount);
+
+        $em->persist($ticket);
+        $em->flush();
+
+        return $ticket;
+    }
+
+    /**
+     * @param Payment $payment
+     * @param float   $newPrice
+     */
+    private function checkTicketsPricesInPayment($payment, $newPrice)
+    {
+        // @todo це що за хрєнь? де коментарі з яких все має бути зрозуміло?
+        $em = $this->getDoctrine()->getManager();
+        // Вытягиваем скидку из конфига
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discount = (float) $paymentsConfig['discount'];
+        /** @var Ticket $ticket */
+        foreach ($payment->getTickets() as $ticket) {
+            if ($ticket->getAmountWithoutDiscount() != $newPrice) {
+                $ticket->setAmountWithoutDiscount($newPrice);
+                if ($ticket->getHasDiscount()) {
+                    if ($promoCode = $ticket->getPromoCode()) {
+                        $cost = $newPrice - ($newPrice * ($promoCode->getDiscountAmount() / 100));
+                    } else {
+                        $cost = $newPrice - ($newPrice * $discount);
+                    }
+                    $ticket->setAmount($cost);
+                } else {
+                    $ticket->setAmount($newPrice);
+                }
+                $em->merge($ticket);
+            }
+        }
+        $payment->recalculateAmount();
+        $em->merge($payment);
+        $em->flush();
     }
 }
