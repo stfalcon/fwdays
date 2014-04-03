@@ -21,10 +21,10 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class PaymentController extends Controller {
 
     /**
-     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как успешный
+     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как успешный (или не отмечаем)
+     * Также рассылаем письма и билеты всем, кто был привязан к платежу
      *
      * @Route("/payment/interaction", name="payment_interaction")
-     * @Method({"GET"})
      * @Template()
      *
      * @param Request $request
@@ -51,7 +51,7 @@ class PaymentController extends Controller {
             /** @var Ticket  $ticket */
             foreach ($payment->getTickets() as $ticket) {
                 // розсилка квитків
-                // тут має смикатись сервіс який розсилає мильники про успішну оплату квитків + пдф в аттачі
+                // @todo тут має смикатись сервіс який розсилає мильники про успішну оплату квитків + пдф в аттачі
                 $user  = $ticket->getUser();
                 $event = $ticket->getEvent();
 
@@ -107,7 +107,6 @@ class PaymentController extends Controller {
                     ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile), $outputFile));
 
                 $this->get('mailer')->send($message);
-
             }
 
             return new Response('SUCCESS', 200);
@@ -150,8 +149,20 @@ class PaymentController extends Controller {
      *
      * @return array
      */
-    public function pendingAction()
-    {
+    public function pendingAction(Request $request) {
+        /** @var Payment $payment */
+        $payment = $this->getDoctrine()
+            ->getRepository('StfalconPaymentBundle:Payment')
+            ->findOneBy(array('id' => $request->get('ik_pm_no')));
+
+        if (!$payment) {
+            throw new Exception('Платеж №' . $request->get('ik_pm_no') . ' не найден!');
+        }
+
+        if ($payment->isPaid()) {
+            return $this->forward('StfalconEventBundle:Payment:success');
+        }
+
         return array();
     }
 
