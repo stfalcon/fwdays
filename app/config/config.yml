@@ -2,6 +2,8 @@ imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
 
+parameters:
+    graylog.fromname: "http://frameworksdays.com"
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
