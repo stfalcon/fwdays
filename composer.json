@@ -36,7 +36,7 @@
         "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
 
         "zendframework/zend-feed": "2.0.*",
-        "mlehner/gelf-php": "dev-master#c07537742c917592528703a829ad55303da68e4e",
+        "mlehner/gelf-php": "v1.0",
 
         "vich/uploader-bundle": "v0.9.0",
         "endroid/qrcode": "1.1.1",
