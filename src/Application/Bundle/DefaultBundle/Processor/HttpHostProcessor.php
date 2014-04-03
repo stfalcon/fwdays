@@ -20,6 +20,9 @@ class HttpHostProcessor extends WebProcessor
         if (!isset($record['extra']['http_host'])) {
             $record['extra']['http_host'] = isset($this->serverData['SERVER_NAME']) ? $this->serverData['SERVER_NAME'] : null;
         }
+        if (!isset($record['extra']['from'])) {
+            $record['extra']['from'] = isset($this->serverData['SERVER_NAME']) ? $this->serverData['SERVER_NAME'] : null;
+        }
 
         return $record;
     }
