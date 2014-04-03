@@ -2015,12 +2015,13 @@ input[type="button"] {
 }
 
 .form-wrapper {
-    width: 500px;
+    width: 700px;
 }
 
 .form-wrapper form {
     border: none;
     padding: 0;
+    display: block;
 }
 
 .form-wrapper label {

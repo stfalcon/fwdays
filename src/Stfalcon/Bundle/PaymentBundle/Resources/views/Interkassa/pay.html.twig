@@ -42,6 +42,12 @@
         </div>
         {% endfor %}
 
+        {% for flashMessage in app.session.flashbag.get('not_used_promocode') %}
+            <div class="msg-block">
+                Участники, к которым не была применена скидка купона потому, что их скидка постоянного участника больше:<br>
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
         <hr>
 
         {% if not payment.getPromoCodeFromTickets %}

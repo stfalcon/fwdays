@@ -120,15 +120,28 @@ class Payment
      * recalculate payment amount
      *
      * @param PromoCode $promoCode
+     * @param int       $baseDiscount
+     *
+     * @return array
      */
-    public function addPromoCodeForTickets($promoCode)
+    public function addPromoCodeForTickets($promoCode, $baseDiscount)
     {
+        $notUsedPromoCode = array();
         foreach ($this->tickets as $ticket) {
             if (!$ticket->getHasDiscount()) {
                 $ticket->setPromoCode($promoCode);
+            } elseif ($ticket->getHasDiscount() &&
+                !$ticket->hasPromoCode() &&
+                ($promoCode->getDiscountAmount() > $baseDiscount)
+            ) {
+                $ticket->setPromoCode($promoCode);
+            } else {
+                $notUsedPromoCode[] = $ticket->getUser()->getFullname();
             }
         }
         $this->recalculateAmount();
+
+        return $notUsedPromoCode;
     }
 
     /**
