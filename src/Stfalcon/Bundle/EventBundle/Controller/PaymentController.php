@@ -104,7 +104,7 @@ class PaymentController extends Controller {
                     ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                     ->setTo($user->getEmail())
                     ->setBody($body, 'text/html')
-                    ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile)));
+                    ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile), $outputFile));
 
                 $this->get('mailer')->send($message);
 
