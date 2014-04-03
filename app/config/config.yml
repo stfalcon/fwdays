@@ -134,7 +134,7 @@ services:
          class: Monolog\Handler\GelfHandler
          arguments: [@gelf.publisher]
      monolog.processor.added_host:
-             class: Monolog\Processor\WebProcessor
+             class: Application\Bundle\DefaultBundle\Processor\HttpHostProcessor
              tags:
                  - { name: monolog.processor, method: __invoke }
 
