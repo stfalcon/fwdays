@@ -23,7 +23,10 @@ class EventAdmin extends Admin
             ->add('name')
             ->add('active')
             ->add('receivePayments')
-            ->add('cost');
+            ->add('cost')
+            ->add('images', 'string', array(
+                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
+                ));
     }
 
     /**

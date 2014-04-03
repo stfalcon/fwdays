@@ -15,7 +15,7 @@ class Version20140225175044 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events DROP slider_background, CHANGE background_image background_image VARCHAR(255) DEFAULT NULL, CHANGE email_background email_background VARCHAR(255) DEFAULT NULL");
+        $this->addSql("ALTER TABLE event__events CHANGE background_image background_image VARCHAR(255) DEFAULT NULL, CHANGE email_background email_background VARCHAR(255) DEFAULT NULL");
     }
 
     public function down(Schema $schema)
@@ -23,6 +23,6 @@ class Version20140225175044 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
         
-        $this->addSql("ALTER TABLE event__events ADD slider_background VARCHAR(255) NOT NULL, CHANGE email_background email_background VARCHAR(255) NOT NULL, CHANGE background_image background_image VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE event__events CHANGE email_background email_background VARCHAR(255) NOT NULL, CHANGE background_image background_image VARCHAR(255) NOT NULL");
     }
 }

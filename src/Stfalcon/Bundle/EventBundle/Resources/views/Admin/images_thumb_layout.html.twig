@@ -1,0 +1,31 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+    <table width="350" cellspacing="0">
+        <tr>
+            <td>Logo</td>
+            <td>Email Baground</td>
+            <td>Pdf Background</td>
+        </tr>
+        <tr>
+            <td>
+                {% if (object.logo != '') %}
+                    <img src="{{ asset('uploads/events/' ~ object.logo) }}" title="Image" width="100px" height="auto" />
+                {% endif %}
+            </td>
+            <td>
+                {% if (object.emailBackground != '') %}
+                    <img src="{{ asset('uploads/events/' ~ object.emailBackground) }}" title="Image" width="100px" height="auto" />
+                {% endif %}
+            </td>
+            <td>
+                {% if (object.backgroundImage != '') %}
+                    <img src="{{ asset('uploads/events/' ~ object.backgroundImage) }}" title="Image" width="100px" height="auto" />
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+
+
+{% endblock %}
