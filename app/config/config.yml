@@ -4,6 +4,7 @@ imports:
 
 parameters:
     graylog.fromname: "http://frameworksdays.com"
+
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
