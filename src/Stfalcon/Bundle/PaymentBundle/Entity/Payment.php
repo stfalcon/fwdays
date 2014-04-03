@@ -233,6 +233,7 @@ class Payment
      *
      * @param string $status
      */
+    // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
     public function setStatus($status)
     {
         $this->status = $status;
@@ -289,6 +290,11 @@ class Payment
         return ($this->getStatus() == self::STATUS_PAID);
     }
 
+    public function isPending()
+    {
+        return ($this->getStatus() == self::STATUS_PENDING);
+    }
+
     public function getGate()
     {
         return $this->gate;
@@ -308,4 +314,10 @@ class Payment
     {
         return (string) $this->getStatus() ?: '-';
     }
+
+    public function markedAsPaid()
+    {
+        $this->setStatus(self::STATUS_PAID);
+    }
+
 }

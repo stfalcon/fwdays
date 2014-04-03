@@ -49,6 +49,8 @@
         <parameter key="stfalcon_event.pdf_generator.helper.class">Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper</parameter>
 
         <parameter key="stfalcon_event.promo_code.form.type.class">Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType</parameter>
+
+        <parameter key="stfalcon_event.interkassa.service.class">Stfalcon\Bundle\EventBundle\Service\InterkassaService</parameter>
     </parameters>
 
     <services>
@@ -155,6 +157,10 @@
 
         <service id="stfalcon_event.ticket.form.type" class="Stfalcon\Bundle\EventBundle\Form\Type\TicketFormType">
             <tag name="form.type" alias="stfalcon_event_ticket" />
+        </service>
+
+        <service id="stfalcon_event.interkassa.service" class="%stfalcon_event.interkassa.service.class%">
+            <argument type="service" id="service_container"/>
         </service>
     </services>
 

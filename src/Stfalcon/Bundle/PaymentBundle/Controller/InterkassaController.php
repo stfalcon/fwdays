@@ -153,6 +153,7 @@ class InterkassaController extends Controller
 
                 $twig = $this->get('twig');
 
+                // @todo ачуметь.. екшн в одному бандлі. вьюшка в іншому
                 $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
                     ->render(array(
                             'event_slug' => $event->getSlug()
