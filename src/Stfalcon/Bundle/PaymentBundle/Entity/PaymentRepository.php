@@ -24,18 +24,15 @@ class PaymentRepository extends EntityRepository
      */
     public function findPaidPaymentsForUser(User $user)
     {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT p
-                FROM StfalconPaymentBundle:Payment p
-                WHERE p.status = :status
-                    AND p.user = :user
-            ')
-            ->setParameters(array(
-                 'status' => Payment::STATUS_PAID,
-                 'user'   => $user
-            ))
-            ->getResult();
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->leftJoin('p.tickets', 't')
+            ->andWhere('t.user = :user')
+            ->andWhere('p.status = :status')
+            ->setParameter('user', $user)
+            ->setParameter('status', Payment::STATUS_PAID)
+            ->getQuery();
+
+        return $query->getResult();
     }
 
     /**
