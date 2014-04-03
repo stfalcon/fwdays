@@ -15,7 +15,7 @@ use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Stfalcon\Bundle\PaymentBundle\Service\InterkassaService;
+use Stfalcon\Bundle\EventBundle\Service\InterkassaService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
