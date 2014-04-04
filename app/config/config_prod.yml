@@ -23,7 +23,7 @@ monolog:
         gelf:
            type: service
            id: monolog.gelf_handler
-           level: debug
+           level: error
 
 parameters:
      graylog.hostname: 10.0.0.1
