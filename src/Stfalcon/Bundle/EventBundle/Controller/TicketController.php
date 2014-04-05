@@ -360,7 +360,6 @@ class TicketController extends BaseController
      *
      * @return Response
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_check")
      */
     public function checkAction(Ticket $ticket, $hash)
@@ -370,6 +369,10 @@ class TicketController extends BaseController
         if ($ticket->getHash() != $hash) {
             // не совпадает хеш билета и хеш в урле
             return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
+        }
+
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
         }
 
         // проверяем существует ли оплата
