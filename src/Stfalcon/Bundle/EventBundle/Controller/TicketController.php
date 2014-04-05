@@ -500,11 +500,11 @@ class TicketController extends BaseController
             // если цена билета без скидки не ровна новой цене на ивент
             // или неверно указан флаг наличия скидки
             if ($ticket->getAmountWithoutDiscount() != $newPrice ||
-                ($ticket->getHasDiscount() != (count($paidPayments) > 0))
+                ($ticket->getHasDiscount() != ((count($paidPayments) > 0) || $ticket->hasPromoCode()))
             ) {
-                // если не правильна установлен флаг налиция скидки, тогда устанавливаем его заново
-                if ($ticket->getHasDiscount() != (count($paidPayments) > 0)) {
-                    $ticket->setHasDiscount(count($paidPayments) > 0);
+                // если не правильно установлен флаг наличия скидки, тогда устанавливаем его заново
+                if ($ticket->getHasDiscount() != ((count($paidPayments) > 0) || $ticket->hasPromoCode())) {
+                    $ticket->setHasDiscount(((count($paidPayments) > 0) || $ticket->hasPromoCode()));
                 }
                 $ticket->setAmountWithoutDiscount($newPrice);
                 if ($ticket->getHasDiscount()) {
