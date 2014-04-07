@@ -3,18 +3,18 @@
 {% block field%}
     <div class="pull-left" style="padding-right: 10px">
         <span>Logo</span><br />
-        <img src="{{ asset('uploads/events/' ~ object.logo) }}" title="Image" width="100px" height="auto" />
+        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto" />
     </div>
     <div class="pull-left" style="padding-right: 10px">
         <span>Email Baground</span><br />
-        {% if (object.emailBackground != '') %}
-            <img src="{{ asset('uploads/events/' ~ object.emailBackground) }}" title="Image" width="100px" height="auto" />
+        {% if object.emailBackground is defined and object.emailBackground is not empty %}
+            <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'emailBackgroundFile') }}" title="email background image" width="100px" height="auto" />
         {% endif %}
     </div>
     <div class="pull-left">
         <span>Pdf Background</span><br />
-        {% if (object.backgroundImage != '') %}
-            <img src="{{ asset('uploads/events/' ~ object.backgroundImage) }}" title="Image" width="100px" height="auto" />
+        {% if object.pdfBackgroundImage is defined and object.pdfBackgroundImage is not empty %}
+            <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'pdfBackgroundFile') }}" title="PDF background image" width="100px" height="auto" />
         {% endif %}
     </div>
 {% endblock %}

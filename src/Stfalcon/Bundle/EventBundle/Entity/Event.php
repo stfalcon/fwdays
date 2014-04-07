@@ -95,13 +95,13 @@ class Event
     protected $emailBackground;
 
     /**
-     * Фон для PDF билетов @todo обозвать по человечески переменную
+     * Фон для PDF билетов
      *
-     * @var string $backgroundImage
+     * @var string $pdfBackgroundImage
      *
      * @ORM\Column(name="background_image", type="string", nullable=true)
      */
-    protected $backgroundImage;
+    protected $pdfBackgroundImage;
 
     /**
      * @var boolean $active
@@ -159,9 +159,9 @@ class Event
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="backgroundImage")
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="pdfBackgroundImage")
      */
-    protected $bgFile;
+    protected $pdfBackgroundFile;
 
     /**
      * Constructor
@@ -169,7 +169,7 @@ class Event
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
-        $this->backgroundImage = '';
+        $this->pdfBackgroundImage = '';
         $this->emailBackground = '';
     }
 
@@ -390,13 +390,13 @@ class Event
     }
 
     /**
-     * Get path to backgroundImage
+     * Get path to pdfBackgroundImage
      *
      * @return string
      */
-    public function getBackgroundImage()
+    public function getPdfBackgroundImage()
     {
-        return $this->backgroundImage;
+        return $this->pdfBackgroundImage;
     }
 
     /**
@@ -460,23 +460,23 @@ class Event
     }
 
     /**
-     * Set bgFile (used in tickets PDF)
+     * Set pdfBackgroundFile (used in tickets PDF)
      *
-     * @param UploadedFile|null $bgFile
+     * @param UploadedFile|null $pdfBackgroundFile
      */
-    public function setBgFile($bgFile)
+    public function setPdfBackgroundFile($pdfBackgroundFile)
     {
-        $this->bgFile = $bgFile;
+        $this->pdfBackgroundFile = $pdfBackgroundFile;
     }
 
     /**
-     * Get bgFile
+     * Get pdfBackgroundFile
      *
      * @return UploadedFile
      */
-    public function getBgFile()
+    public function getPdfBackgroundFile()
     {
-        return $this->bgFile;
+        return $this->pdfBackgroundFile;
     }
 
     /**

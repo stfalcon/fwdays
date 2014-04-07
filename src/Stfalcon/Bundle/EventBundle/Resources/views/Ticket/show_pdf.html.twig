@@ -149,8 +149,10 @@
 
     <body>
         <div class="left-element">
-            {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
-                <img src="{{ path ~ vich_uploader_asset(event, 'bgFile') }}" width="199" height="156" />
+            {% if event.pdfBackgroundImage is defined and event.pdfBackgroundImage is not empty %}
+                <img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />
+            {% else %}
+                <img src="{{ url('homepage') ~ 'images/left-element.png' }}" width="199" height="156"  alt=""/>
             {% endif %}
         </div>
         <div class="logo">
