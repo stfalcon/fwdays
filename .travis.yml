@@ -10,7 +10,8 @@ before_script:
   - sudo /etc/init.d/apache2 restart
   - sudo sed -i -e "/DocumentRoot/i\ServerName fwdays.work" /etc/apache2/sites-available/default
   - echo "127.0.0.1 fwdays.work" | sudo tee -a /etc/hosts
-  - sed -i s/app\.php/app_test\.php/ web/.htaccess
+  - sed -i s/app/app_test/ web/.htaccess
+  - sudo a2enmod rewrite
   - sudo /etc/init.d/apache2 restart
   - curl -s http://getcomposer.org/installer | php
   - composer install --dev --prefer-dist
