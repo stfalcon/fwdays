@@ -89,6 +89,8 @@ class TicketController extends BaseController
         // https://github.com/stfalcon/fwdays/blob/7f1be58c4c7d33d8fe6dd4765a35a0733a55dd5a/src/Stfalcon/Bundle/EventBundle/Controller/TicketController.php#L85
 
         $event = $this->getEventBySlug($event_slug);
+        $paymentsConfig = $this->container->getParameter('stfalcon_payment.config');
+        $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         if (!$event->getReceivePayments()) {
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
@@ -122,14 +124,18 @@ class TicketController extends BaseController
             $code = $promoCodeForm->get('code')->getData();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')->findActivePromoCodeByCodeAndEvent($code, $event);
             if ($promoCode) {
-                $payment->addPromoCodeForTickets($promoCode);
+                $notUsedPromoCode = $payment->addPromoCodeForTickets($promoCode, $discountAmount);
                 $em->flush();
+                if (!empty($notUsedPromoCode)) {
+                    $this->get('session')->getFlashBag()->add('not_used_promocode', implode(', ', $notUsedPromoCode));
+                }
             } else {
                 $promoCodeForm->get('code')->addError(new FormError('Такой промокод не найден'));
             }
         }
 
         $ticketForm = $this->createForm('stfalcon_event_ticket');
+
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
@@ -139,7 +145,8 @@ class TicketController extends BaseController
                 'payment' => $payment,
                 'promoCodeFormView' => $promoCodeForm->createView(),
                 'promoCode' => $promoCode,
-                'ticketFormView' => $ticketForm->createView()
+                'ticketFormView' => $ticketForm->createView(),
+                'discountAmount' => $discountAmount
             )
         );
     }
@@ -353,7 +360,6 @@ class TicketController extends BaseController
      *
      * @return Response
      *
-     * @Secure(roles="ROLE_ADMIN")
      * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_check")
      */
     public function checkAction(Ticket $ticket, $hash)
@@ -363,6 +369,10 @@ class TicketController extends BaseController
         if ($ticket->getHash() != $hash) {
             // не совпадает хеш билета и хеш в урле
             return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
+        }
+
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
         }
 
         // проверяем существует ли оплата
@@ -487,7 +497,18 @@ class TicketController extends BaseController
         $discount = (float) $paymentsConfig['discount'];
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            if ($ticket->getAmountWithoutDiscount() != $newPrice) {
+            // получаем оплаченые платежи пользователя
+            $paidPayments = $em->getRepository('StfalconPaymentBundle:Payment')
+                ->findPaidPaymentsForUser($ticket->getUser());
+            // если цена билета без скидки не ровна новой цене на ивент
+            // или неверно указан флаг наличия скидки
+            if ($ticket->getAmountWithoutDiscount() != $newPrice ||
+                ($ticket->getHasDiscount() != ((count($paidPayments) > 0) || $ticket->hasPromoCode()))
+            ) {
+                // если не правильно установлен флаг наличия скидки, тогда устанавливаем его заново
+                if ($ticket->getHasDiscount() != ((count($paidPayments) > 0) || $ticket->hasPromoCode())) {
+                    $ticket->setHasDiscount(((count($paidPayments) > 0) || $ticket->hasPromoCode()));
+                }
                 $ticket->setAmountWithoutDiscount($newPrice);
                 if ($ticket->getHasDiscount()) {
                     if ($promoCode = $ticket->getPromoCode()) {

@@ -3,7 +3,14 @@
         {{ ticket.user.fullname }} —
         {% if ticket.hasDiscount %}
             <span class="old-price">{{ ticket.amountWithoutDiscount }} грн</span>
-        {% endif %} {{ ticket.amount }} грн.
+        {% endif %} {{ ticket.amount }} грн.&nbsp;
+        {% if ticket.hasDiscount %}
+            {% if ticket.hasPromoCode %}
+                (скидка {{ ticket.getPromoCode.discountAmount }}% по купону)
+            {% else %}
+                (скидка {{ discountAmount }}% для постоянного участника)
+            {% endif %}
+        {% endif %}
         {% if ticket.user != app.user %}
             <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}"
                class="remove-participant" title="Удалить">Удалить</a>

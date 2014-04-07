@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\PaymentBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * PaymentsRepository
@@ -23,17 +24,33 @@ class PaymentRepository extends EntityRepository
      */
     public function findPaidPaymentsForUser(User $user)
     {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT p
-                FROM StfalconPaymentBundle:Payment p
-                WHERE p.status = :status
-                    AND p.user = :user
-            ')
-            ->setParameters(array(
-                 'status' => Payment::STATUS_PAID,
-                 'user'   => $user
-            ))
-            ->getResult();
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->leftJoin('p.tickets', 't')
+            ->andWhere('t.user = :user')
+            ->andWhere('p.status = :status')
+            ->setParameter('user', $user)
+            ->setParameter('status', Payment::STATUS_PAID)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return Payment|null
+     */
+    public function findPaymentByUserAndEvent(User $user, Event $event)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->leftJoin('p.tickets', 't')
+            ->where('t.event = :event')
+            ->andWhere('p.user = :user')
+            ->setParameter('user', $user)
+            ->setParameter('event', $event)
+            ->getQuery();
+
+        return $query->getOneOrNullResult();
     }
 }

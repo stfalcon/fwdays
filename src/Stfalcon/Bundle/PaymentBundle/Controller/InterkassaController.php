@@ -32,13 +32,14 @@ class InterkassaController extends Controller
      * @param FormView  $promoCodeFormView Promo code form view
      * @param PromoCode $promoCode         Promo code
      * @param FormView  $ticketFormView    Ticket form view
+     * @param int       $discountAmount    Discount amount
      *
      * @return array
      *
      * @Template()
      * @Secure(roles="ROLE_USER")
      */
-    public function payAction($event, $user, $payment, $promoCodeFormView, $promoCode, $ticketFormView)
+    public function payAction($event, $user, $payment, $promoCodeFormView, $promoCode, $ticketFormView, $discountAmount)
     {
         $config = $this->container->getParameter('stfalcon_payment.config');
 
@@ -61,12 +62,13 @@ class InterkassaController extends Controller
         );
 
         return array(
-            'data'          => $data,
-            'event'         => $event,
-            'payment'       => $payment,
-            'promoCodeForm' => $promoCodeFormView,
-            'promoCode'     => $promoCode,
-            'ticketForm'    => $ticketFormView
+            'data'           => $data,
+            'event'          => $event,
+            'payment'        => $payment,
+            'promoCodeForm'  => $promoCodeFormView,
+            'promoCode'      => $promoCode,
+            'ticketForm'     => $ticketFormView,
+            'discountAmount' => $discountAmount
         );
     }
 
