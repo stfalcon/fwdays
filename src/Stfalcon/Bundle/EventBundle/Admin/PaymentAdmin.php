@@ -1,5 +1,5 @@
 <?php
-namespace Stfalcon\Bundle\PaymentBundle\Admin;
+namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\Admin;
@@ -10,7 +10,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Knp\Bundle\MenuBundle\MenuItem;
 
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Class PaymentAdmin

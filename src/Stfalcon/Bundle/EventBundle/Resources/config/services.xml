@@ -9,7 +9,6 @@
         <parameter key="stfalcon_event.admin.event.entity">Stfalcon\Bundle\EventBundle\Entity\Event</parameter>
         <parameter key="stfalcon_event.admin.event.controller">SonataAdminBundle:CRUD</parameter>
 
-
         <parameter key="stfalcon_event.admin.speaker.class">Stfalcon\Bundle\EventBundle\Admin\SpeakerAdmin</parameter>
         <parameter key="stfalcon_event.admin.speaker.entity">Stfalcon\Bundle\EventBundle\Entity\Speaker</parameter>
         <parameter key="stfalcon_event.admin.speaker.controller">SonataAdminBundle:CRUD</parameter>
@@ -42,6 +41,10 @@
         <parameter key="stfalcon_event.admin.promo_code.entity">Stfalcon\Bundle\EventBundle\Entity\PromoCode</parameter>
         <parameter key="stfalcon_event.admin.promo_code.controller">SonataAdminBundle:CRUD</parameter>
 
+        <parameter key="stfalcon_event.admin.payment.class">Stfalcon\Bundle\EventBundle\Admin\PaymentAdmin</parameter>
+        <parameter key="stfalcon_event.admin.payment.entity">Stfalcon\Bundle\EventBundle\Entity\Payment</parameter>
+        <parameter key="stfalcon_event.admin.payment.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
 
         <parameter key="stfalcon_event.mailer_helper.class">Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper</parameter>
@@ -51,6 +54,8 @@
         <parameter key="stfalcon_event.promo_code.form.type.class">Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType</parameter>
 
         <parameter key="stfalcon_event.interkassa.service.class">Stfalcon\Bundle\EventBundle\Service\InterkassaService</parameter>
+        
+        <parameter key="stfalcon_event.ticket.service.class">Stfalcon\Bundle\EventBundle\Service\TicketService</parameter>
     </parameters>
 
     <services>
@@ -76,6 +81,20 @@
             <argument>%stfalcon_event.admin.event.entity%</argument>
             <argument>%stfalcon_event.admin.event.controller%</argument>
         </service>
+        
+        <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Доклады"/>
+            <argument />
+            <argument>%stfalcon_event.admin.reviews.entity%</argument>
+            <argument>%stfalcon_event.admin.reviews.controller%</argument>
+        </service>
+
+        <service id="stfalcon_event.admin.speaker" class="%stfalcon_event.admin.speaker.class%">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Докладчики"/>
+            <argument />
+            <argument>%stfalcon_event.admin.speaker.entity%</argument>
+            <argument>%stfalcon_event.admin.speaker.controller%</argument>
+        </service>
 
         <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>
@@ -91,22 +110,9 @@
             <argument>%stfalcon_event.admin.page.controller%</argument>
         </service>
 
-        <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Доклады"/>
-            <argument />
-            <argument>%stfalcon_event.admin.reviews.entity%</argument>
-            <argument>%stfalcon_event.admin.reviews.controller%</argument>
-        </service>
-
-        <service id="stfalcon_event.admin.speaker" class="%stfalcon_event.admin.speaker.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Докладчики"/>
-            <argument />
-            <argument>%stfalcon_event.admin.speaker.entity%</argument>
-            <argument>%stfalcon_event.admin.speaker.controller%</argument>
-        </service>
 
         <service id="stfalcon_event.admin.mails" class="%stfalcon_event.admin.mails.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Почтовые рассылки"/>
+            <tag name="sonata.admin" manager_type="orm" group="Рассылки" label="Рассылки"/>
             <argument />
             <argument>%stfalcon_event.admin.mails.entity%</argument>
             <argument>%stfalcon_event.admin.mails.controller%</argument>
@@ -115,27 +121,34 @@
             </call>
         </service>
 
-        <service id="stfalcon_event.admin.tickets" class="%stfalcon_event.admin.tickets.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Билеты"/>
-            <argument />
-            <argument>%stfalcon_event.admin.tickets.entity%</argument>
-            <argument>%stfalcon_event.admin.tickets.controller%</argument>
-        </service>
-
         <service id="stfalcon_event.admin.mail_queue" class="%stfalcon_event.admin.mail_queue.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Очередь рассылки" label="Очередь"/>
+            <tag name="sonata.admin" manager_type="orm" group="Рассылки" label="Очередь" />
             <argument />
             <argument>%stfalcon_event.admin.mail_queue.entity%</argument>
             <argument>%stfalcon_event.admin.mail_queue.controller%</argument>
         </service>
 
+        <service id="stfalcon_event.admin.tickets" class="%stfalcon_event.admin.tickets.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Билеты" label="Билеты"/>
+            <argument />
+            <argument>%stfalcon_event.admin.tickets.entity%</argument>
+            <argument>%stfalcon_event.admin.tickets.controller%</argument>
+        </service>
+        
+        <service id="stfalcon_event.admin.payment" class="%stfalcon_event.admin.payment.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Билеты" label="Платежи"/>
+            <argument />
+            <argument>%stfalcon_event.admin.payment.entity%</argument>
+            <argument>%stfalcon_event.admin.payment.controller%</argument>
+        </service>       
+
         <service id="stfalcon_event.admin.promo_code" class="%stfalcon_event.admin.promo_code.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Промо коды"/>
+            <tag name="sonata.admin" manager_type="orm" group="Билеты" label="Промо коды"/>
             <argument />
             <argument>%stfalcon_event.admin.promo_code.entity%</argument>
             <argument>%stfalcon_event.admin.promo_code.controller%</argument>
         </service>
-
+        
         <service id="stfalcon_event.qr_code" class="%stfalcon_event.qr_code.class%">
         </service>
 
@@ -160,6 +173,10 @@
         </service>
 
         <service id="stfalcon_event.interkassa.service" class="%stfalcon_event.interkassa.service.class%">
+            <argument type="service" id="service_container"/>
+        </service>
+        
+        <service id="stfalcon_event.ticket.service" class="%stfalcon_event.ticket.service.class%">
             <argument type="service" id="service_container"/>
         </service>
     </services>

@@ -1,13 +1,13 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM;
+namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * LoadPaymentData Class

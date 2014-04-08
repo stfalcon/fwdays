@@ -66,7 +66,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPromoCodeData',
-                'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
@@ -153,7 +153,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
         $ticket->setPayment($payment);
 
@@ -172,7 +172,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
         $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
         $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('StfalconPaymentBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
         $ticket->setPayment($payment);
 
@@ -201,7 +201,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function goToTicketRegistrationPage($mail, $eventSlug)
     {
-        $this->visit($this->getTicketUrl($mail, $eventSlug));
+        $this->visit($this->getTicketRegistrationUrl($mail, $eventSlug));
     }
 
     /**
@@ -212,18 +212,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function goToTicketRegistrationPageWithWrongHash($mail, $eventSlug)
     {
-        $this->visit($this->getTicketUrl($mail, $eventSlug) . 'fffuu');
+        $this->visit($this->getTicketRegistrationUrl($mail, $eventSlug) . 'fffuu');
     }
 
     /**
-     * Generate URL for register ticket
+     * Generate URL for check ticket
      *
      * @param string $mail      E-mail Ticket owner
      * @param string $eventSlug Event slug
      *
      * @return string
      */
-    public function getTicketUrl($mail, $eventSlug)
+    public function getTicketRegistrationUrl($mail, $eventSlug)
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
@@ -233,7 +233,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
 
-        return $this->kernel->getContainer()->get('router')->generate('event_ticket_check',
+        return $this->kernel->getContainer()->get('router')->generate('event_ticket_registration',
             array(
                 'ticket' => $ticket->getId(),
                 'hash'   => $ticket->getHash()

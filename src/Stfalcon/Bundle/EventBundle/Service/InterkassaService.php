@@ -2,10 +2,9 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Validator\File\Md5;
 
 /**
  * Class InterkassaService
@@ -39,7 +38,7 @@ class InterkassaService
         // сортируем по ключам в алфавитном порядке элементы массива
         ksort($params, SORT_STRING);
 
-        $config = $this->container->getParameter('stfalcon_payment.config');
+        $config = $this->container->getParameter('stfalcon_event.config');
         // добавляем в конец массива "секретный ключ"
         array_push($params, $config['interkassa']['secret']);
 
@@ -68,7 +67,7 @@ class InterkassaService
      */
     public function checkPayment(Payment $payment, Request $request)
     {
-        $config = $this->container->getParameter('stfalcon_payment.config');
+        $config = $this->container->getParameter('stfalcon_event.config');
 
         if ($request->get('ik_co_id') == $config['interkassa']['shop_id'] &&
             $request->get('ik_am') == $payment->getAmount() &&

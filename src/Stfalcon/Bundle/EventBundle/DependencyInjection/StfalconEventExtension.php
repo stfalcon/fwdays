@@ -22,7 +22,10 @@ class StfalconEventExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('stfalcon_event.config', $config);
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        // @todo винести адмінку в окремий конфіг
         $loader->load('services.xml');
     }
 }

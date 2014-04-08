@@ -101,7 +101,7 @@ fos_user:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
 
-stfalcon_payment:
+stfalcon_event:
     interkassa:
         shop_id: "533958fbbf4efc736a13bea5"
         secret: %interkassa_secret%
@@ -112,23 +112,27 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts:   [admin]
-
-        #sonata.admin_doctrine_orm.block.audit:
-        #    contexts:   [admin]
-
         sonata.block.service.text:
         sonata.block.service.action:
         sonata.block.service.rss:
 
-        # Some specific block from the SonataMediaBundle
-        #sonata.media.block.media:
-        #sonata.media.block.gallery:
-        #sonata.media.block.feature_media:
-
 sonata_admin:
     templates:
         layout: "::admin.html.twig"
-
+    dashboard:
+        blocks:
+            # display two dashboard blocks
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: ["Пользователи", "События", "Билеты"]
+            -
+                position: right
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: ["Новости", "Страницы", "Рассылки"]
+                    
 services:
      gelf.publisher:
          class: Application\Bundle\DefaultBundle\Publisher\MessagePublisher

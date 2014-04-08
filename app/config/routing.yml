@@ -1,8 +1,3 @@
-StfalconPaymentBundle:
-    resource: "@StfalconPaymentBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 StfalconEventBundle:
     resource: "@StfalconEventBundle/Controller/"
     type:     annotation

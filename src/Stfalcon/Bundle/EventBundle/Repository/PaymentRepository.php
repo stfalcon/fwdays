@@ -1,11 +1,12 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentBundle\Entity;
+namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * PaymentsRepository

@@ -4,7 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Application\Bundle\UserBundle\Entity\User;
 
 /**
@@ -31,6 +31,7 @@ class Ticket
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
+    //@todo переименовать в price
     private $amount;
 
     /**
@@ -69,9 +70,9 @@ class Ticket
     private $user;
 
     /**
-     * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
+     * @var Stfalcon\Bundle\EventBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $payment;
@@ -134,13 +135,21 @@ class Ticket
     }
 
     /**
+     * @return bool
+     */
+    public function hasPayment()
+    {
+        return (bool) $this->getPayment();
+    }
+
+    /**
      * @return Payment
      */
     public function getPayment()
     {
         return $this->payment;
     }
-
+    
     /**
      * @param Payment $payment
      *
@@ -195,7 +204,7 @@ class Ticket
      */
     public function isPaid()
     {
-        return (bool) ($this->getPayment() != null && $this->getPayment()->isPaid());
+        return (bool) ($this->hasPayment() && $this->getPayment()->isPaid());
     }
 
     /**
@@ -235,7 +244,12 @@ class Ticket
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        // мы можем устанавливать/обновлять стоимость только для билетов 
+        // с неоплаченными платежами
+//        if ($this->hasPayment() && $this->getPayment()->isPending()) {
+            $this->amount = $amount;
+//            $this->getPayment()->recalculateAmount();
+//        }
     }
 
     /**
@@ -303,5 +317,13 @@ class Ticket
     public function getHasDiscount()
     {
         return $this->hasDiscount;
+    }
+    
+    /**
+     * @return string
+     */
+    public function generatePdfFilename()
+    {
+        return 'ticket-' . $ticket->getEvent()->getSlug() . '.pdf';
     }
 }

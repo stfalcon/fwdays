@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Event controller
@@ -54,5 +54,26 @@ class EventController extends BaseController
         $event = $this->getEventBySlug($event_slug);
 
         return array('event' => $event);
+    }
+    
+    /**
+     * Show only active events for current user
+     *
+     * @return array
+     *
+     * @Secure(roles="ROLE_USER")
+     * @Route("/events/my", name="events_my")
+     * @Template()
+     */
+    public function myAction()
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket');
+        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
+
+        return array('tickets' => $tickets);
     }
 }
