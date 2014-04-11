@@ -1,0 +1,12 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <h1>Страница не найдена</h1>
+    <h4 style="color:#ffb018; margin-bottom:10px">Ошибка {{ status_code }}</h4>
+    <div class="error-msg-block"><p>Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.</p></div>
+    <h4 style="font-weight:normal">Вы можете:</h4>
+    <ul>
+        <li><a href="{{ path('homepage') }}">Вернуться на главную</a></li>
+        <li>Перейти в любой раздел сайта через верхнее меню</li>
+    </ul>
+{% endblock %}
