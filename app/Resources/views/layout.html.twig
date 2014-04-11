@@ -31,7 +31,7 @@
                     {{ knp_menu_render('main', {'class': 'nav'}) }}
 
                     <div class="user-nav">
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                             <div class="user-menu">
                                 <a class="username" href="# "><span>{{ app.user.username }}</span></a>
                                 <ul class="user-menu-dropdown">
