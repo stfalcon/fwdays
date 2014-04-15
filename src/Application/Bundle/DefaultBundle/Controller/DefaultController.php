@@ -116,22 +116,22 @@ class DefaultController extends Controller {
                     $ticket->setHasDiscount($data['discount']);
                     $ticket->setAmountWithoutDiscount($_POST['amount']);
 
-                    $payment = $ticket->getPayment();
+                    $oldPayment = $ticket->getPayment();
 
-                    if ($payment) {
-                        echo "<b>платеж уже создан!</b><br>";
-                    } else {
-                        echo "создаем новый платеж<br>";
-                        $payment = new Payment();
-                        $payment->setUser($user);
+                    if ($oldPayment) {
+                        $oldPayment->removeTicket($ticket);
+                        $em->persist($oldPayment);
                     }
+                    echo "создаем новый платеж<br>";
+                    $payment = new Payment();
+                    $payment->setUser($user);
+                    $payment->addTicket($ticket);
+
 
                     // обновляем шлюз и статус платежа
                     $payment->setGate('admin');
                     $payment->setStatus('paid');
                     $em->persist($payment);
-
-                    $ticket->setPayment($payment);
                     $em->persist($ticket);
 
                     // сохраняем все изменения

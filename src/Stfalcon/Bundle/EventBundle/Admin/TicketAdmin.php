@@ -3,13 +3,18 @@
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class TicketAdmin extends Admin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -27,8 +32,24 @@ class TicketAdmin extends Admin
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')
-            ->add('used')
-        ;
+            ->add('used');
+    }
+    protected function configureShowFields(ShowMapper $filter)
+    {
+        $filter->add('id')
+        ->add('event')
+        ->add('user.fullname', null, array('label' => 'Fullname'))
+        ->add('amount', 'money', array(
+                'currency' => 'UAH'
+            ))
+        ->add('amountWithoutDiscount', 'money', array(
+                'currency' => 'UAH'
+            ))
+        ->add('promoCode')
+        ->add('payment')
+        ->add('createdAt')
+        ->add('updatedAt')
+        ->add('used');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

@@ -106,8 +106,8 @@ class TicketController extends BaseController
         if (!$payment = $ticket->getPayment()) {
             $payment = new Payment();
             $payment->setUser($user);
+            $payment->addTicket($ticket);
             $em->persist($payment);
-            $ticket->setPayment($payment);
             $em->persist($ticket);
             $em->flush();
         }
@@ -225,7 +225,7 @@ class TicketController extends BaseController
                         $ticket->setPromoCode($promoCode);
                     }
                 }
-                $ticket->setPayment($payment);
+                $payment->addTicket($ticket);
             } else {
                 $alreadyPaidTickets[] = $user->getFullname();
             }
