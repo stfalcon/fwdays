@@ -18,27 +18,19 @@ class ReviewRepository extends EntityRepository
      * Find reviews of speaker for event
      *
      * @param Speaker $speaker
-     * @param Event $event
+     * @param Event   $event
      *
      * @return array
      */
     public function findReviewsOfSpeakerForEvent(Speaker $speaker, Event $event)
     {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT r
-                FROM StfalconEventBundle:Review r
-                JOIN r.speakers s
-                WHERE
-                    s.id = :speakerId
-                    AND r.event = :eventId
-            ')
-            ->setParameters(
-                array(
-                     'speakerId' => $speaker->getId(),
-                     'eventId' => $event->getId()
-                )
-            )
-            ->getArrayResult();
+        return $this->createQueryBuilder('r')
+            ->join('r.speakers', 's')
+            ->where('s.id = :speaker')
+            ->andWhere('r.event = :event')
+            ->setParameter('speaker', $speaker)
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->execute();
     }
 }

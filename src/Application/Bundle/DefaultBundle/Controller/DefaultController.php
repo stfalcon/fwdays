@@ -58,7 +58,6 @@ class DefaultController extends Controller {
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $url = $this->generateUrl('fos_user_registration_confirm', array('token' => $user->getConfirmationToken()), true);
                     $text = "Приветствуем " . $user->getFullname() ."!
 
 Вы были автоматически зарегистрированы на сайте Frameworks Days.
@@ -104,37 +103,35 @@ class DefaultController extends Controller {
                     $ticket = new Ticket();
                     $ticket->setEvent($event);
                     $ticket->setUser($user);
+
                     $em->persist($ticket);
                 }
 
                 if ($ticket->isPaid()) {
                     echo "<b>он уже оплатил участие в конференции!</b><br>";
                 } else {
-                    $payment = $ticket->getPayment();
-
                     // цена участия (с учетом скидки)
                     $amount = $data['discount'] ? $_POST['amount'] * 0.8 : $_POST['amount'];
+                    $ticket->setAmount($amount);
+                    $ticket->setHasDiscount($data['discount']);
+                    $ticket->setAmountWithoutDiscount($_POST['amount']);
 
-                    if ($payment) {
-                        echo "<b>платеж уже создан!</b><br>";
-                        // обновляем цену
-                        $payment->setAmount($amount);
-                        $payment->setHasDiscount($data['discount']);
-                    } else {
-                        echo "создаем новый платеж<br>";
-                        $payment = new Payment();
-                        $payment->setUser($user);
-                        $payment->setAmount($amount);
-                        $payment->setHasDiscount($data['discount']);
+                    $oldPayment = $ticket->getPayment();
+
+                    if ($oldPayment) {
+                        $oldPayment->removeTicket($ticket);
+                        $em->persist($oldPayment);
                     }
-                    $payment->setAmountWithoutDiscount($_POST['amount']);
+                    echo "создаем новый платеж<br>";
+                    $payment = new Payment();
+                    $payment->setUser($user);
+                    $payment->addTicket($ticket);
+
 
                     // обновляем шлюз и статус платежа
                     $payment->setGate('admin');
                     $payment->setStatus('paid');
                     $em->persist($payment);
-
-                    $ticket->setPayment($payment);
                     $em->persist($ticket);
 
                     // сохраняем все изменения
