@@ -169,8 +169,7 @@ class Event
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
-        $this->pdfBackgroundImage = '';
-        $this->emailBackground = '';
+        $this->pdfBackgroundImage = 'left-element.png';
     }
 
     /**
