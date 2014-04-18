@@ -22,15 +22,8 @@
                 {{ speaker.about|raw }}
                 <div>
                     {% if speaker.reviews %}
-                        {% if is_granted('ROLE_USER') %}
-                            {% for review in speaker.reviews %}
-                                <div class="button-like">
-                                    <div class="button-like-top {{ not review.likedUsers.count?'empty' }}">{{ review.likedUsers.count?review.likedUsers.count }}</div>
-                                    <a href="{{ path('event_review_like', {'slug': review.slug }) }}" rel="nofollow">Хочу послушать</a>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        <div class="presenter-presentation {{ is_granted('ROLE_USER')?'with-likes' }}">Доклад:
+                        {% include 'StfalconEventBundle:Review:_like_button.html.twig' with {'event': event, 'speaker': speaker} %}
+                        <div class="presenter-presentation {{ is_granted('ROLE_USER') and event.active?'with-likes' }}">Доклад:
                             {% for review in speaker.reviews %}
                                 <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
                             {% endfor %}

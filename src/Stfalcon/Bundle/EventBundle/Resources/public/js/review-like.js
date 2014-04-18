@@ -4,12 +4,14 @@ $(document).ready(function (){
 
     $reviewLikeLink.on('click', function(e) {
         e.preventDefault();
-        var $reviewLikeCounter = $(this).parent().find('.button-like-top');
+        var $reviewLikeCnt = $(this).parent();
+        var $reviewLikeCounter = $reviewLikeCnt.find('.button-like-top');
         $.ajax({
             'url': $(this).attr('href'),
             async: false,
             success: function (response) {
                 var likesCount = response.likesCount;
+                $reviewLikeCnt.toggleClass('active');
                 if (likesCount > 0) {
                     if ($reviewLikeCounter.hasClass('empty')) {
                         $reviewLikeCounter.removeClass('empty');

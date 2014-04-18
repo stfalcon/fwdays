@@ -2182,7 +2182,13 @@ a.add-new-participant:hover:before {
     background:#f8f6ed url('/images/button-like.png') 0 0 no-repeat;
 }
 
-.presenter-presentation.with-likes {
+.button-like.active a {
+    background:#f8f6ed url('/images/button-like.png') 0 -50px no-repeat;
+    color:#fff;
+    text-shadow: 0 -1px 0 #908d81;
+}
+
+.presenter-presentation {
     margin-left:120px;
 }
 
@@ -2190,4 +2196,20 @@ a.add-new-participant:hover:before {
     font-size:16px;
     margin-top:5px;
     display:block;
+}
+
+.button-like:hover .button-like-top {
+    background:url('/images/icon-like.png') 27px -2px no-repeat;
+}
+
+.button-like:hover .button-like-top.empty {
+    background:url('/images/icon-like.png') 39px -2px no-repeat;
+}
+
+.button-like.active:hover .button-like-top {
+    background:url('/images/icon-like.png') 27px 2px no-repeat;
+}
+
+.button-like.active:hover .button-like-top.empty {
+    background:url('/images/icon-like.png') 39px 2px no-repeat;
 }
