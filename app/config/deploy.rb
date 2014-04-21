@@ -6,9 +6,8 @@ set :app_path,    "app"
 set :repository,  "git://github.com/stfalcon/fwdays.git"
 set :scm,         :git
 
-role :web,        domain                         # Your HTTP server, Apache/etc
-role :app,        domain                         # This may be the same as your `Web` server
-role :db,         domain, :primary => true       # This is where Rails migrations will run
+role :web,        domain
+role :app,        domain, :primary => true
 
 set :keep_releases, 3
 set :user,  "fwdays-com"

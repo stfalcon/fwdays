@@ -15,6 +15,7 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
         $datagrid
+            ->add('id')
             ->add('fullname')
             ->add('email')
             ->add('company')

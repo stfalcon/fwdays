@@ -92,7 +92,6 @@ class TicketRepository extends EntityRepository
             ->from('StfalconEventBundle:Ticket', 't')
             ->join('t.user', 'u')
             ->join('t.event', 'e')
-            ->join('t.payment', 'p')
             ->andWhere('e.active = :eventStatus')
             ->setParameter(':eventStatus', true)
             ->groupBy('u');
@@ -102,7 +101,12 @@ class TicketRepository extends EntityRepository
                 ->setParameter(':events', $events->toArray());
         }
         if ($status != null) {
-            $qb->andWhere('p.status = :status')
+            $statusOr = $qb->expr()->orX('p.status = :status');
+            if ($status == 'pending') {
+                $statusOr->add('p.status IS NULL');
+            }
+            $qb->leftJoin('t.payment', 'p')
+                ->andWhere($statusOr)
                 ->setParameter(':status', $status);
         }
 

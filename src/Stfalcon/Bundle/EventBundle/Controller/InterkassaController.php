@@ -21,7 +21,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class InterkassaController extends Controller {
 
     /**
-     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как успешный (или не отмечаем)
+     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как 
+     * успешный (или не отмечаем)
      * Также рассылаем письма и билеты всем, кто был привязан к платежу
      *
      * @Route("/payment/interaction", name="payment_interaction")
@@ -43,7 +44,7 @@ class InterkassaController extends Controller {
 
         // @var InterkassaService $interkassa
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
-        if ($payment->isPending() && 1) { //$interkassa->checkPayment($payment, $request)) {
+        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
