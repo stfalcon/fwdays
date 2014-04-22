@@ -92,7 +92,7 @@ class Event
      *
      * @ORM\Column(name="email_background", type="string", nullable=true)
      */
-    protected $emailBackground;
+    protected $emailBackground = 'bg-common.png';
 
     /**
      * Фон для PDF билетов
@@ -101,7 +101,7 @@ class Event
      *
      * @ORM\Column(name="background_image", type="string", nullable=true)
      */
-    protected $pdfBackgroundImage;
+    protected $pdfBackgroundImage = 'left-element.png';
 
     /**
      * @var boolean $active
@@ -169,7 +169,6 @@ class Event
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
-        $this->pdfBackgroundImage = 'left-element.png';
     }
 
     /**

@@ -7,14 +7,10 @@
     </div>
     <div class="pull-left" style="padding-right: 10px">
         <span>Email Baground</span><br />
-        {% if object.emailBackground is defined and object.emailBackground is not empty %}
-            <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'emailBackgroundFile') }}" title="email background image" width="100px" height="auto" />
-        {% endif %}
+        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'emailBackgroundFile') }}" title="email background image" width="100px" height="auto" />
     </div>
     <div class="pull-left">
         <span>Pdf Background</span><br />
-        {% if object.pdfBackgroundImage is defined and object.pdfBackgroundImage is not empty %}
-            <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'pdfBackgroundFile') }}" title="PDF background image" width="100px" height="auto" />
-        {% endif %}
+        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'pdfBackgroundFile') }}" title="PDF background image" width="100px" height="auto" />
     </div>
 {% endblock %}
