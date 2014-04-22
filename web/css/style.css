@@ -2138,3 +2138,15 @@ a.add-new-participant:hover:before {
     text-decoration: line-through;
     color: #727272;
 }
+
+.error-page h4 {
+    color:#ffb018;
+    margin-bottom:10px
+}
+
+.error-page strong {
+    display:block;
+    font-weight:normal;
+    font-size:17px;
+    margin:10px 0;
+}
