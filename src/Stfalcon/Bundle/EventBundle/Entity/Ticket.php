@@ -2,10 +2,10 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
-use Application\Bundle\UserBundle\Entity\User;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Ticket
@@ -71,8 +71,8 @@ class Ticket
     /**
      * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment")
-     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment", inversedBy="tickets")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;
 
@@ -142,13 +142,12 @@ class Ticket
     }
 
     /**
-     * @param Payment $payment
+     * @param Payment|null $payment
      *
      * @return void
      */
-    public function setPayment(Payment $payment)
+    public function setPayment($payment)
     {
-        $payment->addTicket($this);
         $this->payment = $payment;
     }
 
@@ -212,7 +211,8 @@ class Ticket
      *
      * @return bool
      */
-    public function isUsed(){
+    public function isUsed()
+    {
         return $this->used;
     }
 
@@ -225,9 +225,12 @@ class Ticket
         return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return (string) $this->getId();
+        return (string) $this->getId() . ' (' . $this->getUser()->getFullname() . ')';
     }
 
     /**

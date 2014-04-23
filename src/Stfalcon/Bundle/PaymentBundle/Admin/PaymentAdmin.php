@@ -2,15 +2,12 @@
 namespace Stfalcon\Bundle\PaymentBundle\Admin;
 
 use Doctrine\ORM\QueryBuilder;
+use Knp\Bundle\MenuBundle\MenuItem;
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-
-use Knp\Bundle\MenuBundle\MenuItem;
-
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
 /**
  * Class PaymentAdmin
@@ -24,8 +21,16 @@ class PaymentAdmin extends Admin
             ->add('amount')
             ->add('status')
             ->add('user')
-            ->add('tickets')
-            ->add('gate');
+            ->add('tickets', 'string', array(
+                    'route' => array(
+                        'name' => 'show'
+                    ),
+                    'template' => 'StfalconPaymentBundle:PaymentAdmin:list_tickets.html.twig'
+                )
+            )
+            ->add('gate')
+            ->add('createdAt')
+            ->add('updatedAt');
 
         return $listMapper;
     }
@@ -103,7 +108,9 @@ class PaymentAdmin extends Admin
                     )
                 ))
                 ->add('user')
-                ->add('tickets')
+                ->add('tickets', null, [
+                    'by_reference' => false
+                ])
             ->end();
     }
 
