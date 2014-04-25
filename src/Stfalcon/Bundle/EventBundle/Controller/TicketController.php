@@ -435,13 +435,13 @@ class TicketController extends BaseController
             );
 
             return array(
-                'action'    => $this->generateUrl('check'),
+                'action'    => $this->generateUrl('event_ticket_check'),
                 'ticketUrl' => $url
             );
         } else {
             return array(
                 'message' => 'Not Found',
-                'action'  => $this->generateUrl('check')
+                'action'  => $this->generateUrl('event_ticket_check')
             );
         }
     }
