@@ -14,6 +14,10 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Ticket controller
@@ -404,46 +408,54 @@ class TicketController extends BaseController
     /**
      * Check that ticket number is valid
      *
+     * @param Request $request
+     *
      * @return array
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/", name="check")
+     * @Secure(roles="ROLE_VOLUNTEER")
+     * @Route("/check/", name="check_ticket_by_number")
      * @Template()
      */
-    public function checkByNumAction()
+    public function checkByNumAction(Request $request)
     {
         // @todo це було тимчасове рішення для адміна. треба винести в адмінку
-        $ticketId = $this->getRequest()->get('id');
-
-        if (!$ticketId) {
-            return array(
-                'action' => $this->generateUrl('check')
-            );
-        }
-
-        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
-            ->findOneBy(array('id' => $ticketId));
-
-        if (is_object($ticket)) {
-            $url = $this->generateUrl(
-                'event_ticket_check',
-                array(
-                    'ticket' => $ticket->getId(),
-                    'hash'   => $ticket->getHash()
+        $url = null;
+        $form = $this->createFormBuilder()
+            ->add('id', 'number', array(
+                'constraints' => array(
+                    new NotBlank(),
+                    new Regex(array(
+                        'pattern' => '/\d+/',
+                        'message' => 'Введенное значение должно быть целым числом'
+                    ))
                 ),
-                true
-            );
-
-            return array(
-                'action'    => $this->generateUrl('check'),
-                'ticketUrl' => $url
-            );
-        } else {
-            return array(
-                'message' => 'Not Found',
-                'action'  => $this->generateUrl('check')
-            );
+                'label' => 'Номер билета'
+            ))
+            ->getForm();
+        if ($request->isMethod('post')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
+                    ->find($form->get('id')->getData());
+                if ($ticket) {
+                    $url = $this->generateUrl(
+                        'event_ticket_check',
+                        array(
+                            'ticket' => $ticket->getId(),
+                            'hash'   => $ticket->getHash()
+                        ),
+                        true
+                    );
+                } else {
+                    $form->addError(new FormError('Билет не найден'));
+                }
+            }
         }
+
+        return array(
+            'form' => $form->createView(),
+            'url' => $url
+        );
     }
 
     /**
