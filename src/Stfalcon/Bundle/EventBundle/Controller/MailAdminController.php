@@ -27,9 +27,9 @@ class MailAdminController extends CRUDController
      */
     public function userSendAction()
     {
-//        if (!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
-//            throw new NotFoundHttpException("Page not found");
-//        }
+        if (!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
+            throw new NotFoundHttpException("Page not found");
+        }
 
         $command = $this->get('user_mail_command_service');
         $output  = new ConsoleOutput();
