@@ -406,8 +406,8 @@ class TicketController extends BaseController
      *
      * @return array
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/", name="check")
+     * @Secure(roles="ROLE_VOLUNTEER")
+     * @Route("/check/", name="check_ticket_by_number")
      * @Template()
      */
     public function checkByNumAction()
@@ -417,7 +417,7 @@ class TicketController extends BaseController
 
         if (!$ticketId) {
             return array(
-                'action' => $this->generateUrl('check')
+                'action' => $this->generateUrl('check_ticket_by_number')
             );
         }
 
