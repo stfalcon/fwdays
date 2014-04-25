@@ -33,6 +33,18 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
 
+        $userVolunteer = new User();
+        $userVolunteer->setUsername('Волонтер');
+        $userVolunteer->setFullname('Volunteer Jack');
+        $userVolunteer->setEmail('volunteer@fwdays.com');
+        $userVolunteer->setPlainPassword('qwerty');
+        $userVolunteer->setRoles(array('ROLE_VOLUNTEER'));
+        $userVolunteer->setEnabled(true);
+        $userVolunteer->setExpired(false);
+        $userVolunteer->setLocked(false);
+        $manager->persist($userVolunteer);
+        $this->addReference('user-volunteer', $userVolunteer);
+
         $userDefault = new User();
         $userDefault->setUsername('Пользователь');
         $userDefault->setFullname('Michael Jordan');
