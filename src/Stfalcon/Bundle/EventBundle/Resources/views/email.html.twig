@@ -42,7 +42,9 @@
                                             {% endif %}
                                         </td>
                                         <td valign="top" align="right">
-                                            <img src="{{ url('homepage') ~ vich_uploader_asset(event, 'emailBackground') }}" alt=""/>
+                                            {% if mail.event is defined %}
+                                                <img src="{{ url('homepage') ~ vich_uploader_asset( mail.event, 'emailBackground') }}" alt=""/>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 </table>
