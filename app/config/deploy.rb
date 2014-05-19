@@ -19,5 +19,5 @@ set :use_composer,  true
 #set :update_vendors,    true
 
 set :shared_files,  ["app/config/parameters.ini"]
-set :shared_children,   [app_path + "/logs", web_path + "/uploads"]
+set :shared_children,   [app_path + "/logs", app_path + "/cache/prod/sessions", web_path + "/uploads"]
 set :dump_assetic_assets,   true
