@@ -76,6 +76,14 @@ class StfalconMailerCommand extends ContainerAwareCommand
             } catch (\Exception $e) {
                 $this->getContainer()->get('logger')->addError($e->getMessage(), array('email' => $user->getEmail()));
 
+                $mail->setTotalMessages($mail->getTotalMessages() - 1);
+                if ($mail->getSentMessages() == $mail->getTotalMessages()) {
+                    $mail->setStart(false);
+                }
+
+                $em->persist($mail);
+                $em->remove($item);
+                $em->flush();
                 continue;
             }
 
