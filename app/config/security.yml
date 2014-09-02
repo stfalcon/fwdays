@@ -23,7 +23,8 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_VOLUNTEER:   ROLE_USER
+        ROLE_ADMIN:       ROLE_VOLUNTEER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
 #    acl:

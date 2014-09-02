@@ -122,6 +122,10 @@ class TicketController extends BaseController
             return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
         }
 
+        if (!$this->get('security.context')->isGranted('ROLE_VOLUNTEER')) {
+            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
+        }
+
         // проверяем существует ли оплата
         if ($ticket->getPayment() instanceof Payment) {
             // проверяем оплачен ли билет
@@ -153,8 +157,8 @@ class TicketController extends BaseController
      *
      * @return array
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/", name="check")
+     * @Secure(roles="ROLE_VOLUNTEER")
+     * @Route("/check/", name="check_ticket_by_number")
      * @Template()
      */
     public function checkByNumAction()
@@ -164,7 +168,7 @@ class TicketController extends BaseController
 
         if (!$ticketId) {
             return array(
-                'action' => $this->generateUrl('check')
+                'action' => $this->generateUrl('check_ticket_by_number')
             );
         }
 
@@ -182,13 +186,13 @@ class TicketController extends BaseController
             );
 
             return array(
-                'action'    => $this->generateUrl('check'),
+                'action'    => $this->generateUrl('check_ticket_by_number'),
                 'ticketUrl' => $url
             );
         } else {
             return array(
                 'message' => 'Not Found',
-                'action'  => $this->generateUrl('check')
+                'action'  => $this->generateUrl('check_ticket_by_number')
             );
         }
     }

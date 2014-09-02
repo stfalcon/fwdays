@@ -30,8 +30,7 @@ class UserAdmin extends Admin
             ->addIdentifier('email')
             ->add('company')
             ->add('enabled')
-            ->add('createdAt')
-        ;
+            ->add('createdAt');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -43,15 +42,31 @@ class UserAdmin extends Admin
                 ->add('company', null, array('required' => false))
                 ->add('post', null, array('required' => false))
                 ->add('subscribe', null, array('required' => false))
-//                ->add('plainPassword', 'text')
+                ->add('plainPassword', 'text', array('required' => false))
             ->end()
             ->with('Management')
-//                ->add('locked', null, array('required' => false))
-//                ->add('expired', null, array('required' => false))
                 ->add('enabled', null, array('required' => false))
-//                ->add('credentialsExpired', null, array('required' => false))
-            ->end()
-        ;
+                ->add('roles', 'choice', array(
+                    'choices' => $this->getAvailableRoles(),
+                    'multiple' => true,
+                    'required' => false
+                ))
+            ->end();
+    }
+
+    /**
+     * @return array
+     */
+    private function getAvailableRoles()
+    {
+        $roles = array();
+        $rolesHierarhy = $this->getConfigurationPool()->getContainer()
+            ->getParameter('security.role_hierarchy.roles');
+        foreach (array_keys($rolesHierarhy) as $role) {
+            $roles[$role] = $role;
+        }
+
+        return $roles;
     }
 
 }

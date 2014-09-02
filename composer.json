@@ -3,7 +3,12 @@
     "type": "project",
     "description": "Site for conference Frameworks Days",
     "homepage": "http://frameworksdays.com/",
-
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:verdet23/MinkSelenium2Driver.git"
+        }
+    ],
     "autoload": {
         "psr-0": { "": "src/" }
     },
@@ -57,7 +62,7 @@
         "behat/mink-browserkit-driver": "*",
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
         "phpunit/phpunit": "3.7.*",
-        "behat/mink-selenium2-driver": "1.2.*@dev"
+        "behat/mink-selenium2-driver": "dev-backport"
     },
 
     "scripts": {

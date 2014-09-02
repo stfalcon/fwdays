@@ -24,8 +24,16 @@ class PaymentAdmin extends Admin
             ->add('amount')
             ->add('status')
             ->add('user')
-            ->add('tickets')
-            ->add('gate');
+            ->add('tickets', 'string', array(
+                    'route' => array(
+                        'name' => 'show'
+                    ),
+                    'template' => 'StfalconPaymentBundle:PaymentAdmin:list_tickets.html.twig'
+                )
+            )
+            ->add('gate')
+            ->add('createdAt')
+            ->add('updatedAt');
 
         return $listMapper;
     }
@@ -103,7 +111,9 @@ class PaymentAdmin extends Admin
                     )
                 ))
                 ->add('user')
-                ->add('tickets')
+                ->add('tickets', null, [
+                    'by_reference' => false
+                ])
             ->end();
     }
 

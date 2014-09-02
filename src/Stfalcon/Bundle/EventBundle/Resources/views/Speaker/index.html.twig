@@ -20,16 +20,24 @@
                 <div class="presenter-company">{{ speaker.company }}</div>
 
                 {{ speaker.about|raw }}
-
-                {% if speaker.reviews %}
-                    <div class="presenter-presentation">Доклад:
-                        {% for review in speaker.reviews %}
-                            <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                <div>
+                    {% if speaker.reviews %}
+                        {% include 'StfalconEventBundle:Review:_like_button.html.twig' with {'event': event, 'speaker': speaker} %}
+                        <div class="presenter-presentation {{ is_granted('ROLE_USER') and event.active?'with-likes' }}">Доклад:
+                            {% for review in speaker.reviews %}
+                                <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/jquery-1.8.2.min.js' 'bundles/stfalconevent/js/review-like.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

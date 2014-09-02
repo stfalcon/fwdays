@@ -2,10 +2,10 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
@@ -110,6 +110,7 @@ class Payment
             if (!$ticket->isPaid()) {
                 $this->amount += $ticket->getAmount();
             }
+            $ticket->setPayment($this);
             $this->tickets->add($ticket);
         }
     }
@@ -164,6 +165,7 @@ class Payment
             if (!$ticket->isPaid()) {
                 $this->amount -= $ticket->getAmount();
             }
+            $ticket->setPayment(null);
             $this->tickets->removeElement($ticket);
         }
     }
