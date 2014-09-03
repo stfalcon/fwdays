@@ -70,7 +70,7 @@ class Ticket
     private $user;
 
     /**
-     * @var Stfalcon\Bundle\EventBundle\Entity\Payment
+     * @var \Stfalcon\Bundle\EventBundle\Entity\Payment
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment", inversedBy="tickets")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
@@ -151,11 +151,11 @@ class Ticket
     }
     
     /**
-     * @param Payment $payment
+     * @param Payment|null $payment
      *
      * @return void
      */
-    public function setPayment(Payment $payment)
+    public function setPayment($payment)
     {
         $this->payment = $payment;
     }
@@ -325,6 +325,6 @@ class Ticket
      */
     public function generatePdfFilename()
     {
-        return 'ticket-' . $ticket->getEvent()->getSlug() . '.pdf';
+        return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
     }
 }
