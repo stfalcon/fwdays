@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 
@@ -19,11 +20,18 @@ use Doctrine\Common\DataFixtures\Loader,
 
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
 
+use PSS\Behat\Symfony2MockerExtension\Context\ServiceMockerAwareInterface;
+use PSS\Behat\Symfony2MockerExtension\ServiceMocker;
 /**
  * Feature context for StfalconEventBundle
  */
-class FeatureContext extends MinkContext implements KernelAwareInterface
+class FeatureContext extends MinkContext implements KernelAwareInterface, ServiceMockerAwareInterface
 {
+    /**
+     * @var ServiceMocker $mocker
+     */
+    private $mocker = null;
+
     /**
      * Constructor
      */
@@ -33,6 +41,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('MinkRedirectContext', new MinkRedirectContext());
         $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
         $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
+    }
+
+    /**
+     * @param ServiceMocker $mocker
+     * @return null|void
+     */
+    public function setServiceMocker(ServiceMocker $mocker)
+    {
+        $this->mocker = $mocker;
     }
 
     /**
@@ -348,6 +365,50 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $date = new \DateTime($date);
 
         $this->assertFieldContains($elem, $date->format($format));
+    }
+
+
+    /**
+     * @Given /^Interkassa API is available$/
+     *
+     * @return null
+     */
+    public function interkassaApiIsAvailable()
+    {
+        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Stfalcon\Bundle\EventBundle\Service\InterkassaService')
+            ->shouldReceive('checkPayment')
+            ->andReturn(true);
+    }
+
+
+    /**
+     * @param integer $paymentId
+     *
+     * @Given /^я перехожу на страницу обработки платежа "([^"]*)"$/
+     */
+    public function goToInterkassaInteraction($paymentId)
+    {
+        $params = [
+            'ik_pm_no' => $paymentId
+        ];
+
+        $this->visit('/payment/interaction?' . http_build_query($params));
+    }
+
+    /**
+     * @param integer $paymentId
+     *
+     * @Given /^платеж "([^"]*)" должен быть помечен как оплачен/
+     */
+    public function paymentEqualTo($paymentId)
+    {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->kernel->getContainer()->get('doctrine')->getManager();
+
+        /** @var Payment $payment */
+        $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
+
+        assertTrue($payment->isPaid());
     }
 
 

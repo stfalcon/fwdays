@@ -36,20 +36,20 @@ class StfalconMailerHelper
      */
     public function formatMessage(User $user, Mail $mail)
     {
-        // Get base template for email
-        $templateContent = $this->twig->loadTemplate('StfalconEventBundle::email.html.twig');
-
         $text = $mail->replace(
             array(
                 '%fullname%' => $user->getFullname(),
-                '%user_id%'  => $user->getId(),
+                '%user_id%' => $user->getId(),
             )
         );
 
-        $body = $templateContent->render(array(
-            'text' => $text,
-            'mail' => $mail
-        ));
+        $body = $this->renderTwigTemplate(
+            'StfalconEventBundle::email.html.twig',
+            [
+                'text' => $text,
+                'mail' => $mail
+            ]
+        );
 
         $message = \Swift_Message::newInstance()
             ->setSubject($mail->getTitle())
@@ -59,4 +59,15 @@ class StfalconMailerHelper
 
         return $message;
     }
+
+    /**
+     * @param string $view
+     * @param array $params
+     * @return string
+     */
+    public function renderTwigTemplate($view, $params)
+    {
+        return $this->twig->loadTemplate($view)->render($params);
+    }
+
 }
