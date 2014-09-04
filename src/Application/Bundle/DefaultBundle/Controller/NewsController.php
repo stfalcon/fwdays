@@ -80,9 +80,8 @@ class NewsController extends Controller
     {
         $feed = new \Zend\Feed\Writer\Feed();
 
-        // @todo text to config
-        $feed->setTitle('Frameworks Days');
-        $feed->setDescription('Новости событий, которые проходят под эгидой Frameworks Days');
+        $feed->setTitle($this->container->getParameter('rss.title'));
+        $feed->setDescription($this->container->getParameter('rss.description'));
         $feed->setLink($this->generateUrl('rss', array(), true));
 
         $news = $this->_getNews();
