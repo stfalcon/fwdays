@@ -81,6 +81,7 @@ class TicketController extends BaseController
     public function downloadAction($event_slug)
     {
         $event  = $this->getEventBySlug($event_slug);
+        /** @var Ticket $ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')
                 ->findTicketForEventByCurrentUser($event);
 
@@ -90,8 +91,10 @@ class TicketController extends BaseController
 
         /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
         $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
+        $html = $pdfGen->generateHTML($ticket);
+
         return new Response(
-            $pdfGen->generatePdfFile($ticket),
+            $pdfGen->generatePdfFile($ticket, $html),
             200,
             array(
                 'Content-Type'        => 'application/pdf',
@@ -112,14 +115,16 @@ class TicketController extends BaseController
      */
     public function registrationAction(Ticket $ticket, $hash)
     {
-        // любопытных пользователей перенаправляем на страницу события
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
-        }
-        
+        //bag fix test ticket.feature:27
         // сверяем хеш билета и хеш из урла
         if ($ticket->getHash() != $hash) {
-            return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
+            return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() . '</h1>', 403);
+        }
+
+        //bag fix test ticket.feature:33
+        // любопытных пользователей перенаправляем на страницу события
+        if (!$this->get('security.context')->isGranted('ROLE_VOLUNTEER')) {
+            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
         }
 
         // проверяем существует ли оплата
@@ -153,8 +158,8 @@ class TicketController extends BaseController
      *
      * @return array
      *
-     * @Secure(roles="ROLE_ADMIN")
-     * @Route("/check/", name="check")
+     * @Secure(roles="ROLE_VOLUNTEER")
+     * @Route("/check/", name="check_ticket_by_number")
      * @Template()
      */
     public function checkByNumAction()
@@ -164,7 +169,7 @@ class TicketController extends BaseController
 
         if (!$ticketId) {
             return array(
-                'action' => $this->generateUrl('check')
+                'action' => $this->generateUrl('check_ticket_by_number')
             );
         }
 
@@ -182,13 +187,13 @@ class TicketController extends BaseController
             );
 
             return array(
-                'action'    => $this->generateUrl('check'),
+                'action'    => $this->generateUrl('check_ticket_by_number'),
                 'ticketUrl' => $url
             );
         } else {
             return array(
                 'message' => 'Not Found',
-                'action'  => $this->generateUrl('check')
+                'action'  => $this->generateUrl('check_ticket_by_number')
             );
         }
     }

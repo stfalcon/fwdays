@@ -23,7 +23,10 @@ class EventAdmin extends Admin
             ->add('name')
             ->add('active')
             ->add('receivePayments')
-            ->add('cost');
+            ->add('cost')
+            ->add('images', 'string', array(
+                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
+                ));
     }
 
     /**
@@ -46,10 +49,9 @@ class EventAdmin extends Admin
             ->end()
             ->with('Images')
                 ->add('logoFile', 'file', array(
-                    'label' => 'Logo',
-                    'required' => false,
+                    'label' => 'Logo'
                 ))
-                ->add('bgFile', 'file', array(
+                ->add('pdfBackgroundFile', 'file', array(
                     'label' => 'Background image',
                     'required' => false,
                 ))

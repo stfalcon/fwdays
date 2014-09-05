@@ -31,12 +31,15 @@
                     {{ knp_menu_render('main', {'class': 'nav'}) }}
 
                     <div class="user-nav">
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                             <div class="user-menu">
-                                <a class="username" href="# "><span>{{ app.user.username }}</span></a>
+                                <a class="username" href="#"><span>{{ app.user.username }}</span></a>
                                 <ul class="user-menu-dropdown">
                                     <li><a href="{{ path('events_my') }}">Мои события</a></li>
                                     <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
+                                    {% if is_granted('ROLE_VOLUNTEER') %}
+                                        <li><a href="{{ path('check_ticket_by_number') }}">Проверка билета по номеру</a></li>
+                                    {% endif %}
                                     <li><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
                                 </ul>
                             </div>

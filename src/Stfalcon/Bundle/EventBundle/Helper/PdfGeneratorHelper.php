@@ -60,10 +60,11 @@ class PdfGeneratorHelper
      * Generate PDF-file of ticket
      *
      * @param Ticket $ticket
+     * @param string $html
      *
      * @return mixed
      */
-    public function generatePdfFile(Ticket $ticket)
+    public function generatePdfFile(Ticket $ticket, $html)
     {
         // Override default fonts directory for mPDF
         define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/open-sans/') . '/');
@@ -103,8 +104,7 @@ class PdfGeneratorHelper
         $mPDF->default_available_fonts[] = 'opensansBI';
 
         $mPDF->SetDisplayMode('fullpage');
-        $mPDF->WriteHTML($this->generateHTML($ticket));
-                
+        $mPDF->WriteHTML($html);
         $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');
 
         return $pdfFile;
@@ -114,10 +114,10 @@ class PdfGeneratorHelper
      * Create HTML template for ticket invitation
      *
      * @param Ticket $ticket
-     * 
+     *
      * @return string
      */
-    private function generateHTML(Ticket $ticket)
+    public function generateHTML(Ticket $ticket)
     {
         $twig = $this->templating;
 

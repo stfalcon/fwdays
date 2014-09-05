@@ -42,8 +42,8 @@
                                             {% endif %}
                                         </td>
                                         <td valign="top" align="right">
-                                            {% if mail.event is defined and mail.event is not null and mail.event.emailBackground is defined and mail.event.emailBackground is not empty %}
-                                                <img src="{{ url('homepage') ~ 'uploads/events/' ~ mail.event.emailBackground }}" alt=""/>
+                                            {% if mail.event is defined %}
+                                                <img src="{{ url('homepage') ~ vich_uploader_asset( mail.event, 'emailBackground') }}" alt=""/>
                                             {% else %}
                                                 <img src="{{ url('homepage') ~ 'images/bg-common.png' }}" alt=""/>
                                             {% endif %}

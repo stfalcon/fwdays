@@ -2138,3 +2138,90 @@ a.add-new-participant:hover:before {
     text-decoration: line-through;
     color: #727272;
 }
+
+.error-page h4 {
+    color:#ffb018;
+    margin-bottom:10px
+}
+
+.error-page strong {
+    display:block;
+    font-weight:normal;
+    font-size:17px;
+    margin:10px 0;
+}
+
+/*=================== Like review button ====================*/
+.button-like {
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    border:1px solid #e5e5e5;
+    width:101px;
+    float:left;
+}
+
+.button-like-top {
+    height:22px;
+    font-size:16px;
+    font-weight:bold;
+    color:#000;
+    background:url('/images/icon-like.png') 27px 0 no-repeat;
+    text-align:left;
+    padding-left:50px;
+    padding-top:4px;
+}
+
+.button-like-top.empty {
+    background:url('/images/icon-like.png') 39px 0 no-repeat;
+}
+
+.button-like a {
+    display:block;
+    text-align:center;
+    padding:2px 0;
+    width:101px;
+    height:21px;
+    color:#0091ad;
+    text-decoration:none;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background:#f8f6ed url('/images/button-like.png') 0 -25px no-repeat;
+    font-size:11px;
+    text-shadow: 0 1px 0 #fcfbf8;
+}
+
+.button-like a:hover {
+    background:#f8f6ed url('/images/button-like.png') 0 0 no-repeat;
+}
+
+.button-like.active a {
+    background:#f8f6ed url('/images/button-like.png') 0 -50px no-repeat;
+    color:#fff;
+    text-shadow: 0 -1px 0 #908d81;
+}
+
+.presenter-presentation {
+    margin-left:120px;
+}
+
+.presenter-presentation a {
+    font-size:16px;
+    margin-top:5px;
+    display:block;
+}
+
+.button-like:hover .button-like-top {
+    background:url('/images/icon-like.png') 27px -2px no-repeat;
+}
+
+.button-like:hover .button-like-top.empty {
+    background:url('/images/icon-like.png') 39px -2px no-repeat;
+}
+
+.button-like.active:hover .button-like-top {
+    background:url('/images/icon-like.png') 27px 2px no-repeat;
+}
+
+.button-like.active:hover .button-like-top.empty {
+    background:url('/images/icon-like.png') 39px 2px no-repeat;
+}

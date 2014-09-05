@@ -40,7 +40,7 @@ class PaymentController extends BaseController {
         /* @var $ticket Ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')
                 ->findTicketForEventByCurrentUser($event);
-        
+
         // если нет привязанного платежа, тогда создаем новый
 //        if (!$ticket->hasPayment()) {
 //            
@@ -70,9 +70,8 @@ class PaymentController extends BaseController {
             $payment = new Payment();
             $payment->setUser($user);
             $em->persist($payment);
-            $ticket->setPayment($payment);
+            $payment->addTicket($ticket);
             $em->persist($ticket);
-            $em->flush();
         }
         // процент скидки для постоянных участников
         // @todo здесь этого не нужно
@@ -82,6 +81,8 @@ class PaymentController extends BaseController {
         if (!$payment->isPaid()) {
             $this->checkTicketsPricesInPayment($payment, $event->getCost());
         }
+
+        $em->flush();
 
         $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
         $promoCode = $payment->getPromoCodeFromTickets();
@@ -277,7 +278,7 @@ class PaymentController extends BaseController {
      * @return array
      * @throws NotFoundHttpException
      *
-     * @Route("/event/{event_slug}/payment/{payment_id}/ticket/remove/{id}", name="remove_ticket_from_payment")
+     * @Route("/event/{event_slug}/payment/{payment_id}/ticket/{id}/remove", name="remove_ticket_from_payment")
      */
     public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
     {

@@ -149,15 +149,11 @@
 
     <body>
         <div class="left-element">
-            {% if event.backgroundImage is defined and event.backgroundImage is not empty %}
-                <img src="{{ path ~ vich_uploader_asset(event, 'bgFile') }}" width="199" height="156" />
-            {% endif %}
+            <img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />
         </div>
         <div class="logo">
             <a href="{{ path('event_show', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
-                {% if event.logo is defined and event.logo is not empty %}
-                    <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
-                {% endif %}
+                <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
             </a>
         </div>
 

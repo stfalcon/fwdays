@@ -70,10 +70,10 @@ class Ticket
     private $user;
 
     /**
-     * @var Stfalcon\Bundle\EventBundle\Entity\Payment
+     * @var \Stfalcon\Bundle\EventBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment")
-     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment", inversedBy="tickets")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;
 
@@ -151,13 +151,12 @@ class Ticket
     }
     
     /**
-     * @param Payment $payment
+     * @param Payment|null $payment
      *
      * @return void
      */
-    public function setPayment(Payment $payment)
+    public function setPayment($payment)
     {
-        $payment->addTicket($this);
         $this->payment = $payment;
     }
 
@@ -212,7 +211,8 @@ class Ticket
      *
      * @param bool $used
      */
-    public function setUsed($used){
+    public function setUsed($used)
+    {
         $this->used = $used;
     }
 
@@ -221,7 +221,8 @@ class Ticket
      *
      * @return bool
      */
-    public function isUsed(){
+    public function isUsed()
+    {
         return $this->used;
     }
 
@@ -236,7 +237,7 @@ class Ticket
 
     public function __toString()
     {
-        return (string) $this->getId();
+        return (string) $this->getId() . ' (' . $this->getUser()->getFullname() . ')';
     }
 
     /**
@@ -324,6 +325,6 @@ class Ticket
      */
     public function generatePdfFilename()
     {
-        return 'ticket-' . $ticket->getEvent()->getSlug() . '.pdf';
+        return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
     }
 }
