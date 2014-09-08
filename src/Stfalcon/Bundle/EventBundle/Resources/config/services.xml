@@ -54,7 +54,7 @@
         <parameter key="stfalcon_event.promo_code.form.type.class">Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType</parameter>
 
         <parameter key="stfalcon_event.interkassa.service.class">Stfalcon\Bundle\EventBundle\Service\InterkassaService</parameter>
-        
+
         <parameter key="stfalcon_event.ticket.service.class">Stfalcon\Bundle\EventBundle\Service\TicketService</parameter>
     </parameters>
 
@@ -81,7 +81,7 @@
             <argument>%stfalcon_event.admin.event.entity%</argument>
             <argument>%stfalcon_event.admin.event.controller%</argument>
         </service>
-        
+
         <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Доклады"/>
             <argument />
@@ -134,13 +134,13 @@
             <argument>%stfalcon_event.admin.tickets.entity%</argument>
             <argument>%stfalcon_event.admin.tickets.controller%</argument>
         </service>
-        
+
         <service id="stfalcon_event.admin.payment" class="%stfalcon_event.admin.payment.class%">
             <tag name="sonata.admin" manager_type="orm" group="Билеты" label="Платежи"/>
             <argument />
             <argument>%stfalcon_event.admin.payment.entity%</argument>
             <argument>%stfalcon_event.admin.payment.controller%</argument>
-        </service>       
+        </service>
 
         <service id="stfalcon_event.admin.promo_code" class="%stfalcon_event.admin.promo_code.class%">
             <tag name="sonata.admin" manager_type="orm" group="Билеты" label="Промо коды"/>
@@ -148,7 +148,7 @@
             <argument>%stfalcon_event.admin.promo_code.entity%</argument>
             <argument>%stfalcon_event.admin.promo_code.controller%</argument>
         </service>
-        
+
         <service id="stfalcon_event.qr_code" class="%stfalcon_event.qr_code.class%">
         </service>
 
@@ -175,10 +175,15 @@
         <service id="stfalcon_event.interkassa.service" class="%stfalcon_event.interkassa.service.class%">
             <argument type="service" id="service_container"/>
         </service>
-        
+
         <service id="stfalcon_event.ticket.service" class="%stfalcon_event.ticket.service.class%">
             <argument type="service" id="service_container"/>
         </service>
-    </services>
 
+        <service id="stfalcon_event.listener.payment" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentListener">
+            <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+    </services>
 </container>

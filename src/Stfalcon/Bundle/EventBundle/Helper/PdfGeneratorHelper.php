@@ -2,6 +2,7 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;

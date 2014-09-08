@@ -13,5 +13,6 @@ default:
             default_session: 'symfony2'
             javascript_session: 'selenium2'
             show_cmd: 'firefox %s'
+        PSS\Behat\Symfony2MockerExtension\Extension: ~
     paths:
         features:  features
