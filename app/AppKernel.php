@@ -73,6 +73,8 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
+
+
     /**
      * Register container configuration
      *
