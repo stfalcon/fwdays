@@ -27,7 +27,7 @@ before_script:
     - app/console do:sc:cr -e=test > /dev/null
     - chmod -R 777 app/cache app/logs
     - app/console cache:clear --env=test
-    - sleep 2
+    - sleep 10
 
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99
