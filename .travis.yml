@@ -29,10 +29,6 @@ before_script:
     - app/console cache:clear --env=test
     - sleep 10
 
-
-
-
-
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99
     - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.42.0.jar > selenium.jar
