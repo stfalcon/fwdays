@@ -50,32 +50,14 @@ class PaymentListener
                     $successPaymentTemplateContent = $this->mailerHelper->renderTwigTemplate(
                         'StfalconEventBundle:Interkassa:_mail.html.twig',
                         [
-                            'event_slug' => $event->getSlug()
+                            'user' => $user,
+                            'event' => $event,
                         ]
                     );
 
                     $mail = new Mail();
                     $mail->addEvent($event);
                     $mail->setText($successPaymentTemplateContent);
-
-                    $dateFormatter = new \IntlDateFormatter(
-                        'ru-RU',
-                        \IntlDateFormatter::NONE,
-                        \IntlDateFormatter::NONE,
-                        date_default_timezone_get(),
-                        \IntlDateFormatter::GREGORIAN,
-                        'd MMMM Y'
-                    );
-
-                    $text = $mail->replace(
-                        array(
-                            '%fullname%' => $user->getFullName(),
-                            '%event%' => $event->getName(),
-                            '%date%' => $dateFormatter->format($event->getDate()),
-                            '%place%' => $event->getPlace(),
-                        )
-                    );
-                    $mail->setText($text);
 
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
                     $message = $this->mailerHelper->formatMessage($user, $mail, true);
