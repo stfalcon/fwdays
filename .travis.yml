@@ -1,15 +1,44 @@
 language: php
+
 php:
-  - 5.4
+    - 5.4
+
+branches:
+    only:
+    - master
+
+before_install:
+    - sudo apt-get update > /dev/null
+    - sudo rm -rf /dev/shm && sudo ln -s /run/shm /dev/shm
+
+install:
+    - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-intl wkhtmltopdf > /dev/null
+    - sudo sed -i -e "s,/var/www,$(pwd)/web,g" /etc/apache2/sites-available/default
+    - sudo /etc/init.d/apache2 restart
+
 before_script:
-  - mysql -e 'create database fwdays_com_testing;'
-  - curl -s https://getcomposer.org/installer | php -- --quiet
-  - php composer.phar install
-  - app/console --env=test doctrine:schema:create
-  - sleep 2
+   - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+   - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+   - export MINK_EXTENSION_PARAMS='base_url=http://localhost:8000/app_test.php'
+
+   - composer self-update
+   - composer install --prefer-source --no-interaction
+   - app/console do:da:cr -e=test > /dev/null
+   - app/console do:sc:cr -e=test > /dev/null
+   - chmod -R 777 app/cache app/logs
+   - app/console --env=test cache:warmup
+   - chmod -R 777 app/cache app/logs
+   - sleep 2
+
+   - sh -e /etc/init.d/xvfb start
+   - export DISPLAY=:99
+   - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.42.0.jar > selenium.jar
+   - java -jar selenium.jar > /dev/null &
+
 script:
   - phpunit -c app/
   - bin/run-all-features
+
 notifications:
   email:
-      - stepan.tanasiychuk@gmail.com
+      - timur.bolotyuh@gmail.com
