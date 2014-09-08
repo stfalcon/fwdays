@@ -5,7 +5,7 @@ php:
 
 branches:
     only:
-    - master
+    - refactoring
 
 before_install:
     - sudo apt-get update > /dev/null
