@@ -60,7 +60,7 @@ class PaymentListener
                     $mail->setText($successPaymentTemplateContent);
 
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-                    $message = $this->mailerHelper->formatMessage($user, $mail, true);
+                    $message = $this->mailerHelper->formatMessage($user, $mail);
                     $message->setSubject($event->getName())
                         ->attach(
                             \Swift_Attachment::newInstance(
