@@ -16,4 +16,4 @@
         И я перехожу на страницу обработки платежа "2"
         Тогда email with subject "PHP Frameworks Day" should have been sent to "user@fwdays.com"
         Тогда платеж "2" должен быть помечен как оплачен
-
+        И я должен видеть "SUCCESS"
