@@ -224,4 +224,15 @@ class User extends BaseUser
     {
         return $this->country;
     }
+
+    /**
+     * Generate a temporary password
+     *
+     * @param int $length
+     */
+    public function setRandomPlainPassword($length = 8)
+    {
+        $password = substr(md5(uniqid(mt_rand(), true) . time()), 0, $length);
+        $this->setPlainPassword($password);
+    }
 }
