@@ -83,13 +83,24 @@ class InterkassaService
     }
 
 
+    /**
+     * Возвращает необходимые данные для формы оплаты
+     *
+     * @param Payment $payment
+     * @param Event $event
+     * @return array
+     */
     public function getData(Payment $payment, Event $event)
     {
 
         $config = $this->container->getParameter('stfalcon_event.config');
 
-        $description = 'Оплата участия в конференции ' . $event->getName()
-            . '. Плательщик ' . $payment->getUser()->getFullname() . ' (#' . $payment->getUser()->getId() . ')';
+        $description = 'Оплата участия в конференции '
+            . $event->getName()
+            . '. Плательщик '
+            . $payment->getUser()->getFullname()
+            . ' (#' . $payment->getUser()->getId()
+            . ')';
 
         $params['ik_co_id'] = $config['interkassa']['shop_id'];
         $params['ik_am'] = $payment->getAmount();

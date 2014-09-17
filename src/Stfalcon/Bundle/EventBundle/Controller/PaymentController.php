@@ -99,6 +99,9 @@ class PaymentController extends BaseController
     }
 
     /**
+     * Пересчитываем итоговую сумму платежа по всем билетам
+     * с учетом скидки
+     *
      * @param Payment $payment
      * @param float $newPrice
      */
