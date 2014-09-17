@@ -11,19 +11,28 @@ use Twig_Environment;
  */
 class StfalconMailerHelper
 {
+
     /**
-     * @var Twig_Environment
+     * @var Twig_Environment $twig
      */
     protected $twig;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager $em
+     */
+    protected $em;
+
 
     /**
      * Constructor
      *
      * @param Twig_Environment $twig
+     * @param \Doctrine\ORM\EntityManager $em
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Twig_Environment $twig, $em)
     {
         $this->twig = $twig;
+        $this->em = $em;
     }
 
     /**
@@ -78,6 +87,39 @@ class StfalconMailerHelper
     public function renderTwigTemplate($view, $params)
     {
         return $this->twig->loadTemplate($view)->render($params);
+    }
+
+    /**
+     * Check possible to send the mail to user
+     *
+     * @param Mail $mail
+     * @param User $user
+     * @return bool
+     */
+    public function allowSendMailForUser($mail, $user)
+    {
+
+        if (!($user && $mail)) {
+            return false;
+        }
+
+        if (!$user->isSubscribe()) {
+
+            // участвует ли пользователь в этих событиях
+            foreach ($mail->getEvents() as $event) {
+
+                /** @var $eventRepository \Stfalcon\Bundle\EventBundle\Repository\EventRepository */
+                $eventRepository = $this->em->getRepository('StfalconEventBundle:Event');
+
+                if ($eventRepository->isActiveEventForUser($event, $user)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
 }

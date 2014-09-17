@@ -9,8 +9,7 @@ use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
     Symfony\Component\Console\Output\OutputInterface;
 
-use Stfalcon\Bundle\EventBundle\Entity\Mail,
-    Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
  * Class StfalconMailerCommand
@@ -65,7 +64,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!($user && $mail)) {
+            if (false === $mailerHelper->allowSendMailForUser($mail, $user)) {
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -86,6 +85,18 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $em->flush();
                 continue;
             }
+
+
+            //add header tag for unsubscribe
+            $headers = $message->getHeaders();
+            $mailto = "mailto:unsubscribe@fwdays.com?subject=Unsubscribe";
+            $http = $this->getContainer()->get('router')->generate('unsubscribe',
+                [
+                    'hash' => $user->getSalt(),
+                    'unsubscribed' => $user->getId()
+                ], true);
+
+            $headers->addTextHeader('List-Unsubscribe:', '<' . $mailto . '>, <' . $http . '>');
 
             if ($mailer->send($message)) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);
