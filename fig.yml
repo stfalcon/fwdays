@@ -1,0 +1,14 @@
+web:
+  build: .
+  command: sudo /usr/local/bin/run.sh
+  ports:
+    - "8000:80"
+    - "1080:1080"
+  links:
+    - db
+  volumes:
+    - .:/code
+db:
+  image: orchardup/mysql
+  environment:
+    MYSQL_DATABASE: fwdays_com_development
