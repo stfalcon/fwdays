@@ -89,14 +89,13 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
             //add header tag for unsubscribe
             $headers = $message->getHeaders();
-            $mailto = "mailto:unsubscribe@fwdays.com?subject=Unsubscribe";
             $http = $this->getContainer()->get('router')->generate('unsubscribe',
                 [
                     'hash' => $user->getSalt(),
-                    'unsubscribed' => $user->getId()
+                    'userId' => $user->getId()
                 ], true);
 
-            $headers->addTextHeader('List-Unsubscribe:', '<' . $mailto . '>, <' . $http . '>');
+            $headers->addTextHeader('List-Unsubscribe:', '<' . $http . '>');
 
             if ($mailer->send($message)) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);
