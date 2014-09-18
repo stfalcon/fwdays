@@ -20,21 +20,21 @@ class UnsubscribeController extends Controller
     /**
      * Unsubscribe action.
      *
-     * @param string $unsubscribed
+     * @param integer $userId
      * @param string $hash
      *
      * @return RedirectResponse
      *
-     * @Route("/unsubscribe/{hash}/{unsubscribed}", name="unsubscribe")
+     * @Route("/unsubscribe/{hash}/{userId}", name="unsubscribe")
      */
-    public function actionUnsubscribe($unsubscribed, $hash) {
+    public function actionUnsubscribe($userId, $hash) {
 
         /**
          * @var User $subscriber
          */
         $subscriber = $this->getDoctrine()
             ->getRepository('ApplicationUserBundle:User')
-            ->findOneBy(['id' => $unsubscribed, 'salt' => $hash]);
+            ->findOneBy(['id' => $userId, 'salt' => $hash]);
 
         if (!$subscriber) {
             throw $this->createNotFoundException('Unable to find Subscriber.');

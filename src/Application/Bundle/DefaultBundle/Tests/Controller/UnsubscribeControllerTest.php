@@ -11,14 +11,14 @@ class CategoryControllerTest extends WebTestCase {
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    private $_em;
+    private $em;
 
     public function setUp() {
 
         static::$kernel = static::createKernel();
         static::$kernel->boot();
 
-        $this->_em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
 
         $loader = new Loader();
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
@@ -49,15 +49,16 @@ class CategoryControllerTest extends WebTestCase {
     public function testUnsubscribe() {
         $client = static::createClient();
 
-        $user = $this->_em->getRepository('ApplicationUserBundle:User')->findOneBy(['id' => 3]);
+        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['id' => 5]);
         $url  = static::$kernel->getContainer()->get('router')->generate('unsubscribe',
             [
                 'hash' => $user->getSalt(),
-                'unsubscribed' => $user->getId()
+                'userId' => 5
             ]);
 
-        $crawler = $client->request('GET', $url);
-        $user = $this->_em->getRepository('ApplicationUserBundle:User')->findOneBy(['id' => 3]);
+        $client->request('GET', $url);
+
+        $this->em->refresh($user);
         $this->assertFalse($user->isSubscribe());
     }
 }
