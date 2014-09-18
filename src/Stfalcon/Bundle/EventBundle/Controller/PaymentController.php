@@ -151,6 +151,8 @@ class PaymentController extends BaseController
     }
 
     /**
+     * Добавления участников к платежу
+     *
      * @param string $slug
      * @param Payment $payment
      *
@@ -174,7 +176,7 @@ class PaymentController extends BaseController
 
             // создаем нового пользователя
             if (!$user) {
-                $user = $this->createUser($participant);
+                $user = $this->get('fos_user.user_manager')->autoRegistration($participant);
             }
 
             // проверяем или у него нет билетов на этот ивент
@@ -208,6 +210,9 @@ class PaymentController extends BaseController
     }
 
     /**
+     *
+     * Удаления билета на события в платеже
+     *
      * @param string $event_slug
      * @param int $payment_id
      * @param Ticket $ticket
@@ -219,12 +224,12 @@ class PaymentController extends BaseController
      */
     public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
     {
-        // @todo що за метод і нафіга? чому нема коментарів?
         $event = $this->getEventBySlug($event_slug);
 
         $em = $this->getDoctrine()->getManager();
         $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
         $payment = $paymentRepository->find($payment_id);
+
         if (!$payment) {
             throw $this->createNotFoundException('Unable to find Payment entity.');
         }
@@ -235,39 +240,6 @@ class PaymentController extends BaseController
         $em->flush();
 
         return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
-    }
-
-    /**
-     * @param $participant
-     * @return \FOS\UserBundle\Model\UserInterface
-     */
-    private function createUser($participant)
-    {
-        $user = $this->get('fos_user.user_manager')->createUser();
-        $user->setEmail($participant['email']);
-        $user->setFullname($participant['name']);
-        $user->setRandomPlainPassword();
-        $user->setEnabled(true);
-        $this->get('fos_user.user_manager')->updateUser($user);
-
-        $mailerHelper = $this->get('stfalcon_event.mailer_helper');
-
-        $body = $mailerHelper->renderTwigTemplate(
-            'ApplicationUserBundle:Registration:automatically.html.twig',
-            [
-                'user' => $user,
-            ]
-        );
-
-        $message = $mailerHelper->createMessage(
-            "Регистрация на сайте Frameworks Days",
-            $user->getEmail(),
-            $body
-        );
-
-        $this->get('mailer')->send($message);
-
-        return $user;
     }
 
 }
