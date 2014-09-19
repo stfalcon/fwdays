@@ -1,6 +1,6 @@
 web:
   build: .
-  command: sudo /usr/local/bin/run.sh
+  command: /usr/local/bin/run.sh
   ports:
     - "8000:80"
     - "1080:1080"
