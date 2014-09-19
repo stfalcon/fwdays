@@ -37,6 +37,10 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
+sonata_admin_ticket_check:
+    pattern:  /admin/ticket/check
+    defaults: { _controller: StfalconEventBundle:TicketAdmin:check }
+
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
