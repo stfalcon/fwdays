@@ -53,7 +53,7 @@ class CategoryControllerTest extends WebTestCase {
         $url  = static::$kernel->getContainer()->get('router')->generate('unsubscribe',
             [
                 'hash' => $user->getSalt(),
-                'userId' => 5
+                'userId' => $user->getId()
             ]);
 
         $client->request('GET', $url);
