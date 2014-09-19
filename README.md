@@ -90,14 +90,11 @@ Clone git repository:
         $ git clone git://github.com/stfalcon/fwdays.git .
         $ fig up
 
-Install Vendors:
+After it run:
 
-        $ fig run web php composer.phar install
+        $ fig run web setup
 
-Setup database:
-
-        $ fig run web ./console doctrine:migrations:migrate
-        $ fig run web ./console doctrine:fixtures:load
+It's installs vendors and setup database.
 
 After it you can open http://127.0.0.1:8000 with running web app
 
@@ -105,7 +102,11 @@ After it you can open http://127.0.0.1:8000 with running web app
 --------------------------------
 
 Web app url: http://127.0.0.1:8000
+
 Phpmyadmin: http://127.0.0.1:8000/phpmyadmin/ (user: root, without password)
+
 Run some command: fig run web <command>
+
 Debugging email sending: all mail are catch by mailcatcher and available via http://127.0.0.1:1080/
+
 Webshell for some custom tasks: http://127.0.0.1:8000/webshell/ (password: b374k)
