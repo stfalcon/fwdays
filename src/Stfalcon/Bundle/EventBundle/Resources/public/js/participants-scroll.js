@@ -1,22 +1,11 @@
-$(document).ready(function (){
-    var $participantsWrapper = $('ul.participants');
+$(document).ready(function () {
 
-    lock = false;//fix double content
+    var $participantsWrapper = $('ul.participants');
 
     /** Get preloader element */
     var $preLoader = $('.preloader');
-    $(window).scroll(function () {
 
-        /** Get ul.participants bottom offset */
-        var participantsWrapperOffsetBottom = ($participantsWrapper.offset().top + $participantsWrapper.height()) - $(window).height();
-        if ($(window).scrollTop() >= (participantsWrapperOffsetBottom) && lock===false) {
-
-            /** Count of showed participants */
-            var offset = $('ul.participants li').length;
-            lock = true;
-            loadContent(offset,$participantsWrapper, $preLoader);
-        }
-    });
+    lock = false;//fix double content
 
     /** Sent AJAX request for get next part of participants */
     function loadContent(offset, wrapper, loader) {
@@ -35,4 +24,16 @@ $(document).ready(function (){
         });
     }
 
-})
+    $(window).scroll(function () {
+        /** Get ul.participants bottom offset */
+        var participantsWrapperOffsetBottom = ($participantsWrapper.offset().top + $participantsWrapper.height()) - $(window).height();
+        if ($(window).scrollTop() >= (participantsWrapperOffsetBottom) && lock === false) {
+
+            /** Count of showed participants */
+            var offset = $('ul.participants li').length;
+            lock = true;
+            loadContent(offset, $participantsWrapper, $preLoader);
+        }
+    });
+
+});
