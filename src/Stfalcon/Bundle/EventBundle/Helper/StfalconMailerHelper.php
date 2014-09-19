@@ -22,17 +22,24 @@ class StfalconMailerHelper
      */
     protected $em;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    protected $router;
+
 
     /**
      * Constructor
      *
      * @param Twig_Environment $twig
      * @param \Doctrine\ORM\EntityManager $em
+     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      */
-    public function __construct(Twig_Environment $twig, $em)
+    public function __construct(Twig_Environment $twig, $em, $router)
     {
         $this->twig = $twig;
         $this->em = $em;
+        $this->router = $router;
     }
 
     /**
@@ -52,11 +59,19 @@ class StfalconMailerHelper
             )
         );
 
+        $unsubscribeLink  = $this->router->generate('unsubscribe',
+            [
+                'hash' => $user->getSalt(),
+                'userId' => $user->getId()
+            ], true);
+
+
         $body = $this->renderTwigTemplate(
             'StfalconEventBundle::email.html.twig',
             [
                 'text' => $text,
-                'mail' => $mail
+                'mail' => $mail,
+                'unsubscribeLink' => $unsubscribeLink
             ]
         );
 
@@ -65,6 +80,8 @@ class StfalconMailerHelper
 
 
     /**
+     * Create message
+     *
      * @param  string $subject
      * @param  string $to
      * @param  string $body
@@ -80,6 +97,8 @@ class StfalconMailerHelper
     }
 
     /**
+     * Render template
+     *
      * @param string $view
      * @param array $params
      * @return string
