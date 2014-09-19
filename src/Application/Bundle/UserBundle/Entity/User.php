@@ -148,7 +148,7 @@ class User extends BaseUser
     /**
      * User has subscribed to the newsletter?
      *
-     * @return string
+     * @return bool
      */
     public function isSubscribe()
     {
