@@ -2,7 +2,9 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment,
+    Stfalcon\Bundle\EventBundle\Entity\Event;
+
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -78,5 +80,38 @@ class InterkassaService
         }
 
         return false;
+    }
+
+
+    /**
+     * Возвращает необходимые данные для формы оплаты
+     *
+     * @param Payment $payment
+     * @param Event $event
+     * @return array
+     */
+    public function getData(Payment $payment, Event $event)
+    {
+
+        $config = $this->container->getParameter('stfalcon_event.config');
+
+        $description = 'Оплата участия в конференции '
+            . $event->getName()
+            . '. Плательщик '
+            . $payment->getUser()->getFullname()
+            . ' (#' . $payment->getUser()->getId()
+            . ')';
+
+        $params['ik_co_id'] = $config['interkassa']['shop_id'];
+        $params['ik_am'] = $payment->getAmount();
+        $params['ik_pm_no'] = $payment->getId();
+        $params['ik_desc'] = $description;
+        $params['ik_loc'] = 'ru';
+
+        return [
+            'ik_co_id' => $config['interkassa']['shop_id'],
+            'ik_desc' => $description,
+            'ik_sign' => $this->getSignHash($params)
+        ];
     }
 }

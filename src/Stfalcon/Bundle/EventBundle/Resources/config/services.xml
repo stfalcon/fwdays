@@ -56,6 +56,9 @@
         <parameter key="stfalcon_event.interkassa.service.class">Stfalcon\Bundle\EventBundle\Service\InterkassaService</parameter>
 
         <parameter key="stfalcon_event.ticket.service.class">Stfalcon\Bundle\EventBundle\Service\TicketService</parameter>
+
+        <parameter key="stfalcon_event.listener.payment.class">Stfalcon\Bundle\EventBundle\EventListener\PaymentListener</parameter>
+
     </parameters>
 
     <services>
@@ -180,7 +183,7 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="stfalcon_event.listener.payment" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentListener">
+        <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
             <argument type="service" id="service_container"/>
         </service>

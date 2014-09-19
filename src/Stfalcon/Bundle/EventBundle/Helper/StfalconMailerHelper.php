@@ -51,13 +51,23 @@ class StfalconMailerHelper
             ]
         );
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject($mail->getTitle())
-            ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-            ->setTo($user->getEmail())
-            ->setBody($body, 'text/html');
+        return $this->createMessage($mail->getTitle(), $user->getEmail(), $body);
+    }
 
-        return $message;
+
+    /**
+     * @param  string $subject
+     * @param  string $to
+     * @param  string $body
+     * @return \Swift_Message
+     */
+    public function createMessage($subject, $to, $body)
+    {
+        return \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+            ->setTo($to)
+            ->setBody($body, 'text/html');
     }
 
     /**
@@ -71,3 +81,4 @@ class StfalconMailerHelper
     }
 
 }
+
