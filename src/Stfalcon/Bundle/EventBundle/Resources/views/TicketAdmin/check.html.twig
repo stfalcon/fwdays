@@ -1,0 +1,27 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block breadcrumb %}
+    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a><span
+                class="divider">/</span></li>
+    <li class="active">Проверить билет</li>
+{% endblock %}
+
+{% block content %}
+    <h1>Проверить билет</h1>
+
+    {% if message is defined %}
+        <p style="color:red">{{ message }}</p>
+    {% endif %}
+
+    <form action="{{ form_action }}">
+        <input type="text" name="id" value="{{ app.request.get('id') }}">
+        <input type="submit">
+    </form>
+
+    {% if ticket_url is defined %}
+        <div>
+            <iframe width="500" height="300" src="{{ ticket_url }}">FUCK</iframe>
+        </div>
+    {% endif %}
+
+{% endblock %}

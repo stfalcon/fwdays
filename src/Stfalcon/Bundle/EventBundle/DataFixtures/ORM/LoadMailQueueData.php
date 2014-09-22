@@ -24,7 +24,7 @@ class LoadMailQueueData extends AbstractFixture implements DependentFixtureInter
         return array(
             'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
             'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-            'Stfalcon\Bundle\PaymentBundle\DataFixtures\ORM\LoadPaymentData',
+            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
         );
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\PaymentBundle\Entity;
+namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,10 +10,10 @@ use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
- * Stfalcon\Bundle\PaymentBundle\Entity\Payment
+ * Stfalcon\Bundle\EventBundle\Entity\Payment
  *
  * @ORM\Table(name="payments")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\PaymentBundle\Entity\PaymentRepository")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PaymentRepository")
  */
 class Payment
 {

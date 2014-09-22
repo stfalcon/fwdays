@@ -1,13 +1,16 @@
 <?php
-namespace Stfalcon\Bundle\PaymentBundle\Admin;
+namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Doctrine\ORM\QueryBuilder;
-use Knp\Bundle\MenuBundle\MenuItem;
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+
+use Knp\Bundle\MenuBundle\MenuItem;
+
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Class PaymentAdmin

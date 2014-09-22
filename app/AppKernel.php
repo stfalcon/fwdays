@@ -49,7 +49,6 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
-            new Stfalcon\Bundle\PaymentBundle\StfalconPaymentBundle(),
             new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
 
             new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
@@ -81,5 +80,18 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getContainerBaseClass()
+    {
+        if ('test' == $this->getEnvironment()) {
+            return '\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer';
+        }
+
+        return parent::getContainerBaseClass();
     }
 }

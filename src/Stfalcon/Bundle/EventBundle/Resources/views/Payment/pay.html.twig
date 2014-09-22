@@ -1,4 +1,4 @@
-{% extends 'StfalconPaymentBundle::layout.html.twig' %}
+{% extends '::layout.html.twig' %}
 
 {% block content %}
     <h2>Оплата участия в конференции {{ event.name }}</h2>
@@ -14,12 +14,12 @@
             <div id="participants-form">
                 {% for ticket in payment.tickets %}
                     {% if ticket.user == app.user %}
-                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                        {% include 'StfalconEventBundle:Payment:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
                     {% endif %}
                 {% endfor %}
                 {% for ticket in payment.tickets %}
                     {% if ticket.user != app.user %}
-                        {% include 'StfalconPaymentBundle:Interkassa:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+                        {% include 'StfalconEventBundle:Payment:_participant.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
                     {% endif %}
                 {% endfor %}
             </div>

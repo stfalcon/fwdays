@@ -2039,7 +2039,7 @@ input[type="button"] {
     overflow: visible;
 }
 
-.form-wrapper input[type="text"] {
+.form-wrapper input[type="text"], .form-wrapper input[type="email"] {
     float: none;
 }
 
