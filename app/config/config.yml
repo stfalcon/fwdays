@@ -4,6 +4,8 @@ imports:
 
 parameters:
     graylog.fromname: "http://frameworksdays.com"
+    rss.title: "Frameworks Days"
+    rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
 
 framework:
     #esi:             ~
