@@ -51,7 +51,8 @@ class PaymentController extends BaseController
         }
 
         if (!$payment->isPaid()) {
-            $this->checkTicketsPricesInPayment($payment, $event->getCost());
+            $this->get('stfalcon_event.payment_manager')
+                ->checkTicketsPricesInPayment($payment, $event->getCost());
         }
 
         $em->flush();
@@ -98,57 +99,6 @@ class PaymentController extends BaseController
         );
     }
 
-    /**
-     * Пересчитываем итоговую сумму платежа по всем билетам
-     * с учетом скидки
-     *
-     * @param Payment $payment
-     * @param float $newPrice
-     */
-    private function checkTicketsPricesInPayment($payment, $newPrice)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        // Вытягиваем скидку из конфига
-        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
-        $discount = (float)$paymentsConfig['discount'];
-
-        /** @var Ticket $ticket */
-        foreach ($payment->getTickets() as $ticket) {
-
-            // получаем оплаченые платежи пользователя
-            $paidPayments = $em->getRepository('StfalconEventBundle:Payment')
-                ->findPaidPaymentsForUser($ticket->getUser());
-
-            //правильно ли установлен флаг наличия скидки
-            $isCorrectDiscount = $ticket->getHasDiscount() != ((count($paidPayments) > 0) || $ticket->hasPromoCode());
-
-            // если цена билета без скидки не ровна новой цене на ивент
-            // или неверно указан флаг наличия скидки
-            if ($ticket->getAmountWithoutDiscount() != $newPrice || $isCorrectDiscount) {
-                // если не правильно установлен флаг наличия скидки, тогда устанавливаем его заново
-                if ($isCorrectDiscount) {
-                    $ticket->setHasDiscount(((count($paidPayments) > 0) || $ticket->hasPromoCode()));
-                }
-
-                $ticket->setAmountWithoutDiscount($newPrice);
-                if ($ticket->getHasDiscount()) {
-                    if ($promoCode = $ticket->getPromoCode()) {
-                        $cost = $newPrice - ($newPrice * ($promoCode->getDiscountAmount() / 100));
-                    } else {
-                        $cost = $newPrice - ($newPrice * $discount);
-                    }
-                    $ticket->setAmount($cost);
-                } else {
-                    $ticket->setAmount($newPrice);
-                }
-                $em->merge($ticket);
-            }
-        }
-        $payment->recalculateAmount();
-        $em->merge($payment);
-        $em->flush();
-    }
 
     /**
      * Добавления участников к платежу

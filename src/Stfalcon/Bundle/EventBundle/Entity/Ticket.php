@@ -327,4 +327,22 @@ class Ticket
     {
         return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
     }
+
+    /**
+     * Set amount with discount.
+     * If has promo code use discount with promo code
+     *
+     * @param $discount
+     */
+    public function setAmountWithDiscount($discount) {
+        $price = $this->getAmountWithoutDiscount();
+
+        if ($promoCode = $this->getPromoCode()) {
+            $cost = $price - ($price * ($promoCode->getDiscountAmount() / 100));
+        } else {
+            $cost = $price - ($price * $discount);
+        }
+
+        $this->setAmount($cost);
+    }
 }

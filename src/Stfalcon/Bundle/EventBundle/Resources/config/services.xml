@@ -59,6 +59,8 @@
 
         <parameter key="stfalcon_event.listener.payment.class">Stfalcon\Bundle\EventBundle\EventListener\PaymentListener</parameter>
 
+        <parameter key="stfalcon_event.payment_manager.class">Stfalcon\Bundle\EventBundle\Entity\PaymentManager</parameter>
+
     </parameters>
 
     <services>
@@ -186,6 +188,12 @@
 
         <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="stfalcon_event.payment_manager" class="%stfalcon_event.payment_manager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument>%stfalcon_event.admin.payment.entity%</argument>
             <argument type="service" id="service_container"/>
         </service>
 
