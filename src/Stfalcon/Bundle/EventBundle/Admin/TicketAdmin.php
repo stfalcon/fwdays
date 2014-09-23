@@ -110,4 +110,19 @@ class TicketAdmin extends Admin
             'used'
         );
     }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('event')
+            ->add(
+                'amount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
+            ->add('payment')
+        ;
+    }
 }

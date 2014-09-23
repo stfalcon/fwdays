@@ -37,20 +37,37 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('fullname')
-                ->add('email')
-                ->add('company', null, array('required' => false))
-                ->add('post', null, array('required' => false))
-                ->add('subscribe', null, array('required' => false))
-                ->add('plainPassword', 'text', array('required' => false))
+            ->add('fullname')
+            ->add('email')
+            ->add('company', null, array('required' => false))
+            ->add('post', null, array('required' => false))
+            ->add('subscribe', null, array('required' => false))
+            ->add('plainPassword', 'text', array('required' => false))
+            ->add(
+                'tickets',
+                'sonata_type_collection',
+                [
+                    'by_reference' => false
+                ],
+                [
+                    'readonly' => true,
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'sortable' => 'id',
+                ]
+            )
             ->end()
             ->with('Management')
-                ->add('enabled', null, array('required' => false))
-                ->add('roles', 'choice', array(
+            ->add('enabled', null, array('required' => false))
+            ->add(
+                'roles',
+                'choice',
+                array(
                     'choices' => $this->getAvailableRoles(),
                     'multiple' => true,
                     'required' => false
-                ))
+                )
+            )
             ->end();
     }
 
@@ -67,6 +84,16 @@ class UserAdmin extends Admin
         }
 
         return $roles;
+    }
+
+    public function prePersist($project)
+    {
+        $project->setTickets($project->getTickets());
+    }
+
+    public function preUpdate($project)
+    {
+        $project->setTickets($project->getTickets());
     }
 
 }
