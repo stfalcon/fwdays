@@ -21,35 +21,61 @@ class TicketAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('event')
-            ->add('user.fullname', null, array('label' => 'Fullname'))
-            ->add('amount', 'money', array(
-                'currency' => 'UAH'
-            ))
-            ->add('amountWithoutDiscount', 'money', array(
-                'currency' => 'UAH'
-            ))
+            ->add(
+                'user.fullname',
+                'url',
+                [
+                    'route' => [
+                        'name' => 'admin_application_user_user_edit',
+                        'identifier_parameter_name' => 'id'
+                    ],
+                ]
+            )
+            ->add(
+                'amount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
+            ->add(
+                'amountWithoutDiscount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
             ->add('promoCode')
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')
             ->add('used');
     }
+
     protected function configureShowFields(ShowMapper $filter)
     {
         $filter->add('id')
-        ->add('event')
-        ->add('user.fullname', null, array('label' => 'Fullname'))
-        ->add('amount', 'money', array(
-                'currency' => 'UAH'
-            ))
-        ->add('amountWithoutDiscount', 'money', array(
-                'currency' => 'UAH'
-            ))
-        ->add('promoCode')
-        ->add('payment')
-        ->add('createdAt')
-        ->add('updatedAt')
-        ->add('used');
+            ->add('event')
+            ->add('user.fullname', null, ['label' => 'Fullname'])
+            ->add(
+                'amount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
+            ->add(
+                'amountWithoutDiscount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
+            ->add('promoCode')
+            ->add('payment')
+            ->add('createdAt')
+            ->add('updatedAt')
+            ->add('used');
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -57,16 +83,18 @@ class TicketAdmin extends Admin
         $datagridMapper
             ->add('event')
             ->add('used')
-            ->add('payment.status', 'doctrine_orm_choice',
-                array(
-                    'field_options' => array(
-                        'choices' => array(
-                            'paid'    => 'Paid',
+            ->add(
+                'payment.status',
+                'doctrine_orm_choice',
+                [
+                    'field_options' => [
+                        'choices' => [
+                            'paid' => 'Paid',
                             'pending' => 'Pending'
-                        ),
-                    ),
+                        ],
+                    ],
                     'field_type' => 'choice'
-                )
+                ]
             );
     }
 
@@ -81,5 +109,20 @@ class TicketAdmin extends Admin
             'updatedAt',
             'used'
         );
+    }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('event')
+            ->add(
+                'amount',
+                'money',
+                [
+                    'currency' => 'UAH'
+                ]
+            )
+            ->add('payment')
+        ;
     }
 }
