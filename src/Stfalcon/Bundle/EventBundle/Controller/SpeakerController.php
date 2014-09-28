@@ -29,8 +29,10 @@ class SpeakerController extends BaseController
         /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
         $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
 
+        $speakers = $event->getSpeakers();
+
         /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
-        foreach ($event->getSpeakers() as &$speaker) {
+        foreach ($speakers as &$speaker) {
             $speaker->setReviews(
                 $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
             );
