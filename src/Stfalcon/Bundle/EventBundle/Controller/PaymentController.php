@@ -162,7 +162,11 @@ class PaymentController extends Controller {
         if (!$payment) {
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(6);
+
+            /**
+             * @todo "8" hot fix last event
+             */
+            $event = $em->getRepository('StfalconEventBundle:Event')->find(8);
             $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
             if (!$payment) {
