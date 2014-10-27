@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Stfalcon\Bundle\EventBundle\Service\InterkassaService;
 // @todo перенести в EventBundle
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 
@@ -41,9 +42,9 @@ class PaymentController extends Controller {
             throw new Exception('Платеж №' . $request->get('ik_pm_no') . ' не найден!');
         }
 
-        // @var InterkassaService $interkassa
+        /** @var InterkassaService $interkassa */
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
-        if ($payment->isPending() && 1) { //$interkassa->checkPayment($payment, $request)) {
+        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -161,7 +162,11 @@ class PaymentController extends Controller {
         if (!$payment) {
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(6);
+
+            /**
+             * @todo "8" hot fix last event
+             */
+            $event = $em->getRepository('StfalconEventBundle:Event')->find(8);
             $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
             if (!$payment) {
