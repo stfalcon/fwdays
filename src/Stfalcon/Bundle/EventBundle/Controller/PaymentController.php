@@ -46,7 +46,10 @@ class PaymentController extends Controller {
         /** @var InterkassaService $interkassa */
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
 
-        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
+        /**
+         * remove check "&& $interkassa->checkPayment($payment, $request)"
+         */
+        if ($payment->isPending()) {
             $payment->markedAsPaid();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
