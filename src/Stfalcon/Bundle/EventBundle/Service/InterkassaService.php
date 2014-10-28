@@ -73,7 +73,7 @@ class InterkassaService
         if ($request->get('ik_co_id') == $config['interkassa']['shop_id'] &&
             $request->get('ik_am') == $payment->getAmount() &&
             $request->get('ik_inv_st') == 'success' &&
-            $request->get('ik_sign') == $this->getSignHash($request->request->all())
+            $request->get('ik_sign') == $this->getSignHash($request->query->all())
         ) {
             return true;
         }

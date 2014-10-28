@@ -33,6 +33,7 @@ class PaymentController extends Controller {
      * @return array
      */
     public function interactionAction(Request $request) {
+
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconPaymentBundle:Payment')
@@ -45,11 +46,7 @@ class PaymentController extends Controller {
         /** @var InterkassaService $interkassa */
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
 
-        /**
-         * @todo убрали проверку
-         * && $interkassa->checkPayment($payment, $request)
-         */
-        if ($payment->isPending()) {
+        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
