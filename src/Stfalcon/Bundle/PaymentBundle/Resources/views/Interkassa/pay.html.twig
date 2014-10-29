@@ -8,7 +8,7 @@
             <a href="#">Оплатить других участников</a>
         </div>
 
-        <form action="{{ path('add_participants_to_payment', {'slug': event.slug, 'id': payment.id}) }}" method="POST"
+        <form action="{{ path('add_participants_to_payment', {'slug': event.slug}) }}" method="POST"
               class="payment-form participants-form">
 
             <div id="participants-form">
@@ -32,6 +32,7 @@
                     <a class="add-new-participant" href="#">Еще участники</a>
                 </div>
             </div>
+            <input type="hidden" name="stfalcon_event_ticket[_token]" value="{{ csrf_token("event_ticket_intention") }}" />
             <!-- /.wrap -->
         </form>
 

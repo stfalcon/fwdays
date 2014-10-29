@@ -136,6 +136,7 @@ class TicketController extends BaseController
 
         $ticketForm = $this->createForm('stfalcon_event_ticket');
 
+        $this->get('session')->set('active_payment_id', $payment->getId());
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
@@ -153,23 +154,35 @@ class TicketController extends BaseController
 
     /**
      * @param string  $slug
-     * @param Payment $payment
      *
      * @return RedirectResponse
      *
-     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
+     * @Route("/event/{slug}/payment/participants/add", name="add_participants_to_payment")
      */
-    public function addParticipantsToPaymentAction($slug, Payment $payment)
+    public function addParticipantsToPaymentAction($slug)
     {
         // @todo це мало порефакторитись а не тупо перенести кусок гавнокоду з одного місця в інше
         $event = $this->getEventBySlug($slug);
         $em = $this->getDoctrine()->getManager();
+
+        $paymentId = $this->get('session')->get('active_payment_id', null);
+
+        if (!is_null($paymentId)) {
+            $payment = $em->getRepository('StfalconPaymentBundle:Payment')->find($paymentId);
+        } else {
+            throw $this->createNotFoundException('Unable to find payment');
+        }
+
         $request = $this->getRequest();
         $ticketForm = $this->createForm('stfalcon_event_ticket');
         $ticketForm->bind($request);
 
-        $participants = $ticketForm->get('participants')->getData();
-        $alreadyPaidTickets = array();
+        $participants = [];
+        $alreadyPaidTickets = [];
+
+        if ($ticketForm->isValid()) {
+            $participants = $ticketForm->get('participants')->getData();
+        }
 
         foreach ($participants as $participant) {
             $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
