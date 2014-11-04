@@ -23,7 +23,7 @@ class ParticipantFormType extends AbstractType
                 'label'              => 'Имя участника',
                 'required'           => true
             ))
-            ->add('email', 'text', array(
+            ->add('email', 'email', array(
                 'label'              => 'E-mail участника',
                 'required'           => true
             ));
