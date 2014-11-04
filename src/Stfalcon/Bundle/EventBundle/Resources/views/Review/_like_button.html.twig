@@ -1,8 +1,10 @@
-{% if is_granted('ROLE_USER') and event.active %}
+{% if event.active %}
     {% for review in speaker.reviews %}
         <div class="button-like {{ review.isLikedByUser(app.user)?'active' }}">
             <div class="button-like-top {{ not review.likedUsers.count?'empty' }}">{{ review.likedUsers.count?review.likedUsers.count }}</div>
-            <a href="{{ path('event_review_like', {'slug': review.slug }) }}" rel="nofollow">Хочу послушать</a>
+            <a {% if (is_granted('ROLE_USER')) %} class="voter" {% endif %}
+
+                    href="{{ path('event_review_like', {'slug': review.slug }) }}" rel="nofollow">Хочу послушать</a>
         </div>
     {% endfor %}
 {% endif %}
