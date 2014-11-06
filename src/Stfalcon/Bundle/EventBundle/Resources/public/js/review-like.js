@@ -1,5 +1,5 @@
 $(document).ready(function (){
-    var $reviewLikeLink = $('.button-like a');
+    var $reviewLikeLink = $('.button-like a.voter');
 
 
     $reviewLikeLink.on('click', function(e) {
@@ -11,6 +11,11 @@ $(document).ready(function (){
             async: false,
             success: function (response) {
                 var likesCount = response.likesCount;
+
+                if (undefined === likesCount) {
+                    window.location.href = '/login';
+                }
+
                 $reviewLikeCnt.toggleClass('active');
                 if (likesCount > 0) {
                     if ($reviewLikeCounter.hasClass('empty')) {
@@ -26,4 +31,4 @@ $(document).ready(function (){
             }
         });
     });
-})
+});
