@@ -88,8 +88,9 @@ class TicketRepository extends EntityRepository
             ->from('StfalconEventBundle:Ticket', 't')
             ->join('t.user', 'u')
             ->join('t.event', 'e')
-            ->andWhere('e.active = :eventStatus')
-            ->setParameter(':eventStatus', true)
+            //@todo hot fix необходимо сделать рассылку для предыдущих ивентов
+            //->andWhere('e.active = :eventStatus')
+            //->setParameter(':eventStatus', true)
             ->groupBy('u');
 
         if ($events != null) {
