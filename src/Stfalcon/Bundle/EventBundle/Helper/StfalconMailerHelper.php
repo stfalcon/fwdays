@@ -11,13 +11,19 @@ use Twig_Environment;
  */
 class StfalconMailerHelper
 {
+
     /**
      * @var Twig_Environment $twig
      */
     protected $twig;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     * @var \Doctrine\ORM\EntityManager $em
+     */
+    protected $em;
+
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
      */
     protected $router;
 
@@ -26,11 +32,13 @@ class StfalconMailerHelper
      * Constructor
      *
      * @param Twig_Environment $twig
+     * @param \Doctrine\ORM\EntityManager $em
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      */
-    public function __construct(Twig_Environment $twig, $router)
+    public function __construct(Twig_Environment $twig, $em, $router)
     {
         $this->twig = $twig;
+        $this->em = $em;
         $this->router = $router;
     }
 
@@ -63,7 +71,7 @@ class StfalconMailerHelper
             [
                 'text' => $text,
                 'mail' => $mail,
-                'unsubscribe_link' => $unsubscribeLink
+                'unsubscribeLink' => $unsubscribeLink
             ]
         );
 
@@ -98,6 +106,39 @@ class StfalconMailerHelper
     public function renderTwigTemplate($view, $params)
     {
         return $this->twig->loadTemplate($view)->render($params);
+    }
+
+    /**
+     * Check possible to send the mail to user
+     *
+     * @param Mail $mail
+     * @param User $user
+     * @return bool
+     */
+    public function allowSendMailForUser($mail, $user)
+    {
+
+        if (!($user && $mail)) {
+            return false;
+        }
+
+        if (!$user->isSubscribe()) {
+
+            // участвует ли пользователь в этих событиях
+            foreach ($mail->getEvents() as $event) {
+
+                /** @var $eventRepository \Stfalcon\Bundle\EventBundle\Repository\EventRepository */
+                $eventRepository = $this->em->getRepository('StfalconEventBundle:Event');
+
+                if ($eventRepository->isActiveEventForUser($event, $user)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
 }

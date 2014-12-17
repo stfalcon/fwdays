@@ -64,7 +64,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!($user && $mail) || !$user->isSubscribe()) {
+            if (false === $mailerHelper->allowSendMailForUser($mail, $user)) {
                 $em->remove($item);
                 $em->flush();
                 continue;

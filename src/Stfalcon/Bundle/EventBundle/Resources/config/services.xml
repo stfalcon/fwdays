@@ -159,6 +159,7 @@
 
         <service id="stfalcon_event.mailer_helper" class="%stfalcon_event.mailer_helper.class%">
             <argument type="service" id="twig"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="router"/>
         </service>
 
