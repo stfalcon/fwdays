@@ -39,7 +39,7 @@ class PaymentListener
         if ($entity instanceof Payment) {
             if ($entity->getStatus() === Payment::STATUS_PAID) {
 
-                $tickets = $this->get('doctrine')
+                $tickets = $this->container->get('doctrine')
                     ->getManager()
                     ->getRepository('StfalconEventBundle:Ticket')
                     ->getAllTicketsByPayment($entity);
