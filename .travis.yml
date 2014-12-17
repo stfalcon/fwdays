@@ -20,7 +20,6 @@ before_script:
     - app/console doctrine:schema:create --env=test > /dev/null
     - app/console doctrine:fixtures:load --no-interaction --env=test > /dev/null
     - app/console cache:warmup --env=test > /dev/null
-
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99
     - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar > selenium.jar

@@ -2,185 +2,194 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Service\InterkassaService;
-// @todo перенести в EventBundle
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Symfony\Component\Form\FormError;
 
-// @todo тут не повинно бути цього
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
-
-/**
- * Контроллер оплаты и статусов платежей
- */
-class PaymentController extends Controller {
+class PaymentController extends BaseController
+{
 
     /**
-     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как успешный (или не отмечаем)
-     * Также рассылаем письма и билеты всем, кто был привязан к платежу
+     * Event pay
      *
-     * @Route("/payment/interaction", name="payment_interaction")
+     * @param Event $event
+     * @throws \Exception
+     *
+     * @Secure(roles="ROLE_USER")
+     * @Route("/event/{event_slug}/pay", name="event_pay")
+     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
      * @Template()
-     *
-     * @param Request $request
      *
      * @return array
      */
-    public function interactionAction(Request $request) {
-
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('StfalconPaymentBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
-
-        if (!$payment) {
-            throw new Exception('Платеж №' . $request->get('ik_pm_no') . ' не найден!');
+    public function payAction(Event $event)
+    {
+        if (!$event->getReceivePayments()) {
+            throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
 
-        /** @var InterkassaService $interkassa */
-        $interkassa = $this->container->get('stfalcon_event.interkassa.service');
+        $em = $this->getDoctrine()->getManager();
 
-        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
-            $payment->markedAsPaid();
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+        /* @var $user User */
+        $user = $this->container->get('security.context')->getToken()->getUser();
 
-            /** @var Ticket  $ticket */
-            foreach ($payment->getTickets() as $ticket) {
-                // розсилка квитків
-                // @todo тут має смикатись сервіс який розсилає мильники про успішну оплату квитків + пдф в аттачі
-                $user  = $ticket->getUser();
-                $event = $ticket->getEvent();
+        /* @var $ticket Ticket */
+        $ticket = $this->container->get('stfalcon_event.ticket.service')
+            ->findTicketForEventByCurrentUser($event);
 
-                $twig = $this->get('twig');
-
-                // @todo ачуметь.. екшн в одному бандлі. вьюшка в іншому
-                $successPaymentTemplateContent = $twig->loadTemplate('StfalconEventBundle:Interkassa:success_payment.html.twig')
-                    ->render(array(
-                        'event_slug' => $event->getSlug()
-                    ));
-
-                $mail = new Mail();
-                $mail->addEvent($event);
-                $mail->setText($successPaymentTemplateContent);
-
-                // Get base template for email
-                $emailTemplateContent = $twig->loadTemplate('StfalconEventBundle::email.html.twig');
-
-                $dateFormatter = new \IntlDateFormatter(
-                    'ru-RU',
-                    \IntlDateFormatter::NONE,
-                    \IntlDateFormatter::NONE,
-                    date_default_timezone_get(),
-                    \IntlDateFormatter::GREGORIAN,
-                    'd MMMM Y'
-                );
-
-                $text = $mail->replace(
-                    array(
-                        '%fullname%' => $user->getFullName(),
-                        '%event%'    => $event->getName(),
-                        '%date%'     => $dateFormatter->format($event->getDate()),
-                        '%place%'    => $event->getPlace(),
-                    )
-                );
-
-                $body = $emailTemplateContent->render(array(
-                    'text'               => $text,
-                    'mail'               => $mail,
-                    'add_bottom_padding' => true
-                ));
-
-                /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
-                $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-                $html = $pdfGen->generateHTML($ticket);
-                $outputFile = 'ticket-' . $event->getSlug() . '.pdf';
-
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($event->getName())
-                    ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                    ->setTo($user->getEmail())
-                    ->setBody($body, 'text/html')
-                    ->attach(\Swift_Attachment::newInstance($pdfGen->generatePdfFile($html, $outputFile), $outputFile));
-
-                $this->get('mailer')->send($message);
-            }
-
-            return new Response('SUCCESS', 200);
+        if (!$payment = $ticket->getPayment()) {
+            $payment = new Payment();
+            $payment->setUser($user);
+            $em->persist($payment);
+            $payment->addTicket($ticket);
+            $em->persist($ticket);
         }
 
-        return new Response('FAIL', 400);
-    }
+        if (!$payment->isPaid()) {
+            $this->get('stfalcon_event.payment_manager')
+                ->checkTicketsPricesInPayment($payment, $event->getCost());
+        }
 
-    /**
-     * Платеж проведен успешно. Показываем пользователю соответствующее сообщение.
-     *
-     * @Route("/payment/success", name="payment_success")
-     * @Template()
-     *
-     * @return array
-     */
-    public function successAction()
-    {
-        return array();
-    }
+        $em->flush();
 
-    /**
-     * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
-     *
-     * @Route("/payment/fail", name="payment_fail")
-     * @Template()
-     *
-     * @return array
-     */
-    public function failAction()
-    {
-        return array();
-    }
+        /**
+         * Обработка формы промо кода
+         */
+        $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
 
-    /**
-     * Оплата не завершена. Ожидаем ответ шлюза
-     *
-     * @param Request $request
-     *
-     * @Route("/payment/pending", name="payment_pending")
-     * @Template()
-     *
-     * @return array
-     */
-    public function pendingAction(Request $request)
-    {
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('StfalconPaymentBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
+        $promoCode = $payment->getPromoCodeFromTickets();
+        $request = $this->getRequest();
 
-        if (!$payment) {
-            $user = $this->getUser();
-            $em = $this->getDoctrine()->getManager();
+        // процент скидки для постоянных участников
+        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
+        $discountAmount = 100 * (float)$paymentsConfig['discount'];
 
-            /**
-             * @todo "8" hot fix last event
-             */
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(8);
-            $paymentRepository = $em->getRepository('StfalconPaymentBundle:Payment');
-            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
-            if (!$payment) {
-                return $this->forward('StfalconEventBundle:Payment:fail');
+        if ($request->isMethod('post')) {
+            $promoCodeForm->bind($request);
+            $code = $promoCodeForm->get('code')->getData();
+            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
+                ->findActivePromoCodeByCodeAndEvent($code, $event);
+
+            if ($promoCode) {
+                $notUsedPromoCode = $payment->addPromoCodeForTickets($promoCode, $discountAmount);
+                $em->flush();
+
+                if (!empty($notUsedPromoCode)) {
+                    $this->get('session')->getFlashBag()->add('not_used_promocode', implode(', ', $notUsedPromoCode));
+                }
+
+            } else {
+                $promoCodeForm->get('code')->addError(new FormError('Такой промокод не найден'));
             }
         }
 
-        if ($payment->isPaid()) {
-            return $this->forward('StfalconEventBundle:Payment:success');
+        return array(
+            'data' => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
+            'event' => $event,
+            'payment' => $payment,
+            'promoCodeForm' => $promoCodeForm->createView(),
+            'promoCode' => $promoCode,
+            'ticketForm' => $this->createForm('stfalcon_event_ticket')->createView(),
+            'discountAmount' => $discountAmount
+        );
+    }
+
+
+    /**
+     * Добавления участников к платежу
+     *
+     * @param string $slug
+     * @param Payment $payment
+     *
+     * @return RedirectResponse
+     *
+     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
+     */
+    public function addParticipantsToPaymentAction($slug, Payment $payment)
+    {
+        $event = $this->getEventBySlug($slug);
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $ticketForm = $this->createForm('stfalcon_event_ticket');
+        $ticketForm->bind($request);
+
+        $participants = $ticketForm->get('participants')->getData();
+        $alreadyPaidTickets = array();
+
+        foreach ($participants as $participant) {
+            $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
+
+            // создаем нового пользователя
+            if (!$user) {
+                $user = $this->get('fos_user.user_manager')->autoRegistration($participant);
+            }
+
+            // проверяем или у него нет билетов на этот ивент
+            /** @var Ticket $ticket */
+            $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+
+            if (!$ticket) {
+                $ticket = $this->container->get('stfalcon_event.ticket.service')
+                    ->createTicket($event, $user);
+            }
+
+            if (!$ticket->isPaid()) {
+                if (($promoCode = $payment->getPromoCodeFromTickets()) && !$ticket->getHasDiscount()) {
+                    $ticket->setPromoCode($promoCode);
+                }
+                $ticket->setPayment($payment);
+            } else {
+                $alreadyPaidTickets[] = $user->getFullname();
+            }
+            $em->persist($payment);
+            $em->persist($ticket);
         }
 
-        return array();
+        $em->flush();
+        if (!empty($alreadyPaidTickets)) {
+            $this->get('session')->getFlashBag()->add('already_paid_tickets', implode(', ', $alreadyPaidTickets));
+        }
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
+    }
+
+    /**
+     *
+     * Удаления билета на события в платеже
+     *
+     * @param string $event_slug
+     * @param int $payment_id
+     * @param Ticket $ticket
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     *
+     * @Route("/event/{event_slug}/payment/{payment_id}/ticket/{id}/remove", name="remove_ticket_from_payment")
+     */
+    public function removeTicketFromPaymentAction($event_slug, $payment_id, Ticket $ticket)
+    {
+        $event = $this->getEventBySlug($event_slug);
+
+        $em = $this->getDoctrine()->getManager();
+        $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
+        $payment = $paymentRepository->find($payment_id);
+
+        if (!$payment) {
+            throw $this->createNotFoundException('Unable to find Payment entity.');
+        }
+
+        // а якщо чувак оплатив квиток?
+        $payment->removeTicket($ticket);
+        $em->remove($ticket);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
     }
 
 }

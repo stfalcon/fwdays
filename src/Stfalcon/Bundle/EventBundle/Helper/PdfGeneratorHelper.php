@@ -2,6 +2,7 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
@@ -57,52 +58,17 @@ class PdfGeneratorHelper
     }
 
     /**
-     * Create HTML template for ticket invitation
-     *
-     * @param Ticket $ticket
-     *
-     * @return string
-     */
-    public function generateHTML(Ticket $ticket)
-    {
-        $twig = $this->templating;
-
-        $url = $this->router->generate(
-            'event_ticket_check',
-            array(
-                'ticket' => $ticket->getId(),
-                'hash'   => $ticket->getHash()
-            ),
-            true
-        );
-
-        $this->qrCode->setText($url);
-        $this->qrCode->setSize(105);
-        $this->qrCode->setPadding(0);
-        $qrCodeBase64 = base64_encode($this->qrCode->get());
-        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:show_pdf.html.twig');
-        $body = $templateContent->render(array(
-                'ticket'       => $ticket,
-                'qrCodeBase64' => $qrCodeBase64,
-                'path'         => realpath($this->kernel->getRootDir() . '/../web') . '/'
-            ));
-
-        return $body;
-    }
-
-    /**
      * Generate PDF-file of ticket
      *
-     * @param string $html       HTML to generate pdf
-     * @param string $outputFile Name of output file
+     * @param Ticket $ticket
+     * @param string $html
      *
      * @return mixed
      */
-    public function generatePdfFile($html, $outputFile)
+    public function generatePdfFile(Ticket $ticket, $html)
     {
         // Override default fonts directory for mPDF
         define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/open-sans/') . '/');
-
 
         /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
         $mPDFService = $this->container->get('tfox.mpdfport');
@@ -140,8 +106,43 @@ class PdfGeneratorHelper
 
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
-        $pdfFile = $mPDF->Output($outputFile, 'S');
+        $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');
 
         return $pdfFile;
     }
+
+    /**
+     * Create HTML template for ticket invitation
+     *
+     * @param Ticket $ticket
+     *
+     * @return string
+     */
+    public function generateHTML(Ticket $ticket)
+    {
+        $twig = $this->templating;
+
+        $url = $this->router->generate(
+            'event_ticket_registration',
+            array(
+                'ticket' => $ticket->getId(),
+                'hash'   => $ticket->getHash()
+            ),
+            true
+        );
+
+        $this->qrCode->setText($url);
+        $this->qrCode->setSize(105);
+        $this->qrCode->setPadding(0);
+        $qrCodeBase64 = base64_encode($this->qrCode->get());
+        $templateContent = $twig->loadTemplate('StfalconEventBundle:Ticket:_pdf.html.twig');
+        $body = $templateContent->render(array(
+                'ticket'       => $ticket,
+                'qrCodeBase64' => $qrCodeBase64,
+                'path'         => realpath($this->kernel->getRootDir() . '/../web') . '/'
+            ));
+
+        return $body;
+    }
+
 }

@@ -2,10 +2,10 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
-use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\UserBundle\Entity\User;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Ticket
@@ -31,6 +31,7 @@ class Ticket
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
+    //@todo переименовать в price
     private $amount;
 
     /**
@@ -69,9 +70,9 @@ class Ticket
     private $user;
 
     /**
-     * @var Stfalcon\Bundle\PaymentBundle\Entity\Payment
+     * @var \Stfalcon\Bundle\EventBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\PaymentBundle\Entity\Payment", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment", inversedBy="tickets")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;
@@ -134,13 +135,21 @@ class Ticket
     }
 
     /**
+     * @return bool
+     */
+    public function hasPayment()
+    {
+        return (bool) $this->getPayment();
+    }
+
+    /**
      * @return Payment
      */
     public function getPayment()
     {
         return $this->payment;
     }
-
+    
     /**
      * @param Payment|null $payment
      *
@@ -194,7 +203,7 @@ class Ticket
      */
     public function isPaid()
     {
-        return (bool) ($this->getPayment() != null && $this->getPayment()->isPaid());
+        return (bool) ($this->hasPayment() && $this->getPayment()->isPaid());
     }
 
     /**
@@ -202,7 +211,8 @@ class Ticket
      *
      * @param bool $used
      */
-    public function setUsed($used){
+    public function setUsed($used)
+    {
         $this->used = $used;
     }
 
@@ -225,9 +235,6 @@ class Ticket
         return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return (string) $this->getId() . ' (' . $this->getUser()->getFullname() . ')';
@@ -238,7 +245,12 @@ class Ticket
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        // мы можем устанавливать/обновлять стоимость только для билетов 
+        // с неоплаченными платежами
+//        if ($this->hasPayment() && $this->getPayment()->isPending()) {
+            $this->amount = $amount;
+//            $this->getPayment()->recalculateAmount();
+//        }
     }
 
     /**
@@ -306,5 +318,31 @@ class Ticket
     public function getHasDiscount()
     {
         return $this->hasDiscount;
+    }
+    
+    /**
+     * @return string
+     */
+    public function generatePdfFilename()
+    {
+        return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
+    }
+
+    /**
+     * Set amount with discount.
+     * If has promo code use discount with promo code
+     *
+     * @param $discount
+     */
+    public function setAmountWithDiscount($discount) {
+        $price = $this->getAmountWithoutDiscount();
+
+        if ($promoCode = $this->getPromoCode()) {
+            $cost = $price - ($price * ($promoCode->getDiscountAmount() / 100));
+        } else {
+            $cost = $price - ($price * $discount);
+        }
+
+        $this->setAmount($cost);
     }
 }

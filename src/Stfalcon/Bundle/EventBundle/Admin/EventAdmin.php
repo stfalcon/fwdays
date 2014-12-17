@@ -5,7 +5,6 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class EventAdmin
@@ -24,9 +23,13 @@ class EventAdmin extends Admin
             ->add('active')
             ->add('receivePayments')
             ->add('cost')
-            ->add('images', 'string', array(
+            ->add(
+                'images',
+                'string',
+                array(
                     'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
-                ));
+                )
+            );
     }
 
     /**
@@ -34,31 +37,46 @@ class EventAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $subject = $this->getSubject();
+
         $formMapper
             ->with('General')
-                ->add('name')
-                ->add('slug')
-                ->add('city')
-                ->add('place')
-                ->add('date')
-                ->add('description')
-                ->add('about')
-                ->add('active', null, array('required' => false))
-                ->add('receivePayments', null, array('required' => false))
-                ->add('cost', null, array('required' => true))
+            ->add('name')
+            ->add('slug')
+            ->add('city')
+            ->add('place')
+            ->add('date')
+            ->add('description')
+            ->add('about')
+            ->add('active', null, array('required' => false))
+            ->add('receivePayments', null, array('required' => false))
+            ->add('cost', null, array('required' => true))
             ->end()
             ->with('Images')
-                ->add('logoFile', 'file', array(
-                    'label' => 'Logo'
-                ))
-                ->add('pdfBackgroundFile', 'file', array(
+            ->add(
+                'logoFile',
+                'file',
+                array(
+                    'label' => 'Logo',
+                    'required' => is_null($subject->getLogo())
+                )
+            )
+            ->add(
+                'pdfBackgroundFile',
+                'file',
+                array(
                     'label' => 'Background image',
                     'required' => false,
-                ))
-                ->add('emailBackgroundFile', 'file', array(
+                )
+            )
+            ->add(
+                'emailBackgroundFile',
+                'file',
+                array(
                     'label' => 'Email background',
                     'required' => false,
-                ))
+                )
+            )
             ->end();
     }
 

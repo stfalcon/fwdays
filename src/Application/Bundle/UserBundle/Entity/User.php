@@ -5,6 +5,7 @@ namespace Application\Bundle\UserBundle\Entity;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -73,6 +74,18 @@ class User extends BaseUser
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="user")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $tickets;
+
+
+    public function __construct() {
+        parent::__construct();
+        $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Redefinition email setter for use email as username
@@ -148,7 +161,7 @@ class User extends BaseUser
     /**
      * User has subscribed to the newsletter?
      *
-     * @return string
+     * @return bool
      */
     public function isSubscribe()
     {
@@ -224,4 +237,40 @@ class User extends BaseUser
     {
         return $this->country;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @param mixed $tickets
+     * @return $this
+     */
+    public function setTickets($tickets)
+    {
+        if (count($tickets) > 0) {
+            foreach ($tickets as $item) {
+                $this->addTicket($item);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addTicket(Ticket $ticket)
+    {
+        $ticket->setUser($this);
+        $this->tickets->add($ticket);
+    }
+
+    public function removeTicket(Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+
 }

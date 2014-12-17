@@ -12,8 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
 
 use Stfalcon\Bundle\EventBundle\Entity\Ticket,
     Stfalcon\Bundle\EventBundle\Entity\Event,
-    Stfalcon\Bundle\PaymentBundle\Entity\Payment;
-use Symfony\Component\Form\FormError;
+    Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Ticket controller
@@ -37,12 +36,13 @@ class TicketController extends BaseController
         $event  = $this->getEventBySlug($event_slug);
         $user = $this->get('security.context')->getToken()->getUser();
 
-        // проверяем или у него нет билетов на этот ивент
-        $ticket = $this->_findTicketForEventByCurrentUser($event);
-
-        // если нет, тогда создаем билет
+        // ищем билет на этот ивент
+        $ticket = $this->container->get('stfalcon_event.ticket.service')
+            ->findTicketForEventByCurrentUser($event);
+        // если билета нет, тогда создаем новый
         if (is_null($ticket)) {
-            $this->createTicket($event, $user);
+            $this->container->get('stfalcon_event.ticket.service')
+                ->createTicket($event, $user);
         }
 
         // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
@@ -136,7 +136,6 @@ class TicketController extends BaseController
 
         $ticketForm = $this->createForm('stfalcon_event_ticket');
 
-        $this->get('session')->set('active_payment_id', $payment->getId());
 
         return $this->forward(
             'StfalconPaymentBundle:Interkassa:pay',
@@ -154,35 +153,23 @@ class TicketController extends BaseController
 
     /**
      * @param string  $slug
+     * @param Payment $payment
      *
      * @return RedirectResponse
      *
-     * @Route("/event/{slug}/payment/participants/add", name="add_participants_to_payment")
+     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
      */
-    public function addParticipantsToPaymentAction($slug)
+    public function addParticipantsToPaymentAction($slug, Payment $payment)
     {
         // @todo це мало порефакторитись а не тупо перенести кусок гавнокоду з одного місця в інше
         $event = $this->getEventBySlug($slug);
         $em = $this->getDoctrine()->getManager();
-
-        $paymentId = $this->get('session')->get('active_payment_id', null);
-
-        if (!is_null($paymentId)) {
-            $payment = $em->getRepository('StfalconPaymentBundle:Payment')->find($paymentId);
-        } else {
-            throw $this->createNotFoundException('Unable to find payment');
-        }
-
         $request = $this->getRequest();
         $ticketForm = $this->createForm('stfalcon_event_ticket');
         $ticketForm->bind($request);
 
-        $participants = [];
-        $alreadyPaidTickets = [];
-
-        if ($ticketForm->isValid()) {
-            $participants = $ticketForm->get('participants')->getData();
-        }
+        $participants = $ticketForm->get('participants')->getData();
+        $alreadyPaidTickets = array();
 
         foreach ($participants as $participant) {
             $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
@@ -293,40 +280,13 @@ class TicketController extends BaseController
      */
     public function statusAction(Event $event)
     {
-        $ticket = $this->_findTicketForEventByCurrentUser($event);
+        $ticket = $this->container->get('stfalcon_event.ticket.service')
+                ->findTicketForEventByCurrentUser($event);
 
         return array(
             'event'  => $event,
             'ticket' => $ticket
         );
-    }
-
-    /**
-     * Find ticket for event by current user
-     *
-     * @param Event $event
-     *
-     * @return Ticket|null
-     */
-    private function _findTicketForEventByCurrentUser(Event $event)
-    {
-        // @todo в сервіс
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
-        $ticket = null;
-        if (is_object($user) && $user instanceof \FOS\UserBundle\Model\UserInterface) {
-            // проверяем или у пользователя есть билеты на этот ивент
-            $ticket = $this->getDoctrine()->getManager()
-                ->getRepository('StfalconEventBundle:Ticket')
-                ->findOneBy(
-                    array(
-                        'event' => $event->getId(),
-                        'user'  => $user->getId()
-                    )
-                );
-        }
-
-        return $ticket;
     }
 
     /**
@@ -337,13 +297,14 @@ class TicketController extends BaseController
      * @return array
      *
      * @Secure(roles="ROLE_USER")
-     * @Route("/event/{event_slug}/ticket", name="event_ticket_show")
-     * @Template()
+     * @Route("/event/{event_slug}/ticket", name="event_ticket_download")
      */
-    public function showAction($event_slug)
+    public function downloadAction($event_slug)
     {
         $event  = $this->getEventBySlug($event_slug);
-        $ticket = $this->_findTicketForEventByCurrentUser($event);
+        /** @var Ticket $ticket */
+        $ticket = $this->container->get('stfalcon_event.ticket.service')
+                ->findTicketForEventByCurrentUser($event);
 
         if (!$ticket || !$ticket->isPaid()) {
             return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
@@ -351,16 +312,14 @@ class TicketController extends BaseController
 
         /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
         $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-        // @todo чому зразу не передати ticket в generatePdfFile? і не генерувати html в екшені
         $html = $pdfGen->generateHTML($ticket);
-        $fileName = 'ticket-' . $event->getSlug() . '.pdf';
 
         return new Response(
-            $pdfGen->generatePdfFile($html, $fileName),
+            $pdfGen->generatePdfFile($ticket, $html),
             200,
             array(
                 'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'attach; filename="' . $fileName . '"'
+                'Content-Disposition' => 'attach; filename="' . $ticket->generatePdfFilename() . '"'
             )
         );
     }
@@ -373,17 +332,18 @@ class TicketController extends BaseController
      *
      * @return Response
      *
-     * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_check")
+     * @Route("/ticket/{ticket}/check/{hash}", name="event_ticket_registration")
      */
-    public function checkAction(Ticket $ticket, $hash)
+    public function registrationAction(Ticket $ticket, $hash)
     {
-        // @todo ця вся (майже вся) логіка чудно виноситься в вьюшку
-        // проверяем хеш
+        //bag fix test ticket.feature:27
+        // сверяем хеш билета и хеш из урла
         if ($ticket->getHash() != $hash) {
-            // не совпадает хеш билета и хеш в урле
-            return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() .'</h1>', 403);
+            return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() . '</h1>', 403);
         }
 
+        //bag fix test ticket.feature:33
+        // любопытных пользователей перенаправляем на страницу события
         if (!$this->get('security.context')->isGranted('ROLE_VOLUNTEER')) {
             return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
         }
@@ -406,8 +366,8 @@ class TicketController extends BaseController
             return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' оплата не существует' . '</h1>');
         }
 
-        $em = $this->getDoctrine()->getManager();
         // отмечаем билет как использованный
+        $em = $this->getDoctrine()->getManager();
         $ticket->setUsed(true);
         $em->flush();
 
@@ -439,7 +399,7 @@ class TicketController extends BaseController
 
         if (is_object($ticket)) {
             $url = $this->generateUrl(
-                'event_ticket_check',
+                'event_ticket_registration',
                 array(
                     'ticket' => $ticket->getId(),
                     'hash'   => $ticket->getHash()
