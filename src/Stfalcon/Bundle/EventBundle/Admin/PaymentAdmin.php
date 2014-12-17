@@ -7,9 +7,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-
 use Knp\Bundle\MenuBundle\MenuItem;
-
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
@@ -28,7 +26,7 @@ class PaymentAdmin extends Admin
                     'route' => array(
                         'name' => 'show'
                     ),
-                    'template' => 'StfalconPaymentBundle:PaymentAdmin:list_tickets.html.twig'
+                    'template' => 'StfalconEventBundle:Admin:list_tickets.html.twig'
                 )
             )
             ->add('gate')

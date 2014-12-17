@@ -39,8 +39,13 @@ class PaymentListener
         if ($entity instanceof Payment) {
             if ($entity->getStatus() === Payment::STATUS_PAID) {
 
+                $tickets = $this->get('doctrine')
+                    ->getManager()
+                    ->getRepository('StfalconEventBundle:Ticket')
+                    ->getAllTicketsByPayment($entity);
+
                 /** @var Ticket $ticket */
-                foreach ($entity->getTickets() as $ticket) {
+                foreach ($tickets as $ticket) {
                     /** @var $user User */
                     $user = $ticket->getUser();
 

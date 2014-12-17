@@ -1,17 +1,10 @@
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
-    {% if
-    field_description.options.identifier is defined
-    and field_description.options.route is defined
-    and admin.isGranted(field_description.options.route.name == 'show' ? 'VIEW' : field_description.options.route.name|upper, object)
-    and admin.hasRoute(field_description.options.route.name)
-    %}
-    {% for element in value %}
-        {{ block('relation_link') }}
-        {% if not loop.last %}, {% endif %}
-    {% endfor %}
-
-        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters) }}">
-            {%- block field %}{{ value }}{% endblock -%}
-        </a>
-    {% endif %}
+    {%- block field %}
+        {% for element in value %}
+            <a class="sonata-link-identifier" href="{{ path('admin_stfalcon_event_ticket_show',{'id':element.id}) }}">
+                {{ element.user }}
+            </a>
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endblock -%}
 </td>

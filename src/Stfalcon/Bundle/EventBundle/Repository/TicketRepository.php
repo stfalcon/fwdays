@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * EventRepository
@@ -212,5 +213,16 @@ class TicketRepository extends EntityRepository
                 'user'  => $user->getId()
             )
         );
+    }
+
+    /**
+     * Get all tickets for payment
+     *
+     * @param Payment $payment
+     *
+     * @return array
+     */
+    public function getAllTicketsByPayment(Payment $payment) {
+        return $this->findBy(['payment' => $payment]);
     }
 }
