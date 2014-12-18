@@ -88,6 +88,8 @@ class PaymentController extends BaseController
             }
         }
 
+        $this->get('session')->set('active_payment_id', $payment->getId());
+
         return array(
             'data' => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
             'event' => $event,
@@ -104,19 +106,30 @@ class PaymentController extends BaseController
      * Добавления участников к платежу
      *
      * @param string $slug
-     * @param Payment $payment
      *
      * @return RedirectResponse
      *
-     * @Route("/event/{slug}/payment/{id}/participants/add", name="add_participants_to_payment")
+     * @Route("/event/{slug}/payment/participants/add", name="add_participants_to_payment")
      */
-    public function addParticipantsToPaymentAction($slug, Payment $payment)
+    public function addParticipantsToPaymentAction($slug)
     {
         $event = $this->getEventBySlug($slug);
         $em = $this->getDoctrine()->getManager();
+
+        $paymentId = $this->get('session')->get('active_payment_id', null);
+
+        if (!is_null($paymentId)) {
+            $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
+        } else {
+            throw $this->createNotFoundException('Unable to find payment');
+        }
+
+
+
         $request = $this->getRequest();
         $ticketForm = $this->createForm('stfalcon_event_ticket');
         $ticketForm->bind($request);
+
 
         $participants = $ticketForm->get('participants')->getData();
         $alreadyPaidTickets = array();
