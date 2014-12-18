@@ -165,7 +165,7 @@ class User extends BaseUser
      */
     public function isSubscribe()
     {
-        return $this->subscribe;
+        return (boolean)$this->subscribe;
     }
 
     /**

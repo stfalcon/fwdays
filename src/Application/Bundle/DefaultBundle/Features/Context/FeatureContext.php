@@ -42,7 +42,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @BeforeScenario
      */
-    public function beforeScen()
+    public function beforeScenario()
     {
         $loader = new Loader();
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
@@ -51,21 +51,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         $this->em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $connection = $this->em->getConnection();
-        $connection->beginTransaction();
-        $connection->query('SET FOREIGN_KEY_CHECKS=0');
-        $connection->commit();
-
-        $purger   = new ORMPurger();
+        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $purger = new ORMPurger();
         $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($this->em, $purger);
         $executor->purge();
-
-        $connection->beginTransaction();
-        $connection->query('SET FOREIGN_KEY_CHECKS=1');
-        $connection->commit();
-
         $executor->execute($loader->getFixtures(), true);
+        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
     }
 
     /**
@@ -90,7 +82,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $url = $this->kernel->getContainer()->get('router')->generate(
             'unsubscribe',
             [
-                'hash' => $user->getSalt(),
+                'hash'   => $user->getSalt(),
                 'userId' => $user->getId()
             ]
         );
@@ -105,8 +97,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $user = $this->em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['username' => $username]);
+        $this->em->refresh($user);
 
+        assertNotNull($user);
         assertFalse($user->isSubscribe());
     }
-
 }

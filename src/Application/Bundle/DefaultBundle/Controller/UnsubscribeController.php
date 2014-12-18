@@ -28,7 +28,6 @@ class UnsubscribeController extends Controller
      * @Route("/unsubscribe/{hash}/{userId}", name="unsubscribe")
      */
     public function actionUnsubscribe($userId, $hash) {
-
         /**
          * @var User $subscriber
          */
