@@ -15,27 +15,4 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 class EventRepository extends EntityRepository
 {
 
-    /**
-     * User involved in an event
-     *
-     * @param User $user
-     * @param Event $event
-     *
-     * @return boolean
-     */
-    public function isActiveEventForUser(Event $event, User $user)
-    {
-        return (bool)$this->getEntityManager()
-            ->createQuery('
-                SELECT COUNT(t.id)
-                FROM StfalconEventBundle:Ticket t
-                JOIN t.event e
-                WHERE e.active = TRUE
-                    AND t.user = :user
-                    AND t.event = :event
-            ')
-            ->setParameter('event', $event)
-            ->setParameter('user', $user)
-            ->getSingleScalarResult();
-    }
 }

@@ -25,6 +25,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     protected $kernel;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $em;
+
+    /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
      *
      * @return null
@@ -44,18 +49,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
         $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
 
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $connection = $em->getConnection();
+        $this->em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
+        $connection = $this->em->getConnection();
         $connection->beginTransaction();
-
         $connection->query('SET FOREIGN_KEY_CHECKS=0');
         $connection->commit();
 
         $purger   = new ORMPurger();
         $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
-        $executor = new ORMExecutor($em, $purger);
+        $executor = new ORMExecutor($this->em, $purger);
         $executor->purge();
 
         $connection->beginTransaction();
@@ -70,12 +73,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userIsSubscribed($username)
     {
-        /**
-         * @var \Doctrine\ORM\EntityManager
-         */
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
-
-        $user = $em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['username' => $username]);
 
         assertTrue($user->isSubscribe());
@@ -86,12 +84,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userGoToLinkUnsubscribe($username)
     {
-        /**
-         * @var \Doctrine\ORM\EntityManager
-         */
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
-
-        $user = $em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['username' => $username]);
 
         $url = $this->kernel->getContainer()->get('router')->generate(
@@ -110,12 +103,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userIsUnsubscribed($username)
     {
-        /**
-         * @var \Doctrine\ORM\EntityManager
-         */
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
-
-        $user = $em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['username' => $username]);
 
         assertFalse($user->isSubscribe());

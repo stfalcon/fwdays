@@ -108,38 +108,5 @@ class StfalconMailerHelper
         return $this->twig->loadTemplate($view)->render($params);
     }
 
-    /**
-     * Check possible to send the mail to user
-     *
-     * @param Mail $mail
-     * @param User $user
-     * @return bool
-     */
-    public function allowSendMailForUser($mail, $user)
-    {
-
-        if (!($user && $mail)) {
-            return false;
-        }
-
-        if (!$user->isSubscribe()) {
-
-            // участвует ли пользователь в этих событиях
-            foreach ($mail->getEvents() as $event) {
-
-                /** @var $eventRepository \Stfalcon\Bundle\EventBundle\Repository\EventRepository */
-                $eventRepository = $this->em->getRepository('StfalconEventBundle:Event');
-
-                if ($eventRepository->isActiveEventForUser($event, $user)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
 }
 
