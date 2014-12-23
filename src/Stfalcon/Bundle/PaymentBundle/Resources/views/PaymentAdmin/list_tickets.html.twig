@@ -1,8 +1,0 @@
-{% extends 'SonataDoctrineORMAdminBundle:CRUD:list_orm_one_to_many.html.twig' %}
-
-{% block field %}
-    {% for element in value%}
-            {{ block('relation_link') }}
-        {% if not loop.last %}, {% endif %}
-    {% endfor %}
-{% endblock %}

@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * EventRepository
@@ -14,6 +15,10 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class TicketRepository extends EntityRepository
 {
+    // @todo це ппц. половина методів незрозуміло для чого. мені треба пошук квитка для юзера на івент. 
+    // підозрюю, що він тут є, але так сходу не вгадаєш
+    // треба передивитись методи і забрати зайве, а решту нормально назвати
+    
     /**
      * Find tickets of active events for some user
      *
@@ -191,5 +196,33 @@ class TicketRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    
+    /**
+     *  Find ticket for event by user
+     * 
+     * @param Event $event
+     * @param User $user
+     * 
+     * @return Ticket
+     */
+    public function getTicketForEventByUser(Event $event, User $user) {
+        return $this->findOneBy(
+            array(
+                'event' => $event->getId(),
+                'user'  => $user->getId()
+            )
+        );
+    }
+
+    /**
+     * Get all tickets for payment
+     *
+     * @param Payment $payment
+     *
+     * @return array
+     */
+    public function getAllTicketsByPayment(Payment $payment) {
+        return $this->findBy(['payment' => $payment]);
     }
 }
