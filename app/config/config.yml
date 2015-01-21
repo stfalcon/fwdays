@@ -131,7 +131,7 @@ sonata_admin:
                 position: left
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Пользователи", "События", "Билеты"]
+                    groups: ["Пользователи", "События", "Билеты", "Спонсоры"]
             -
                 position: right
                 type: sonata.admin.block.admin_list
