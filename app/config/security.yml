@@ -13,6 +13,14 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+                remember_me: true
+            remember_me:
+                key: %secret%
+                lifetime: 31536000 # 365 days in seconds
+                path: ~
+                domain: ~
+                always_remember_me: true
             logout:       true
             anonymous:    true
 
