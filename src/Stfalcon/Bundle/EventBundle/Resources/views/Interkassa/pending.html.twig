@@ -1,0 +1,16 @@
+{% extends 'StfalconEventBundle::layout.html.twig' %}
+
+{% block content %}
+    <h2>Оплата ещё не завершена!</h2>
+
+    Пожалуйста, подождите немного, пока мы получим подтверждение оплаты.
+
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    <script type="text/JavaScript">
+        // auto refresh page with js
+        setTimeout("location.reload(true);", 10000);
+    </script>
+{% endblock %}

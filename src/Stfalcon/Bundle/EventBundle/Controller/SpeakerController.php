@@ -26,14 +26,10 @@ class SpeakerController extends BaseController
     {
         $event = $this->getEventBySlug($event_slug);
 
-        // @todo почему нельзя просто взять $event->getSpeakers?
-        /** @var $speakerRepository \Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository */
-        $speakerRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Speaker');
-
         /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
         $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
 
-        $speakers = $speakerRepository->findSpeakersForEvent($event_slug);
+        $speakers = $event->getSpeakers();
 
         /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
         foreach ($speakers as &$speaker) {
@@ -44,7 +40,7 @@ class SpeakerController extends BaseController
 
         return array(
             'event'    => $event,
-            'speakers' => $speakers
+            'speakers' => $event->getSpeakers()
         );
     }
 

@@ -20,9 +20,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('stfalcon_event');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('discount')->end()
+                ->arrayNode('interkassa')
+                    ->children()
+                        ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end();
 
         return $treeBuilder;
     }

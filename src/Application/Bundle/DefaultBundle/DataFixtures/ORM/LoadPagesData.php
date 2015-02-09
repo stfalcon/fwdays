@@ -78,5 +78,14 @@ class LoadPagesData extends AbstractFixture
         $manager->persist($page);
 
         $manager->flush();
+
+
+        $page = new Page();
+        $page->setTitle('О Frameworks Days');
+        $page->setSlug('about');
+        $page->setText('<p>Текст страницы</p>');
+
+        $manager->persist($page);
+        $manager->flush();
     }
 }

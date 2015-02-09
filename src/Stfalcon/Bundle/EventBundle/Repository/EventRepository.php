@@ -3,6 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * EventRepository
@@ -12,4 +14,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
+
 }
