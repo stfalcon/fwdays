@@ -20,7 +20,6 @@ security:
                 lifetime: 31536000 # 365 days in seconds
                 path: ~
                 domain: ~
-                always_remember_me: true
             logout:       true
             anonymous:    true
 
