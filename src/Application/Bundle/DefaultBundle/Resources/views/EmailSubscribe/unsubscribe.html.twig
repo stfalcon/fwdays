@@ -1,0 +1,9 @@
+{% extends 'ApplicationDefaultBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Мы больше не будем присылать Вам <br/>
+        новости Framework Days
+    </h1>
+    <p>Если вы отписались по ошибке, вы можете
+        <a href="{{ path('subscribe',{'hash':hash,'userId':userId}) }}">подписаться заново</a></p>
+{% endblock %}
