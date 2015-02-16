@@ -91,6 +91,38 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @Given /^пользователь "([^"]*)" перешел на ссылку подписаться на рассылку$/
+     */
+    public function userGoToLinkSubscribe($username)
+    {
+        $user = $this->em->getRepository('ApplicationUserBundle:User')
+            ->findOneBy(['username' => $username]);
+
+        $url = $this->kernel->getContainer()->get('router')->generate(
+            'subscribe',
+            [
+                'hash'   => $user->getSalt(),
+                'userId' => $user->getId()
+            ]
+        );
+
+        $this->visit($url);
+    }
+
+    /**
+     * @Given /^пользователь "([^"]*)" должен быть подписан на рассылку$/
+     */
+    public function userShouldBeSubscribed($username)
+    {
+        $user = $this->em->getRepository('ApplicationUserBundle:User')
+            ->findOneBy(['username' => $username]);
+        $this->em->refresh($user);
+
+        assertNotNull($user);
+        assertTrue($user->isSubscribe());
+    }
+
+    /**
      * @Given /^пользователь "([^"]*)" должен быть отписан от рассылки$/
      */
     public function userIsUnsubscribed($username)
