@@ -73,7 +73,6 @@ class LoadUserData extends AbstractFixture
         $userDefault2->setPost('Captain');
         $userDefault2->setEnabled(true);
         $userDefault2->setExpired(false);
-        $userDefault2->setSubscribe(false);
         $userDefault2->setLocked(false);
         $manager->persist($userDefault2);
         $this->addReference('user-default2', $userDefault2);
@@ -93,6 +92,23 @@ class LoadUserData extends AbstractFixture
         $userDefault3->setLocked(false);
         $manager->persist($userDefault3);
         $this->addReference('user-default3', $userDefault3);
+
+        $userDefault4 = new User();
+        $userDefault4->setUsername('Rasmus');
+        $userDefault4->setFullname('Rasmus Lerdorf');
+        $userDefault4->setEmail('rasmus.lerdorf@fwdays.com');
+        $userDefault4->setPlainPassword('qwerty');
+        $userDefault4->addRole('ROLE_USER');
+        $userDefault4->setCountry('Greenland');
+        $userDefault4->setCity('Tortuga');
+        $userDefault4->setCompany('PHP');
+        $userDefault4->setPost('Core developer');
+        $userDefault4->setEnabled(true);
+        $userDefault4->setSubscribe(false);
+        $userDefault4->setExpired(false);
+        $userDefault4->setLocked(false);
+        $manager->persist($userDefault4);
+        $this->addReference('user-default4', $userDefault4);
 
         for ($i = 1; $i <= 100; $i++) {
             $userDefault = new User();
