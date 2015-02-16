@@ -73,6 +73,7 @@ class LoadUserData extends AbstractFixture
         $userDefault2->setPost('Captain');
         $userDefault2->setEnabled(true);
         $userDefault2->setExpired(false);
+        $userDefault2->setSubscribe(false);
         $userDefault2->setLocked(false);
         $manager->persist($userDefault2);
         $this->addReference('user-default2', $userDefault2);
