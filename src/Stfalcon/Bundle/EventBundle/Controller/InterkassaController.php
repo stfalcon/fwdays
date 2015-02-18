@@ -10,7 +10,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Service\InterkassaService;
-
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
@@ -63,7 +62,7 @@ class InterkassaController extends Controller {
      */
     public function successAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -76,7 +75,7 @@ class InterkassaController extends Controller {
      */
     public function failAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -99,19 +98,18 @@ class InterkassaController extends Controller {
         if (!$payment) {
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(6);
+            $event = $em->getRepository('StfalconEventBundle:Event')->find(9);//TODO: java
             $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
             if (!$payment) {
-                return $this->forward('StfalconEventBundle:Payment:fail');
+                return $this->forward('StfalconEventBundle:Interkassa:fail');
             }
         }
 
         if ($payment->isPaid()) {
-            return $this->forward('StfalconEventBundle:Payment:success');
+            return $this->forward('StfalconEventBundle:Interkassa:success');
         }
 
-        return array();
+        return [];
     }
-
 }
