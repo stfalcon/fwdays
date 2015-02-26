@@ -1,0 +1,16 @@
+{% extends 'StfalconEventBundle::events-layout.html.twig' %}
+
+{% block title %}Реферальная программа / {{ parent() }}{% endblock %}
+
+{% block content %}
+    <h2>Реферальная программа</h2>
+    <div class="form-wrapper referral-page">
+        <p>Баланс: <span class="sum">{{ balance }} грн.</span></p>
+        <hr/>
+        <div class="ref-link">
+            <p>Реферальная ссылка:</p>
+            <input type="text" value="{{ url('referral_link', {'code' : code, 'eventSlug' : 'java-frameworks-day-2015'}) }}"/>
+        </div>
+
+    </div>
+{% endblock %}
