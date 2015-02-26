@@ -15,10 +15,11 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 /**
  * Контроллер оплаты и статусов платежей через Интеркассу
  */
-class InterkassaController extends Controller {
+class InterkassaController extends Controller
+{
 
     /**
-     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как 
+     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как
      * успешный (или не отмечаем)
      * Также рассылаем письма и билеты всем, кто был привязан к платежу
      *
@@ -29,7 +30,8 @@ class InterkassaController extends Controller {
      *
      * @return array
      */
-    public function interactionAction(Request $request) {
+    public function interactionAction(Request $request)
+    {
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Payment')
@@ -45,6 +47,19 @@ class InterkassaController extends Controller {
             $payment->markedAsPaid();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            try {
+                $referralService = $this->get('stfalcon_event.referral.service');
+                // начисляем средства за реферала
+                $referralService->chargingReferral();
+
+                // списываем реферельные средства
+                $referralService->utilizeBalance($payment);
+
+
+            } catch (\Exception $e) {
+
+            }
 
             return new Response('SUCCESS', 200);
         }
