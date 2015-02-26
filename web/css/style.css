@@ -2225,3 +2225,26 @@ a.add-new-participant:hover:before {
 .button-like.active:hover .button-like-top.empty {
     background:url('/images/icon-like.png') 39px 2px no-repeat;
 }
+
+/*=================== REFERRAL PAGE ====================*/
+
+.referral-page {
+
+}
+
+.referral-page p {
+    font-size: 15px;
+}
+
+.referral-page .sum {
+    font-weight: bold;
+}
+
+.referral-page .ref-link > p {
+    padding-bottom: 5px;
+}
+
+.referral-page .ref-link > input {
+    width: 650px;
+    font-size: 13px;
+}
