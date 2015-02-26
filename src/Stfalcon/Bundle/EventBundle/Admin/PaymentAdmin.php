@@ -20,6 +20,7 @@ class PaymentAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('amount')
+            ->add('fwdaysAmount')
             ->add('status')
             ->add('user')
             ->add('tickets', 'string', array(
@@ -94,6 +95,9 @@ class PaymentAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('amount', 'money', array(
+                    'currency' => 'UAH'
+                ))
+                ->add('fwdaysAmount', 'money', array(
                     'currency' => 'UAH'
                 ))
                 ->add('status', 'choice', array(
