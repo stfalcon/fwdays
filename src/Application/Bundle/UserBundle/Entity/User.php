@@ -81,6 +81,18 @@ class User extends BaseUser
      */
     protected $tickets;
 
+    /**
+     *
+     * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
+     */
+    protected $referralCode;
+
+    /**
+     * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
+     *
+     */
+    protected $balance = 0;
+
 
     public function __construct() {
         parent::__construct();
@@ -273,4 +285,35 @@ class User extends BaseUser
         $this->tickets->removeElement($ticket);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBalance()
+    {
+        return (is_null($this->balance)) ? 0 : $this->balance;
+    }
+
+    /**
+     * @param mixed $balance
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferralCode()
+    {
+        return $this->referralCode;
+    }
+
+    /**
+     * @param mixed $referralCode
+     */
+    public function setReferralCode($referralCode)
+    {
+        $this->referralCode = $referralCode;
+    }
 }
