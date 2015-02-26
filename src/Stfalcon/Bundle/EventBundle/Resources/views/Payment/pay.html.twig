@@ -78,6 +78,11 @@
             <input type="hidden" name="ik_loc" value="ru" />
             <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
 
+            {% if balance > 0 %}
+                <div class="pay-sum">Сумма: <span class="sum">{{ payment.baseAmount }} грн.</span></div>
+                <div class="pay-sum">Ваши бонусы fwdays: <span class="sum">{{ balance }} грн.</span></div>
+            {% endif %}
+
             <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
             <div>
             <input type="submit" value="Оплатить участие"/>
