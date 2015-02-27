@@ -88,6 +88,12 @@ class User extends BaseUser
     protected $referralCode;
 
     /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id")
+     */
+    protected $userReferral;
+
+    /**
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
      *
      */
@@ -315,5 +321,21 @@ class User extends BaseUser
     public function setReferralCode($referralCode)
     {
         $this->referralCode = $referralCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserReferral()
+    {
+        return $this->userReferral;
+    }
+
+    /**
+     * @param mixed $userReferral
+     */
+    public function setUserReferral($userReferral)
+    {
+        $this->userReferral = $userReferral;
     }
 }
