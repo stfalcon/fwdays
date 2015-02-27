@@ -67,9 +67,9 @@ class UserLoginListener
                 if ($userReferral) {
                     $user->setUserReferral($userReferral);
                 }
-            }
 
-            $this->userManager->updateUser($user);
+                $this->userManager->updateUser($user);
+            }
         }
     }
 }
