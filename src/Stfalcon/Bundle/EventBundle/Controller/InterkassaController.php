@@ -51,7 +51,7 @@ class InterkassaController extends Controller
             try {
                 $referralService = $this->get('stfalcon_event.referral.service');
                 // начисляем средства за реферала
-                $referralService->chargingReferral();
+                $referralService->chargingReferral($payment);
 
                 // списываем реферельные средства
                 $referralService->utilizeBalance($payment);
