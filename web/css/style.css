@@ -2248,3 +2248,16 @@ a.add-new-participant:hover:before {
     width: 650px;
     font-size: 13px;
 }
+
+.text-headline {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.text p{
+    font-size: 14px;
+}
+
+.text p.text-desc{
+    padding-bottom: 10px;
+}
