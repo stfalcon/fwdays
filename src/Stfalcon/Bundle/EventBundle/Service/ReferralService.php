@@ -121,6 +121,7 @@ class ReferralService
 
             $em->persist($user);
             $em->flush();
+
             return true;
         }
 
