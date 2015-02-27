@@ -88,7 +88,7 @@ class User extends BaseUser
     protected $referralCode;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id")
      */
     protected $userReferral;
