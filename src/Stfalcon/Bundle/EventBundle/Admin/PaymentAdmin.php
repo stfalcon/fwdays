@@ -98,7 +98,8 @@ class PaymentAdmin extends Admin
                     'currency' => 'UAH'
                 ))
                 ->add('fwdaysAmount', 'money', array(
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'required' => false
                 ))
                 ->add('status', 'choice', array(
                     'choices'   => array(
