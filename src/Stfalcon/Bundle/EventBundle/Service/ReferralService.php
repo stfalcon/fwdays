@@ -66,53 +66,23 @@ class ReferralService
     /**
      * Начисляет рефералы
      *
+     * @param Payment $payment
+     *
      * @return bool
      *
      * @throws \Exception
      */
-    public function chargingReferral()
+    public function chargingReferral(Payment $payment)
     {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
-        $logger = $this->container->get('logger');
+        $userReferral = $payment->getUser()->getUserReferral();
 
-        if ($this->request->cookies->has(self::REFERRAL_CODE)) {
-            $logger->error('Isset cookies');
+        $balance = $userReferral->getBalance() + 100;
+        $userReferral->setBalance($balance);
 
-            $referralCode = $this->request->cookies->get(self::REFERRAL_CODE);
-
-            //check self referral code
-            if ($this->getReferralCode() === $referralCode) {
-                $logger->error('Referral code equal');
-
-                return false;
-            }
-
-            /**
-             * @var User $referralUser User
-             */
-            $referralUser = $em->getRepository('ApplicationUserBundle:User')
-                ->findOneBy(['referralCode' => $referralCode]);
-            $logger->error('Referral code' . $referralCode);
-
-            if ($referralUser) {
-                $logger->error('Found user ID:' . $referralUser->getId());
-
-                $balance = $referralUser->getBalance() + 100;
-                $referralUser->setBalance($balance);
-
-                $em->persist($referralUser);
-                $em->flush();
-
-                return true;
-            } else {
-                $logger->error('Not found user');
-            }
-        } else {
-            $logger->error('Not cookies');
-        }
-
-        return false;
+        $em->persist($userReferral);
+        $em->flush();
     }
 
     /**
@@ -142,6 +112,21 @@ class ReferralService
     }
 
     /**
+     * @param $referralCode
+     * @return User|null
+     * @throws \Exception
+     */
+    public function getUserByReferralCode($referralCode)
+    {
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
+
+        $referralUser = $em->getRepository('ApplicationUserBundle:User')
+            ->findOneBy(['referralCode' => $referralCode]);
+
+        return $referralUser;
+    }
+
+    /**
      * Save ref code in cookies
      *
      * @param Request $request
@@ -153,13 +138,26 @@ class ReferralService
         if ($request->query->has('ref')) {
             $code = $request->query->get('ref');
 
+            //уже используется реф. код
             if (false == $request->cookies->has(self::REFERRAL_CODE)) {
 
                 $user = $this->getUser();
 
+                //user authorize
                 if (!is_null($user)) {
-                    if ($user->getReferralCode() == $code){
+                    if ($user->getReferralCode() == $code) {
                         return false;
+                    }
+
+                    $userReferral = $this->getUserByReferralCode($code);
+
+                    if ($userReferral) {
+                        $em = $this->container->get('doctrine.orm.default_entity_manager');
+
+                        $user->setUserReferral($userReferral);
+
+                        $em->persist($user);
+                        $em->flush();
                     }
                 }
 
