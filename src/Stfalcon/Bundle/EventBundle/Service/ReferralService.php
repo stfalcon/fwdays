@@ -6,6 +6,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\Container;
 use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * Сервис для работы с реферальной программой
@@ -123,5 +125,56 @@ class ReferralService
         }
 
         return false;
+    }
+
+    /**
+     * Save ref code in cookies
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public function handleRequest($request)
+    {
+        if ($request->query->has('ref')) {
+            $code = $request->query->get('ref');
+
+            if (false == $request->cookies->has(self::REFERRAL_CODE)) {
+
+                $user = $this->getUser();
+
+                if (!is_null($user)) {
+                    if ($user->getReferralCode() == $code){
+                        return false;
+                    }
+                }
+
+                $response = new Response();
+                $expire = time() + (10 * 365 * 24 * 3600);
+
+                $response->headers->setCookie(new Cookie(self::REFERRAL_CODE, $code, $expire));
+                $response->send();
+            }
+        }
+    }
+
+    /**
+     * Get user
+     *
+     * @return User|null
+     *
+     * @throws \Exception
+     */
+    private function getUser()
+    {
+        if (null === $token = $this->container->get('security.context')->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 }
