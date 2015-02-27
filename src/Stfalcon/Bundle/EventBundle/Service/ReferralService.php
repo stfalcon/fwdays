@@ -70,15 +70,21 @@ class ReferralService
      *
      * @throws \Exception
      */
-    public function chargingReferral() {
+    public function chargingReferral()
+    {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
+        $logger = $this->container->get('logger');
+
         if ($this->request->cookies->has(self::REFERRAL_CODE)) {
+            $logger->error('Isset cookies');
 
             $referralCode = $this->request->cookies->get(self::REFERRAL_CODE);
 
             //check self referral code
             if ($this->getReferralCode() === $referralCode) {
+                $logger->error('Referral code equal');
+
                 return false;
             }
 
@@ -87,8 +93,11 @@ class ReferralService
              */
             $referralUser = $em->getRepository('ApplicationUserBundle:User')
                 ->findOneBy(['referralCode' => $referralCode]);
+            $logger->error('Referral code' . $referralCode);
 
             if ($referralUser) {
+                $logger->error('Found user ID:' . $referralUser->getId());
+
                 $balance = $referralUser->getBalance() + 100;
                 $referralUser->setBalance($balance);
 
@@ -96,7 +105,11 @@ class ReferralService
                 $em->flush();
 
                 return true;
+            } else {
+                $logger->error('Not found user');
             }
+        } else {
+            $logger->error('Not cookies');
         }
 
         return false;
