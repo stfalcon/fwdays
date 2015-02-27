@@ -290,7 +290,7 @@ class User extends BaseUser
      */
     public function getBalance()
     {
-        return (is_null($this->balance)) ? 0 : $this->balance;
+        return (is_null($this->balance)) ? 0 : (int)$this->balance;
     }
 
     /**
