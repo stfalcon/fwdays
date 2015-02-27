@@ -37,7 +37,7 @@
                                 <ul class="user-menu-dropdown">
                                     <li><a href="{{ path('events_my') }}">Мои события</a></li>
                                     <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
-                                    <li><a href="{{ path('referral_page') }}">Реферальная программа</a></li>
+                                    <li><a href="{{ path('referral_page') }}">Пригласи друзей</a></li>
                                     {% if is_granted('ROLE_VOLUNTEER') %}
                                         <li><a href="{{ path('check_ticket_by_number') }}">Проверка билета по номеру</a></li>
                                     {% endif %}
