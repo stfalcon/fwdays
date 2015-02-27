@@ -53,7 +53,7 @@ class ReferralService
 
         if (true === empty($referralCode)) {
 
-            $user->setReferralCode(md5($user->getEmail()));
+            $user->setReferralCode(md5($user->getEmail().time()));
             $em = $this->container->get('doctrine.orm.default_entity_manager');
 
             $em->persist($user);
