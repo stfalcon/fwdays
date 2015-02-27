@@ -78,11 +78,14 @@ class ReferralService
 
         $userReferral = $payment->getUser()->getUserReferral();
 
-        $balance = $userReferral->getBalance() + 100;
-        $userReferral->setBalance($balance);
+        if ($userReferral) {
+            $balance = $userReferral->getBalance() + 100;
+            $userReferral->setBalance($balance);
 
-        $em->persist($userReferral);
-        $em->flush();
+            $em->persist($userReferral);
+            $em->flush();
+
+        }
     }
 
     /**
