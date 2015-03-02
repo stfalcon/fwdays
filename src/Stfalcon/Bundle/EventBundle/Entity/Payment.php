@@ -127,7 +127,9 @@ class Payment
         if (!$this->tickets->contains($ticket)) {
             if (!$ticket->isPaid()) {
                 $this->amount += $ticket->getAmount();
+                $this->baseAmount += $ticket->getAmount();
             }
+
             $ticket->setPayment($this);
             $this->tickets->add($ticket);
         }
