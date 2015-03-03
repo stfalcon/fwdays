@@ -12,9 +12,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
