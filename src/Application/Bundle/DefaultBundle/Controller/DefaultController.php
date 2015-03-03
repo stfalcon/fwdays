@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,6 +12,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Stfalcon\Bundle\PaymentBundle\Entity\Payment;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller {
 
@@ -148,4 +151,54 @@ class DefaultController extends Controller {
         return array();
     }
 
+    /**
+     * Widget share contacts
+     *
+     * @return Response
+     */
+    public function widgetShareContactsAction()
+    {
+        /**
+         * @var User $user
+         */
+        if (null !== ($user = $this->getUser())) {
+
+            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
+            }
+        }
+
+        return new Response();
+    }
+
+    /**
+     * @Route("/share-contacts/{reply}", name="share_contacts")
+     *
+     * @param string $reply
+     *
+     * @Secure(roles="ROLE_USER")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function shareContactsAction($reply = 'no')
+    {
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
+
+        if ('yes' == $reply) {
+            $user->setAllowShareContacts(true);
+        } else {
+            $user->setAllowShareContacts(false);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $url = $this->getRequest()->headers->get("referer");
+
+        return new RedirectResponse($url);
+    }
 }
