@@ -76,6 +76,13 @@ class User extends BaseUser
     private $createdAt;
 
     /**
+     * @var boolean $allowShareContacts Allow share contacts
+     *
+     * @ORM\Column(name="allow_share_contacts", type="boolean", options={"default" : null}, nullable=true)
+     */
+    private $allowShareContacts;
+
+    /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -337,5 +344,22 @@ class User extends BaseUser
     public function setUserReferral($userReferral)
     {
         $this->userReferral = $userReferral;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function isAllowShareContacts()
+    {
+        return $this->allowShareContacts;
+    }
+
+    /**
+     * @param boolean $allowShareContacts
+     */
+    public function setAllowShareContacts($allowShareContacts)
+    {
+        $this->allowShareContacts = $allowShareContacts;
     }
 }

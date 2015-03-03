@@ -102,6 +102,10 @@
 
         {% block javascripts %}{% endblock %}
 
+        {% block modals %}
+            {% render controller('ApplicationDefaultBundle:Default:widgetShareContacts') %}
+        {% endblock %}
+
         {% if app.environment == 'prod' %}
             <script type="text/javascript">
 

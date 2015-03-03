@@ -1,0 +1,27 @@
+<!-- Modal -->
+<div class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-header">
+            <h2>Ваши контакты для партнеров</h2>
+        </div>
+
+        <div class="modal-body">
+            <p>
+                Наши партнеры смогут делиться с вами актуальными новостями и привлекательными вакансиями, если вы пожелаете.
+                <br/>
+                <br/>
+                У вас есть право отказаться.
+            </p>
+
+            <div class="btn-row">
+                <a class="btn-cancel" href="{{ path('share_contacts', {'reply' : 'no'}) }}">не согласен</a>
+                <a class="btn-success" href="{{ path('share_contacts', {'reply' : 'yes'}) }}">Я согласен</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /Modal -->
+<div  class="simplemodal-overlay"></div>
+
