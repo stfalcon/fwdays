@@ -92,6 +92,7 @@ class DefaultController extends Controller {
 
                 $user->setCompany($_POST['company']);
                 $em->persist($user);
+                $em->flush();
 
                 // проверяем или у него нет билетов на этот ивент
                 /** @var Ticket $ticket */
@@ -126,10 +127,13 @@ class DefaultController extends Controller {
 
                     $payment->setUser($user);
                     $payment->addTicket($ticket);
+                    $em->persist($payment);
+                    $em->flush();
 
                     // обновляем шлюз и статус платежа
                     $payment->setGate('admin');
-                    $payment->setStatus('paid');
+                    $payment->markedAsPaid();
+
                     $em->persist($payment);
                     $em->persist($ticket);
 
