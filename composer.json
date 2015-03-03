@@ -19,7 +19,7 @@
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.0",
-        "symfony/assetic-bundle": "2.3.*",
+        "symfony/assetic-bundle": "2.6.0",
         "symfony/swiftmailer-bundle": "2.2.3",
         "symfony/monolog-bundle": "2.2.0",
         "sensio/distribution-bundle": "2.2.3",
