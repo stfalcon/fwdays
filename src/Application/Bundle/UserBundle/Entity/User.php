@@ -75,6 +75,13 @@ class User extends BaseUser
     private $createdAt;
 
     /**
+     * @var boolean $allowShareContacts Allow share contacts
+     *
+     * @ORM\Column(name="allow_share_contacts", type="boolean", options={"default" : null}, nullable=true)
+     */
+    private $allowShareContacts;
+
+    /**
      * Redefinition email setter for use email as username
      *
      * @param string $email
@@ -223,5 +230,22 @@ class User extends BaseUser
     public function getCountry()
     {
         return $this->country;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function isAllowShareContacts()
+    {
+        return $this->allowShareContacts;
+    }
+
+    /**
+     * @param boolean $allowShareContacts
+     */
+    public function setAllowShareContacts($allowShareContacts)
+    {
+        $this->allowShareContacts = $allowShareContacts;
     }
 }
