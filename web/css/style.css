@@ -2067,9 +2067,9 @@ div.promo-code {
 }
 
 .pay-for-other-participants {
-    float: right;
-    padding-right: 0;
+    padding: 0;
 }
+
 .pay-for-other-participants a {
     text-decoration: none;
     border-bottom: 1px dashed;
