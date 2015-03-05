@@ -32,13 +32,10 @@ class TicketAdmin extends Admin
             ->addIdentifier('id')
             ->addIdentifier('event')
             ->add(
-                'user.fullname',
-                'url',
+                'user',
+                'string',
                 [
-                    'route' => [
-                        'name' => 'admin_application_user_user_edit',
-                        'identifier_parameter_name' => 'id'
-                    ],
+                    'template' => 'StfalconEventBundle:Admin:user_link_field.html.twig'
                 ]
             )
             ->add(
