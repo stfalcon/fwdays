@@ -11,6 +11,16 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class TicketAdmin extends Admin
 {
+    /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'updatedAt'
+    );
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');

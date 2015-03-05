@@ -15,6 +15,16 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
  */
 class PaymentAdmin extends Admin
 {
+    /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'updatedAt'
+    );
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
