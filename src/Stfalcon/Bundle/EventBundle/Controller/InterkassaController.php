@@ -113,7 +113,7 @@ class InterkassaController extends Controller
         if (!$payment) {
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(9);//TODO: java
+            $event = $em->getRepository('StfalconEventBundle:Event')->find(10);//TODO: js-2015
             $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
             if (!$payment) {
