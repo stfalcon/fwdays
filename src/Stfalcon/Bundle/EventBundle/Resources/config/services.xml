@@ -204,5 +204,15 @@
             <argument type="service" id="service_container"/>
         </service>
 
+        <service class="Stfalcon\Bundle\EventBundle\Service\GACommerce" id="stfalcon_event.gacommerce">
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="stfalcon_event.listener.paymentGACommerce" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentGACommerceListener">
+            <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="stfalcon_event.gacommerce"/>
+        </service>
+
     </services>
 </container>
