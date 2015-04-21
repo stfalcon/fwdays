@@ -36,7 +36,7 @@ class SponsorRepository extends EntityRepository
                 WHERE
                     e.id = :eventId
                 ORDER BY
-                    c.sortOrder DESC
+                    c.sortOrder DESC, s.sortOrder DESC
             ')
             ->setParameter('eventId', $event->getId())
             ->getResult();
