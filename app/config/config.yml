@@ -122,6 +122,7 @@ sonata_block:
         sonata.block.service.text:
         sonata.block.service.action:
         sonata.block.service.rss:
+        sonata.block.service.statistic: ~
 
 sonata_admin:
     templates:
@@ -138,7 +139,10 @@ sonata_admin:
                 position: right
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Новости", "Страницы", "Рассылки"]
+                    groups: ["Новости", "Страницы", "Рассылки", "Статистика"]
+            -
+                position: right
+                type: sonata.block.service.statistic
 
 
 services:
