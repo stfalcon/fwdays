@@ -32,4 +32,13 @@ class UserRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getCountBaseQueryBuilder() {
+        return $this->createQueryBuilder('u')
+                    ->select('COUNT(u)')
+        ;
+    }
 }
