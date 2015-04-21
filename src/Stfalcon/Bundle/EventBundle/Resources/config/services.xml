@@ -214,5 +214,11 @@
             <argument type="service" id="stfalcon_event.gacommerce"/>
         </service>
 
+        <service id="sonata.block.service.statistic" class="Stfalcon\Bundle\EventBundle\Service\StatisticBlockService">
+            <tag name="sonata.block" />
+            <argument>sonata.block.service.statistic</argument>
+            <argument type="service" id="templating"/>
+        </service>
+
     </services>
 </container>
