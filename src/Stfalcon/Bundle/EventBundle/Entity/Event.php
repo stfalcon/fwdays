@@ -126,6 +126,15 @@ class Event
     protected $receivePayments = false;
 
     /**
+     * Можно ли применять скидку для постоянных участников
+     *
+     * @var boolean $useDiscounts
+     *
+     * @ORM\Column(name="use_discounts", type="boolean")
+     */
+    protected $useDiscounts = true;
+
+    /**
      * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
@@ -356,6 +365,20 @@ class Event
     public function getReceivePayments()
     {
         return $this->receivePayments;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseDiscounts() {
+        return $this->useDiscounts;
+    }
+
+    /**
+     * @param boolean $useDiscounts
+     */
+    public function setUseDiscounts($useDiscounts) {
+        $this->useDiscounts = $useDiscounts;
     }
 
     /**

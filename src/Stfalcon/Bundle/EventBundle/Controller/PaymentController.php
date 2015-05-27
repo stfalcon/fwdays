@@ -29,6 +29,8 @@ class PaymentController extends BaseController
      */
     public function payAction(Event $event)
     {
+        // @todo если я уже оплатил билет, тогда почему я вижу форму оплаты на этой странице? (допустим я зашел по сохраненной ссылке)
+
         if (!$event->getReceivePayments()) {
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
@@ -52,7 +54,7 @@ class PaymentController extends BaseController
 
         if (!$payment->isPaid()) {
             $this->get('stfalcon_event.payment_manager')
-                ->checkTicketsPricesInPayment($payment, $event->getCost());
+                ->checkTicketsPricesInPayment($payment, $event);
         }
 
         $em->flush();

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class TicketService
 {
-    
+
     /**
      * @var Container $container
      */
@@ -23,7 +23,7 @@ class TicketService
     {
         $this->container = $container;
     }
-    
+
     /**
      * Find ticket for event by current user
      *
@@ -44,7 +44,7 @@ class TicketService
 
         return $ticket;
     }
-    
+
     /**
      * @param Event $event
      * @param User  $user
@@ -54,7 +54,7 @@ class TicketService
     public function createTicket($event, $user)
     {
         // @todo це ще треба передивитись і поправити
-        
+
         $em= $this->container->get('doctrine.orm.default_entity_manager');
         // Вытягиваем скидку из конфига
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
@@ -67,8 +67,9 @@ class TicketService
         $paidPayments = $em->getRepository('StfalconEventBundle:Payment')
             ->findPaidPaymentsForUser($user);
 
-        // Если пользователь имеет оплаченные события, то он получает скидку
-        if (count($paidPayments) > 0) {
+        // если пользователь имеет оплаченные события,
+        // то он получает скидку (если для события разрешена такая скидка)
+        if (count($paidPayments) > 0 && $event->getUseDiscounts()) {
             $cost = $event->getCost() - $event->getCost() * $discount;
             $hasDiscount = true;
         } else {

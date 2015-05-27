@@ -50,6 +50,7 @@ class EventAdmin extends Admin
             ->add('about')
             ->add('active', null, array('required' => false))
             ->add('receivePayments', null, array('required' => false))
+            ->add('useDiscounts', null, array('required' => false))
             ->add('cost', null, array('required' => true))
             ->end()
             ->with('Images')
