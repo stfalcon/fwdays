@@ -21,4 +21,24 @@ class UserRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getAllSubscribed()
+    {
+        return $this->createQueryBuilder('u')
+            ->where("u.subscribe = 1")
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getCountBaseQueryBuilder() {
+        return $this->createQueryBuilder('u')
+                    ->select('COUNT(u)')
+        ;
+    }
 }

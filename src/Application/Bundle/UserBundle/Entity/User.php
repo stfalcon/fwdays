@@ -76,10 +76,35 @@ class User extends BaseUser
     private $createdAt;
 
     /**
+     * @var boolean $allowShareContacts Allow share contacts
+     *
+     * @ORM\Column(name="allow_share_contacts", type="boolean", options={"default" : null}, nullable=true)
+     */
+    private $allowShareContacts;
+
+    /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $tickets;
+
+    /**
+     *
+     * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
+     */
+    protected $referralCode;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id")
+     */
+    protected $userReferral;
+
+    /**
+     * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
+     *
+     */
+    protected $balance = 0;
 
 
     public function __construct() {
@@ -273,4 +298,68 @@ class User extends BaseUser
         $this->tickets->removeElement($ticket);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBalance()
+    {
+        return (is_null($this->balance)) ? 0 : (int)$this->balance;
+    }
+
+    /**
+     * @param mixed $balance
+     */
+    public function setBalance($balance)
+    {
+        $this->balance = $balance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReferralCode()
+    {
+        return $this->referralCode;
+    }
+
+    /**
+     * @param mixed $referralCode
+     */
+    public function setReferralCode($referralCode)
+    {
+        $this->referralCode = $referralCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserReferral()
+    {
+        return $this->userReferral;
+    }
+
+    /**
+     * @param mixed $userReferral
+     */
+    public function setUserReferral($userReferral)
+    {
+        $this->userReferral = $userReferral;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function isAllowShareContacts()
+    {
+        return $this->allowShareContacts;
+    }
+
+    /**
+     * @param boolean $allowShareContacts
+     */
+    public function setAllowShareContacts($allowShareContacts)
+    {
+        $this->allowShareContacts = $allowShareContacts;
+    }
 }

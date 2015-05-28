@@ -3,5 +3,8 @@
 {% block title %}Новости / {{ parent() }}{% endblock %}
 
 {% block content %}
-    {% render controller("ApplicationDefaultBundle:News:last", { 'count': 10 }) %}
+    <h2>Новости</h2>
+    <div class="news-list"> 
+        {{ include('ApplicationDefaultBundle:News:_news_list.html.twig', {'news': news}) }}
+    </div>
 {% endblock %}

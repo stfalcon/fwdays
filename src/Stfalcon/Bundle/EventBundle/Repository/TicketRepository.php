@@ -18,7 +18,7 @@ class TicketRepository extends EntityRepository
     // @todo це ппц. половина методів незрозуміло для чого. мені треба пошук квитка для юзера на івент. 
     // підозрюю, що він тут є, але так сходу не вгадаєш
     // треба передивитись методи і забрати зайве, а решту нормально назвати
-    
+
     /**
      * Find tickets of active events for some user
      *
@@ -82,10 +82,10 @@ class TicketRepository extends EntityRepository
      * @param Array $events  Events
      * @param null  $status Status
      *
-     * @return array
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findUsersByEventsAndStatus($events = null, $status = null)
-    {
+    public function findUsersByEventsAndStatusQueryBuilder($events = null, $status = null) {
+
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('u')
@@ -112,10 +112,43 @@ class TicketRepository extends EntityRepository
                 ->setParameter(':status', $status);
         }
 
-        $qb = $qb->getQuery();
+        return $qb;
+    }
 
-        $users = array();
-        foreach ($qb->execute() as $result) {
+    /**
+     * Find users by event and status
+     *
+     * @param Array $events  Events
+     * @param null  $status Status
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findUsersSubscribedByEventsAndStatus($events = null, $status = null) {
+        $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $status);
+        $qb->andWhere('u.subscribe = 1');
+
+        $users = [];
+
+        foreach ($qb->getQuery()->execute() as $result) {
+            $users[] = $result->getUser();
+        }
+
+        return $users;
+    }
+
+    /**
+     * Find users by event and status
+     *
+     * @param Array $events  Events
+     * @param null  $status Status
+     *
+     * @return array
+     */
+    public function findUsersByEventsAndStatus($events = null, $status = null)
+    {
+        $users = [];
+
+        foreach ($this->findUsersByEventsAndStatusQueryBuilder($events, $status)->getQuery()->execute() as $result) {
             $users[] = $result->getUser();
         }
 
@@ -197,13 +230,13 @@ class TicketRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-    
+
     /**
      *  Find ticket for event by user
-     * 
+     *
      * @param Event $event
      * @param User $user
-     * 
+     *
      * @return Ticket
      */
     public function getTicketForEventByUser(Event $event, User $user) {

@@ -1,0 +1,23 @@
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    <table class="table table-condensed sonata-ba-list">
+        <tbody>
+        <tr>
+            <td colspan="3" style="background: none repeat scroll 0 0 #F7F7F7;"><strong>Статистика</strong></td>
+        </tr>
+        <tr>
+            <td class="sonata-ba-list-label">
+                Статистика
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-link" href="{{ path('admin_show_statistic') }}">
+                        <i class="icon-list"></i>
+                        Список</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

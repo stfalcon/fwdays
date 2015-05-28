@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -29,15 +30,13 @@ class PaymentController extends BaseController
      */
     public function payAction(Event $event)
     {
-        // @todo если я уже оплатил билет, тогда почему я вижу форму оплаты на этой странице? (допустим я зашел по сохраненной ссылке)
-
         if (!$event->getReceivePayments()) {
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
 
         $em = $this->getDoctrine()->getManager();
 
-        /* @var $user User */
+        /* @var  User $user */
         $user = $this->container->get('security.context')->getToken()->getUser();
 
         /* @var $ticket Ticket */
@@ -55,6 +54,38 @@ class PaymentController extends BaseController
         if (!$payment->isPaid()) {
             $this->get('stfalcon_event.payment_manager')
                 ->checkTicketsPricesInPayment($payment, $event);
+
+            // покупка за реферальные средства
+            if ($user->getBalance() > 0) {
+
+                if ($payment->getAmount() < $user->getBalance()) {
+                    //Билет бесплатно
+
+
+                    $referralService = $this->get('stfalcon_event.referral.service');
+
+                    $payment->setAmount(0);
+                    $payment->setFwdaysAmount($payment->getBaseAmount());
+
+                    $payment->markedAsPaid();
+
+                    // списываем реферельные средства
+                    $referralService->utilizeBalance($payment);
+
+
+                    $em->persist($payment);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('payment_success'));
+
+                } else {
+                    $amount = $payment->getAmount() - $user->getBalance();
+                    $payment->setAmount($amount);
+                    $payment->setFwdaysAmount($user->getBalance());
+                }
+
+                $em->persist($payment);
+            }
         }
 
         $em->flush();
@@ -93,13 +124,14 @@ class PaymentController extends BaseController
         $this->get('session')->set('active_payment_id', $payment->getId());
 
         return array(
-            'data' => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
-            'event' => $event,
-            'payment' => $payment,
-            'promoCodeForm' => $promoCodeForm->createView(),
-            'promoCode' => $promoCode,
-            'ticketForm' => $this->createForm('stfalcon_event_ticket')->createView(),
-            'discountAmount' => $discountAmount
+            'data'           => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
+            'event'          => $event,
+            'payment'        => $payment,
+            'promoCodeForm'  => $promoCodeForm->createView(),
+            'promoCode'      => $promoCode,
+            'ticketForm'     => $this->createForm('stfalcon_event_ticket')->createView(),
+            'discountAmount' => $discountAmount,
+            'balance'        => $user->getBalance()
         );
     }
 

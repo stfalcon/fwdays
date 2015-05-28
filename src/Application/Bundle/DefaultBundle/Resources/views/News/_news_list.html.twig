@@ -1,0 +1,18 @@
+{% for one_news in news %}
+    <article class="intro">
+        <h2>
+            {% if one_news.event is defined %}
+                <a href="{{ path('event_news_show', { 'event_slug': one_news.event.slug, 'news_slug':one_news.slug }) }}">{{one_news.title }}</a>
+            {% else %}
+                <a href="{{ path('news_show', { 'slug':one_news.slug }) }}">{{one_news.title }}</a>
+            {% endif %}
+        </h2>
+        <div class="article-date-rubrics">
+            {{ one_news.createdat|date('d M Y') }}
+            {% if one_news.event is defined %}
+                <a href="{{ path('event_show', { 'event_slug': one_news.event.slug }) }}">{{ one_news.event.name }}</a>
+            {% endif %}
+        </div>
+        <p>{{ one_news.preview|raw }}</p>
+    </article>
+{% endfor %}

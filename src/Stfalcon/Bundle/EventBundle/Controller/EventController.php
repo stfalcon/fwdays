@@ -51,9 +51,12 @@ class EventController extends BaseController
      */
     public function showAction($event_slug)
     {
+        $referralService = $this->get('stfalcon_event.referral.service');
+        $referralService->handleRequest($this->getRequest());
+
         $event = $this->getEventBySlug($event_slug);
 
-        return array('event' => $event);
+        return ['event' => $event];
     }
     
     /**
