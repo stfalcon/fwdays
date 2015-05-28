@@ -53,8 +53,7 @@ class PaymentController extends BaseController
 
         if (!$payment->isPaid()) {
             $this->get('stfalcon_event.payment_manager')
-                ->checkTicketsPricesInPayment($payment, $event->getCost());
-
+                ->checkTicketsPricesInPayment($payment, $event);
 
             // покупка за реферальные средства
             if ($user->getBalance() > 0) {
