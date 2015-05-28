@@ -55,16 +55,16 @@
     },
 
     "require-dev": {
-        "behat/behat":  "2.5.*",
         "behat/mink": "v1.5.0",
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/common-contexts": "*",
-        "behat/mink-browserkit-driver": "*",
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
-        "phpunit/phpunit": "3.7.*",
         "behat/mink-selenium2-driver": "dev-backport",
-        "polishsymfonycommunity/symfony2-mocker-extension": "*"
+        "behat/behat": "2.5.4",
+        "behat/symfony2-extension": "1.1.2",
+        "behat/mink-extension": "1.3.3",
+        "behat/common-contexts": "1.2.0",
+        "behat/mink-browserkit-driver": "1.1.0",
+        "polishsymfonycommunity/symfony2-mocker-extension": "1.0.0",
+        "phpunit/phpunit": "3.7.*"
     },
 
     "scripts": {
