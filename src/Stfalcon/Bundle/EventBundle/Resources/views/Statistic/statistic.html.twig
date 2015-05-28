@@ -1,0 +1,59 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_breadcrumb %}
+    <div class="span6">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+                <span class="divider">/</span>
+            </li>
+            <li class="active">Статистика</li>
+        </ul>
+    </div>
+
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock stylesheets %}
+
+{% set title = 'Статистика' %}
+
+{% block title %} - {{ title }}{% endblock title %}
+
+{% block content %}
+    <h1>Статистика</h1>
+    <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
+
+    <table>
+        <tbody>
+        <tr>
+            <td>Людей отказалось предоставлять свои данные партнерам:</td>
+            <td>{{ data['countRefusedProvideData'] }}</td>
+        </tr>
+        <tr>
+            <td>Людей согласилось:</td>
+            <td>{{ data['countAgreedProvideData'] }}</td>
+        </tr>
+        <tr>
+            <td>Людей еще не ответило:</td>
+            <td>{{ data['countNotAnswered'] }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <h4>статистика по реферральной программе</h4>
+    <table>
+        <tbody>
+        <tr>
+            <td>Переходов по ссылкам:</td>
+            <td>{{ data['countUseReferralProgram'] }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock javascripts %}
