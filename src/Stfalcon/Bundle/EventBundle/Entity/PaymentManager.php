@@ -90,6 +90,9 @@ class PaymentManager {
         }
 
         $payment->recalculateAmount();
+        //set base price
+        $payment->setBaseAmount($payment->getAmount());
+
         $this->entityManager->merge($payment);
         $this->flush();
     }

@@ -40,6 +40,8 @@ assetic:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
         yui_js:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
+    workers:
+        cache_busting: ~
 
 # Doctrine Configuration
 doctrine:

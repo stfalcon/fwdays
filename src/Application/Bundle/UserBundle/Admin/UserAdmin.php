@@ -19,6 +19,7 @@ class UserAdmin extends Admin
             ->add('fullname')
             ->add('email')
             ->add('company')
+            ->add('balance')
             ->add('enabled')
         ;
     }
@@ -29,6 +30,7 @@ class UserAdmin extends Admin
             ->add('fullname')
             ->addIdentifier('email')
             ->add('company')
+            ->add('balance')
             ->add('enabled')
             ->add('createdAt');
     }
@@ -40,6 +42,7 @@ class UserAdmin extends Admin
             ->add('fullname')
             ->add('email')
             ->add('company', null, array('required' => false))
+            ->add('balance')
             ->add('post', null, array('required' => false))
             ->add('subscribe', null, array('required' => false))
             ->add('plainPassword', 'text', array('required' => false))

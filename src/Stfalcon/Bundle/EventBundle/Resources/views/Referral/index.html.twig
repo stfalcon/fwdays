@@ -1,0 +1,40 @@
+{% extends 'StfalconEventBundle::events-layout.html.twig' %}
+
+{% block title %}Пригласи друзей / {{ parent() }}{% endblock %}
+
+{% block javascripts %}
+    {% javascripts 'js/jquery-1.8.2.min.js' 'js/simple-slider.js' 'js/jquery.cycle.all.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#code-inp').focus(function(){
+                $(this).select();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h2>Приглашайте друзей и накапливайте бонусы! </h2>
+    <div class="text">
+        <p class="text-desc">
+            У Вас много друзей, которые интересуются Javа? Приглашайте их на конференцию
+            <b>Java Frameworks Day 2015</b> и получайте по 100 ₴ за каждую покупку билета!
+            Накапливайте бонусы и используйте их при покупке билетов на наши
+            мероприятия ;)
+        </p>
+
+        <p>Внесем немного азарта в нашу жизнь!</p>
+    </div>
+    <div class="form-wrapper referral-page">
+        <p>Ваш баланс: <span class="sum">{{ balance }} ₴</span></p>
+        <hr/>
+        <div class="ref-link">
+            <p>Реферальная ссылка:</p>
+            <input id="code-inp" type="text"
+                   value="{{ url('event_show', {'event_slug' : 'js-frameworks-day-2015', 'ref': code}) }}"/>
+        </div>
+    </div>
+{% endblock %}

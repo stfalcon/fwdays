@@ -79,24 +79,24 @@ class MailAdmin extends Admin
 
         $formMapper
             ->with('General')
-                ->add('title')
-                ->add('text')
-                ->add('events', 'entity', array(
-                    'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple'  => true,
-                    'expanded'  => false,
-                    'required'  => false,
-                    'read_only' => $isEdit
-                ))
-                ->add('start', null, array('required' => false))
-                ->add('paymentStatus', 'choice', array(
-                    'choices'   => array(
-                      'paid'    => 'Оплачено',
-                      'pending' => 'Не оплачено'
-                    ),
-                    'required'  => false,
-                    'read_only' => $isEdit
-                ))
+            ->add('title')
+            ->add('text')
+            ->add('events', 'entity', array(
+                'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                'multiple'  => true,
+                'expanded'  => false,
+                'required'  => false,
+                'read_only' => $isEdit
+            ))
+            ->add('start', null, array('required' => false))
+            ->add('paymentStatus', 'choice', array(
+                'choices'   => array(
+                    'paid'    => 'Оплачено',
+                    'pending' => 'Не оплачено'
+                ),
+                'required'  => false,
+                'read_only' => $isEdit
+            ))
             ->end();
     }
 
@@ -115,18 +115,14 @@ class MailAdmin extends Admin
         /** @var $users \Application\Bundle\UserBundle\Entity\User[] */
         if ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findUsersByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
+                ->findUsersSubscribedByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
         } else {
-            $users = $em->getRepository('ApplicationUserBundle:User')->findAll();
+            $users = $em->getRepository('ApplicationUserBundle:User')->getAllSubscribed();
         }
 
         if (isset($users)) {
             $countSubscribers = 0;
             foreach ($users as $user) {
-                if (!$user->isSubscribe() && !$mail->getPaymentStatus()) {
-                    continue;
-                }
-
                 $mailQueue = new MailQueue();
                 $mailQueue->setUser($user);
                 $mailQueue->setMail($mail);
