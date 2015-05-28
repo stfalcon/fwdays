@@ -13,23 +13,40 @@ class EventAdmin extends Admin
 {
 
     /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'date'
+    );
+
+    /**
      * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+// @todo можна додати інфу про к-ть зареєстрованих-оплачених-відмічених участників і загальний баланс конф
+
         $listMapper
-            ->addIdentifier('slug')
-            ->add('name')
+            ->addIdentifier('name')
+            ->add('date')
             ->add('active')
-            ->add('receivePayments')
             ->add('cost')
-            ->add(
-                'images',
-                'string',
-                array(
-                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
-                )
-            );
+            ->add('receivePayments')
+            ->add('useDiscounts')
+            ->add('city')
+            ->add('place');
+// @todo якщо Ірі не потрібні ці картинки, тоді видалити цей код і шаблон
+//            ->add(
+//                'images',
+//                'string',
+//                array(
+//                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
+//                )
+//            );
     }
 
     /**
