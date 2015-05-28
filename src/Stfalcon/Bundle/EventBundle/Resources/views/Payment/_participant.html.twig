@@ -1,9 +1,11 @@
 <div class="added-participant">
     <div class="added-participant-name">
         {{ ticket.user.fullname }} —
+
         {% if ticket.hasDiscount %}
             <span class="old-price">{{ ticket.amountWithoutDiscount }} грн</span>
         {% endif %} {{ ticket.amount }} грн.&nbsp;
+
         {% if ticket.hasDiscount %}
             {% if ticket.hasPromoCode %}
                 (скидка {{ ticket.getPromoCode.discountAmount }}% по купону)
