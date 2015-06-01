@@ -19,7 +19,7 @@
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.0",
-        "symfony/assetic-bundle": "2.3.*",
+        "symfony/assetic-bundle": "2.6.0",
         "symfony/swiftmailer-bundle": "2.2.3",
         "symfony/monolog-bundle": "2.2.0",
         "sensio/distribution-bundle": "2.2.3",
@@ -50,20 +50,22 @@
         "tfox/mpdf-port-bundle": "1.1.*",
 
         "stfalcon/page-bundle": "dev-master#479e3a7370a7e97faddc038913e5afde90923f70",
-        "stfalcon/news-bundle": "dev-master#ae6615894e346611df1dbbc3ee562fa6e585df19"
+        "stfalcon/news-bundle": "dev-master#ae6615894e346611df1dbbc3ee562fa6e585df19",
+        "sensio/buzz-bundle": "1.0.0"
     },
 
     "require-dev": {
-        "behat/behat":  "2.5.*",
         "behat/mink": "v1.5.0",
-        "behat/symfony2-extension": "*",
-        "behat/mink-extension": "*",
-        "behat/common-contexts": "*",
-        "behat/mink-browserkit-driver": "*",
         "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
-        "phpunit/phpunit": "3.7.*",
         "behat/mink-selenium2-driver": "dev-backport",
-        "polishsymfonycommunity/symfony2-mocker-extension": "*"
+        "behat/behat": "2.5.4",
+        "behat/symfony2-extension": "1.1.2",
+        "behat/mink-extension": "1.3.3",
+        "behat/common-contexts": "1.2.0",
+        "behat/mink-browserkit-driver": "1.1.0",
+        "polishsymfonycommunity/symfony2-mocker-extension": "1.0.0",
+        "phpunit/phpunit": "3.7.*",
+        "phpspec/prophecy": "1.4.1"
     },
 
     "scripts": {
@@ -91,4 +93,3 @@
         "symfony-assets-install": "symlink"
     }
 }
-

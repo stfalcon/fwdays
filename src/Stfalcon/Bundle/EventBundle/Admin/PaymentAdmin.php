@@ -15,11 +15,22 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
  */
 class PaymentAdmin extends Admin
 {
+    /**
+     * Default Datagrid values
+     *
+     * @var array
+     */
+    protected $datagridValues = array(
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'updatedAt'
+    );
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('id')
             ->add('amount')
+            ->add('fwdaysAmount')
             ->add('status')
             ->add('user')
             ->add('tickets', 'string', array(
@@ -95,6 +106,10 @@ class PaymentAdmin extends Admin
             ->with('General')
                 ->add('amount', 'money', array(
                     'currency' => 'UAH'
+                ))
+                ->add('fwdaysAmount', 'money', array(
+                    'currency' => 'UAH',
+                    'required' => false
                 ))
                 ->add('status', 'choice', array(
                     'choices'   => array(

@@ -49,6 +49,24 @@ class Payment
     private $amount;
 
     /**
+     * Первоначальная стоимость
+     *
+     * @var float $baseAmount
+     *
+     * @ORM\Column(name="base_amount", type="decimal", precision=10, scale=2)
+     */
+    private $baseAmount;
+
+    /**
+     * Использовано внутренной валюты
+     *
+     * @var float $fwdaysAmount
+     *
+     * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $fwdaysAmount;
+
+    /**
      * @var string $status
      *
      * @ORM\Column(name="status", type="string")
@@ -109,7 +127,9 @@ class Payment
         if (!$this->tickets->contains($ticket)) {
             if (!$ticket->isPaid()) {
                 $this->amount += $ticket->getAmount();
+                $this->baseAmount += $ticket->getAmount();
             }
+
             $ticket->setPayment($this);
             $this->tickets->add($ticket);
         }
@@ -338,4 +358,35 @@ class Payment
         $this->setStatus(self::STATUS_PAID);
     }
 
+    /**
+     * @return float
+     */
+    public function getBaseAmount()
+    {
+        return $this->baseAmount;
+    }
+
+    /**
+     * @param float $baseAmount
+     */
+    public function setBaseAmount($baseAmount)
+    {
+        $this->baseAmount = $baseAmount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFwdaysAmount()
+    {
+        return $this->fwdaysAmount;
+    }
+
+    /**
+     * @param float $fwdaysAmount
+     */
+    public function setFwdaysAmount($fwdaysAmount)
+    {
+        $this->fwdaysAmount = $fwdaysAmount;
+    }
 }

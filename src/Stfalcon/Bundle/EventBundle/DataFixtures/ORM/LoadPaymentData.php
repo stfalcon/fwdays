@@ -37,6 +37,7 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
         $payment = new Payment();
         $payment->setUser($userDefault);
         $payment->setAmount(0);
+        $payment->setBaseAmount(0);
         $payment->setStatus(Payment::STATUS_PAID);
         $manager->persist($payment);
         $this->addReference('payment', $payment);
@@ -44,6 +45,7 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
         $payment = new Payment();
         $payment->setUser($userDefault);
         $payment->setAmount(0);
+        $payment->setBaseAmount(0);
         $payment->setStatus(Payment::STATUS_PENDING);
         $manager->persist($payment);
         $this->addReference('pending', $payment);
@@ -54,6 +56,7 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
         $payment = new Payment();
         $payment->setUser($userDefault2);
         $payment->setAmount(0);
+        $payment->setBaseAmount(0);
         $payment->setStatus(Payment::STATUS_PAID);
         $manager->persist($payment);
         $this->addReference('payment2', $payment);
@@ -61,6 +64,7 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
         $payment = new Payment();
         $payment->setUser($userDefault2);
         $payment->setAmount(0);
+        $payment->setBaseAmount(0);
         $payment->setStatus(Payment::STATUS_PENDING);
         $manager->persist($payment);
         $this->addReference('pending2', $payment);

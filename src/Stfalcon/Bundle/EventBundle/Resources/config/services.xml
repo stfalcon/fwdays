@@ -57,6 +57,8 @@
 
         <parameter key="stfalcon_event.ticket.service.class">Stfalcon\Bundle\EventBundle\Service\TicketService</parameter>
 
+        <parameter key="stfalcon_event.referral.service.class">Stfalcon\Bundle\EventBundle\Service\ReferralService</parameter>
+
         <parameter key="stfalcon_event.listener.payment.class">Stfalcon\Bundle\EventBundle\EventListener\PaymentListener</parameter>
 
         <parameter key="stfalcon_event.payment_manager.class">Stfalcon\Bundle\EventBundle\Entity\PaymentManager</parameter>
@@ -187,6 +189,10 @@
             <argument type="service" id="service_container"/>
         </service>
 
+        <service id="stfalcon_event.referral.service" class="%stfalcon_event.referral.service.class%">
+            <argument type="service" id="service_container"/>
+        </service>
+
         <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
             <argument type="service" id="service_container"/>
@@ -196,6 +202,22 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument>%stfalcon_event.admin.payment.entity%</argument>
             <argument type="service" id="service_container"/>
+        </service>
+
+        <service class="Stfalcon\Bundle\EventBundle\Service\GACommerce" id="stfalcon_event.gacommerce">
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service id="stfalcon_event.listener.paymentGACommerce" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentGACommerceListener">
+            <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="stfalcon_event.gacommerce"/>
+        </service>
+
+        <service id="sonata.block.service.statistic" class="Stfalcon\Bundle\EventBundle\Service\StatisticBlockService">
+            <tag name="sonata.block" />
+            <argument>sonata.block.service.statistic</argument>
+            <argument type="service" id="templating"/>
         </service>
 
     </services>

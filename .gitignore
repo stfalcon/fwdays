@@ -3,10 +3,10 @@
 /app/logs/*
 /app/cache/*
 /app/sessions/*
+!/app/sessions/.gitkeep
 /vendor/
 /web/bundles/*
 /composer.phar
-/composer.lock
 
 # Application
 /web/tmp/*

@@ -2067,9 +2067,9 @@ div.promo-code {
 }
 
 .pay-for-other-participants {
-    float: right;
-    padding-right: 0;
+    padding: 0;
 }
+
 .pay-for-other-participants a {
     text-decoration: none;
     border-bottom: 1px dashed;
@@ -2224,4 +2224,111 @@ a.add-new-participant:hover:before {
 
 .button-like.active:hover .button-like-top.empty {
     background:url('/images/icon-like.png') 39px 2px no-repeat;
+}
+
+/*=================== REFERRAL PAGE ====================*/
+
+.referral-page {
+
+}
+
+.referral-page p {
+    font-size: 15px;
+}
+
+.referral-page .sum {
+    font-weight: bold;
+}
+
+.referral-page .ref-link > p {
+    padding-bottom: 5px;
+}
+
+.referral-page .ref-link > input {
+    width: 650px;
+    font-size: 13px;
+}
+
+.text-headline {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.text p{
+    font-size: 14px;
+}
+
+.text p.text-desc{
+    padding-bottom: 10px;
+}
+/*=================== Modal ====================*/
+.simplemodal-overlay {
+    background: #000;
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 10;
+}
+
+.modal {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    z-index: 11;
+    width: 500px;
+    margin-left: -250px;
+}
+
+.modal .modal-dialog {
+    background: #ffffff;
+    border-radius: 5px;
+    padding: 25px;
+    box-shadow: 1px 1px 10px #000;
+}
+
+.modal-dialog .modal-header {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.modal-dialog .modal-body p {
+    padding: 10px 0;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.modal-dialog .modal-header h2 {
+    font-size: 23px;
+}
+
+.modal-dialog .btn-row {
+    margin:20px 0 0 30px;
+    overflow: hidden;
+}
+
+.btn-row > a {
+    margin: 0 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    color: #000000;
+    border: 1px solid #e8e8e8;
+    display: block;
+    float: left;
+    font-weight: bold;
+    padding: 8px 10px;
+}
+
+.btn-row > a.btn-success {
+    color: #ffffff;
+    width: 180px;
+    background: #2abbd7;
+}
+
+.btn-row > a.btn-cancel {
+    width: 120px;
 }
