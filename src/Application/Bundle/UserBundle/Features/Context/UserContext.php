@@ -6,9 +6,6 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\BehatContext,
     Behat\Behat\Context\Step;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
-
 /**
  * Feature context for ApplicationUserBundle
  */

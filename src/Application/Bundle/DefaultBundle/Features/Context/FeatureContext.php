@@ -11,8 +11,7 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Executor\ORMExecutor,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+use \PHPUnit_Framework_Assert as Assert;
 
 /**
  * Feature context for ApplicationDefaultBundle
@@ -68,7 +67,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $user = $this->em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['username' => $username]);
 
-        assertTrue($user->isSubscribe());
+        Assert::assertTrue($user->isSubscribe());
     }
 
     /**
@@ -118,8 +117,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ->findOneBy(['username' => $username]);
         $this->em->refresh($user);
 
-        assertNotNull($user);
-        assertTrue($user->isSubscribe());
+        Assert::assertNotNull($user);
+        Assert::assertTrue($user->isSubscribe());
     }
 
     /**
@@ -131,7 +130,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ->findOneBy(['username' => $username]);
         $this->em->refresh($user);
 
-        assertNotNull($user);
-        assertFalse($user->isSubscribe());
+        Assert::assertNotNull($user);
+        Assert::assertFalse($user->isSubscribe());
     }
 }

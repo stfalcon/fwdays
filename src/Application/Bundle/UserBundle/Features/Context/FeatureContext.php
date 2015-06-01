@@ -14,8 +14,7 @@ use Doctrine\Common\DataFixtures\Loader,
 
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+use \PHPUnit_Framework_Assert as Assert;
 
 /**
  * Feature context for ApplicationUserBundle
@@ -77,7 +76,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $tickets = $this->kernel->getContainer()->get('doctrine')->getManager()
             ->getRepository('StfalconEventBundle:Ticket')->findBy(array('user' => $user->getId()));
 
-        assertEquals(count($tickets), count($activeEvents));
+        Assert::assertEquals(count($tickets), count($activeEvents));
     }
 
     /**

@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints\File;
 use Behat\Symfony2Extension\Context\KernelAwareInterface,
     Behat\MinkExtension\Context\MinkContext,
     Behat\CommonContexts\DoctrineFixturesContext,
-    Behat\CommonContexts\MinkRedirectContext,
     Behat\CommonContexts\SymfonyMailerContext;
 
 use Doctrine\Common\DataFixtures\Loader,
@@ -22,6 +21,9 @@ use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUse
 
 use PSS\Behat\Symfony2MockerExtension\Context\ServiceMockerAwareInterface;
 use PSS\Behat\Symfony2MockerExtension\ServiceMocker;
+
+use \PHPUnit_Framework_Assert as Assert;
+
 /**
  * Feature context for StfalconEventBundle
  */
@@ -156,7 +158,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
             $pdfFileConstraint
         );
 
-        assertCount(0, $errorList, "Это не PDF-файл");
+        Assert::assertCount(0, $errorList, "Это не PDF-файл");
     }
 
     /**
@@ -320,7 +322,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     public function singleUser($userName)
     {
         $result = $this->getSession()->getPage()->find('css', '.table.table-bordered.table-striped');
-        assertEquals(1, mb_substr_count($result->getHtml(), $userName));
+        Assert::assertEquals(1, mb_substr_count($result->getHtml(), $userName));
     }
 
     /**
@@ -408,8 +410,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         /** @var Payment $payment */
         $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
 
-        assertTrue($payment->isPaid());
+        Assert::assertTrue($payment->isPaid());
     }
-
-
 }

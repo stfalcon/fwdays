@@ -13,8 +13,7 @@ use Doctrine\Common\DataFixtures\Loader,
     Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
+use \PHPUnit_Framework_Assert as Assert;
 
 /**
  * Feature context for StfalconSponsorBundle
@@ -73,7 +72,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function elementContainsImageWithSrc($src, $element)
     {
-        assertTrue($this->_findImageWithSrc($src, $element));
+        Assert::assertTrue($this->_findImageWithSrc($src, $element));
     }
 
     /**
@@ -86,7 +85,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function documentNotContainsImageWithSrc($src, $element)
     {
-        assertTrue(!$this->_findImageWithSrc($src, $element));
+        Assert::assertTrue(!$this->_findImageWithSrc($src, $element));
     }
 
     private function _findImageWithSrc($src, $element)
@@ -101,5 +100,4 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         return false;
     }
-
 }
