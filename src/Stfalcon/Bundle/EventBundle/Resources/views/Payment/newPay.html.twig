@@ -1,0 +1,55 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+    <h2>Оплата участия в конференции {{ event.name }}</h2>
+
+
+    <div class="form-wrapper">
+        <p class="pay-sum">
+            Стоимость участия
+            {% if ticket.hasDiscount %}
+                <span class="old-price">{{ ticket.amountWithoutDiscount }} грн</span>
+            {% endif %} {{ ticket.amount }} грн.
+            {% if ticket.hasDiscount %}
+                {% if ticket.hasPromoCode %}
+                    (скидка {{ ticket.promoCode.discountAmount }}% по купону)
+                {% else %}
+                    (скидка {{ ticket.discountAsPercents }}% для постоянного участника)
+                {% endif %}
+            {% endif %}
+        </p>
+
+        {% if ticket.promoCode %}
+            <div class="promo-code">
+                Купон на скидку:
+                <b class="code">{{ ticket.promoCode.code }}</b>
+            </div>
+        {% else %}
+            <div>
+                <form action="" method="post" class="payment-form promo-code">
+                    {{ form_label(promoCodeForm.code) }}
+                    {{ form_widget(promoCodeForm.code) }}
+                    <input type="submit" value="Применить">
+                    {{ form_errors(promoCodeForm.code) }}
+                    {{ form_rest(promoCodeForm) }}
+                </form>
+            </div>
+        {% endif %}
+
+        <hr>
+
+        <form name="payment" method="post" action="https://sci.interkassa.com/" accept-charset="UTF-8">
+            <input type="hidden" name="ik_co_id" value="{{ data.ik_co_id }}" />
+            <input type="hidden" name="ik_pm_no" value="{{ payment.id }}" />
+            <input type="hidden" name="ik_am" value="{{ payment.amount }}" />
+            <input type="hidden" name="ik_desc" value="{{ data.ik_desc|escape }}" />
+            <input type="hidden" name="ik_loc" value="ru" />
+            <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
+
+            <div class="pay-sum">Сумма к оплате: <span class="sum">{{ payment.amount }} грн.</span></div>
+            <div>
+            <input type="submit" value="Оплатить участие"/>
+            </div>
+        </form>
+    </div>
+{% endblock %}

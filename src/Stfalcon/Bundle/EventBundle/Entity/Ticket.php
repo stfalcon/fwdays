@@ -41,7 +41,10 @@ class Ticket
      *
      * @ORM\Column(name="amount_without_discount", type="decimal", precision=10, scale=2)
      */
+    //@todo переименовать в total
     private $amountWithoutDiscount;
+
+    //@todo добавить свойство discount?
 
     /**
      * @var PromoCode
@@ -100,13 +103,6 @@ class Ticket
     private $used = false;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="has_discount", type="boolean")
-     */
-    private $hasDiscount = false;
-
-    /**
      * Get id
      *
      * @return integer
@@ -149,7 +145,7 @@ class Ticket
     {
         return $this->payment;
     }
-    
+
     /**
      * @param Payment|null $payment
      *
@@ -228,6 +224,7 @@ class Ticket
 
     /**
      * Generate unique md5 hash for ticket
+     *
      * @return string
      */
     public function getHash()
@@ -243,9 +240,10 @@ class Ticket
     /**
      * @param float $amount
      */
-    public function setAmount($amount)
+    private function setAmount($amount)
     {
-        // мы можем устанавливать/обновлять стоимость только для билетов 
+        // @todo wtf? в коментах нижче
+        // мы можем устанавливать/обновлять стоимость только для билетов
         // с неоплаченными платежами
 //        if ($this->hasPayment() && $this->getPayment()->isPending()) {
             $this->amount = $amount;
@@ -262,17 +260,17 @@ class Ticket
     }
 
     /**
-     * @param float $amountWithoutDiscount
+     * @param float $cost
      */
-    public function setAmountWithoutDiscount($amountWithoutDiscount)
+    public function setCost($cost)
     {
-        $this->amountWithoutDiscount = $amountWithoutDiscount;
+        $this->amountWithoutDiscount = $cost;
     }
 
     /**
      * @return float
      */
-    public function getAmountWithoutDiscount()
+    public function getCost()
     {
         return $this->amountWithoutDiscount;
     }
@@ -305,21 +303,14 @@ class Ticket
     }
 
     /**
-     * @param boolean $hasDiscount
-     */
-    public function setHasDiscount($hasDiscount)
-    {
-        $this->hasDiscount = $hasDiscount;
-    }
-
-    /**
      * @return boolean
      */
     public function getHasDiscount()
     {
-        return $this->hasDiscount;
+        // @todo назва методу якась не ок і нафіга він тут взагалі потрібен?
+        return (boolean) $this->getAmountWithoutDiscount() == $this->getAmount();
     }
-    
+
     /**
      * @return string
      */
@@ -329,20 +320,69 @@ class Ticket
     }
 
     /**
+     * Apply discount for ticket price
+     *
+     * @param type $discountPercents
+     */
+    public function applyDiscount($discountPercents) {
+        $discount = round($this->getCost() / 100 * $discountPercents, 2);
+        $this->setAmount($this->getCost() - $discount);
+        $this->setHasDiscount(true);
+    }
+
+    /**
+     * Get discount amount in percents
+     *
+     * @return int
+     */
+    public function getDiscountAsPercents() {
+        return (int) (100 - ($this->getAmount() * 100 / $this->getCost()));
+    }
+
+    // удаляем
+    // @todo переименовать методы и переменные.
+    // amount => сумма, величина. цена => price, cost
+    public function setAmountWithoutDiscount($amountWithoutDiscount)
+    {
+        $this->amountWithoutDiscount = $amountWithoutDiscount;
+    }    public function getAmountWithoutDiscount()
+    {
+        return $this->amountWithoutDiscount;
+    }
+    /**
      * Set amount with discount.
      * If has promo code use discount with promo code
      *
      * @param $discount
      */
+    // @todo видалити цей метод. він просто дублює логіку з сервісу і методу applyDiscount
+    // тільки по свому
     public function setAmountWithDiscount($discount) {
         $price = $this->getAmountWithoutDiscount();
 
         if ($promoCode = $this->getPromoCode()) {
             $cost = $price - ($price * ($promoCode->getDiscountAmount() / 100));
         } else {
-            $cost = $price - ($price * $discount);
+            $cost = $price - ($price * 100 / $discount);
         }
 
         $this->setAmount($cost);
     }
+    /**
+     * @param boolean $hasDiscount
+     */
+    // @todo цей метод і властивість зайві. я можу просто дивитись чи сума зізнижкою рівна сумі без знижки
+    public function setHasDiscount($hasDiscount)
+    {
+        $this->hasDiscount = $hasDiscount;
+    }
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="has_discount", type="boolean")
+     */
+    // @todo цей метод і властивість зайві. я можу просто дивитись чи сума зізнижкою рівна сумі без знижки
+    private $hasDiscount = false;
+
+
 }

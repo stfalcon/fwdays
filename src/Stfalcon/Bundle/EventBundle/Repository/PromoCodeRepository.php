@@ -13,12 +13,12 @@ use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 class PromoCodeRepository extends EntityRepository
 {
     /**
-     * @param string $code
      * @param Event  $event
+     * @param string $code
      *
      * @return PromoCode|null
      */
-    public function findActivePromoCodeByCodeAndEvent($code, $event)
+    public function findActivePromoCodeForEventByCode(Event $event, $code)
     {
         $qb = $this->createQueryBuilder('pc')
             ->andWhere('pc.event = :event')
@@ -28,7 +28,7 @@ class PromoCodeRepository extends EntityRepository
             ->setParameter('event', $event)
             ->setParameter('endDate', new \DateTime())
             ->setMaxResults(1);
-
+        // @todo а може код просто має бути унікальним (в базі) і тоді не треба setMaxResults && getOneOrNullResult?
         return $qb->getQuery()->getOneOrNullResult();
     }
 }

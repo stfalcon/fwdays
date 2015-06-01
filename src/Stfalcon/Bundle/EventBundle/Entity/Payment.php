@@ -127,6 +127,7 @@ class Payment
      */
     public function addPromoCodeForTickets($promoCode, $baseDiscount)
     {
+        // @todo можливо зайве лишиться
         $notUsedPromoCode = array();
         foreach ($this->tickets as $ticket) {
             if (!$ticket->getHasDiscount()) {
@@ -150,6 +151,7 @@ class Payment
      */
     public function recalculateAmount()
     {
+        // @todo можливо зайве лишиться
         $this->amount = 0;
         foreach ($this->tickets as $ticket) {
             $this->amount += $ticket->getAmount();
@@ -177,6 +179,7 @@ class Payment
      */
     public function getPromoCodeFromTickets()
     {
+        //@todo WTF!? він ж віддасть перший промокод... шо за брєд
         $promoCode = null;
         foreach ($this->tickets as $ticket) {
             if ($promoCode = $ticket->getPromoCode()) {

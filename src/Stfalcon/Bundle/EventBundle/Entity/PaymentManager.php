@@ -83,7 +83,7 @@ class PaymentManager {
                 if ($ticket->getHasDiscount()) {
                     $ticket->setAmountWithDiscount($discount);
                 } else {
-                    $ticket->setAmount($eventCost);
+                    $ticket->applyDiscount($discount);
                 }
                 $this->entityManager->merge($ticket);
             }

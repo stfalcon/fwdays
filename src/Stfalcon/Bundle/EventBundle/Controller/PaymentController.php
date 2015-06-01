@@ -15,6 +15,84 @@ class PaymentController extends BaseController
 {
 
     /**
+     * Страница оплаты участия в событии
+     *
+     * @param Event $event
+     * @throws \Exception
+     *
+     * @Secure(roles="ROLE_USER")
+     * @Route("/event/{event_slug}/newpay", name="event_newpay")
+     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
+     * @Template()
+     *
+     * @return array
+     */
+    public function newPayAction(Event $event) {
+        // проверяем или для события включен прием платежей
+        if (!$event->getReceivePayments()) {
+            throw new \Exception("Оплата за участие в \"{$event->getName()}\" не принимается.");
+        }
+
+        // ищем билет на событие
+        // он должен был быть уже создан ранее по ссылке "принять участие"
+        $ticketService = $this->container->get('stfalcon_event.ticket.service');
+        /* @var $ticket Ticket */
+        if (!$ticket = $ticketService->findTicketForEventByCurrentUser($event)) {
+            // @todo можна об’єднати цей екшн і take-part, щоб не перевіряти квитки і не кидати ексепшени?
+            // виводимо замість лінка на pay лін на take-part і робимо forward з take-part
+            throw new \Exception("У Вас нет билета на участие в \"{$event->getName()}\"");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        // в квитка має бути payment, якщо його нема, то треба створити
+        $user = $this->get('security.context')->getToken()->getUser();
+        if (!$payment = $ticket->getPayment()) {
+            // @todo можна в сервіс це все?
+            $payment = new Payment();
+            $payment->setUser($user);
+            $em->persist($payment);
+            $payment->addTicket($ticket);
+            $em->persist($ticket);
+            $em->flush();
+        }
+
+        // форма з промокодом
+        $promocodeForm = $this->createForm('stfalcon_event_promo_code');
+        if ($this->getRequest()->isMethod('post')) {
+            $promocodeForm->bind($this->getRequest());
+            $code = $promocodeForm->get('code')->getData();
+
+            // проверяем промокод
+            $promocode = $em->getRepository('StfalconEventBundle:PromoCode')
+                    ->findActivePromoCodeForEventByCode($event, $code);
+            if ($promocode) {
+                // @todo такой момент вылазит в бизнес-логике. у промо-кода есть ограничение по дате
+                // по идее мы хотели, чтобы участники быстрее покупали билеты с такими промокодами?
+                // сейчас получается, что участник заходит в личный кабинет, применяет промо-код,
+                // промо-код привязывается к билету и все. если промокод заканчивается завтра, то
+                // оплатить билет можно и через неделю (т.к. код то уже привязан)
+
+                if ($ticket->getDiscountAsPercents() > $promocode->getDiscountAmount()) {
+                    $promocodeForm->get('code')->addError(new FormError("Ваша текущая скидка больше чем скидка {$promocode->getDiscountAmount()}% по этому промокоду"));
+                } else {
+//                    $ticketService->setPromocode($ticket, $code);
+                }
+            } else {
+                $promocodeForm->get('code')->addError(new FormError('Такой промокод не найден или он уже неактивен'));
+            }
+        }
+
+        return array(
+            'data' => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
+            'event' => $event,
+            'payment' => $payment,
+            'ticket' => $ticket,
+            'promoCodeForm' => $promocodeForm->createView(),
+        );
+    }
+
+    /**
      * Event pay
      *
      * @param Event $event
@@ -69,13 +147,13 @@ class PaymentController extends BaseController
 
         // процент скидки для постоянных участников
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
-        $discountAmount = 100 * (float)$paymentsConfig['discount'];
+        $discountAmount = $paymentsConfig['discount'];
 
         if ($request->isMethod('post')) {
             $promoCodeForm->bind($request);
             $code = $promoCodeForm->get('code')->getData();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
-                ->findActivePromoCodeByCodeAndEvent($code, $event);
+                ->findActivePromoCodeForEventByCode($event, $code);
 
             if ($promoCode) {
                 $notUsedPromoCode = $payment->addPromoCodeForTickets($promoCode, $discountAmount);

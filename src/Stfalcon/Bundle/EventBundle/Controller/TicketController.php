@@ -32,20 +32,18 @@ class TicketController extends BaseController
     public function takePartAction($event_slug)
     {
         $event  = $this->getEventBySlug($event_slug);
+
+        // создаем новый билет
         $user = $this->get('security.context')->getToken()->getUser();
+        $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
 
-        // ищем билет на этот ивент
-        $ticket = $this->container->get('stfalcon_event.ticket.service')
-            ->findTicketForEventByCurrentUser($event);
-
-        // если билета нет, тогда создаем новый
-        if (is_null($ticket)) {
-            $this->container->get('stfalcon_event.ticket.service')
-                ->createTicket($event, $user);
+        // если для события уже включена оплата, тогда ведем пользователя на страницу оплаты
+        // если нет — на страницу событий пользователя к хешу /evenets/my#zend-framework-day-2011
+        if ($event->getReceivePayments()) {
+            return new RedirectResponse($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
+        } else {
+            return new RedirectResponse($this->generateUrl('events_my') . '#' . $event->getSlug());
         }
-
-        // переносим на страницу билетов пользователя к хешу /evenets/my#zend-framework-day-2011
-        return new RedirectResponse($this->generateUrl('events_my') . '#' . $event->getSlug());
     }
 
     /**

@@ -31,6 +31,7 @@ class EventAdmin extends Admin
 // @todo можна додати інфу про к-ть зареєстрованих-оплачених-відмічених участників і загальний баланс конф
 
         $listMapper
+            ->add('id')
             ->addIdentifier('name')
             ->add('date')
             ->add('active')
