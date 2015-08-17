@@ -21,6 +21,7 @@ class EventAdmin extends Admin
             ->addIdentifier('slug')
             ->add('name')
             ->add('active')
+            ->add('useDiscounts')
             ->add('receivePayments')
             ->add('cost')
             ->add(
