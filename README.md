@@ -40,20 +40,15 @@ If you get any warnings or recommendations, fix these now before moving on.
 
 	$ chmod 0777 app/cache/ app/logs
 
-### c) Initialize and update Submodules
-
-	$ git submodule init
-	$ git submodule update
-
-### d) Install Composer
+### c) Install Composer
 
 	$ curl -s https://getcomposer.org/installer | php
 
-### e) Install the Vendor Libraries
+### d) Install the Vendor Libraries
 
     $ ./composer.phar install
 
-### f) Change DBAL settings, create DB, update it and load fixtures
+### e) Change DBAL settings, create DB, update it and load fixtures
 
 Change DBAL setting in `app/config/config.yml`, `app/config/config_dev.yml` or
 `app/config/config_test.yml`. After that execute the following:
@@ -64,7 +59,7 @@ Change DBAL setting in `app/config/config.yml`, `app/config/config_dev.yml` or
 
 You can set environment `test` for command if you add `--env=test` to it.
 
-### g) Install Assets (if they hadn't been installed in **e** step or if you want to update them )
+### f) Install Assets (if they hadn't been installed in **e** step or if you want to update them )
 
     $ ./console assets:install web --symlink
 
