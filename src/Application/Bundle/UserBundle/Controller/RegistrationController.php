@@ -29,21 +29,22 @@ class RegistrationController extends BaseController
         $response = new RedirectResponse($this->container->get('router')->generate('fos_user_registration_confirmed'));
         $this->authenticateUser($user, $response);
 
-        $activeEvents = $this->container->get('doctrine')->getManager()
-            ->getRepository('StfalconEventBundle:Event')
-            ->findBy(array('active' => true ));
-
-        // Подписываем пользователя на все активные евенты
-        $em = $this->container->get('doctrine')->getManagerForClass('StfalconEventBundle:Ticket');
-        foreach ($activeEvents as $activeEvent) {
-            $ticket = new Ticket();
-            $ticket->setEvent($activeEvent);
-            $ticket->setUser($user);
-            $ticket->setAmount($activeEvent->getCost());
-            $ticket->setAmountWithoutDiscount($activeEvent->getCost());
-            $em->persist($ticket);
-            $em->flush();
-        }
+        // Убрал согласно тикету #24389
+//        $activeEvents = $this->container->get('doctrine')->getManager()
+//            ->getRepository('StfalconEventBundle:Event')
+//            ->findBy(array('active' => true ));
+//
+//        // Подписываем пользователя на все активные евенты
+//        $em = $this->container->get('doctrine')->getManagerForClass('StfalconEventBundle:Ticket');
+//        foreach ($activeEvents as $activeEvent) {
+//            $ticket = new Ticket();
+//            $ticket->setEvent($activeEvent);
+//            $ticket->setUser($user);
+//            $ticket->setAmount($activeEvent->getCost());
+//            $ticket->setAmountWithoutDiscount($activeEvent->getCost());
+//            $em->persist($ticket);
+//            $em->flush();
+//        }
 
         return $response;
     }
