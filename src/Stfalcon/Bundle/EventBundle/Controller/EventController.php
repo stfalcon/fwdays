@@ -25,6 +25,36 @@ class EventController extends BaseController
      */
     public function indexAction()
     {
+        $session = $this->get('session');
+
+        /** @var \Application\Bundle\UserBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        // Пока в сессие есть переменная just_registered будем показывать два флеш-сообения. Одно об успешной регистрации
+        // второе - о том, что юзер может добавить событие.
+        // Так как после подтверждения имейла нас перекидывает на страницу событий, мы должны показать эти сообщения.
+        // Но после первого редиректа на страницу событий вылетает модальное окно с вопросом о разрешение использовать
+        // свои данные партнерам сайта. В этот момент флеш-месседжи выводятся, но модальное окно их частично перекрывает
+        // и не весь текст можно прочитать + внимание сосредоточено на окне а не на флеш-сообщениях.
+        // Поэтому нужно еще раз показать эти флеш-сообщения на странице событий, но уже после того,
+        // как пользователь даст ответ в модальном окне и опять будет перенаправлен на страницу событий.
+        if ($session->has('just_registered')) {
+            $message = $this->get('translator')->trans(
+                'registration.confirmed',
+                array('%username%' => $user->getFullname()),
+                'FOSUserBundle'
+            );
+            $session->getFlashBag()->add('sonata_flash_success', $message);
+            $session->getFlashBag()->add('sonata_flash_info', 'choose_event');
+        }
+
+        // Когда пользователь дал ответ и второй раз попадает на страницу событий, то allowShareContacts у него не null,
+        // и мы удаляем переменную из сессий, после этого при перезагрузке страницы события -
+        // флеш-сообщения уже показываться не будут
+        if (null !== $user->isAllowShareContacts()) {
+            $session->remove('just_registered');
+        }
+
         $activeEvents = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Event')
                      ->findBy(array('active' => true ), array('date' => 'DESC'));
@@ -58,7 +88,7 @@ class EventController extends BaseController
 
         return ['event' => $event];
     }
-    
+
     /**
      * Show only active events for current user
      *
