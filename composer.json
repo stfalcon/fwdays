@@ -2,7 +2,7 @@
     "name": "stfalcon/fwdays",
     "type": "project",
     "description": "Site for conference Frameworks Days",
-    "homepage": "http://frameworksdays.com/",
+    "homepage": "http://fwdays.com/",
     "repositories": [
         {
             "type": "vcs",
