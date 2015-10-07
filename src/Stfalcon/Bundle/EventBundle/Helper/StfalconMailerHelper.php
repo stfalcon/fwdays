@@ -45,12 +45,13 @@ class StfalconMailerHelper
     /**
      * Format message
      *
-     * @param User $user
-     * @param Mail $mail
+     * @param User $user          User
+     * @param Mail $mail          Mail
+     * @param bool $isTestMessage Test message (needed for admin mails)
      *
      * @return \Swift_Mime_MimePart
      */
-    public function formatMessage(User $user, Mail $mail)
+    public function formatMessage(User $user, Mail $mail, $isTestMessage = false)
     {
         $text = $mail->replace(
             array(
@@ -75,7 +76,14 @@ class StfalconMailerHelper
             ]
         );
 
-        return $this->createMessage($mail->getTitle(), $user->getEmail(), $body);
+        $title = $mail->getTitle();
+        // Модифицируем заголовок, если рассылка является для админов, т.е. тестовой
+        if ($isTestMessage) {
+            // Тестовая рассылка
+            $title = 'Тестовая рассылка для админов! '.$title;
+        }
+
+        return $this->createMessage($title, $user->getEmail(), $body);
     }
 
 

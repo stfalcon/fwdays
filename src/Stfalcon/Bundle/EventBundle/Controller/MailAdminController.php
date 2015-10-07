@@ -77,10 +77,11 @@ class MailAdminController extends CRUDController
             $mailerHelper = $this->get('stfalcon_event.mailer_helper');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
+            $isTestMessage = true;
 
             $error = false;
             foreach ($users as $user) {
-                if (!$mailer->send($mailerHelper->formatMessage($user, $mail))) {
+                if (!$mailer->send($mailerHelper->formatMessage($user, $mail, $isTestMessage))) {
                     $error = true;
                 }
             }
