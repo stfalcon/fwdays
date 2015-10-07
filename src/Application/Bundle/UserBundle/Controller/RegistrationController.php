@@ -26,7 +26,12 @@ class RegistrationController extends BaseController
         $user->setLastLogin(new \DateTime());
 
         $this->container->get('fos_user.user_manager')->updateUser($user);
-        $response = new RedirectResponse($this->container->get('router')->generate('fos_user_registration_confirmed'));
+
+        $session = $this->container->get('session');
+        $session->set('just_registered', true);
+
+        $response = new RedirectResponse($this->container->get('router')->generate('events'));
+
         $this->authenticateUser($user, $response);
 
         // Убрал согласно тикету #24389

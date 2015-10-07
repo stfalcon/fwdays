@@ -4,6 +4,12 @@
 
 {% block content %}
 
+    {% for key, message in app.session.getFlashes() %}
+        <div class="info-msg-block">
+            <p>{{ message|trans({}, 'FOSUserBundle') }}</p>
+        </div>
+    {% endfor %}
+
     {% if activeEvents|length %}
         <h2>Будущие события</h2>
 
