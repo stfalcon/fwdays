@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -38,7 +39,7 @@ class EventController extends BaseController
         // и не весь текст можно прочитать + внимание сосредоточено на окне а не на флеш-сообщениях.
         // Поэтому нужно еще раз показать эти флеш-сообщения на странице событий, но уже после того,
         // как пользователь даст ответ в модальном окне и опять будет перенаправлен на страницу событий.
-        if ($session->has('just_registered')) {
+        if ($user instanceof User && $session->has('just_registered')) {
             $message = $this->get('translator')->trans(
                 'registration.confirmed',
                 array('%username%' => $user->getFullname()),
@@ -51,7 +52,7 @@ class EventController extends BaseController
         // Когда пользователь дал ответ и второй раз попадает на страницу событий, то allowShareContacts у него не null,
         // и мы удаляем переменную из сессий, после этого при перезагрузке страницы события -
         // флеш-сообщения уже показываться не будут
-        if (null !== $user->isAllowShareContacts()) {
+        if ($user instanceof User && null !== $user->isAllowShareContacts()) {
             $session->remove('just_registered');
         }
 
