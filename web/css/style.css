@@ -2332,3 +2332,7 @@ a.add-new-participant:hover:before {
 .btn-row > a.btn-cancel {
     width: 120px;
 }
+
+#wrapper.page-program #side-left {
+    display: none!important;
+}
