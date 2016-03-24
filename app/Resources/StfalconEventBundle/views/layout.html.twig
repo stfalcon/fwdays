@@ -2,7 +2,7 @@
 
 {% block title %}{{ event.name }} / {{ parent() }}{% endblock %}
 
-{% block div_wrapper_class %}sidebars-right{% endblock %}
+{% block div_wrapper_class %}sidebars-right {% if page is defined %}page-{{ page.slug }}{% endif %}{% endblock %}
 
 {% block header %}
     <header id="header">
