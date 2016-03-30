@@ -2336,3 +2336,7 @@ a.add-new-participant:hover:before {
 #wrapper.page-program #side-left {
     display: none!important;
 }
+
+#wrapper.page-program #content{
+    margin: 0 20% 0 4%!important;
+}
