@@ -772,11 +772,11 @@ input[type="submit"] {
     line-height: normal;
     color: #0091ad;
     text-decoration: none;
-    border-bottom: 1px dashed #0091ad;
+    border-bottom: 1px solid #0091ad;
 }
 .events-switches ul li a:hover {
     color: #cd3b23;
-    border-bottom: 1px dashed #cd3b23;
+    border-bottom: 1px solid #cd3b23;
 }
 .events-switches ul li a:active {
     color: #cd3b23;
