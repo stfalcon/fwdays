@@ -3,12 +3,6 @@
     "type": "project",
     "description": "Site for conference Frameworks Days",
     "homepage": "http://frameworksdays.com/",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:verdet23/MinkSelenium2Driver.git"
-        }
-    ],
     "autoload": {
         "psr-0": { "": "src/" }
     },
@@ -36,11 +30,11 @@
 
         "sonata-project/intl-bundle": "dev-master#723d12b06d0c4649adeab5c9df29f7814b78f183",
 
-        "doctrine/doctrine-fixtures-bundle": "dev-master#186d605aa6b592bd577e07e0e9a2c420b02b2492",
-        "doctrine/doctrine-migrations-bundle": "dev-master#3792aa78445773387754c6853bbd7f4dcb31f486",
+        "doctrine/doctrine-fixtures-bundle": "2.2.1",
+        "doctrine/doctrine-migrations-bundle": "1.0.0",
         "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
 
-        "zendframework/zend-feed": "2.0.*",
+        "zendframework/zend-feed": "2.7.*",
         "mlehner/gelf-php": "v1.0",
 
         "vich/uploader-bundle": "v0.9.0",
@@ -55,14 +49,14 @@
     },
 
     "require-dev": {
-        "behat/mink": "v1.5.0",
-        "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
-        "behat/mink-selenium2-driver": "dev-backport",
+        "behat/mink": "v1.6.1",
+        "liip/functional-test-bundle": "1.2.2",
+        "behat/mink-selenium2-driver": "1.2.0",
         "behat/behat": "2.5.4",
         "behat/symfony2-extension": "1.1.2",
         "behat/mink-extension": "1.3.3",
         "behat/common-contexts": "1.2.0",
-        "behat/mink-browserkit-driver": "1.1.0",
+        "behat/mink-browserkit-driver": "1.2.0",
         "polishsymfonycommunity/symfony2-mocker-extension": "1.0.0",
         "phpunit/phpunit": "3.7.*",
         "phpspec/prophecy": "1.4.1"
