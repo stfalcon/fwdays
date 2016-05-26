@@ -46,7 +46,7 @@ class ReferralService
     public function getReferralCode($user = null)
     {
         if (is_null($user)) {
-            $user = $this->container->get('security.context')->getToken()->getUser();
+            $user = $this->container->get('security.token_storage')->getToken()->getUser();
         }
 
         $referralCode = $user->getReferralCode();
@@ -182,7 +182,7 @@ class ReferralService
      */
     private function getUser()
     {
-        if (null === $token = $this->container->get('security.context')->getToken()) {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
             return null;
         }
 

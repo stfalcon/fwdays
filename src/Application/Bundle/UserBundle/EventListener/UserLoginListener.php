@@ -39,7 +39,7 @@ class UserLoginListener
     {
         $this->userManager = $userManager;
         $this->container = $container;
-        $this->request   = $this->container->get('request');
+        $this->request   = $this->container->get('request_stack');
 
     }
 

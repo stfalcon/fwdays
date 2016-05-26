@@ -1,7 +1,7 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    {% for key, message in app.session.getFlashes() %}
+    {% for key, message in app.session.flashBag.all() %}
     <div class="info-msg-block">
         <p>{{ message|trans({}, 'FOSUserBundle') }}</p>
     </div>

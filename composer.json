@@ -6,68 +6,58 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "git@github.com:verdet23/MinkSelenium2Driver.git"
+            "url": "https://github.com/LogansUA/PageBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LogansUA/NewsBundle"
         }
     ],
-    "autoload": {
-        "psr-0": { "": "src/" }
-    },
-
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.2.3",
-        "doctrine/orm": "~2.2,>=2.2.3",
-        "doctrine/doctrine-bundle": "1.2.*",
-        "twig/extensions": "1.0.0",
-        "symfony/assetic-bundle": "2.6.0",
-        "symfony/swiftmailer-bundle": "2.2.3",
-        "symfony/monolog-bundle": "2.2.0",
-        "sensio/distribution-bundle": "2.2.3",
-        "sensio/framework-extra-bundle": "2.2.3",
-        "sensio/generator-bundle": "2.2.3",
-        "jms/security-extra-bundle": "1.4.0",
-        "sonata-project/admin-bundle": "2.2.11 as dev-master",
-
-        "sonata-project/doctrine-orm-admin-bundle": "2.2.7 as dev-master",
-
-        "avalanche123/imagine-bundle": "dev-master#eb03645887f732410127a2b3d992befe0f175277",
-
-        "friendsofsymfony/user-bundle": "v1.3.1",
-
-        "sonata-project/intl-bundle": "dev-master#723d12b06d0c4649adeab5c9df29f7814b78f183",
-
-        "doctrine/doctrine-fixtures-bundle": "dev-master#186d605aa6b592bd577e07e0e9a2c420b02b2492",
-        "doctrine/doctrine-migrations-bundle": "dev-master#3792aa78445773387754c6853bbd7f4dcb31f486",
-        "stof/doctrine-extensions-bundle": "dev-master#0247e6f1658d76292c8ffe2c5106090bd36bd799",
-
-        "zendframework/zend-feed": "2.0.*",
-        "mlehner/gelf-php": "v1.0",
-
-        "vich/uploader-bundle": "v0.9.0",
-        "endroid/qrcode": "1.1.1",
-        "ornicar/gravatar-bundle" : "dev-master#f681200f5b50d0626618c51c5f6b088bc2c6ba24",
-
+        "php": ">=5.4 <5.5",
+        "symfony/symfony": "2.8.*",
+        "symfony/assetic-bundle": "2.8.*",
+        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/monolog-bundle": "2.11.*",
+        "doctrine/orm": "2.4.*",
+        "doctrine/doctrine-bundle": "1.6.*",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "doctrine/doctrine-migrations-bundle": "1.0.*",
+        "twig/extensions": "1.3.*",
+        "sensio/distribution-bundle": "4.0.*",
+        "sensio/framework-extra-bundle": "3.0.*",
+        "sensio/generator-bundle": "2.4.*",
+        "sensio/buzz-bundle": "1.1.*",
+        "sonata-project/doctrine-orm-admin-bundle": "2.2.*",
+        "sonata-project/admin-bundle": "2.2.*",
+        "sonata-project/intl-bundle": "2.2.*",
+        "sonata-project/block-bundle": "2.2.*",
+        "stfalcon/page-bundle": "1.*",
+        "stfalcon/news-bundle": "1.*",
+        "jms/security-extra-bundle": "1.6.*",
+        "avalanche123/imagine-bundle": "2.1.*",
+        "friendsofsymfony/user-bundle": "1.3.*",
+        "stof/doctrine-extensions-bundle": "1.2.*",
+        "vich/uploader-bundle": "0.14.*",
+        "ornicar/gravatar-bundle" : "1.1.*",
         "tfox/mpdf-port-bundle": "1.1.*",
-
-        "stfalcon/page-bundle": "dev-master#479e3a7370a7e97faddc038913e5afde90923f70",
-        "stfalcon/news-bundle": "dev-master#ae6615894e346611df1dbbc3ee562fa6e585df19",
-        "sensio/buzz-bundle": "1.0.0"
+        "zendframework/zend-feed": "2.0.*",
+        "mlehner/gelf-php": "1.1.*",
+        "endroid/qrcode": "1.6.*"
     },
-
     "require-dev": {
-        "behat/mink": "v1.5.0",
-        "liip/functional-test-bundle": "dev-master#31d286f84c29d3d415c757fd4943342b88538c68",
-        "behat/mink-selenium2-driver": "dev-backport",
-        "behat/behat": "2.5.4",
-        "behat/symfony2-extension": "1.1.2",
-        "behat/mink-extension": "1.3.3",
-        "behat/common-contexts": "1.2.0",
-        "behat/mink-browserkit-driver": "1.1.0",
-        "polishsymfonycommunity/symfony2-mocker-extension": "1.0.0",
-        "phpunit/phpunit": "3.7.*",
-        "phpspec/prophecy": "1.4.1"
+        "phpunit/phpunit": "~4.8",
+        "liip/functional-test-bundle": "1.2.*",
+        "behat/behat": "3.1.*",
+        "behat/mink": "1.6.*",
+        "behat/mink-selenium2-driver": "1.2.*",
+        "behat/symfony2-extension": "2.1.*",
+        "behat/mink-extension": "2.2.*",
+        "behat/common-contexts": "1.2.*",
+        "behat/mink-browserkit-driver": "1.2.*",
+        "polishsymfonycommunity/symfony2-mocker-extension": "1.0.*",
+        "phpspec/prophecy": "1.6.*"
     },
-
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -80,13 +70,17 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ]
     },
-
-    "config": {
-        "bin-dir": "bin"
+    "autoload": {
+        "psr-4": { "": "src/" },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
-
-    "minimum-stability": "dev",
-
+    "config": {
+        "bin-dir": "bin",
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "5.4"
+        }
+    },
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",

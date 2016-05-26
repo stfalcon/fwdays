@@ -32,7 +32,7 @@ class TicketController extends BaseController
     public function takePartAction($event_slug)
     {
         $event  = $this->getEventBySlug($event_slug);
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         // ищем билет на этот ивент
         $ticket = $this->container->get('stfalcon_event.ticket.service')
@@ -123,7 +123,7 @@ class TicketController extends BaseController
 
         //bag fix test ticket.feature:33
         // любопытных пользователей перенаправляем на страницу события
-        if (!$this->get('security.context')->isGranted('ROLE_VOLUNTEER')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_VOLUNTEER')) {
             return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
         }
 
