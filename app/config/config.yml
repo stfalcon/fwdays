@@ -135,14 +135,14 @@ sonata_admin:
                 position: left
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Пользователи", "События", "Билеты", "Спонсоры"]
+                    groups: ["Пользователи", "События", "Новости", "Статистика"]
             -
                 position: right
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Новости", "Страницы", "Рассылки", "Статистика"]
+                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки"]
             -
-                position: right
+                position: left
                 type: sonata.block.service.statistic
 
 

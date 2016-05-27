@@ -10,16 +10,49 @@
         textarea.sonata-medium {
             width: 98%;
         }
+        .right-side {
+            margin-left: 0;
+        }
     </style>
-{% endblock %}
+{% endblock stylesheets %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('vendor/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/markItUpSettings.js') }}" type="text/javascript"></script>
     <script type="text/javascript" >
-    $(document).ready(function() {
+        $(document).ready(function() {
             $("textarea").markItUp(mySettings);
-    });
+        });
     </script>
-{% endblock %}
+{% endblock javascripts %}
+
+{% block side_bar_before_nav %}{% endblock side_bar_before_nav %}
+{% block sonata_left_side %}{% endblock sonata_left_side %}
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
+{% block sonata_breadcrumb %}
+    {% if _breadcrumb is not empty or action is defined %}
+        <ol class="nav navbar-top-links breadcrumb">
+            {% if _breadcrumb is empty %}
+                {% if action is defined %}
+                    {% for menu in admin.breadcrumbs(action) %}
+                        {% if not loop.last  %}
+                            <li>
+                                {% if menu.uri is not empty %}
+                                    <a href="{{ menu.uri }}">{{ menu.label|raw }}</a>
+                                {% else %}
+                                    {{ menu.label }}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="active"><span>{{ menu.label|trans }}</span></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                {{ _breadcrumb|raw }}
+            {% endif %}
+        </ol>
+    {% endif %}
+{% endblock sonata_breadcrumb %}
