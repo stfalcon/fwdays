@@ -1,0 +1,5 @@
+deploy_callbacks:
+    after_clone:
+        - 'sed -i "s/database_host     =.*/database_host     = fwdays-mysql/" app/config/parameters.ini'
+        - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
+        - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
