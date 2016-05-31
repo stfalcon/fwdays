@@ -50,14 +50,15 @@ class SponsorAdmin extends Admin
                     )
                 ))
                 ->add('onMain', null, array('required' => false))
+            ->end()
             ->with('Events')
-            ->add('sponsorEvents', 'sonata_type_collection',
-                array(
-                    'label' => 'Events',
-                    'by_reference' => false
-                ), array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
+                ->add('sponsorEvents', 'sonata_type_collection',
+                    array(
+                        'label' => 'Events',
+                        'by_reference' => false
+                    ), array(
+                        'edit' => 'inline',
+                        'inline' => 'table',
                 ))
             ->end();
     }
