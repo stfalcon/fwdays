@@ -20,6 +20,11 @@
     <script type="text/javascript" >
         $(document).ready(function() {
             $("textarea").markItUp(mySettings);
+
+            var $sideBar = $('.row-offcanvas-left');
+
+            $sideBar.find('aside.left-side').addClass('collapse-left');
+            $sideBar.find('aside.right-side').addClass('strech');
         });
     </script>
 {% endblock javascripts %}
