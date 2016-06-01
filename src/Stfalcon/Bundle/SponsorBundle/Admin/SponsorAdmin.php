@@ -24,7 +24,13 @@ class SponsorAdmin extends Admin
             ->add('site')
             ->add('about')
             ->add('onMain')
-            ->add('sortOrder');
+            ->add('sortOrder')
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit'   => [],
+                    'delete' => [],
+                ],
+            ]);
     }
 
     /**
