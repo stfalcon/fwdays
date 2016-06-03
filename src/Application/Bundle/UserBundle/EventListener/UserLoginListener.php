@@ -38,9 +38,9 @@ class UserLoginListener
     public function __construct(UserManagerInterface $userManager, $container)
     {
         $this->userManager = $userManager;
-        $this->container = $container;
-        $this->request   = $this->container->get('request');
-
+        $this->container   = $container;
+        $requestStack      = $this->container->get('request_stack');
+        $this->request     = $requestStack->getCurrentRequest();
     }
 
     /**

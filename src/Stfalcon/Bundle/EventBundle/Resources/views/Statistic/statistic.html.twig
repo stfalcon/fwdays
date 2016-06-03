@@ -1,25 +1,21 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
 {% block sonata_breadcrumb %}
-    <div class="span6">
-        <ul class="breadcrumb">
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
             <li>
                 <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
-                <span class="divider">/</span>
             </li>
             <li class="active">Статистика</li>
-        </ul>
+        </ol>
     </div>
-
 {% endblock sonata_breadcrumb %}
 
 {% block stylesheets %}
     {{ parent() }}
 {% endblock stylesheets %}
 
-{% set title = 'Статистика' %}
-
-{% block title %} - {{ title }}{% endblock title %}
+{% block title %} - {{ 'Статистика' }}{% endblock title %}
 
 {% block content %}
     <h1>Статистика</h1>

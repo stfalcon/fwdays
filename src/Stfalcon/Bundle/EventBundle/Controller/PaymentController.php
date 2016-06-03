@@ -37,7 +37,7 @@ class PaymentController extends BaseController
         $em = $this->getDoctrine()->getManager();
 
         /* @var  User $user */
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         /* @var $ticket Ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')

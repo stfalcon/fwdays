@@ -92,7 +92,7 @@ class MailAdminController extends CRUDController
             }
         }
 
-        $this->get('session')->setFlash('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
+        $this->get('session')->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }

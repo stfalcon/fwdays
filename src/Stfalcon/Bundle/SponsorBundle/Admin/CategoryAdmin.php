@@ -19,7 +19,13 @@ class CategoryAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('name')
-            ->add('sortOrder');
+            ->add('sortOrder')
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit'   => [],
+                    'delete' => [],
+                ],
+            ]);
     }
 
     /**

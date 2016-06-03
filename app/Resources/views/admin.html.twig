@@ -11,15 +11,59 @@
             width: 98%;
         }
     </style>
-{% endblock %}
+{% endblock stylesheets %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('vendor/markitup/jquery.markitup.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/markItUpSettings.js') }}" type="text/javascript"></script>
     <script type="text/javascript" >
-    $(document).ready(function() {
+        $(document).ready(function() {
             $("textarea").markItUp(mySettings);
-    });
+
+            var $sideBar = $('.row-offcanvas-left');
+
+            $sideBar.find('aside.left-side').addClass('collapse-left');
+            $sideBar.find('aside.right-side').addClass('strech');
+        });
     </script>
+{% endblock javascripts %}
+
+{% block side_bar_before_nav %}{% endblock side_bar_before_nav %}
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
+{% block sonata_breadcrumb %}
+    {% if _breadcrumb is not empty or action is defined %}
+        <ol class="nav navbar-top-links breadcrumb">
+            {% if _breadcrumb is empty %}
+                {% if action is defined %}
+                    {% for menu in admin.breadcrumbs(action) %}
+                        {% if not loop.last  %}
+                            <li>
+                                {% if menu.uri is not empty %}
+                                    <a href="{{ menu.uri }}">{{ menu.label|raw }}</a>
+                                {% else %}
+                                    {{ menu.label }}
+                                {% endif %}
+                            </li>
+                        {% else %}
+                            <li class="active"><span>{{ menu.label|trans }}</span></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                {{ _breadcrumb|raw }}
+            {% endif %}
+        </ol>
+    {% endif %}
+{% endblock sonata_breadcrumb %}
+
+{% block logo %}
+    {% spaceless %}
+        <a class="logo" href="{{ url('sonata_admin_dashboard') }}">
+            {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+                <span>{{ admin_pool.title }}</span>
+            {% endif %}
+        </a>
+    {% endspaceless %}
 {% endblock %}

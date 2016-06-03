@@ -89,7 +89,7 @@ class PaymentAdmin extends Admin
                     'field_type' => 'entity',
                     'field_options' => array(
                         'class' => 'StfalconEventBundle:Event',
-                        'property' => 'name',
+                        'choice_label' => 'name',
                         'multiple' => true,
                         'required' => false
                     )
