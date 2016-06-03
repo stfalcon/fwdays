@@ -41,18 +41,6 @@ class Speaker
     private $name = '';
 
     /**
-     * @param string $photo
-     *
-     * @return $this
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
      * @var string $email
      *
      * @ORM\Column(name="email", type="string", length=255)
