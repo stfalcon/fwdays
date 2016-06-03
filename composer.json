@@ -6,11 +6,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/LogansUA/PageBundle"
+            "url": "https://github.com/stfalcon-studio/NewsBundle.git"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/LogansUA/NewsBundle"
+            "url": "https://github.com/stfalcon-studio/PageBundle.git"
         }
     ],
     "require": {
@@ -28,10 +28,11 @@
         "sensio/framework-extra-bundle": "3.0.*",
         "sensio/generator-bundle": "2.4.*",
         "sensio/buzz-bundle": "1.1.*",
-        "sonata-project/doctrine-orm-admin-bundle": "2.2.*",
-        "sonata-project/admin-bundle": "2.2.*",
+        "sonata-project/doctrine-orm-admin-bundle": "2.3.*",
+        "sonata-project/admin-bundle": "2.3.*",
         "sonata-project/intl-bundle": "2.2.*",
         "sonata-project/block-bundle": "2.2.*",
+        "sonata-project/core-bundle": "2.3.10",
         "stfalcon/page-bundle": "1.*",
         "stfalcon/news-bundle": "1.*",
         "jms/security-extra-bundle": "1.6.*",

@@ -28,6 +28,11 @@ StfalconSponsorBundle:
 #    type:     annotation
 #    prefix:   /
 
+app_backend:
+    resource: "@StfalconEventBundle/Controller/Admin"
+    type:     annotation
+    prefix:   /admin
+
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin

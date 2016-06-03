@@ -126,8 +126,10 @@ sonata_block:
         sonata.block.service.statistic: ~
 
 sonata_admin:
+    title: framework days
     templates:
         layout: "::admin.html.twig"
+        user_block: '::user_block.html.twig'
     dashboard:
         blocks:
             # display two dashboard blocks
@@ -135,14 +137,14 @@ sonata_admin:
                 position: left
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Пользователи", "События", "Билеты", "Спонсоры"]
+                    groups: ["Пользователи", "События", "Новости", "Статистика"]
             -
                 position: right
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Новости", "Страницы", "Рассылки", "Статистика"]
+                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки"]
             -
-                position: right
+                position: left
                 type: sonata.block.service.statistic
 
 

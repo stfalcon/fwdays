@@ -44,7 +44,6 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-            new Sonata\jQueryBundle\SonatajQueryBundle(),
 
             new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),

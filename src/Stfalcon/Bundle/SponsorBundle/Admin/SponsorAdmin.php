@@ -24,7 +24,13 @@ class SponsorAdmin extends Admin
             ->add('site')
             ->add('about')
             ->add('onMain')
-            ->add('sortOrder');
+            ->add('sortOrder')
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit'   => [],
+                    'delete' => [],
+                ],
+            ]);
     }
 
     /**
@@ -50,14 +56,15 @@ class SponsorAdmin extends Admin
                     )
                 ))
                 ->add('onMain', null, array('required' => false))
+            ->end()
             ->with('Events')
-            ->add('sponsorEvents', 'sonata_type_collection',
-                array(
-                    'label' => 'Events',
-                    'by_reference' => false
-                ), array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
+                ->add('sponsorEvents', 'sonata_type_collection',
+                    array(
+                        'label' => 'Events',
+                        'by_reference' => false
+                    ), array(
+                        'edit' => 'inline',
+                        'inline' => 'table',
                 ))
             ->end();
     }
