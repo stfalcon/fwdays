@@ -16,6 +16,7 @@
 <script>
     $(function () {
         $('.mail').on('click', function (e) {
+            $elem = $(this).parents('td.sonata-ba-list-field');
             e.preventDefault();
 
             var $button = $(this);
@@ -25,11 +26,11 @@
                 success: function (response) {
                     if (response.status === true) {
                         if (response.value === "0") {
-                            $('.mail-yes').hide();
-                            $('.mail-no').show();
+                            $elem.find('.mail-yes').hide();
+                            $elem.find('.mail-no').show();
                         } else {
-                            $('.mail-yes').show();
-                            $('.mail-no').hide();
+                            $elem.find('.mail-yes').show();
+                            $elem.find('.mail-no').hide();
                         }
                     }
                 }

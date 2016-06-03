@@ -402,17 +402,9 @@ class Event
     }
 
     /**
-     * Get path to logo
+     * Set logo
      *
-     * @return string
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    /**
-     * @param string $logo
+     * @param string $logo logo
      *
      * @return $this
      */
@@ -424,7 +416,9 @@ class Event
     }
 
     /**
-     * @param string $emailBackground
+     * Set emailBackground
+     *
+     * @param string $emailBackground emailBackground
      *
      * @return $this
      */
@@ -436,7 +430,9 @@ class Event
     }
 
     /**
-     * @param string $pdfBackgroundImage
+     * Set pdfBackgroundImage
+     *
+     * @param string $pdfBackgroundImage pdfBackgroundImage
      *
      * @return $this
      */
@@ -448,7 +444,9 @@ class Event
     }
 
     /**
-     * @param mixed $pages
+     * Set pages
+     *
+     * @param mixed $pages pages
      *
      * @return $this
      */
@@ -460,7 +458,9 @@ class Event
     }
 
     /**
-     * @param ArrayCollection $speakers
+     * Set speakers
+     *
+     * @param ArrayCollection $speakers speakers
      *
      * @return $this
      */
@@ -472,7 +472,9 @@ class Event
     }
 
     /**
-     * @param mixed $tickets
+     * Set tickets
+     *
+     * @param mixed $tickets tickets
      *
      * @return $this
      */
@@ -481,6 +483,16 @@ class Event
         $this->tickets = $tickets;
 
         return $this;
+    }
+
+    /**
+     * Get path to logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 
     /**
