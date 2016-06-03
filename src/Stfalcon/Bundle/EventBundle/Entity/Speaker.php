@@ -137,6 +137,20 @@ class Speaker
     }
 
     /**
+     * Set photo
+     *
+     * @param string $photo photo
+     *
+     * @return $this
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
      * Set slug
      *
      * @param string $slug
