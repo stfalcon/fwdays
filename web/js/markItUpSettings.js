@@ -20,12 +20,7 @@ mySettings = {
 		{name:'Li', openWith:'<li>', closeWith:'</li>' },
 		{separator:'---------------' },
 
-		//{name:'PictureSimple', key:'P', replaceWith:'<img src="[![Source:!:http://]!]" alt="[![Alternative text]!]" />' },
-		{
-			name:'Picture',
-			key:'P',
-			beforeInsert: function(markItUp) { InlineUpload.display(markItUp) }
-		},
+		{name:'PictureSimple', key:'P', replaceWith:'<img src="[![Source:!:http://]!]" alt="[![Alternative text]!]" />' },
 
 		{name:'Link', key:'L', openWith:'<a href="[![Link:!:http://]!]"(!( title="[![Title]!]")!)>', closeWith:'</a>', placeHolder:'Your text to link...' },
 		{separator:'---------------' },
