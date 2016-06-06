@@ -37,7 +37,7 @@ class PromoCodeAdmin extends Admin
                 ->add('code')
                 ->add('event', null, array(
                     'required' => true,
-                    'empty_value' => 'Choose event'
+                    'placeholder' => 'Choose event'
                 ))
                 ->add('endDate', 'date', array(
                     'widget' => 'single_text'

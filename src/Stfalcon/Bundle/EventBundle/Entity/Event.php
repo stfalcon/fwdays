@@ -402,6 +402,90 @@ class Event
     }
 
     /**
+     * Set logo
+     *
+     * @param string $logo logo
+     *
+     * @return $this
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Set emailBackground
+     *
+     * @param string $emailBackground emailBackground
+     *
+     * @return $this
+     */
+    public function setEmailBackground($emailBackground)
+    {
+        $this->emailBackground = $emailBackground;
+
+        return $this;
+    }
+
+    /**
+     * Set pdfBackgroundImage
+     *
+     * @param string $pdfBackgroundImage pdfBackgroundImage
+     *
+     * @return $this
+     */
+    public function setPdfBackgroundImage($pdfBackgroundImage)
+    {
+        $this->pdfBackgroundImage = $pdfBackgroundImage;
+
+        return $this;
+    }
+
+    /**
+     * Set pages
+     *
+     * @param mixed $pages pages
+     *
+     * @return $this
+     */
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
+
+        return $this;
+    }
+
+    /**
+     * Set speakers
+     *
+     * @param ArrayCollection $speakers speakers
+     *
+     * @return $this
+     */
+    public function setSpeakers($speakers)
+    {
+        $this->speakers = $speakers;
+
+        return $this;
+    }
+
+    /**
+     * Set tickets
+     *
+     * @param mixed $tickets tickets
+     *
+     * @return $this
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
      * Get path to logo
      *
      * @return string

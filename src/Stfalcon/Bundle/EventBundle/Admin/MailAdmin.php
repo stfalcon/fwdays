@@ -54,18 +54,18 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title')
-            ->add('start', 'boolean', array(
-                'editable' => true,
-                'label'    => 'Mail active',
-                'template' => 'StfalconEventBundle:Admin:list_boolean.html.twig'
-            ))
             ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
             ->add('events')
             ->add('_action', 'actions', array(
                 'actions'   => array(
                     'edit'      => array(),
                     'delete'    => array(),
-                    'ispremium' => array('template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig'),
+                    'ispremium' => array(
+                        'template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig',
+                    ),
+                    'start' => array(
+                        'template' => 'StfalconEventBundle:Admin:list__action_start.html.twig',
+                    ),
                 ),
             ));
     }

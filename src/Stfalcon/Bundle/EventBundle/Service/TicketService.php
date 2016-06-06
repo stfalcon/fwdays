@@ -2,6 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
+use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -31,8 +33,9 @@ class TicketService
      *
      * @return Ticket|null
      */
-    public function findTicketForEventByCurrentUser($event) {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+    public function findTicketForEventByCurrentUser($event)
+    {
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $ticket = null;
         if (is_object($user) && $user instanceof \FOS\UserBundle\Model\UserInterface) {

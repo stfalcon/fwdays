@@ -1,0 +1,40 @@
+<a
+    href="{{ path('admin_start_mail', {'id': object.id, 'value': 0}) }}"
+    class="btn btn-sm btn-default edit_link mail mail-yes"
+    {% if object.start == false %}style="display: none"{% endif %}>
+    <i class="glyphicon glyphicon-remove-circle"></i>&nbsp;
+    <span>{{ 'label_type_stfalcon_mail_yes'|trans({}, 'SonataAdminBundle')|capitalize }}</span>
+</a>
+<a
+    href="{{ path('admin_start_mail', {'id': object.id, 'value': 1}) }}"
+    class="btn btn-sm btn-default edit_link mail mail-no"
+    {% if object.start == true %}style="display: none"{% endif %}>
+    <i class="glyphicon glyphicon-ok-circle"></i>&nbsp;
+    <span>{{ 'label_type_stfalcon_mail_no'|trans({}, 'SonataAdminBundle')|capitalize }}</span>
+</a>
+
+<script>
+    $(function () {
+        $('.mail').on('click', function (e) {
+            $elem = $(this).parents('td.sonata-ba-list-field');
+            e.preventDefault();
+
+            var $button = $(this);
+
+            $.ajax({
+                url: $button.attr('href'),
+                success: function (response) {
+                    if (response.status === true) {
+                        if (response.value === "0") {
+                            $elem.find('.mail-yes').hide();
+                            $elem.find('.mail-no').show();
+                        } else {
+                            $elem.find('.mail-yes').show();
+                            $elem.find('.mail-no').hide();
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>

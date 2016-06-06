@@ -12,8 +12,8 @@ class ProfileFormHandler extends BaseProfileFormHandler
     {
         $this->form->setData($user);
 
-        if ('POST' == $this->request->getMethod()) {
-            $this->form->bindRequest($this->request);
+        if ('POST' === $this->request->getMethod()) {
+            $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($user);

@@ -5,6 +5,7 @@
 /app/sessions/*
 !/app/sessions/.gitkeep
 /vendor/
+/bin/
 /web/bundles/*
 /composer.phar
 

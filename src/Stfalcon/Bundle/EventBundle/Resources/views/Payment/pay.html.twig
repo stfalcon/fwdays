@@ -26,7 +26,7 @@
 
             </div>
             <div class="wrap" style="display:none;">
-                <div id="stfalcon_event_ticket_participants" data-prototype="{% filter escape %}{% include 'StfalconEventBundle:Form:ticketPrototype.html.twig' with {'form': ticketForm.participants.get('prototype')} %}{% endfilter %}">
+                <div id="stfalcon_event_ticket_participants" data-prototype="{% filter escape %}{% include 'StfalconEventBundle:Form:ticketPrototype.html.twig' with {'form': ticketForm.participants.vars.prototype} %}{% endfilter %}">
                 </div>
                 {#{{ form_widget(ticketForm.participants) }}#}
                 <div class="wrap-footer">
