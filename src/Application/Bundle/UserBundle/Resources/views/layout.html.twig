@@ -1,10 +1,12 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    {% for key, message in app.session.flashBag.all() %}
-    <div class="info-msg-block">
-        <p>{{ message|trans({}, 'FOSUserBundle') }}</p>
-    </div>
+    {% for key, messages in app.session.flashBag.all() %}
+        {% for message in messages %}
+            <div class="info-msg-block">
+                <p>{{ message|trans({}, 'FOSUserBundle') }}</p>
+            </div>
+        {% endfor %}
     {% endfor %}
 
     {% block fos_user_content %}{% endblock %}
