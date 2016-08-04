@@ -1,5 +1,5 @@
 <h1 style="font-family: Arial; font-size: 18px; line-height: 22px; font-weight: normal; color: #000000; padding-bottom: 20px; margin-top: 0; margin-bottom: 0;">
-    Доброго времени суток, <br/>{{ user.fullname }}.
+    Здравствуйте, <br/>{{ user.fullname }}.
 </h1>
 
 <p style="font-family: Arial; font-size: 15px; line-height: 22px; font-weight: normal; color: #000000; padding-right: 20px; margin-top: 0; margin-bottom: 0;">
@@ -8,4 +8,7 @@
 
     Напоминаем, что конференция состоится {{ event.date|localizeddate('none', 'none', 'ru-RU', null, "d MMMM Y") }}
     года, {{ event.place }}.
+    <br>
+
+    Ваш билет находится во вложении.
 </p>
