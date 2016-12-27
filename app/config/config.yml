@@ -72,7 +72,7 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
+    transport: accord_mandrill
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
@@ -176,3 +176,6 @@ vich_uploader:
               upload_destination: %kernel.root_dir%/../web/uploads/events
 
 ornicar_gravatar: ~
+
+accord_mandrill_swift_mailer:
+    api_key: 7RcxSsuGVOhIshbRq7Y_TQ
