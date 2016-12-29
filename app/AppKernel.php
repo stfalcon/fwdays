@@ -57,7 +57,9 @@ class AppKernel extends Kernel
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
 
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle()
+            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
+
+            new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

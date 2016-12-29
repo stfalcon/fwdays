@@ -176,3 +176,6 @@ vich_uploader:
               upload_destination: %kernel.root_dir%/../web/uploads/events
 
 ornicar_gravatar: ~
+
+accord_mandrill_swift_mailer:
+    api_key: %mandrill_api_key%
