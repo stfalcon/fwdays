@@ -28,16 +28,18 @@ class TicketRepository extends EntityRepository
      */
     public function findTicketsOfActiveEventsForUser(User $user)
     {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT t
-                FROM StfalconEventBundle:Ticket t
-                JOIN t.event e
-                WHERE e.active = TRUE
-                    AND t.user = :user
-            ')
-            ->setParameter('user', $user)
-            ->getResult();
+        $qb = $this->createQueryBuilder('t');
+
+        return $qb->join('t.event', 'e')
+                  ->where($qb->expr()->eq('e.active', ':active'))
+                  ->andWhere($qb->expr()->eq('t.user', ':user'))
+                  ->setParameters([
+                      'user' => $user,
+                      'active' => true,
+                  ])
+                  ->orderBy('e.date', 'ASC')
+                  ->getQuery()
+                  ->getResult();
     }
 
     /**
