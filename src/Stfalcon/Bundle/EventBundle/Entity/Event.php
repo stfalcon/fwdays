@@ -64,6 +64,13 @@ class Event
     protected $date;
 
     /**
+     * @var \DateTime $date
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $showOnlyMonth = false;
+
+    /**
      * @var string $description
      *
      * @ORM\Column(type="text")
@@ -614,5 +621,21 @@ class Event
     public function getCost()
     {
         return $this->cost;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getShowOnlyMonth()
+    {
+        return $this->showOnlyMonth;
+    }
+
+    /**
+     * @param \DateTime $showOnlyMonth
+     */
+    public function setShowOnlyMonth($showOnlyMonth)
+    {
+        $this->showOnlyMonth = $showOnlyMonth;
     }
 }

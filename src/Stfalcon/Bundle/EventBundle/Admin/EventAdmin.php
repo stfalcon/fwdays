@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
  * Class EventAdmin
@@ -47,6 +48,7 @@ class EventAdmin extends Admin
             ->add('city')
             ->add('place')
             ->add('date')
+            ->add('showOnlyMonth')
             ->add('description')
             ->add('about')
             ->add('active', null, array('required' => false))
