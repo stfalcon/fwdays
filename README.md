@@ -83,25 +83,20 @@ Then add "/usr/local/bin/docker -d -G your_username" to /etc/rc.local and start 
 Clone git repository:
 
         $ git clone git://github.com/stfalcon/fwdays.git .
-        $ fig up
+        $ cd fwdays && docker-compose build
 
 After it run:
 
-        $ fig run web setup
+        $ docker-compose up
 
 It's installs vendors and setup database.
-
-After it you can open http://127.0.0.1:8000 with running web app
+After it you can open http://127.0.0.1:8888 with running web app
 
 3) Some notes about configuration and usage:
 --------------------------------
 
-Web app url: http://127.0.0.1:8000
+Web app url: http://127.0.0.1:8888
 
-Phpmyadmin: http://127.0.0.1:8000/phpmyadmin/ (user: root, without password)
+Phpmyadmin: http://127.0.0.1:8888/phpmyadmin/ (user: root, password: qwerty)
+container access: $ docker exec -ti fwdays_fwdays_1 /bin/bash 
 
-Run some command: fig run web <command>
-
-Debugging email sending: all mail are catch by mailcatcher and available via http://127.0.0.1:1080/
-
-Webshell for some custom tasks: http://127.0.0.1:8000/webshell/ (password: b374k)
