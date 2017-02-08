@@ -1,0 +1,26 @@
+; These parameters can be imported into other config files
+; by enclosing the key with % (like %database_user%)
+; Comments start with ';', as in php.ini
+[parameters]
+    database_driver   = pdo_mysql
+    database_host     = db
+    database_port     = null
+    database_name     = stfalcon_com_development
+    database_user     = root
+    database_password = qwerty
+
+    mailer_transport  = smtp
+    mailer_host       = localhost
+    mailer_user       =
+    mailer_password   =
+    mailer_port       = 25
+
+    locale            = ru
+
+    secret            = "012ZLNrkD4GbnlfNyzGb#HEM`m8]uX.J"
+
+    interkassa_secret      = "8GLHlDz1QzpYLduP"
+    interkassa_secret_test = "BQHpiDLt4efYBFQs"
+    tracking_id            = "UA-19310691-2"
+
+    mandrill_api_key = your_api_key
