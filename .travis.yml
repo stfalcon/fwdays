@@ -23,7 +23,7 @@ before_script:
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99
     - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar > selenium.jar
-    - java -jar selenium.jar > /dev/null &
+    - java -jar selenium.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=14,maxInstances=1
     - sleep 5
 
 script:
