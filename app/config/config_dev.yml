@@ -1,6 +1,10 @@
 imports:
     - { resource: config.yml }
 
+doctrine:
+    dbal:
+        server_version: 5.6
+
 framework:
     router:   { resource: "%kernel.root_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
