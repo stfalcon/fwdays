@@ -66,4 +66,4 @@
         И редирект страниц отключен
         Тогда я заполняю обязательные поля формы: имя - "Jack Smith", e-mail - "test@fwdays.com", пароль - "qwerty"
         Когда я нажимаю "Регистрация"
-        Тогда email with subject "Добро пожаловать test@fwdays.com!" should have been sent to "test@fwdays.com"
+        Тогда email with subject "Добро пожаловать, test@fwdays.com!" should have been sent to "test@fwdays.com"

@@ -9,7 +9,7 @@ default:
             base_url: 'http://fwdays.work/'
             selenium2:
               wd_host: 'http://127.0.0.1:4444/wd/hub'
-              capabilities: { "browser": "firefox", "browserVersion": "10", "browserName": "firefox", "version": "10", "deviceOrientation": "landscape", "deviceType": "desktop"}
+              wd_capabilities: { "browser": "firefox", "browserVersion": "10", "browserName": "firefox", "version": "10", "deviceOrientation": "landscape", "deviceType": "desktop"}
             default_session: 'symfony2'
             javascript_session: 'selenium2'
             show_cmd: 'firefox %s'
