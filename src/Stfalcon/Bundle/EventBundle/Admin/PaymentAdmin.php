@@ -28,7 +28,7 @@ class PaymentAdmin extends Admin
                     'route' => array(
                         'name' => 'show'
                     ),
-                    'template' => 'StfalconPaymentBundle:PaymentAdmin:list_tickets.html.twig'
+//                    'template' => 'StfalconPaymentBundle:PaymentAdmin:list_tickets.html.twig'
                 )
             )
             ->add('gate')
