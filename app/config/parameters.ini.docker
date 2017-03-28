@@ -19,6 +19,9 @@
 
     secret            = "012ZLNrkD4GbnlfNyzGb#HEM`m8]uX.J"
 
+    google_captcha_secret_key = your_secret_key
+    google_captcha_site_key = your_site_key
+
     interkassa_secret      = "8GLHlDz1QzpYLduP"
     interkassa_secret_test = "BQHpiDLt4efYBFQs"
     tracking_id            = "UA-19310691-2"

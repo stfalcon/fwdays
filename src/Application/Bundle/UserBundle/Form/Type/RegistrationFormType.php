@@ -51,6 +51,7 @@ class RegistrationFormType extends BaseRegistrationFormType
             ))
             ->add('subscribe', 'checkbox', array(
                 'required'           => false,
+                'data'               => true,
                 'label'              => 'fos_user_profile_form_subscribe',
                 'translation_domain' => 'FOSUserBundle'
             ));
