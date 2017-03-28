@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     JMS\SecurityExtraBundle\Annotation\Secure;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * EmailSubscribe controller
@@ -20,34 +22,36 @@ class EmailSubscribeController extends Controller
      *
      * @param integer $userId
      * @param string $hash
+     * @param integer $mailId
+     * @Template()
+     * @return array
      *
-     * @return RedirectResponse
-     *
-     * @Route("/unsubscribe/{hash}/{userId}", name="unsubscribe")
+     * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
      */
-    public function actionUnsubscribe($userId, $hash)
+    public function unsubscribeAction($hash, $userId, $mailId = -1)
     {
-        /**
-         * @var User $subscriber
-         */
-        $subscriber = $this->getDoctrine()
-            ->getRepository('ApplicationUserBundle:User')
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $subscriber */
+        $subscriber = $em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['id' => $userId, 'salt' => $hash]);
 
         if (!$subscriber) {
             throw $this->createNotFoundException('Unable to find Subscriber.');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        if (-1 !== $mailId) {
+            /** @var MailQueue $mailQueue */
+            $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
+                ->findOneBy(['user' => $userId, 'mail' => $mailId]);
+            if ($mailQueue && $subscriber->isSubscribe()) {
+                $mailQueue->setIsUnsubscribe();
+            }
+        }
 
         $subscriber->setSubscribe(false);
-        $em->persist($subscriber);
         $em->flush();
 
-        return $this->render('ApplicationDefaultBundle:EmailSubscribe:unsubscribe.html.twig', [
-            'hash' => $hash,
-            'userId' => $userId
-        ]);
+        return ['hash' => $hash, 'userId' => $userId];
     }
 
     /**
@@ -55,33 +59,25 @@ class EmailSubscribeController extends Controller
      *
      * @param integer $userId
      * @param string $hash
-     *
-     * @return RedirectResponse
+     * @Template()
+     * @return array
      *
      * @Route("/subscribe/{hash}/{userId}", name="subscribe")
      */
-    public function actionSubscribe($userId, $hash)
+    public function subscribeAction($userId, $hash)
     {
-        /**
-         * @var User $subscriber
-         */
-        $subscriber = $this->getDoctrine()
-            ->getRepository('ApplicationUserBundle:User')
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $subscriber */
+        $subscriber = $em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['id' => $userId, 'salt' => $hash]);
 
         if (!$subscriber) {
             throw $this->createNotFoundException('Unable to find Subscriber.');
         }
 
-        $em = $this->getDoctrine()->getManager();
-
         $subscriber->setSubscribe(true);
-        $em->persist($subscriber);
         $em->flush();
 
-        return $this->render('ApplicationDefaultBundle:EmailSubscribe:subscribe.html.twig', [
-            'hash' => $hash,
-            'userId' => $userId
-        ]);
+        return ['hash' => $hash, 'userId' => $userId];
     }
 }

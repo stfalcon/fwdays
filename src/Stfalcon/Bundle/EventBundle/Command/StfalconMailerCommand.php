@@ -92,7 +92,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $http = $this->getContainer()->get('router')->generate('unsubscribe',
                 [
                     'hash' => $user->getSalt(),
-                    'userId' => $user->getId()
+                    'userId' => $user->getId(),
+                    'mailId' => $mail->getId(),
                 ], true);
 
             $headers->addTextHeader('List-Unsubscribe:', '<' . $http . '>');
