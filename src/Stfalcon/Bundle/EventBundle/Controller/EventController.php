@@ -58,11 +58,11 @@ class EventController extends BaseController
 
         $activeEvents = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Event')
-                     ->findBy(array('active' => true ), array('date' => 'DESC'));
+                     ->findBy(array('active' => true ), array('date' => 'ASC'));
 
         $pastEvents = $this->getDoctrine()->getManager()
                      ->getRepository('StfalconEventBundle:Event')
-                     ->findBy(array('active' => false ), array('date' => 'DESC'));
+                     ->findBy(array('active' => false ), array('date' => 'ASC'));
 
         return array(
             'activeEvents' => $activeEvents,
