@@ -5,15 +5,15 @@
     database_driver   = pdo_mysql
     database_host     = db
     database_port     = null
-    database_name     = stfalcon_com_development
+    database_name     = fwdays_com_development
     database_user     = root
     database_password = qwerty
 
     mailer_transport  = smtp
-    mailer_host       = localhost
+    mailer_host       = mailcatcher
     mailer_user       =
     mailer_password   =
-    mailer_port       = 25
+    mailer_port       = 1025
 
     locale            = ru
 
