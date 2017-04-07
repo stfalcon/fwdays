@@ -6,18 +6,22 @@ services:
      volumes:
        - db_data:/var/lib/mysql
        - ./docker-files/mysql-conf.d:/etc/mysql/conf.d
-     restart: always
      environment:
        MYSQL_ROOT_PASSWORD: qwerty
+   mailcatcher:
+     image: juliolustosa/mailcatcher
+     ports:
+       - "1026:1025"
+       - "1081:1080"
    fwdays:
      depends_on:
        - db
+       - mailcatcher
      build: .
      volumes:
-      - .:/var/www/html
+       - .:/var/www/html
      ports:
-       - "8888:80"
+       - "8000:80"
        - "9999:9000"
-     restart: always
 volumes:
     db_data:
