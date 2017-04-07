@@ -189,18 +189,16 @@
             <argument type="service" id="service_container"/>
         </service>
 
+        <service id="stfalcon_event.payment.service" class="Stfalcon\Bundle\EventBundle\Service\PaymentService">
+            <argument type="service" id="service_container"/>
+        </service>
+
         <service id="stfalcon_event.referral.service" class="%stfalcon_event.referral.service.class%">
             <argument type="service" id="service_container"/>
         </service>
 
         <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
-            <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.payment_manager" class="%stfalcon_event.payment_manager.class%">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument>%stfalcon_event.admin.payment.entity%</argument>
             <argument type="service" id="service_container"/>
         </service>
 

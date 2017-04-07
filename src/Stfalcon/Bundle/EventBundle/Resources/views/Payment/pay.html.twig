@@ -53,7 +53,7 @@
         {% endfor %}
         <hr>
 
-        {% if not payment.getPromoCodeFromTickets %}
+        {% if not promoCodeFromTickets %}
             <div>
                 <form action="{{ path('event_pay', {'event_slug': event.slug}) }}" method="post" class="payment-form promo-code">
                     {{ form_label(promoCodeForm.code) }}
