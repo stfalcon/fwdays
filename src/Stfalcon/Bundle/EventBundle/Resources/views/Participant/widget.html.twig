@@ -2,7 +2,7 @@
 {% for participant in participants %}
     <li>
         <div class="part-block" title="{{ participant.user.fullname }}">
-            <img src="{{ gravatar(participant.user.email) }}&d={{ 'http://frameworksdays.com' ~ asset('/images/img-user-nophoto.png') }}" width="53" height="53" alt="{{ participant.user.fullname }}">
+            <img src="{{ gravatar(participant.user.email) }}&d={{ 'https://frameworksdays.com' ~ asset('/images/img-user-nophoto.png') }}" width="53" height="53" alt="{{ participant.user.fullname }}">
             {{ participant.user.fullname }}
         </div>
     </li>
