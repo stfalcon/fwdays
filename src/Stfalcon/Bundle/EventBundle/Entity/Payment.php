@@ -50,7 +50,7 @@ class Payment
     private $amount;
 
     /**
-     * Первоначальная стоимость
+     * Базова/початкова сума платежа, до застосування промокода чи скидки
      *
      * @var float $baseAmount
      *
@@ -59,7 +59,8 @@ class Payment
     private $baseAmount;
 
     /**
-     * Использовано внутренной валюты
+     * Використанно валюти з балансу користувача,
+     * яку він отримує за рефералів або за повернення коштів при відсутності євента
      *
      * @var float $fwdaysAmount
      *
@@ -118,6 +119,15 @@ class Payment
     public function getTickets()
     {
         return $this->tickets;
+    }
+
+    /**
+     * Constructor. Set default status to new payment.
+     */
+    public function __construct()
+    {
+        $this->setStatus(self::STATUS_PENDING);
+        $this->tickets = new ArrayCollection();
     }
 
     /**
@@ -223,15 +233,6 @@ class Payment
         }
 
         return ;
-    }
-
-    /**
-     * Constructor. Set default status to new payment.
-     */
-    public function __construct()
-    {
-        $this->setStatus(self::STATUS_PENDING);
-        $this->tickets = new ArrayCollection();
     }
 
     /**
@@ -348,7 +349,8 @@ class Payment
      */
     public function __toString()
     {
-        return (string) $this->getStatus() ?: '-';
+        $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
+        return $string;
     }
 
     public function markedAsPaid()
