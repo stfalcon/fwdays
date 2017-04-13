@@ -19,6 +19,7 @@ class Payment
 {
     const STATUS_PENDING = 'pending';
     const STATUS_PAID    = 'paid';
+    const STATUS_RETURNED = 'returned'; //доданий для статусу, коли платіж повернений користувачу
 
     /**
      * @var integer $id
@@ -118,6 +119,15 @@ class Payment
     public function getTickets()
     {
         return $this->tickets;
+    }
+
+    /**
+     * Constructor. Set default status to new payment.
+     */
+    public function __construct()
+    {
+        $this->setStatus(self::STATUS_PENDING);
+        $this->tickets = new ArrayCollection();
     }
 
     /**
@@ -223,15 +233,6 @@ class Payment
         }
 
         return ;
-    }
-
-    /**
-     * Constructor. Set default status to new payment.
-     */
-    public function __construct()
-    {
-        $this->setStatus(self::STATUS_PENDING);
-        $this->tickets = new ArrayCollection();
     }
 
     /**
@@ -348,7 +349,8 @@ class Payment
      */
     public function __toString()
     {
-        return (string) $this->getStatus() ? '('.$this->getId().') '.$this->getStatus(): '-';
+        $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
+        return $string;
     }
 
     public function markedAsPaid()
