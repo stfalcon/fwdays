@@ -115,7 +115,8 @@ class PaymentAdmin extends Admin
                 ->add('status', 'choice', array(
                     'choices'   => array(
                         'pending'   => 'pending',
-                        'paid' => 'paid'
+                        'paid' => 'paid',
+                        'returned' => 'returned',
                     )
                 ))
                 ->add('gate', 'choice', array(
