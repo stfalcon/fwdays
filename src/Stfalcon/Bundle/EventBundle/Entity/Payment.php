@@ -49,7 +49,7 @@ class Payment
     private $amount;
 
     /**
-     * Первоначальная стоимость
+     * Базова/початкова сума платежа, до застосування промокода чи скидки
      *
      * @var float $baseAmount
      *
@@ -58,7 +58,8 @@ class Payment
     private $baseAmount;
 
     /**
-     * Использовано внутренной валюты
+     * Використанно валюти з балансу користувача,
+     * яку він отримує за рефералів або за повернення коштів при відсутності євента
      *
      * @var float $fwdaysAmount
      *
@@ -347,7 +348,7 @@ class Payment
      */
     public function __toString()
     {
-        return (string) $this->getStatus() ?: '-';
+        return (string) $this->getStatus() ? '('.$this->getId().') '.$this->getStatus(): '-';
     }
 
     public function markedAsPaid()
