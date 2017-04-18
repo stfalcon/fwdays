@@ -55,6 +55,10 @@
             <argument type="service" id="service_container" />
         </service>
 
+        <service id="fos_user.registration.form.handler" class="Application\Bundle\UserBundle\Services\RegistrationFormWithGoogleCaptcha">
+            <argument type="service" id="service_container" />
+        </service>
+
     </services>
 
 </container>
