@@ -1,6 +1,7 @@
 {% block javascripts %}
     {% javascripts 'js/jquery-1.8.2.min.js' 'js/password-field-eye.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     {% endjavascripts %}
 {% endblock %}
 
@@ -61,6 +62,7 @@
             Я хочу получать обновления новостей и событий на почту.</label>
         </div>
         {{ form_widget(form._token) }}
+        <div class="g-recaptcha" data-sitekey="{{ captcha_site_key }}"></div>
         <input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
 </form>
