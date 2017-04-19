@@ -72,16 +72,15 @@ class MailAdminController extends CRUDController
              * @var \Swift_Mailer $mailer
              * @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper
              */
-            $em = $this->get('doctrine')->getEntityManager('default');
+            $em = $this->getDoctrine()->getManager();
             $mailer = $this->get('mailer');
             $mailerHelper = $this->get('stfalcon_event.mailer_helper');
 
             $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
-            $isTestMessage = true;
 
             $error = false;
             foreach ($users as $user) {
-                if (!$mailer->send($mailerHelper->formatMessage($user, $mail, $isTestMessage))) {
+                if (!$mailer->send($mailerHelper->formatMessage($user, $mail))) {
                     $error = true;
                 }
             }

@@ -128,6 +128,7 @@
         И я перехожу на страницу со списком рассылок
         Тогда код ответа сервера должен быть 200
         И I do not follow redirects
+        И я должен видеть "Отправить Админам"
         Если я кликаю по ссылке "Отправить Админам"
         Тогда email with subject "test" should have been sent to "admin@fwdays.com"
         Тогда email with subject "test" should have not been sent to "user@fwdays.com"

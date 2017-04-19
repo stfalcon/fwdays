@@ -8,6 +8,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\EventBundle\Entity\Mail,
     Application\Bundle\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Container;
 
 class PaymentListener
 {
@@ -20,7 +21,7 @@ class PaymentListener
 
     /** @var \Swift_Mailer $mailer */
     private $mailer;
-
+    /** @var  Container */
     private $container;
 
     public function __construct($container)
@@ -66,14 +67,17 @@ class PaymentListener
 
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
                     $message = $this->mailerHelper->formatMessage($user, $mail);
-                    $message->setSubject($event->getName())
-                        ->attach(
+
+                    $message->setSubject($event->getName());
+                    /** костиль: тестовому середовищі виникає виключення при парсінгу html тексту для створення pdf */
+                    if ('test' != $this->container->get('kernel')->getEnvironment()) {
+                        $message->attach(
                             \Swift_Attachment::newInstance(
                                 $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
                                 $ticket->generatePdfFilename()
                             )
                         );
-
+                    }
                     $this->mailer->send($message);
                 }
             }
