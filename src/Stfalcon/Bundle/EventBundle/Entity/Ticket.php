@@ -242,6 +242,8 @@ class Ticket
 
     /**
      * @param float $amount
+     *
+     * @return Ticket
      */
     public function setAmount($amount)
     {
@@ -251,6 +253,7 @@ class Ticket
             $this->amount = $amount;
 //            $this->getPayment()->recalculateAmount();
 //        }
+        return $this;
     }
 
     /**
@@ -282,10 +285,9 @@ class Ticket
      */
     public function setPromoCode($promoCode)
     {
-        $this->setHasDiscount(true);
-        $amountWithDiscount = $this->amountWithoutDiscount - ($this->amountWithoutDiscount * ($promoCode->getDiscountAmount() / 100));
-        $this->setAmount($amountWithDiscount);
         $this->promoCode = $promoCode;
+
+        return $this;
     }
 
     /**
@@ -326,23 +328,5 @@ class Ticket
     public function generatePdfFilename()
     {
         return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
-    }
-
-    /**
-     * Set amount with discount.
-     * If has promo code use discount with promo code
-     *
-     * @param $discount
-     */
-    public function setAmountWithDiscount($discount) {
-        $price = $this->getAmountWithoutDiscount();
-
-        if ($promoCode = $this->getPromoCode()) {
-            $cost = $price - ($price * ($promoCode->getDiscountAmount() / 100));
-        } else {
-            $cost = $price - ($price * $discount);
-        }
-
-        $this->setAmount($cost);
     }
 }

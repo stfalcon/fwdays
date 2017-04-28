@@ -36,11 +36,6 @@ class PaymentController extends BaseController
             throw new \Exception("Оплата за участие в {$event->getName()} не принимается.");
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        /* @var  User $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
-
         /* @var $ticket Ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
@@ -48,47 +43,17 @@ class PaymentController extends BaseController
         $paymentService = $this->get('stfalcon_event.payment.service');
 
         if (!$payment = $ticket->getPayment()) {
-            $payment = $paymentService->createPaymentForUserWithTicket($user, $ticket);
+            $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
         }
 
         if ($payment->isPaid()) {
             return new RedirectResponse($this->generateUrl('events_my'));
         }
 
-        if (!$payment->isPaid()) {
+        if ($payment->isPending()) {
             $paymentService->checkTicketsPricesInPayment($payment, $event);
-
-            // покупка за реферальные средства
-            if ($user->getBalance() > 0) {
-                if ($payment->getAmount() < $user->getBalance()) {
-                    //Билет бесплатно
-
-                    $referralService = $this->get('stfalcon_event.referral.service');
-
-                    $payment->setAmount(0);
-                    $payment->setFwdaysAmount($payment->getBaseAmount());
-
-                    $payment->markedAsPaid();
-
-                    // списываем реферельные средства
-                    $referralService->utilizeBalance($payment);
-
-                    $em->persist($payment);
-                    $em->flush();
-
-                    return $this->redirect($this->generateUrl('payment_success'));
-
-                } else {
-                    $amount = $payment->getAmount() - $user->getBalance();
-                    $payment->setAmount($amount);
-                    $payment->setFwdaysAmount($user->getBalance());
-                }
-
-                $em->persist($payment);
-            }
+            $paymentService->payByReferralMoney($payment);
         }
-
-        $em->flush();
 
         /**
          * Обработка формы промо кода
@@ -96,22 +61,18 @@ class PaymentController extends BaseController
         $promoCodeForm = $this->createForm('stfalcon_event_promo_code');
 
         $promoCode = $paymentService->getPromoCodeFromPaymentTickets($payment);
-        $request = $this->getRequest();
-
-        // процент скидки для постоянных участников
-        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
-        $discountAmount = 100 * (float)$paymentsConfig['discount'];
+        $request = $this->container->get('request_stack')->getCurrentRequest();
 
         if ($request->isMethod('post')) {
-            $promoCodeForm->bind($request);
+            $promoCodeForm->submit($request);
             $code = $promoCodeForm->get('code')->getData();
+
+            $em = $this->getDoctrine()->getManager();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
                 ->findActivePromoCodeByCodeAndEvent($code, $event);
 
             if ($promoCode) {
-                $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode, $discountAmount);
-                $em->flush();
-
+                $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
                 if (!empty($notUsedPromoCode)) {
                     $this->get('session')->getFlashBag()->add('not_used_promocode', implode(', ', $notUsedPromoCode));
                 }
@@ -122,6 +83,11 @@ class PaymentController extends BaseController
         }
 
         $this->get('session')->set('active_payment_id', $payment->getId());
+
+        /* @var  User $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
+        $discountAmount = 100 * (float)$paymentsConfig['discount'];
 
         return array(
             'data'           => $this->get('stfalcon_event.interkassa.service')->getData($payment, $event),
@@ -163,16 +129,15 @@ class PaymentController extends BaseController
             throw new HttpException(404, sprintf('Can not allow paid'));
         }
 
-        $request = $this->getRequest();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $ticketForm = $this->createForm('stfalcon_event_ticket');
-        $ticketForm->bind($request);
-
+        $ticketForm->submit($request);
 
         $participants = $ticketForm->get('participants')->getData();
-        $alreadyPaidTickets = array();
+        $alreadyPaidTickets = [];
 
         foreach ($participants as $participant) {
-            $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $participant['email']));
+            $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $participant['email']]);
 
             // создаем нового пользователя
             if (!$user) {
@@ -182,26 +147,21 @@ class PaymentController extends BaseController
             // проверяем или у него нет билетов на этот ивент
             /** @var Ticket $ticket */
             $ticket = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+                ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
             if (!$ticket) {
-                $ticket = $this->container->get('stfalcon_event.ticket.service')
-                    ->createTicket($event, $user);
+                $ticketService = $this->get('stfalcon_event.ticket.service');
+                $ticket = $ticketService->createTicket($event, $user);
             }
-            $paymentService = $this->get('stfalcon_event.payment.service');
+
             if (!$ticket->isPaid()) {
-                if (($promoCode = $paymentService->getPromoCodeFromPaymentTickets($payment))
-                    && !$ticket->getHasDiscount()) {
-                    $ticket->setPromoCode($promoCode);
-                }
+                $paymentService = $this->get('stfalcon_event.payment.service');
                 $paymentService->addTicketToPayment($payment, $ticket);
             } else {
                 $alreadyPaidTickets[] = $user->getFullname();
             }
-            $em->persist($ticket);
         }
 
-        $em->flush();
         if (!empty($alreadyPaidTickets)) {
             $this->get('session')->getFlashBag()->add('already_paid_tickets', implode(', ', $alreadyPaidTickets));
         }

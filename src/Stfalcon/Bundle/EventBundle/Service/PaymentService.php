@@ -17,6 +17,7 @@ class PaymentService
      */
     protected $container;
     protected $em;
+
     /**
      * @param Container $container
      */
@@ -27,16 +28,19 @@ class PaymentService
     }
 
     /**
-     * @param User   $user
+     * Create payment for current user ticket
+     *
      * @param Ticket $ticket
      * @return Payment
      */
-    public function createPaymentForUserWithTicket($user, $ticket)
+    public function createPaymentForCurrentUserWithTicket($ticket)
     {
+        /* @var  User $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $payment = new Payment();
         $payment->setUser($user);
-        $this->addTicketToPayment($payment, $ticket, false);
         $this->em->persist($payment);
+        $this->addTicketToPayment($payment, $ticket);
         $this->em->flush();
 
         return $payment;
@@ -46,19 +50,13 @@ class PaymentService
      *
      * @param Payment $payment
      * @param Ticket  $ticket
-     * @param bool    $withFlush
      */
-    public function addTicketToPayment($payment, $ticket, $withFlush = true)
+    public function addTicketToPayment($payment, $ticket)
     {
         if (!$ticket->isPaid() && $payment->addTicket($ticket)) {
             $ticket->setPayment($payment);
-
-            $payment->setAmount($payment->getAmount() + $ticket->getAmount());
-            $payment->setBaseAmount($payment->getBaseAmount() + $ticket->getAmount());
-            if ($withFlush) {
-                $this->em->persist($ticket);
-                $this->em->flush();
-            }
+            $this->em->persist($ticket);
+            $this->recalculatePaymentAmount($payment);
         }
     }
     /**
@@ -71,11 +69,8 @@ class PaymentService
     {
         if (!$ticket->isPaid() && $payment->removeTicket($ticket)) {
             $ticket->setPayment(null);
-
-            $payment->setAmount($payment->getAmount() - $ticket->getAmount());
-            $payment->setBaseAmount($payment->getBaseAmount() - $ticket->getAmount());
             $this->em->remove($ticket);
-            $this->em->flush();
+            $this->recalculatePaymentAmount($payment);
         }
     }
 
@@ -85,12 +80,15 @@ class PaymentService
      */
     public function recalculatePaymentAmount($payment)
     {
-        $result = 0;
+        $paymentAmount = 0;
+        $paymentAmountWithoutDiscount = 0;
+        /** @var Ticket $ticket*/
         foreach ($payment->getTickets() as $ticket) {
-            /** @var Ticket $ticket*/
-            $result += $ticket->getAmount();
+            $paymentAmount += $ticket->getAmount();
+            $paymentAmountWithoutDiscount += $ticket->getAmountWithoutDiscount();
         }
-        $payment->setAmount($result);
+        $payment->setAmount($paymentAmount);
+        $payment->setBaseAmount($paymentAmountWithoutDiscount);
 
         $this->em->flush();
     }
@@ -136,23 +134,22 @@ class PaymentService
      *
      * @param Payment   $payment
      * @param PromoCode $promoCode
-     * @param int       $baseDiscount
      *
      * @return array
      */
-    public function addPromoCodeForTicketsInPayment($payment, $promoCode, $baseDiscount)
+    public function addPromoCodeForTicketsInPayment($payment, $promoCode)
     {
         $notUsedPromoCode = [];
+
+        $ticketService = $this->container->get('stfalcon_event.ticket.service');
         /** @var  Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            if (!$ticket->getHasDiscount()) {
-                $ticket->setPromoCode($promoCode);
-            } elseif ($ticket->getHasDiscount() &&
-                !$ticket->hasPromoCode() &&
-                ($promoCode->getDiscountAmount() > $baseDiscount)
-            ) {
-                $ticket->setPromoCode($promoCode);
+            if ($ticketService->isMustBeDiscount($ticket)) {
+                $ticketService->setTicketBestDiscount($ticket, $promoCode);
             } else {
+                $ticketService->setTicketPromoCode($ticket, $promoCode);
+            }
+            if (!$ticket->hasPromoCode()) {
                 $notUsedPromoCode[] = $ticket->getUser()->getFullname();
             }
         }
@@ -170,47 +167,42 @@ class PaymentService
      */
     public function checkTicketsPricesInPayment($payment, $event)
     {
-        // Вытягиваем скидку из конфига
-        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
-        $discount = (float) $paymentsConfig['discount'];
-
+        $ticketService = $this->container->get('stfalcon_event.ticket.service');
         $eventCost = $event->getCost();
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            // получаем оплаченые платежи пользователя
-            $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
-                ->findPaidPaymentsForUser($ticket->getUser());
 
-            //правильно ли установлен флаг наличия скидки
-            // @todo с расчетом скидки у нас явно проблемы. ниже почти такой же код идет. плюс ещё в нескольких
-            // местах по коду делаем подобные расчеты. плюс в самой модели билета есть логика расчета цены со скидкой...
+            $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
 
-            $isCorrectDiscount = $ticket->getHasDiscount() == ((count($paidPayments) > 0 && $event->getUseDiscounts()) || $ticket->hasPromoCode());
-
-            // если цена билета без скидки не ровна новой цене на ивент
-            // или неверно указан флаг наличия скидки
-            if (($ticket->getAmountWithoutDiscount() != $eventCost) || !$isCorrectDiscount) {
-                // если не правильно установлен флаг наличия скидки, тогда устанавливаем его заново
-                if (!$isCorrectDiscount) {
-                    // @todo для реализации возможности отключения скидки постоянных участников мне пришлось
-                    // использовать метод $event->getUseDiscounts() в трех разных местах. а нужно, чтобы
-                    // это можно было сделать в одном месте
-                    $ticket->setHasDiscount(((count($paidPayments) > 0 && $event->getUseDiscounts()) || $ticket->hasPromoCode()));
-                }
-
-                $ticket->setAmountWithoutDiscount($eventCost);
-                if ($ticket->getHasDiscount()) {
-                    $ticket->setAmountWithDiscount($discount);
-                } else {
-                    $ticket->setAmount($eventCost);
-                }
-                $this->em->merge($ticket);
+            if (($ticket->getAmountWithoutDiscount() != $eventCost) ||
+                ($ticket->getHasDiscount() != ($isMustBeDiscount || $ticket->hasPromoCode()))) {
+                $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount);
             }
         }
-
         $this->recalculatePaymentAmount($payment);
+    }
 
-        $this->em->merge($payment);
-        $this->em->flush();
+    /**
+     * Correct pay amount by user referral money
+     *
+     * @param Payment $payment
+     */
+    public function payByReferralMoney(Payment $payment)
+    {
+        /* @var  User $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        if ($user->getBalance() > 0) {
+            $amount = $user->getBalance() - $payment->getAmount();
+            if ($amount < 0) {
+                $payment->setAmount(-$amount);
+                $payment->setFwdaysAmount($user->getBalance());
+            } else {
+                $payment->setAmount(0);
+                $payment->setFwdaysAmount($payment->getBaseAmount());
+                $payment->markedAsPaid();
+                $this->container->get('stfalcon_event.referral.service')->utilizeBalance($payment);
+            }
+            $this->em->flush();
+        }
     }
 }
