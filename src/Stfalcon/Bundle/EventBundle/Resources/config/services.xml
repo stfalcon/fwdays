@@ -191,6 +191,7 @@
 
         <service id="stfalcon_event.referral.service" class="%stfalcon_event.referral.service.class%">
             <argument type="service" id="service_container"/>
+            <argument type="service" id="stfalcon.user_balance.service"/>
         </service>
 
         <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">

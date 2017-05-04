@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
+use Application\Bundle\UserBundle\Services\UserBalanceService;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\Container;
 use Application\Bundle\UserBundle\Entity\User;
@@ -27,13 +28,16 @@ class ReferralService
      */
     protected $request;
 
+    protected $userBalanceService;
     /**
-     * @param Container $container
+     * @param Container          $container
+     * @param UserBalanceService $userBalanceService
      */
-    public function __construct($container)
+    public function __construct($container, $userBalanceService)
     {
         $this->container = $container;
         $this->request   = $this->container->get('request');
+        $this->userBalanceService = $userBalanceService;
     }
 
     /**
@@ -67,51 +71,20 @@ class ReferralService
      * Начисляет рефералы
      *
      * @param Payment $payment
-     *
-     * @return bool
-     *
-     * @throws \Exception
      */
     public function chargingReferral(Payment $payment)
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-
-        $userReferral = $payment->getUser()->getUserReferral();
-
-        if ($userReferral) {
-            $balance = $userReferral->getBalance() + 100;
-            $userReferral->setBalance($balance);
-
-            $em->persist($userReferral);
-            $em->flush();
-
-        }
+        $this->userBalanceService->setUserBalance($payment, UserBalanceService::INCOME);
     }
 
     /**
-     * @param Payment $payment
+     * Списуєм реферальні средства
      *
-     * @return bool
+     * @param Payment $payment
      */
     public function utilizeBalance(Payment $payment)
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-
-        //списываем реферальные средства если они были использованы
-        if ($payment->getFwdaysAmount() > 0) {
-
-            $user = $payment->getUser();
-            $userBalance = $payment->getUser()->getBalance();
-            $balance = $userBalance - $payment->getFwdaysAmount();
-            $user->setBalance($balance);
-
-            $em->persist($user);
-            $em->flush();
-
-            return true;
-        }
-
-        return false;
+       $this->userBalanceService->setUserBalance($payment, UserBalanceService::OUTCOME);
     }
 
     /**
