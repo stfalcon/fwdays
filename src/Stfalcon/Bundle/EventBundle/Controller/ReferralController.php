@@ -72,10 +72,14 @@ class ReferralController extends BaseController
          * @var User $user
          */
         $user = $this->getUser();
-
+        $options = $this->getDoctrine()->getRepository('StfalconEventBundle:Options')->getOptions();
+        if (isset($options['referral_event_id'])) {
+            $referralEvent = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->find($options['referral_event_id']);
+        }
         return [
             'balance' => $user->getBalance(),
-            'code'    => $referralService->getReferralCode()
+            'code'    => $referralService->getReferralCode(),
+            'event'   => $referralEvent,
         ];
     }
 }

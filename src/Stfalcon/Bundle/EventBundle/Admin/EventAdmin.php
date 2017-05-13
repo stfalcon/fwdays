@@ -18,6 +18,7 @@ class EventAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id')
             ->addIdentifier('slug')
             ->add('name')
             ->add('active')

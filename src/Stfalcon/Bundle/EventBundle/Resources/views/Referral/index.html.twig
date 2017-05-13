@@ -17,10 +17,17 @@
 {% endblock %}
 
 {% block content %}
+    {% if event is null %}
+        {% set event_slug = 'php-fwdays-17' %}
+        {% set event_name = 'PHP fwdays 17' %}
+    {% else %}
+        {% set event_slug = event.slug %}
+        {% set event_name = event.name %}
+    {% endif %}
     <h2>Приглашайте друзей и накапливайте бонусы! </h2>
     <div class="text">
-        <p class="text-desc">У вас много друзей, которые интересуются .NET? Приглашайте их на конференцию
-            <b>.NET fwdays '17</b> и получайте по 100 ₴ за каждую покупку билета!
+        <p class="text-desc">Приглашайте друзей на конференцию
+            <b>{{ event_name }}</b> и получайте по 100 ₴ за каждую покупку билета!
             Накапливайте бонусы и используйте их при покупке билетов на наши мероприятия.</p>
         <p>Внесем немного азарта в нашу жизнь!</p>
     </div>
@@ -30,7 +37,7 @@
         <div class="ref-link">
             <p>Реферальная ссылка:</p>
             <input id="code-inp" type="text"
-                   value="{{ url('event_show', {'event_slug' : 'js-frameworks-day-2017', 'ref': code}) }}"/>
+                   value="{{ url('event_show', {'event_slug' : event_slug, 'ref': code}) }}"/>
         </div>
     </div>
 {% endblock %}
