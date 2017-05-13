@@ -30,7 +30,6 @@ class PaymentRepository extends EntityRepository
             ->leftJoin('t.event', 'e')
             ->andWhere('e.useDiscounts = :useDiscounts')
             ->andWhere('t.user = :user')
-            ->andWhere('t.user = :user')
             ->andWhere('p.status = :status')
             ->setParameter('user', $user)
             ->setParameter('useDiscounts', true)

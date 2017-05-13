@@ -45,6 +45,9 @@
         <parameter key="stfalcon_event.admin.payment.entity">Stfalcon\Bundle\EventBundle\Entity\Payment</parameter>
         <parameter key="stfalcon_event.admin.payment.controller">SonataAdminBundle:CRUD</parameter>
 
+        <parameter key="stfalcon_event.admin.options.entity">Stfalcon\Bundle\EventBundle\Entity\Options</parameter>
+        <parameter key="stfalcon_event.admin.options.controller">SonataAdminBundle:CRUD</parameter>
+
         <parameter key="stfalcon_event.qr_code.class">Endroid\QrCode\QrCode</parameter>
 
         <parameter key="stfalcon_event.mailer_helper.class">Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper</parameter>
@@ -117,6 +120,12 @@
             <argument>%stfalcon_event.admin.page.controller%</argument>
         </service>
 
+        <service id="stfalcon_event.admin.options" class="Stfalcon\Bundle\EventBundle\Admin\OptionsAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Пользователи" label="Настройки"/>
+            <argument />
+            <argument>%stfalcon_event.admin.options.entity%</argument>
+            <argument>%stfalcon_event.admin.options.controller%</argument>
+        </service>
 
         <service id="stfalcon_event.admin.mails" class="%stfalcon_event.admin.mails.class%">
             <tag name="sonata.admin" manager_type="orm" group="Рассылки" label="Рассылки"/>
