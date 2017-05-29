@@ -4,7 +4,7 @@
             <a class="event-paid" href="{{ path('event_ticket_download', {'event_slug': event.slug}) }}">
                 Скачать билет
             </a>
-        {% elseif ticket and event.receivePayments %}
+        {% elseif (ticket or (payment and payment.pending)) and event.receivePayments %}
             <a class="event-pay" href="{{ path('event_pay', {'event_slug': event.slug}) }}">
                 Оплатить участие
             </a>
@@ -12,7 +12,11 @@
             <a href="{{ path('events_my') }}">
                 Событие добавлено
             </a>
-        {% else %}
+        {% elseif (payment and payment.paid) %}
+            <a href="{{ path('events_my') }}">
+                Участие оплачено
+            </a>
+        {% elseif (not payment) %}
             <a class="take-part" href="{{ path('event_takePart', {'event_slug': event.slug }) }}">
                 Принять участие
             </a>

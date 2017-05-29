@@ -61,10 +61,19 @@ class TicketController extends BaseController
     {
         $ticket = $this->container->get('stfalcon_event.ticket.service')
                 ->findTicketForEventByCurrentUser($event);
-
+        /** @var Payment $payment */
+        $payment = null;
+        /* @var  User $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        if ($user instanceof User) {
+            $payment = $this->container->get('doctrine.orm.default_entity_manager')
+                ->getRepository('StfalconEventBundle:Payment')
+                ->findPaymentByUserAndEvent($user, $event);
+        }
         return array(
             'event'  => $event,
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'payment' => $payment,
         );
     }
 
