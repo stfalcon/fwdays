@@ -13,7 +13,7 @@
                 (скидка {{ discountAmount }}% для постоянного участника)
             {% endif %}
         {% endif %}
-        {% if ticket.user != app.user %}
+        {% if ticket.payment.tickets.count > 1 %}
             <a href="{{ path('remove_ticket_from_payment', {'event_slug': event.slug, 'payment_id': payment.id, 'id': ticket.id}) }}"
                class="remove-participant" title="Удалить">Удалить</a>
         {% endif %}

@@ -45,7 +45,12 @@ class PaymentController extends BaseController
         $ticket = $this->container->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
 
-        if (!$payment = $ticket->getPayment()) {
+        /** @var Payment $payment */
+        $payment = $this->container->get('doctrine.orm.default_entity_manager')
+            ->getRepository('StfalconEventBundle:Payment')
+            ->findPaymentByUserAndEvent($user, $event);
+
+        if ($ticket && !$payment = $ticket->getPayment()) {
             $payment = new Payment();
             $payment->setUser($user);
             $em->persist($payment);
