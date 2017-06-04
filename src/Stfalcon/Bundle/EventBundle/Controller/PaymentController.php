@@ -244,10 +244,11 @@ class PaymentController extends BaseController
             throw $this->createNotFoundException('Unable to find Payment entity.');
         }
 
-        // а якщо чувак оплатив квиток?
-        $payment->removeTicket($ticket);
-        $em->remove($ticket);
-        $em->flush();
+        if (!$payment->isPaid()) {
+            $payment->removeTicket($ticket);
+            $em->remove($ticket);
+            $em->flush();
+        }
 
         return $this->redirect($this->generateUrl('event_pay', array('event_slug' => $event->getSlug())));
     }
