@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\Request;
 
 class RegistrationController extends BaseController
 {
@@ -52,5 +54,84 @@ class RegistrationController extends BaseController
 //        }
 
         return $response;
+    }
+
+    public function registerAction()
+    {
+        $form = $this->container->get('fos_user.registration.form');
+        $formHandler = $this->container->get('fos_user.registration.form.handler');
+        $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
+
+        $request = Request::createFromGlobals();
+        $captcha = $request->request->get('g-recaptcha-response');
+
+        $process = $this->getGoogleCaptchaCheck($captcha) && $formHandler->process($confirmationEnabled);
+
+        if ($process) {
+            $user = $form->getData();
+
+            $authUser = false;
+            if ($confirmationEnabled) {
+                $this->container->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
+                $route = 'fos_user_registration_check_email';
+            } else {
+                $authUser = true;
+                $route = 'fos_user_registration_confirmed';
+            }
+
+            $this->setFlash('fos_user_success', 'registration.flash.user_created');
+            $url = $this->container->get('router')->generate($route);
+            $response = new RedirectResponse($url);
+
+            if ($authUser) {
+                $this->authenticateUser($user, $response);
+            }
+
+            return $response;
+        }
+
+        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Перевіряєм капчу
+     *
+     * @link https://www.google.com/recaptcha/admin#list
+     *
+     * @param string $captcha
+     * @throws
+     * @return bool
+     */
+    private function getGoogleCaptchaCheck($captcha)
+    {
+        if (empty($captcha)) {
+
+            return false;
+        }
+
+        $params = [
+            'secret'  => $this->container->getParameter('captcha_secret_key'),
+            'response' => $captcha,
+            'remoteip' => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        $response = json_decode(
+            $this->container->get('buzz')->submit(
+                $this->container->getParameter('captcha_check_url'),
+                $params
+            )->getContent(),
+            true
+        );
+        if (!isset($response['success'])) {
+
+            throw new \Exception('google captcha api response missing');
+        } elseif (isset($response['error-codes'])) {
+
+            throw new \Exception('google captcha api error: '.$response['error-codes']);
+        }
+
+        return (bool) $response['success'];
     }
 }
