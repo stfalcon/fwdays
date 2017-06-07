@@ -30,6 +30,7 @@ class LoadUserData extends AbstractFixture
         $userAdmin->setEnabled(true);
         $userAdmin->setExpired(false);
         $userAdmin->setLocked(false);
+        $userAdmin->setAllowShareContacts(true);
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
 
@@ -42,7 +43,9 @@ class LoadUserData extends AbstractFixture
         $userVolunteer->setEnabled(true);
         $userVolunteer->setExpired(false);
         $userVolunteer->setLocked(false);
+        $userVolunteer->setAllowShareContacts(true);
         $manager->persist($userVolunteer);
+
         $this->addReference('user-volunteer', $userVolunteer);
 
         $userDefault = new User();
@@ -58,6 +61,7 @@ class LoadUserData extends AbstractFixture
         $userDefault->setEnabled(true);
         $userDefault->setExpired(false);
         $userDefault->setLocked(false);
+        $userDefault->setAllowShareContacts(true);
         $manager->persist($userDefault);
         $this->addReference('user-default', $userDefault);
 
@@ -74,6 +78,7 @@ class LoadUserData extends AbstractFixture
         $userDefault2->setEnabled(true);
         $userDefault2->setExpired(false);
         $userDefault2->setLocked(false);
+        $userDefault2->setAllowShareContacts(true);
         $manager->persist($userDefault2);
         $this->addReference('user-default2', $userDefault2);
 
@@ -90,6 +95,7 @@ class LoadUserData extends AbstractFixture
         $userDefault3->setEnabled(true);
         $userDefault3->setExpired(false);
         $userDefault3->setLocked(false);
+        $userDefault3->setAllowShareContacts(true);
         $manager->persist($userDefault3);
         $this->addReference('user-default3', $userDefault3);
 
@@ -107,6 +113,7 @@ class LoadUserData extends AbstractFixture
         $userDefault4->setSubscribe(false);
         $userDefault4->setExpired(false);
         $userDefault4->setLocked(false);
+        $userDefault4->setAllowShareContacts(true);
         $manager->persist($userDefault4);
         $this->addReference('user-default4', $userDefault4);
 
@@ -124,6 +131,7 @@ class LoadUserData extends AbstractFixture
             $userDefault->setEnabled(true);
             $userDefault->setExpired(false);
             $userDefault->setLocked(false);
+            $userDefault->setAllowShareContacts(true);
             $manager->persist($userDefault);
             $this->addReference('user-default-' . $i, $userDefault);
         }
