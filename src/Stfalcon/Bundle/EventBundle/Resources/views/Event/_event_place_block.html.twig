@@ -1,5 +1,9 @@
 {% if event.date %}
-    {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }},
+    {% if event.showOnlyMonth %}
+        {{ event.date|format_date('M')|month_name }} {{ event.date|format_date('Y')|month_name }},
+    {% else %}
+        {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }},
+    {% endif %}
 {% endif %}
 {{ event.city }}<br>
 {% if event.place %}
