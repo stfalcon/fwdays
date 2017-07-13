@@ -2,18 +2,33 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
-use Stfalcon\Bundle\PageBundle\Entity\BasePage;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
  * @ORM\Table(name="event__pages")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation")
  */
-class Page extends BasePage
+class Page extends BasePage implements Translatable
 {
+    use Translate;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
+
     /**
      * @var bool $showInMenu
      *
@@ -35,6 +50,11 @@ class Page extends BasePage
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     protected $sortOrder = 1;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     /**
      * @param Event $event

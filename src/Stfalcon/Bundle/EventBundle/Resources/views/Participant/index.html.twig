@@ -1,12 +1,12 @@
 {% extends 'StfalconEventBundle::layout.html.twig' %}
 
-{% block title %}Докладчики / {{ parent() }}{% endblock %}
+{% block title %}{{ 'parcipiant.speakers.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block event_speakers_widget %}{% endblock %}
 
 {% block content %}
     <!-- Контент участников -->
-    <h2>Участники</h2>
+    <h2>{{ 'parcipiant.title'|trans }}</h2>
 
     <ul class="participants">
         {% block ajax_content %}{% endblock %}

@@ -35,8 +35,20 @@ class CategoryAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('name')
-                ->add('sortOrder')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'translatable_class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Category',
+                'fields' => [
+                    'name'=> [
+                        'label' => 'name',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                ]
+            ])
+            ->add('sortOrder')
             ->end();
     }
 

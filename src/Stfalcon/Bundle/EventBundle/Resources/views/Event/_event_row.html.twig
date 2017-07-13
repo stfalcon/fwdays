@@ -14,7 +14,7 @@
         <div class="conf-info-links">
             {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
 
-            <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="Детальная информация о {{ event.name }}">Детальная информация</a>
+            <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="{{ 'event.detail.info1'|trans({'{{ event_name }}':event.name}) }}">{{ 'event.detail.info2'|trans }}</a>
         </div>
     </td>
 </tr>

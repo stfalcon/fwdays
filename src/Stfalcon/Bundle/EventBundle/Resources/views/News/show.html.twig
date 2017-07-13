@@ -11,7 +11,7 @@
         {{ one_news.text|raw }}
     </article>
 
-    <div class="to-newslist-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">← <u>к списку новостей</u></a></div>
+    <div class="to-newslist-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">← <u>{{ 'news.to_the_list'|trans }}</u></a></div>
 
     {% include "StfalconEventBundle::_share_buttons.html.twig" %}
 

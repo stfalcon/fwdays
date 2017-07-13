@@ -40,10 +40,29 @@ class SponsorAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('name')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                        'translatable_class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
+                        'fields' => [
+                            'name'=> [
+                                'label' => 'name',
+                                'locale_options' => [
+                                    'uk' => ['required' => true],
+                                    'ru' => ['required' => false],
+                                    'en' => ['required' => false],
+                                ]
+                            ],
+                            'about'=> [
+                                'label' => 'about',
+                                'locale_options' => [
+                                    'uk' => ['required' => false],
+                                    'ru' => ['required' => false],
+                                    'en' => ['required' => false],
+                                ]
+                            ],
+                        ]
+                ])
                 ->add('slug')
                 ->add('site')
-                ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                       'required' => false,

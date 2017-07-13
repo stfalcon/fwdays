@@ -1,9 +1,9 @@
 {% extends 'StfalconEventBundle::layout.html.twig' %}
 
-{% block title %}Новости и анонсы / {{ parent() }}{% endblock %}
+{% block title %}{{ 'news.title'|trans }}/ {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>Новости и анонсы</h2>
+    <h2>{{ 'news.title'|trans }}</h2>
 
     <div class="news-list">
         {% for one_news in news %}

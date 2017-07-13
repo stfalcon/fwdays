@@ -1,9 +1,9 @@
 {% extends 'StfalconEventBundle::events-layout.html.twig' %}
 
-{% block title %}Мои события / {{ parent() }}{% endblock %}
+{% block title %}{{ 'events.my'|trans }} / {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>Мои события</h2>
+    <h2>{{ 'events.my'|trans }}</h2>
 
     <table class="conferences-list">
         <tbody>
@@ -26,7 +26,7 @@
                         <div class="conf-info-links">
                             {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
 
-                            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">Детальная информация</a>
+                            <a href="{{ path('event_show', {'event_slug': event.slug } )}}">{{ 'event.detail.info2'|trans }}<</a>
                         </div>
                     </td>
                 </tr>

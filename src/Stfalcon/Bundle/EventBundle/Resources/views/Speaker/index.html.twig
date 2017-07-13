@@ -1,11 +1,11 @@
 {% extends 'StfalconEventBundle::layout.html.twig' %}
 
-{% block title %}Докладчики / {{ parent() }}{% endblock %}
+{% block title %}{{ 'speaker.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block event_speakers_widget %}{% endblock %}
 
 {% block content %}
-    <h2>Докладчики</h2>
+    <h2>{{ 'speaker.title'|trans }} </h2>
 
     <div class="presenters">
         {% for speaker in speakers %}
@@ -23,7 +23,7 @@
                 <div>
                     {% if speaker.reviews %}
                         {% include 'StfalconEventBundle:Review:_like_button.html.twig' with {'event': event, 'speaker': speaker} %}
-                        <div class="presenter-presentation {{ is_granted('ROLE_USER') and event.active?'with-likes' }}">Доклад:
+                        <div class="presenter-presentation {{ is_granted('ROLE_USER') and event.active?'with-likes' }}">{{ 'speaker.review.title'|trans }} :
                             {% for review in speaker.reviews %}
                                 <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
                             {% endfor %}

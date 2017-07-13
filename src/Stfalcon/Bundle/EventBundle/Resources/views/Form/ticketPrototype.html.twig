@@ -2,7 +2,7 @@
     <div class="field-name">
         {{ form_label(form.name) }}
         {{ form_widget(form.name) }}
-        <a href="#" class="remove-participant-form remove-participant" title="Удалить">Удалить</a>
+        <a href="#" class="remove-participant-form remove-participant" title="{{ 'delete'|trans }}">{{ 'delete'|trans }}</a>
     </div>
     <div class="field-email">
         {{ form_label(form.email) }}

@@ -42,17 +42,58 @@ class EventAdmin extends Admin
 
         $formMapper
             ->with('General')
-            ->add('name')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'translatable_class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                'fields' => [
+                    'name'=> [
+                        'label' => 'name',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                    'city'=> [
+                        'label' => 'city',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                    'place'=> [
+                        'label' => 'place',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                    'description'=> [
+                        'label' => 'description',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                    'about'=> [
+                        'label' => 'about',
+                        'locale_options' => [
+                            'uk' => ['required' => true],
+                            'ru' => ['required' => false],
+                            'en' => ['required' => false],
+                        ]
+                    ],
+                ],
+                'label' => 'Перевод',
+            ])
             ->add('slug')
-            ->add('city')
-            ->add('place')
             ->add('date')
-            ->add('description')
-            ->add('about')
-            ->add('active', null, array('required' => false))
-            ->add('receivePayments', null, array('required' => false))
-            ->add('useDiscounts', null, array('required' => false))
-            ->add('cost', null, array('required' => true))
+            ->add('active', null, ['required' => false])
+            ->add('receivePayments', null, ['required' => false])
+            ->add('useDiscounts', null, ['required' => false])
+            ->add('cost', null, ['required' => true])
             ->end()
             ->with('Images')
             ->add(

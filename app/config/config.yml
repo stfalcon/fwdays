@@ -1,6 +1,7 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: multi_lang.yml }
 
 parameters:
     graylog.fromname: "https://frameworksdays.com"
@@ -61,18 +62,16 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        mappings:
-            StofDoctrineExtensionsBundle: false
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:
-    default_locale: %locale%
+    default_locale: '%locale%'
     orm:
         default:
             loggable: false
-            sluggable: false
+            sluggable: true
             timestampable: true
-            translatable: false
+            translatable: true
             tree: false
 
 # Swiftmailer Configuration
@@ -151,6 +150,10 @@ sonata_admin:
             -
                 position: left
                 type: sonata.block.service.statistic
+#        groups:
+#            group.translation:
+#                label: Translation
+#                items: ~
 
 
 services:
@@ -184,3 +187,4 @@ ornicar_gravatar: ~
 
 accord_mandrill_swift_mailer:
     api_key: %mandrill_api_key%
+

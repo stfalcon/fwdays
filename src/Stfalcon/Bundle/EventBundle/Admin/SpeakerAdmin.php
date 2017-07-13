@@ -23,11 +23,30 @@ class SpeakerAdmin extends Admin
     {
         $formMapper
             ->with('General')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                        'translatable_class' => 'Stfalcon\Bundle\EventBundle\Entity\Speaker',
+                        'fields' => [
+                            'name'=> [
+                                'label' => 'name',
+                                'locale_options' => [
+                                    'uk' => ['required' => true],
+                                    'ru' => ['required' => false],
+                                    'en' => ['required' => false],
+                                ]
+                            ],
+                            'about'=> [
+                                'label' => 'about',
+                                'locale_options' => [
+                                    'uk' => ['required' => false],
+                                    'ru' => ['required' => false],
+                                    'en' => ['required' => false],
+                                ]
+                            ],
+                        ]
+                ])
                 ->add('slug')
-                ->add('name')
                 ->add('email')
                 ->add('company')
-                ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                         'required' => false,

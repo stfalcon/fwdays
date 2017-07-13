@@ -6,20 +6,55 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Stfalcon\Bundle\NewsBundle\Admin\NewsAdmin as BaseNewsAdmin;
 
-class NewsAdmin extends BaseNewsAdmin
+class NewsAdmin extends Admin
 {
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('event');
+        $listMapper
+            ->add('event')
+            ->addIdentifier('slug')
+            ->add('title')
+            ->add('created_at')
+        ;
     }
     
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper = parent::configureFormFields($formMapper);
         $formMapper
+            ->with('General')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => 'Stfalcon\Bundle\EventBundle\Entity\News',
+                    'fields' => [
+                        'title'=> [
+                            'label' => 'title',
+                            'locale_options' => [
+                                'uk' => ['required' => true],
+                                'ru' => ['required' => false],
+                                'en' => ['required' => false],
+                            ]
+                        ],
+                        'preview'=> [
+                            'label' => 'preview',
+                            'locale_options' => [
+                                'uk' => ['required' => true],
+                                'ru' => ['required' => false],
+                                'en' => ['required' => false],
+                            ]
+                        ],
+                        'text'=> [
+                            'label' => 'text',
+                            'locale_options' => [
+                                'uk' => ['required' => true],
+                                'ru' => ['required' => false],
+                                'en' => ['required' => false],
+                            ]
+                        ],
+                    ]
+                ])
+                ->add('slug')
+                ->add('created_at')
+            ->end()
             ->with('General')
                 ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',

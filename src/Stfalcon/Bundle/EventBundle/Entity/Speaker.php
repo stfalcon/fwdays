@@ -4,6 +4,8 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,9 +16,20 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @Vich\Uploadable
  * @ORM\Table(name="event__speakers")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation")
  */
-class Speaker
+class Speaker implements Translatable
 {
+    use Translate;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
     /**
      * @var integer $id
      *
@@ -37,6 +50,7 @@ class Speaker
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Gedmo\Translatable(fallback=true)
      */
     private $name = '';
 
@@ -58,6 +72,7 @@ class Speaker
      * @var text $about
      *
      * @ORM\Column(name="about", type="text")
+     * @Gedmo\Translatable(fallback=true)
      */
     private $about;
 
@@ -112,6 +127,7 @@ class Speaker
     {
         $this->events = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**

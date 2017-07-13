@@ -1,6 +1,6 @@
 {% extends 'StfalconEventBundle::events-layout.html.twig' %}
 
-{% block title %}События / {{ parent() }}{% endblock %}
+{% block title %}{{ 'event.events.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block content %}
 
@@ -13,7 +13,7 @@
     {% endfor %}
 
     {% if activeEvents|length %}
-        <h2>Будущие события</h2>
+        <h2>{{ 'events.future'|trans }}</h2>
 
         <table class="conferences-list">
             <tbody>
@@ -27,7 +27,7 @@
     {% endif %}
 
     {% if pastEvents|length %}
-        <h2 id="past-events">Прошедшие события</h2>
+        <h2 id="past-events">{{ 'events.past'|trans }}</h2>
 
         <table class="conferences-list conferences-list-past">
             <tbody>

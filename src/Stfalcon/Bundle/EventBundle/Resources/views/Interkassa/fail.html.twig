@@ -1,8 +1,8 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
-    <h2>Не удалось провести платеж!</h2>
+    <h2>{{ 'interkassa.payment.fail'|trans }}</h2>
 
-    Пожалуйста, вернитесь на страницу оплаты билета и попробуйте ещё раз.
+    {{ 'interkassa.payment.fail.back'|trans }}
 
 {% endblock %}

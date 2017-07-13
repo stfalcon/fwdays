@@ -45,7 +45,7 @@ class AppKernel extends Kernel
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
+//            new Stfalcon\Bundle\PageBundle\StfalconPageBundle(),
             new Stfalcon\Bundle\NewsBundle\StfalconNewsBundle(),
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
             new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
@@ -60,6 +60,15 @@ class AppKernel extends Kernel
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),
+
+            new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
+            new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+
+//            new A2lix\AutoFormBundle\A2lixAutoFormBundle(),
+//            new JMS\TranslationBundle\JMSTranslationBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

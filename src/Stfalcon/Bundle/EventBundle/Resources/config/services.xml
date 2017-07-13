@@ -63,9 +63,17 @@
 
         <parameter key="stfalcon_event.payment_manager.class">Stfalcon\Bundle\EventBundle\Entity\PaymentManager</parameter>
 
+        <parameter key="stfalcon_event.admin.static_page.class">Stfalcon\Bundle\EventBundle\Admin\StaticPageAdmin</parameter>
+        <parameter key="stfalcon_event.admin.static_page.entity">Stfalcon\Bundle\EventBundle\Entity\StaticPage</parameter>
     </parameters>
 
     <services>
+        <service id="stfalcon_event.admin.static_page" class="%stfalcon_event.admin.static_page.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Страницы" label="Страницы"/>
+            <argument />
+            <argument>%stfalcon_event.admin.static_page.entity%</argument>
+            <argument />
+        </service>
 
         <service id="user_mail_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconMailerCommand">
          <call method="setContainer">
