@@ -4,7 +4,13 @@
     <div class="error-page">
         <h1>{{ 'page.error.notfound'|trans }}</h1>
         <h4>{{ 'page.error.notfound.error'|trans }}</h4>
-        <div class="error-msg-block">{{ 'page.error.notfound.message'|trans|raw }}</div>
-        {{ 'page.error.notfound.you_can'|trans|raw }}
+        <div class="error-msg-block">
+            <p>{{ 'page.error.notfound.message'|trans|raw }}</p>
+        </div>
+        <strong> {{ 'page.error.notfound.you_can'|trans|raw }}</strong>
+        <ul>
+            <li><a href="https://frameworksdays.com/">{{ 'page.error.notfound.you_can1'|trans|raw }}</a> </li>
+            <li>{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
+        </ul>
     </div>
 {% endblock %}

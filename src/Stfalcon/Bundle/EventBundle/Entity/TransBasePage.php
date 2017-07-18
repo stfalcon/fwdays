@@ -6,56 +6,53 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Stfalcon\Bundle\PageBundle\Entity\Page
- *
  * @ORM\MappedSuperclass
  */
-abstract class BasePage
+abstract class TransBasePage
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string $slug
      *
-     * @ORM\Column()
+     * @ORM\Column(name="slug", type="string", length=255)
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string $title
      * @Gedmo\Translatable(fallback=true)
-     * @ORM\Column()
+     * @ORM\Column(name="title", type="string", length=255)
      */
-    private $title;
+    protected $title;
 
     /**
-     * @var string $text
+     * @var text $text
      * @Gedmo\Translatable(fallback=true)
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="text", type="text")
      */
-    private $text;
+    protected $text;
 
     /**
      * @var string $metaKeywords
      * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
      */
-    private $metaKeywords;
+    protected $metaKeywords;
 
     /**
      * @var string $metaDescription
      * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(name="meta_description", type="string", length=255, nullable=true)
      */
-    private $metaDescription;
-
+    protected $metaDescription;
 
     /**
      * Get id
@@ -65,6 +62,26 @@ abstract class BasePage
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set text
+     *
+     * @param text $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * Get text
+     *
+     * @return text
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
@@ -105,26 +122,6 @@ abstract class BasePage
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set text
-     *
-     * @param string $text
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
-
-    /**
-     * Get text
-     *
-     * @return string
-     */
-    public function getText()
-    {
-        return $this->text;
     }
 
     /**

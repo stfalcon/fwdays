@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Knp\Menu\Util\MenuManipulator;
 use Symfony\Component\Translation\Translator;

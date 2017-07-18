@@ -63,15 +63,26 @@
 
         <parameter key="stfalcon_event.payment_manager.class">Stfalcon\Bundle\EventBundle\Entity\PaymentManager</parameter>
 
-        <parameter key="stfalcon_event.admin.static_page.class">Stfalcon\Bundle\EventBundle\Admin\StaticPageAdmin</parameter>
-        <parameter key="stfalcon_event.admin.static_page.entity">Stfalcon\Bundle\EventBundle\Entity\StaticPage</parameter>
+        <parameter key="stfalcon_event.admin.general_page.class">Stfalcon\Bundle\EventBundle\Admin\GeneralPageAdmin</parameter>
+        <parameter key="stfalcon_event.admin.general_page.entity">Stfalcon\Bundle\EventBundle\Entity\GeneralPage</parameter>
+
+        <parameter key="stfalcon_event.admin.general_news.class">Stfalcon\Bundle\EventBundle\Admin\GeneralNewsAdmin</parameter>
+        <parameter key="stfalcon_event.admin.general_news.entity">Stfalcon\Bundle\EventBundle\Entity\GeneralNews</parameter>
     </parameters>
 
     <services>
-        <service id="stfalcon_event.admin.static_page" class="%stfalcon_event.admin.static_page.class%">
+
+        <service id="stfalcon_event.admin.general_page" class="%stfalcon_event.admin.general_page.class%">
             <tag name="sonata.admin" manager_type="orm" group="Страницы" label="Страницы"/>
             <argument />
-            <argument>%stfalcon_event.admin.static_page.entity%</argument>
+            <argument>%stfalcon_event.admin.general_page.entity%</argument>
+            <argument />
+        </service>
+
+        <service id="stfalcon_event.admin.general_news" class="%stfalcon_event.admin.general_news.class%">
+            <tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>
+            <argument />
+            <argument>%stfalcon_event.admin.general_news.entity%</argument>
             <argument />
         </service>
 

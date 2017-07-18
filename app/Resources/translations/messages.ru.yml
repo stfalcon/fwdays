@@ -1,0 +1,28 @@
+Logout: Выйти
+menu.events.my: Мои события
+menu.user.info: Личная информация
+menu.referral.title: Пригласи друзей
+menu.check.ticket.bynumber: Проверка билета по номеру
+menu.logout: Выйти
+menu.user.registration: Зарегистрироваться
+menu.login: Войти
+email: Электронная почта
+madeby: Сделано в веб-студии
+tweets.text: Твиты пользователя @fwdays
+page.error.notfound: Страница не найдена
+page.error.notfound.error: Ошибка 404
+page.error.notfound.message: Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.
+page.error.notfound.you_can: 'Вы можете:'
+page.error.notfound.you_can1: Вернуться на главную
+page.error.notfound.you_can2: Перейти в любой раздел сайта через верхнее меню
+sponsor.and.partners: Спонсоры и партнеры
+sponsor.partners.title: Партнеры
+sponsor.partners.call_us: <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
+event.get_more_info: Узнать больше
+sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
+events.future: Будущие события
+events.past: Прошедшие события
+news.all: все новости
+news.title: Новости
+event.get_more_info: __event.get_more_info
+events.past: __events.past

@@ -3,16 +3,6 @@ StfalconEventBundle:
     type:     annotation
     prefix:   /
 
-StfalconNewsBundle:
-    resource: "@StfalconNewsBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-#StfalconPageBundle:
-#    resource: "@StfalconPageBundle/Controller/"
-#    type:     annotation
-#    prefix:   /page
-
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation

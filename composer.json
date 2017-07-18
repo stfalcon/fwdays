@@ -33,8 +33,6 @@
         "sonata-project/intl-bundle": "2.2.*",
         "sonata-project/block-bundle": "2.2.*",
         "sonata-project/core-bundle": "2.3.10",
-        "stfalcon/page-bundle": "1.*",
-        "stfalcon/news-bundle": "1.*",
         "jms/security-extra-bundle": "1.6.*",
         "avalanche123/imagine-bundle": "2.1.*",
         "friendsofsymfony/user-bundle": "1.3.*",

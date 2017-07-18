@@ -9,10 +9,8 @@
         {% if ticket.hasDiscount %}
             {% if ticket.hasPromoCode %}
                 {{ 'payment.discount.cupon'|trans({'{{ summ }}':ticket.getPromoCode.discountAmount}) }}&nbsp;
-                {#(скидка {{ ticket.getPromoCode.discountAmount }}% по купону)#}
             {% else %}
                 {{ 'payment.discount.member'|trans({'{{ summ }}':discountAmount}) }}&nbsp;
-                {#(скидка {{ discountAmount }}% для постоянного участника)#}
             {% endif %}
         {% endif %}
         {% if ticket.payment.tickets.count > 1 %}

@@ -23,8 +23,6 @@ class PageAdmin extends BasePageAdmin
 
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
-     *
-     * @return \Sonata\AdminBundle\Form\FormMapper|void
      */
     protected function configureFormFields(FormMapper $formMapper)
     {

@@ -3,7 +3,6 @@
 {% block content %}
     <h2>{{ 'interkassa.payment.success'|trans }}</h2>
 
-    {{ 'interkassa.payment.success.emailsend'|trans|raw }}
-    {#На Ваш e-mail отправлено сообщение с подтверждением оплаты и билетом участника конференции. Также Вы можете скачать билет на странице "<a href="{{ path("events_my") }}">Мои события</a>".#}
+    {{ 'interkassa.payment.success.emailsend'|trans|raw }}"<a href="{{ path("events_my") }}">{{ 'events.my'|trans }}</a>".
 
 {% endblock %}

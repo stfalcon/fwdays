@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="application_default.menu_builder.class">Application\Bundle\DefaultBundle\Menu\MenuBuilder</parameter>
+        <!--<parameter key="jms_i18n_routing.locale_resolver.class">Application\Bundle\DefaultBundle\Service\LocaleResolver</parameter>-->
     </parameters>
 
     <services>
@@ -39,5 +40,16 @@
             <tag name="twig.extension" />
         </service>
 
+        <!--<service id="application_default.locale_url.listener" class="Application\Bundle\DefaultBundle\Service\LocaleUrlResponseListener">-->
+            <!--<tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="128" />-->
+            <!--<argument>%jms_i18n_routing.default_locale%</argument>-->
+            <!--<argument>%jms_i18n_routing.locales%</argument>-->
+            <!--<argument>%jms_i18n_routing.cookie.name%</argument>-->
+        <!--</service>-->
+
+        <service id="application_default.sonata.locales.required" class="Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService">
+            <argument>%jms_i18n_routing.default_locale%</argument>
+            <argument>%jms_i18n_routing.locales%</argument>
+        </service>
     </services>
 </container>

@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity\Translation;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
+use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntity;
 
 abstract class AbstractTranslation extends AbstractPersonalTranslation implements TranslatableEntity
 {

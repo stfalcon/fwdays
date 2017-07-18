@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9997e5804384ae836e1a01c1ec0d0c45",
+    "content-hash": "0253fb911539a31250034a8fa599f74e",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3490,112 +3490,6 @@
                 "time"
             ],
             "time": "2016-02-20T16:29:57+00:00"
-        },
-        {
-            "name": "stfalcon/news-bundle",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LogansUA/NewsBundle.git",
-                "reference": "a6fd9e3dd407376e11dd00aceb153b9a7cfdcca8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LogansUA/NewsBundle/zipball/a6fd9e3dd407376e11dd00aceb153b9a7cfdcca8",
-                "reference": "a6fd9e3dd407376e11dd00aceb153b9a7cfdcca8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "sonata-project/admin-bundle": "^2.2",
-                "sonata-project/doctrine-orm-admin-bundle": "^2.2",
-                "stof/doctrine-extensions-bundle": "1.2.*",
-                "symfony/symfony": ">=2.1"
-            },
-            "suggest": {
-                "doctrine/data-fixtures": "required for functional testing",
-                "doctrine/doctrine-fixtures-bundle": "required for functional testing",
-                "liip/functional-test-bundle": "functional testing bundle"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Stfalcon\\Bundle\\NewsBundle\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stepan Tanasiychuk",
-                    "homepage": "http://blog.stfalcon.com",
-                    "email": "ceo@stfalcon.com"
-                }
-            ],
-            "description": "Simple news module.",
-            "keywords": [
-                "bundle",
-                "page",
-                "stfalcon"
-            ],
-            "support": {
-                "source": "https://github.com/LogansUA/NewsBundle/tree/v1.0.3"
-            },
-            "time": "2016-05-27T11:32:48+00:00"
-        },
-        {
-            "name": "stfalcon/page-bundle",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LogansUA/PageBundle.git",
-                "reference": "8161a4220d61be5767b89d088e579742f588350b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LogansUA/PageBundle/zipball/8161a4220d61be5767b89d088e579742f588350b",
-                "reference": "8161a4220d61be5767b89d088e579742f588350b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "sonata-project/admin-bundle": "^2.2",
-                "sonata-project/doctrine-orm-admin-bundle": "^2.2",
-                "stof/doctrine-extensions-bundle": "1.2.*",
-                "symfony/symfony": ">=2.1"
-            },
-            "suggest": {
-                "doctrine/data-fixtures": "required for functional testing",
-                "doctrine/doctrine-fixtures-bundle": "required for functional testing",
-                "liip/functional-test-bundle": "functional testing bundle"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Stfalcon\\Bundle\\PageBundle\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stepan Tanasiychuk",
-                    "homepage": "http://blog.stfalcon.com",
-                    "email": "ceo@stfalcon.com"
-                }
-            ],
-            "description": "Simple page module.",
-            "keywords": [
-                "bundle",
-                "page",
-                "stfalcon"
-            ],
-            "support": {
-                "source": "https://github.com/LogansUA/PageBundle/tree/v1.0.3"
-            },
-            "time": "2016-05-27T11:34:12+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",

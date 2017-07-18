@@ -16,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation")
  */
-class Page extends BasePage implements Translatable
+class Page extends TransBasePage implements Translatable
 {
     use Translate;
 

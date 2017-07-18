@@ -1,0 +1,59 @@
+Dashboard: Dashboard
+parcipiant.list.all: все участники
+parcipiant.speakers.title: Докладчики
+parcipiant.title: Участники
+rewiew.wonna.listen: Хочу послушать
+speaker.list.all: все докладчики
+speaker.title: Докладчики
+speaker.review.title: 'Доклад:'
+ticket.email.waitfornews: 'Следите за новостями:'
+ticket.email.unsubscribe: Отписаться от рассылки
+ticket.email.team: С уважением, <br/>команда Frameworks Days <br/>
+news.to_the_list: к списку новостей
+news.title: Новости
+interkassa.payment.fail: Не удалось провести платеж!
+interkassa.payment.fail.back: Пожалуйста, вернитесь на страницу оплаты билета и попробуйте ещё раз.
+interkassa.mail.msg.hello: Здравствуйте, <br/>{{ user.fullname }}.
+interkassa.mail.msg.thanks: Благодарим Вас за оплату участия в конференции {{ event.name }}.
+interkassa.mail.msg.remember: 'Напоминаем, что конференция состоится'
+interkassa.mail.msg.remember1: 'года,'
+interkassa.mail.msg.ticket: Ваш билет находится во вложении.
+interkassa.payment.success: Оплата прошла успешно!
+interkassa.payment.success.emailsend: На Ваш e-mail отправлено сообщение с подтверждением оплаты и билетом участника конференции. Также Вы можете скачать билет на странице
+interkassa.payment.pending: Оплата ещё не завершена!
+interkassa.payment.pending.wait: Пожалуйста, подождите немного, пока мы получим подтверждение оплаты.
+events.my: Мои события
+event.detail.info2: Детальная информация
+event.about: О событии
+event.events.title: События
+event.detail.info1: Детальная информация о {{ event_name }}
+ticke.dear_user: Уважаемый участник <b>{{ ticket.user.fullname }}</b>,
+ticke.wait_for_you: 'ждем Вас:'
+ticke.city: г. {{ event.city }},
+ticket.registration.begin: 'Регистрация начинается в'
+ticke.event.programm: 'Программа конференции:'
+ticke.print.ticket.text1: Пожалуйста, распечатайте это приглашение и возьмите его с собой — это Ваш входной билет на {{ event_name }}.
+ticke.print.ticket.text2: 'С нетерпением ждем встречи!'
+ticke.print.ticket.text3: С уважением,<br> Организаторы {{ event_name }}
+ticket.status.download: Скачать билет
+ticket.status.pay: Оплатить участие
+ticket.status.event.add: Событие добавлено
+ticket.status.paid: Участие оплачено
+ticket.status.take_apart: Принять участие
+referral.invaite.title: Пригласи друзей
+referral.invaite.title2: Приглашайте друзей и накапливайте бонусы!
+referral.invaite.text1: Приглашайте друзей на конференцию <b>PM fwdays'17</b> и получайте по 100 ₴ за каждую покупку билета! Накапливайте бонусы и используйте их при покупке билетов на наши мероприятия.
+referral.invaite.text2: 'Внесем немного азарта в нашу жизнь!'
+referral.balance: 'Ваш баланс:'
+referral.invaite.link.text: 'Реферальная ссылка:'
+delete: Удалить
+payment.price: '{{ summ }} грн.'
+payment.discount.cupon: (скидка {{ summ }} % по купону)
+payment.discount.member: (скидка {{ discountAmount }}% для постоянного участника)
+pay.event.title: Оплата участия в конференции {{ event_name }}
+pay.event.pay_for_other: Оплатить других участников
+pay.event.one_more_participants: Еще участники
+pay.event.members_already_paid: 'Участники, которые уже оплатили участие:'
+pay.event.members_without_dicount: 'Участники, к которым не была применена скидка купона потому, что их скидка постоянного участника больше:'
+pay.event.cupon: 'Купон на скидку:'
+news_and_anonce.title: 'Новости и анонсы'

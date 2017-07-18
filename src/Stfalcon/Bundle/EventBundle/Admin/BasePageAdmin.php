@@ -29,45 +29,36 @@ abstract class BasePageAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
-            ->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => 'Stfalcon\Bundle\EventBundle\Entity\Page',
-                'fields' => [
-                    'title' => [
-                        'label' => 'title',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
-                    ],
-                    'text' => [
-                        'label' => 'text',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
-                    ],
-                    'metaKeywords' => [
-                        'label' => 'metaKeywords',
-                        'locale_options' => [
-                            'uk' => ['required' => false],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
-                    ],
-                    'metaDescription' => [
-                        'label' => 'metaDescription',
-                        'locale_options' => [
-                            'uk' => ['required' => false],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
-                    ],
-                ]
-            ])
-            ->add('slug')
+            ->with('Переводы')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'title' => [
+                            'label' => 'title',
+                            'locale_options' => $localOptions
+                        ],
+                        'text' => [
+                            'label' => 'text',
+                            'locale_options' => $localOptions
+                        ],
+                        'metaKeywords' => [
+                            'label' => 'metaKeywords',
+                            'locale_options' => $localOptionsAllFalse
+                        ],
+                        'metaDescription' => [
+                            'label' => 'metaDescription',
+                            'locale_options' => $localOptionsAllFalse
+                        ],
+                    ]
+                ])
+            ->end()
+            ->with('General')
+                ->add('slug')
+            ->end()
         ;
 
         return $formMapper;

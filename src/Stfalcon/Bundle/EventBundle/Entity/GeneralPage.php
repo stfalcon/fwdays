@@ -9,18 +9,18 @@ use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
 
 /**
- * Stfalcon\Bundle\PageBundle\Entity\StaticPage
+ * Stfalcon\Bundle\PageBundle\Entity\GeneralPage
  *
  * @ORM\Table(name="pages")
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\StaticPageRepository")
- * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\StaticPageTranslation")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\GeneralPageRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\GeneralPageTranslation")
  */
-class StaticPage extends BasePage implements Translatable
+class GeneralPage extends TransBasePage implements Translatable
 {
     use Translate;
     /**
      * @ORM\OneToMany(
-     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\StaticPageTranslation",
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\GeneralPageTranslation",
      *   mappedBy="object",
      *   cascade={"persist", "remove"}
      * )

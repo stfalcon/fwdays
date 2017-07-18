@@ -34,7 +34,7 @@ class NewsController extends Controller
         // get last news for events
         $regularNews = array();
         $this->getDoctrine()
-            ->getRepository('StfalconNewsBundle:News')
+            ->getRepository('StfalconEventBundle:GeneralNews')
             ->getLastNews($count);
         foreach ($regularNews as $oneNews) {
             $news[$oneNews->getCreatedAt()->getTimestamp()] = $oneNews;

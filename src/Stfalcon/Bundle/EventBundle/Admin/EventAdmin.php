@@ -39,51 +39,33 @@ class EventAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $subject = $this->getSubject();
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
 
         $formMapper
             ->with('General')
             ->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                'translatable_class' => $this->getClass(),
                 'fields' => [
                     'name'=> [
                         'label' => 'name',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
+                        'locale_options' => $localOptions
                     ],
                     'city'=> [
                         'label' => 'city',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
+                        'locale_options' => $localOptions
                     ],
                     'place'=> [
                         'label' => 'place',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
+                        'locale_options' => $localOptions
                     ],
                     'description'=> [
                         'label' => 'description',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
+                        'locale_options' => $localOptions
                     ],
                     'about'=> [
                         'label' => 'about',
-                        'locale_options' => [
-                            'uk' => ['required' => true],
-                            'ru' => ['required' => false],
-                            'en' => ['required' => false],
-                        ]
+                        'locale_options' => $localOptions
                     ],
                 ],
                 'label' => 'Перевод',

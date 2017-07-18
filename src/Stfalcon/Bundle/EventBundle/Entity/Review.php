@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation")
  */
-class Review extends BasePage implements Translatable
+class Review extends TransBasePage implements Translatable
 {
     use Translate;
     /**
