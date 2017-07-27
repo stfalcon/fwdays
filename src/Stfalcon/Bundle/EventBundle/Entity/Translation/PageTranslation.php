@@ -3,9 +3,10 @@
 namespace Stfalcon\Bundle\EventBundle\Entity\Translation;
 
 use Doctrine\ORM\Mapping as ORM;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractTranslation;
 
 /**
- * PageTranslation entity.
+ * EventTranslation entity.
  *
  * @ORM\Entity()
  *

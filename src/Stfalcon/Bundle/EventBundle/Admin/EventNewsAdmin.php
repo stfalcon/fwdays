@@ -5,16 +5,16 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractNewsAdmin;
 
-class ReviewAdmin extends AbstractPageAdmin
+class EventNewsAdmin extends AbstractNewsAdmin
 {
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
             ->add('event')
-            ->add('speakers');
+        ;
     }
     
     protected function configureFormFields(FormMapper $formMapper)
@@ -24,10 +24,6 @@ class ReviewAdmin extends AbstractPageAdmin
             ->with('General')
                 ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                ))
-                ->add('speakers', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Speaker',
-                    'multiple' => true, 'expanded' => true,
                 ))
             ->end()
         ;

@@ -38,26 +38,21 @@ class SponsorAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
             ->with('General')
                 ->add('translations', 'a2lix_translations_gedmo', [
-                        'translatable_class' => 'Stfalcon\Bundle\SponsorBundle\Entity\Sponsor',
+                        'translatable_class' => $this->getClass(),
                         'fields' => [
                             'name'=> [
                                 'label' => 'name',
-                                'locale_options' => [
-                                    'uk' => ['required' => true],
-                                    'ru' => ['required' => false],
-                                    'en' => ['required' => false],
-                                ]
+                                'locale_options' => $localOptions
                             ],
                             'about'=> [
                                 'label' => 'about',
-                                'locale_options' => [
-                                    'uk' => ['required' => false],
-                                    'ru' => ['required' => false],
-                                    'en' => ['required' => false],
-                                ]
+                                'locale_options' => $localOptionsAllFalse
                             ],
                         ]
                 ])

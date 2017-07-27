@@ -3,7 +3,7 @@
 namespace Stfalcon\Bundle\SponsorBundle\Entity\Translation;
 
 use Doctrine\ORM\Mapping as ORM;
-use Stfalcon\Bundle\EventBundle\Entity\Translation\AbstractTranslation;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractTranslation;
 
 /**
  * EventTranslation entity.

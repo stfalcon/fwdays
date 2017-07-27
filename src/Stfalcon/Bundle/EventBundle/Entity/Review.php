@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation")
  */
-class Review extends TransBasePage implements Translatable
+class Review extends AbstractPage implements Translatable
 {
     use Translate;
     /**
@@ -40,7 +41,7 @@ class Review extends TransBasePage implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker")
+     * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews")
      * @ORM\JoinTable(name="event__speakers_reviews",
      *   joinColumns={
      *     @ORM\JoinColumn(name="review_id", referencedColumnName="id")

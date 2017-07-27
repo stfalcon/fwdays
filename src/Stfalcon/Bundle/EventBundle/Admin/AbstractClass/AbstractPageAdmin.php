@@ -1,12 +1,12 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Admin;
+namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
-abstract class BasePageAdmin extends Admin
+abstract class AbstractPageAdmin extends Admin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper

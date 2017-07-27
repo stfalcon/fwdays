@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Entity;
+namespace Stfalcon\Bundle\EventBundle\Entity\AbstractClass;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class TransBasePage
+abstract class AbstractPage
 {
     /**
      * @var integer $id

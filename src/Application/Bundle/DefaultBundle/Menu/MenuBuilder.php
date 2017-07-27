@@ -19,15 +19,17 @@ class MenuBuilder
     private $factory;
 
     private $translator;
-
+    private $locales;
     /**
      * @param \Knp\Menu\FactoryInterface $factory
      * @param Translator $translator
+     * @param $locales
      */
-    public function __construct(FactoryInterface $factory, $translator)
+    public function __construct(FactoryInterface $factory, $translator, $locales)
     {
         $this->factory = $factory;
         $this->translator = $translator;
+        $this->locales = $locales;
     }
 
     /**
@@ -44,9 +46,14 @@ class MenuBuilder
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'nav');
 
-        $menuManipulator = new MenuManipulator();
+        $homepages = [];
+        foreach ($this->locales as $locale) {
+            $homepages[] = '/'.$locale.'/';
+        }
+        $homepages[] = '/';
 
-        if ($request->getPathInfo() != '/') {
+        $menuManipulator = new MenuManipulator();
+        if (!in_array($request->getPathInfo(), $homepages)) {
             $item = $menu->addChild($this->translator->trans('main.menu.go_head'), array('route' => 'homepage'));
             $menuManipulator->moveToFirstPosition($item);
         }

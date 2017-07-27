@@ -1,16 +1,15 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Entity;
+namespace Stfalcon\Bundle\EventBundle\Entity\AbstractClass;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 
 /**
- * Stfalcon\Bundle\PageBundle\Entity\Page
- *
  * @ORM\MappedSuperclass
  */
-abstract class TransBaseNews extends TransBasePage
+abstract class AbstractNews extends AbstractPage
 {
     /**
      * @var text $preview

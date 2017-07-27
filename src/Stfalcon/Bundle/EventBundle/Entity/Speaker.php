@@ -93,7 +93,7 @@ class Speaker implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Event")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
      *   joinColumns={
      *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")

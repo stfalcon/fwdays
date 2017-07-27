@@ -40,7 +40,7 @@
 
     {% block event_news_widget %}
         <h2>{{ 'news.title'|trans }}</h2>
-        {% render controller("StfalconEventBundle:News:widget", { 'event': event, 'count': 7 }) %}
+        {% render controller("StfalconEventBundle:EventNews:widget", { 'event': event, 'count': 7 }) %}
     {% endblock %}
 
 {% endblock %}

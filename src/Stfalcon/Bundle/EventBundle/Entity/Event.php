@@ -153,7 +153,7 @@ class Event implements Translatable
     protected $useDiscounts = true;
 
     /**
-     * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
     protected $pages;
@@ -465,7 +465,7 @@ class Event implements Translatable
     /**
      * Set pages
      *
-     * @param mixed $pages pages
+     * @param ArrayCollection $pages
      *
      * @return $this
      */

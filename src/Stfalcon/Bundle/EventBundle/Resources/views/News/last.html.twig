@@ -1,6 +1,6 @@
 <div class="news-list">
     {% for one_news in news %}
-        {% include '_one-news-preview.html.twig' with {'one_news': one_news} %}
+        {% include '@StfalconEvent/News/_one-news-preview.html.twig' with {'one_news': one_news} %}
     {% endfor %}
 
     <div class="allnews-link"><a href="{{ path('news') }}">{{ 'news.all'|trans }}</a></div>

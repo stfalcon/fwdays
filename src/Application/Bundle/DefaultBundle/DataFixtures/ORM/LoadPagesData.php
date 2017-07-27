@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Stfalcon\Bundle\EventBundle\Entity\StaticPage;
+use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -18,7 +18,7 @@ class LoadPagesData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $page = new StaticPage();
+        $page = new Page();
         $page->setSlug('contacts');
         $text = '<!-- Orgs contacts page content -->
                 <div class="contacts-page">
@@ -80,7 +80,7 @@ class LoadPagesData extends AbstractFixture
         $manager->flush();
 
 
-        $page = new StaticPage();
+        $page = new Page();
         $page->setTitle('О Frameworks Days');
         $page->setSlug('about');
         $page->setText('<p>Текст страницы</p>');

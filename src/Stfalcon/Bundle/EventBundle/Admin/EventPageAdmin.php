@@ -7,16 +7,24 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
-class ReviewAdmin extends AbstractPageAdmin
+class EventPageAdmin extends AbstractPageAdmin
 {
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     *
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper|void
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
             ->add('event')
-            ->add('speakers');
+            ->add('sortOrder');
     }
-    
+
+    /**
+     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper = parent::configureFormFields($formMapper);
@@ -25,9 +33,11 @@ class ReviewAdmin extends AbstractPageAdmin
                 ->add('event', 'entity',  array(
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                 ))
-                ->add('speakers', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Speaker',
-                    'multiple' => true, 'expanded' => true,
+                ->add('showInMenu', null, array('required' => false))
+                ->add('sortOrder', null, array(
+                    'attr' => array(
+                        'min' => 1
+                    )
                 ))
             ->end()
         ;

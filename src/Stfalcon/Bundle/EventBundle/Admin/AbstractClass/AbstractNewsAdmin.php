@@ -1,12 +1,12 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Admin;
+namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
-abstract class BaseNewsAdmin extends Admin
+abstract class AbstractNewsAdmin extends Admin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
@@ -62,6 +62,7 @@ abstract class BaseNewsAdmin extends Admin
                 ])
             ->end()
             ->with('General')
+                ->add('slug')
                 ->add('created_at')
             ->end()
         ;

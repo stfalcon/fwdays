@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Entity\Translation;
+namespace Stfalcon\Bundle\EventBundle\Entity\AbstractClass;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntity;
