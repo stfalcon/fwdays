@@ -2,40 +2,37 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractNews;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
-use Stfalcon\Bundle\NewsBundle\Entity\BaseNews,
-    Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
- * @ORM\Table(name="event__news")
+ * @ORM\Table(name="news")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\NewsRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\NewsTranslation")
  */
-class News extends BaseNews
+class News extends AbstractNews implements Translatable
 {
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     */
-    private $event;
+    use Translate;
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\NewsTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
      */
-    public function getEvent()
-    {
-        return $this->event;
-    }
+    private $translations;
 
-    /**
-     * @param Event $event
-     */
-    public function setEvent($event)
+    public function __construct()
     {
-        $this->event = $event;
+        $this->translations = new ArrayCollection();
     }
 }

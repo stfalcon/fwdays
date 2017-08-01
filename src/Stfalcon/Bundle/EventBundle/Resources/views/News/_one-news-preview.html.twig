@@ -1,14 +1,5 @@
 <article class="intro">
-    <h2>
-        <a href="{{ path('event_news_show', { 'event_slug': event.slug, 'news_slug': one_news.slug }) }}">
-            {{ one_news.title }}
-        </a>
-    </h2>
-    <div class="article-date-rubrics">
-        {{ one_news.createdat|date('d M Y') }},
-        <a href="{{ path('event_show', { 'event_slug': event.slug } )}}">
-            {{ event.name }}
-        </a>
-    </div>
-    <p>{{ one_news.preview|raw }}</p>
+    <h2><a href="{{ path('news_show', { 'slug': one_news.slug }) }}">{{ one_news.title }}</a></h2>
+    <div class="article-date-rubrics">{{ one_news.createdat|date('d M Y') }}</div>
+    <p>{{ one_news.preview }}</p>
 </article>

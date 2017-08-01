@@ -1,7 +1,7 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h2>Оплата участия в конференции {{ event.name }}</h2>
+    <h2>{{ 'pay.event.title'|trans({'{{ event_name }}':event.name}) }}</h2>
     <div class="form-wrapper">
 
 
@@ -21,7 +21,7 @@
                 {% endfor %}
 
                 <div class="pay-for-other-participants">
-                    <a href="#">Оплатить других участников</a>
+                    <a href="#">{{ 'pay.event.pay_for_other'|trans }}</a>
                 </div>
 
             </div>
@@ -31,7 +31,7 @@
                 {#{{ form_widget(ticketForm.participants) }}#}
                 <div class="wrap-footer">
                     <input type="submit" value="Закончить список и посчитать сумму">
-                    <a class="add-new-participant" href="#">Еще участники</a>
+                    <a class="add-new-participant" href="#">{{ 'pay.event.one_more_participants'|trans }}</a>
                 </div>
             </div>
             <input type="hidden" name="stfalcon_event_ticket[_token]" value="{{ csrf_token("event_ticket_intention") }}" />
@@ -40,14 +40,14 @@
 
         {% for flashMessage in app.session.flashbag.get('already_paid_tickets') %}
         <div class="msg-block">
-            Участники, которые уже оплатили участие:<br>
+            {{ 'pay.event.members_already_paid'|trans }}<br>
             {{ flashMessage }}
         </div>
         {% endfor %}
 
         {% for flashMessage in app.session.flashbag.get('not_used_promocode') %}
             <div class="msg-block">
-                Участники, к которым не была применена скидка купона потому, что их скидка постоянного участника больше:<br>
+                {{ 'pay.event.members_without_dicount'|trans }}<br>
                 {{ flashMessage }}
             </div>
         {% endfor %}
@@ -65,7 +65,7 @@
             </div>
         {% else %}
             <div class="promo-code">
-                Купон на скидку:
+                {{ 'pay.event.cupon'|trans }}
                 <b class="code">{{ promoCode.code }}</b>
             </div>
         {% endif %}

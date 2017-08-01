@@ -39,20 +39,43 @@ class EventAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $subject = $this->getSubject();
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
 
         $formMapper
             ->with('General')
-            ->add('name')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'name'=> [
+                        'label' => 'name',
+                        'locale_options' => $localOptions
+                    ],
+                    'city'=> [
+                        'label' => 'city',
+                        'locale_options' => $localOptions
+                    ],
+                    'place'=> [
+                        'label' => 'place',
+                        'locale_options' => $localOptions
+                    ],
+                    'description'=> [
+                        'label' => 'description',
+                        'locale_options' => $localOptions
+                    ],
+                    'about'=> [
+                        'label' => 'about',
+                        'locale_options' => $localOptions
+                    ],
+                ],
+                'label' => 'Перевод',
+            ])
             ->add('slug')
-            ->add('city')
-            ->add('place')
             ->add('date')
-            ->add('description')
-            ->add('about')
-            ->add('active', null, array('required' => false))
-            ->add('receivePayments', null, array('required' => false))
-            ->add('useDiscounts', null, array('required' => false))
-            ->add('cost', null, array('required' => true))
+            ->add('active', null, ['required' => false])
+            ->add('receivePayments', null, ['required' => false])
+            ->add('useDiscounts', null, ['required' => false])
+            ->add('cost', null, ['required' => true])
             ->end()
             ->with('Images')
             ->add(

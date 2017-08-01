@@ -3,9 +3,12 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Stfalcon\Bundle\PageBundle\Entity\BasePage;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,9 +16,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="event__reviews")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation")
  */
-class Review extends BasePage {
-    
+class Review extends AbstractPage implements Translatable
+{
+    use Translate;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -27,7 +41,7 @@ class Review extends BasePage {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker")
+     * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews")
      * @ORM\JoinTable(name="event__speakers_reviews",
      *   joinColumns={
      *     @ORM\JoinColumn(name="review_id", referencedColumnName="id")
@@ -49,13 +63,14 @@ class Review extends BasePage {
      * )
      */
     private $likedUsers;
-    
+
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
         $this->likedUsers = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
-    
+
     public function getEvent() {
         return $this->event;
     }

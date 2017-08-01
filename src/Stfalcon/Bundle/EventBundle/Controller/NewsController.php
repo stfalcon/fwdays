@@ -2,73 +2,58 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
 
-/**
- * Event news controller
- */
-class NewsController extends BaseController
+use Stfalcon\Bundle\EventBundle\Entity\News;
+
+class NewsController extends Controller
 {
-
     /**
-     * List of all news for event
+     * List of all news
      *
-     * @Route("/event/{event_slug}/news", name="event_news")
+     * @Route("/news", name="news")
      * @Template()
-     * @param string $event_slug
-     * @return array
      */
-    public function indexAction($event_slug)
+    public function indexAction()
     {
-        $event = $this->getEventBySlug($event_slug);
-        $news = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:News')
-            ->getLastNewsForEvent($event);
+        // @todo здесь нужно будет добавить пагинатор и заменить выборку
+        $news = $this->getDoctrine()->getEntityManager()
+            ->getRepository('StfalconEventBundle:News')->findAll();
 
-        return array('event' => $event, 'news' => $news);
+        return ['news' => $news];
     }
 
     /**
-     * Finds and displays a one news for event
+     * Finds and displays a one news
      *
-     * @Route("/event/{event_slug}/news/{news_slug}", name="event_news_show")
+     * @Route("/news/{slug}", name="news_show")
+     * @param News $oneNews
      * @Template()
-     * @param string $event_slug
-     * @param string $news_slug
      * @return array
      */
-    public function showAction($event_slug, $news_slug)
+    public function showAction(News $oneNews)
     {
-        $event = $this->getEventBySlug($event_slug);
-
-        $oneNews = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:News')
-            ->findOneBy(array('event' => $event->getId(), 'slug' => $news_slug));
-
-        if (!$oneNews) {
-            throw $this->createNotFoundException('Unable to find News entity.');
-        }
-
-        return array('event' => $event, 'one_news' => $oneNews);
+        return ['one_news' => $oneNews];
     }
 
     /**
-     * List of last news for event
+     * List of last news
      *
-     * @Template()
-     *
-     * @param Event $event
      * @param integer $count
+     *
+     * @Template()
+     *
      * @return array
      */
-    public function widgetAction(Event $event, $count)
+    public function lastAction($count)
     {
-        $news = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:News')->getLastNewsForEvent($event, $count);
+        // @todo здесь нужно будет добавить ограничение
+        $news = $this->getDoctrine()->getEntityManager()
+            ->getRepository('StfalconEventBundle:News')->getLastNews($count);
 
-        return array('event' => $event, 'news' => $news);
+        return ['news' => $news];
     }
-
 }

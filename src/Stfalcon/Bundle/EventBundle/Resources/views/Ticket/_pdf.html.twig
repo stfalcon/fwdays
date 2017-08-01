@@ -158,35 +158,40 @@
         </div>
 
         <div class="top">
-            <div class="dear-user">Уважаемый участник <b>{{ ticket.user.fullname }}</b>,</div>
+            <div class="dear-user">{{ 'ticke.dear_user'|trans({'{{ user_name }}':ticket.user.fullname})|raw }}</div>
             <div class="date-n-address">
-                <div class="wait-for-you">ждем Вас:</div>
+                <div class="wait-for-you">{{ 'ticke.wait_for_you'|trans }}</div>
                 <div class="date-addr">
                     {% if event.date %}
                         {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
                     {% endif %}
                     <br />
-                    г. {{ event.city }},
+                    {{ 'ticke.city'|trans({'{{ city_name }}':event.city}) }}
                     {% if event.place %}
                         {{ event.place }}
                     {% endif %}
                 </div>
-                <div class="registration-begins">Регистрация начинается в {{ event.date|format_date('HH:mm', 'ru', 'Europe/Kiev') }}.</div>
+                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', 'ru', 'Europe/Kiev') }}.</div>
             </div>
         </div>
 
         <div class="bottom">
             <div class="qr-code">
-                <div class="qr-code-h">Программа конференции:</div>
+                <div class="qr-code-h">{{ 'ticke.event.programm'|trans }}</div>
                 <div class="qr-code-img">
                     <img src="data:image/png;base64,{{ qrCodeBase64 }}" />
                 </div>
                 <div class="qr-code-num">№{{ ticket.id }}</div>
             </div>
             <div class="invitation-text">
-                <p class="main-text">Пожалуйста, распечатайте это приглашение и возьмите его с собой — это Ваш входной билет на {{ event.name }}.</p>
-                <p>С нетерпением ждем встречи!</p>
-                <p>С уважением,<br> Организаторы {{ event.name }}</p>
+                <p class="main-text">{{ 'ticke.print.ticket.text1'|trans({'{{ event_name }}':event.name})|raw }}</p>
+                <p>{{ 'ticke.print.ticket.text2'|trans|raw }}</p>
+                <p>{{ 'ticke.print.ticket.text3'|trans({'{{ event_name }}':event.name})|raw }}</p>
+
+
+                    {{ 'ticke.print.ticket.text'|trans({'{{ event_name }}':event.name})|raw }}
+
+                </p>
             </div>
             <div class="links">
                 <p>Сайт: <a href="http://fwdays.com">fwdays.com</a></p>
