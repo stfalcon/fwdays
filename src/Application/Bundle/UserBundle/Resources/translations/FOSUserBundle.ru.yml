@@ -21,8 +21,8 @@ resetting.request.invalid_username: 'Пользователь с электро�
 resetting.request.username: 'Ваша электронная почта:'
 resetting.check_email: 'На электронную почту "%email%" отправлено письмо с ссылкой для сброса пароля.'
 choose_event: 'Добавьте себе, пожалуйста, событие, которое хотите посетить.'
-profile.show.email: __profile.show.email
+profile.show.email: 'Электронная почта:'
 security.login.password: 'Пароль'
 security.login.remember_me: 'Запомнить меня'
 security.login.submit: 'Войти'
-registration.back: __registration.back
+registration.back: 'Вернуться'
