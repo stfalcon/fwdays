@@ -137,9 +137,6 @@ class DefaultController extends Controller {
                     $payment->setGate('admin');
                     $payment->markedAsPaid();
 
-                    $em->persist($payment);
-                    $em->persist($ticket);
-
                     // сохраняем все изменения
                     $em->flush();
 
