@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e33d8d645fb49b259a7ae677bd7e9646",
+    "content-hash": "58421012fd20e7777d6153bd1f874e06",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4440,17 +4440,17 @@
         },
         {
             "name": "tfox/mpdf-port-bundle",
-            "version": "dev-coment-1.1.1",
+            "version": "dev-fix-yellow-square",
             "target-dir": "TFox/MpdfPortBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stfalcon-studio/MpdfPortBundle.git",
-                "reference": "adee0e978ae81b47829f7c9221e4a55649e12231"
+                "reference": "7c013230da58b85617aa6f777cde3ab157c9151a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stfalcon-studio/MpdfPortBundle/zipball/adee0e978ae81b47829f7c9221e4a55649e12231",
-                "reference": "adee0e978ae81b47829f7c9221e4a55649e12231",
+                "url": "https://api.github.com/repos/stfalcon-studio/MpdfPortBundle/zipball/7c013230da58b85617aa6f777cde3ab157c9151a",
+                "reference": "7c013230da58b85617aa6f777cde3ab157c9151a",
                 "shasum": ""
             },
             "require": {
@@ -4490,10 +4490,10 @@
                 "mPDF"
             ],
             "support": {
-                "source": "https://github.com/stfalcon-studio/MpdfPortBundle/tree/coment-1.1.1",
+                "source": "https://github.com/stfalcon-studio/MpdfPortBundle/tree/fix-yellow-square",
                 "issues": "https://github.com/stfalcon-studio/MpdfPortBundle/issues"
             },
-            "time": "2017-08-04 14:18:10"
+            "time": "2017-08-04 15:09:12"
         },
         {
             "name": "twig/extensions",
