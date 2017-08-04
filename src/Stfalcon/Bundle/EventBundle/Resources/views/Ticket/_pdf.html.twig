@@ -158,15 +158,15 @@
         </div>
 
         <div class="top">
-            <div class="dear-user">{{ 'ticke.dear_user'|trans({'{{ user_name }}':ticket.user.fullname})|raw }}</div>
+            <div class="dear-user">{{ 'ticket.dear_user'|trans({'{{ user_name }}':ticket.user.fullname})|raw }}</div>
             <div class="date-n-address">
-                <div class="wait-for-you">{{ 'ticke.wait_for_you'|trans }}</div>
+                <div class="wait-for-you">{{ 'ticket.wait_for_you'|trans }}</div>
                 <div class="date-addr">
                     {% if event.date %}
                         {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
                     {% endif %}
                     <br />
-                    {{ 'ticke.city'|trans({'{{ city_name }}':event.city}) }}
+                    {{ 'ticket.city'|trans({'{{ city_name }}':event.city}) }}
                     {% if event.place %}
                         {{ event.place }}
                     {% endif %}
@@ -177,19 +177,19 @@
 
         <div class="bottom">
             <div class="qr-code">
-                <div class="qr-code-h">{{ 'ticke.event.programm'|trans }}</div>
+                <div class="qr-code-h">{{ 'ticket.event.programm'|trans }}</div>
                 <div class="qr-code-img">
                     <img src="data:image/png;base64,{{ qrCodeBase64 }}" />
                 </div>
                 <div class="qr-code-num">№{{ ticket.id }}</div>
             </div>
             <div class="invitation-text">
-                <p class="main-text">{{ 'ticke.print.ticket.text1'|trans({'{{ event_name }}':event.name})|raw }}</p>
-                <p>{{ 'ticke.print.ticket.text2'|trans|raw }}</p>
-                <p>{{ 'ticke.print.ticket.text3'|trans({'{{ event_name }}':event.name})|raw }}</p>
+                <p class="main-text">{{ 'ticket.print.ticket.text1'|trans({'{{ event_name }}':event.name})|raw }}</p>
+                <p>{{ 'ticket.print.ticket.text2'|trans|raw }}</p>
+                <p>{{ 'ticket.print.ticket.text3'|trans({'{{ event_name }}':event.name})|raw }}</p>
 
 
-                    {{ 'ticke.print.ticket.text'|trans({'{{ event_name }}':event.name})|raw }}
+                    {{ 'ticket.print.ticket.text'|trans({'{{ event_name }}':event.name})|raw }}
 
                 </p>
             </div>
