@@ -35,7 +35,7 @@
         "stof/doctrine-extensions-bundle": "1.2.*",
         "vich/uploader-bundle": "0.8.1",
         "ornicar/gravatar-bundle" : "1.1.*",
-        "tfox/mpdf-port-bundle": "fix-yellow-square",
+        "tfox/mpdf-port-bundle": "dev-fix-yellow-square",
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
