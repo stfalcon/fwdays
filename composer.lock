@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0253fb911539a31250034a8fa599f74e",
+    "content-hash": "e33d8d645fb49b259a7ae677bd7e9646",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4440,17 +4440,17 @@
         },
         {
             "name": "tfox/mpdf-port-bundle",
-            "version": "1.1.1",
+            "version": "dev-coment-1.1.1",
             "target-dir": "TFox/MpdfPortBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tasmanianfox/MpdfPortBundle.git",
-                "reference": "9e97aa827a5b272ea41b62853eb47f4491f7d895"
+                "url": "https://github.com/stfalcon-studio/MpdfPortBundle.git",
+                "reference": "adee0e978ae81b47829f7c9221e4a55649e12231"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tasmanianfox/MpdfPortBundle/zipball/9e97aa827a5b272ea41b62853eb47f4491f7d895",
-                "reference": "9e97aa827a5b272ea41b62853eb47f4491f7d895",
+                "url": "https://api.github.com/repos/stfalcon-studio/MpdfPortBundle/zipball/adee0e978ae81b47829f7c9221e4a55649e12231",
+                "reference": "adee0e978ae81b47829f7c9221e4a55649e12231",
                 "shasum": ""
             },
             "require": {
@@ -4474,7 +4474,6 @@
                     "TFox\\MpdfPortBundle": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4487,10 +4486,14 @@
             "description": "A wrapper for mPDF class which allows to use mPDF in Symfony2 projects",
             "homepage": "http://github.com/tasmanianfox/MpdfPortBundle",
             "keywords": [
-                "mpdf",
-                "pdf"
+                "PDF",
+                "mPDF"
             ],
-            "time": "2014-01-08T15:40:39+00:00"
+            "support": {
+                "source": "https://github.com/stfalcon-studio/MpdfPortBundle/tree/coment-1.1.1",
+                "issues": "https://github.com/stfalcon-studio/MpdfPortBundle/issues"
+            },
+            "time": "2017-08-04 14:18:10"
         },
         {
             "name": "twig/extensions",
@@ -6928,7 +6931,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "tfox/mpdf-port-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
