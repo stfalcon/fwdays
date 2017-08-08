@@ -50,6 +50,11 @@ class LocaleUrlResponseListener
         if ('' === rtrim($path, '/')) {
             $params = $request->query->all();
             $event->setResponse(new RedirectResponse($request->getBaseUrl() . '/' . $locale . ($params ? '?' . http_build_query($params) : ''), 301));
+        } elseif ('admin' === $currentLocal && $locale !== $this->defaultLocale) {
+            $params = $request->query->all();
+            unset($params[$this->cookieName]);
+            $request->setLocale($this->defaultLocale);
+            $event->setResponse(new RedirectResponse($request->getBaseUrl() . $path . ($params ? '?' . http_build_query($params) : ''), 301));
         } elseif (!in_array($currentLocal, $this->locales)) {
             try {
                 $matched = $this->routerService->match('/' . $locale . $path);
