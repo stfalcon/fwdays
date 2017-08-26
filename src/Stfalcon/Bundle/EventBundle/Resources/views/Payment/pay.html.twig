@@ -1,7 +1,7 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <h2>{{ 'pay.event.title'|trans({'{{ event_name }}':event.name}) }}</h2>
+    <h2>{{ 'pay.event.title'|trans({'%event_name%':event.name}) }}</h2>
     <div class="form-wrapper">
 
 
