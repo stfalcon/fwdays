@@ -47,10 +47,21 @@ class SpeakerAdmin extends Admin
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file'
                 ))
-                ->add('events', 'entity',  array(
-                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'multiple' => true, 'expanded' => true,
-                ))
+                ->end()
+                ->with('Events', ['class' => 'col-md-6'])
+                    ->add('events', 'entity',  [
+                        'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                        'multiple' => true,
+                        'expanded' => true,
+                    ])
+                ->end()
+                ->with('Candidate events', ['class' => 'col-md-6'])
+                    ->add('candidateEvents', 'entity',  [
+                        'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                        'multiple' => true,
+                        'expanded' => true,
+                    ])
+                ->end()
             ->end()
         ;
     }

@@ -104,6 +104,15 @@ class Speaker implements Translatable
      * )
      */
     private $events;
+    /**
+     * Євенти в яких спикер знаходиться на розгляді
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
+     * @ORM\JoinTable(name="event_speakers_candidate")
+     */
+    private $candidateEvents;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -279,6 +288,25 @@ class Speaker implements Translatable
 
     public function setEvents($events) {
         $this->events = $events;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCandidateEvents()
+    {
+        return $this->candidateEvents;
+    }
+
+    /**
+     * @param ArrayCollection $candidateEvents
+     * @return $this
+     */
+    public function setCandidateEvents($candidateEvents)
+    {
+        $this->candidateEvents = $candidateEvents;
+
+        return $this;
     }
 
     public function getReviews() {

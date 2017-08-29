@@ -1,0 +1,22 @@
+{% if event.speakers.count > 0 or event.candidateSpeakers.count > 0 %}
+<section id="speakers-event" class="speakers">
+    <div class="container">
+    {% if event.speakers.count > 0 %}
+        <div class="speakers__box">
+            <h2 class="h2 speakers__title">{{ 'speaker.title'|trans }}</h2>
+            <ul class="speakers__items">
+                {% render controller('ApplicationDefaultBundle:Event:eventSpeakers', {'event':event}) %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if event.candidateSpeakers.count > 0 %}
+        <div class="speakers__box">
+            <h2 class="h2 speakers__title">{{ 'candidate.speaker.title'|trans }}</h2>
+            <ul class="speakers__items">
+                {% render controller('ApplicationDefaultBundle:Event:eventSpeakers', {'event':event, 'isCandidates':true }) %}
+            </ul>
+        </div>
+    {% endif %}
+    </div>
+</section>
+{% endif %}

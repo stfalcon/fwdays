@@ -1,0 +1,141 @@
+
+.icon-stfalcon {
+  display: inline-block;
+  width: 19px;
+  height: 18px;
+  background: url("../img/icons/icon-stfalcon.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-like {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url("../img/icons/icon-like.png") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-facebook {
+  display: inline-block;
+  width: 8px;
+  height: 17px;
+  background: url("../img/icons/icon_fb_share.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-close {
+  position: relative;
+  width: 30px;
+  height: 30px;
+
+  &:before {
+    position: absolute;
+    top: -2px;
+    left: 14px;
+    display: block;
+    width: 2px;
+    height: 34px;
+    background: #727272;
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    position: absolute;
+    top: -2px;
+    left: 14px;
+    display: block;
+    width: 2px;
+    height: 34px;
+    background: #727272;
+    content: '';
+    transform: rotate(-45deg);
+  }
+}
+
+.icon-close--circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: $white-color;
+
+  &:before,
+  &:after {
+    top: 10px;
+    left: 26px;
+  }
+}
+
+.icon-login-facebook {
+  display: inline-block;
+  width: 100px;
+  height: 20px;
+  background: url("../img/icons/login_fb.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-login-google {
+  display: inline-block;
+  width: 81px;
+  height: 27px;
+  background: url("../img/icons/login_google.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-eye {
+  width: 24px;
+  height: 24px;
+  background: url("../img/icons/icon-eye.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-circle-close {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  width: 13px;
+  height: 13px;
+  border: none;
+  border-radius: 50%;
+  background-color: $red-light-color;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    position: absolute;
+    top: 3px;
+    left: 6px;
+    display: block;
+    width: 1px;
+    height: 7px;
+    background-color: $white-color;
+    content: '';
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+.icon-copy {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url("../img/icons/icon-copy.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-arrow {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 1px solid $white-color;
+  border-top: none;
+  border-right: none;
+  background: 0 0;
+  transform: rotate(-45deg);
+}

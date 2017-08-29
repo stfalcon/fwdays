@@ -1,0 +1,16 @@
+<!--BEGIN footer-->
+<footer class="footer">
+    <div class="footer__left">
+        <div class="footer__copyright">© 2011–2017 fwdays.com</div>
+        {% include '@ApplicationDefault/Redesign/menu.html.twig' with {'position':'footer'} %}
+    </div>
+    <div class="footer__right">
+        {% render controller('ApplicationDefaultBundle:Widgets:languageSwitcher', {'request': app.request, 'position' : 'footer'}) %}
+        <div class="social footer__social">
+            {% include '@ApplicationDefault/Redesign/social.html.twig' %}
+        </div>
+        <a href="#" class="made-by footer__made-by">{{ 'madeby'|trans }} <i class="made-by__icon icon-stfalcon"></i>
+            stfalcon.com</a>
+    </div>
+</footer>
+<!--END footer-->

@@ -1,0 +1,26 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+    <!--BEGIN event-list-->
+    <section class="event-list">
+        <div class="container container--sm">
+            <div class="event-list__box">
+                <div class="event-list__label">{{ 'events.future'|trans }}</div>
+                <div class="event-list__items">
+                    {% for event in activeEvents %}
+                        {% include '@ApplicationDefault/Redesign/event.row.html.twig' with {'event': event} %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="event-list__box">
+                <div class="event-list__label">{{ 'events.past'|trans }}</div>
+                <div class="event-list__items">
+                    {% for event in pastEvents %}
+                        {% include '@ApplicationDefault/Redesign/event.row.html.twig' with {'event': event} %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--END event-list-->
+{% endblock content %}

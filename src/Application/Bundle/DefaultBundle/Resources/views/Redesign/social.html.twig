@@ -1,0 +1,34 @@
+{% set labels = {
+        0: {
+            'title': 'fb',
+            'link': '#',
+            'img': asset('img/social/icon_fb.svg')
+        },
+        1: {
+            'title': 'twitter',
+            'link': '#',
+            'img': asset('img/social/icon_twitter.svg')
+        },
+        2: {
+            'title': 'youtube',
+            'link': '#',
+            'img': asset('img/social/icon_youtube.svg')
+        },
+        3: {
+            'title': 'insta',
+            'link': '#',
+            'img': asset('img/social/icon_insta.svg')
+        },
+    }
+%}
+
+<ul class="social__items">
+    {% for i in 0..3 %}
+    <li class="social__item">
+        <a href="{{ labels[i].link }}" class="social__link">
+            <img class="social__icon" src="{{ labels[i].img }}" alt="{{ labels[i].title }}">
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+

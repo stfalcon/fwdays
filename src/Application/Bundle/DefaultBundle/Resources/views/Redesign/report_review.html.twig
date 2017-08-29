@@ -1,0 +1,72 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block shareButtonsScripts %}
+    <!--BEGIN Share buttons scripts-->
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.9&appId=1607562856200764";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+    <script src="https://apis.google.com/js/platform.js" async defer>
+        {
+            lang: 'ru'
+        }
+    </script>
+    <script>window.twttr = (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function (f) {
+                t._e.push(f);
+            };
+
+            return t;
+        }(document, "script", "twitter-wjs"));</script>
+    <!--END Share buttons scripts-->
+{% endblock shareButtonsScripts %}
+
+{% block content %}
+    {% include '@ApplicationDefault/Redesign/event.header.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position':'report'} %}
+
+    <!--BEGIN report-review-->
+    <section class="report-review">
+        <div class="container container--sm">
+            <div class="review-layout">
+                <div class="review-header review-layout__header">
+                    <h2 class="h2 review-header__title">{{ review.title }}</h2>
+                    <div class="like-btn review-header__likes">
+                        {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                    </div>
+                </div>
+                {% for speaker in review.speakers %}
+                <div class="review-speaker review-layout__speaker">
+                    <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
+                    <div class="review-speaker__description">
+                        <div class="review-speaker__name">{{ speaker.name }}</div>
+                        <div class="review-speaker__position">{{ speaker.company }}</div>
+                        <div id="show-speaker-info" class="review-speaker__info-show">{{ 'speaker.about'|trans }}</div>
+                        <div class="review-speaker__info">
+                            {{ speaker.about|raw }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <article class="review-info review-layout__info">
+                    {{ review.text|raw }}
+                </article>
+            </div>
+        </div>
+    </section>
+    <!--END report-review-->
+
+{% endblock content %}

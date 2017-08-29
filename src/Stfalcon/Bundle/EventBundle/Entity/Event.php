@@ -81,6 +81,13 @@ class Event implements Translatable
     protected $date;
 
     /**
+     * @var \DateTime $dateEnd
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $dateEnd;
+
+    /**
      * @var string $description
      *
      * @ORM\Column(type="text")
@@ -153,6 +160,15 @@ class Event implements Translatable
     protected $useDiscounts = true;
 
     /**
+     * Background color for event card
+     *
+     * @var $backgroundColor
+     * @Assert\NotBlank()
+     * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#0000FF"})
+     */
+    protected $backgroundColor = '#0000FF';
+
+    /**
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
@@ -164,6 +180,16 @@ class Event implements Translatable
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      */
     protected $speakers;
+
+    /**
+     * Спикери які знаходяться на розгляді участі в евенті
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="candidateEvents")
+     */
+    protected $candidateSpeakers;
+
 
     /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
@@ -208,6 +234,26 @@ class Event implements Translatable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param \DateTime $dateEnd
+     *
+     * @return $this
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
     }
 
     /**
@@ -368,6 +414,14 @@ class Event implements Translatable
     public function isActive()
     {
         return $this->active;
+    }
+
+    public function isActiveAndFuture()
+    {
+        $eventEndDate = $this->dateEnd ? $this->dateEnd : $this->date;
+        $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
+
+        return $this->active && ($eventEndDate ? $eventEndDate > $pastDate : true);
     }
 
     /**
@@ -633,5 +687,45 @@ class Event implements Translatable
     public function getCost()
     {
         return $this->cost;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBackgroundColor()
+    {
+        return $this->backgroundColor;
+    }
+
+    /**
+     * @param mixed $backgroundColor
+     *
+     * @return $this
+     */
+    public function setBackgroundColor($backgroundColor)
+    {
+        $this->backgroundColor = $backgroundColor;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCandidateSpeakers()
+    {
+        return $this->candidateSpeakers;
+    }
+
+    /**
+     * @param ArrayCollection $candidateSpeakers
+     *
+     * @return $this
+     */
+    public function setCandidateSpeakers($candidateSpeakers)
+    {
+        $this->candidateSpeakers = $candidateSpeakers;
+
+        return $this;
     }
 }

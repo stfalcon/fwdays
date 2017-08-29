@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Review controller
+ * @Route("/old")
  */
 class ReviewController extends BaseController
 {

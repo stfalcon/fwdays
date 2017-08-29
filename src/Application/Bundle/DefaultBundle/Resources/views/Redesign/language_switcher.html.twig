@@ -1,0 +1,12 @@
+{% if (position is defined and position == 'header') or (position is not defined) %}
+    {% set class = 'header__language' %}
+{% elseif (position is defined and position == 'footer') %}
+    {% set class = 'footer__language' %}
+{% endif %}
+{% set currentLink = '#' %}
+{% for key, link in locales %}
+    {% if app.request.locale != key %}
+        {% set currentLink = link %}
+    {% endif %}
+{% endfor %}
+<a href="{{ currentLink }}" class="{{ class }}">{{ 'in.lang.link'|trans }}</a>

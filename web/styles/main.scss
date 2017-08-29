@@ -1,0 +1,24 @@
+/*
+* Third Party
+*/
+@import "../../node_modules/normalize.css/normalize.css";
+@import "../../node_modules/remodal/dist/remodal.css";
+@import "../../node_modules/remodal/dist/remodal-default-theme.css";
+
+/*
+* Custom
+*/
+@import "partials/variable";
+@import "partials/icons";
+@import "partials/fonts";
+@import "partials/common";
+@import "partials/header";
+@import "partials/footer";
+@import "partials/home";
+@import "partials/event";
+@import "partials/review";
+@import "partials/contacts";
+@import "partials/events";
+@import "partials/cabinet";
+@import "partials/modals";
+@import "partials/media";

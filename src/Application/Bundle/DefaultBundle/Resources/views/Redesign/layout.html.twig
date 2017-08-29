@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Frameworks Days{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+</head>
+<body>
+    {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
+
+<!--BEGIN layout-box-->
+<div class="layout-box">
+
+    <!--BEGIN layout-box__top-->
+    <div class="layout-box__top">
+        {% include '@ApplicationDefault/Redesign/header.html.twig' %}
+        {% block content %}{% endblock content %}
+    </div>
+    <!--END layout-box__top-->
+
+    <!--BEGIN layout-box__bottom-->
+    <div class="layout-box__bottom">
+        {% include '@ApplicationDefault/Redesign/footer.html.twig' %}
+    </div>
+    <!--END layout-box__bottom-->
+    {% include '@ApplicationDefault/Redesign/popups.html.twig' %}
+</div>
+<!--END layout-box-->
+{% block scripts %}
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock scripts %}
+</body>
+</html>

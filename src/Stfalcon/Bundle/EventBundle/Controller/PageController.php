@@ -11,7 +11,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Page;
 
 /**
  * Page controller
- * @Route("/page")
+ * @Route("/old/page")
  */
 class PageController extends Controller
 {

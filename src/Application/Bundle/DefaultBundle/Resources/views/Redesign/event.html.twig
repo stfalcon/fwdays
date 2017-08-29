@@ -1,0 +1,85 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+    {% include '@ApplicationDefault/Redesign/event.header.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position':'event'} %}
+
+    <!--BEGIN event-description-->
+    <section class="event-description">
+        <div class="container container--sm">
+            {{ event.about|raw }}
+        </div>
+    </section>
+    <!--END event-description-->
+    <!--BEGIN speakers-->
+    {% include '@ApplicationDefault/Redesign/event.speakers.html.twig' with {'event':event} %}
+    <!--END speakers-->
+    <!--BEGIN program-->
+    {% if programPage %}
+    <section id="program-event" class="schedule">
+        <div class="container schedule__container">
+            <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
+            {{ programPage.text|raw }}
+        </div>
+    </section>
+    {% endif %}
+    <!--END program-->
+
+    <!--BEGIN price-list-->
+    <section id="price-event" class="price-list">
+        <div class="container container--sm">
+            <h2 class="h2 price-list__title">Стоимость участия</h2>
+            <div class="price-list__items">
+                <div class="cost cost--last price-list__item">
+                    <div class="cost__type">Early birds</div>
+                    <div class="cost__tickets">
+                        <span class="cost__strike">50 билетов</span>
+                        <span class="cost__sales">Продано</span>
+                    </div>
+                    <div class="cost__price">1 700 грн <span class="cost__dollars">≈$62</span></div>
+                </div>
+                <div class="cost cost--active price-list__item">
+                    <div class="cost__type">Regular</div>
+                    <div class="cost__tickets">150 билетов</div>
+                    <div class="cost__price cost__price--mob">1 900 грн <span class="cost__dollars">≈$77</span>
+                    </div>
+                    <a href="#" class="btn btn--primary btn--lg cost__buy">Купить за 1 900 грн <span
+                                class="cost__dollars">≈$70</span></a>
+                    <a href="#" class="btn btn--primary btn--lg cost__buy cost__buy--mob">Купить билет</a>
+                </div>
+                <div class="cost price-list__item">
+                    <div class="cost__type">Late birds</div>
+                    <div class="cost__tickets">Оставшиеся билеты</div>
+                    <div class="cost__price">2 100 грн <span class="cost__dollars">≈$77</span></div>
+                </div>
+            </div>
+            <div class="price-list__hint">Для участников предыдущих конференций скидка 20%</div>
+        </div>
+    </section>
+    <!--END price-list-->
+
+    {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
+
+    <!--BEGIN location-->
+    {% if venuePage %}
+    <section id="location-event" class="location">
+        <div class="container container--sm">
+            <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
+            <div class="location__description">
+                {{ venuePage.text|raw }}
+            </div>
+        </div>
+        <div id="map" class="location__map"></div>
+    </section>
+    {% endif %}
+    <!--END location-->
+
+    {#{% for page in pages %}#}
+        {#{% include '@ApplicationDefault/Redesign/event.static.page.html.twig' with {'page':page} %}#}
+    {#{% endfor %}#}
+
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
+    {{ parent() }}
+{% endblock scripts %}

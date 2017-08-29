@@ -1,0 +1,34 @@
+{% set link = '' %}
+{% if position == 'report' %}
+    {% set link = url('event_show_redesign', {'event_slug': event.slug }) %}
+    {% set scrollClass = '' %}
+{% elseif position == 'event' %}
+    {% set scrollClass = ' go-to-block' %}
+{% endif %}
+<nav class="event-menu">
+    <ul class="event-menu__items">
+    {% if event.speakers is defined and event.speakers is not null %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#speakers-event" class="event-menu__link{{ scrollClass }}">{{ 'speaker.title'|trans }}</a>
+        </li>
+    {% endif %}
+    {% if programPage %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#program-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
+        </li>
+    {% endif %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#price-event" class="event-menu__link{{ scrollClass }}">Стоимость участия</a>
+        </li>
+    {% if venuePage %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#location-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.venue'|trans }}</a>
+        </li>
+    {% endif %}
+    {#{% for page in pages %}#}
+        {#<li class="event-menu__item">#}
+            {#<a href="{{ link }}#{{ page.slug }}-event" class="event-menu__link{{ scrollClass }}">{{ page.title }}</a>#}
+        {#</li>#}
+    {#{% endfor %}#}
+    </ul>
+</nav>

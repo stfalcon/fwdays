@@ -6,6 +6,7 @@ main.menu.partners: Партнеры
 main.menu.about_event: О событии
 main.menu.speakers: Докладчики
 main.menu.participants: Участники
+main.menu.cabinet: Кабінет
 share_contact.text: 'Наши партнеры смогут делиться с вами актуальными новостями и привлекательными вакансиями, если вы пожелаете. <br/> <br/> У вас есть право отказаться.'
 share_contact.agree: 'Я согласен'
 share_contact.not_agree: 'Не согласен'
@@ -14,3 +15,12 @@ add_user.company: 'Компания: '
 add_user.city: 'Город: '
 add_user.price:  'Цена: '
 add_user.user_list: 'Список пользователей: '
+image.home.title: Series of high-caliber developer events in Ukraine
+image.home.description: Since 2007, more then 30 events
+video.description.text: '<p> Традиционно, мы выбрали для вас актуальные и полезные темы докладов от продвинутых иностранных и украинских экспертов с большим практическим опытом работы. </p> <p> Вас ждут доклады в 3 потока, общение со спикерами, перерывы на вкусные кофе-брейки и питательный обед. </p>'
+our.youtube.channel: Наш YouTube канал
+more.gallery.link: Все галереи на Flickr
+in.lang.link: На Українській
+ticket.status.event_done: Событие состоялось
+event.page.program: Програма
+event.page.venue: Место проведения

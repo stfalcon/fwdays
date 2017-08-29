@@ -9,6 +9,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Speaker controller
+ * @Route("/old")
  */
 class SpeakerController extends BaseController
 {

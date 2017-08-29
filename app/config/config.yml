@@ -34,6 +34,9 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         captcha_site_key: %captcha_site_key%
+    form:
+        resources:
+            - 'SonataCoreBundle:Form:colorpicker.html.twig'
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

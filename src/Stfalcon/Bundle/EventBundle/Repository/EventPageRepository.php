@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * EventPageRepository
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventPageRepository extends EntityRepository
 {
+    /**
+     * Get event pages that may show in menu
+     *
+     * @param $event
+     */
+    public function getEventPagesShowInMenu(Event $event)
+    {
+        $this->createQueryBuilder('ep')
+            ->where('ep.event  = :event')
+            ->where('ep.showInMenu = :show')
+            ->setParameter('event', $event)
+            ->setParameter('show', true)
+            ->getQuery()
+            ->getResult();
+    }
 }

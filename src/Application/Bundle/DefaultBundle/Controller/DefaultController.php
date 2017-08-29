@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class DefaultController
+ * @Route("/old")
+ */
 class DefaultController extends Controller {
 
     /**

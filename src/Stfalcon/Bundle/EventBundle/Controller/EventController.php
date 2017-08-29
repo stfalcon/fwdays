@@ -13,6 +13,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Event controller
+ * @Route("/old")
  */
 class EventController extends BaseController
 {
