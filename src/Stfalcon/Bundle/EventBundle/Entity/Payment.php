@@ -202,6 +202,20 @@ class Payment
     }
 
     /**
+     * @param Ticket $ticket
+     */
+    public function removePaidTicket(Ticket $ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            if ($ticket->isPaid()) {
+                $this->amount -= $ticket->getAmount();
+            }
+            $ticket->setPayment(null);
+            $this->tickets->removeElement($ticket);
+        }
+    }
+
+    /**
      * Get promo code from tickets if it have
      *
      * @return null|PromoCode
