@@ -60,19 +60,12 @@ class StfalconMailerHelper
             )
         );
 
-        $unsubscribeLink  = $this->router->generate('unsubscribe',
-            [
-                'hash'   => $user->getSalt(),
-                'userId' => $user->getId()
-            ], true);
-
-
         $body = $this->renderTwigTemplate(
             'StfalconEventBundle::email.html.twig',
             [
                 'text'            => $text,
                 'mail'            => $mail,
-                'unsubscribeLink' => $unsubscribeLink
+                'user'            => $user,
             ]
         );
 
