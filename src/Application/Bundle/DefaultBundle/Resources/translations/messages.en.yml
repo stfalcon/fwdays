@@ -24,3 +24,16 @@ in.lang.link: На Українській
 ticket.status.event_done: Event done
 event.page.program: Program
 event.page.venue: Venue
+menu.profile.my: Profile
+user.name.title: Name
+user.surname.title: Surname
+user.email.title: Email
+user.phone.title: Phone
+user.country.title: Country
+user.city.title: City
+user.company.title: Company
+user.company_post.title: Post
+user.subscribe.title: I agree to receive important news on e-mail
+user.refresh.title: Refresh
+referral.program.conditions.title: Program conditions
+referral.program.conditions.text: __referral.program.conditions.text

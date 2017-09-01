@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,7 +30,25 @@ class DefaultRedesignController extends Controller
      */
     public function cabinetAction()
     {
-        return [];
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket');
+        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
+
+        $referralService = $this->get('stfalcon_event.referral.service');
+
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(['active' => true ]);
+
+        return [
+            'user' => $user,
+            'tickets' => $tickets,
+            'events' => $events,
+            'code' => $referralService->getReferralCode(),
+        ];
     }
     /**
      * @Route("/contacts", name="contacts")

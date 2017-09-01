@@ -16,8 +16,10 @@ class UserAdmin extends Admin
     {
         $datagrid
             ->add('id')
-            ->add('fullname')
+            ->add('name')
+            ->add('surname')
             ->add('email')
+            ->add('phone')
             ->add('company')
             ->add('balance')
             ->add('enabled')
@@ -27,8 +29,10 @@ class UserAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('fullname')
+            ->add('name')
+            ->add('surname')
             ->addIdentifier('email')
+            ->add('phone')
             ->add('company')
             ->add('balance')
             ->add('enabled')
@@ -39,8 +43,10 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->with('General')
-            ->add('fullname')
+            ->add('name')
+            ->add('surname')
             ->add('email')
+            ->add('phone')
             ->add('company', null, array('required' => false))
             ->add('balance')
             ->add('post', null, array('required' => false))

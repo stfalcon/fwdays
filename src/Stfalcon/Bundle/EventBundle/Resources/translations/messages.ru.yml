@@ -47,6 +47,7 @@ referral.invaite.title2: Приглашайте друзей и накаплив
 referral.invaite.text1: Приглашайте друзей на конференцию <b>PM fwdays'17</b> и получайте по 100 ₴ за каждую покупку билета! Накапливайте бонусы и используйте их при покупке билетов на наши мероприятия.
 referral.invaite.text2: 'Внесем немного азарта в нашу жизнь!'
 referral.balance: 'Ваш баланс:'
+referral.balance.redesign: 'Ваш баланс: %user_balance% грн.'
 referral.invaite.link.text: 'Реферальная ссылка:'
 delete: Удалить
 payment.price: '%summ% грн.'

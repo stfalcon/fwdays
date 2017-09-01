@@ -1,4 +1,154 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
 {% block content %}
+    <!--BEGIN cabinet-head-->
+    <div class="cabinet-head">
+        <div class="container">
+            <div class="cabinet-head__wrap">
+                <div class="cabinet-head__left">
+                    <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
+                </div>
+                <div class="cabinet-head__right">
+                    <a href="#modal-profile" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                    <a href="{{ path('fos_user_security_logout') }}" class="cabinet-head__link">{{ 'menu.logout'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END cabinet-head-->
+    {% if tickets|length > 0 %}
+    <!--BEGIN events-->
+    <section class="events">
+        <div class="container">
+            <div class="events__box">
+                {% for ticket in tickets %}
+                    {% include '@ApplicationDefault/Redesign/event.card.html.twig' with {'event': ticket.event} %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!--END events-->
+    {% endif %}
+
+    <!--BEGIN share-->
+    <section class="share">
+        <div class="container">
+            <div class="share-banner">
+                <div class="share-banner__info">
+                    <h2 class="h2 h2--white share-banner__title">{{ 'referral.invaite.title2'|trans }}</h2>
+                    <div class="share-banner__hint-show">{{ 'referral.program.conditions.title'|trans }}</div>
+                    <div class="share-banner__hint">
+                        {{ 'referral.program.conditions.text'|trans({'%referal_bonus%':constant('Stfalcon\\Bundle\\EventBundle\\Service\\ReferralService::REFERRAL_BONUS') }) }}
+                    </div>
+                    <div class="share-banner__balance">{{ 'referral.balance.redesign'|trans({'%user_balance%': user.balance}) }}</div>
+                </div>
+                <div class="share-ref">
+                    <div class="share-ref__top">
+                        <div class="share-ref__label">{{ 'referral.invaite.link.text'|trans }}</div>
+                        <div class="share-ref__dropdown">
+                            {% set event = events|first %}
+                            <div id="ref-selected" class="share-ref__dropdown-selected">{{ event.name }}</div>
+                            <select id="ref-dropdown" name="" class="share-ref__select">
+                                {% for event in events %}
+                                <option value="{{ loop.index }}"
+                                        data-ref="value={{ url('event_show_redesign', {'event_slug' : event.slug, 'ref': code}) }}">
+                                    {{ event.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="share-ref__bottom">
+                        <div class="share-ref__field">
+                            <input id="ref-input" class="input share-ref__input" type="text"
+                                   value="https://frameworksdays.com/event/php-fwdays-17?ref=3cf0f69ce3917f1d3183390456966f7e"
+                                   readonly>
+                            <button id="ref-copy" class="share-ref__copy tooltip-copy" type="button"
+                                    data-copy="Скопійовано">
+                                <i class="icon-copy share-ref__copy-icon"></i>
+                            </button>
+                        </div>
+                        <a href="#" class="btn btn--md share-ref__facebook"><i class="btn__icon icon-facebook"></i>Поделиться</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--END share-->
+
 {% endblock content%}
+{% block popups %}
+    <!--BEGIN profile-popup-->
+    <div class="remodal remodal--md" data-remodal-id="modal-profile">
+        <button data-remodal-action="close" class="remodal-close icon-close"></button>
+        <div class="remodal__body">
+            <div class="remodal__head">
+                <h2 class="h2 remodal__title">{{ 'menu.user.info'|trans }}</h2>
+            </div>
+            <form action="">
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
+                            <input class="input" type="text" value="{{ user.name }}">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
+                        <input class="input" type="text" value="{{ user.surname }}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label form-label--required" for="">{{ 'user.email.title'|trans }}</label>
+                            <input class="input" type="email" value="{{ user.email }}">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
+                        <input class="input mask-phone-input--js" type="tel" value="{{ user.phone }}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'user.country.title'|trans }}</label>
+                            <input class="input" type="text" value="{{ user.country }}">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <label class="form-label" for="">{{ 'user.city.title'|trans }}</label>
+                        <input class="input" type="text" value="{{ user.city }}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'user.company.title'|trans }}</label>
+                            <input class="input" type="text" value="{{ user.company }}">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <label class="form-label" for="">{{ 'user.company_post.title'|trans }}</label>
+                        <input class="input" type="text" value="{{ user.post }}">
+                    </div>
+                </div>
+                <div class="form-row form-row--checkbox">
+                    <div class="form-col">
+                        <div class="checkbox">
+                            <input id="check1" type="checkbox" class="checkbox__input" value="{{ user.subscribe }}">
+                            <label for="check1" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.refresh.title'|trans }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--END profile-popup-->
+{% endblock popups %}
