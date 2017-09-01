@@ -50,7 +50,8 @@ class UserAdmin extends Admin
                 'tickets',
                 'sonata_type_collection',
                 [
-                    'by_reference' => false
+                    'by_reference' => false,
+                    'disabled' => true,
                 ],
                 [
                     'readonly' => true,

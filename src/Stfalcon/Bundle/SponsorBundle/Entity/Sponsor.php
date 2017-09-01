@@ -4,6 +4,8 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -16,9 +18,11 @@ use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
  * @Vich\Uploadable
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
-class Sponsor
+class Sponsor implements Translatable
 {
+    use Translate;
     /**
      * @var integer $id
      *
@@ -27,6 +31,14 @@ class Sponsor
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
 
     /**
      * @var string $slug
@@ -39,6 +51,7 @@ class Sponsor
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Gedmo\Translatable(fallback=true)
      */
     protected $name;
 
@@ -78,6 +91,7 @@ class Sponsor
      * @var string $about
      *
      * @ORM\Column(name="about", type="text", nullable=true)
+     * @Gedmo\Translatable(fallback=true)
      */
     protected $about;
 
@@ -118,6 +132,7 @@ class Sponsor
     public function __construct()
     {
         $this->sponsorEvents = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**

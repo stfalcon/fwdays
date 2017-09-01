@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
-use Stfalcon\Bundle\EventBundle\Entity\News;
+use Stfalcon\Bundle\EventBundle\Entity\EventNews;
 
 /**
  * LoadNewsData Class
@@ -30,7 +30,7 @@ class LoadNewsData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $news = new News();
+        $news = new EventNews();
         $news->setTitle('Определились с датой и местом проведения Zend Framework Day');
         $news->setSlug('date-and-place');
         $news->setPreview('Zend Framework Day посвящен популярному PHP фреймворку Zend Framework и является наследником конференции ZFConf Ukraine 2010.');

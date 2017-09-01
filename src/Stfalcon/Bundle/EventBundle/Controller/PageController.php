@@ -2,33 +2,32 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Stfalcon\Bundle\EventBundle\Entity\Page;
+
 /**
  * Page controller
+ * @Route("/page")
  */
-class PageController extends BaseController
+class PageController extends Controller
 {
     /**
      * Finds and displays a Page entity.
      *
-     * @Route("/event/{event_slug}/page/{page_slug}", name="event_page_show")
+     * @param \Stfalcon\Bundle\EventBundle\Entity\Page $page
+     *
+     * @Route   ("/{slug}", name="page_show")
      * @Template()
+     *
+     * @return array
      */
-    public function showAction($event_slug, $page_slug)
+    public function showAction(Page $page)
     {
-        $event = $this->getEventBySlug($event_slug);
-
-        $page = $this->getDoctrine()
-                     ->getRepository('StfalconEventBundle:Page')
-                     ->findOneBy(array('event' => $event->getId(), 'slug' => $page_slug));
-
-        if (!$page) {
-            throw $this->createNotFoundException('Unable to find Page entity.');
-        }
-
-        return array('event' => $event, 'page' => $page);
+        return array('page' => $page);
     }
 
 }

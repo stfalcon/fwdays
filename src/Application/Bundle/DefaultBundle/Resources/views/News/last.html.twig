@@ -1,6 +1,6 @@
 <div class="news-list"> 
     {{ include('ApplicationDefaultBundle:News:_news_list.html.twig', {'news': news}) }}  
     <div class="allnews-link">
-        <a href="{{ path('news') }}">все новости</a>
+        <a href="{{ path('news') }}">{{ 'news.all'|trans }}</a>
     </div>
  </div>

@@ -1,6 +1,6 @@
-{% extends 'StfalconEventBundle::events-layout.html.twig' %}
+{% extends '@StfalconEvent/events-layout.html.twig' %}
 
-{% block title %}События / {{ parent() }}{% endblock %}
+{% block title %}{{ 'event.events.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block content %}
 
@@ -13,12 +13,12 @@
     {% endfor %}
 
     {% if activeEvents|length %}
-        <h2>Будущие события</h2>
+        <h2>{{ 'events.future'|trans }}</h2>
 
         <table class="conferences-list">
             <tbody>
                 {% for event in activeEvents %}
-                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                    {% include "@StfalconEvent/Event/_event_row.html.twig" with { 'event': event } %}
                 {% endfor %}
 
             {#<tr><td></td><td><a class="propose-conference-theme" href="# ">Я хочу предложить тему конференции</a></td></tr>#}
@@ -27,12 +27,12 @@
     {% endif %}
 
     {% if pastEvents|length %}
-        <h2 id="past-events">Прошедшие события</h2>
+        <h2 id="past-events">{{ 'events.past'|trans }}</h2>
 
         <table class="conferences-list conferences-list-past">
             <tbody>
                 {% for event in pastEvents %}
-                    {% include "StfalconEventBundle:Event:_event_row.html.twig" with { 'event': event } %}
+                    {% include "@StfalconEvent/Event/_event_row.html.twig" with { 'event': event } %}
                 {% endfor %}
             </tbody>
         </table>

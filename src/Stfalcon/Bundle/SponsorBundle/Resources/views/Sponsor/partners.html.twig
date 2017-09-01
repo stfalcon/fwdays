@@ -1,9 +1,9 @@
 {% extends '::layout.html.twig' %}
-{% block title %}Партнеры / {{ parent() }}{% endblock %}
+{% block title %}{{ 'sponsor.partners.title'|trans }} / {{ parent() }}{% endblock %}
 {% block content %}
     {% if sponsors %}
             <h2>
-                Партнеры
+                {{ 'sponsor.partners.title'|trans }}
             </h2>
             <table class="sponsors-partners-list">
                 <tbody>
@@ -21,7 +21,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
+                        {{ 'sponsor.partners.call_us'|trans|raw }}
                     </td>
                 </tr>
                 </tbody>

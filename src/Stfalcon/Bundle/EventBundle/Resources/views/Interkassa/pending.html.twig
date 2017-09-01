@@ -1,9 +1,9 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
-    <h2>Оплата ещё не завершена!</h2>
+    <h2>{{ 'interkassa.payment.pending'|trans }}</h2>
 
-    Пожалуйста, подождите немного, пока мы получим подтверждение оплаты.
+    {{ 'interkassa.payment.pending.wait'|trans }}
 
 {% endblock %}
 

@@ -7,7 +7,7 @@
                         <a href="{{ path('event_show', {'event_slug': event.slug }) }}">{{ event.name }}</a>
                     </li>
                 {% endfor %}
-                <li class="past-events"><a href="{{ path('events') }}#past-events">Прошедшие</a></li>
+                <li class="past-events"><a href="{{ path('events') }}#past-events">{{ 'events.past'|trans }}</a></li>
             </ul>
         </div>
     </div>

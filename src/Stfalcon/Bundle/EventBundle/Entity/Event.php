@@ -4,9 +4,12 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event
@@ -14,9 +17,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @Vich\Uploadable
  * @ORM\Table(name="event__events")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
  */
-class Event
+class Event implements Translatable
 {
+    use Translate;
     /**
      * @var integer $id
      *
@@ -24,13 +29,23 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
 
     /**
      * @var string $name
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Gedmo\Translatable(fallback=true)
      */
     protected $name = '';
 
@@ -46,6 +61,7 @@ class Event
      * @var string $city
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Translatable(fallback=true)
      */
     protected $city;
 
@@ -53,6 +69,7 @@ class Event
      * @var string $place
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Translatable(fallback=true)
      */
     protected $place;
 
@@ -67,6 +84,7 @@ class Event
      * @var string $description
      *
      * @ORM\Column(type="text")
+     * @Gedmo\Translatable(fallback=true)
      * @Assert\NotBlank()
      */
     protected $description;
@@ -75,7 +93,7 @@ class Event
      * Краткий текст в слайдере
      *
      * @var string $about
-     *
+     * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(type="text", nullable=true)
      */
     protected $about;
@@ -135,7 +153,7 @@ class Event
     protected $useDiscounts = true;
 
     /**
-     * @ORM\OneToMany(targetEntity="Page", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
     protected $pages;
@@ -179,6 +197,7 @@ class Event
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -446,7 +465,7 @@ class Event
     /**
      * Set pages
      *
-     * @param mixed $pages pages
+     * @param ArrayCollection $pages
      *
      * @return $this
      */

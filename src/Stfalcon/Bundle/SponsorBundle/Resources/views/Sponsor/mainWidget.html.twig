@@ -2,7 +2,7 @@
     <div class="side-right-holder">
         <div class="partners">
             {% if sponsors %}
-                <h2>Спонсоры и партнеры</h2>
+                <h2>{{ 'sponsor.and.partners'|trans }}</h2>
 
                 {% for sponsor in sponsors %}
                     <div class="partner sort-order-{{ loop.index }}">
