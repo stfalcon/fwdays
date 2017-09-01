@@ -27,8 +27,7 @@ class User extends BaseUser
     /**
      * @var string $fullname
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
      */
     protected $fullname;
 
@@ -105,7 +104,83 @@ class User extends BaseUser
      *
      */
     protected $balance = 0;
+    /**
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    protected $name;
+    /**
+     * @var string $surname
+     *
+     * @ORM\Column(name="surname", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    protected $surname;
+    /**
+     * @var string $phone
+     *
+     * @ORM\Column(name="phone", type="string", length=20, nullable=true)
+     */
+    protected $phone;
+    /**
+     * @return string
+     */
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     * @return $this
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
 
     public function __construct() {
         parent::__construct();

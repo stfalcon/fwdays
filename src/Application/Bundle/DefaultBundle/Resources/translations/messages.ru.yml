@@ -24,3 +24,18 @@ in.lang.link: На Українській
 ticket.status.event_done: Событие состоялось
 event.page.program: Програма
 event.page.venue: Место проведения
+menu.profile.my: Профиль
+user.name.title: Имя
+user.surname.title: Фамилия
+user.email.title: Электронная почта
+user.phone.title: Номер телефона
+user.country.title: Страна
+user.city.title: Город
+user.company.title: Компания
+user.company_post.title: Должность
+user.subscribe.title: Я согласен получать важные новости на e-mail
+user.refresh.title: Обновить
+referral.program.conditions.title: Условия программы
+referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
+referral.share.title: Поделиться
+referral.link.copied: Скопировано

@@ -49,6 +49,56 @@ class MailQueue
     private $isSent = false;
 
     /**
+     * @var bool $isOpen
+     *
+     * @ORM\Column(name="is_open", type="boolean")
+     */
+    private $isOpen = false;
+    /**
+     * @var bool $isUnsubscribe
+     *
+     * @ORM\Column(name="is_unsubscribe", type="boolean")
+     */
+    private $isUnsubscribe = false;
+
+    /**
+     * @param bool $isOpen
+     * @return MailQueue
+     */
+    public function setIsOpen($isOpen = true)
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsOpen()
+    {
+        return $this->isOpen;
+    }
+    /**
+     * @param bool $isUnsubscribe
+     * @return MailQueue
+     */
+    public function setIsUnsubscribe($isUnsubscribe = true)
+    {
+        $this->isUnsubscribe = $isUnsubscribe;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsUnsubscribe()
+    {
+        return $this->isUnsubscribe;
+    }
+
+    /**
      * @return string
      */
     public function __toString()

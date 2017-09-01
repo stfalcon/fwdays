@@ -47,6 +47,7 @@ referral.invaite.title2: __referral.invaite.title2
 referral.invaite.text1: __referral.invaite.text1
 referral.invaite.text2: __referral.invaite.text2
 referral.balance: __referral.balance
+referral.balance.redesign: 'Ваш баланс: %user_balance% грн.'
 referral.invaite.link.text: __referral.invaite.link.text
 delete: __delete
 payment.price: __payment.price

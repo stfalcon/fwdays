@@ -23,4 +23,19 @@ more.gallery.link: Все галереи на Flickr
 in.lang.link: In English
 ticket.status.event_done: Событие состоялось
 event.page.program: Програма
-event.page.venue: Место проведения
+event.page.venue: Місце проведення
+menu.profile.my: Профіль
+user.name.title: Імя
+user.surname.title: Прізвище
+user.email.title: Електронна пошта
+user.phone.title: Номер телефона
+user.country.title: Країна
+user.city.title: Місто
+user.company.title: Компанія
+user.company_post.title: Посада
+user.subscribe.title: Я згоден отримувати важливі новини на e-mail
+user.refresh.title: Оновити
+referral.program.conditions.title: Умови програмы
+referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
+referral.share.title: Поділитись
+referral.link.copied: Скопійовано

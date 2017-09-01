@@ -5,7 +5,8 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">Вход</h2>
         </div>
-        <form action="">
+        <form action="{{ url("fos_user_security_check") }}" method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
             <div class="login-social-buttons">
                 <div class="form-hint">Войдите как пользователь</div>
                 <div class="form-row">
@@ -26,12 +27,12 @@
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
                         <label class="form-label" for="">Электронная почта</label>
-                        <input class="input" type="email" value="">
+                        <input class="input" type="email" name="_username" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
                     <label class="form-label" for="">Пароль</label>
-                    <input class="input" type="password" value="">
+                    <input class="input" type="password" name="_password" value="">
                 </div>
             </div>
             <div class="form-row form-row--checkbox">
