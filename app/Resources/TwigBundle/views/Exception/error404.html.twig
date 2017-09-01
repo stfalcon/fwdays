@@ -2,13 +2,15 @@
 
 {% block content %}
     <div class="error-page">
-        <h1>Страница не найдена</h1>
-        <h4>Ошибка 404</h4>
-        <div class="error-msg-block"><p>Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.</p></div>
-        <strong>Вы можете:</strong>
+        <h1>{{ 'page.error.notfound'|trans }}</h1>
+        <h4>{{ 'page.error.notfound.error'|trans }}</h4>
+        <div class="error-msg-block">
+            <p>{{ 'page.error.notfound.message'|trans|raw }}</p>
+        </div>
+        <strong> {{ 'page.error.notfound.you_can'|trans|raw }}</strong>
         <ul>
-            <li><a href="http://frameworksdays.com/">Вернуться на главную</a></li>
-            <li>Перейти в любой раздел сайта через верхнее меню</li>
+            <li><a href="https://frameworksdays.com/">{{ 'page.error.notfound.you_can1'|trans|raw }}</a> </li>
+            <li>{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
         </ul>
     </div>
 {% endblock %}

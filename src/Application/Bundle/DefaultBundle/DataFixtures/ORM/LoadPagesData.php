@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Stfalcon\Bundle\PageBundle\Entity\Page;
+use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -30,9 +30,9 @@ class LoadPagesData extends AbstractFixture
                     </div>
 
                     <ul class="contacts-page-social">
-                        <li><a href="http://frameworksdays.com/rss"><img src="/images/img-contacts-page-rss.png" width="92" height="41" alt=""></a></li>
-                        <li><a href="http://www.facebook.com/fwdays"><img src="/images/img-contacts-page-facebook.png" width="92" height="41" alt=""></a></li>
-                        <li><a href="http://twitter.com/fwdays"><img src="/images/img-contacts-page-twitter.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="https://frameworksdays.com/rss"><img src="/images/img-contacts-page-rss.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="https://www.facebook.com/fwdays"><img src="/images/img-contacts-page-facebook.png" width="92" height="41" alt=""></a></li>
+                        <li><a href="https://twitter.com/fwdays"><img src="/images/img-contacts-page-twitter.png" width="92" height="41" alt=""></a></li>
                     </ul>
 
                     <div class="contacts-page-orgs">

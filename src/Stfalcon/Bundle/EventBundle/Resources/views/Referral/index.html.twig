@@ -1,6 +1,6 @@
 {% extends 'StfalconEventBundle::events-layout.html.twig' %}
 
-{% block title %}Пригласи друзей / {{ parent() }}{% endblock %}
+{% block title %}{{ 'referral.invaite.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block javascripts %}
     {% javascripts 'js/jquery-1.8.2.min.js' 'js/simple-slider.js' 'js/jquery.cycle.all.min.js' %}
@@ -17,20 +17,20 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Приглашайте друзей и накапливайте бонусы! </h2>
+    <h2>{{ 'referral.invaite.title2'|trans }} </h2>
     <div class="text">
-        <p class="text-desc">У вас много друзей, которые интересуются JavaScript? Приглашайте их на конференцию
-            <b>Most JS Frameworks Day'16</b> и получайте по 100 ₴ за каждую покупку билета!
-            Накапливайте бонусы и используйте их при покупке билетов на наши мероприятия.</p>
-        <p>Внесем немного азарта в нашу жизнь!</p>
+        <p class="text-desc">
+            <p>{{ 'referral.invaite.text1'|trans|raw }} </p>
+            <p>{{ 'referral.invaite.text2'|trans|raw }} </p>
+        </p>
     </div>
     <div class="form-wrapper referral-page">
-        <p>Ваш баланс: <span class="sum">{{ balance }} ₴</span></p>
+        <p>{{ 'referral.balance'|trans }} <span class="sum">{{ balance }} ₴</span></p>
         <hr/>
         <div class="ref-link">
-            <p>Реферальная ссылка:</p>
+            <p>{{ 'referral.invaite.link.text'|trans|raw }} </p>
             <input id="code-inp" type="text"
-                   value="{{ url('event_show', {'event_slug' : 'most-js-fwdays-2016', 'ref': code}) }}"/>
+                   value="{{ url('event_show', {'event_slug' : 'pm-fwdays-2017', 'ref': code}) }}"/>
         </div>
     </div>
 {% endblock %}

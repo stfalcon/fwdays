@@ -38,12 +38,26 @@ class SponsorAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
             ->with('General')
-                ->add('name')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                        'translatable_class' => $this->getClass(),
+                        'fields' => [
+                            'name'=> [
+                                'label' => 'name',
+                                'locale_options' => $localOptions
+                            ],
+                            'about'=> [
+                                'label' => 'about',
+                                'locale_options' => $localOptionsAllFalse
+                            ],
+                        ]
+                ])
                 ->add('slug')
                 ->add('site')
-                ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                       'required' => false,

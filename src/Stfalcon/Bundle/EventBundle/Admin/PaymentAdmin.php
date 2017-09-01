@@ -50,6 +50,7 @@ class PaymentAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id')
             ->add(
                 'gate',
                 'doctrine_orm_choice',
@@ -114,7 +115,8 @@ class PaymentAdmin extends Admin
                 ->add('status', 'choice', array(
                     'choices'   => array(
                         'pending'   => 'pending',
-                        'paid' => 'paid'
+                        'paid' => 'paid',
+                        'returned' => 'returned',
                     )
                 ))
                 ->add('gate', 'choice', array(

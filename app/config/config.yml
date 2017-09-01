@@ -1,11 +1,15 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
+    - { resource: multi_lang.yml }
 
 parameters:
-    graylog.fromname: "http://frameworksdays.com"
+    graylog.fromname: "https://frameworksdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
+    captcha_secret_key: %google_captcha_secret_key%
+    captcha_site_key: %google_captcha_site_key%
+    captcha_check_url: https://www.google.com/recaptcha/api/siteverify
 
 framework:
     #esi:             ~
@@ -28,6 +32,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        captcha_site_key: %captcha_site_key%
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
@@ -61,13 +67,13 @@ doctrine:
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:
-    default_locale: %locale%
+    default_locale: '%locale%'
     orm:
         default:
             loggable: false
             sluggable: false
             timestampable: true
-            translatable: false
+            translatable: true
             tree: false
 
 # Swiftmailer Configuration
@@ -137,7 +143,12 @@ sonata_admin:
                 position: left
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Пользователи", "События", "Новости", "Статистика"]
+                    groups:
+                      - "Пользователи"
+                      - "События"
+                      - "Новости"
+                      - "Статистика"
+                      - "group.translation"
             -
                 position: right
                 type: sonata.admin.block.admin_list
@@ -179,3 +190,4 @@ ornicar_gravatar: ~
 
 accord_mandrill_swift_mailer:
     api_key: %mandrill_api_key%
+

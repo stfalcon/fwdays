@@ -11,6 +11,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentController extends BaseController
 {
@@ -43,12 +45,21 @@ class PaymentController extends BaseController
         $ticket = $this->container->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
 
-        if (!$payment = $ticket->getPayment()) {
+        /** @var Payment $payment */
+        $payment = $this->container->get('doctrine.orm.default_entity_manager')
+            ->getRepository('StfalconEventBundle:Payment')
+            ->findPaymentByUserAndEvent($user, $event);
+
+        if ($ticket && !$payment = $ticket->getPayment()) {
             $payment = new Payment();
             $payment->setUser($user);
             $em->persist($payment);
             $payment->addTicket($ticket);
             $em->persist($ticket);
+        }
+
+        if ($payment->isPaid()) {
+            return new RedirectResponse($this->generateUrl('events_my'));
         }
 
         if (!$payment->isPaid()) {
@@ -158,7 +169,9 @@ class PaymentController extends BaseController
             throw $this->createNotFoundException('Unable to find payment');
         }
 
-
+        if ($payment->isPaid()) {
+            throw new HttpException(404, sprintf('Can not allow paid'));
+        }
 
         $request = $this->getRequest();
         $ticketForm = $this->createForm('stfalcon_event_ticket');
@@ -190,13 +203,13 @@ class PaymentController extends BaseController
                 if (($promoCode = $payment->getPromoCodeFromTickets()) && !$ticket->getHasDiscount()) {
                     $ticket->setPromoCode($promoCode);
                 }
-                $ticket->setPayment($payment);
+                $payment->addTicket($ticket);
             } else {
                 $alreadyPaidTickets[] = $user->getFullname();
             }
-            $em->persist($payment);
             $em->persist($ticket);
         }
+
 
         $em->flush();
         if (!empty($alreadyPaidTickets)) {

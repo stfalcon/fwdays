@@ -28,7 +28,7 @@ class EmailSubscribeController extends Controller
      *
      * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
      */
-    public function unsubscribeAction($hash, $userId, $mailId = -1)
+    public function unsubscribeAction($hash, $userId, $mailId = null)
     {
         $em = $this->getDoctrine()->getManager();
         /** @var User $subscriber */
@@ -39,7 +39,7 @@ class EmailSubscribeController extends Controller
             throw $this->createNotFoundException('Unable to find Subscriber.');
         }
 
-        if (-1 !== $mailId) {
+        if ($mailId) {
             /** @var MailQueue $mailQueue */
             $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
                 ->findOneBy(['user' => $userId, 'mail' => $mailId]);

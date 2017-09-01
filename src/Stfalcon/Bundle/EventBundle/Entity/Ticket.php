@@ -54,7 +54,7 @@ class Ticket
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
@@ -64,7 +64,7 @@ class Ticket
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", inversedBy="tickets")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;

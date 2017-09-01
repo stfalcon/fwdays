@@ -96,7 +96,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                     'mailId' => $mail->getId(),
                 ], true);
 
-            $headers->addTextHeader('List-Unsubscribe:', '<' . $http . '>');
+            $headers->addTextHeader('List-Unsubscribe', '<' . $http . '>');
 
             if ($mailer->send($message)) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);

@@ -3,16 +3,6 @@ StfalconEventBundle:
     type:     annotation
     prefix:   /
 
-StfalconNewsBundle:
-    resource: "@StfalconNewsBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-StfalconPageBundle:
-    resource: "@StfalconPageBundle/Controller/"
-    type:     annotation
-    prefix:   /page
-
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation
@@ -32,23 +22,33 @@ app_backend:
     resource: "@StfalconEventBundle/Controller/Admin"
     type:     annotation
     prefix:   /admin
+    options:
+        i18n: false
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
+    options:
+        i18n: false
 
 _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /admin
+    options:
+        i18n: false
 
 sonata_admin_ticket_check:
     pattern:  /admin/ticket/check
     defaults: { _controller: StfalconEventBundle:TicketAdmin:check }
+    options:
+        i18n: false
 
 admin_show_statistic:
     pattern:  /admin/statistic
     defaults: { _controller: StfalconEventBundle:StatisticAdmin:showStatistic }
+    options:
+        i18n: false
 
 # Internal routing configuration to handle ESI
 #_internal:
@@ -58,9 +58,13 @@ admin_show_statistic:
 _imagine:
     resource: .
     type: imagine
+    options:
+        i18n: false
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    options:
+        i18n: false
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"

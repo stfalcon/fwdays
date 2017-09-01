@@ -22,9 +22,9 @@ class TrackingController extends Controller
      *
      * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
      */
-    public function actionTrackOpenMail($userId, $hash, $mailId = -1)
+    public function actionTrackOpenMail($userId, $hash, $mailId = null)
     {
-        if (-1 !== $mailId) {
+        if ($mailId) {
             $em = $this->getDoctrine()->getManager();
             /** @var User $user */
             $user = $em->getRepository('ApplicationUserBundle:User')
