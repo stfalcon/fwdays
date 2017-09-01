@@ -6,11 +6,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/stfalcon-studio/NewsBundle.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/stfalcon-studio/PageBundle.git"
+            "url": "https://github.com/stfalcon-studio/MpdfPortBundle.git"
         }
     ],
     "require": {
@@ -33,19 +29,21 @@
         "sonata-project/intl-bundle": "2.2.*",
         "sonata-project/block-bundle": "2.2.*",
         "sonata-project/core-bundle": "2.3.10",
-        "stfalcon/page-bundle": "1.*",
-        "stfalcon/news-bundle": "1.*",
         "jms/security-extra-bundle": "1.6.*",
         "avalanche123/imagine-bundle": "2.1.*",
         "friendsofsymfony/user-bundle": "1.3.*",
         "stof/doctrine-extensions-bundle": "1.2.*",
         "vich/uploader-bundle": "0.8.1",
         "ornicar/gravatar-bundle" : "1.1.*",
-        "tfox/mpdf-port-bundle": "1.1.*",
+        "tfox/mpdf-port-bundle": "dev-fix-yellow-square",
         "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
-        "accord/mandrill-swiftmailer-bundle": "^1.2"
+        "accord/mandrill-swiftmailer-bundle": "^1.2",
+        "a2lix/translation-form-bundle": "~1.3",
+        "ibrows/sonata-translation-bundle": "^1.1",
+        "jms/i18n-routing-bundle": "^2.0",
+        "gedmo/doctrine-extensions": "^2.4"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",

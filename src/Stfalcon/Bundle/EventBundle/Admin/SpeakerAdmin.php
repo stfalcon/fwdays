@@ -21,13 +21,26 @@ class SpeakerAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
             ->with('General')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                        'translatable_class' => $this->getClass(),
+                        'fields' => [
+                            'name'=> [
+                                'label' => 'name',
+                                'locale_options' => $localOptions
+                            ],
+                            'about'=> [
+                                'label' => 'about',
+                                'locale_options' => $localOptions
+                            ],
+                        ]
+                ])
                 ->add('slug')
-                ->add('name')
                 ->add('email')
                 ->add('company')
-                ->add('about')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                         'required' => false,

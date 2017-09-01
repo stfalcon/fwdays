@@ -4,7 +4,7 @@
             <div class="button-like-top {{ not review.likedUsers.count?'empty' }}">{{ review.likedUsers.count?review.likedUsers.count }}</div>
             <a {% if (is_granted('ROLE_USER')) %} class="voter" {% endif %}
 
-                    href="{{ path('event_review_like', {'slug': review.slug }) }}" rel="nofollow">Хочу послушать</a>
+                    href="{{ path('event_review_like', {'slug': review.slug }) }}" rel="nofollow">{{ 'rewiew.wonna.listen'|trans }} </a>
         </div>
     {% endfor %}
 {% endif %}

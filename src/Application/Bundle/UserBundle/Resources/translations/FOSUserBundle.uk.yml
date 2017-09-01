@@ -1,0 +1,9 @@
+profile.show.fullname: __profile.show.fullname
+profile.show.email: __profile.show.email
+security.login.username: __security.login.username
+security.login.password: __security.login.password
+security.login.remember_me: __security.login.remember_me
+security.login.submit: __security.login.submit
+registration.check_email: __registration.check_email
+registration.confirmed: __registration.confirmed
+registration.back: __registration.back

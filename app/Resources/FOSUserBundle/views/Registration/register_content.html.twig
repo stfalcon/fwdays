@@ -3,7 +3,7 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
     {% endjavascripts %}
-    {% if app.environment != 'prod' %}
+    {% if app.environment == 'prod' %}
         <script>
             $( window ).load( function () {
                 $('#g-recaptcha-response').attr("required", "required");

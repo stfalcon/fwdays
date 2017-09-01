@@ -1,20 +1,20 @@
 <?php
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Stfalcon\Bundle\PageBundle\Admin\PageAdmin as BasePageAdmin;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
-class ReviewAdmin extends BasePageAdmin 
+class ReviewAdmin extends AbstractPageAdmin
 {
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
-        $listMapper->add('event');
-        $listMapper->add('speakers');
+        $listMapper
+            ->add('event')
+            ->add('speakers');
     }
     
     protected function configureFormFields(FormMapper $formMapper)

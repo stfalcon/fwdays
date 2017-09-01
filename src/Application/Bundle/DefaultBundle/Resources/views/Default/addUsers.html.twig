@@ -1,8 +1,8 @@
 <form method="post">
-    <p>Компания: <input name="company"></p>
-    <p>Город: <input name="city"></p>
-    <p>Цена: <input name="amount"></p>
+    <p>{{ 'add_user.company'|trans }}<input name="company"></p>
+    <p>{{ 'add_user.city'|trans }}<input name="city"></p>
+    <p>{{ 'add_user.price'|trans }}<input name="amount"></p>
 
-    Список пользователей:<textarea name="users"></textarea>
+    {{ 'add_user.user_list'|trans }}<textarea name="users"></textarea>
     <input type="submit" value="Add" />
 </form>

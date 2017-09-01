@@ -46,18 +46,18 @@
                             <div class="user-menu">
                                 <a class="username" href="#"><span>{{ app.user.username }}</span></a>
                                 <ul class="user-menu-dropdown">
-                                    <li><a href="{{ path('events_my') }}">Мои события</a></li>
-                                    <li><a href="{{ path('fos_user_profile_edit') }}">Личная информация</a></li>
-                                    <li><a href="{{ path('referral_page') }}">Пригласи друзей</a></li>
+                                    <li><a href="{{ path('events_my') }}">{{ 'menu.events.my'|trans }}</a></li>
+                                    <li><a href="{{ path('fos_user_profile_edit') }}">{{ 'menu.user.info'|trans }}</a></li>
+                                    <li><a href="{{ path('referral_page') }}">{{ 'menu.referral.title'|trans }}</a></li>
                                     {% if is_granted('ROLE_VOLUNTEER') %}
-                                        <li><a href="{{ path('check_ticket_by_number') }}">Проверка билета по номеру</a></li>
+                                        <li><a href="{{ path('check_ticket_by_number') }}">{{ 'menu.check.ticket.bynumber'|trans }}</a></li>
                                     {% endif %}
-                                    <li><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
+                                    <li><a href="{{ path('fos_user_security_logout') }}">{{ 'menu.logout'|trans }}</a></li>
                                 </ul>
                             </div>
                         {% else %}
-                            <a class="register" href="{{ path('fos_user_registration_register') }}">Зарегистрироваться</a>
-                            <a class="login" href="{{ path('fos_user_security_login') }}">Войти</a>
+                            <a class="register" href="{{ path('fos_user_registration_register') }}">{{ 'menu.user.registration'|trans }}</a>
+                            <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'menu.login'|trans }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -106,8 +106,8 @@
         <footer id="footer">
             <div class="wrap">
                 <div class="copyright">&#169; 2011-{{"now"|date('Y')}} Frameworks Days</div>
-                <address>Электронная почта: <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a></address>
-                <div class="created-by">Сделано в веб-студии <a class="stfalcon" href="http://stfalcon.com"><span class="icon"></span>stfalcon.com</a></div>
+                <address>{{ 'email'|trans }} <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a></address>
+                <div class="created-by">{{ 'madeby'|trans }} <a class="stfalcon" href="http://stfalcon.com"><span class="icon"></span>stfalcon.com</a></div>
             </div>
         </footer><!-- #footer -->
 
