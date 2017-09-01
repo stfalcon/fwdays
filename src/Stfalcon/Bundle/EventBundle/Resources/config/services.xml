@@ -31,7 +31,7 @@
 
         <parameter key="stfalcon_event.admin.tickets.class">Stfalcon\Bundle\EventBundle\Admin\TicketAdmin</parameter>
         <parameter key="stfalcon_event.admin.tickets.entity">Stfalcon\Bundle\EventBundle\Entity\Ticket</parameter>
-        <parameter key="stfalcon_event.admin.tickets.controller">SonataAdminBundle:CRUD</parameter>
+        <parameter key="stfalcon_event.admin.tickets.controller">StfalconEventBundle:TicketCRUD</parameter>
 
         <parameter key="stfalcon_event.admin.mail_queue.class">Stfalcon\Bundle\EventBundle\Admin\MailQueueAdmin</parameter>
         <parameter key="stfalcon_event.admin.mail_queue.entity">Stfalcon\Bundle\EventBundle\Entity\MailQueue</parameter>

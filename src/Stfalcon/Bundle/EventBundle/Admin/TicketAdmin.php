@@ -24,6 +24,7 @@ class TicketAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
+        $collection->add('remove_ticket_from_payment', $this->getRouterIdParameter().'/remove_ticket_from_payment');
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -56,7 +57,16 @@ class TicketAdmin extends Admin
             ->add('payment')
             ->add('createdAt')
             ->add('updatedAt')
-            ->add('used');
+            ->add('used')
+            ->add('_action', null, [
+                'actions' => [
+                    'removeTicket' => [
+                        'ask_confirmation' => true,
+                        'template' => 'StfalconEventBundle:Admin:list_action_remove_ticket.html.twig',
+                    ],
+                ]
+            ])
+        ;
     }
 
     protected function configureShowFields(ShowMapper $filter)
