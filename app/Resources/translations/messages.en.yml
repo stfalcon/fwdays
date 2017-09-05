@@ -1,4 +1,3 @@
-Logout: __Logout
 menu.events.my: __menu.events.my
 menu.user.info: __menu.user.info
 menu.referral.title: __menu.referral.title
@@ -24,3 +23,18 @@ news.all: все новости
 news.title: __news.title
 event.get_more_info: __event.get_more_info
 events.past: __events.past
+user.fullname.title: Your name and surname
+user.name.title: Name
+user.surname.title: Surname
+user.email.title: Email
+user.phone.title: Phone
+user.country.title: Country
+user.city.title: City
+user.company.title: Company
+user.company_post.title: Post
+user.subscribe.title: I agree to receive important news on e-mail
+user.refresh.title: Refresh
+user.password.title: Password
+user.forgot_password.title: Forgot password?
+user.show_password.title: show password
+user.remember_me.title: Remember me

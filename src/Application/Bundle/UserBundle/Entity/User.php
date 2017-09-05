@@ -2,11 +2,13 @@
 
 namespace Application\Bundle\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Validator\Constraints as Assert;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * User Class
@@ -88,6 +90,22 @@ class User extends BaseUser
     protected $tickets;
 
     /**
+     * Подіі в яких юзер бажає прийняти участь
+     *
+     * @var ArrayCollection $wantsToVisitEvents
+     *
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
+     * @ORM\JoinTable(name="user_wants_visit_event",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    protected $wantsToVisitEvents;
+    /**
      *
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
      */
@@ -124,6 +142,52 @@ class User extends BaseUser
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      */
     protected $phone;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getWantsToVisitEvents()
+    {
+        return $this->wantsToVisitEvents;
+    }
+
+    /**
+     * @param ArrayCollection $wantsToVisitEvents
+     * @return $this
+     */
+    public function setWantsToVisitEvents($wantsToVisitEvents)
+    {
+        $this->wantsToVisitEvents = $wantsToVisitEvents;
+
+        return $this;
+    }
+
+    /**
+     * @param Event $event
+     * @return bool
+     */
+    public function addWantsToVisitEvents(Event $event)
+    {
+        if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
+            return $event->addWantsToVisitCount();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param Event $event
+     * @return bool
+     */
+    public function subtractWantsToVisitEvents(Event $event)
+    {
+        if ($this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->removeElement($event)) {
+            return $event->subtractWantsToVisitCount();
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @return string
      */
@@ -184,7 +248,8 @@ class User extends BaseUser
 
     public function __construct() {
         parent::__construct();
-        $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->wantsToVisitEvents = new ArrayCollection();
     }
 
     /**

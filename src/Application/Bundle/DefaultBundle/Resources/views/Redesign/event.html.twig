@@ -78,8 +78,22 @@
     {#{% endfor %}#}
 
 {% endblock content %}
+{% block popups %}
+<!--BEGIN speaker-popup-->
+<div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker">
+    <button data-remodal-action="close"
+            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+    <div id="speaker-popup-content" class="remodal__body">
+    <!-- popup content  -->
+    </div>
+</div>
+<!--END speaker-popup-->
+{% endblock popups %}
 {% block scripts %}
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
     {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/partials/add.js') }}"> </script>
 {% endblock scripts %}

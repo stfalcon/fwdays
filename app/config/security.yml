@@ -15,6 +15,7 @@ security:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
                 remember_me: true
+                use_referer:    true
             remember_me:
                 key: %secret%
                 lifetime: 31536000 # 365 days in seconds

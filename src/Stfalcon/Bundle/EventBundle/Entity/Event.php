@@ -106,6 +106,14 @@ class Event implements Translatable
     protected $about;
 
     /**
+     * Wants to visit event users count;
+     *
+     * @var int $wantsToVisitCount
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $wantsToVisitCount = 0;
+
+    /**
      * @var string $logo
      *
      * @ORM\Column(type="string")
@@ -164,9 +172,9 @@ class Event implements Translatable
      *
      * @var $backgroundColor
      * @Assert\NotBlank()
-     * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#0000FF"})
+     * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#4e4e84"})
      */
-    protected $backgroundColor = '#0000FF';
+    protected $backgroundColor = '#4e4e84';
 
     /**
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
@@ -223,7 +231,47 @@ class Event implements Translatable
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
+        $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWantsToVisitCount()
+    {
+        return $this->wantsToVisitCount;
+    }
+
+    /**
+     * @param mixed $wantsToVisitCount
+     * @return $this
+     */
+    public function setWantsToVisitCount($wantsToVisitCount)
+    {
+        $this->wantsToVisitCount = $wantsToVisitCount;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function addWantsToVisitCount()
+    {
+        $this->wantsToVisitCount++;
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function subtractWantsToVisitCount()
+    {
+        $this->wantsToVisitCount--;
+
+        return true;
     }
 
     /**

@@ -35,6 +35,8 @@ user.company.title: Company
 user.company_post.title: Post
 user.subscribe.title: I agree to receive important news on e-mail
 user.refresh.title: Refresh
+user.create.title: Create account
+user.already_have_account.title: I already have an account
 referral.program.conditions.title: Program conditions
 referral.program.conditions.text: __referral.program.conditions.text
 referral.share.title: Share

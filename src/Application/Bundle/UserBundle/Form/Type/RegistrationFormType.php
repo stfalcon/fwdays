@@ -17,44 +17,47 @@ class RegistrationFormType extends BaseRegistrationFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array(
-                'label'              => 'fos_user_profile_form_email',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('fullname', null, array(
+            ->add('email', 'email', [
                 'required'           => true,
+                'label'              => 'fos_user_profile_form_email',
+            ])
+            ->add('surname', null, [
+                'required'           => true,
+                'label'              => 'fos_user_profile_form_surname',
+            ])
+            ->add('fullname', null,[
                 'label'              => 'fos_user_profile_form_fullname',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('country', null, array(
+            ])
+            ->add('name', null,[
+                'required'           => true,
+                'label'              => 'fos_user_profile_form_name',
+            ])
+            ->add('country', null, [
                 'label'              => 'fos_user_profile_form_country',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('city', null, array(
+            ])
+            ->add('phone', null, [
+                'label'              => 'fos_user_profile_form_phone',
+            ])
+            ->add('city', null, [
                 'label'              => 'fos_user_profile_form_city',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('company', null, array(
+            ])
+            ->add('company', null, [
                 'required'           => false,
                 'label'              => 'fos_user_registration_form_company',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('post', null, array(
+            ])
+            ->add('post', null, [
                 'required'           => false,
                 'label'              => 'fos_user_profile_form_post',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('plainPassword', 'password', array(
+            ])
+            ->add('plainPassword', 'password', [
                 'required'           => true,
                 'label'              => 'fos_user_profile_form_password',
-                'translation_domain' => 'FOSUserBundle'
-            ))
-            ->add('subscribe', 'checkbox', array(
+            ])
+            ->add('subscribe', 'checkbox', [
                 'required'           => false,
                 'data'               => true,
                 'label'              => 'fos_user_profile_form_subscribe',
-                'translation_domain' => 'FOSUserBundle'
-            ));
+            ]);
     }
 
     /**

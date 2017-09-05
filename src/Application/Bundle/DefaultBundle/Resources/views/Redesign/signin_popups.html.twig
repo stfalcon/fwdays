@@ -26,12 +26,12 @@
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label" for="">Электронная почта</label>
+                        <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
                         <input class="input" type="email" name="_username" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label" for="">Пароль</label>
+                    <label class="form-label" for="">{{ 'user.password.title'|trans }}</label>
                     <input class="input" type="password" name="_password" value="">
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="form-col">
                     <div class="checkbox">
                         <input id="check1" type="checkbox" class="checkbox__input">
-                        <label for="check1" class="checkbox__label">Запомнить меня</label>
+                        <label for="check1" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
                     </div>
                 </div>
             </div>
@@ -49,8 +49,8 @@
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="help-links">
-                        <a href="#modal-forgot-password" class="form-link help-links__item">Забыли пароль?</a>
-                        <a href="#modal-signup-payment" class="form-link help-links__item">Зарегистрироваться </a>
+                        <a href="#modal-forgot-password" class="form-link help-links__item">{{ 'user.forgot_password.title'|trans }}</a>
+                        <a href="#modal-signup-payment" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
                     </div>
                 </div>
             </div>
@@ -86,12 +86,12 @@
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label" for="">Электронная почта</label>
+                        <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
                         <input class="input" type="email" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label" for="">Пароль</label>
+                    <label class="form-label" for="">{{ 'user.password.title'|trans }}</label>
                     <input class="input" type="password" value="">
                 </div>
             </div>
@@ -99,18 +99,18 @@
                 <div class="form-col">
                     <div class="checkbox">
                         <input id="check2" type="checkbox" class="checkbox__input">
-                        <label for="check2" class="checkbox__label">Запомнить меня</label>
+                        <label for="check2" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
                     </div>
                 </div>
             </div>
             <div class="form-row form-row--align-center">
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Войти</button>
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'menu.login'|trans }}</button>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="help-links">
-                        <a href="#modal-forgot-password" class="form-link help-links__item">Забыли пароль?</a>
-                        <a href="#modal-signup-payment" class="form-link help-links__item">Зарегистрироваться </a>
+                        <a href="#modal-forgot-password" class="form-link help-links__item">{{ 'user.forgot_password.title'|trans }}</a>
+                        <a href="#modal-signup-payment" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
                     </div>
                 </div>
             </div>
@@ -126,31 +126,32 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">Оплата участия в конференции PHP&nbsp;fwdays '17</h2>
         </div>
-        <form action="">
-            <div class="form-hint">Регистрация на сайте</div>
+        <form action="{{ path('fos_user_registration_register') }}" method="POST">
+            <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="{{csrf_token('registration')}}"/>
+            <div class="form-hint">{{ 'menu.user.registration'|trans }}</div>
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label form-label--required" for="">Имя</label>
-                        <input class="input" type="text" value="">
+                        <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
+                        <input class="input" type="text" name="fos_user_registration_form[name]" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label form-label--required" for="">Фамилия</label>
-                    <input class="input" type="text" value="">
+                    <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
+                    <input class="input" type="text" name="fos_user_registration_form[surname]" value="">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label form-label--required" for="">Электронная почта</label>
-                        <input class="input" type="email" value="">
+                        <label class="form-label form-label--required" for="">{{ 'user.email.title'|trans }}</label>
+                        <input class="input" type="email" name="fos_user_registration_form[email]" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label form-label--required" for="">Пароль</label>
+                    <label class="form-label form-label--required" for="">{{ 'user.password.title'|trans }}</label>
                     <div class="input-password">
-                        <input class="input input-password__field" type="password" value="">
+                        <input class="input input-password__field" type="password" name="fos_user_registration_form[plainPassword]" value="">
                         <i class="input-password__icon icon-eye icon-password--js"></i>
                     </div>
                 </div>
@@ -158,26 +159,26 @@
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label" for="">Номер телефона</label>
-                        <input class="input mask-phone-input--js" type="tel" value="">
+                        <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
+                        <input class="input mask-phone-input--js" type="tel" name="fos_user_registration_form[phone]" value="">
                     </div>
                 </div>
             </div>
             <div class="form-row form-row--checkbox">
                 <div class="form-col">
                     <div class="checkbox">
-                        <input id="check3" type="checkbox" class="checkbox__input">
-                        <label for="check3" class="checkbox__label">Я согласен получать важные новости на e-mail</label>
+                        <input id="check3" type="checkbox" name="fos_user_registration_form[subscribe]" class="checkbox__input" checked="checked">
+                        <label for="check3" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
                     </div>
                 </div>
             </div>
             <div class="form-row form-row--align-center">
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Создать аккаунт</button>
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.create.title'|trans }}</button>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="help-links">
-                        <a href="#modal-signin" class="form-link">У меня уже есть аккаунт</a>
+                        <a href="#modal-signin" class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
                     </div>
                 </div>
             </div>
@@ -191,7 +192,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">Забыли пароль?</h2>
+            <h2 class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</h2>
         </div>
         <form action="">
             <div class="form-row form-row--align-bottom">

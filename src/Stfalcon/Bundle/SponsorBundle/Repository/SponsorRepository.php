@@ -42,6 +42,30 @@ class SponsorRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * Get all sponsors of event with category
+     *
+     * @param Event $event
+     *
+     * @return array List of sponsors
+     */
+    public function getSponsorsOfEventWithCategory(Event $event)
+    {
+        $qb = $this->createQueryBuilder('s');
+        return
+            $qb->select('s', 'c.name', 'c.isWideContainer')
+            ->where('e.id = :eventId')
+            ->join('s.sponsorEvents', 'se')
+            ->join('se.event', 'e')
+            ->join('se.category', 'c')
+            ->setParameter('eventId', $event->getId())
+            ->orderBy('c.sortOrder', 'DESC')
+            ->orderBy('s.sortOrder', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+    }
+
     public function getCheckedSponsorsOfActiveEvents()
     {
         return $this->getEntityManager()

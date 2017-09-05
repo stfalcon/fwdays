@@ -85,59 +85,60 @@
             <div class="remodal__head">
                 <h2 class="h2 remodal__title">{{ 'menu.user.info'|trans }}</h2>
             </div>
-            <form action="">
+            <form action="{{ path('fos_user_profile_edit') }}" method="POST">
+                <input type="hidden" id="fos_user_profile_form__token" name="fos_user_profile_form[_token]" value="{{csrf_token('profile')}}"/>
                 <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
-                            <input class="input" type="text" value="{{ user.name }}">
+                            <input class="input" type="text" name="fos_user_profile_form[name]" value="{{ user.name }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
                         <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
-                        <input class="input" type="text" value="{{ user.surname }}">
+                        <input class="input" type="text" name="fos_user_profile_form[surname]" value="{{ user.surname }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
-                            <label class="form-label form-label--required" for="">{{ 'user.email.title'|trans }}</label>
-                            <input class="input" type="email" value="{{ user.email }}">
+                            <label class="form-label form-label--required" for="fos_user_profile_form_email">{{ 'user.email.title'|trans }}</label>
+                            <input class="input" type="email" id="fos_user_profile_form_email" name="fos_user_profile_form[email]" value="{{ user.email }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
                         <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
-                        <input class="input mask-phone-input--js" type="tel" value="{{ user.phone }}">
+                        <input class="input mask-phone-input--js" type="tel" name="fos_user_profile_form[phone]" value="{{ user.phone }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="">{{ 'user.country.title'|trans }}</label>
-                            <input class="input" type="text" value="{{ user.country }}">
+                            <input class="input" type="text" name="fos_user_profile_form[country]" value="{{ user.country }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
                         <label class="form-label" for="">{{ 'user.city.title'|trans }}</label>
-                        <input class="input" type="text" value="{{ user.city }}">
+                        <input class="input" type="text" name="fos_user_profile_form[city]" value="{{ user.city }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="">{{ 'user.company.title'|trans }}</label>
-                            <input class="input" type="text" value="{{ user.company }}">
+                            <input class="input" type="text" name="fos_user_profile_form[company]" value="{{ user.company }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
                         <label class="form-label" for="">{{ 'user.company_post.title'|trans }}</label>
-                        <input class="input" type="text" value="{{ user.post }}">
+                        <input class="input" type="text" name="fos_user_profile_form[post]" value="{{ user.post }}">
                     </div>
                 </div>
                 <div class="form-row form-row--checkbox">
                     <div class="form-col">
                         <div class="checkbox">
-                            <input id="check1" type="checkbox" class="checkbox__input" value="{{ user.subscribe }}">
+                            <input id="check1" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]" value="{{ user.subscribe }}">
                             <label for="check1" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
                         </div>
                     </div>

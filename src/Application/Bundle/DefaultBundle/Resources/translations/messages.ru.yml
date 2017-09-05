@@ -35,6 +35,8 @@ user.company.title: Компания
 user.company_post.title: Должность
 user.subscribe.title: Я согласен получать важные новости на e-mail
 user.refresh.title: Обновить
+user.create.title: Создать аккаунт
+user.already_have_account.title: У меня уже есть аккаунт
 referral.program.conditions.title: Условия программы
 referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
 referral.share.title: Поделиться

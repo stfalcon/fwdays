@@ -8,6 +8,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Application event controller
@@ -117,6 +118,38 @@ class EventController extends Controller
     }
 
     /**
+     * @Route(path="/speaker_popup/{event_slug}/{speaker_slug}", name="speaker_popup",
+     *     methods={"GET"},
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     * @param string $speaker_slug
+     * @param string $event_slug
+     *
+     * @return JsonResponse
+     */
+    public function speakerPopupAction($speaker_slug, $event_slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $speaker = $em->getRepository('StfalconEventBundle:Speaker')->findOneBy(['slug' => $speaker_slug]);
+        if (!$speaker) {
+           return new JsonResponse(['result' => false, 'html' => 'Unable to find Speaker by slug: '.$speaker_slug]);
+        }
+
+        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $event_slug]);
+        if (!$event) {
+            return new JsonResponse(['result' => false, 'html' => 'Unable to find Event by slug: '.$event_slug]);
+        }
+
+        $html = $this->renderView('@ApplicationDefault/Redesign/speaker.popup.html.twig', [
+            'speaker' => $speaker,
+            'event' => $event,
+        ]);
+
+        return new JsonResponse(['result' => true, 'html' => $html]);
+    }
+
+    /**
      * Get event entity by slug
      *
      * @param string $slug
@@ -185,11 +218,13 @@ class EventController extends Controller
         /** @var $partnerRepository \Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository */
         $partnerRepository = $this->getDoctrine()->getManager()
             ->getRepository('StfalconSponsorBundle:Sponsor');
-        $partners = $partnerRepository->getSponsorsOfEvent($event);
+//        $partners = $partnerRepository->getSponsorsOfEvent($event);
+
+        $partners = $partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
-        foreach ($partners as $partner){
-            $sortedPartners[$partner['category_name']][] = $partner['sponsor'];
+        foreach ($partners as $key => $partner){
+            $sortedPartners[$partner['isWideContainer']][$partner['name']][] = $partner[0];
         }
 
         return ['partners' => $sortedPartners];

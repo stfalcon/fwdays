@@ -63,6 +63,7 @@ class AppKernel extends Kernel
             new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle,
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

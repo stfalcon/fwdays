@@ -135,6 +135,7 @@ class Speaker implements Translatable
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->candidateEvents = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }

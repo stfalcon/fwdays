@@ -24,6 +24,8 @@ class LoadUserData extends AbstractFixture
         $userAdmin = new User();
         $userAdmin->setUsername('Администратор');
         $userAdmin->setFullname('Super Admin');
+        $userAdmin->setName('Super');
+        $userAdmin->setSurname('Super');
         $userAdmin->setEmail('admin@fwdays.com');
         $userAdmin->setPlainPassword('qwerty');
         $userAdmin->setRoles(array('ROLE_SUPER_ADMIN'));
@@ -36,6 +38,8 @@ class LoadUserData extends AbstractFixture
         $userVolunteer = new User();
         $userVolunteer->setUsername('Волонтер');
         $userVolunteer->setFullname('Volunteer Jack');
+        $userVolunteer->setName('Jack');
+        $userVolunteer->setSurname('Volunteer');
         $userVolunteer->setEmail('volunteer@fwdays.com');
         $userVolunteer->setPlainPassword('qwerty');
         $userVolunteer->setRoles(array('ROLE_VOLUNTEER'));
@@ -48,6 +52,8 @@ class LoadUserData extends AbstractFixture
         $userDefault = new User();
         $userDefault->setUsername('Пользователь');
         $userDefault->setFullname('Michael Jordan');
+        $userDefault->setName('Michael');
+        $userDefault->setSurname('Jordan');
         $userDefault->setEmail('user@fwdays.com');
         $userDefault->setPlainPassword('qwerty');
         $userDefault->addRole('ROLE_USER');
@@ -64,6 +70,8 @@ class LoadUserData extends AbstractFixture
         $userDefault2 = new User();
         $userDefault2->setUsername('Pirate');
         $userDefault2->setFullname('Jack Sparrow');
+        $userDefault2->setName('Jack');
+        $userDefault2->setSurname('Sparrow');
         $userDefault2->setEmail('jack.sparrow@fwdays.com');
         $userDefault2->setPlainPassword('qwerty');
         $userDefault2->addRole('ROLE_USER');
@@ -80,6 +88,8 @@ class LoadUserData extends AbstractFixture
         $userDefault3 = new User();
         $userDefault3->setUsername('Spiderman');
         $userDefault3->setFullname('Peter Parker');
+        $userDefault3->setName('Peter');
+        $userDefault3->setSurname('Parker');
         $userDefault3->setEmail('peter.parker@fwdays.com');
         $userDefault3->setPlainPassword('qwerty');
         $userDefault3->addRole('ROLE_USER');
@@ -96,6 +106,8 @@ class LoadUserData extends AbstractFixture
         $userDefault4 = new User();
         $userDefault4->setUsername('Rasmus');
         $userDefault4->setFullname('Rasmus Lerdorf');
+        $userDefault4->setName('Rasmus');
+        $userDefault4->setSurname('Lerdorf');
         $userDefault4->setEmail('rasmus.lerdorf@fwdays.com');
         $userDefault4->setPlainPassword('qwerty');
         $userDefault4->addRole('ROLE_USER');
@@ -114,6 +126,8 @@ class LoadUserData extends AbstractFixture
             $userDefault = new User();
             $userDefault->setUsername('Пользователь ' . $i);
             $userDefault->setFullname('Default User ' . $i);
+            $userDefault->setName('User ' . $i);
+            $userDefault->setSurname('Default ' . $i);
             $userDefault->setEmail('user' . $i . '@fwdays.com');
             $userDefault->setPlainPassword('qwerty');
             $userDefault->addRole('ROLE_USER');

@@ -20,6 +20,7 @@ class CategoryAdmin extends Admin
             ->addIdentifier('id')
             ->add('name')
             ->add('sortOrder')
+            ->add('isWideContainer')
             ->add('_action', 'actions', [
                 'actions' => [
                     'edit'   => [],
@@ -46,6 +47,7 @@ class CategoryAdmin extends Admin
                         ],
                     ]
                 ])
+                ->add('isWideContainer')
                 ->add('sortOrder')
             ->end();
     }

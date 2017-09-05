@@ -32,12 +32,12 @@
 
     {# юзер записався на евент але евент ще не приймає оплату - на список власних евентів #}
     {% elseif ticket and not event.receivePayments %}
-        <a class="{{ class }}" href="{{ path('events_my') }}">
+        <a class="{{ class }}" href="{{ path('cabinet') }}">
             {{ 'ticket.status.event.add'|trans }}
         </a>
     {# юзер має оплачений евент але не має квитка (оплатив за інших) - на список власних евентів #}
     {% elseif (payment and payment.paid) %}
-        <a class="{{ class }}" href="{{ path('events_my') }}">
+        <a class="{{ class }}" href="{{ path('cabinet') }}">
             {{ 'ticket.status.paid'|trans }}
         </a>
     {# залогинений юзер і евент не приймає оплати - реестрація на евент (створення квитка) #}

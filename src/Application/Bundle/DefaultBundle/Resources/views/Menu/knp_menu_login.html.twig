@@ -1,0 +1,19 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block list %}
+   {{ block('children') }}
+{% endblock %}
+
+{% block item %}
+   {{ block('linkElement') }}
+{% endblock %}
+
+{% block linkElement %}
+     <a href="{{ item.uri }}"
+    {% if matcher.isCurrent(item) %}
+        class="header__auth header-nav__link--active">
+    {% else %}
+        class="header__auth">
+    {% endif %}
+         {{ block('label') }}</a>
+{% endblock %}

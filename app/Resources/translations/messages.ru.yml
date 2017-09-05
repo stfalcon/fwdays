@@ -1,4 +1,3 @@
-Logout: Выйти
 menu.events.my: Мои события
 menu.user.info: Личная информация
 menu.referral.title: Пригласи друзей
@@ -26,3 +25,18 @@ news.all: все новости
 news.title: Новости
 event.get_more_info: __event.get_more_info
 events.past: __events.past
+user.fullname.title: Ваше имя и фамилия
+user.name.title: Имя
+user.surname.title: Фамилия
+user.email.title: Электронная почта
+user.phone.title: Номер телефона
+user.country.title: Страна
+user.city.title: Город
+user.company.title: Компания
+user.company_post.title: Должность
+user.subscribe.title: Я согласен получать важные новости на e-mail
+user.refresh.title: Обновить
+user.password.title: Пароль
+user.forgot_password.title: Забыли пароль?
+user.show_password.title: показать пароль
+user.remember_me.title: Запомнить меня

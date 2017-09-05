@@ -2,11 +2,9 @@ Dashboard: __Dashboard
 parcipiant.list.all: __parcipiant.list.all
 parcipiant.speakers.title: __parcipiant.speakers.title
 parcipiant.title: __parcipiant.title
-rewiew.wonna.listen: __rewiew.wonna.listen
+review.wonna.listen: Wonna listen
 speaker.list.all: __speaker.list.all
-speaker.title: __speaker.title
-speaker.about: About speaker
-candidate.speaker.title: Candidates
+speaker.title: Speakers
 speaker.review.title: __speaker.review.title
 ticket.email.waitfornews: __ticket.email.waitfornews
 ticket.email.unsubscribe: __ticket.email.unsubscribe
