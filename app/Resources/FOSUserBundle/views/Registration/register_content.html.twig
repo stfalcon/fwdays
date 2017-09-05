@@ -12,37 +12,37 @@
     {% endif %}
 {% endblock %}
 
-<h2>Регистрация на сайте</h2>
+<h2>{{ 'menu.user.registration'|trans }}</h2>
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
     <div id="fos_user_registration_form">
         <div>
-            <label for="fos_user_registration_form_fullname" class="required">Ваше имя и фамилия</label>
+            <label for="fos_user_registration_form_fullname" class="required">{{ 'user.fullname.title'|trans }}</label>
             {{ form_widget(form.fullname, {'attr': {'required': 'required'}}) }}
             {{ form_errors(form.fullname) }}
         </div>
         <div>
-            <label for="fos_user_registration_form_email" class="required">Электронная почта</label>
+            <label for="fos_user_registration_form_email" class="required">{{ 'user.email.title'|trans }}</label>
             {{ form_widget(form.email) }}
             {{ form_errors(form.email) }}
         </div>
         <div>
-            <label for="fos_user_registration_form_plainPassword" class="required">Пароль</label>
+            <label for="fos_user_registration_form_plainPassword" class="required">{{ 'user.password.title'|trans }}</label>
             {{ form_widget(form.plainPassword) }}
             {{ form_errors(form.plainPassword) }}
-            <span class="eye" title="Показать пароль"></span>
+            <span class="eye" title="{{ 'user.show_password.title'|trans }}"></span>
         </div>
         <div class="wrap">
             <table>
                 <tr>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_company">Компания</label>
+                            <label for="fos_user_registration_form_company">{{ 'user.company.title'|trans }}</label>
                             {{ form_widget(form.company) }}
                         </div>
                     </td>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_post">Должность</label>
+                            <label for="fos_user_registration_form_post">{{ 'user.company_post.title'|trans }}</label>
                             {{ form_widget(form.post) }}
                         </div>
                     </td>
@@ -50,13 +50,13 @@
                 <tr>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_city">Город</label>
+                            <label for="fos_user_registration_form_city">{{ 'user.city.title'|trans }}</label>
                             {{ form_widget(form.city) }}
                         </div>
                     </td>
                     <td>
                         <div>
-                            <label for="fos_user_registration_form_country">Страна</label>
+                            <label for="fos_user_registration_form_country">{{ 'user.country.title'|trans }}</label>
                             {{ form_widget(form.country) }}
                         </div>
                     </td>
@@ -66,7 +66,8 @@
         <div>
             <label for="fos_user_registration_form_subscribe">
             {{ form_widget(form.subscribe) }}
-            Я хочу получать обновления новостей и событий на почту.</label>
+            {{ 'user.subscribe.title'|trans }}
+            </label>
         </div>
         {{ form_widget(form._token) }}
         <div class="g-recaptcha" data-sitekey="{{ captcha_site_key }}"></div>
