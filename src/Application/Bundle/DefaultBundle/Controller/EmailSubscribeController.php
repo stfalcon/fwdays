@@ -80,4 +80,36 @@ class EmailSubscribeController extends Controller
 
         return ['hash' => $hash, 'userId' => $userId];
     }
+
+    /**
+     * Open mail action.
+     *
+     * @param integer $userId
+     * @param string  $hash
+     * @param integer $mailId
+     *
+     * @return RedirectResponse
+     *
+     * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
+     */
+    public function actionTrackOpenMail($userId, $hash, $mailId = null)
+    {
+        if ($mailId) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var User $user */
+            $user = $em->getRepository('ApplicationUserBundle:User')
+                ->findOneBy(['id' => $userId, 'salt' => $hash]);
+
+            if ($user) {
+                /** @var MailQueue $mailQueue */
+                $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
+                if ($mailQueue && !$mailQueue->getIsOpen()) {
+                    $mailQueue->setIsOpen();
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl("homepage"));
+    }
 }

@@ -24,6 +24,8 @@ in.lang.link: In English
 ticket.status.event_done: Событие состоялось
 event.page.program: Програма
 event.page.venue: Місце проведення
+user.by_user.title: Війдіть як користувач
+user.by_email.title: Або по почті
 menu.profile.my: Профіль
 user.name.title: Імя
 user.surname.title: Прізвище
@@ -41,3 +43,6 @@ referral.program.conditions.title: Умови програмы
 referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
 referral.share.title: Поділитись
 referral.link.copied: Скопійовано
+popup.header.title: Оплата участі в конференції %event_name%
+cancel.title: Отмена
+add.title: Додати

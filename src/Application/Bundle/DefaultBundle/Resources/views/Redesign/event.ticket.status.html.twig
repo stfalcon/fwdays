@@ -21,15 +21,9 @@
         </a>
     {# не залогинений юзер і евент приймає оплати - логін і оплата #}
     {% elseif not user and event.receivePayments %}
-        <a class="{{ class }}" href="#modal-signin-payment">
+        <a class="{{ class }} set-modal-header" data-event="{{ event.slug }}" href="#modal-signin-payment">
             {{ 'ticket.status.pay'|trans }}
         </a>
-    {# не залогинений юзер і евент не приймає оплати - логін і реестрація на евент (створення квитка) #}
-    {% elseif not user and not event.receivePayments %}
-        <a class="{{ class }}" href="#modal-signin-payment">
-            {{ 'ticket.status.take_apart'|trans }}
-        </a>
-
     {# юзер записався на евент але евент ще не приймає оплату - на список власних евентів #}
     {% elseif ticket and not event.receivePayments %}
         <a class="{{ class }}" href="{{ path('cabinet') }}">
@@ -41,13 +35,17 @@
             {{ 'ticket.status.paid'|trans }}
         </a>
     {# залогинений юзер і евент не приймає оплати - реестрація на евент (створення квитка) #}
-    {% elseif not event.receivePayments %}
-        <a class="{{ class }}" href="#event-take-part">
+    {% elseif not event.receivePayments and (not user or not user.isEventInWants(event)) %}
+        <a class="{{ class }} set-modal-header add-wants-visit-event" data-event="{{ event.slug }}">
             {{ 'ticket.status.take_apart'|trans }}
         </a>
+    {% elseif not event.receivePayments and user.isEventInWants(event) %}
+        <a class="{{ class }} set-modal-header sub-wants-visit-event" data-event="{{ event.slug }}">
+            {{ 'ticket.status.not_take_apart'|trans }}
+        </a>
     {# залогинений юзер і евент приймає оплату - створити квиток і оплатити #}
-    {% elseif not payment %}
-        <a class="{{ class }}" href="#modal-payment">
+    {% elseif not payment or (payment and payment.isPending)%}
+        <a class="{{ class }} set-modal-header" data-event="{{ event.slug }}" href="#modal-payment">
             {{ 'ticket.status.pay'|trans }}
         </a>
     {% endif %}

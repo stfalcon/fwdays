@@ -1,0 +1,9 @@
+services:
+
+    user.login_entry_point:
+        class: Application\Bundle\UserBundle\EventListener\LoginEntryPoint
+        arguments: ["@jms_i18n_routing.router"]
+
+    user.handler.login_handler:
+            class: Application\Bundle\UserBundle\Handler\LoginHandler
+            arguments: ["@router", "%locales%", "@stfalcon_event.referral.service", "@stfalcon.user_manager" ]

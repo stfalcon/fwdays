@@ -189,6 +189,15 @@ class User extends BaseUser
     }
 
     /**
+     * @param Event $event
+     * @return bool
+     */
+    public function isEventInWants(Event $event)
+    {
+        return $this->wantsToVisitEvents->contains($event);
+    }
+
+    /**
      * @return string
      */
 

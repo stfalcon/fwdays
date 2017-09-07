@@ -22,7 +22,7 @@ sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш л�
 news.all: все новости
 news.title: __news.title
 event.get_more_info: __event.get_more_info
-events.past: __events.past
+events.past: Past events
 user.fullname.title: Your name and surname
 user.name.title: Name
 user.surname.title: Surname
@@ -36,5 +36,11 @@ user.subscribe.title: I agree to receive important news on e-mail
 user.refresh.title: Refresh
 user.password.title: Password
 user.forgot_password.title: Forgot password?
+user.reset_password.title: Reset password
 user.show_password.title: show password
 user.remember_me.title: Remember me
+pay.i_have_promo.title: I have promo-code
+pay.enter_promo.title: Enter promo code
+pay.sum.bold.title: 'Sum: <b>%sum% grn</b>'
+pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% grn</b>'
+pay.sum_for_pay.bold.title: 'For pay: <b>%sum% grn</b>'

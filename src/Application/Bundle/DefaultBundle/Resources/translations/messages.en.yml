@@ -25,6 +25,8 @@ ticket.status.event_done: Event done
 event.page.program: Program
 event.page.venue: Venue
 menu.profile.my: Profile
+user.by_user.title: Enter as user
+user.by_email.title: Or by mail
 user.name.title: Name
 user.surname.title: Surname
 user.email.title: Email
@@ -41,3 +43,6 @@ referral.program.conditions.title: Program conditions
 referral.program.conditions.text: __referral.program.conditions.text
 referral.share.title: Share
 referral.link.copied: Copied
+popup.header.title: Pay for event %event_name%
+cancel.title: Cancel
+add.title: Add

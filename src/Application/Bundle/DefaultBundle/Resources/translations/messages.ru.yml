@@ -25,6 +25,8 @@ ticket.status.event_done: Событие состоялось
 event.page.program: Програма
 event.page.venue: Место проведения
 menu.profile.my: Профиль
+user.by_user.title: Войдите как пользователь
+user.by_email.title: Или по почте
 user.name.title: Имя
 user.surname.title: Фамилия
 user.email.title: Электронная почта
@@ -41,3 +43,6 @@ referral.program.conditions.title: Условия программы
 referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
 referral.share.title: Поделиться
 referral.link.copied: Скопировано
+popup.header.title: Оплата участия в конференции %event_name%
+cancel.title: Отмена
+add.title: Додати

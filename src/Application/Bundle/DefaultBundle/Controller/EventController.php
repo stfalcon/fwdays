@@ -2,13 +2,18 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Application event controller
@@ -150,28 +155,6 @@ class EventController extends Controller
     }
 
     /**
-     * Get event entity by slug
-     *
-     * @param string $slug
-     * @throw \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return Event
-     */
-    public function getEventBySlug($slug)
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
-
-        if (!$event) {
-            throw $this->createNotFoundException('Unable to find Event by slug: '.$slug);
-        }
-
-        $this->setEventToContainer($event);
-
-        return $event;
-    }
-
-    /**
      * Lists all speakers for event
      *
      * @param Event $event
@@ -261,6 +244,139 @@ class EventController extends Controller
     public function switchAction()
     {
         return ['events' => $this->_getActiveEvents()];
+    }
+
+    /**
+     * @Route(path="/get_modal_header/{slug}", name="get_modal_header",
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     * @param $slug
+     * @return JsonResponse
+     */
+    public function getModalHeaderAction($slug)
+    {
+        $event = $this->getEventBySlug($slug);
+        if (!$event) {
+            return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
+        }
+
+        $html = $this->get('translator')->trans('popup.header.title', ['%event_name%' => $event->getName()]);
+
+        return new JsonResponse(['result' => true, 'error' => '', 'html' => $html]);
+    }
+    /**
+     * Юзер бажає відвідати подію
+     *
+     * @Route(path="/addwantstovisitevent/{slug}", name="add_wants_to_visit_event",
+     *     options = {"expose"=true})
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param string $slug
+     * @param Request $request
+     *
+     * @return JsonResponse|Response
+     */
+    public function userAddWantsToVisitEventAction($slug, Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $result = false;
+        $html = '';
+        $em = $this->getDoctrine()->getManager();
+        $event = $this->getEventBySlug($slug);
+
+        if (!$event) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: ' . $slug]);
+            } else {
+                return $this->createNotFoundException('Unable to find Event by slug: ' . $slug);
+            }
+        }
+
+        $result = false;
+
+        if ($event->isActiveAndFuture()) {
+            $result = $user->addWantsToVisitEvents($event);
+            $error = $result ? '' : 'cant remove event '.$slug;
+        } else {
+            $error = 'Event not active!';
+        }
+
+        if ($result) {
+            $html = $this->get('translator')->trans('ticket.status.not_take_apart');
+            $em->flush();
+        }
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
+        } else {
+            $url = $request->headers->has('referer') ? $request->headers->get('referer')
+                : $this->generateUrl('homepage_redesign');
+
+            return $this->redirect($url);
+        }
+    }
+
+    /**
+     * Юзер вже не бажає відвідати подію
+     *
+     * @Route("/subwantstovisitevent/{slug}", name="sub_wants_to_visit_event",
+     *     methods={"POST"},
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param string $slug
+     *
+     * @return JsonResponse
+     */
+    public function userSubWantsToVisitEventAction($slug)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $result = false;
+        $html = '';
+        $em = $this->getDoctrine()->getManager();
+        $event = $this->getEventBySlug($slug);
+
+        if (!$event) {
+            return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
+        }
+
+        if ($event->isActiveAndFuture()) {
+            $result = $user->subtractWantsToVisitEvents($event);
+            $error = $result ? '' : 'cant remove event '.$slug;
+        } else {
+            $error = 'Event not active!';
+        }
+
+        if ($result) {
+            $html = $this->get('translator')->trans('ticket.status.take_apart');
+            $em->flush();
+        }
+
+        return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
+    }
+
+    /**
+     * Get event entity by slug
+     *
+     * @param string $slug
+     * @throw \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Event
+     */
+    private function getEventBySlug($slug)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+
+        if (!$event) {
+            throw $this->createNotFoundException('Unable to find Event by slug: '.$slug);
+        }
+
+        $this->setEventToContainer($event);
+
+        return $event;
     }
 
     /**

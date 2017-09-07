@@ -26,7 +26,7 @@ class TicketController  extends Controller
         /** @var Payment $payment */
         $payment = null;
         /* @var  User $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         if ($user instanceof User) {
             $payment = $this->container->get('doctrine.orm.default_entity_manager')
                 ->getRepository('StfalconEventBundle:Payment')

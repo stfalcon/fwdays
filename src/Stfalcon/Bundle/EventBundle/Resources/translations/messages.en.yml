@@ -40,6 +40,7 @@ ticket.status.pay: __ticket.status.pay
 ticket.status.event.add: __ticket.status.event.add
 ticket.status.paid: __ticket.status.paid
 ticket.status.take_apart: __ticket.status.take_apart
+ticket.status.not_take_apart : Remove visit
 referral.invaite.title: __referral.invaite.title
 referral.invaite.title2: __referral.invaite.title2
 referral.invaite.text1: __referral.invaite.text1

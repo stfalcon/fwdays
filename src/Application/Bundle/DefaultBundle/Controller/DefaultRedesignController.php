@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class DefaultRedesignController extends Controller
 {
     /**
-     * @Route("/", name="homepage_redesign")
+     * @Route("/", name="homepage_redesign",
+     *     options = {"expose"=true})
      * @Template("ApplicationDefaultBundle:Redesign:index.html.twig")
      */
     public function indexAction()
@@ -55,81 +56,6 @@ class DefaultRedesignController extends Controller
     }
 
     /**
-     * Юзер бажає відвідати подію
-     *
-     * @Route(path="/addwantstovisitevent", name="add_wants_to_visit_event",
-     *     methods={"POST"},
-     *     options = {"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param string $slug
-     *
-     * @return JsonResponse
-     */
-    public function userAddWantsToVisitEventAction($slug)
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $result = false;
-        $message = '';
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
-
-        if (!$event) {
-            return new JsonResponse(['result' => $result, 'message' => 'Unable to find Event by slug: '.$slug]);
-        }
-
-        $result = false;
-
-        if ($event->isActiveAndFuture()) {
-            $result = $user->addWantsToVisitEvents($event);
-        } else {
-            $message = 'Event not active!';
-        }
-
-        $em->flush();
-
-        return new JsonResponse(['result' => $result, 'message' => $message]);
-    }
-
-    /**
-     * Юзер вже не бажає відвідати подію
-     *
-     * @Route("/subwantstovisitevent", name="sub_wants_to_visit_event",
-     *     methods={"POST"},
-     *     options = {"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @param string $slug
-     *
-     * @return JsonResponse
-     */
-    public function userSubWantsToVisitEventAction($slug)
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $result = false;
-        $message = '';
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
-
-        if (!$event) {
-            return new JsonResponse(['result' => $result, 'message' => 'Unable to find Event by slug: '.$slug]);
-        }
-
-        if ($event->isActiveAndFuture()) {
-            $result = $user->subtractWantsToVisitEvents($event);
-        } else {
-            $message = 'Event not active!';
-        }
-        $em->flush();
-
-        return new JsonResponse(['result' => $result, 'message' => $message]);
-    }
-
-    /**
      * @Route("/contacts", name="contacts")
      * @Template("ApplicationDefaultBundle:Redesign:contacts.html.twig")
      */
@@ -145,5 +71,10 @@ class DefaultRedesignController extends Controller
     public function pageAction(Page $staticPage)
     {
         return ['text' => $staticPage->getText()];
+    }
+
+    public function payAction()
+    {
+
     }
 }

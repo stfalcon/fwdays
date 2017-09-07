@@ -20,11 +20,10 @@ sponsor.partners.call_us: <a href="/page/contacts">Свяжитесь</a> с н�
 event.get_more_info: Узнать больше
 sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
 events.future: Будущие события
-events.past: Прошедшие события
+events.past: events.past
 news.all: все новости
 news.title: Новости
 event.get_more_info: __event.get_more_info
-events.past: __events.past
 user.fullname.title: Ваше имя и фамилия
 user.name.title: Имя
 user.surname.title: Фамилия
@@ -38,5 +37,11 @@ user.subscribe.title: Я согласен получать важные ново
 user.refresh.title: Обновить
 user.password.title: Пароль
 user.forgot_password.title: Забыли пароль?
+user.reset_password.title: Сбросить пароль
 user.show_password.title: показать пароль
 user.remember_me.title: Запомнить меня
+pay.i_have_promo.title: У меня есть промокод
+pay.enter_promo.title: Введите промокод для получения скидки&nbsp;&nbsp;
+pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
+pay.bonus.bold.title: 'Ваши бонусы fwdays: <b>%sum% грн</b>'
+pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'

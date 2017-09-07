@@ -22,7 +22,7 @@ sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш л�
 news.all: все новости
 news.title: __news.title
 event.get_more_info: __event.get_more_info
-events.past: __events.past
+events.past: Минулі події
 user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Імя
 user.surname.title: Прізвище
@@ -36,5 +36,11 @@ user.subscribe.title: Я згоден отримувати важливі нов
 user.refresh.title: Оновити
 user.password.title: Пароль
 user.forgot_password.title: Забули пароль?
+user.reset_password.title: Скинути пароль
 user.show_password.title: показати пароль
 user.remember_me.title: Запомнити мене
+pay.i_have_promo.title: У мени є промокод
+pay.enter_promo.title: Введите промокод для получения скидки&nbsp;&nbsp;
+pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
+pay.bonus.bold.title: 'Ваші бонусы fwdays: <b>%sum% грн</b>'
+pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'

@@ -41,7 +41,8 @@ ticket.status.download: Скачать билет
 ticket.status.pay: Оплатить участие
 ticket.status.event.add: Событие добавлено
 ticket.status.paid: Участие оплачено
-ticket.status.take_apart: Принять участие
+ticket.status.take_apart: Зарегистрироваться
+ticket.status.not_take_apart : Отписаться от посещения
 referral.invaite.title: Пригласи друзей
 referral.invaite.title2: Приглашайте друзей и накапливайте бонусы!
 referral.invaite.text1: Приглашайте друзей на конференцию <b>PM fwdays'17</b> и получайте по 100 ₴ за каждую покупку билета! Накапливайте бонусы и используйте их при покупке билетов на наши мероприятия.

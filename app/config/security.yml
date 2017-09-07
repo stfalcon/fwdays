@@ -15,7 +15,9 @@ security:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
                 remember_me: true
-                use_referer:    true
+                use_referer: true
+                success_handler: user.handler.login_handler
+            entry_point: user.login_entry_point
             remember_me:
                 key: %secret%
                 lifetime: 31536000 # 365 days in seconds
@@ -29,6 +31,8 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/addwantstovisitevent/, role: ROLE_USER }
+        - { path: ^/subwantstovisitevent/, role: ROLE_USER }
 
     role_hierarchy:
         ROLE_VOLUNTEER:   ROLE_USER

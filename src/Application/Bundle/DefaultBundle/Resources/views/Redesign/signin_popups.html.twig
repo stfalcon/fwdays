@@ -1,28 +1,14 @@
-<!--BEGIN signin-popup-->
+<!--BEGIN signin-popup ЛОГИН-->
 <div class="remodal remodal--md" data-remodal-id="modal-signin">
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">Вход</h2>
+            <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
         </div>
         <form action="{{ url("fos_user_security_check") }}" method="post">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-            <div class="login-social-buttons">
-                <div class="form-hint">Войдите как пользователь</div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <a href="#" class="btn btn--lg btn--facebook form-col__btn">
-                            <i class="icon-login-facebook"></i>
-                        </a>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <a href="#" class="btn btn--lg btn--google form-col__btn">
-                            <i class="icon-login-google"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="form-hint">Или по почте</div>
+            {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' %}
+            <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
@@ -45,7 +31,7 @@
             </div>
             <div class="form-row form-row--align-center">
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Войти</button>
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'menu.login'|trans }}</button>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="help-links">
@@ -59,30 +45,16 @@
 </div>
 <!--END signin-popup-->
 
-<!--BEGIN signin-payment-popup-->
+<!--BEGIN signin-payment-popup УДАЛИТЬ -->
 <div class="remodal remodal--md" data-remodal-id="modal-signin-payment">
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">Оплата участия в конференции PHP&nbsp;fwdays '17</h2>
+            <h2 class="h2 remodal__title">***</h2>
         </div>
         <form action="">
-            <div class="login-social-buttons">
-                <div class="form-hint">Войдите как пользователь</div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <a href="#" class="btn btn--lg btn--facebook form-col__btn">
-                            <i class="icon-login-facebook"></i>
-                        </a>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <a href="#" class="btn btn--lg btn--google form-col__btn">
-                            <i class="icon-login-google"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="form-hint">Или по почте</div>
+            {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' %}
+            <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
             <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
@@ -119,12 +91,12 @@
 </div>
 <!--END signin-payment-popup-->
 
-<!--BEGIN signup-payment-popup-->
+<!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
 <div class="remodal remodal--md" data-remodal-id="modal-signup-payment">
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">Оплата участия в конференции PHP&nbsp;fwdays '17</h2>
+            <h2 class="h2 remodal__title">***</h2>
         </div>
         <form action="{{ path('fos_user_registration_register') }}" method="POST">
             <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="{{csrf_token('registration')}}"/>
@@ -194,16 +166,16 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</h2>
         </div>
-        <form action="">
+        <form action="{{ url("fos_user_resetting_send_email") }}" method="post">
             <div class="form-row form-row--align-bottom">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
-                        <label class="form-label" for="">Ваша электронная почта</label>
-                        <input class="input" type="email" value="">
+                        <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
+                        <input class="input" type="email" name="username" value="">
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Сбросить пароль</button>
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.reset_password.title'|trans }}</button>
                 </div>
             </div>
         </form>
@@ -216,106 +188,10 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head remodal__head--payment">
-            <h2 class="h2 remodal__title">Оплата участия в&nbsp;конференции PHP&nbsp;fwdays '17</h2>
+            <h2 class="h2 remodal__title">***</h2>
         </div>
-        <form action="">
-            <div class="user-payment">
-                <button class="icon-circle-close user-payment__remove"></button>
-                <div class="user-payment__left">
-                    <div class="user-payment__name">Константинопольский Костя</div>
-                    <div class="user-payment__email">johndoe@gmail.com</div>
-                </div>
-                <div class="user-payment__right">
-                    <div class="user-payment__price">1900 грн</div>
-                </div>
-            </div>
-            <div class="user-payment">
-                <button class="icon-circle-close user-payment__remove"></button>
-                <div class="user-payment__left">
-                    <div class="user-payment__name">Петров Андрей</div>
-                    <div class="user-payment__email">andrew_petrov@yahoo.com</div>
-                </div>
-                <div class="user-payment__right">
-                    <div class="user-payment__price">
-                        <span class="user-payment__price-strike">1900 грн</span>1520 грн
-                    </div>
-                    <div class="user-payment__discount">скидка 20% для постоянного участника</div>
-                </div>
-            </div>
-            <div id="payment-add-user" class="form-add">
-                <div class="form-add__hint">
-                    Укажите как зовут участника и куда высылать билет&nbsp;&nbsp;<a id="cancel-add-user" href="#"
-                                                                                    class="btn-link">Отмена</a>
-                </div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="">Имя</label>
-                            <input class="input" type="text" value="">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--col-6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="">Фамилия</label>
-                            <input class="input" type="text" value="">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row form-row--align-bottom">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="">Электронная почта</label>
-                            <input class="input" type="email" value="">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <button class="btn btn--secondary btn--md form-col__btn">Добавить</button>
-                    </div>
-                </div>
-            </div>
-            <div id="add-promo-code" class="form-add">
-                <div class="form-add__hint">
-                    Введите промокод для получения скидки&nbsp;&nbsp;<a id="cancel-promo-code" href="#"
-                                                                        class="btn-link">Отмена</a>
-                </div>
-                <div class="form-row form-row--align-bottom">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="">Промокод</label>
-                            <input class="input" type="text" value="">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <button class="btn btn--secondary btn--md form-col__btn">Добавить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="payment-info">
-                <div class="payment-info__left">
-                    <div class="payment-info__btn-link">
-                        <a id="add-user-trigger" href="#" class="btn-link">Добавить участника</a>
-                    </div>
-                    <div class="payment-info__btn-link">
-                        <a id="promo-code-trigger" href="#" class="btn-link">У меня есть промокод</a>
-                    </div>
-                </div>
-                <div class="payment-info__right">
-                    <div class="payment-info__total">Сума: <b>3420 грн</b></div>
-                    <div class="payment-info__total">Ваши бонусы fwdays: <b>300 грн</b></div>
-                    <div class="payment-info__total">К оплате: <b>1600 грн</b></div>
-                </div>
-            </div>
-            <div class="form-row form-row--align-bottom">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label" for="">Контактный номер телефона</label>
-                        <input class="input mask-phone-input--js" type="tel" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Оплатить участие</button>
-                </div>
-            </div>
+        <form id="pay-form" action="https://sci.interkassa.com/" method="post" accept-charset="UTF-8">
+            <!-- render html -->
         </form>
     </div>
 </div>
