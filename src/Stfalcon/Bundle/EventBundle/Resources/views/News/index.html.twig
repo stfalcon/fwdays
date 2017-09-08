@@ -1,16 +1,13 @@
-{% extends 'StfalconEventBundle::layout.html.twig' %}
+{% extends '::layout.html.twig' %}
 
-{% block title %}Новости и анонсы / {{ parent() }}{% endblock %}
+{% block title %}{{ 'news_and_anonce.title'|trans }} / {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>Новости и анонсы</h2>
+    <h2>{{ 'news_and_anonce.title'|trans }}</h2>
 
     <div class="news-list">
         {% for one_news in news %}
-            {% include 'StfalconEventBundle:News:_one-news-preview.html.twig' with {'one_news': one_news} %}
+            {% include '@StfalconEvent/News/_one-news-preview.html.twig' with {'one_news': one_news} %}
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block event_news_widget %}
 {% endblock %}

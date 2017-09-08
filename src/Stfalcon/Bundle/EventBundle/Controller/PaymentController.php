@@ -198,4 +198,5 @@ class PaymentController extends BaseController
 
         return $this->redirect($this->generateUrl('event_pay', ['event_slug' => $event->getSlug()]));
     }
+
 }

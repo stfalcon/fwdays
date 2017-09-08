@@ -4,9 +4,9 @@ namespace Application\Bundle\DefaultBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Knp\Menu\Util\MenuManipulator;
+use Symfony\Component\Translation\Translator;
 
 /**
  * MenuBuilder Class
@@ -18,12 +18,18 @@ class MenuBuilder
      */
     private $factory;
 
+    private $translator;
+    private $locales;
     /**
      * @param \Knp\Menu\FactoryInterface $factory
+     * @param Translator $translator
+     * @param $locales
      */
-    public function __construct(FactoryInterface $factory)
+    public function __construct(FactoryInterface $factory, $translator, $locales)
     {
         $this->factory = $factory;
+        $this->translator = $translator;
+        $this->locales = $locales;
     }
 
     /**
@@ -40,16 +46,21 @@ class MenuBuilder
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'nav');
 
-        $menuManipulator = new MenuManipulator();
+        $homepages = [];
+        foreach ($this->locales as $locale) {
+            $homepages[] = '/'.$locale.'/';
+        }
+        $homepages[] = '/';
 
-        if ($request->getPathInfo() != '/') {
-            $item = $menu->addChild('← На главную', array('route' => 'homepage'));
+        $menuManipulator = new MenuManipulator();
+        if (!in_array($request->getPathInfo(), $homepages)) {
+            $item = $menu->addChild($this->translator->trans('main.menu.go_head'), array('route' => 'homepage'));
             $menuManipulator->moveToFirstPosition($item);
         }
-        $menu->addChild('О Frameworks Days', array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
-        $menu->addChild('События', array('route' => 'events'));
-        $menu->addChild('Контакты', array('route' => 'page_show', 'routeParameters' => array('slug' => 'contacts')));
-        $menu->addChild('Партнеры', array('route' => 'partners_page'));
+        $menu->addChild($this->translator->trans('main.menu.about'), array('route' => 'page_show', 'routeParameters' => array('slug' => 'about')));
+        $menu->addChild($this->translator->trans('main.menu.events'), array('route' => 'events'));
+        $menu->addChild($this->translator->trans('main.menu.contacts'), array('route' => 'page_show', 'routeParameters' => array('slug' => 'contacts')));
+        $menu->addChild($this->translator->trans('main.menu.partners'), array('route' => 'partners_page'));
 
         return $menu;
     }
@@ -68,14 +79,14 @@ class MenuBuilder
 
         $menu->setUri($request->getRequestUri());
 
-        $menu->addChild("О событии", array('route' => 'event_show', 'routeParameters' => array('event_slug' => $event->getSlug())));
+        $menu->addChild($this->translator->trans('main.menu.about_event'), array('route' => 'event_show', 'routeParameters' => array('event_slug' => $event->getSlug())));
 
         if ($event->getSpeakers()) {
-            $menu->addChild("Докладчики", array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
+            $menu->addChild($this->translator->trans('main.menu.speakers'), array('route' => 'event_speakers', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
         if ($event->getTickets()) {
-            $menu->addChild("Участники", array('route' => 'event_participants', 'routeParameters' => array('event_slug' => $event->getSlug())));
+            $menu->addChild($this->translator->trans('main.menu.participants'), array('route' => 'event_participants', 'routeParameters' => array('event_slug' => $event->getSlug())));
         }
 
         // ссылки на страницы ивента

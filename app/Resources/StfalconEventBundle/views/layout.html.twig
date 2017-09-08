@@ -29,18 +29,18 @@
 
 {% block sidebar_left %}
     {% block event_speakers_widget %}
-        <h2>Докладчики</h2>
+        <h2>{{ 'speaker.title'|trans }}</h2>
         {% render controller("StfalconEventBundle:Speaker:widget", { 'event': event, 'count': 3 }) %}
 
         {% if event.active == true %}
-            <h2>Участники</h2>
+            <h2>{{ 'parcipiant.title'|trans }}</h2>
             {% render controller("StfalconEventBundle:Participant:widget", { 'event': event, 'count': 9 }) %}
         {% endif %}
     {% endblock %}
 
     {% block event_news_widget %}
-        <h2>Новости</h2>
-        {% render controller("StfalconEventBundle:News:widget", { 'event': event, 'count': 7 }) %}
+        <h2>{{ 'news.title'|trans }}</h2>
+        {% render controller("StfalconEventBundle:EventNews:widget", { 'event': event, 'count': 7 }) %}
     {% endblock %}
 
 {% endblock %}

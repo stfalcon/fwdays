@@ -132,6 +132,7 @@ class TicketAdmin extends Admin
                 ]
             )
             ->add('payment')
+            ->add('used')
         ;
     }
 }

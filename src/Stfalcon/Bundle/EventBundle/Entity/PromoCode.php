@@ -2,17 +2,32 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Gedmo\Translatable\Translatable;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\PromoCode
  *
  * @ORM\Table(name="event__promo_code")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PromoCodeRepository")
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation")
  */
 class PromoCode
 {
+    use Translate;
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
+
     /**
      * @var integer
      *
@@ -26,6 +41,7 @@ class PromoCode
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Gedmo\Translatable(fallback=true)
      * @Assert\NotBlank()
      */
     protected $title = '';
@@ -66,6 +82,7 @@ class PromoCode
         $this->code = substr(strtoupper(md5(uniqid())), 0, 10);
         $this->discountAmount = 10;
         $this->endDate = new \DateTime('+10 days');
+        $this->translations = new ArrayCollection();
     }
 
     /**

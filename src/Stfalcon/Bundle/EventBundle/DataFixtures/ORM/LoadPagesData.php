@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
 
-use Stfalcon\Bundle\EventBundle\Entity\Page;
+use Stfalcon\Bundle\EventBundle\Entity\EventPage;
 
 /**
  * LoadPagesData Class
@@ -30,7 +30,7 @@ class LoadPagesData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $page = new Page();
+        $page = new EventPage();
         $page->setTitle('Страница события');
         $page->setSlug('eventPage');
         $page->setText('<p>Текст страницы</p>');

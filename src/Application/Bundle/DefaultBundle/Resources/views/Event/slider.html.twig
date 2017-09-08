@@ -15,7 +15,7 @@
                 {% render controller('StfalconEventBundle:Ticket:status', { 'event': event }) %}
 
                 <div class="status">
-                    <a href="{{ path('event_show', {'event_slug': event.slug }) }}">Узнать больше</a>
+                    <a href="{{ path('event_show', {'event_slug': event.slug }) }}">{{ 'event.get_more_info'|trans }}</a>
                 </div>
             </div>
         </div>
