@@ -48,6 +48,10 @@ class PaymentController extends BaseController
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
 
+        if (!$ticket && !$payment) {
+            $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+        }
+
         if ($ticket && !$payment = $ticket->getPayment()) {
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
         }
