@@ -132,121 +132,20 @@ class Payment
 
     /**
      * @param Ticket $ticket
+     * @return bool
      */
     public function addTicket(Ticket $ticket)
     {
-        if (!$this->tickets->contains($ticket)) {
-            if (!$ticket->isPaid()) {
-                $this->amount += $ticket->getAmount();
-                $this->baseAmount += $ticket->getAmount();
-            }
-
-            $ticket->setPayment($this);
-            $this->tickets->add($ticket);
-        }
-    }
-
-    /**
-     * Add promo code for all tickets in payment
-     * if ticket already not have discount and
-     * recalculate payment amount
-     *
-     * @param PromoCode $promoCode
-     * @param int       $baseDiscount
-     *
-     * @return array
-     */
-    public function addPromoCodeForTickets($promoCode, $baseDiscount)
-    {
-        $notUsedPromoCode = array();
-        foreach ($this->tickets as $ticket) {
-            if (!$ticket->getHasDiscount()) {
-                $ticket->setPromoCode($promoCode);
-            } elseif ($ticket->getHasDiscount() &&
-                !$ticket->hasPromoCode() &&
-                ($promoCode->getDiscountAmount() > $baseDiscount)
-            ) {
-                $ticket->setPromoCode($promoCode);
-            } else {
-                $notUsedPromoCode[] = $ticket->getUser()->getFullname();
-            }
-        }
-        $this->recalculateAmount();
-
-        return $notUsedPromoCode;
-    }
-
-    /**
-     * Recalculate amount of payment
-     */
-    public function recalculateAmount()
-    {
-        $this->amount = 0;
-        foreach ($this->tickets as $ticket) {
-            $this->amount += $ticket->getAmount();
-        }
+        return !$this->tickets->contains($ticket) && $this->tickets->add($ticket);
     }
 
     /**
      * @param Ticket $ticket
+     * @return false
      */
     public function removeTicket(Ticket $ticket)
     {
-        if ($this->tickets->contains($ticket)) {
-            if (!$ticket->isPaid()) {
-                $this->amount -= $ticket->getAmount();
-            }
-            $ticket->setPayment(null);
-            $this->tickets->removeElement($ticket);
-        }
-    }
-
-    /**
-     * @param Ticket $ticket
-     */
-    public function removePaidTicket(Ticket $ticket)
-    {
-        if ($this->tickets->contains($ticket)) {
-            if ($ticket->isPaid()) {
-                $this->amount -= $ticket->getAmount();
-            }
-            $ticket->setPayment(null);
-            $this->tickets->removeElement($ticket);
-        }
-    }
-
-    /**
-     * Get promo code from tickets if it have
-     *
-     * @return null|PromoCode
-     */
-    public function getPromoCodeFromTickets()
-    {
-        $promoCode = null;
-        foreach ($this->tickets as $ticket) {
-            if ($promoCode = $ticket->getPromoCode()) {
-                return $promoCode;
-            }
-        }
-
-        return $promoCode;
-    }
-
-    /**
-     * Get ticket number for payment
-     *
-     * @return int|void
-     */
-    public function getTicketNumber()
-    {
-        /** @var ArrayCollection $tickets */
-        $tickets = $this->getTickets();
-
-        if (!$tickets->isEmpty()) {
-            return $tickets->first()->getId();
-        }
-
-        return ;
+        return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
     }
 
     /**

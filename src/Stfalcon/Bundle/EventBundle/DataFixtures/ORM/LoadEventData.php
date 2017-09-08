@@ -81,6 +81,22 @@ class LoadEventData extends AbstractFixture
         $manager->persist($event);
         $this->addReference('event-javascript-day', $event);
 
+        $event = new Event();
+        $event->setName('PHP Day');
+        $event->setSlug('php-day-2017');
+        $event->setDescription('test description');
+        $event->setLogoFile($this->_generateUploadedFile('zend-framework-day.png'));
+        $event->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'));
+        $event->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'));
+        $event->setCity('Киев');
+        $event->setPlace('отель "Казацкий"');
+        $event->setAbout('Описание события');
+        $event->setDate(new \DateTime('2017-04-19', new \DateTimeZone('Europe/Kiev')));
+        $event->setReceivePayments(true);
+        $event->setCost(1000);
+        $manager->persist($event);
+        $this->addReference('event-phpday2017', $event);
+
         $manager->flush();
     }
 
