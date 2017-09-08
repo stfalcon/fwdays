@@ -37,13 +37,23 @@ class PaymentController extends BaseController
         }
 
         /* @var $ticket Ticket */
-        $ticket = $this->container->get('stfalcon_event.ticket.service')
+        $ticket = $this->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
 
         $paymentService = $this->get('stfalcon_event.payment.service');
 
-        if (!$payment = $ticket->getPayment()) {
+        $user = $this->getUser();
+
+        /** @var Payment $payment */
+        $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
+            ->findPaymentByUserAndEvent($user, $event);
+
+        if ($ticket && !$payment = $ticket->getPayment()) {
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
+        }
+
+        if (!$payment) {
+            $this->createNotFoundException('Payment not found!');
         }
 
         if ($payment->isPaid()) {
