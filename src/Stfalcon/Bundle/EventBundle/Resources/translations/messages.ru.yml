@@ -39,6 +39,7 @@ ticket.print.ticket.text2: 'С нетерпением ждем встречи!'
 ticket.print.ticket.text3: С уважением,<br> Организаторы %event_name%
 ticket.status.download: Скачать билет
 ticket.status.pay: Оплатить участие
+ticket.status.pay_for: Купить за
 ticket.status.event.add: Событие добавлено
 ticket.status.paid: Участие оплачено
 ticket.status.take_apart: Зарегистрироваться

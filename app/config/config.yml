@@ -1,6 +1,6 @@
 imports:
     - { resource: parameters.ini }
-    - { resource: @ApplicationUserBundle/Resources/config/services.yml }
+    - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
 

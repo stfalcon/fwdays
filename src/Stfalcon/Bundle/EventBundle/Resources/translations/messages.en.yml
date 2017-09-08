@@ -37,6 +37,7 @@ ticket.print.ticket.text2: __ticke.print.ticket.text2
 ticket.print.ticket.text3: __ticke.print.ticket.text3
 ticket.status.download: __ticket.status.download
 ticket.status.pay: __ticket.status.pay
+ticket.status.pay_for: Buy ticket for
 ticket.status.event.add: __ticket.status.event.add
 ticket.status.paid: __ticket.status.paid
 ticket.status.take_apart: __ticket.status.take_apart

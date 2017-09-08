@@ -72,9 +72,4 @@ class DefaultRedesignController extends Controller
     {
         return ['text' => $staticPage->getText()];
     }
-
-    public function payAction()
-    {
-
-    }
 }

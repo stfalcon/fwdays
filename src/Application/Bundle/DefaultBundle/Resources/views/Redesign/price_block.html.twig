@@ -1,0 +1,25 @@
+{% if currentPrice > ticket.amount %}
+<div class="cost cost--last price-list__item">
+    <div class="cost__type">{{ ticket.name }}</div>
+    <div class="cost__tickets">
+        <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.soldCount}) }}</span>
+        <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
+    </div>
+    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }} <span class="cost__dollars">≈$00</span></div>
+</div>
+{% elseif currentPrice < ticket.amount %}
+<div class="cost price-list__item">
+    <div class="cost__type">{{ ticket.name }}</div>
+    <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count}) }}</div>
+    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }} <span class="cost__dollars">≈$00</span></div>
+</div>
+{% else %}
+<div class="cost cost--active price-list__item">
+    <div class="cost__type">{{ ticket.name }}</div>
+    <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count}) }}</div>
+    <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }} <span class="cost__dollars">≈$00</span></div>
+    <a class="btn btn--primary btn--lg cost__buy set-modal-header get-payment">{{ 'ticket.status.pay_for'|trans }} {{ 'payment.price'|trans({'%summ%':ticket.amount}) }} <span
+                    class="cost__dollars">≈$00</span></a>
+    <a class="btn btn--primary btn--lg cost__buy cost__buy--mob set-modal-header get-payment">{{ 'ticket.status.pay'|trans }}</a>
+</div>
+{% endif %}

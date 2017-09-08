@@ -52,7 +52,9 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
          */
         $user = $this->createUser();
         $user->setEmail($participant['email']);
-        $user->setFullname($participant['name']);
+        $user->setName($participant['name']);
+        $user->setSurName($participant['surname']);
+        $user->setFullname($participant['surname'].' '.$participant['name']);
 
         //Generate a temporary password
         $plainPassword = substr(md5(uniqid(mt_rand(), true) . time()), 0, 8);

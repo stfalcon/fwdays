@@ -1,5 +1,4 @@
 services:
-
     user.login_entry_point:
         class: Application\Bundle\UserBundle\EventListener\LoginEntryPoint
         arguments: ["@jms_i18n_routing.router"]

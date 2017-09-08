@@ -1,0 +1,15 @@
+{% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
+
+{% block content %}
+    {% if error %}
+        <div class="error-msg-block"><p>{{ error|trans({}, 'FOSUserBundle') }}</p></div>
+    {% endif %}
+<div>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' %}
+    </div>
+</div>
+{% endblock content %}

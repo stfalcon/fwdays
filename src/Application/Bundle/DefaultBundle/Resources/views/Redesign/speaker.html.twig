@@ -1,7 +1,7 @@
 {% for speaker in speakers %}
 <li class="speakers__item speaker-card">
     <div class="speaker-card__box">
-        <a href="#modal-speaker" data-content-event="{{ event.slug }}" data-content-speaker="{{ speaker.slug }}" class="speaker-card__top">
+        <a data-event="{{ event.slug }}" data-speaker="{{ speaker.slug }}" class="speaker-card__top">
             <img class="speaker-card__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
             <span class="speaker-card__name">{{ speaker.name }}</span>
             <span class="speaker-card__position">{{ speaker.company }}</span>

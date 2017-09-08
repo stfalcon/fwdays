@@ -24,38 +24,7 @@
     {% endif %}
     <!--END program-->
 
-    <!--BEGIN price-list-->
-    <section id="price-event" class="price-list">
-        <div class="container container--sm">
-            <h2 class="h2 price-list__title">Стоимость участия</h2>
-            <div class="price-list__items">
-                <div class="cost cost--last price-list__item">
-                    <div class="cost__type">Early birds</div>
-                    <div class="cost__tickets">
-                        <span class="cost__strike">50 билетов</span>
-                        <span class="cost__sales">Продано</span>
-                    </div>
-                    <div class="cost__price">1 700 грн <span class="cost__dollars">≈$62</span></div>
-                </div>
-                <div class="cost cost--active price-list__item">
-                    <div class="cost__type">Regular</div>
-                    <div class="cost__tickets">150 билетов</div>
-                    <div class="cost__price cost__price--mob">1 900 грн <span class="cost__dollars">≈$77</span>
-                    </div>
-                    <a href="#" class="btn btn--primary btn--lg cost__buy">Купить за 1 900 грн <span
-                                class="cost__dollars">≈$70</span></a>
-                    <a href="#" class="btn btn--primary btn--lg cost__buy cost__buy--mob">Купить билет</a>
-                </div>
-                <div class="cost price-list__item">
-                    <div class="cost__type">Late birds</div>
-                    <div class="cost__tickets">Оставшиеся билеты</div>
-                    <div class="cost__price">2 100 грн <span class="cost__dollars">≈$77</span></div>
-                </div>
-            </div>
-            <div class="price-list__hint">Для участников предыдущих конференций скидка 20%</div>
-        </div>
-    </section>
-    <!--END price-list-->
+    {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
 
     {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
 

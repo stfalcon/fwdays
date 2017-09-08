@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {# Behat hack #}
+        {% if app.environment == 'test' %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        {% else %}
+            <meta charset="utf-8" />
+        {% endif %}
+
+        <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <title>{% block title %}Frameworks Days{% endblock %}</title>
+
+        {% block metatags %}{% endblock %}
+
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+        {% stylesheets 'css/style.css' filter='?yui_css' output="tmp/css/*.css" %}
+            <link rel="stylesheet" type="text/css" media="screen, projection" href="{{ asset_url }}" />
+            <!--[if IE 7]><link rel="stylesheet" href="/css/style_ie7.css" type="text/css" media="screen, projection" /><![endif]-->
+        {% endstylesheets %}
+
+        <link href="{{ path('rss') }}" rel="alternate" type="application/rss+xml" title="Подписка по RSS" />
+    </head>
+
+    <body>
+        {% if app.environment == 'prod' %}
+            <!-- Google Tag Manager -->
+            <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
+            <!-- End Google Tag Manager -->
+        {% endif %}
+        <div id="wrapper" class="{% block div_wrapper_class %}no-head{% endblock %}">
+
+            <nav class="top-nav">
+                <div class="wrap">
+                    {{ knp_menu_render('main', {'class': 'nav'}) }}
+
+                    <div class="user-nav">
+                        {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <div class="user-menu">
+                                <a class="username" href="#"><span>{{ app.user.username }}</span></a>
+                                <ul class="user-menu-dropdown">
+                                    <li><a href="{{ path('events_my') }}">{{ 'menu.events.my'|trans }}</a></li>
+                                    <li><a href="{{ path('fos_user_profile_edit') }}">{{ 'menu.user.info'|trans }}</a></li>
+                                    <li><a href="{{ path('referral_page') }}">{{ 'menu.referral.title'|trans }}</a></li>
+                                    {% if is_granted('ROLE_VOLUNTEER') %}
+                                        <li><a href="{{ path('check_ticket_by_number') }}">{{ 'menu.check.ticket.bynumber'|trans }}</a></li>
+                                    {% endif %}
+                                    <li><a href="{{ path('fos_user_security_logout') }}">{{ 'menu.logout'|trans }}</a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <a class="register" href="{{ path('fos_user_registration_register') }}">{{ 'menu.user.registration'|trans }}</a>
+                            <a class="login" href="{{ path('fos_user_security_login') }}">{{ 'menu.login'|trans }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+
+            {% block header %}
+                <header id="header">
+                    {% block photo_slider %}{% endblock %}
+                    <div class="wrap">
+                        <div class="logo">
+                            <div>
+                                <a href="{{ path('homepage') }}" title="Frameworks Days">Frameworks Days</a>
+                            </div>
+                        </div><!-- div.logo -->
+
+                        {% block slider %}{% endblock %}
+                    </div>
+                </header><!-- #header-->
+            {% endblock %}
+
+            <!-- nav for events switcher -->
+            {% block switch %}{% endblock %}
+
+            <section id="middle">
+                <div id="container">
+                    <div id="content">
+                        {% block content %}{% endblock %}
+                    </div><!-- #content-->
+                </div><!-- #container-->
+
+                <aside id="side-left">
+                    {% block sidebar_left %}
+                            {% include "::_soc-widgets.html.twig" %}
+                    {% endblock %}
+                </aside><!-- #side-left -->
+
+                <aside id="side-right">
+                    {% block sidebar_right %}
+                    {% endblock %}
+                </aside><!-- #side-right -->
+
+            </section><!-- #middle-->
+
+        </div><!-- #wrapper -->
+
+        <footer id="footer">
+            <div class="wrap">
+                <div class="copyright">&#169; 2011-{{"now"|date('Y')}} Frameworks Days</div>
+                <address>{{ 'email'|trans }} <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a></address>
+                <div class="created-by">{{ 'madeby'|trans }} <a class="stfalcon" href="http://stfalcon.com"><span class="icon"></span>stfalcon.com</a></div>
+            </div>
+        </footer><!-- #footer -->
+
+        {% block javascripts %}{% endblock %}
+
+        {% block modals %}
+            {% render controller('ApplicationDefaultBundle:Default:widgetShareContacts') %}
+        {% endblock %}
+    </body>
+</html>

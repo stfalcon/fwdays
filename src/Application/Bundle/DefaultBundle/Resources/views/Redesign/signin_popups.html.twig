@@ -5,42 +5,7 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
         </div>
-        <form action="{{ url("fos_user_security_check") }}" method="post">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-            {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' %}
-            <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
-            <div class="form-row">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
-                        <input class="input" type="email" name="_username" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label" for="">{{ 'user.password.title'|trans }}</label>
-                    <input class="input" type="password" name="_password" value="">
-                </div>
-            </div>
-            <div class="form-row form-row--checkbox">
-                <div class="form-col">
-                    <div class="checkbox">
-                        <input id="check1" type="checkbox" class="checkbox__input">
-                        <label for="check1" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row form-row--align-center">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'menu.login'|trans }}</button>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="help-links">
-                        <a href="#modal-forgot-password" class="form-link help-links__item">{{ 'user.forgot_password.title'|trans }}</a>
-                        <a href="#modal-signup-payment" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
-                    </div>
-                </div>
-            </div>
-        </form>
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' %}
     </div>
 </div>
 <!--END signin-popup-->
@@ -96,65 +61,9 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">***</h2>
+            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
         </div>
-        <form action="{{ path('fos_user_registration_register') }}" method="POST">
-            <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="{{csrf_token('registration')}}"/>
-            <div class="form-hint">{{ 'menu.user.registration'|trans }}</div>
-            <div class="form-row">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
-                        <input class="input" type="text" name="fos_user_registration_form[name]" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
-                    <input class="input" type="text" name="fos_user_registration_form[surname]" value="">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label form-label--required" for="">{{ 'user.email.title'|trans }}</label>
-                        <input class="input" type="email" name="fos_user_registration_form[email]" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label form-label--required" for="">{{ 'user.password.title'|trans }}</label>
-                    <div class="input-password">
-                        <input class="input input-password__field" type="password" name="fos_user_registration_form[plainPassword]" value="">
-                        <i class="input-password__icon icon-eye icon-password--js"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
-                        <input class="input mask-phone-input--js" type="tel" name="fos_user_registration_form[phone]" value="">
-                    </div>
-                </div>
-            </div>
-            <div class="form-row form-row--checkbox">
-                <div class="form-col">
-                    <div class="checkbox">
-                        <input id="check3" type="checkbox" name="fos_user_registration_form[subscribe]" class="checkbox__input" checked="checked">
-                        <label for="check3" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row form-row--align-center">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.create.title'|trans }}</button>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="help-links">
-                        <a href="#modal-signin" class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
-                    </div>
-                </div>
-            </div>
-        </form>
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' %}
     </div>
 </div>
 <!--END signup-payment-popup-->
@@ -190,8 +99,82 @@
         <div class="remodal__head remodal__head--payment">
             <h2 class="h2 remodal__title">***</h2>
         </div>
-        <form id="pay-form" action="https://sci.interkassa.com/" method="post" accept-charset="UTF-8">
-            <!-- render html -->
+        <form action="https://sci.interkassa.com/" method="post" accept-charset="UTF-8">
+            <p id="pay-form"><!-- render html --></p>
+            <div id="payment-add-user" class="form-add">
+                <div class="form-add__hint"> {{ 'pay.event.pay_for_other'|trans }}
+                    <a id="cancel-add-user" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'user.name.title'|trans }}</label>
+                            <input class="input" type="text" name="user-name" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--col-6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'user.surname.title'|trans }}</label>
+                            <input class="input" type="text" name="user-surname" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row form-row--align-bottom">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
+                            <input class="input" type="email" name="user-email" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <button type="button" class="btn btn--secondary btn--md form-col__btn add-user-btn">{{ 'add.title'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+            <div id="add-promo-code" class="form-add">
+                <div class="form-add__hint"> {{ 'pay.enter_promo.title'|trans }}
+                    <a id="cancel-promo-code" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
+                </div>
+                <div class="form-row form-row--align-bottom">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">{{ 'pay.event.cupon'|trans }}</label>
+                            <input name="promo-code" class="input" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <button type="button" class="btn btn--secondary btn--md form-col__btn add-promo-code-btn">{{ 'add.title'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-info">
+                <div class="payment-info__left">
+                    <div class="payment-info__btn-link">
+                        <a id="add-user-trigger" href="#" class="btn-link">{{ 'pay.event.one_more_participants'|trans }}</a>
+                    </div>
+                    <div class="payment-info__btn-link">
+                        <a id="promo-code-trigger" href="#" class="btn-link">{{ 'pay.i_have_promo.title'|trans }}</a>
+                    </div>
+                </div>
+                <div id="payment-sums" class="payment-info__right">
+                </div>
+            </div>
+
+            <div class="form-row form-row--align-bottom">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
+                        {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+                            <input class="input mask-phone-input--js" type="tel" value="{{ app.user.phone }}">
+                        {% else %}
+                            <input class="input mask-phone-input--js" type="tel" value="">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

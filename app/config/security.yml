@@ -33,6 +33,7 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/addwantstovisitevent/, role: ROLE_USER }
         - { path: ^/subwantstovisitevent/, role: ROLE_USER }
+        - { path: /pay, role: ROLE_USER }
 
     role_hierarchy:
         ROLE_VOLUNTEER:   ROLE_USER

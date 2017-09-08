@@ -44,3 +44,6 @@ pay.enter_promo.title: Введите промокод для получения
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
 pay.bonus.bold.title: 'Ваші бонусы fwdays: <b>%sum% грн</b>'
 pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'
+event.price.title: Вартість участі
+tickets.count: '%count% квитків'
+sold_out.title: Продано

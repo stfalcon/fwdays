@@ -1,0 +1,15 @@
+{% if ticketCosts is not null %}
+<!--BEGIN price-list-->
+<section id="price-event" class="price-list">
+    <div class="container container--sm">
+        <h2 class="h2 price-list__title">{{ 'event.price.title'|trans }}</h2>
+        <div class="price-list__items">
+        {% for ticket in ticketCosts %}
+            {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice}  %}
+        {% endfor %}
+        </div>
+        <div class="price-list__hint"> {{ 'payment.discount.member'|trans({'%discountAmount%':20})|raw }}&nbsp;</div>
+    </div>
+</section>
+<!--END price-list-->
+{% endif %}

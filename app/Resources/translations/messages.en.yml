@@ -44,3 +44,6 @@ pay.enter_promo.title: Enter promo code
 pay.sum.bold.title: 'Sum: <b>%sum% grn</b>'
 pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% grn</b>'
 pay.sum_for_pay.bold.title: 'For pay: <b>%sum% grn</b>'
+event.price.title: Event price
+tickets.count: '%count% tickets'
+sold_out.title: Sold out

@@ -1,0 +1,57 @@
+<form action="{{ path('fos_user_registration_register') }}" method="POST">
+    <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="{{csrf_token('registration')}}"/>
+    <div class="form-hint">{{ 'menu.user.registration'|trans }}</div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
+                <input class="input" type="text" name="fos_user_registration_form[name]" value="">
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
+            <input class="input" type="text" name="fos_user_registration_form[surname]" value="">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="">{{ 'user.email.title'|trans }}</label>
+                <input class="input" type="email" name="fos_user_registration_form[email]" value="">
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label form-label--required" for="">{{ 'user.password.title'|trans }}</label>
+            <div class="input-password">
+                <input class="input input-password__field" type="password" name="fos_user_registration_form[plainPassword]" value="">
+                <i class="input-password__icon icon-eye icon-password--js"></i>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="">{{ 'user.phone.title'|trans }}</label>
+                <input class="input mask-phone-input--js" type="tel" name="fos_user_registration_form[phone]" value="">
+            </div>
+        </div>
+    </div>
+    <div class="form-row form-row--checkbox">
+        <div class="form-col">
+            <div class="checkbox">
+                <input id="check3" type="checkbox" name="fos_user_registration_form[subscribe]" class="checkbox__input" checked="checked">
+                <label for="check3" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-row form-row--align-center">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.create.title'|trans }}</button>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="help-links">
+                <a href="#modal-signin" class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
+            </div>
+        </div>
+    </div>
+</form>

@@ -152,6 +152,10 @@ class Event implements Translatable
     protected $cost;
 
     /**
+     * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", mappedBy="event")
+     */
+    protected $ticketsCost;
+    /**
      * @var boolean $receivePayments
      *
      * @ORM\Column(name="receive_payments", type="boolean")
@@ -233,6 +237,25 @@ class Event implements Translatable
         $this->speakers = new ArrayCollection();
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
+        $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTicketsCost()
+    {
+        return $this->ticketsCost;
+    }
+
+    /**
+     * @param mixed $ticketsCost
+     * @return $this
+     */
+    public function setTicketsCost($ticketsCost)
+    {
+        $this->ticketsCost = $ticketsCost;
+        return $this;
     }
 
     /**

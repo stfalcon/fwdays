@@ -44,7 +44,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
 
     public function processAuthSuccess(Request $request, User $user)
     {
-
         if ($request->cookies->has(ReferralService::REFERRAL_CODE)) {
             $referralCode = $request->cookies->get(ReferralService::REFERRAL_CODE);
 
@@ -73,11 +72,15 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         if ($session->has('request_params')) {
             $requestParams = $session->get('request_params');
             $request->getSession()->remove('request_params');
+//            if ('event_pay' === $requestParams['_route']) {
+//                return new RedirectResponse($request->headers->get('referer').'#modal-payment');
+//            }
 
             return new RedirectResponse($this->router->generate($requestParams['_route'], $requestParams['_route_params']));
         }
 
         $loginCodeUrl = $this->router->generate('fos_user_security_login',[], true);
+        $registerCodeUrl = $this->router->generate('fos_user_registration_register',[], true);
         $cabinetUrl = $this->router->generate('cabinet');
 
         $referrer = $request->headers->get('referer');
@@ -87,7 +90,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             return new RedirectResponse($cabinetUrl);
         }
 
-        if (in_array($referrer, [$loginCodeUrl])) {
+        if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
             return new RedirectResponse($this->router->generate('homepage_redesign'));
         } else {
             return new RedirectResponse($referrer);
