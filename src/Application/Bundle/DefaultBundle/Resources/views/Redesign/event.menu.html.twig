@@ -7,7 +7,7 @@
 {% endif %}
 <nav class="event-menu">
     <ul class="event-menu__items">
-    {% if event.speakers is defined and event.speakers is not null %}
+    {% if event.speakers is defined and event.speakers|length > 0 %}
         <li class="event-menu__item">
             <a href="{{ link }}#speakers-event" class="event-menu__link{{ scrollClass }}">{{ 'speaker.title'|trans }}</a>
         </li>

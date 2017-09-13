@@ -5,53 +5,19 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
         </div>
-        {% include '@ApplicationDefault/Redesign/login_form.html.twig' %}
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'registrationLink':'#modal-signup-payment', 'queryLink':''} %}
     </div>
 </div>
 <!--END signin-popup-->
 
-<!--BEGIN signin-payment-popup УДАЛИТЬ -->
+<!--BEGIN signin-payment-popup  -->
 <div class="remodal remodal--md" data-remodal-id="modal-signin-payment">
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">***</h2>
+            <h2 class="h2 remodal__title change-title">***</h2>
         </div>
-        <form action="">
-            {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' %}
-            <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
-            <div class="form-row">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
-                        <input class="input" type="email" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <label class="form-label" for="">{{ 'user.password.title'|trans }}</label>
-                    <input class="input" type="password" value="">
-                </div>
-            </div>
-            <div class="form-row form-row--checkbox">
-                <div class="form-col">
-                    <div class="checkbox">
-                        <input id="check2" type="checkbox" class="checkbox__input">
-                        <label for="check2" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-row form-row--align-center">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'menu.login'|trans }}</button>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="help-links">
-                        <a href="#modal-forgot-password" class="form-link help-links__item">{{ 'user.forgot_password.title'|trans }}</a>
-                        <a href="#modal-signup-payment" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
-                    </div>
-                </div>
-            </div>
-        </form>
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'registrationLink':'#modal-signup-payment', 'queryLink':'?exception_login=1'} %}
     </div>
 </div>
 <!--END signin-payment-popup-->
@@ -63,7 +29,7 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
         </div>
-        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' %}
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':'#modal-signin'} %}
     </div>
 </div>
 <!--END signup-payment-popup-->
@@ -97,7 +63,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head remodal__head--payment">
-            <h2 class="h2 remodal__title">***</h2>
+            <h2 class="h2 remodal__title change-title"></h2>
         </div>
         <form action="https://sci.interkassa.com/" method="post" accept-charset="UTF-8">
             <p id="pay-form"><!-- render html --></p>

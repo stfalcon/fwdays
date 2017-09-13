@@ -12,6 +12,7 @@ class TicketCostRepository extends EntityRepository
      * Get event current cost
      *
      * @param Event $event
+     * @return float
      */
     public function getEventCurrentCost(Event $event)
     {
@@ -23,9 +24,10 @@ class TicketCostRepository extends EntityRepository
             ->orderBy('tc.amount');
         $query = $qb->getQuery();
 
-        $result = $query->getFirstResult();
+        $result = $query->getResult();
+        $result = is_array($result) ? array_shift($result) : null;
 
-        $currentCost = $result ? $result->getAmount() : $event->getCost();
+        $currentCost = $result ? $result['amount'] : $event->getCost();
 
         return $currentCost;
     }

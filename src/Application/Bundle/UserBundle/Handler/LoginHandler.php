@@ -6,6 +6,7 @@ use Application\Bundle\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Stfalcon\Bundle\EventBundle\Service\ReferralService;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,22 +69,33 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             return new RedirectResponse($url);
         }
 
+        $loginCodeUrl = $this->router->generate('fos_user_security_login',[], true);
+        $registerCodeUrl = $this->router->generate('fos_user_registration_register',[], true);
+        $referrer = $request->headers->get('referer');
+        $cabinetUrl = $this->router->generate('cabinet');
+
         $session = $request->getSession();
         if ($session->has('request_params')) {
             $requestParams = $session->get('request_params');
             $request->getSession()->remove('request_params');
-//            if ('event_pay' === $requestParams['_route']) {
-//                return new RedirectResponse($request->headers->get('referer').'#modal-payment');
-//            }
 
-            return new RedirectResponse($this->router->generate($requestParams['_route'], $requestParams['_route_params']));
+            if ($request->query->has('exception_login')) {
+                $url = $referrer;
+                if ('event_pay' === $requestParams['_route']) {
+                    if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
+                        $url = $this->router->generate('homepage_redesign');
+                    }
+                    $response = new RedirectResponse($url . '#modal-payment');
+                    $cookie = new Cookie('event', $requestParams['event_slug'], time() + 3600, '/', null, false, false);
+                    $response->headers->setCookie($cookie);
+
+                    return $response;
+                }
+
+                return new RedirectResponse($this->router->generate($requestParams['_route'], $requestParams['_route_params']));
+            }
         }
 
-        $loginCodeUrl = $this->router->generate('fos_user_security_login',[], true);
-        $registerCodeUrl = $this->router->generate('fos_user_registration_register',[], true);
-        $cabinetUrl = $this->router->generate('cabinet');
-
-        $referrer = $request->headers->get('referer');
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referrer), '\/');
 
         if (in_array($clearReferrer, $this->homePages)) {

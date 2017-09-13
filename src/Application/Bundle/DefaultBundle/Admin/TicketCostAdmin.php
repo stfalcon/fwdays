@@ -41,6 +41,7 @@ class TicketCostAdmin extends Admin
             ->add('name')
             ->add('event')
             ->add('amount')
+            ->add('altAmount')
             ->add('count')
             ->add('soldCount')
             ->add('enabled')

@@ -1,4 +1,4 @@
-<form action="{{ url("fos_user_security_check") }}" method="post">
+<form id="login-form" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
     {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' %}
     <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
@@ -29,7 +29,7 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="help-links">
                 <a href="#modal-forgot-password" class="form-link help-links__item">{{ 'user.forgot_password.title'|trans }}</a>
-                <a href="#modal-signup-payment" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
+                <a href="{{ registrationLink }}" class="form-link help-links__item">{{ 'menu.user.registration'|trans }} </a>
             </div>
         </div>
     </div>

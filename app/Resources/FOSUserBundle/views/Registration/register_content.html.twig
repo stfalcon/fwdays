@@ -1,12 +1,9 @@
 {% block content %}
 <!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
-<div>
-    <div class="remodal__body">
-        <div class="remodal__head">
-            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
-        </div>
-        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' %}
-    </div>
+<div class="form-auth">
+    <h2 class="h2 form-auth__title">{{ 'menu.user.registration'|trans }}</h2>
+    {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':path('fos_user_security_login')} %}
 </div>
 <!--END signup-payment-popup-->
 {% endblock content %}
+

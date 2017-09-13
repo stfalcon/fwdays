@@ -41,6 +41,14 @@ class TicketCost
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
+
+    /**
+     * Альтернативна сума оплати
+     * @var string $altAmount
+     *
+     * @ORM\Column(name="alt_amount", type="string", length=10, nullable=true)
+     */
+    private $altAmount = '';
     /**
      * @var int $soldCount
      *
@@ -72,6 +80,24 @@ class TicketCost
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAltAmount()
+    {
+        return $this->altAmount;
+    }
+
+    /**
+     * @param string $altAmount
+     * @return $this
+     */
+    public function setAltAmount($altAmount)
+    {
+        $this->altAmount = $altAmount;
+        return $this;
     }
 
     /**

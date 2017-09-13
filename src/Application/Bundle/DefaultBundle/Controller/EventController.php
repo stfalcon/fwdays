@@ -77,7 +77,11 @@ class EventController extends Controller
         $eventCurrentCost = $ticketCostRepository->getEventCurrentCost($event);
         $ticketCosts = $ticketCostRepository->getEventTicketsCost($event);
 
-        return ['ticketCosts' => $ticketCosts, 'currentPrice' => $eventCurrentCost];
+        return [
+            'ticketCosts' => $ticketCosts,
+            'currentPrice' => $eventCurrentCost,
+            'event' => $event,
+        ];
     }
 
     /**
@@ -380,9 +384,10 @@ class EventController extends Controller
     /**
      * Event pay
      * @Route("/event/{event_slug}/pay", name="event_pay",
-     *     options = {"expose"=true})
+     *     methods={"POST"},
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
      *
-     * @Security("has_role('ROLE_USER')")
      *
      * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
      * @param Event $event

@@ -202,6 +202,10 @@
     }
   }
 
+  .form-auth {
+    margin-top: 0;
+  }
+
   .event-header {
     margin-bottom: 32px;
     padding: 45px 0 45px 24px;
@@ -248,12 +252,24 @@
   .event-action-mob {
     display: block;
     margin-bottom: 32px;
+    text-align: center;
 
     &__btn {
       display: block;
       margin: auto;
       max-width: 343px;
       width: 100%;
+    }
+
+    &__download {
+      font-weight: 500;
+      margin-top: 12px;
+      display: inline-block;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: $dark-color;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+      text-decoration: none;
     }
   }
 
@@ -1361,6 +1377,15 @@
   }
 
   .fix-event-header {
+    &__download {
+      display: none;
+    }
+
+    &__download--mob {
+      display: block;
+      margin-right: 16px;
+    }
+
     &__btn {
       display: none;
     }
@@ -1404,6 +1429,10 @@
   .remodal-close {
     top: 16px;
     right: 16px;
+  }
+
+  .form-auth {
+    padding: 16px;
   }
 
   .header-nav {
