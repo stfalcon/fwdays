@@ -2,9 +2,9 @@
 .event-header {
   position: relative;
   display: flex;
+  margin: -1px 0 50px;
   padding: 65px 0 65px 103px;
   min-height: 520px;
-  margin: -1px 0 50px;
 
   &__box {
     display: flex;
@@ -89,6 +89,21 @@
   &__btn {
     margin-right: 25px;
     width: 318px;
+  }
+
+  &__download {
+    display: inline-block;
+    margin-right: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    color: $white-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+
+    &:hover {
+      border: none;
+    }
   }
 
   &__tickets {
@@ -844,6 +859,24 @@
   }
 
   &__btn--mob {
+    display: none;
+  }
+
+  &__download {
+    margin-right: 32px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    color: $white-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+
+    &:hover {
+      border-bottom: none;
+    }
+  }
+
+  &__download--mob {
     display: none;
   }
 }
