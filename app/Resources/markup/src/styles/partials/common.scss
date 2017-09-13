@@ -507,3 +507,13 @@ ul {
     line-height: 24px;
   }
 }
+
+.form-auth {
+  margin: 32px auto 0;
+  padding: 32px;
+  max-width: 616px;
+
+  &__title {
+    margin-bottom: 28px;
+  }
+}
