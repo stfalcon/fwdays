@@ -138,12 +138,14 @@ class EventController extends Controller
             }
         }
 
+        $eventCurrentAmount = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:TicketCost')->getEventCurrentCost($event);
         return [
             'event'       => $event,
             'programPage' => $programPage,
             'venuePage'   => $venuePage,
             'pages'       => $pages,
             'review'      => $review,
+            'eventCurrentAmount' => $eventCurrentAmount,
         ];
     }
 
@@ -519,6 +521,7 @@ class EventController extends Controller
         if (!$ticket->isPaid()) {
             $paymentService = $this->get('stfalcon_event.payment.service');
             $paymentService->addTicketToPayment($payment, $ticket);
+            $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
             return new JsonResponse(['result' => false, 'error' => "User".$user->getName(). $user->getSurName()." already paid ticket!", 'html' => '']);
         }
@@ -550,7 +553,13 @@ class EventController extends Controller
             return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => '']);
         }
 
-        $this->get('stfalcon_event.payment.service')->removeTicketFromPayment($payment, $ticket);
+        if (!$ticket->isPaid()) {
+            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService->removeTicketFromPayment($payment, $ticket);
+            $paymentService->checkTicketsPricesInPayment($payment, $event);
+        } else {
+            return new JsonResponse(['result' => false, 'error' => "Already paid ticket!", 'html' => '']);
+        }
 
         return $this->getPaymentHtml($event, $payment);
     }

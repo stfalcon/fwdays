@@ -39,7 +39,8 @@ ticket.status.download: __ticket.status.download
 ticket.mob_status.download: Скачати
 ticket.status.pay: __ticket.status.pay
 ticket.mob_status.pay: Купити
-ticket.status.pay_for: Купити квиток за
+ticket.status.pay_for: Купити за
+ticket.summ_from: Квитки від %summ% грн.
 ticket.status.event.add: __ticket.status.event.add
 ticket.status.paid: __ticket.status.paid
 ticket.status.take_apart: __ticket.status.take_apart

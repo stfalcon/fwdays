@@ -44,7 +44,8 @@
         "ibrows/sonata-translation-bundle": "^1.1",
         "jms/i18n-routing-bundle": "^2.0",
         "gedmo/doctrine-extensions": "^2.4",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "hwi/oauth-bundle": "^0.5.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",

@@ -4,5 +4,9 @@ services:
         arguments: ["@jms_i18n_routing.router"]
 
     user.handler.login_handler:
-            class: Application\Bundle\UserBundle\Handler\LoginHandler
-            arguments: ["@router", "%locales%", "@stfalcon_event.referral.service", "@stfalcon.user_manager" ]
+        class: Application\Bundle\UserBundle\Handler\LoginHandler
+        arguments: ["@router", "%locales%", "@stfalcon_event.referral.service", "@stfalcon.user_manager" ]
+
+    app.provider.oauth:
+        class: Application\Bundle\UserBundle\Security\OAuthUserProvider
+        arguments: [fos_user.user_manager,{facebook: facebookID, google: googleID}]

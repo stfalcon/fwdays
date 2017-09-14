@@ -33,8 +33,8 @@
             </div>
             <div class="event-header__action">
                 {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_header'}) %}
-                {% if event.activeAndFuture %}
-                    <a href="{{ link }}#price-event" class="event-header__tickets go-to-block">Билеты от {{ event.cost }} грн</a>
+                {% if event.activeAndFuture and event.receivePayments %}
+                    <a href="{{ link }}#price-event" class="event-header__tickets go-to-block">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount}) }}</a>
                 {% endif %}
             </div>
         </div>

@@ -2,4 +2,4 @@
 {% if href %} href="{{ href }}"{% endif %}
 {% if class %} class="{{ class }}"{% endif %}
 {% if data %} data-event="{{ data }}"{% endif %}
->{% if caption %}{{ caption }}{% endif %}{% if isDiv %}</div>{% else %}</a>{% endif %}
+>{% if caption %}{{ caption|raw }}{% endif %}{% if isDiv %}</div>{% else %}</a>{% endif %}

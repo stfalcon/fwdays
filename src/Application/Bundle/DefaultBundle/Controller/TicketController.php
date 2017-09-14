@@ -80,24 +80,7 @@ class TicketController  extends Controller
             if ($getTicket) {
                 $caption = $isMob ? $translator->trans('ticket.mob_status.download') : $translator->trans('ticket.status.download');
                 $href = $this->generateUrl('event_ticket_download', ['event_slug' => $event->getSlug()]);
-            } elseif (!$user && $event->getReceivePayments()) {
-                if ($isMob) {
-                    $caption = $translator->trans('ticket.mob_status.pay');
-                } elseif ($position === 'price_block') {
-                    $caption = $translator->trans('ticket.status.pay_for').' '. $translator->trans('payment.price', ['%summ%' => $ticketCost->getAmount()]);
-                    if ($ticketCost->getAltAmount()) {
-                        $caption .= '<span class="cost__dollars">'.$ticketCost->getAltAmount().'</span>';
-                    }
-                } else {
-                    $caption = $translator->trans('ticket.status.pay');
-                }
-
-                    ($position === 'price_block' ?
-                        : $translator->trans('ticket.status.pay'));
-
-                //$href = "#modal-payment";
-                $class .=' set-modal-header get-payment';
-            }  elseif ($ticket && !$event->getReceivePayments()) {
+            } elseif ($ticket && !$event->getReceivePayments()) {
                 $caption = $translator->trans('ticket.status.event.add');
             } elseif ($payment && $payment->isPaid()) {
                 $caption = $translator->trans('ticket.status.paid');
@@ -108,8 +91,16 @@ class TicketController  extends Controller
                 $class .= ' set-modal-header sub-wants-visit-event';
                 $caption = $translator->trans('ticket.status.not_take_apart');
             } elseif (!$payment || ($payment && $payment->isPending())) {
-                $caption = $isMob ? $translator->trans('ticket.mob_status.pay') : $translator->trans('ticket.status.pay');
-                //$href = "#modal-payment";
+                if ($isMob) {
+                    $caption = $translator->trans('ticket.mob_status.pay');
+                } elseif ($position === 'price_block') {
+                    $caption = $translator->trans('ticket.status.pay_for').' '. $translator->trans('payment.price', ['%summ%' => number_format($ticketCost->getAmount(), 0,',','')]);
+                    if ($ticketCost->getAltAmount()) {
+                        $caption .= '<span class="cost__dollars">'.$ticketCost->getAltAmount().'</span>';
+                    }
+                } else {
+                    $caption = $translator->trans('ticket.status.pay');
+                }
                 $class .=' set-modal-header get-payment';
             }
         } else {

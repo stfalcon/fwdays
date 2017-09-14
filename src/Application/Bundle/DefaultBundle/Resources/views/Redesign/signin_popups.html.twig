@@ -15,7 +15,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title change-title">***</h2>
+            <h2 class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</h2>
         </div>
         {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'registrationLink':'#modal-signup-payment', 'queryLink':'?exception_login=1'} %}
     </div>

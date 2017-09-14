@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
@@ -170,20 +171,46 @@ class PaymentService
     public function checkTicketsPricesInPayment($payment, $event)
     {
         $ticketService = $this->container->get('stfalcon_event.ticket.service');
-        $eventCost = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')->getEventCurrentCost($event);
+        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')->getEventEnabledTicketsCost($event);
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
+            $currentTicketCost = null;
+            $eventCost = $event->getCost();
+            /** @var TicketCost $cost */
+            foreach ($eventCosts as $cost) {
+                if ($cost->isHaveTemporaryCount()) {
+                    $eventCost = $cost->getAmountByTemporaryCount();
+                    $currentTicketCost = $cost;
+                    break;
+                }
+            }
 
             $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
 
-            if (($ticket->getAmountWithoutDiscount() != $eventCost) ||
+            if (($ticket->getTicketCost() !== $currentTicketCost) ||
                 ($ticket->getHasDiscount() != ($isMustBeDiscount || $ticket->hasPromoCode()))) {
-                $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount);
+                $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
         }
         $this->recalculatePaymentAmount($payment);
     }
 
+    /**
+     * Check ticket costs as sold
+     *
+     * @param Payment $payment
+     */
+    public function setTicketsCostAsSold($payment)
+    {
+        if ($payment->isPaid()) {
+            /** @var Ticket $ticket */
+            foreach ($payment->getTickets() as $ticket) {
+                $ticketCost = $ticket->getTicketCost();
+                $ticketCost->incSoldCount();
+            }
+            $this->em->flush();
+        }
+    }
     /**
      * Correct pay amount by user referral money
      *

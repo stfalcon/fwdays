@@ -27,6 +27,12 @@ class TicketCost
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="ticketCost")
+     */
+    private $tickets;
+
     /**
      * @var int $count
      *
@@ -73,13 +79,45 @@ class TicketCost
      * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
-
+    /**
+     * @var int $temporaryCount
+     */
+    private $temporaryCount = 0;
     /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getAmountByTemporaryCount()
+    {
+        $this->temporaryCount++;
+
+        return $this->getAmount();
+    }
+
+    public function isHaveTemporaryCount()
+    {
+        return $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count;
+    }
+    /**
+     * @return mixed
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * @param mixed $tickets
+     * @return $this
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+        return $this;
     }
 
     /**

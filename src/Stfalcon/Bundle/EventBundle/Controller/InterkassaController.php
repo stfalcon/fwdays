@@ -28,7 +28,7 @@ class InterkassaController extends Controller
      *
      * @param Request $request
      *
-     * @return array
+     * @return array|Response
      */
     public function interactionAction(Request $request)
     {
@@ -45,6 +45,7 @@ class InterkassaController extends Controller
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
         if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
+            $this->get('stfalcon_event.payment.service')->setTicketsCostAsSold($payment);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 

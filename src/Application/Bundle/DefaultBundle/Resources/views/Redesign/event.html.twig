@@ -1,7 +1,14 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
 {% block content %}
-    {% include '@ApplicationDefault/Redesign/event.header.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position':'event'} %}
+    {% include '@ApplicationDefault/Redesign/event.header.html.twig' with {
+    'event':event,
+    'programPage':programPage,
+    'venuePage':venuePage,
+    'pages':pages,
+    'position':'event',
+    'eventCurrentAmount':eventCurrentAmount
+    } %}
 
     <!--BEGIN event-description-->
     <section class="event-description">
