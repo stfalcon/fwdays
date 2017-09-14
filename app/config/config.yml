@@ -30,7 +30,7 @@ framework:
         save_path: "%kernel.root_dir%/sessions/"
 
 # Twig Configuration
-twig:
+twig:>>>>>>> 36316-redesign
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
