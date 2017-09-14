@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
 </head>
 <body>
-    {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
+{% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
 
 <!--BEGIN layout-box-->
 <div class="layout-box">
@@ -31,6 +31,10 @@
 {% block popups %}{% endblock popups %}
 {% block scripts %}
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/partials/js.cookie.js') }}" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/partials/add.js') }}"> </script>
 {% endblock scripts %}
 </body>
 </html>

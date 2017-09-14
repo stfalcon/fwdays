@@ -62,7 +62,4 @@
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
     {{ parent() }}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/partials/add.js') }}"> </script>
 {% endblock scripts %}

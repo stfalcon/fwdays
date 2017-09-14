@@ -111,9 +111,9 @@ function setSubWantsOnclick() {
 
 $(document).on('opening', '.remodal', function (e) {
     if (window.location.hash === '#modal-payment') {
-        var e_slug = $.cookie('event');
+        var e_slug = Cookies.get('event');
         if (e_slug) {
-            $.removeCookie('event', { path: '/', http: false, secure : false });
+            Cookies.remove('event', { path: '/', http: false, secure : false });
             setModalHeader(e_slug);
             setPaymentHtml(e_slug, false);
         }
