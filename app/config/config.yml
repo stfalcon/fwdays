@@ -30,7 +30,7 @@ framework:
         save_path: "%kernel.root_dir%/sessions/"
 
 # Twig Configuration
-twig:
+twig:>>>>>>> 36316-redesign
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
@@ -196,8 +196,7 @@ accord_mandrill_swift_mailer:
     api_key: %mandrill_api_key%
 
 hwi_oauth:
-    # name of the firewall in which this bundle is active, this setting MUST be set
-    firewall_name: main
+    firewall_names: [main]
     connect:
         account_connector: app.provider.oauth
     resource_owners:
@@ -206,7 +205,7 @@ hwi_oauth:
             client_id:           %facebook_client_id%
             client_secret:       %facebook_client_secret%
             scope:               "email, public_profile"
-            infos_url:           "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
+            infos_url:           "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name"
             paths:
                 email: email
             options:

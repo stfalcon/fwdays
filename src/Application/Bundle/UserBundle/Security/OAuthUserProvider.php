@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Security;
 
+use Application\Bundle\UserBundle\Entity\User;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -19,6 +20,7 @@ class OAuthUserProvider extends BaseClass
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $socialID = $response->getUsername();
+        /** @var User $user */
         $user = $this->userManager->findUserBy([$this->getProperty($response)=>$socialID]);
         $email = $response->getEmail();
         //check if the user already has the corresponding social account
@@ -29,6 +31,8 @@ class OAuthUserProvider extends BaseClass
             if (!$user || !$user instanceof UserInterface) {
                 //if the user does not have a normal account, set it up:
                 $user = $this->userManager->createUser();
+                $user->setName($response->getFirstName());
+                $user->setSurname($response->getLastName());
                 $user->setEmail($email);
                 $user->setPlainPassword(md5(uniqid()));
                 $user->setEnabled(true);

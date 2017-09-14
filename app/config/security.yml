@@ -12,8 +12,8 @@ security:
         main:
             pattern: ^/
             oauth:
-                failure_path: your_path
-                login_path: your_path
+                failure_path: /login
+                login_path: /login
                 check_path: /connect_check
                 provider: fos_userbundle
                 resource_owners:
