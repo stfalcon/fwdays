@@ -45,6 +45,6 @@ pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
 pay.bonus.bold.title: 'Ваші бонусы fwdays: <b>%sum% грн</b>'
 pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'
 event.price.title: Вартість участі
-tickets.count: '%count% квитків'
+tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.other.title: всі інші квитки
 sold_out.title: Продано

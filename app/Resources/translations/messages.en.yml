@@ -45,6 +45,6 @@ pay.sum.bold.title: 'Sum: <b>%sum% grn</b>'
 pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% grn</b>'
 pay.sum_for_pay.bold.title: 'For pay: <b>%sum% grn</b>'
 event.price.title: Event price
-tickets.count: '%count% tickets'
+tickets.count: '{0}%count% ticket|{1}%count% tickets|{2}%count% tickets'
 tickets.other.title: other tickets
 sold_out.title: Sold out

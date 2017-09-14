@@ -24,6 +24,7 @@ in.lang.link: In English
 ticket.status.event_done: Событие состоялось
 event.page.program: Програма
 event.page.venue: Місце проведення
+event_cost.title: Вартість участі
 user.by_user.title: Війдіть як користувач
 user.by_email.title: Або по почті
 menu.profile.my: Профіль

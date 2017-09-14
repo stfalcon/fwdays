@@ -24,6 +24,7 @@ in.lang.link: На Українській
 ticket.status.event_done: Event done
 event.page.program: Program
 event.page.venue: Venue
+event_cost.title: Event Cost
 menu.profile.my: Profile
 user.by_user.title: Enter as user
 user.by_email.title: Or by mail

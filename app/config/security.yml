@@ -11,6 +11,16 @@ security:
     firewalls:
         main:
             pattern: ^/
+            oauth:
+                failure_path: /login
+                login_path: /login
+                check_path: /connect_check
+                provider: fos_userbundle
+                resource_owners:
+                    facebook: "/login/check-facebook"
+                    google: "/login/check-google"
+                oauth_user_provider:
+                    service: app.provider.oauth
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider

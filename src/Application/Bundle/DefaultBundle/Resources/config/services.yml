@@ -5,3 +5,8 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: "Билеты", label: "Цены событий" }
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
+
+    app.twig.extemtion:
+        class: Application\Bundle\DefaultBundle\Twig\AppExtension
+        tags:
+            - { name: twig.extension}

@@ -64,6 +64,7 @@ class AppKernel extends Kernel
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle,
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

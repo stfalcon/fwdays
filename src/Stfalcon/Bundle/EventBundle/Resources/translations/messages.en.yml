@@ -39,7 +39,8 @@ ticket.status.download: __ticket.status.download
 ticket.mob_status.download: Download
 ticket.status.pay: __ticket.status.pay
 ticket.mob_status.pay: Buy
-ticket.status.pay_for: Buy ticket for
+ticket.status.pay_for: Buy for
+ticket.summ_from: Tickets from %summ% grn.
 ticket.status.event.add: __ticket.status.event.add
 ticket.status.paid: __ticket.status.paid
 ticket.status.take_apart: __ticket.status.take_apart

@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Service;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
@@ -47,11 +48,13 @@ class TicketService
      * @param Ticket $ticket
      * @param $amount
      * @param bool $isMustBeDiscount
+     * @param TicketCost $currentTicketCost
      */
-    public function setTicketAmount($ticket, $amount, $isMustBeDiscount)
+    public function setTicketAmount($ticket, $amount, $isMustBeDiscount, $currentTicketCost)
     {
         $ticket->setAmountWithoutDiscount($amount);
         $ticket->setAmount($amount);
+        $ticket->setTicketCost($currentTicketCost);
         /** -1 flag means you need to discount in the configuration */
         $discount = $isMustBeDiscount ? -1 : 0;
         $this->setTicketBestDiscount($ticket, $ticket->getPromoCode(), $discount);

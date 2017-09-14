@@ -2,10 +2,10 @@
 <div class="cost cost--last price-list__item">
     <div class="cost__type">{{ ticket.name }}</div>
     <div class="cost__tickets">
-        <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.soldCount}) }}</span>
+        <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.soldCount})|transchoice(ticket.soldCount|pluralization) }}</span>
         <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
     </div>
-    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
+    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',','')}) }}
         {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
     </div>
 </div>
@@ -13,11 +13,11 @@
 <div class="cost price-list__item">
     <div class="cost__type">{{ ticket.name }}</div>
     {% if ticket.count %}
-        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count}) }}</div>
+        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</div>
     {% else %}
         <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
     {% endif %}
-    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
+    <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',','')}) }}
         {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
     </div>
 </div>
@@ -25,15 +25,16 @@
 <div class="cost cost--active price-list__item">
     <div class="cost__type">{{ ticket.name }}</div>
     {% if ticket.count %}
-        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count - ticket.soldCount}) }}</div>
+        {% set count = ticket.count - ticket.soldCount %}
+        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': count})|transchoice(count|pluralization) }}</div>
     {% else %}
         <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
     {% endif %}
 
-    <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
+    <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',','')}) }}
         {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
     </div>
-    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block' }) %}
-    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob'}) %}
+    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block', 'ticketCost':ticket }) %}
+    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob', 'ticketCost':ticket}) %}
 </div>
 {% endif %}
