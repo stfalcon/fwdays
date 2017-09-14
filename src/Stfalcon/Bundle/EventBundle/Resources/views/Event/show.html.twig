@@ -1,14 +1,14 @@
 {% extends 'StfalconEventBundle::layout.html.twig' %}
 
-{% block title %}О событии / {{ parent() }}{% endblock %}
+{% block title %}{{ 'event.about'|trans }} / {{ parent() }}{% endblock %}
 
 {% block content %}
-    <h2>О событии</h2>
+    <h2>{{ 'event.about'|trans }}</h2>
 
     <article class="about-event">
         {{ event.about|raw }}
     </article>
 
-    {% include "StfalconEventBundle::_share_buttons.html.twig" %}
+    {% include "@StfalconEvent/_share_buttons.html.twig" %}
 
 {% endblock %}

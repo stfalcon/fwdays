@@ -1,0 +1,39 @@
+Logout: __Logout
+menu.events.my: __menu.events.my
+menu.user.info: __menu.user.info
+menu.referral.title: __menu.referral.title
+menu.check.ticket.bynumber: __menu.check.ticket.bynumber
+menu.logout: __menu.logout
+menu.user.registration: __menu.user.registration
+menu.login: __menu.login
+email: __email
+madeby: __madeby
+tweets.text: __tweets.text
+page.error.notfound: Страница не найдена
+page.error.notfound.error: Ошибка 404
+page.error.notfound.message: Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.
+page.error.notfound.you_can: 'Вы можете:'
+page.error.notfound.you_can1: Вернуться на главную
+page.error.notfound.you_can2: Перейти в любой раздел сайта через верхнее меню
+sponsor.and.partners: Спонсоры и партнеры
+sponsor.partners.title: Партнеры
+sponsor.partners.call_us: <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
+event.get_more_info: Узнать больше
+sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
+news.all: все новости
+news.title: __news.title
+event.get_more_info: __event.get_more_info
+events.past: __events.past
+user.fullname.title: Ваше ім'я та прізвище
+user.name.title: Імя
+user.surname.title: Прізвище
+user.email.title: Електронна пошта
+user.phone.title: Номер телефона
+user.country.title: Країна
+user.city.title: Місто
+user.company.title: Компанія
+user.company_post.title: Посада
+user.subscribe.title: Я згоден отримувати важливі новини на e-mail
+user.refresh.title: Оновити
+user.password.title: Пароль
+user.show_password.title: показати пароль

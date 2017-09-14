@@ -63,6 +63,10 @@ You can set environment `test` for command if you add `--env=test` to it.
 
     $ ./console assets:install web --symlink
 
+### g) Import translations from translate files to bd
+
+    $ ./console lexik:translations:import
+
 Setup dev-env via docker and fig
 ========================================
 

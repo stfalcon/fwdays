@@ -1,14 +1,21 @@
 <div class="soc-plugin-holder">
-    <a class="twitter-timeline" height="350px" width="240px" href="https://twitter.com/fwdays" data-widget-id="370793090891534336">Твиты пользователя @fwdays</a>
+    <a class="twitter-timeline" height="350px" width="240px" href="https://twitter.com/fwdays" data-widget-id="370793090891534336">{{ 'tweets.text'|trans }}</a>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 </div>
 <div class="soc-plugin-holder">
     <div id="fb-root"></div>
+    {% if app.request.locale == 'ru' %}
+        {% set lang = 'ru_RU' %}
+    {% elseif app.request.locale == 'en' %}
+        {% set lang = 'en_EN' %}
+    {% else %}
+        {% set lang = 'uk_UA'%}
+    {% endif %}
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/uk_UA/all.js#xfbml=1&appId=147663055321186";
+      js.src = "//connect.facebook.net/{{ lang }}/all.js#xfbml=1&appId=147663055321186";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
     <div class="fb-like-box" data-href="http://www.facebook.com/fwdays" data-width="240" data-height="375" data-show-faces="true" data-stream="false" data-header="true"></div>

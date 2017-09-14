@@ -33,9 +33,19 @@ class CategoryAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
             ->with('General')
-                ->add('name')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'name'=> [
+                            'label' => 'name',
+                            'locale_options' => $localOptions
+                        ],
+                    ]
+                ])
                 ->add('sortOrder')
             ->end();
     }

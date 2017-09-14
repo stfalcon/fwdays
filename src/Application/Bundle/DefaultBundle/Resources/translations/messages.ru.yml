@@ -1,0 +1,16 @@
+main.menu.go_head: ← На главную
+main.menu.about: О Frameworks Days
+main.menu.events: События
+main.menu.contacts: Контакты
+main.menu.partners: Партнеры
+main.menu.about_event: О событии
+main.menu.speakers: Докладчики
+main.menu.participants: Участники
+share_contact.text: 'Наши партнеры смогут делиться с вами актуальными новостями и привлекательными вакансиями, если вы пожелаете. <br/> <br/> У вас есть право отказаться.'
+share_contact.agree: 'Я согласен'
+share_contact.not_agree: 'Не согласен'
+share_contact.title: 'Ваши контакты для партнеров'
+add_user.company: 'Компания: '
+add_user.city: 'Город: '
+add_user.price:  'Цена: '
+add_user.user_list: 'Список пользователей: '
