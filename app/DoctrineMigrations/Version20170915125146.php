@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170915123725 extends AbstractMigration
+class Version20170915125146 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -30,6 +30,7 @@ class Version20170915123725 extends AbstractMigration
         $this->addSql('ALTER TABLE event__tickets ADD CONSTRAINT FK_66E295591173DC2D FOREIGN KEY (ticket_cost_id) REFERENCES event__ticketsCost (id)');
         $this->addSql('CREATE INDEX IDX_66E295591173DC2D ON event__tickets (ticket_cost_id)');
         $this->addSql('ALTER TABLE event__events ADD dateEnd DATETIME DEFAULT NULL, ADD wantsToVisitCount INT DEFAULT NULL, ADD background_color VARCHAR(7) DEFAULT \'#4e4e84\' NOT NULL');
+        $this->addSql('ALTER TABLE sponsors_category ADD is_wide_container TINYINT(1) NOT NULL');
     }
 
     /**
@@ -47,5 +48,6 @@ class Version20170915123725 extends AbstractMigration
         $this->addSql('ALTER TABLE event__events DROP dateEnd, DROP wantsToVisitCount, DROP background_color');
         $this->addSql('DROP INDEX IDX_66E295591173DC2D ON event__tickets');
         $this->addSql('ALTER TABLE event__tickets DROP ticket_cost_id');
+        $this->addSql('ALTER TABLE sponsors_category DROP is_wide_container');
     }
 }
