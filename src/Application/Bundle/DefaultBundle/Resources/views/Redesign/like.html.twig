@@ -1,8 +1,8 @@
 {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
-    <a href="#" data-rewie class="like-btn__action">{{ 'review.wonna.listen'|trans }}</a>
+    <a data-review="{{ review.slug }}" class="like-btn__action">{{ 'review.wonna.listen'|trans }}</a>
 {% else %}
     <a href="#modal-signin" data-href="{{ app.request.requestUri }}" class="like-btn__action">{{ 'review.wonna.listen'|trans }}</a>
 {% endif %}
-<div class="like-btn__amount">
+<div class="like-btn__amount" data-review="{{ review.slug }}">
     <i class="icon-like like-btn__icon"></i>{{ review.likedUsers.count?review.likedUsers.count }}
 </div>

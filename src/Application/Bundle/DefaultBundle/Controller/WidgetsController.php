@@ -2,7 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,6 +34,16 @@ class WidgetsController extends Controller
 
     /**
      * Like review
+     *
+     * @Route(path="/like/{review_slug}", name="like_review",
+     *     methods={"POST"},
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     * @Security("has_role('ROLE_USER')"))
+     * @ParamConverter("review", options={"mapping": {"review_slug": "slug"}})
+     * @param Review  $review
+     *
+     * @return JsonResponse
      */
     public function likeAction(Review $review)
     {
@@ -44,11 +56,7 @@ class WidgetsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new JsonResponse(['likesCount' => $review->getLikedUsers()->count()]);
-        }
-
-        return $this->redirect($this->generateUrl('event_speakers', array('event_slug' => $review->getEvent()->getSlug())));
+        return new JsonResponse(['result'=> true, 'likesCount' => $review->getLikedUsers()->count()]);
     }
 
     /**
