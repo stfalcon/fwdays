@@ -71,7 +71,7 @@ class SpeakerController extends Controller
 
         return [
             'event'    => $event,
-            'speakers' => $event->getSpeakers(),
+            'speakers' => $speakers,
         ];
     }
 }
