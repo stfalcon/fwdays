@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170915091246 extends AbstractMigration
+class Version20170915123725 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -26,11 +26,10 @@ class Version20170915091246 extends AbstractMigration
         $this->addSql('ALTER TABLE event__ticketsCost ADD CONSTRAINT FK_3D5054F271F7E88B FOREIGN KEY (event_id) REFERENCES event__events (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE user_wants_visit_event ADD CONSTRAINT FK_D23C106DA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
         $this->addSql('ALTER TABLE user_wants_visit_event ADD CONSTRAINT FK_D23C106D71F7E88B FOREIGN KEY (event_id) REFERENCES event__events (id)');
-        $this->addSql('ALTER TABLE event__tickets DROP FOREIGN KEY FK_66E295591173DC2D');
+        $this->addSql('ALTER TABLE event__tickets ADD ticket_cost_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE event__tickets ADD CONSTRAINT FK_66E295591173DC2D FOREIGN KEY (ticket_cost_id) REFERENCES event__ticketsCost (id)');
+        $this->addSql('CREATE INDEX IDX_66E295591173DC2D ON event__tickets (ticket_cost_id)');
         $this->addSql('ALTER TABLE event__events ADD dateEnd DATETIME DEFAULT NULL, ADD wantsToVisitCount INT DEFAULT NULL, ADD background_color VARCHAR(7) DEFAULT \'#4e4e84\' NOT NULL');
-        $this->addSql('ALTER TABLE sponsors_category ADD is_wide_container TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE users ADD name VARCHAR(255) NOT NULL, ADD surname VARCHAR(255) NOT NULL, ADD phone VARCHAR(20) DEFAULT NULL, ADD facebook_id VARCHAR(255) DEFAULT NULL, ADD google_id VARCHAR(255) DEFAULT NULL, CHANGE fullname fullname VARCHAR(255) DEFAULT NULL');
     }
 
     /**
@@ -46,9 +45,7 @@ class Version20170915091246 extends AbstractMigration
         $this->addSql('DROP TABLE event__ticketsCost');
         $this->addSql('DROP TABLE user_wants_visit_event');
         $this->addSql('ALTER TABLE event__events DROP dateEnd, DROP wantsToVisitCount, DROP background_color');
-        $this->addSql('ALTER TABLE event__tickets DROP FOREIGN KEY FK_66E295591173DC2D');
-        $this->addSql('ALTER TABLE event__tickets ADD CONSTRAINT FK_66E295591173DC2D FOREIGN KEY (ticket_cost_id) REFERENCES event__ticketsCost (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE sponsors_category DROP is_wide_container');
-        $this->addSql('ALTER TABLE users DROP name, DROP surname, DROP phone, DROP facebook_id, DROP google_id, CHANGE fullname fullname VARCHAR(255) NOT NULL COLLATE utf8_general_ci');
+        $this->addSql('DROP INDEX IDX_66E295591173DC2D ON event__tickets');
+        $this->addSql('ALTER TABLE event__tickets DROP ticket_cost_id');
     }
 }
