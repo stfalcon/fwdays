@@ -70,5 +70,7 @@ class LoadTicketCost extends AbstractFixture
             ->setEnabled(true)
             ->setEvent($manager->merge($event2));
         $manager->persist($ticketCost4);
+
+        $manager->flush();
     }
 }

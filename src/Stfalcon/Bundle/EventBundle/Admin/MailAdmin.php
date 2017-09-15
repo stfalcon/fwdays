@@ -153,6 +153,6 @@ class MailAdmin extends Admin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('stfalcon_event.admin.mail_queue.list', array('id' => $id))));
+        $menu->addChild('Line items', array('uri' => $admin->generateUrl('mail_queue', array('id' => $id))));
     }
 }
