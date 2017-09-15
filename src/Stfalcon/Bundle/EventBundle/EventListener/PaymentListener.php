@@ -53,7 +53,7 @@ class PaymentListener
                     $event = $ticket->getEvent();
 
                     $successPaymentTemplateContent = $this->mailerHelper->renderTwigTemplate(
-                        'StfalconEventBundle:Interkassa:_mail.html.twig',
+                        'ApplicationDefaultBundle:Interkassa:_mail.html.twig',
                         [
                             'user' => $user,
                             'event' => $event,

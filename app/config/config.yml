@@ -197,8 +197,8 @@ hwi_oauth:
     resource_owners:
         facebook:
             type:                facebook
-            client_id:           %facebook_client_id%
-            client_secret:       %facebook_client_secret%
+            client_id:           "%facebook_client_id%"
+            client_secret:       "%facebook_client_secret%"
             scope:               "email, public_profile"
             infos_url:           "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name"
             paths:
@@ -207,8 +207,8 @@ hwi_oauth:
                 display: page
         google:
             type:                google
-            client_id:           %google_client_id%
-            client_secret:       %google_client_secret%
+            client_id:           "%google_client_id%"
+            client_secret:       "%google_client_secret%"
             scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             paths:
                 email: email
