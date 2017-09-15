@@ -26,7 +26,7 @@ class EventController extends Controller
     /**
      * Show all events
      *
-     * @Route("/events", name="events_redesign")
+     * @Route("/events", name="events")
      * @Template("ApplicationDefaultBundle:Redesign:events.html.twig")
      *
      * @return array
@@ -196,7 +196,7 @@ class EventController extends Controller
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
         } else {
             $url = $request->headers->has('referer') ? $request->headers->get('referer')
-                : $this->generateUrl('homepage_redesign');
+                : $this->generateUrl('homepage');
 
             return $this->redirect($url);
         }

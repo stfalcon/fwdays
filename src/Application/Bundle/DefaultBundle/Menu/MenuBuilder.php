@@ -50,7 +50,7 @@ class MenuBuilder
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'header-nav');
 
-        $menu->addChild($this->translator->trans('main.menu.events'), ['route' => 'events_redesign', ])
+        $menu->addChild($this->translator->trans('main.menu.events'), ['route' => 'events', ])
             ->setAttribute('class','header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.contacts'), ['route' => 'contacts'])
             ->setAttribute('class','header-nav__item');

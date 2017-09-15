@@ -32,9 +32,9 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         $this->router = $router;
         $this->referralService = $referralService;
         $this->userManager = $userManager;
-        $this->homePages[] = trim($router->generate('homepage_redesign', [], true), '\/');
+        $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
         foreach ($locales as $locale) {
-            $this->homePages[] = $router->generate('homepage_redesign', ['_locale' => $locale], true);
+            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
         }
     }
 
@@ -83,7 +83,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
                 $url = $referrer;
                 if ('event_pay' === $requestParams['_route']) {
                     if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
-                        $url = $this->router->generate('homepage_redesign');
+                        $url = $this->router->generate('homepage');
                     }
                     $response = new RedirectResponse($url . '#modal-payment');
                     $cookie = new Cookie('event', $requestParams['event_slug'], time() + 3600, '/', null, false, false);
@@ -103,7 +103,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         }
 
         if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
-            return new RedirectResponse($this->router->generate('homepage_redesign'));
+            return new RedirectResponse($this->router->generate('homepage'));
         } else {
             return new RedirectResponse($referrer);
         }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage_redesign",
+     * @Route("/", name="homepage",
      *     options = {"expose"=true})
      * @Template("ApplicationDefaultBundle:Redesign:index.html.twig")
      */
