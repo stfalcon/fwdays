@@ -32,7 +32,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 40$')
             ->setCount(2)
             ->setEnabled(true)
-            ->setEvent($event1);
+            ->setEvent($manager->merge($event1));
         $manager->persist($ticketCost);
 
         $ticketCost1 = new TicketCost();
@@ -41,7 +41,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 120$')
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($event1);
+            ->setEvent($manager->merge($event1));
         $manager->persist($ticketCost1);
 
         $ticketCost2 = new TicketCost();
@@ -50,7 +50,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 80$')
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($event1);
+            ->setEvent($manager->merge($event1));
         $manager->persist($ticketCost2);
 
         $ticketCost3 = new TicketCost();
@@ -59,7 +59,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 120$')
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($event2);
+            ->setEvent($manager->merge($event2));
         $manager->persist($ticketCost3);
 
         $ticketCost4 = new TicketCost();
@@ -68,7 +68,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 80$')
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($event2);
+            ->setEvent($manager->merge($event2));
         $manager->persist($ticketCost4);
     }
 }
