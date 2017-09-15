@@ -1,12 +1,12 @@
-menu.events.my: __menu.events.my
-menu.user.info: __menu.user.info
-menu.referral.title: __menu.referral.title
+menu.events.my: My events
+menu.user.info: User info
+menu.referral.title: Invite friends
 menu.check.ticket.bynumber: __menu.check.ticket.bynumber
-menu.logout: __menu.logout
-menu.user.registration: __menu.user.registration
-menu.login: __menu.login
-email: __email
-madeby: __madeby
+menu.logout: Logout
+menu.user.registration: Registration
+menu.login: Login
+email: Email
+madeby: made by
 tweets.text: __tweets.text
 page.error.notfound: Страница не найдена
 page.error.notfound.error: Ошибка 404
@@ -128,8 +128,9 @@ interkassa.payment.pending.wait: __interkassa.payment.pending.wait
 events.my: __events.my
 event.detail.info2: __event.detail.info2
 event.about: __event.about
-event.events.title: __event.events.title
+event.events.title: Other events
 event.detail.info1: __event.detail.info1
+events.future: Future events
 ticket.dear_user: __ticke.dear_user
 ticket.wait_for_you: __ticke.wait_for_you
 ticket.city: __ticke.city
@@ -140,13 +141,13 @@ ticket.print.ticket.text2: __ticke.print.ticket.text2
 ticket.print.ticket.text3: __ticke.print.ticket.text3
 ticket.status.download: __ticket.status.download
 ticket.mob_status.download: Download
-ticket.status.pay: __ticket.status.pay
+ticket.status.pay: Buy ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
 ticket.summ_from: Tickets from %summ% grn.
 ticket.status.event.add: __ticket.status.event.add
-ticket.status.paid: __ticket.status.paid
-ticket.status.take_apart: __ticket.status.take_apart
+ticket.status.paid: Paid
+ticket.status.take_apart: register
 ticket.status.not_take_apart : Remove visit
 referral.invaite.title: __referral.invaite.title
 referral.invaite.title2: __referral.invaite.title2
@@ -156,13 +157,13 @@ referral.balance: __referral.balance
 referral.balance.redesign: 'Ваш баланс: %user_balance% грн.'
 referral.invaite.link.text: __referral.invaite.link.text
 delete: __delete
-payment.price: __payment.price
+payment.price: '%summ% grn.'
 payment.discount.cupon: __payment.discount.cupon
 payment.discount.member: __payment.discount.member
 pay.event.title: __pay.event.title
 pay.event.pay_for_other: __pay.event.pay_for_other
-pay.event.one_more_participants: __pay.event.one_more_participants
+pay.event.one_more_participants: pay for one more participant
 pay.event.members_already_paid: __pay.event.members_already_paid
 pay.event.members_without_dicount: __pay.event.members_without_dicount
-pay.event.cupon: __pay.event.cupon
+pay.event.cupon: pay by event cupon
 news_and_anonce.title: __news_and_anonce.title
