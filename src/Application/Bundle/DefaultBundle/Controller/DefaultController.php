@@ -3,176 +3,84 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-/**
- * Class DefaultController
- * @Route("/old")
- */
-class DefaultController extends Controller {
-
+class DefaultController extends Controller
+{
     /**
-     * @Route("/", name="homepage")
-     * @Template()
+     * @Route("/", name="homepage_redesign",
+     *     options = {"expose"=true})
+     * @Template("ApplicationDefaultBundle:Redesign:index.html.twig")
      */
-    public function indexAction() {
-        return array();
+    public function indexAction()
+    {
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(['active' => true ]);
+
+        return [ 'events' => $events];
     }
 
     /**
-     * @Route("/admin/event/{slug}/users/add", name="adminusersadd")
-     * @Secure(roles="ROLE_ADMIN")
-     * @Template()
+     * @Route(path="/cabinet", name="cabinet")
+     * @Security("has_role('ROLE_USER')")
+     * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
      */
-    public function addUsersAction(Event $event) {
-        // @todo удалить этот метод. одноразовый харкод
-        $em = $this->getDoctrine()->getManager();
+    public function cabinetAction()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
+        $ticketRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket');
+        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
 
-        if (isset($_POST['users'])) {
-            $users = explode("\r\n", $_POST['users']);
+        $referralService = $this->get('stfalcon_event.referral.service');
 
-            foreach ($users as $data) {
-                // данные с формы
-                $dt = explode(' ', $data);
-                unset($data);
-                $data['name'] = $dt[0] . ' ' . $dt[1];
-                $data['email'] = $dt[2];
-                $data['discount'] = isset($dt[3]);
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy(['active' => true ]);
 
-                $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $data['email']));
+        return [
+            'user' => $user,
+            'tickets' => $tickets,
+            'events' => $events,
+            'code' => $referralService->getReferralCode(),
+        ];
+    }
 
-                // создаем нового пользователя
-                if (!$user) {
-                    $user = $this->get('fos_user.user_manager')->createUser();
-                    $user->setEmail($data['email']);
-                    $user->setFullname($data['name']);
-
-                    // генерация временного пароля
-                    $password = substr(str_shuffle(md5(time())), 5, 8);
-                    $user->setPlainPassword($password);
-                    $user->setEnabled(true);
-
-                    $this->get('fos_user.user_manager')->updateUser($user);
-
-                    // отправляем сообщение о регистрации
-                    $text = "Приветствуем " . $user->getFullname() ."!
-
-Вы были автоматически зарегистрированы на сайте Frameworks Days.
-
-Ваш временный пароль: " . $password . "
-Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
-
-
----
-С уважением,
-Команда Frameworks Days";
-
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject("Регистрация на сайте Frameworks Days")
-                        // @todo refact
-                        ->setFrom('orgs@fwdays.com', 'Frameworks Days')
-                        ->setTo($user->getEmail())
-                        ->setBody($text);
-
-                    // @todo каждый вызов отнимает память
-                    $this->get('mailer')->send($message);
-
-                    echo "#{$user->getId()} {$user->getFullname()} — Create a new user<br>";
-                } else {
-                    echo "<b>#{$user->getId()} {$user->getFullname()} — already registered</b><br>";
-                }
-
-                // обновляем информацию о компании
-                $user->setCountry('Украина');
-                if (isset($_POST['city'])) {
-                    $user->setCity($_POST['city']);
-                }
-
-                $user->setCompany($_POST['company']);
-                $em->persist($user);
-                $em->flush();
-
-                // проверяем или у него нет билетов на этот ивент
-                /** @var Ticket $ticket */
-                $ticket = $em->getRepository('StfalconEventBundle:Ticket')
-                    ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
-
-                if (!$ticket) {
-                    $ticket = new Ticket();
-                    $ticket->setEvent($event);
-                    $ticket->setUser($user);
-
-                    $em->persist($ticket);
-                }
-
-                if ($ticket->isPaid()) {
-                    echo "<b>he has already paid participation in the conference!</b><br>";
-                } else {
-                    // цена участия (с учетом скидки)
-                    $amount = $data['discount'] ? $_POST['amount'] * 0.8 : $_POST['amount'];
-                    $ticket->setAmount($amount);
-                    $ticket->setHasDiscount($data['discount']);
-                    $ticket->setAmountWithoutDiscount($_POST['amount']);
-
-                    $oldPayment = $ticket->getPayment();
-
-                    if ($oldPayment) {
-                        $oldPayment->removeTicket($ticket);
-                        $em->persist($oldPayment);
-                    }
-                    echo "create a new payment<br>";
-                    $payment = new Payment();
-
-                    $payment->setUser($user);
-                    $payment->addTicket($ticket);
-                    $em->persist($payment);
-                    $em->flush();
-
-                    // обновляем шлюз и статус платежа
-                    $payment->setGate('admin');
-                    $payment->markedAsPaid();
-
-                    // сохраняем все изменения
-                    $em->flush();
-
-                    echo "mark as paid<br>";
-                }
-            }
-
-            echo 'complete';
-            exit;
-        }
-
+    /**
+     * @Route("/contacts", name="contacts")
+     * @Template("ApplicationDefaultBundle:Redesign:contacts.html.twig")
+     */
+    public function contactsAction()
+    {
         return [];
     }
-
     /**
-     * Widget share contacts
+     * @Route("/page/{slug}", name="show_page")
      *
-     * @return Response
+     * @param string $slug
+     * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
+     *
+     * @return array
      */
-    public function widgetShareContactsAction()
+    public function pageAction($slug)
     {
-        /**
-         * @var User $user
-         */
-        if (null !== ($user = $this->getUser())) {
-
-            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-            }
+        $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
+            ->findOneBy(['slug' => $slug]);
+        if (!$staticPage) {
+            $this->createNotFoundException('Page not found! '.$slug);
         }
 
-        return new Response();
+        return ['text' => $staticPage->getText()];
     }
 
     /**
@@ -180,9 +88,9 @@ class DefaultController extends Controller {
      *
      * @param string $reply
      *
-     * @Secure(roles="ROLE_USER")
+     * @Security("has_role('ROLE_USER')")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function shareContactsAction($reply = 'no')
     {

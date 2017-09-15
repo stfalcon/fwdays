@@ -16,7 +16,7 @@ page.error.notfound.you_can1: Вернуться на главную
 page.error.notfound.you_can2: Перейти в любой раздел сайта через верхнее меню
 sponsor.and.partners: Спонсоры и партнеры
 sponsor.partners.title: Партнеры
-sponsor.partners.call_us: <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
+sponsor.partners.call_us: <a href="/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
 event.get_more_info: Узнать больше
 sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
 news.all: все новости
@@ -48,3 +48,121 @@ event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.other.title: всі інші квитки
 sold_out.title: Продано
+sponsor.partners.can_be_your_logo: __sponsor.partners.can_be_your_logo
+sponsor.partners.title: __sponsor.partners.title
+sponsor.partners.call_us: __sponsor.partners.call_us
+sponsor.and.partners: __sponsor.and.partners
+main.menu.go_head: ← На головну
+main.menu.about: Про Frameworks Days
+main.menu.events: Події
+main.menu.contacts: Контакти
+main.menu.partners: Партнери
+main.menu.about_event: Про подію
+main.menu.speakers: Доповідачі
+main.menu.participants: Участники
+main.menu.cabinet: Кабінет
+share_contact.text: __share_contact.text
+share_contact.agree: __share_contact.agree
+share_contact.not_agree: __share_contact.not_agree
+share_contact.title: __share_contact.title
+add_user.company: __add_user.company
+add_user.city: __add_user.city
+add_user.price: __add_user.price
+add_user.user_list: __add_user.user_list
+image.home.title: Series of high-caliber developer events in Ukraine
+image.home.description: Since 2007, more then 30 events
+video.description.text: '<p> Традиционно, мы выбрали для вас актуальные и полезные темы докладов от продвинутых иностранных и украинских экспертов с большим практическим опытом работы. </p> <p> Вас ждут доклады в 3 потока, общение со спикерами, перерывы на вкусные кофе-брейки и питательный обед. </p>'
+our.youtube.channel: Наш YouTube канал
+more.gallery.link: Все галереи на Flickr
+in.lang.link: In English
+ticket.status.event_done: Событие состоялось
+event.page.program: Програма
+event.page.venue: Місце проведення
+event_cost.title: Вартість участі
+user.by_user.title: Війдіть як користувач
+user.by_email.title: Або по почті
+menu.profile.my: Профіль
+user.name.title: Імя
+user.surname.title: Прізвище
+user.email.title: Електронна пошта
+user.phone.title: Номер телефона
+user.country.title: Країна
+user.city.title: Місто
+user.company.title: Компанія
+user.company_post.title: Посада
+user.subscribe.title: Я згоден отримувати важливі новини на e-mail
+user.refresh.title: Оновити
+user.create.title: Створити аккаунт
+user.already_have_account.title: У мене вже є обліковий запис
+referral.program.conditions.title: Умови програмы
+referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
+referral.share.title: Поділитись
+referral.link.copied: Скопійовано
+popup.header.title: Оплата участі в конференції %event_name%
+cancel.title: Отмена
+add.title: Додати
+Dashboard: __Dashboard
+parcipiant.list.all: __parcipiant.list.all
+parcipiant.speakers.title: __parcipiant.speakers.title
+parcipiant.title: __parcipiant.title
+review.wonna.listen: Хочу послухати
+speaker.list.all: __speaker.list.all
+speaker.title: Спікери
+speaker.review.title: __speaker.review.title
+ticket.email.waitfornews: __ticket.email.waitfornews
+ticket.email.unsubscribe: __ticket.email.unsubscribe
+ticket.email.team: __ticket.email.team
+news.to_the_list: __news.to_the_list
+news.title: __news.title
+interkassa.payment.fail: __interkassa.payment.fail
+interkassa.payment.fail.back: __interkassa.payment.fail.back
+interkassa.mail.msg.hello: __interkassa.mail.msg.hello
+interkassa.mail.msg.thanks: __interkassa.mail.msg.thanks
+interkassa.mail.msg.remember: __interkassa.mail.msg.remember
+interkassa.mail.msg.remember1: __interkassa.mail.msg.remember1
+interkassa.mail.msg.ticket: __interkassa.mail.msg.ticket
+interkassa.payment.success: __interkassa.payment.success
+interkassa.payment.success.emailsend: __interkassa.payment.success.emailsend
+interkassa.payment.pending: __interkassa.payment.pending
+interkassa.payment.pending.wait: __interkassa.payment.pending.wait
+events.my: __events.my
+event.detail.info2: __event.detail.info2
+event.about: __event.about
+event.events.title: __event.events.title
+event.detail.info1: __event.detail.info1
+ticket.dear_user: __ticke.dear_user
+ticket.wait_for_you: __ticke.wait_for_you
+ticket.city: __ticke.city
+ticket.registration.begin: __ticket.registration.begin
+ticket.event.programm: __ticke.event.programm
+ticket.print.ticket.text1: __ticke.print.ticket.text1
+ticket.print.ticket.text2: __ticke.print.ticket.text2
+ticket.print.ticket.text3: __ticke.print.ticket.text3
+ticket.status.download: __ticket.status.download
+ticket.mob_status.download: Скачати
+ticket.status.pay: __ticket.status.pay
+ticket.mob_status.pay: Купити
+ticket.status.pay_for: Купити за
+ticket.summ_from: Квитки від %summ% грн.
+ticket.status.event.add: __ticket.status.event.add
+ticket.status.paid: __ticket.status.paid
+ticket.status.take_apart: __ticket.status.take_apart
+ticket.status.not_take_apart : Відписатись
+referral.invaite.title: __referral.invaite.title
+referral.invaite.title2: __referral.invaite.title2
+referral.invaite.text1: __referral.invaite.text1
+referral.invaite.text2: __referral.invaite.text2
+referral.balance: __referral.balance
+referral.balance.redesign: 'Ваш баланс: %user_balance% грн.'
+referral.invaite.link.text: __referral.invaite.link.text
+delete: __delete
+payment.price: __payment.price
+payment.discount.cupon: __payment.discount.cupon
+payment.discount.member: __payment.discount.member
+pay.event.title: __pay.event.title
+pay.event.pay_for_other: __pay.event.pay_for_other
+pay.event.one_more_participants: __pay.event.one_more_participants
+pay.event.members_already_paid: __pay.event.members_already_paid
+pay.event.members_without_dicount: __pay.event.members_without_dicount
+pay.event.cupon: __pay.event.cupon
+news_and_anonce.title: __news_and_anonce.title

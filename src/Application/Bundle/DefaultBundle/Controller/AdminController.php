@@ -1,0 +1,324 @@
+<?php
+
+namespace Application\Bundle\DefaultBundle\Controller;
+
+use Application\Bundle\UserBundle\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+class AdminController extends Controller
+{
+    /**
+     * @Route("/admin/event/{slug}/users/add", name="adminusersadd")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Template()
+     */
+    public function addUsersAction(Event $event) {
+        // @todo удалить этот метод. одноразовый харкод
+        $em = $this->getDoctrine()->getManager();
+
+        if (isset($_POST['users'])) {
+            $users = explode("\r\n", $_POST['users']);
+
+            foreach ($users as $data) {
+                // данные с формы
+                $dt = explode(' ', $data);
+                unset($data);
+                $data['name'] = $dt[0] . ' ' . $dt[1];
+                $data['email'] = $dt[2];
+                $data['discount'] = isset($dt[3]);
+
+                $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $data['email']));
+
+                // создаем нового пользователя
+                if (!$user) {
+                    $user = $this->get('fos_user.user_manager')->createUser();
+                    $user->setEmail($data['email']);
+                    $user->setFullname($data['name']);
+
+                    // генерация временного пароля
+                    $password = substr(str_shuffle(md5(time())), 5, 8);
+                    $user->setPlainPassword($password);
+                    $user->setEnabled(true);
+
+                    $this->get('fos_user.user_manager')->updateUser($user);
+
+                    // отправляем сообщение о регистрации
+                    $text = "Приветствуем " . $user->getFullname() ."!
+
+Вы были автоматически зарегистрированы на сайте Frameworks Days.
+
+Ваш временный пароль: " . $password . "
+Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
+
+
+---
+С уважением,
+Команда Frameworks Days";
+
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject("Регистрация на сайте Frameworks Days")
+                        // @todo refact
+                        ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                        ->setTo($user->getEmail())
+                        ->setBody($text);
+
+                    // @todo каждый вызов отнимает память
+                    $this->get('mailer')->send($message);
+
+                    echo "#{$user->getId()} {$user->getFullname()} — Create a new user<br>";
+                } else {
+                    echo "<b>#{$user->getId()} {$user->getFullname()} — already registered</b><br>";
+                }
+
+                // обновляем информацию о компании
+                $user->setCountry('Украина');
+                if (isset($_POST['city'])) {
+                    $user->setCity($_POST['city']);
+                }
+
+                $user->setCompany($_POST['company']);
+                $em->persist($user);
+                $em->flush();
+
+                // проверяем или у него нет билетов на этот ивент
+                /** @var Ticket $ticket */
+                $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                    ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+
+                if (!$ticket) {
+                    $ticket = new Ticket();
+                    $ticket->setEvent($event);
+                    $ticket->setUser($user);
+
+                    $em->persist($ticket);
+                }
+
+                if ($ticket->isPaid()) {
+                    echo "<b>he has already paid participation in the conference!</b><br>";
+                } else {
+                    // цена участия (с учетом скидки)
+                    $amount = $data['discount'] ? $_POST['amount'] * 0.8 : $_POST['amount'];
+                    $ticket->setAmount($amount);
+                    $ticket->setHasDiscount($data['discount']);
+                    $ticket->setAmountWithoutDiscount($_POST['amount']);
+
+                    $oldPayment = $ticket->getPayment();
+
+                    if ($oldPayment) {
+                        $oldPayment->removeTicket($ticket);
+                        $em->persist($oldPayment);
+                    }
+                    echo "create a new payment<br>";
+                    $payment = new Payment();
+
+                    $payment->setUser($user);
+                    $payment->addTicket($ticket);
+                    $em->persist($payment);
+                    $em->flush();
+
+                    // обновляем шлюз и статус платежа
+                    $payment->setGate('admin');
+                    $payment->markedAsPaid();
+
+                    // сохраняем все изменения
+                    $em->flush();
+
+                    echo "mark as paid<br>";
+                }
+            }
+
+            echo 'complete';
+            exit;
+        }
+
+        return [];
+    }
+
+    /**
+     * Widget share contacts
+     *
+     * @return Response
+     */
+    public function widgetShareContactsAction()
+    {
+        /**
+         * @var User $user
+         */
+        if (null !== ($user = $this->getUser())) {
+
+            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
+            }
+        }
+
+        return new Response();
+    }
+
+    /**
+     * Send messages for all users in mail queue (using console command)
+     *
+     * @return Response
+     *
+     */
+    public function userSendAction()
+    {
+        if (!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
+            throw $this->createNotFoundException("Page not found");
+        }
+
+        $command = $this->get('user_mail_command_service');
+        $output  = new ConsoleOutput();
+
+        $arguments = array(
+            '--amount' => '5',
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
+
+        return new Response('complete');
+    }
+
+    /**
+     * Send messages only for admins
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function adminSendAction(Request $request)
+    {
+        $id = $request->get($this->admin->getIdParameter());
+
+        $mail = $this->admin->getObject($id);
+
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $this->get('session');
+
+        if (!$mail) {
+            $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
+
+            return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
+        }
+
+        if ($mail->getId()) {
+            /**
+             * @var \Doctrine\ORM\EntityManager $em
+             * @var \Swift_Mailer $mailer
+             * @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper
+             */
+            $em = $this->get('doctrine')->getEntityManager('default');
+            $mailer = $this->get('mailer');
+            $mailerHelper = $this->get('stfalcon_event.mailer_helper');
+
+            $users = $em->getRepository('ApplicationUserBundle:User')->getAdmins();
+            $isTestMessage = true;
+
+            $error = false;
+            foreach ($users as $user) {
+                if (!$mailer->send($mailerHelper->formatMessage($user, $mail, $isTestMessage))) {
+                    $error = true;
+                }
+            }
+            if ($error) {
+                $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+
+                return new RedirectResponse($this->admin->generateUrl('list'));
+            }
+        }
+
+        $this->get('session')->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
+
+        return new RedirectResponse($this->admin->generateUrl('list'));
+    }
+
+    /**
+     * Show Statistic
+     *
+     *
+     * @return Response
+     *
+     * @Method({"GET", "POST"})
+     */
+    public function showStatisticAction()
+    {
+        $repo = $this   ->getDoctrine()
+            ->getManager()
+            ->getRepository('ApplicationUserBundle:User');
+
+        //сколько людей отказалось предоставлять свои данные партнерам
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.allowShareContacts = :allowShareContacts');
+        $qb->setParameter('allowShareContacts', 0);
+        $countRefusedProvideData = $qb->getQuery()->getSingleScalarResult();
+
+        //сколько согласилось
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.allowShareContacts = :allowShareContacts');
+        $qb->setParameter('allowShareContacts', 1);
+        $countAgreedProvideData = $qb->getQuery()->getSingleScalarResult();
+
+        //сколько еще не ответило
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->isNull('u.allowShareContacts'));
+        $countNotAnswered = $qb->getQuery()->getSingleScalarResult();
+
+        //сколько было переходов
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->isNotNull('u.userReferral'));
+        $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
+
+
+        return $this->render('@StfalconEvent/Statistic/statistic.html.twig', [
+            'admin_pool'  => $this->container->get('sonata.admin.pool'),
+            'data'        => [
+                'countRefusedProvideData' => $countRefusedProvideData,
+                'countAgreedProvideData'  => $countAgreedProvideData,
+                'countNotAnswered'        => $countNotAnswered,
+                'countUseReferralProgram' => $countUseReferralProgram
+            ]
+        ]);
+    }
+
+    /**
+     * Start mail action
+     *
+     * @Route("/mail/{id}/start/{value}", name="admin_start_mail")
+     * @param Request $request Request
+     * @param Mail    $mail    Mail
+     * @param int     $value   Value
+     *
+     * @return JsonResponse
+     */
+    public function startMailAction(Request $request, Mail $mail, $value)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mail->setStart((bool) $value);
+        $em->persist($mail);
+        $em->flush();
+
+        return new JsonResponse([
+            'status' => true,
+            'value'  => $value,
+        ]);
+    }
+
+
+}

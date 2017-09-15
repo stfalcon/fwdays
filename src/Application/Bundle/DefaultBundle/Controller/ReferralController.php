@@ -1,8 +1,9 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Controller;
+namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,7 +16,7 @@ use Stfalcon\Bundle\EventBundle\Service\ReferralService;
 /**
  * Referral controller
  */
-class ReferralController extends BaseController
+class ReferralController extends Controller
 {
     /**
      * @param string $code  Code
@@ -42,7 +43,7 @@ class ReferralController extends BaseController
             $response->send();
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $event = $em->getRepository('StfalconEventBundle:Event')->findBy(['slug' => $eventSlug]);
 
         if ($event) {
@@ -52,30 +53,5 @@ class ReferralController extends BaseController
         }
 
         return $this->redirect($url);
-    }
-
-    /**
-     *
-     * @return array
-     *
-     * @Secure(roles="ROLE_USER")
-     *
-     * @Route("/referral", name="referral_page")
-     *
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $referralService = $this->get('stfalcon_event.referral.service');
-
-        /**
-         * @var User $user
-         */
-        $user = $this->getUser();
-
-        return [
-            'balance' => $user->getBalance(),
-            'code'    => $referralService->getReferralCode()
-        ];
     }
 }

@@ -2,9 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class WidgetsController extends Controller
@@ -13,6 +16,7 @@ class WidgetsController extends Controller
      * @param Request $request
      * @param string $position
      * @Template("ApplicationDefaultBundle:Redesign:language_switcher.html.twig")
+     *
      * @return array
      */
     public function languageSwitcherAction($request, $position = 'header')

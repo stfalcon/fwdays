@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Controller;
+namespace Application\Bundle\DefaultBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class TicketAdminController extends CoreController
 {
-
     /**
      * Check that ticket number is valid
      *
@@ -66,4 +65,4 @@ class TicketAdminController extends CoreController
             ];
         }
     }
-} 
+}

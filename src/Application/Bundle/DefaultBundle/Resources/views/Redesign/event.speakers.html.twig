@@ -5,7 +5,7 @@
         <div class="speakers__box">
             <h2 class="h2 speakers__title">{{ 'speaker.title'|trans }}</h2>
             <ul class="speakers__items">
-                {% render controller('ApplicationDefaultBundle:Event:eventSpeakers', {'event':event}) %}
+                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers', {'event':event}) %}
             </ul>
         </div>
     {% endif %}
@@ -13,7 +13,7 @@
         <div class="speakers__box">
             <h2 class="h2 speakers__title">{{ 'candidate.speaker.title'|trans }}</h2>
             <ul class="speakers__items">
-                {% render controller('ApplicationDefaultBundle:Event:eventSpeakers', {'event':event, 'isCandidates':true }) %}
+                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers', {'event':event, 'isCandidates':true }) %}
             </ul>
         </div>
     {% endif %}

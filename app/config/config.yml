@@ -8,9 +8,6 @@ parameters:
     graylog.fromname: "https://frameworksdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
-    captcha_secret_key: %google_captcha_secret_key%
-    captcha_site_key: %google_captcha_site_key%
-    captcha_check_url: https://www.google.com/recaptcha/api/siteverify
 
 framework:
     #esi:             ~
@@ -33,8 +30,6 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-    globals:
-        captcha_site_key: %captcha_site_key%
     form:
         resources:
             - 'SonataCoreBundle:Form:colorpicker.html.twig'
@@ -107,7 +102,7 @@ fos_user:
         form:
             type: application_user_registration
         confirmation:
-            enabled:    true
+            enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:

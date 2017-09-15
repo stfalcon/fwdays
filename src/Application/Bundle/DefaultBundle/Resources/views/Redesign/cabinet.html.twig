@@ -91,19 +91,19 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label form-label--required" for="">{{ 'user.name.title'|trans }}</label>
-                            <input class="input" type="text" name="fos_user_profile_form[name]" value="{{ user.name }}">
+                            <input class="input" type="text" name="fos_user_profile_form[name]" required value="{{ user.name }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
                         <label class="form-label form-label--required" for="">{{ 'user.surname.title'|trans }}</label>
-                        <input class="input" type="text" name="fos_user_profile_form[surname]" value="{{ user.surname }}">
+                        <input class="input" type="text" name="fos_user_profile_form[surname]" required value="{{ user.surname }}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label form-label--required" for="fos_user_profile_form_email">{{ 'user.email.title'|trans }}</label>
-                            <input class="input" type="email" id="fos_user_profile_form_email" name="fos_user_profile_form[email]" value="{{ user.email }}">
+                            <input class="input" type="email" id="fos_user_profile_form_email" required name="fos_user_profile_form[email]" value="{{ user.email }}">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
