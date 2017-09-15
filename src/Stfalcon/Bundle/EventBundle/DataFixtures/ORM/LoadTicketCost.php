@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
+namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\DataFixtures\AbstractFixture;
