@@ -88,13 +88,22 @@ fos_js_routing:
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /connect
+    options:
+        i18n: false
+
 
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
+    options:
+        i18n: false
 
 facebook_login:
     path: /login/check-facebook
+    options:
+        i18n: false
 
 google_login:
     path: /login/check-google
+    options:
+        i18n: false
