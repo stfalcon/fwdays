@@ -5,19 +5,19 @@
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
-                <label class="form-label" for="">{{ 'user.email.title'|trans }}</label>
-                <input class="input" type="email" name="_username" value="">
+                <label class="form-label" for="user_email">{{ 'user.email.title'|trans }}</label>
+                <input class="input" type="email" id="user_email" name="_username" value="">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <label class="form-label" for="">{{ 'user.password.title'|trans }}</label>
-            <input class="input" type="password" name="_password" value="">
+            <label class="form-label" for="user_password">{{ 'user.password.title'|trans }}</label>
+            <input class="input" type="password" id="user_password" name="_password" value="">
         </div>
     </div>
     <div class="form-row form-row--checkbox">
         <div class="form-col">
             <div class="checkbox">
-                <input id="check1" type="checkbox" class="checkbox__input">
+                <input id="check1" type="checkbox" name="_remember_me" class="checkbox__input">
                 <label for="check1" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
             </div>
         </div>
