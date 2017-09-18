@@ -9,5 +9,8 @@ deploy_callbacks:
         - 'sed -i "s/facebook_client_secret =.*/facebook_client_secret = `echo -n $APP_FACEBOOK_CLIENT_SECRET`/" app/config/parameters.ini'
         - 'sed -i "s/google_client_id =.*/google_client_id = `echo -n $APP_GOOGLE_CLIENT_ID`/" app/config/parameters.ini'
         - 'sed -i "s/google_client_secret =.*/google_client_secret = `echo -n $APP_GOOGLE_CLIENT_SECRET`/" app/config/parameters.ini'
+        - 'npm install -g gulp'
+        - 'npm install'
+        - 'npm run gulp-prod'
     after_deploy:
         - "php app/console lexik:translations:import"
