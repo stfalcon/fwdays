@@ -21,22 +21,27 @@ class PaymentGACommerceListener
      * @var \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
      */
     private $gacommerce;
-
+    /**
+     * @var string
+     */
+    private $environment;
     /**
      * @param Container                                       $container
      * @param \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
+     * @param string $environment
      */
-    public function __construct($container, $gacommerce)
+    public function __construct($container, $gacommerce, $environment)
     {
         $this->container  = $container;
         $this->gacommerce = $gacommerce;
+        $this->environment = $environment;
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof Payment) {
+        if ($entity instanceof Payment && 'prod' === $this->environment) {
             if ($entity->getStatus() === Payment::STATUS_PAID) {
 
                 $tickets = $this->container->get('doctrine')

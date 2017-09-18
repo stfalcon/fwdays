@@ -229,6 +229,7 @@
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
             <argument type="service" id="service_container"/>
             <argument type="service" id="stfalcon_event.gacommerce"/>
+            <argument>%kernel.environment%</argument>
         </service>
 
         <service id="sonata.block.service.statistic" class="Stfalcon\Bundle\EventBundle\Service\StatisticBlockService">
