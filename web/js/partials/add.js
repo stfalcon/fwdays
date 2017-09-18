@@ -179,7 +179,8 @@ $(document).ready(function () {
             });
     });
 
-    $('.like-btn__action').on('click', function () {
+    $(document).on('click', '.like-btn-js', function (e) {
+        e.preventDefault();
         var rv_slug = $(this).data('review');
         $.post(Routing.generate('like_review', {review_slug: rv_slug}),
             function (data) {
