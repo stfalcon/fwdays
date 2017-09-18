@@ -12,3 +12,6 @@
 # Application
 /web/tmp/*
 /web/uploads/*
+/node_modules
+.idea
+/web/assets
