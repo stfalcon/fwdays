@@ -1,29 +1,38 @@
 <form action="{{ path('fos_user_registration_register') }}" method="POST">
-    <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]" value="{{csrf_token('registration')}}"/>
+    <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]"
+           value="{{ csrf_token('registration') }}"/>
     <div class="form-hint">{{ 'menu.user.registration'|trans }}</div>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
-                <label class="form-label form-label--required" for="fos_user_registration_form_name">{{ 'user.name.title'|trans }}</label>
-                <input class="input" type="text" id="fos_user_registration_form_name" name="fos_user_registration_form[name]" value="">
+                <label class="form-label form-label--required"
+                       for="fos_user_registration_form_name">{{ 'user.name.title'|trans }}</label>
+                <input class="input" type="text" id="fos_user_registration_form_name"
+                       name="fos_user_registration_form[name]" value="">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <label class="form-label form-label--required" for="fos_user_registration_form_surname">{{ 'user.surname.title'|trans }}</label>
-            <input class="input" type="text" id="fos_user_registration_form_surname" name="fos_user_registration_form[surname]" value="">
+            <label class="form-label form-label--required"
+                   for="fos_user_registration_form_surname">{{ 'user.surname.title'|trans }}</label>
+            <input class="input" type="text" id="fos_user_registration_form_surname"
+                   name="fos_user_registration_form[surname]" value="">
         </div>
     </div>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
-                <label class="form-label form-label--required" for="fos_user_registration_form_email">{{ 'user.email.title'|trans }}</label>
-                <input class="input" type="email" id="fos_user_registration_form_email" name="fos_user_registration_form[email]" value="">
+                <label class="form-label form-label--required"
+                       for="fos_user_registration_form_email">{{ 'user.email.title'|trans }}</label>
+                <input class="input" type="email" id="fos_user_registration_form_email"
+                       name="fos_user_registration_form[email]" value="">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <label class="form-label form-label--required" for="fos_user_registration_form_plainPassword">{{ 'user.password.title'|trans }}</label>
+            <label class="form-label form-label--required"
+                   for="fos_user_registration_form_plainPassword">{{ 'user.password.title'|trans }}</label>
             <div class="input-password">
-                <input class="input input-password__field" type="password" id="fos_user_registration_form_plainPassword" name="fos_user_registration_form[plainPassword]" value="">
+                <input class="input input-password__field" type="password" id="fos_user_registration_form_plainPassword"
+                       name="fos_user_registration_form[plainPassword]" value="">
                 <i class="input-password__icon icon-eye icon-password--js"></i>
             </div>
         </div>
@@ -32,25 +41,31 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label" for="fos_user_registration_form_phone">{{ 'user.phone.title'|trans }}</label>
-                <input class="input mask-phone-input--js" type="tel" id="fos_user_registration_form_phone" name="fos_user_registration_form[phone]" value="">
+                <input class="input mask-phone-input--js" type="tel" id="fos_user_registration_form_phone"
+                       name="fos_user_registration_form[phone]" value="">
             </div>
         </div>
     </div>
     <div class="form-row form-row--checkbox">
         <div class="form-col">
             <div class="checkbox">
-                <input id="fos_user_registration_form_subscribe" type="checkbox" name="fos_user_registration_form[subscribe]" class="checkbox__input" checked>
-                <label for="fos_user_registration_form_subscribe" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
+                <input id="fos_user_registration_form_subscribe" type="checkbox"
+                       name="fos_user_registration_form[subscribe]" class="checkbox__input" checked>
+                <label for="fos_user_registration_form_subscribe"
+                       class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
             </div>
         </div>
     </div>
     <div class="form-row form-row--align-center">
         <div class="form-col form-col--6 form-col--xs-12">
-            <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.create.title'|trans }}</button>
+            <button class="btn btn--primary btn--lg form-col__btn"
+                    type="submit">{{ 'user.create.title'|trans }}</button>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="help-links">
-                <a href="{{ loginLink }}" class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
+                <div class="help-links__item">
+                    <a href="{{ loginLink }}" class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
+                </div>
             </div>
         </div>
     </div>
