@@ -1,6 +1,7 @@
 <?php
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -103,6 +104,9 @@ class PaymentAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var User $user */
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+
         $formMapper
             ->with('General')
                 ->add('amount', 'money', array(
@@ -127,7 +131,8 @@ class PaymentAdmin extends Admin
                 ))
                 ->add('user')
                 ->add('tickets', null, [
-                    'by_reference' => false
+                    'by_reference' => false,
+                    'disabled' => !($user && $user->hasRole('ROLE_SUPER_ADMIN')),
                 ])
             ->end();
     }

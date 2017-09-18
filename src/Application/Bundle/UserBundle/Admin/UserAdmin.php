@@ -1,6 +1,7 @@
 <?php
 namespace Application\Bundle\UserBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -37,6 +38,8 @@ class UserAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var User $user */
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         $formMapper
             ->with('General')
             ->add('fullname')
@@ -51,10 +54,10 @@ class UserAdmin extends Admin
                 'sonata_type_collection',
                 [
                     'by_reference' => false,
-                    'disabled' => true,
+                    'disabled' => !($user && $user->hasRole('ROLE_SUPER_ADMIN')),
                 ],
                 [
-                    'readonly' => true,
+                    'readonly' => !($user && $user->hasRole('ROLE_SUPER_ADMIN')),
                     'edit' => 'inline',
                     'inline' => 'table',
                     'sortable' => 'id',

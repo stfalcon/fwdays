@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -122,6 +123,9 @@ class TicketAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var User $user */
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+
         $formMapper
             ->add('event')
             ->add(
@@ -131,7 +135,9 @@ class TicketAdmin extends Admin
                     'currency' => 'UAH'
                 ]
             )
-            ->add('payment')
+            ->add('payment', null, [
+                'disabled' => !($user && $user->hasRole('ROLE_SUPER_ADMIN')),
+            ])
             ->add('used')
         ;
     }
