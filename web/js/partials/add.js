@@ -185,9 +185,9 @@ $(document).ready(function () {
         $.post(Routing.generate('like_review', {review_slug: rv_slug}),
             function (data) {
                 if (data.result) {
-                    $("div[data-review="+rv_slug+"]").html('<i class="icon-like like-btn__icon"></i>'+data.likesCount);
+                    $("div[data-review='"+ rv_slug+"']").html('<i class="icon-like like-btn__icon"></i>'+data.likesCount);
                 } else {
-                    $("div[data-review="+rv_slug+"]").html('<i class="icon-like like-btn__icon"></i>error');
+                    $("div[data-review='"+rv_slug+"']").html('<i class="icon-like like-btn__icon"></i>error');
                 }
         });
     });
