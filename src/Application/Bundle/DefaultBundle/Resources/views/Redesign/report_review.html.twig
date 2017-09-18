@@ -75,7 +75,10 @@
                 </div>
                 {% endfor %}
                 <article class="review-info review-layout__info">
-                    {{ review.text|raw }}
+
+                    <div class="review-description">
+                        {{ review.text|raw }}
+                    </div>
                     <div class="share-buttons">
                         <div class="share-buttons__item">
                             <a class="twitter-share-button"
