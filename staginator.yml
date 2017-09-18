@@ -5,5 +5,9 @@ deploy_callbacks:
         - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
         - 'sed -i "s/google_captcha_secret_key =.*/google_captcha_secret_key     = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
         - 'sed -i "s/google_captcha_site_key =.*/google_captcha_site_key     = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
+        - 'sed -i "s/facebook_client_id =.*/facebook_client_id = `echo -n $APP_FACEBOOK_CLIENT_ID`/" app/config/parameters.ini'
+        - 'sed -i "s/facebook_client_secret =.*/facebook_client_secret = `echo -n $APP_FACEBOOK_CLIENT_SECRET`/" app/config/parameters.ini'
+        - 'sed -i "s/google_client_id =.*/google_client_id = `echo -n $APP_GOOGLE_CLIENT_ID`/" app/config/parameters.ini'
+        - 'sed -i "s/google_client_secret =.*/google_client_secret = `echo -n $APP_GOOGLE_CLIENT_SECRET`/" app/config/parameters.ini'
     after_deploy:
         - "php app/console lexik:translations:import"
