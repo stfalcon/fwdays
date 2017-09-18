@@ -2,18 +2,24 @@
 
 {% block shareButtonsScripts %}
     <!--BEGIN Share buttons scripts-->
+    {% if app.request.locale == 'uk' %}
+        {% set lang = 'uk_UA' %}
+    {% else %}
+        {% set lang = 'en_US' %}
+    {% endif %}
     <div id="fb-root"></div>
     <script>(function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s);
             js.id = id;
-            js.src = "//connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v2.9&appId=1607562856200764";
+            js.src = "//connect.facebook.net/{{ lang }}/all.js#appId=147663055321186&xfbml=1";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
+
     <script src="https://apis.google.com/js/platform.js" async defer>
         {
-            lang: 'ru'
+            lang: '{{ app.request.locale }}'
         }
     </script>
     <script>window.twttr = (function (d, s, id) {
@@ -70,6 +76,21 @@
                 {% endfor %}
                 <article class="review-info review-layout__info">
                     {{ review.text|raw }}
+                    <div class="share-buttons">
+                        <div class="share-buttons__item">
+                            <a class="twitter-share-button"
+                               href="https://twitter.com/intent/tweet">
+                                Tweet</a>
+                        </div>
+                        <div class="share-buttons__item">
+                            <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+                        </div>
+
+
+                        <div class="share-buttons__item">
+                            <div class="g-plusone" data-size="medium"></div>
+                        </div>
+                    </div>
                 </article>
             </div>
         </div>
