@@ -5,14 +5,15 @@ namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 /**
  * LoadSpeakerData Class
  */
-class LoadSpeakerData extends AbstractFixture
+class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     private $abouts = [
         '<ul class="presenter-facts">
@@ -35,7 +36,15 @@ class LoadSpeakerData extends AbstractFixture
 </ul>'
     ];
 
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Return fixture classes fixture is dependent on
@@ -67,7 +76,7 @@ class LoadSpeakerData extends AbstractFixture
             ->setCompany('Stfalcon')
             ->setAbout($this->abouts[0])
             ->setSlug('andrew-shkodyak')
-            ->setFile($this->_generateUploadedFile('speaker-1.png'))
+            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventJsDay, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad]);
         $manager->persist($speaker);
@@ -79,7 +88,7 @@ class LoadSpeakerData extends AbstractFixture
             ->setCompany('Stfalcon')
             ->setAbout($this->abouts[1])
             ->setSlug('valeriy-rabievskiy')
-            ->setFile($this->_generateUploadedFile('speaker-1.png'))
+            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventPHPDay2018, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017]);
         $manager->persist($speaker);
@@ -92,9 +101,9 @@ class LoadSpeakerData extends AbstractFixture
                 ->setCompany('random')
                 ->setAbout($this->abouts[2])
                 ->setSlug('speaker'.$i)
-                ->setFile($this->_generateUploadedFile('speaker-'.($i+4).'.png'))
+                ->setFile($this->_generateUploadedFile('speaker-'.($i+4).'.jpg'))
                 ->setEvents([$eventPHPDay2017, $eventHighLoad])
-                ->getCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018]);
+                ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018]);
             $manager->persist($speaker);
             $this->addReference('speaker-'.$i, $speaker);
         }
@@ -114,12 +123,17 @@ class LoadSpeakerData extends AbstractFixture
      */
     private function _generateUploadedFile($filename)
     {
-        $fullPath = realpath(dirname(__FILE__) . '/assets/img/speakers/' . $filename);
+        $fullPath = realpath($this->getKernelDir() . '/../web/assets/img/speakers/' . $filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'speaker');
         copy($fullPath, $tmpFile);
 
         return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
+    }
+
+    private function getKernelDir()
+    {
+        return $this->container->get('kernel')->getRootDir();
     }
 }

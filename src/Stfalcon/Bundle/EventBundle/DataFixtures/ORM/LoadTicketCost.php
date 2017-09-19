@@ -4,9 +4,10 @@ namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTicketCost extends AbstractFixture
+class LoadTicketCost extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * Return fixture classes fixture is dependent on

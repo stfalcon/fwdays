@@ -26,23 +26,22 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
             'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
         );
     }
-
-    /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
+    public function setEventSponsor(ObjectManager $manager, $sponsorCtg, $event, $sponsor)
     {
-        // Get references for category fixtures
+        $eventSponsor = (new EventSponsor())
+            ->setCategory($sponsorCtg)
+            ->setEvent($event)
+            ->setSponsor($sponsor);
+        $manager->persist($eventSponsor);
+    }
+
+    public function setComplectSponsor(ObjectManager $manager, $event)
+    {
         $goldenSponsor = $manager->merge($this->getReference('golden-sponsor'));
         $silverSponsor = $manager->merge($this->getReference('silver-sponsor'));
         $partnerSponsor = $manager->merge($this->getReference('partner-sponsor'));
         $infoPartnerSponsor = $manager->merge($this->getReference('info-partner-sponsor'));
 
-        // Get references for event fixtures
-        $eventZFDay  = $manager->merge($this->getReference('event-zfday'));
-        $eventPHPDay = $manager->merge($this->getReference('event-phpday'));
-
-        // Get references for sponsor fixtures
         $sponsorODesk   = $manager->merge($this->getReference('sponsor-odesk'));
         $sponsorMagento = $manager->merge($this->getReference('sponsor-magento'));
         $sponsorEpochta = $manager->merge($this->getReference('sponsor-epochta'));
@@ -56,26 +55,32 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
             $infoPartners[] = $manager->merge($this->getReference('info-partner-'.$i));
         }
 
-        // oDesk is Golden sponsor of PHP Frameworks Day 2012
-        $eventSponsor = new EventSponsor();
-        $eventSponsor->setCategory($goldenSponsor);
-        $eventSponsor->setEvent($eventPHPDay);
-        $eventSponsor->setSponsor($sponsorODesk);
-        $manager->persist($eventSponsor);
+        $this->setEventSponsor($manager, $goldenSponsor, $event, $sponsorODesk);
+        $this->setEventSponsor($manager, $goldenSponsor, $event, $sponsorEpochta);
+        $this->setEventSponsor($manager, $silverSponsor, $event, $sponsorMagento);
+        $this->setEventSponsor($manager, $partnerSponsor, $event, $partners[0]);
+        $this->setEventSponsor($manager, $partnerSponsor, $event, $partners[1]);
+        $this->setEventSponsor($manager, $partnerSponsor, $event, $partners[2]);
+        $this->setEventSponsor($manager, $infoPartnerSponsor, $event, $infoPartners[0]);
+        $this->setEventSponsor($manager, $infoPartnerSponsor, $event, $infoPartners[1]);
+        $this->setEventSponsor($manager, $infoPartnerSponsor, $event, $infoPartners[2]);
+    }
 
-        // Magento is Golden sponsor of Zend Framework Day 2011
-        $eventSponsor = new EventSponsor();
-        $eventSponsor->setCategory($goldenSponsor);
-        $eventSponsor->setEvent($eventZFDay);
-        $eventSponsor->setSponsor($sponsorMagento);
-        $manager->persist($eventSponsor);
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function load(ObjectManager $manager)
+    {
+        $eventZFDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventPHPDay = $manager->merge($this->getReference('event-phpday2017'));
+        $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
+        $eventHighLoad = $manager->merge($this->getReference('event-highload-day'));
 
-        // ePochta is Silver sponsor of PHP Frameworks Day 2012
-        $eventSponsor = new EventSponsor();
-        $eventSponsor->setCategory($silverSponsor);
-        $eventSponsor->setEvent($eventPHPDay);
-        $eventSponsor->setSponsor($sponsorEpochta);
-        $manager->persist($eventSponsor);
+        $this->setComplectSponsor($manager, $eventPHPDay);
+        $this->setComplectSponsor($manager, $eventZFDay);
+        $this->setComplectSponsor($manager, $eventPHPDay2018);
+        $this->setComplectSponsor($manager, $eventPHPDay);
+        $this->setComplectSponsor($manager, $eventHighLoad);
 
         $manager->flush();
     }

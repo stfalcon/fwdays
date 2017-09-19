@@ -5,15 +5,26 @@ namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * LoadEventData Class
  */
-class LoadEventData extends AbstractFixture
+class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
@@ -382,17 +393,20 @@ class LoadEventData extends AbstractFixture
      */
     private function _generateUploadedFile($filename)
     {
-        $fullPath = realpath($this->getKernelDir().'../web/assets/img/events/' . $filename);
-        $tmpFile = tempnam(sys_get_temp_dir(), 'event');
-        copy($fullPath, $tmpFile);
-
-        return new UploadedFile($tmpFile,
-            $filename, null, null, null, true
-        );
+        $fullPath = realpath($this->getKernelDir().'/../web/assets/img/events/' . $filename);
+        if ($fullPath) {
+            $tmpFile = tempnam(sys_get_temp_dir(), 'event');
+            copy($fullPath, $tmpFile);
+            return new UploadedFile($tmpFile,
+                $filename, null, null, null, true
+            );
+        } else {
+            return null;
+        }
     }
 
     private function getKernelDir()
     {
-        return $this->get('kernel')->getRootDir();
+        return $this->container->get('kernel')->getRootDir();
     }
 }

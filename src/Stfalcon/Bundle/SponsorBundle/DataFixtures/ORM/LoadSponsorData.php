@@ -4,6 +4,8 @@ namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
@@ -11,8 +13,18 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 /**
  * Load Sponsor fixtures to database
  */
-class LoadSponsorData extends AbstractFixture
+class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
@@ -58,7 +70,7 @@ class LoadSponsorData extends AbstractFixture
                 ->setName('partner-'.$i)
                 ->setSlug('partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.$i.'.jpg'))
+                ->setFile($this->_generateUploadedFile('partner-'.($i+1).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder(20)
                 ->setOnMain(true);
@@ -71,7 +83,7 @@ class LoadSponsorData extends AbstractFixture
                 ->setName('info partner-'.$i)
                 ->setSlug('info-partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.($i+3).'.jpg'))
+                ->setFile($this->_generateUploadedFile('partner-'.($i+5).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder($i+10)
                 ->setOnMain(true);
@@ -91,12 +103,17 @@ class LoadSponsorData extends AbstractFixture
      */
     private function _generateUploadedFile($filename)
     {
-        $fullPath = realpath(dirname(__FILE__) . '/assets/img/partners/' . $filename);
+        $fullPath = realpath($this->getKernelDir() . '/../web/assets/img/partners/' . $filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'sponsor');
         copy($fullPath, $tmpFile);
 
         return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
+    }
+
+    private function getKernelDir()
+    {
+        return $this->container->get('kernel')->getRootDir();
     }
 }
