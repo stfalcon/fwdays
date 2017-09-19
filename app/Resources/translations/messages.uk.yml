@@ -5,6 +5,16 @@ menu.check.ticket.bynumber: __menu.check.ticket.bynumber
 menu.logout: Вихід
 menu.user.registration: Реєстрація
 menu.login: Login
+menu.profile.my: Профіль
+main.menu.go_head: ← На головну
+main.menu.about: Про нас
+main.menu.events: Події
+main.menu.contacts: Контакти
+main.menu.partners: Партнери
+main.menu.about_event: Про подію
+main.menu.speakers: Доповідачі
+main.menu.participants: Участники
+main.menu.cabinet: Кабінет
 email: email
 madeby: розроблено
 tweets.text: __tweets.text
@@ -39,6 +49,10 @@ user.forgot_password.title: Забули пароль?
 user.reset_password.title: Скинути пароль
 user.show_password.title: показати пароль
 user.remember_me.title: Запомнити мене
+user.by_user.title: Війдіть як користувач
+user.by_email.title: Або по почті
+user.create.title: Створити аккаунт
+user.already_have_account.title: У мене вже є обліковий запис
 pay.i_have_promo.title: У мени є промокод
 pay.enter_promo.title: Введите промокод для получения скидки&nbsp;&nbsp;
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
@@ -52,15 +66,6 @@ sponsor.partners.can_be_your_logo: __sponsor.partners.can_be_your_logo
 sponsor.partners.title: __sponsor.partners.title
 sponsor.partners.call_us: __sponsor.partners.call_us
 sponsor.and.partners: __sponsor.and.partners
-main.menu.go_head: ← На головну
-main.menu.about: Про нас
-main.menu.events: Події
-main.menu.contacts: Контакти
-main.menu.partners: Партнери
-main.menu.about_event: Про подію
-main.menu.speakers: Доповідачі
-main.menu.participants: Участники
-main.menu.cabinet: Кабінет
 share_contact.text: __share_contact.text
 share_contact.agree: __share_contact.agree
 share_contact.not_agree: __share_contact.not_agree
@@ -76,21 +81,6 @@ our.youtube.channel: Наш YouTube канал
 more.gallery.link: Все галереи на Flickr
 in.lang.link: In English
 ticket.status.event_done: Событие состоялось
-user.by_user.title: Війдіть як користувач
-user.by_email.title: Або по почті
-menu.profile.my: Профіль
-user.name.title: Імя
-user.surname.title: Прізвище
-user.email.title: Електронна пошта
-user.phone.title: Номер телефона
-user.country.title: Країна
-user.city.title: Місто
-user.company.title: Компанія
-user.company_post.title: Посада
-user.subscribe.title: Я згоден отримувати важливі новини на e-mail
-user.refresh.title: Оновити
-user.create.title: Створити аккаунт
-user.already_have_account.title: У мене вже є обліковий запис
 referral.program.conditions.title: Умови програмы
 referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
 referral.share.title: Поділитись
@@ -167,3 +157,4 @@ pay.event.members_already_paid: __pay.event.members_already_paid
 pay.event.members_without_dicount: __pay.event.members_without_dicount
 pay.event.cupon: __pay.event.cupon
 news_and_anonce.title: __news_and_anonce.title
+contact_info.title: Контактна інформація

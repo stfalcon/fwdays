@@ -88,10 +88,13 @@ class Category implements Translatable
      * Set name
      *
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -108,10 +111,13 @@ class Category implements Translatable
      * Set sortOrder
      *
      * @param int $sortOrder
+     * @return $this
      */
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**

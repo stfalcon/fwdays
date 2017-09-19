@@ -63,6 +63,8 @@ class EventPage extends AbstractPage implements Translatable
     public function setEvent(Event $event)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -97,6 +99,8 @@ class EventPage extends AbstractPage implements Translatable
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**

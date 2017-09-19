@@ -75,13 +75,13 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_name">{{ 'user.name.title'|trans }}</label>
-                            <input class="input" type="text" id="payment_user_name" name="user-name" value="">
+                            <input class="input" type="text" id="payment_user_name" name="user-name" value="" required>
                         </div>
                     </div>
                     <div class="form-col form-col--col-6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_surname">{{ 'user.surname.title'|trans }}</label>
-                            <input class="input" type="text" id="payment_user_surname" name="user-surname" value="">
+                            <input class="input" type="text" id="payment_user_surname" name="user-surname" value="" required>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_email">{{ 'user.email.title'|trans }}</label>
-                            <input class="input" type="email" id="payment_user_email" name="user-email" value="">
+                            <input class="input" type="email" id="payment_user_email" name="user-email" value="" required>
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
@@ -105,7 +105,7 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="user_promo_code">{{ 'pay.event.cupon'|trans }}</label>
-                            <input name="promo-code" class="input" id="user_promo_code" type="text" value="">
+                            <input name="promo-code" class="input" id="user_promo_code" type="text" value="" required>
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
@@ -131,9 +131,9 @@
                     <div class="form-group">
                         <label class="form-label" for="user_phone">{{ 'user.phone.title'|trans }}</label>
                         {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
-                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="{{ app.user.phone }}">
+                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="{{ app.user.phone }}" required>
                         {% else %}
-                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="">
+                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="" required>
                         {% endif %}
                     </div>
                 </div>

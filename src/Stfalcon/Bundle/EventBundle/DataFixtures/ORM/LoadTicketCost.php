@@ -24,15 +24,16 @@ class LoadTicketCost extends AbstractFixture
     {
         $ticketCost = new TicketCost();
 
-        $event1 = $this->getReference('event-zfday');
-        $event2 = $this->getReference('event-not-active');
+        $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
+
 
         $ticketCost->setName('early')
             ->setAmount(1000)
             ->setAltAmount('= 40$')
             ->setCount(2)
             ->setEnabled(true)
-            ->setEvent($manager->merge($event1));
+            ->setEvent($manager->merge($eventJsDay));
         $manager->persist($ticketCost);
 
         $ticketCost1 = new TicketCost();
@@ -41,7 +42,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 120$')
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($manager->merge($event1));
+            ->setEvent($manager->merge($eventJsDay));
         $manager->persist($ticketCost1);
 
         $ticketCost2 = new TicketCost();
@@ -50,7 +51,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 80$')
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($manager->merge($event1));
+            ->setEvent($manager->merge($eventJsDay));
         $manager->persist($ticketCost2);
 
         $ticketCost3 = new TicketCost();
@@ -59,7 +60,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 120$')
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($manager->merge($event2));
+            ->setEvent($manager->merge($eventPHPDay2017));
         $manager->persist($ticketCost3);
 
         $ticketCost4 = new TicketCost();
@@ -68,7 +69,7 @@ class LoadTicketCost extends AbstractFixture
             ->setAltAmount('= 80$')
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($manager->merge($event2));
+            ->setEvent($manager->merge($eventPHPDay2017));
         $manager->persist($ticketCost4);
 
         $manager->flush();

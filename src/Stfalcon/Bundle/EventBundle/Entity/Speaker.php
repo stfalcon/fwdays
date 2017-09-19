@@ -172,6 +172,7 @@ class Speaker implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
+        return $this;
     }
 
     /**
@@ -192,6 +193,7 @@ class Speaker implements Translatable
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -212,6 +214,7 @@ class Speaker implements Translatable
     public function setEmail($eMail)
     {
         $this->email = $eMail;
+        return $this;
     }
 
     /**
@@ -232,6 +235,7 @@ class Speaker implements Translatable
     public function setCompany($company)
     {
         $this->company = $company;
+        return $this;
     }
 
     /**
@@ -252,6 +256,7 @@ class Speaker implements Translatable
     public function setAbout($about)
     {
         $this->about = $about;
+        return $this;
     }
 
     /**
@@ -269,26 +274,33 @@ class Speaker implements Translatable
      *
      * @return string
      */
-    public function getPhoto() {
+    public function getPhoto()
+    {
         return $this->photo;
     }
 
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
 
        $this->setUpdatedAt(new \DateTime());
+        return $this;
     }
 
-    public function getEvents() {
+    public function getEvents()
+    {
         return $this->events;
     }
 
-    public function setEvents($events) {
+    public function setEvents($events)
+    {
         $this->events = $events;
+        return $this;
     }
 
     /**
@@ -310,16 +322,21 @@ class Speaker implements Translatable
         return $this;
     }
 
-    public function getReviews() {
+    public function getReviews()
+    {
         return $this->reviews;
     }
 
-    public function setReviews($reviews) {
+    public function setReviews($reviews)
+    {
         $this->reviews = $reviews;
+        return $this;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt) {
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**

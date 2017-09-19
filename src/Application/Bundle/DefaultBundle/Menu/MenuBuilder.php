@@ -56,6 +56,15 @@ class MenuBuilder
             ->setAttribute('class','header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'show_page', 'routeParameters' => ['slug' => 'about']])
             ->setAttribute('class','header-nav__item');
+        $token = $this->tokenService->getToken();
+        $user = $token ? $token->getUser() : null;
+        if ($user instanceof User) {
+            $menu->addChild($this->translator->trans( 'main.menu.cabinet'), ['route' => 'cabinet'])
+                ->setAttribute('class','header-nav__item header-nav__item--mob');
+        } else {
+            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#modal-signin'])
+                ->setAttribute('class','header-nav__item header-nav__item--mob');
+        }
 
         return $menu;
     }

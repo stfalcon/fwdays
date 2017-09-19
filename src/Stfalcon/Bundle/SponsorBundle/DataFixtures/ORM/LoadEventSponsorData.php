@@ -35,6 +35,8 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
         // Get references for category fixtures
         $goldenSponsor = $manager->merge($this->getReference('golden-sponsor'));
         $silverSponsor = $manager->merge($this->getReference('silver-sponsor'));
+        $partnerSponsor = $manager->merge($this->getReference('partner-sponsor'));
+        $infoPartnerSponsor = $manager->merge($this->getReference('info-partner-sponsor'));
 
         // Get references for event fixtures
         $eventZFDay  = $manager->merge($this->getReference('event-zfday'));
@@ -44,6 +46,15 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
         $sponsorODesk   = $manager->merge($this->getReference('sponsor-odesk'));
         $sponsorMagento = $manager->merge($this->getReference('sponsor-magento'));
         $sponsorEpochta = $manager->merge($this->getReference('sponsor-epochta'));
+
+        $partners = [];
+        for ($i = 0; $i < 3; $i++) {
+            $partners[] = $manager->merge($this->getReference('partner-'.$i));
+        }
+        $infoPartners = [];
+        for ($i = 0; $i < 6; $i++) {
+            $infoPartners[] = $manager->merge($this->getReference('info-partner-'.$i));
+        }
 
         // oDesk is Golden sponsor of PHP Frameworks Day 2012
         $eventSponsor = new EventSponsor();

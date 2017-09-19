@@ -335,6 +335,8 @@ class Event implements Translatable
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -355,6 +357,7 @@ class Event implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
+        return $this;
     }
 
     /**
@@ -375,6 +378,7 @@ class Event implements Translatable
     public function setCity($city)
     {
         $this->city = $city;
+        return $this;
     }
 
     /**
@@ -395,6 +399,7 @@ class Event implements Translatable
     public function setPlace($place)
     {
         $this->place = $place;
+        return $this;
     }
 
     /**
@@ -425,6 +430,7 @@ class Event implements Translatable
     public function setDate($date)
     {
         $this->date = $date;
+        return $this;
     }
 
     /**
@@ -435,6 +441,7 @@ class Event implements Translatable
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -455,6 +462,7 @@ class Event implements Translatable
     public function setAbout($about)
     {
         $this->about = $about;
+        return $this;
     }
 
     /**
@@ -475,6 +483,7 @@ class Event implements Translatable
     public function setActive($active)
     {
         $this->active = $active;
+        return $this;
     }
 
     /**
@@ -501,6 +510,7 @@ class Event implements Translatable
     public function setReceivePayments($receivePayments)
     {
         $this->receivePayments = $receivePayments;
+        return $this;
     }
 
     /**
@@ -523,6 +533,7 @@ class Event implements Translatable
      */
     public function setUseDiscounts($useDiscounts) {
         $this->useDiscounts = $useDiscounts;
+        return $this;
     }
 
     /**
@@ -667,6 +678,7 @@ class Event implements Translatable
     public function setLogoFile($logoFile)
     {
         $this->logoFile = $logoFile;
+        return $this;
     }
 
     /**
@@ -687,6 +699,7 @@ class Event implements Translatable
     public function setEmailBackgroundFile($emailBackgroundFile)
     {
         $this->emailBackgroundFile = $emailBackgroundFile;
+        return $this;
     }
 
     /**
@@ -717,6 +730,7 @@ class Event implements Translatable
     public function setPdfBackgroundFile($pdfBackgroundFile)
     {
         $this->pdfBackgroundFile = $pdfBackgroundFile;
+        return $this;
     }
 
     /**
@@ -748,6 +762,7 @@ class Event implements Translatable
     public function setCost($cost)
     {
         $this->cost = $cost;
+        return $this;
     }
 
     /**

@@ -16,7 +16,6 @@ function setPaymentHtml(e_slug, open) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
-                setUserPaymentRemove();
                 if (open === true) {
                     window.location.replace('#modal-payment');
                 }
@@ -36,33 +35,27 @@ function setPaymentHtml(e_slug, open) {
     });
 }
 
-function setUserPaymentRemove() {
-    $('.user-payment__remove').prop('onclick', null).off('click').
-    on('click', function () {
+$(document).on('click', '.user-payment__remove', function () {
         console.log('here');
         var elem = $(this);
         var e_slug = $('#pay-form').data('event');
         $.post(Routing.generate('remove_ticket_from_payment',
             {
                 event_slug: e_slug,
-                id: elem.data('ticket'),
+                id: elem.data('ticket')
             }),
             function (data) {
                 if (data.result) {
                     $('#pay-form').html(data.html);
                     $('#payment-sums').html(data.paymentSums);
-                    setUserPaymentRemove();
                 } else {
                     $('#pay-form').html(data.html);
                     console.log('Error:'+data.error);
                 }
             });
-    });
-}
+});
 
-function setAddWantsOnclick() {
-    $('.add-wants-visit-event').prop('onclick',null).off('click').
-    on('click', function () {
+$(document).on('click', '.add-wants-visit-event', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
         $.ajax({
@@ -88,12 +81,9 @@ function setAddWantsOnclick() {
                 }
             }
         });
-    });
-}
+});
 
-function setSubWantsOnclick() {
-    $('.sub-wants-visit-event').prop('onclick', null).off('click').
-    on('click', function () {
+$(document).on('click', '.sub-wants-visit-event', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
         $.post(Routing.generate('sub_wants_to_visit_event', {slug: e_slug}), function (data) {
@@ -106,8 +96,7 @@ function setSubWantsOnclick() {
                 console.log('Error:'+data.error);
             }
         });
-    })
-}
+});
 
 $(document).on('opening', '.remodal', function (e) {
     if (window.location.hash === '#modal-payment') {
@@ -144,39 +133,43 @@ $(document).ready(function () {
     });
 
     $('.add-promo-code-btn').on('click', function () {
-        var e_slug = $('#pay-form').data('event');
-        $.post(Routing.generate('add_promo_code', {code: $("input[name='promo-code']").val(), event_slug: e_slug}),
-            function (data) {
-                if (data.result) {
-                    $('#pay-form').html(data.html);
-                    $('#payment-sums').html(data.paymentSums);
-                    setUserPaymentRemove();
-                } else {
-                    $('#pay-form').html(data.html);
-                    console.log('Error:'+data.error);
-                }
-            });
+        if ($('#user_promo_code').valid()) {
+            var e_slug = $('#pay-form').data('event');
+            $.post(Routing.generate('add_promo_code', {code: $("input[name='promo-code']").val(), event_slug: e_slug}),
+                function (data) {
+                    if (data.result) {
+                        $('#pay-form').html(data.html);
+                        $('#payment-sums').html(data.paymentSums);
+                    } else {
+                        $('#pay-form').html(data.html);
+                        console.log('Error:' + data.error);
+                    }
+                });
+        }
     });
 
     $('.add-user-btn').on('click', function () {
-        var e_slug = $('#pay-form').data('event');
-        $.post(Routing.generate('add_participant_to_payment',
-            {
-                event_slug: e_slug,
-                name: $("input[name='user-name']").val(),
-                surname: $("input[name='user-surname']").val(),
-                email: $("input[name='user-email']").val()
-            }),
-            function (data) {
-                if (data.result) {
-                    $('#pay-form').html(data.html);
-                    $('#payment-sums').html(data.paymentSums);
-                    setUserPaymentRemove();
-                } else {
-                    $('#pay-form').html(data.html);
-                    console.log('Error:'+data.error);
-                }
-            });
+        if ($('#payment_user_name').valid() &&
+            $('#payment_user_surname').valid() &&
+            $('#payment_user_email').valid()) {
+            var e_slug = $('#pay-form').data('event');
+            $.post(Routing.generate('add_participant_to_payment',
+                {
+                    event_slug: e_slug,
+                    name: $("input[name='user-name']").val(),
+                    surname: $("input[name='user-surname']").val(),
+                    email: $("input[name='user-email']").val()
+                }),
+                function (data) {
+                    if (data.result) {
+                        $('#pay-form').html(data.html);
+                        $('#payment-sums').html(data.paymentSums);
+                    } else {
+                        $('#pay-form').html(data.html);
+                        console.log('Error:' + data.error);
+                    }
+                });
+        }
     });
 
     $(document).on('click', '.like-btn-js', function (e) {
@@ -192,7 +185,7 @@ $(document).ready(function () {
         });
     });
 
-    setAddWantsOnclick();
-    setSubWantsOnclick();
+    // setAddWantsOnclick();
+    // setSubWantsOnclick();
 });
 

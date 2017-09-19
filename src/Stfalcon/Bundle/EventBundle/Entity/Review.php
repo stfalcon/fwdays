@@ -77,6 +77,8 @@ class Review extends AbstractPage implements Translatable
 
     public function setEvent($event) {
         $this->event = $event;
+
+        return $this;
     }
     
     public function getSpeakers() {
@@ -85,6 +87,8 @@ class Review extends AbstractPage implements Translatable
 
     public function setSpeaker($speakers) {
         $this->speakers = $speakers;
+
+        return $this;
     }
 
     /**
@@ -93,6 +97,8 @@ class Review extends AbstractPage implements Translatable
     public function setLikedUsers($likedUsers)
     {
         $this->likedUsers = $likedUsers;
+
+        return $this;
     }
 
     /**
@@ -111,6 +117,8 @@ class Review extends AbstractPage implements Translatable
         if (!$this->likedUsers->contains($user)) {
             $this->likedUsers->add($user);
         }
+
+        return $this;
     }
 
     /**
@@ -119,6 +127,8 @@ class Review extends AbstractPage implements Translatable
     public function removeLikedUser($user)
     {
         $this->likedUsers->removeElement($user);
+
+        return $this;
     }
 
     /**

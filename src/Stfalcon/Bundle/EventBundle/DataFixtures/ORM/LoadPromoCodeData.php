@@ -32,34 +32,34 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
     public function load(ObjectManager $manager)
     {
         /** @var Event $eventZFDays, $eventPHPDay */
-        $eventZFDays = $manager->merge($this->getReference('event-zfday'));
-        $eventPHPDay = $manager->merge($this->getReference('event-phpday'));
+        $eventJsDays = $manager->merge($this->getReference('event-jsday2018'));
+        $eventPHPDay = $manager->merge($this->getReference('event-phpday2017'));
 
         // Promo code 1
         $promoCode = new PromoCode();
         $promoCode
-            ->setTitle('Promo code for ZFDays')
-            ->setCode('Promo code for ZFDays')
-            ->setEvent($eventZFDays);
+            ->setTitle('Promo code for JsDays')
+            ->setCode('Promo code for JsDays')
+            ->setEvent($eventJsDays);
         $manager->persist($promoCode);
         $this->addReference('promoCode-1', $promoCode);
 
         // Promo code 2
         $promoCode = new PromoCode();
         $promoCode
-            ->setTitle('Promo code for ZFDays 5%')
-            ->setCode('Promo code for ZFDays 5%')
+            ->setTitle('Promo code for JsDays 5%')
+            ->setCode('Promo code for JsDays 5%')
             ->setDiscountAmount(5)
-            ->setEvent($eventZFDays);
+            ->setEvent($eventJsDays);
         $manager->persist($promoCode);
         $this->addReference('promoCode-2', $promoCode);
 
         // Promo code 3
         $promoCode = new PromoCode();
         $promoCode
-            ->setTitle('Promo code for ZFDays overdue')
-            ->setCode('Promo code for ZFDays overdue')
-            ->setEvent($eventZFDays)
+            ->setTitle('Promo code for JsDays overdue')
+            ->setCode('Promo code for JsDays overdue')
+            ->setEvent($eventJsDays)
             ->setEndDate(new \DateTime('-11 Days'));
         $manager->persist($promoCode);
         $this->addReference('promoCode-3', $promoCode);
