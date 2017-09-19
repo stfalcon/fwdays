@@ -35,10 +35,10 @@
 }
 
 .remodal-close--circle {
-  width: 54px;
-  height: 54px;
   top: 18px;
   right: 18px;
+  width: 54px;
+  height: 54px;
 }
 
 .speaker-popup {
@@ -78,9 +78,9 @@
     }
 
     a {
+      border-bottom: 1px solid rgba(0, 145, 173, 0.4);
       color: $blue-light-color;
       text-decoration: none;
-      border-bottom: 1px solid rgba(0, 145, 173, 0.4);
 
       &:hover {
         border-color: transparent;
@@ -126,5 +126,9 @@
 .help-links {
   &__item {
     margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

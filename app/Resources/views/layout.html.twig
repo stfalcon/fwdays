@@ -5,7 +5,7 @@
     <title>{% block title %}Frameworks Days{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/styles/main.css') }}">
 </head>
 <body>
 {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
@@ -30,11 +30,9 @@
 <!--END layout-box-->
 {% block popups %}{% endblock popups %}
 {% block scripts %}
-    <script src="{{ asset('js/main.js') }}"></script>
-    <script src="{{ asset('js/partials/js.cookie.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="{{ asset('js/partials/add.js') }}"> </script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 {% endblock scripts %}
 </body>
 </html>
