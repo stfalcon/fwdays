@@ -78,7 +78,7 @@ class DefaultController extends Controller
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
             ->findOneBy(['slug' => $slug]);
         if (!$staticPage) {
-            $this->createNotFoundException('Page not found! '.$slug);
+            throw $this->createNotFoundException('Page not found! '.$slug);
         }
 
         return ['text' => $staticPage->getText()];

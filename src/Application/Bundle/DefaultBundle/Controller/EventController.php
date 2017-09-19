@@ -175,7 +175,7 @@ class EventController extends Controller
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: ' . $slug]);
             } else {
-                return $this->createNotFoundException('Unable to find Event by slug: ' . $slug);
+                throw $this->createNotFoundException('Unable to find Event by slug: ' . $slug);
             }
         }
 

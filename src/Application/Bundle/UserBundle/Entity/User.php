@@ -157,6 +157,11 @@ class User extends BaseUser
      */
     private $googleID;
 
+    public function __construct() {
+        parent::__construct();
+        $this->tickets = new ArrayCollection();
+        $this->wantsToVisitEvents = new ArrayCollection();
+    }
     /**
      * @return string
      */
@@ -309,11 +314,7 @@ class User extends BaseUser
         return $this;
     }
 
-    public function __construct() {
-        parent::__construct();
-        $this->tickets = new ArrayCollection();
-        $this->wantsToVisitEvents = new ArrayCollection();
-    }
+
 
     /**
      * Redefinition email setter for use email as username
@@ -324,6 +325,7 @@ class User extends BaseUser
     {
         parent::setEmail($email);
         $this->setUsername($email);
+        return $this;
     }
 
     /**
@@ -344,6 +346,7 @@ class User extends BaseUser
     public function setFullname($fullname)
     {
         $this->fullname = strip_tags($fullname);
+        return $this;
     }
 
     /**
@@ -364,6 +367,7 @@ class User extends BaseUser
     public function setCompany($company)
     {
         $this->company = strip_tags($company);
+        return $this;
     }
 
     /**
@@ -384,6 +388,7 @@ class User extends BaseUser
     public function setPost($post)
     {
         $this->post = strip_tags($post);
+        return $this;
     }
 
     /**
@@ -404,6 +409,7 @@ class User extends BaseUser
     public function setSubscribe($subscribe)
     {
         $this->subscribe = $subscribe;
+        return $this;
     }
 
     /**
@@ -424,6 +430,7 @@ class User extends BaseUser
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -434,6 +441,7 @@ class User extends BaseUser
     public function setCity($city)
     {
         $this->city = strip_tags($city);
+        return $this;
     }
 
     /**
@@ -454,6 +462,7 @@ class User extends BaseUser
     public function setCountry($country)
     {
         $this->country = strip_tags($country);
+        return $this;
     }
 
     /**
@@ -499,6 +508,7 @@ class User extends BaseUser
     public function removeTicket(Ticket $ticket)
     {
         $this->tickets->removeElement($ticket);
+        return $this;
     }
 
     /**
@@ -515,6 +525,7 @@ class User extends BaseUser
     public function setBalance($balance)
     {
         $this->balance = $balance;
+        return $this;
     }
 
     /**
@@ -531,6 +542,7 @@ class User extends BaseUser
     public function setReferralCode($referralCode)
     {
         $this->referralCode = $referralCode;
+        return $this;
     }
 
     /**
@@ -547,6 +559,7 @@ class User extends BaseUser
     public function setUserReferral($userReferral)
     {
         $this->userReferral = $userReferral;
+        return $this;
     }
 
 
@@ -564,5 +577,6 @@ class User extends BaseUser
     public function setAllowShareContacts($allowShareContacts)
     {
         $this->allowShareContacts = $allowShareContacts;
+        return $this;
     }
 }
