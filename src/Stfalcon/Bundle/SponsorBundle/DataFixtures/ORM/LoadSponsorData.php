@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -11,7 +12,7 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 /**
  * Load Sponsor fixtures to database
  */
-class LoadSponsorData extends AbstractFixture
+class LoadSponsorData extends FixtureWithDir
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager

@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 
@@ -12,13 +13,14 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 /**
  * LoadEventData Class
  */
-class LoadEventData extends AbstractFixture
+class LoadEventData extends FixtureWithDir
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
+
         $event = (new Event())
             ->setName('Конференция JavaScript fwdays \'18')
             ->setSlug('javaScript-framework-day-2018')
@@ -381,7 +383,7 @@ class LoadEventData extends AbstractFixture
      */
     private function _generateUploadedFile($filename)
     {
-        $fullPath = realpath(dirname(__FILE__) . '/assets/img/events/' . $filename);
+        $fullPath = realpath($this->getKernelDir().'../web/assets/img/events/' . $filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'event');
         copy($fullPath, $tmpFile);
 

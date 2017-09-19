@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\DependentFixtureInterface,
     Doctrine\Common\Persistence\ObjectManager;
@@ -12,7 +13,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 /**
  * LoadSpeakerData Class
  */
-class LoadSpeakerData extends AbstractFixture implements DependentFixtureInterface
+class LoadSpeakerData extends FixtureWithDir
 {
     private $abouts = [
         '<ul class="presenter-facts">

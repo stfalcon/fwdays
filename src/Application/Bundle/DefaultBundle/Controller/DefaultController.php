@@ -75,6 +75,7 @@ class DefaultController extends Controller
      */
     public function pageAction($slug)
     {
+        $dir = $this->get('kernel')->getRootDir();
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
             ->findOneBy(['slug' => $slug]);
         if (!$staticPage) {
