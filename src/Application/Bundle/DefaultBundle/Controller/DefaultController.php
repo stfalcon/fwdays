@@ -41,7 +41,7 @@ class DefaultController extends Controller
         $ticketRepository = $this->getDoctrine()->getManager()
             ->getRepository('StfalconEventBundle:Ticket');
         $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
-
+        $wannaVisit = $user->getWantsToVisitEvents();
         $referralService = $this->get('stfalcon_event.referral.service');
 
         $events = $this->getDoctrine()
@@ -50,6 +50,7 @@ class DefaultController extends Controller
 
         return [
             'user' => $user,
+            'wannaVisit' => $wannaVisit,
             'tickets' => $tickets,
             'events' => $events,
             'code' => $referralService->getReferralCode(),
