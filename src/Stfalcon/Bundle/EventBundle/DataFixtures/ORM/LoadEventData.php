@@ -2,7 +2,6 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 
@@ -13,7 +12,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 /**
  * LoadEventData Class
  */
-class LoadEventData extends FixtureWithDir
+class LoadEventData extends AbstractFixture
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
@@ -390,5 +389,10 @@ class LoadEventData extends FixtureWithDir
         return new UploadedFile($tmpFile,
             $filename, null, null, null, true
         );
+    }
+
+    private function getKernelDir()
+    {
+        return $this->get('kernel')->getRootDir();
     }
 }

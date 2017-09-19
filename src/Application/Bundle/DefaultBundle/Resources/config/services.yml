@@ -10,7 +10,3 @@ services:
         class: Application\Bundle\DefaultBundle\Twig\AppExtension
         tags:
             - { name: twig.extension}
-
-    app.fixture.kernel_dir:
-        class: Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir
-        arguments: "%kernel.root_dir%"

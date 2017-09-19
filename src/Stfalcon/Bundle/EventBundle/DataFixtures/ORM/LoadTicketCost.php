@@ -27,7 +27,6 @@ class LoadTicketCost extends AbstractFixture
         $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
 
-
         $ticketCost->setName('early')
             ->setAmount(1000)
             ->setAltAmount('= 40$')
