@@ -2,7 +2,6 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
-use Application\Bundle\DefaultBundle\DataFixtures\FixtureWithDir;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -12,7 +11,7 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 /**
  * Load Sponsor fixtures to database
  */
-class LoadSponsorData extends FixtureWithDir
+class LoadSponsorData extends AbstractFixture
 {
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
@@ -61,7 +60,7 @@ class LoadSponsorData extends FixtureWithDir
                 ->setSite('http://example.com/')
                 ->setFile($this->_generateUploadedFile('partner-'.$i.'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
-                ->setSortOrder($i+10)
+                ->setSortOrder(20)
                 ->setOnMain(true);
             $manager->persist($partner);
             $this->addReference('partner-'.$i, $partner);
