@@ -1,10 +1,10 @@
-menu.events.my: __menu.events.my
-menu.user.info: __menu.user.info
+menu.events.my: Мої події
+menu.user.info: Особиста інфомація
 menu.referral.title: __menu.referral.title
 menu.check.ticket.bynumber: __menu.check.ticket.bynumber
 menu.logout: Вихід
 menu.user.registration: Реєстрація
-menu.login: Login
+menu.login: Увійти
 menu.profile.my: Профіль
 main.menu.go_head: ← На головну
 main.menu.about: Про нас
@@ -140,19 +140,19 @@ ticket.status.paid: __ticket.status.paid
 ticket.status.take_apart: Зареєструватися
 ticket.status.not_take_apart : Відписатись
 referral.invaite.title: __referral.invaite.title
-referral.invaite.title2: __referral.invaite.title2
+referral.invaite.title2: Приглашайте друзей и накапливайте бонусы
 referral.invaite.text1: __referral.invaite.text1
 referral.invaite.text2: __referral.invaite.text2
 referral.balance: __referral.balance
 referral.balance.redesign: 'Ваш баланс: %user_balance% грн.'
-referral.invaite.link.text: __referral.invaite.link.text
+referral.invaite.link.text: Ваша реферальна ссилка на конференцію
 delete: __delete
 payment.price: '%summ% грн.'
 payment.discount.cupon: __payment.discount.cupon
 payment.discount.member: __payment.discount.member
 pay.event.title: __pay.event.title
 pay.event.pay_for_other: __pay.event.pay_for_other
-pay.event.one_more_participants: __pay.event.one_more_participants
+pay.event.one_more_participants: Ще учасники
 pay.event.members_already_paid: __pay.event.members_already_paid
 pay.event.members_without_dicount: __pay.event.members_without_dicount
 pay.event.cupon: __pay.event.cupon

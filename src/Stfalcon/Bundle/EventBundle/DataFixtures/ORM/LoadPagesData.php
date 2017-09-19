@@ -486,6 +486,7 @@ HTML5 canvas.</a></div>
         ->setSlug('program')
         ->setText($this->newProgram)
         ->setEvent($manager->merge($this->getReference('event-jsday2018')))
+        ->setShowInMenu(true)
         ->setSortOrder(1);
         $manager->persist($page);
 
@@ -494,6 +495,7 @@ HTML5 canvas.</a></div>
             ->setSlug('program')
             ->setText($this->newProgram)
             ->setEvent($manager->merge($this->getReference('event-phpday2018')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -502,6 +504,7 @@ HTML5 canvas.</a></div>
             ->setSlug('program')
             ->setText($this->oldProgram)
             ->setEvent($manager->merge($this->getReference('event-phpday2017')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -510,6 +513,7 @@ HTML5 canvas.</a></div>
             ->setSlug('program')
             ->setText($this->oldProgram)
             ->setEvent($manager->merge($this->getReference('event-not-active')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -518,6 +522,7 @@ HTML5 canvas.</a></div>
             ->setSlug('venue')
             ->setText($this->newVenue)
             ->setEvent($manager->merge($this->getReference('event-jsday2018')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -526,6 +531,7 @@ HTML5 canvas.</a></div>
             ->setSlug('venue')
             ->setText($this->newVenue)
             ->setEvent($manager->merge($this->getReference('event-highload-day')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -534,6 +540,7 @@ HTML5 canvas.</a></div>
             ->setSlug('venue')
             ->setText($this->oldVenue)
             ->setEvent($manager->merge($this->getReference('event-phpday2017')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 
@@ -542,6 +549,7 @@ HTML5 canvas.</a></div>
             ->setSlug('venue')
             ->setText($this->oldVenue)
             ->setEvent($manager->merge($this->getReference('event-not-active')))
+            ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
 

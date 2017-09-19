@@ -71,11 +71,11 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         $eventNotActive = $manager->merge($this->getReference('event-not-active'));
 
         $speaker = (new Speaker())
-            ->setName('Андрей Шкодяк')
+            ->setName('Андрей Воробей')
             ->setEmail('a_s@test.com')
             ->setCompany('Stfalcon')
             ->setAbout($this->abouts[0])
-            ->setSlug('andrew-shkodyak')
+            ->setSlug('andrew-vorobey')
             ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventJsDay, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad]);
@@ -83,11 +83,11 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         $this->addReference('speaker-shkodyak', $speaker);
 
         $speaker = (new Speaker())
-            ->setName('Валерий Рабиевский')
+            ->setName('Валера Питерский')
             ->setEmail('v_r@test.com')
-            ->setCompany('Stfalcon')
+            ->setCompany('ZZZ')
             ->setAbout($this->abouts[1])
-            ->setSlug('valeriy-rabievskiy')
+            ->setSlug('valeriy-pitersky')
             ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventPHPDay2018, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017]);

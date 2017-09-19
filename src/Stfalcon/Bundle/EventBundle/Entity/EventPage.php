@@ -81,6 +81,7 @@ class EventPage extends AbstractPage implements Translatable
     public function setShowInMenu($showInMenu)
     {
         $this->showInMenu = $showInMenu;
+        return $this;
     }
 
     /**
