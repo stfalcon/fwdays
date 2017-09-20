@@ -63,9 +63,12 @@ $(document).on('click', '.add-wants-visit-event', function () {
             url: Routing.generate('add_wants_to_visit_event', { slug: e_slug}),
             success: function(data) {
                 if (data.result) {
-                    elem.removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').prop('onclick',null)
-                        .off('click').html(data.html);
-                    setSubWantsOnclick();
+                    if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
+                        $('.event-header__btn').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
+                        $('.fix-event-header').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
+                    } else {
+                        elem.removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
+                    }
                 } else {
                     elem.html(data.html);
                     console.log('Error:'+data.error);
@@ -88,9 +91,12 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         var e_slug = elem.data('event');
         $.post(Routing.generate('sub_wants_to_visit_event', {slug: e_slug}), function (data) {
             if (data.result) {
-                elem.removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').prop('onclick', null)
-                    .off('click').html(data.html);
-                setAddWantsOnclick();
+                if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
+                    $('.event-header__btn').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
+                    $('.fix-event-header').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
+                } else {
+                    elem.removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
+                }
             } else {
                 elem.html(data.html);
                 console.log('Error:'+data.error);
@@ -171,6 +177,13 @@ $(document).ready(function () {
                 });
         }
     });
+    $('#buy-ticket-btn').on('click', function () {
+        console.log('here');
+        if ($('#user_phone').valid()) {
+            $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {
+            });
+        }
+    });
 
     $(document).on('click', '.like-btn-js', function (e) {
         e.preventDefault();
@@ -184,8 +197,5 @@ $(document).ready(function () {
                 }
         });
     });
-
-    // setAddWantsOnclick();
-    // setSubWantsOnclick();
 });
 

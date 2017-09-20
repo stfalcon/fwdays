@@ -59,7 +59,7 @@ class Review extends AbstractPage implements Translatable
      * @ORM\ManyToMany(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinTable(name="reviews_users_likes",
      *      joinColumns={@ORM\JoinColumn(name="review_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $likedUsers;

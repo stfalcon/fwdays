@@ -13,10 +13,10 @@ ApplicationDefaultBundle:
 #    type:     annotation
 #    prefix:   /
 
-#ApplicationUserBundle:
-#    resource: "@ApplicationDefaultBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
+ApplicationUserBundle:
+    resource: "@ApplicationUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
 
 #app_backend:
 #    resource: "@StfalconEventBundle/Controller/Admin"

@@ -5,7 +5,7 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
         </div>
-        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'registrationLink':'#modal-signup-payment', 'queryLink':''} %}
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'registrationLink':'#modal-signup', 'queryLink':''} %}
     </div>
 </div>
 <!--END signin-popup-->
@@ -23,13 +23,25 @@
 <!--END signin-payment-popup-->
 
 <!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
+<div class="remodal remodal--md" data-remodal-id="modal-signup">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':'#modal-signin', 'queryLink':''} %}
+    </div>
+</div>
+<!--END signup-payment-popup-->
+
+<!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
 <div class="remodal remodal--md" data-remodal-id="modal-signup-payment">
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
         </div>
-        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':'#modal-signin'} %}
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':'#modal-signin', 'queryLink':'?exception_login=1'} %}
     </div>
 </div>
 <!--END signup-payment-popup-->
@@ -75,13 +87,13 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_name">{{ 'user.name.title'|trans }}</label>
-                            <input class="input" type="text" id="payment_user_name" name="user-name" value="" required>
+                            <input class="input" type="text" id="payment_user_name" name="user-name" value="">
                         </div>
                     </div>
                     <div class="form-col form-col--col-6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_surname">{{ 'user.surname.title'|trans }}</label>
-                            <input class="input" type="text" id="payment_user_surname" name="user-surname" value="" required>
+                            <input class="input" type="text" id="payment_user_surname" name="user-surname" value="">
                         </div>
                     </div>
                 </div>
@@ -89,7 +101,7 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_email">{{ 'user.email.title'|trans }}</label>
-                            <input class="input" type="email" id="payment_user_email" name="user-email" value="" required>
+                            <input class="input" type="email" id="payment_user_email" name="user-email" value="">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
@@ -105,7 +117,7 @@
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="user_promo_code">{{ 'pay.event.cupon'|trans }}</label>
-                            <input name="promo-code" class="input" id="user_promo_code" type="text" value="" required>
+                            <input name="promo-code" class="input" id="user_promo_code" type="text" value="">
                         </div>
                     </div>
                     <div class="form-col form-col--6 form-col--xs-12">
@@ -138,7 +150,7 @@
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
+                    <button id="buy-ticket-btn" class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
                 </div>
             </div>
         </form>

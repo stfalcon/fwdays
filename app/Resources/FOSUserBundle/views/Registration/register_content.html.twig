@@ -2,7 +2,7 @@
 <!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
 <div class="form-auth">
     <h2 class="h2 form-auth__title">{{ 'menu.user.registration'|trans }}</h2>
-    {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':path('fos_user_security_login')} %}
+    {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'loginLink':path('fos_user_security_login'), 'queryLink':''} %}
 </div>
 <!--END signup-payment-popup-->
 {% endblock content %}

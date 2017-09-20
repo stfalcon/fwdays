@@ -30,11 +30,18 @@ $(document).ready(function () {
     $('#add-user-trigger').on('click', function (e) {
         e.preventDefault();
         $(this).hide();
+        $("#payment_user_name").prop('required', true);
+        $("#payment_user_surname").prop('required', true);
+        $("#payment_user_email").prop('required', true);
+
         $('#payment-add-user').show();
     });
 
     $('#cancel-add-user').on('click', function (e) {
         e.preventDefault();
+        $("#payment_user_name").prop('required', false);
+        $("#payment_user_surname").prop('required', false);
+        $("#payment_user_email").prop('required', false);
         $('#payment-add-user').hide();
         $('#add-user-trigger').show();
     });
@@ -42,12 +49,14 @@ $(document).ready(function () {
     $('#promo-code-trigger').on('click', function (e) {
         e.preventDefault();
         $(this).hide();
+        $("#user_promo_code").prop('required', true);
         $('#add-promo-code').show();
     });
 
     $('#cancel-promo-code').on('click', function (e) {
         e.preventDefault();
         $('#add-promo-code').hide();
+        $("#user_promo_code").prop('required', false);
         $('#promo-code-trigger').show();
     });
 
