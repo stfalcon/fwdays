@@ -29,6 +29,13 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/news", name="news")
+     */
+    public function redirectAction()
+    {
+        return new RedirectResponse($this->generateUrl('homepage'));
+    }
+    /**
      * @Route(path="/cabinet", name="cabinet")
      * @Security("has_role('ROLE_USER')")
      * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
@@ -75,7 +82,6 @@ class DefaultController extends Controller
      */
     public function pageAction($slug)
     {
-        $dir = $this->get('kernel')->getRootDir();
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
             ->findOneBy(['slug' => $slug]);
         if (!$staticPage) {

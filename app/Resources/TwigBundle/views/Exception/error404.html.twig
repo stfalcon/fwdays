@@ -1,16 +1,22 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <div class="error-page">
-        <h1>{{ 'page.error.notfound'|trans }}</h1>
-        <h4>{{ 'page.error.notfound.error'|trans }}</h4>
-        <div class="error-msg-block">
-            <p>{{ 'page.error.notfound.message'|trans|raw }}</p>
+    <section class="contacts">
+        <div class="container container--sm">
+            <h1 class="h2 contacts__title">{{ 'page.error.notfound'|trans }}</h1>
+
+                <h4>{{ 'page.error.notfound.error'|trans }}</h4>
+                <div class="error-msg-block">
+                    <p>{{ 'page.error.notfound.message'|trans|raw }}</p>
+                </div>
+                <strong> {{ 'page.error.notfound.you_can'|trans|raw }}</strong>
+                <ul>
+                    <li><a href="{{ path('homepage') }}">{{ 'page.error.notfound.you_can1'|trans|raw }}</a> </li>
+                    <li>{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
+                </ul>
+
+
         </div>
-        <strong> {{ 'page.error.notfound.you_can'|trans|raw }}</strong>
-        <ul>
-            <li><a href="https://frameworksdays.com/">{{ 'page.error.notfound.you_can1'|trans|raw }}</a> </li>
-            <li>{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
-        </ul>
-    </div>
+    </section>
 {% endblock %}
+
