@@ -1,10 +1,11 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
+    <div class="event-description__text">
     <h2>{{ 'interkassa.payment.pending'|trans }}</h2>
 
     {{ 'interkassa.payment.pending.wait'|trans }}
-
+    </div>
 {% endblock %}
 
 {% block javascripts %}

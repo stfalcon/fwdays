@@ -101,17 +101,17 @@ ticket.email.unsubscribe: __ticket.email.unsubscribe
 ticket.email.team: __ticket.email.team
 news.to_the_list: __news.to_the_list
 news.title: __news.title
-interkassa.payment.fail: __interkassa.payment.fail
-interkassa.payment.fail.back: __interkassa.payment.fail.back
+interkassa.payment.fail: Не вдалося провести платіж!
+interkassa.payment.fail.back: Будь ласка, поверніться на сторінку оплати квитка і спробуйте ще раз.
 interkassa.mail.msg.hello: __interkassa.mail.msg.hello
 interkassa.mail.msg.thanks: __interkassa.mail.msg.thanks
 interkassa.mail.msg.remember: __interkassa.mail.msg.remember
 interkassa.mail.msg.remember1: __interkassa.mail.msg.remember1
 interkassa.mail.msg.ticket: __interkassa.mail.msg.ticket
-interkassa.payment.success: __interkassa.payment.success
-interkassa.payment.success.emailsend: __interkassa.payment.success.emailsend
-interkassa.payment.pending: __interkassa.payment.pending
-interkassa.payment.pending.wait: __interkassa.payment.pending.wait
+interkassa.payment.success: Оплата пройшла успішно!
+interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також, Ви можете скачати квиток на сторінці
+interkassa.payment.pending: Оплата ще не завершена!
+interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
 events.my: __events.my
 event.detail.info2: __event.detail.info2
 event.about: __event.about

@@ -117,17 +117,17 @@ ticket.email.unsubscribe: __ticket.email.unsubscribe
 ticket.email.team: __ticket.email.team
 news.to_the_list: __news.to_the_list
 news.title: __news.title
-interkassa.payment.fail: __interkassa.payment.fail
-interkassa.payment.fail.back: __interkassa.payment.fail.back
+interkassa.payment.fail: Payment is fail
+interkassa.payment.fail.back: Please, go back to the payment page and try again.
 interkassa.mail.msg.hello: __interkassa.mail.msg.hello
 interkassa.mail.msg.thanks: __interkassa.mail.msg.thanks
 interkassa.mail.msg.remember: __interkassa.mail.msg.remember
 interkassa.mail.msg.remember1: __interkassa.mail.msg.remember1
 interkassa.mail.msg.ticket: __interkassa.mail.msg.ticket
-interkassa.payment.success: __interkassa.payment.success
-interkassa.payment.success.emailsend: __interkassa.payment.success.emailsend
-interkassa.payment.pending: __interkassa.payment.pending
-interkassa.payment.pending.wait: __interkassa.payment.pending.wait
+interkassa.payment.success: Payment successful!
+interkassa.payment.success.emailsend: Message confirming the payment and the ticket have been sent to your e-mail. Also you can download the ticket on the page
+interkassa.payment.pending: Payment is pending!
+interkassa.payment.pending.wait: Please wait for a while until we receive a payment confirmation.
 
 ticket.dear_user: __ticke.dear_user
 ticket.wait_for_you: __ticke.wait_for_you

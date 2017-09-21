@@ -117,7 +117,7 @@ fos_user:
 stfalcon_event:
     interkassa:
         shop_id: "%interkassa_shop_id_test%"
-        secret: %interkassa_secret_test%
+        secret: "%interkassa_secret_test%"
     discount: 0.2
 
 sonata_block:
