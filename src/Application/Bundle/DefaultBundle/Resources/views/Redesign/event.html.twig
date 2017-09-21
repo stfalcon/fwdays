@@ -38,7 +38,9 @@
     {% endif %}
     <!--END program-->
 
-    {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
+    {% if event.receivePayments %}
+        {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
+    {% endif %}
 
     {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
 
