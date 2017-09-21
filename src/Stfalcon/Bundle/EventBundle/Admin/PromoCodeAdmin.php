@@ -11,6 +11,24 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
  */
 class PromoCodeAdmin extends Admin
 {
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        };
+    }
 
     /**
      * @param ListMapper $listMapper

@@ -11,6 +11,25 @@ use Knp\Bundle\MenuBundle\MenuItem;
 
 class SpeakerAdmin extends Admin
 {
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        };
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
