@@ -1,5 +1,20 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
+{% block shareButtonsScripts %}
+    {% if app.request.locale == 'uk' %}
+        {% set lang = 'uk_UA' %}
+    {% else %}
+        {% set lang = 'en_US' %}
+    {% endif %}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/{{ lang }}/sdk.js#xfbml=1&version=v2.10&appId=1954646954821827";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock shareButtonsScripts %}
 {% block content %}
     <!--BEGIN cabinet-head-->
     <div class="cabinet-head">
@@ -50,6 +65,7 @@
                         <div class="share-ref__label">{{ 'referral.invaite.link.text'|trans }}</div>
                         <div class="share-ref__dropdown">
                             {% set firstEvent = events|first %}
+                            {% set fistLink = url('event_show_redesign', {'event_slug' : firstEvent.slug, 'ref': code}) %}
                             <div id="ref-selected" class="share-ref__dropdown-selected">{{ firstEvent.name }}</div>
                             <select id="ref-dropdown" name="" class="share-ref__select">
                                 {% for event in events %}
@@ -71,14 +87,17 @@
                                 <i class="icon-copy share-ref__copy-icon"></i>
                             </button>
                         </div>
-                        <a href="#" class="btn btn--md share-ref__facebook"><i class="btn__icon icon-facebook"></i>{{ 'referral.share.title'|trans }}</a>
+                        <a id="share-ref__facebook" href="http://www.facebook.com/sharer/sharer.php?u={{ fistLink }}%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                           class="btn btn--md share-ref__facebook" target="_blank" data-layout="button" data-size="large" data-mobile-iframe="true"
+                           onclick="popupwindow(this.href, 'facebook', 500, 350);">
+                            <i class="btn__icon icon-facebook"></i>{{ 'referral.share.title'|trans }}
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!--END share-->
-
 {% endblock content%}
 {% block popups %}
     <!--BEGIN profile-popup-->

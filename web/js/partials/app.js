@@ -87,6 +87,7 @@ $(document).ready(function () {
 
         $('#ref-selected').text(value);
         $('#ref-input').val(ref);
+        $('#share-ref__facebook').attr("href", 'http://www.facebook.com/sharer.php?u='+ref+'%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse');
     });
 
     /**

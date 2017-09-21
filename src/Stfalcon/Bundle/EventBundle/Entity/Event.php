@@ -74,6 +74,21 @@ class Event implements Translatable
     protected $place;
 
     /**
+     * @var string $approximateDate
+     *
+     * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Translatable(fallback=true)
+     */
+    protected $approximateDate = '';
+
+    /**
+     * @var bool $useApproximateDate
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $useApproximateDate = false;
+
+    /**
      * @var \DateTime $date
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -238,6 +253,40 @@ class Event implements Translatable
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseApproximateDate()
+    {
+        return $this->useApproximateDate;
+    }
+
+    /**
+     * @param bool $useApproximateDate
+     */
+    public function setUseApproximateDate($useApproximateDate)
+    {
+        $this->useApproximateDate = $useApproximateDate;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getApproximateDate()
+    {
+        return $this->approximateDate;
+    }
+
+    /**
+     * @param string $approximateDate
+     * @return $this
+     */
+    public function setApproximateDate($approximateDate)
+    {
+        $this->approximateDate = $approximateDate;
+        return $this;
     }
 
     /**
@@ -501,7 +550,7 @@ class Event implements Translatable
         $eventEndDate = $this->dateEnd ? $this->dateEnd : $this->date;
         $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
 
-        return $this->active && ($eventEndDate ? $eventEndDate > $pastDate : true);
+        return $this->active && ($this->useApproximateDate || ($eventEndDate ? $eventEndDate > $pastDate : true));
     }
 
     /**

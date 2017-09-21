@@ -69,10 +69,15 @@ class EventAdmin extends Admin
                         'label' => 'about',
                         'locale_options' => $localOptions
                     ],
+                    'approximateDate'=> [
+                        'label' => 'Приблизительная дата',
+                        'locale_options' => $localOptions
+                    ],
                 ],
                 'label' => 'Перевод',
             ])
             ->add('slug')
+            ->add('useApproximateDate')
             ->add('date')
             ->add('dateEnd')
             ->add('active', null, ['required' => false])

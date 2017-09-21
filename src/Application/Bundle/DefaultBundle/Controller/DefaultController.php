@@ -23,9 +23,9 @@ class DefaultController extends Controller
     {
         $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true ]);
+            ->findBy(['active' => true ], ['date' => 'ASC']);
 
-        return [ 'events' => $events];
+        return ['events' => $events];
     }
 
     /**

@@ -4,7 +4,11 @@
             <h2 class="h2 h2--white event-card__title">
                 <a href="{{ path('event_show_redesign', {'event_slug': event.slug } )}}">{{ event.name }}</a>
             </h2>
-            <time class="event-card__date">{{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
+            {% if event.isUseApproximateDate %}
+                <time class="event-card__date">{{ event.approximateDate }}, {{ event.city }}</time>
+            {% else %}
+                <time class="event-card__date">{{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
+            {% endif %}
             {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'card'}) %}
         </div>
         <div class="event-card__photo">
