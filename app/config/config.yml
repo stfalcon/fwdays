@@ -116,7 +116,7 @@ fos_user:
 
 stfalcon_event:
     interkassa:
-        shop_id: "533958fbbf4efc736a13bea5"
+        shop_id: "%interkassa_shop_id_test%"
         secret: %interkassa_secret_test%
     discount: 0.2
 
