@@ -15,6 +15,13 @@ use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
  */
 class TicketService
 {
+    const CAN_BUY_TICKET = 'can buy ticket';
+    const CAN_DOWNLOAD_TICKET = 'can download ticket';
+    const CAN_WANNA_VISIT = 'can wanna visit';
+    const WAIT_FOR_PAYMENT_RECEIVE = 'wit for payment receive';
+    const PAID_FOR_ANOTHER = 'paid for another';
+    const EVENT_DONE = 'event done';
+    const EVENT_DEFAULT_STATE = 'event default state';
 
     /**
      * @var Container $container
@@ -173,7 +180,7 @@ class TicketService
     public function getTicketHtmlData($user, $event, $position, $ticketCost)
     {
         $result = [];
-
+        $eventState = null;
         $ticket = $this->findTicketForEventByCurrentUser($event);
         /** @var Payment $payment */
         $payment = null;
@@ -184,62 +191,104 @@ class TicketService
                 ->findPaymentByUserAndEvent($user, $event);
         }
 
-        $getTicket = $ticket && $ticket->isPaid();
         $translator = $this->container->get('translator');
-
+        $eventState = null;
         $isDiv = null;
         $data = null;
         $class = '';
         $href = null;
         $isMob = null;
         $caption = '';
+
         if ($event->isActiveAndFuture()) {
-            switch ($position) {
-                case 'row':
-                    $class = $getTicket ? 'event-row__download' :'event-row__btn btn btn--primary btn--sm';
-                    break;
-                case 'card':
-                    $class = $getTicket ? 'event-card__download' : 'btn btn--primary btn--sm event-card__btn';
-                    break;
-                case 'event_header':
-                    $class = $getTicket ? 'event-header__download' : 'btn btn--primary btn--lg event-header__btn';
-                    break;
-                case 'event_fix_header':
-                    $class = $getTicket ? 'fix-event-header__download'
-                        : 'btn btn--primary btn--lg fix-event-header__btn';
-                    break;
-                case 'event_fix_header_mob':
-                    $class = $getTicket ? 'fix-event-header__download fix-event-header__download--mob'
-                        : 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob';
-                    $isMob = true;
-                    break;
-                case 'event_action_mob':
-                    $class = 'btn btn--primary btn--lg event-action-mob__btn';
-                    $isMob = true;
-                    break;
-                case 'price_block_mob':
-                    $class = 'btn btn--primary btn--lg cost__buy cost__buy--mob';
-                    $isMob = true;
-                    break;
-                case 'price_block':
-                    $class = 'btn btn--primary btn--lg cost__buy';
-                    break;
+
+            if ($ticket && $ticket->isPaid()) {
+
+                $eventState = self::CAN_DOWNLOAD_TICKET;
+
+            } elseif ($ticket && !$event->getReceivePayments()) {
+
+                $eventState = self::WAIT_FOR_PAYMENT_RECEIVE;
+
+            } elseif ($payment && $payment->isPaid()) {
+
+                $eventState = self::PAID_FOR_ANOTHER;
+
+            } elseif (!$event->getReceivePayments()) {
+
+                $eventState = self::CAN_WANNA_VISIT;
+
+            } elseif (!$payment || ($payment && $payment->isPending())) {
+
+                $eventState = self::CAN_BUY_TICKET;
             }
+        } else {
+            $eventState = self::EVENT_DONE;
+        }
+
+        $states =
+            [
+                'row' =>
+                    [
+                        self::CAN_DOWNLOAD_TICKET => 'event-row__download',
+                        self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
+
+                    ],
+                'card' =>
+                    [
+                        self::CAN_DOWNLOAD_TICKET => 'event-card__download',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--sm event-card__btn',
+                    ],
+                'event_header' =>
+                    [
+                        self::CAN_DOWNLOAD_TICKET => 'event-header__download',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
+                    ],
+                'event_fix_header' =>
+                    [
+                        self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
+                    ],
+                'event_fix_header_mob' =>
+                    [
+                        self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download fix-event-header__download--mob',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
+                    ],
+                'event_action_mob' =>
+                    [
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
+                    ],
+                'price_block_mob' =>
+                    [
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
+                    ],
+                'price_block' => []
+        ];
+
+        if ($event->isActiveAndFuture()) {
+            $isMob = in_array($position, ['event_fix_header_mob', 'event_action_mob', 'price_block_mob']);
+
             $data = $event->getSlug();
             if ($getTicket) {
                 $caption = $isMob ? $translator->trans('ticket.mob_status.download') : $translator->trans('ticket.status.download');
                 $href = $this->container->get('router')->generate('event_ticket_download', ['event_slug' => $event->getSlug()]);
+
             } elseif ($ticket && !$event->getReceivePayments()) {
                 $caption = $translator->trans('ticket.status.event.add');
+                $isDiv = true;
             } elseif ($payment && $payment->isPaid()) {
                 $caption = $translator->trans('ticket.status.paid');
+
             } elseif (!$event->getReceivePayments() && (!$user || !$user->isEventInWants($event))) {
                 $class .= ' set-modal-header add-wants-visit-event';
                 $caption = $translator->trans('ticket.status.take_apart');
+
             } elseif (!$event->getReceivePayments() && $user->isEventInWants($event)) {
                 $class .= ' set-modal-header sub-wants-visit-event';
                 $caption = $translator->trans('ticket.status.not_take_apart');
+
             } elseif (!$payment || ($payment && $payment->isPending())) {
+
                 if ($isMob) {
                     $caption = $translator->trans('ticket.mob_status.pay');
                 } elseif ($position === 'price_block') {
@@ -272,6 +321,7 @@ class TicketService
                     $class = 'event-card__done';
             }
         }
+
         $result['class'] = $class;
         $result['caption'] = $caption;
         $result['href'] = $href;
@@ -279,5 +329,10 @@ class TicketService
         $result['data'] = $data;
 
         return $result;
+    }
+
+    private function getHtmlClassByState($eventState)
+    {
+
     }
 }
