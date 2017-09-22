@@ -33,6 +33,8 @@ class Version20170915142627 extends AbstractMigration
         $this->addSql('ALTER TABLE sponsors_category ADD is_wide_container TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE users ADD name VARCHAR(255) NOT NULL, ADD surname VARCHAR(255) NOT NULL, ADD phone VARCHAR(20) DEFAULT NULL, ADD facebook_id VARCHAR(255) DEFAULT NULL, ADD google_id VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE users CHANGE fullname fullname VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE reviews_users_likes DROP FOREIGN KEY FK_8009513FA76ED395');
+        $this->addSql('ALTER TABLE reviews_users_likes ADD CONSTRAINT FK_8009513FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE');
     }
 
     /**
@@ -53,6 +55,7 @@ class Version20170915142627 extends AbstractMigration
         $this->addSql('ALTER TABLE sponsors_category DROP is_wide_container');
         $this->addSql('ALTER TABLE users DROP name, DROP surname, DROP phone, DROP facebook_id, DROP google_id');
         $this->addSql('ALTER TABLE users CHANGE fullname fullname VARCHAR(255) NOT NULL COLLATE utf8_general_ci');
-
+        $this->addSql('ALTER TABLE reviews_users_likes DROP FOREIGN KEY FK_8009513FA76ED395');
+        $this->addSql('ALTER TABLE reviews_users_likes ADD CONSTRAINT FK_8009513FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
     }
 }
