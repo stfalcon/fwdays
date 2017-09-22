@@ -29,13 +29,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/news", name="news")
-     */
-    public function redirectAction()
-    {
-        return new RedirectResponse($this->generateUrl('homepage'));
-    }
-    /**
      * @Route(path="/cabinet", name="cabinet")
      * @Security("has_role('ROLE_USER')")
      * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
@@ -72,6 +65,22 @@ class DefaultController extends Controller
     {
         return [];
     }
+
+    /**
+     * @Route("/about", name="about")
+     * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
+     */
+    public function aboutAction()
+    {
+        $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
+            ->findOneBy(['slug' => 'about']);
+        if (!$staticPage) {
+            throw $this->createNotFoundException('Page not found! about');
+        }
+
+        return ['text' => $staticPage->getText()];
+    }
+
     /**
      * @Route("/page/{slug}", name="show_page")
      *

@@ -54,7 +54,7 @@ class MenuBuilder
             ->setAttribute('class','header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.contacts'), ['route' => 'contacts'])
             ->setAttribute('class','header-nav__item');
-        $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'show_page', 'routeParameters' => ['slug' => 'about']])
+        $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'about'])
             ->setAttribute('class','header-nav__item');
         $token = $this->tokenService->getToken();
         $user = $token ? $token->getUser() : null;

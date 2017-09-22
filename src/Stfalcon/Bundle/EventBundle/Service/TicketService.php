@@ -263,13 +263,13 @@ class TicketService
                     $class = 'event-card__done';
                     break;
                 case 'event_fix_header':
-                    $class = 'fix-event-header__download';
+                    $class = 'fix-event-header__done';
                     break;
                 case 'event_fix_header_mob':
-                    $class = 'fix-event-header__download fix-event-header__download--mob';
+                    $class = 'fix-event-header__done fix-event-header__done--mob';
                     break;
                 default:
-                    $class = 'event-header__download';
+                    $class = 'event-card__done';
             }
         }
         $result['class'] = $class;
