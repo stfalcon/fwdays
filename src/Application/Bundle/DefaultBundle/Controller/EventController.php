@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Buzz\Message\RequestInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -149,6 +150,44 @@ class EventController extends Controller
         return new JsonResponse(['result' => true, 'error' => '', 'html' => $html]);
     }
 
+    /**
+     * Get event map position
+     *
+     * @Route(path="/get_map_pos/{slug}", name="get_event_map_position",
+     *     options = {"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     * @param string $slug
+     *
+     * @return JsonResponse
+     */
+    public function getEventMapPosition($slug)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+        if (!$event) {
+            return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
+        }
+        $lat = 0;
+        $lng = 0;
+
+        $address = $event->getCity().','.$event->getPlace();
+        $json = $this->container->get('buzz')->get(
+            'https://maps.google.com/maps/api/geocode/json?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&address='.urlencode($address)
+        );
+        $response = json_decode(
+            $json->getContent(),
+            true
+        );
+
+        if (isset($response['status']) && $response['status'] === 'OK') {
+            $lat = isset($response['results'][0]['geometry']['location']['lat']) ? $response['results'][0]['geometry']['location']['lat'] : 0;
+            $lng = isset($response['results'][0]['geometry']['location']['lng']) ? $response['results'][0]['geometry']['location']['lng'] : 0;
+        } else {
+            return new JsonResponse(['result' => false, 'lat'=> $lat, 'lng' => $lng]);
+        }
+
+        return new JsonResponse(['result' => true, 'lat'=> $lat, 'lng' => $lng]);
+    }
     /**
      * User wanna visit an event
      *

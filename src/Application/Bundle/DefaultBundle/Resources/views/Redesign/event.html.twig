@@ -53,7 +53,7 @@
                 {{ venuePage.text|raw }}
             </div>
         </div>
-        <div id="map" class="location__map"></div>
+        <div id="map" data-event="{{ event.slug }}" class="location__map"></div>
     </section>
     {% endif %}
     <!--END location-->

@@ -231,27 +231,36 @@ class TicketService
                 'row' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'event-row__download',
+                        self::PAID_FOR_ANOTHER => 'event-row__done',
+                        self::EVENT_DONE => 'event-row__done',
                         self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
-
                     ],
                 'card' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'event-card__download',
+                        self::PAID_FOR_ANOTHER => 'event-card__done',
+                        self::EVENT_DONE => 'event-card__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--sm event-card__btn',
                     ],
                 'event_header' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'event-header__download',
+                        self::PAID_FOR_ANOTHER => 'event-card__done',
+                        self::EVENT_DONE => 'event-card__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download',
+                        self::PAID_FOR_ANOTHER => 'fix-event-header__done',
+                        self::EVENT_DONE => 'fix-event-header__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download fix-event-header__download--mob',
+                        self::PAID_FOR_ANOTHER => 'fix-event-header__done fix-event-header__done--mob',
+                        self::EVENT_DONE => 'fix-event-header__done fix-event-header__done--mob',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' =>
@@ -262,32 +271,37 @@ class TicketService
                     [
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
                     ],
-                'price_block' => []
+                'price_block' =>
+                    [
+                        self::EVENT_DEFAULT_STATE =>'btn btn--primary btn--lg cost__buy',
+                    ]
         ];
+
+        $class = isset($states[$position][$eventState]) ? $states[$position][$eventState] : $states[$position][self::EVENT_DEFAULT_STATE];
 
         if ($event->isActiveAndFuture()) {
             $isMob = in_array($position, ['event_fix_header_mob', 'event_action_mob', 'price_block_mob']);
 
             $data = $event->getSlug();
-            if ($getTicket) {
+            if ($eventState === self::CAN_DOWNLOAD_TICKET) {
                 $caption = $isMob ? $translator->trans('ticket.mob_status.download') : $translator->trans('ticket.status.download');
                 $href = $this->container->get('router')->generate('event_ticket_download', ['event_slug' => $event->getSlug()]);
 
-            } elseif ($ticket && !$event->getReceivePayments()) {
+            } elseif ($eventState === self::WAIT_FOR_PAYMENT_RECEIVE) {
                 $caption = $translator->trans('ticket.status.event.add');
                 $isDiv = true;
-            } elseif ($payment && $payment->isPaid()) {
+            } elseif ($eventState === self::PAID_FOR_ANOTHER) {
                 $caption = $translator->trans('ticket.status.paid');
 
-            } elseif (!$event->getReceivePayments() && (!$user || !$user->isEventInWants($event))) {
+            } elseif ($eventState === self::CAN_WANNA_VISIT && (!$user || !$user->isEventInWants($event))) {
                 $class .= ' set-modal-header add-wants-visit-event';
                 $caption = $translator->trans('ticket.status.take_apart');
 
-            } elseif (!$event->getReceivePayments() && $user->isEventInWants($event)) {
+            } elseif ($eventState === self::CAN_WANNA_VISIT && $user->isEventInWants($event)) {
                 $class .= ' set-modal-header sub-wants-visit-event';
                 $caption = $translator->trans('ticket.status.not_take_apart');
 
-            } elseif (!$payment || ($payment && $payment->isPending())) {
+            } elseif ($eventState === self::CAN_BUY_TICKET) {
 
                 if ($isMob) {
                     $caption = $translator->trans('ticket.mob_status.pay');
@@ -304,22 +318,6 @@ class TicketService
         } else {
             $isDiv = true;
             $caption = $translator->trans('ticket.status.event_done');
-            switch ($position) {
-                case 'row':
-                    $class = 'event-row__done';
-                    break;
-                case 'card':
-                    $class = 'event-card__done';
-                    break;
-                case 'event_fix_header':
-                    $class = 'fix-event-header__done';
-                    break;
-                case 'event_fix_header_mob':
-                    $class = 'fix-event-header__done fix-event-header__done--mob';
-                    break;
-                default:
-                    $class = 'event-card__done';
-            }
         }
 
         $result['class'] = $class;
@@ -329,10 +327,5 @@ class TicketService
         $result['data'] = $data;
 
         return $result;
-    }
-
-    private function getHtmlClassByState($eventState)
-    {
-
     }
 }
