@@ -35,8 +35,7 @@
                    for="fos_user_registration_form_plainPassword">{{ 'user.password.title'|trans }}</label>
             <div class="input-password">
                 <input class="input input-password__field" type="password" id="fos_user_registration_form_plainPassword"
-                       name="fos_user_registration_form[plainPassword]" value="{% if form is defined and form.plainPassword.vars.value %}{{ form.plainPassword.vars.value }}{% endif %}">
-                {% if form is defined and form.plainPassword.vars.errors|length %}<p class="text-error">{{ form.plainPassword.vars.errors[0].message|trans }}</p>{% endif %}
+                       name="fos_user_registration_form[plainPassword]" value="">
                 <i class="input-password__icon icon-eye icon-password--js"></i>
             </div>
         </div>

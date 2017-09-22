@@ -107,74 +107,7 @@
             <div class="remodal__head">
                 <h2 class="h2 remodal__title">{{ 'menu.user.info'|trans }}</h2>
             </div>
-            <form action="{{ path('fos_user_profile_edit') }}" method="POST">
-                <input type="hidden" id="fos_user_profile_form__token" name="fos_user_profile_form[_token]" value="{{csrf_token('profile')}}"/>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label form-label--required" for="fos_user_profile_form_name">{{ 'user.name.title'|trans }}</label>
-                            <input class="input" type="text" id="fos_user_profile_form_name" name="fos_user_profile_form[name]" required value="{{ user.name }}">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <label class="form-label form-label--required" for="fos_user_profile_form_surname">{{ 'user.surname.title'|trans }}</label>
-                        <input class="input" type="text" id="fos_user_profile_form_surname" name="fos_user_profile_form[surname]" required value="{{ user.surname }}">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label form-label--required" for="fos_user_profile_form_email">{{ 'user.email.title'|trans }}</label>
-                            <input class="input" type="email" id="fos_user_profile_form_email" required name="fos_user_profile_form[email]" value="{{ user.email }}">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <label class="form-label" for="fos_user_profile_form_phone">{{ 'user.phone.title'|trans }}</label>
-                        <input class="input mask-phone-input--js" type="tel" id="fos_user_profile_form_phone" name="fos_user_profile_form[phone]" value="{{ user.phone }}">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="fos_user_profile_form_country">{{ 'user.country.title'|trans }}</label>
-                            <input class="input" type="text" id="fos_user_profile_form_country" name="fos_user_profile_form[country]" value="{{ user.country }}">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <label class="form-label" for="fos_user_profile_form_city">{{ 'user.city.title'|trans }}</label>
-                        <input class="input" type="text" id="fos_user_profile_form_city" name="fos_user_profile_form[city]" value="{{ user.city }}">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <div class="form-group">
-                            <label class="form-label" for="fos_user_profile_form_company">{{ 'user.company.title'|trans }}</label>
-                            <input class="input" type="text" id="fos_user_profile_form_company" name="fos_user_profile_form[company]" value="{{ user.company }}">
-                        </div>
-                    </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <label class="form-label" for="fos_user_profile_form_post">{{ 'user.company_post.title'|trans }}</label>
-                        <input class="input" type="text" id="fos_user_profile_form_post" name="fos_user_profile_form[post]" value="{{ user.post }}">
-                    </div>
-                </div>
-                <div class="form-row form-row--checkbox">
-                    <div class="form-col">
-                        <div class="checkbox">
-                            {% if user.subscribe == true %}
-                                <input id="check1" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]" checked>
-                            {% else %}
-                                <input id="check1" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]">
-                            {% endif %}
-                            <label for="check1" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-col form-col--6 form-col--xs-12">
-                        <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.refresh.title'|trans }}</button>
-                    </div>
-                </div>
-            </form>
+            {% include '@ApplicationDefault/Redesign/profile_form.html.twig' %}
         </div>
     </div>
     <!--END profile-popup-->

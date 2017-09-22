@@ -143,9 +143,9 @@
                     <div class="form-group">
                         <label class="form-label" for="user_phone">{{ 'user.phone.title'|trans }}</label>
                         {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
-                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="{{ app.user.phone }}" required>
+                            <input class="input mask-phone-input--js" id="user_phone" name="user_phone" type="tel" value="{{ app.user.phone }}" required>
                         {% else %}
-                            <input class="input mask-phone-input--js" id="user_phone" type="tel" value="" required>
+                            <input class="input mask-phone-input--js" id="user_phone" name="user_phone" type="tel" value="" required>
                         {% endif %}
                     </div>
                 </div>

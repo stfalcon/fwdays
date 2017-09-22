@@ -1,0 +1,14 @@
+{% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
+
+{% block content %}
+
+    <!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
+    <div class="form-auth">
+        <h2 class="h2 form-auth__title">{{ 'menu.profile.my'|trans }}</h2>
+        {% for error in form.vars.errors %}
+            <p class="text-error">{{ error.message|trans }}</p>
+        {% endfor %}
+        {% include '@ApplicationDefault/Redesign/profile_form.html.twig' %}
+    </div>
+    <!--END signup-payment-popup-->
+{% endblock content %}

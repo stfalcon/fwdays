@@ -124,12 +124,14 @@ $(document).on('opening', '.remodal', function (e) {
 $(document).ready(function () {
     $('#payment').validate();
 
-    $( "#user_phone" ).rules( "add", {
+    $("#user_phone").rules( "add", {
         required: true,
         minlength: 17,
+        pattern: /^(\+38\s0[0-9]{2}\s[0-9]{3}\s[0-9]{2}\s[0-9]{2})/,
         messages: {
             required: "Required phone number",
-            minlength: jQuery.validator.format("Please, at least {0} characters are necessary")
+            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
+            pattern: "Please specify the correct phone"
         }
     });
 
