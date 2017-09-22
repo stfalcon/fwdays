@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Validator\Constraints as Assert;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * User Class
@@ -127,6 +128,11 @@ class User extends BaseUser
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your name cannot contain a number"
+     * )
      */
     protected $name;
     /**
@@ -134,6 +140,11 @@ class User extends BaseUser
      *
      * @ORM\Column(name="surname", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your surname cannot contain a number"
+     * )
      */
     protected $surname;
     /**
@@ -162,6 +173,20 @@ class User extends BaseUser
         $this->tickets = new ArrayCollection();
         $this->wantsToVisitEvents = new ArrayCollection();
     }
+
+    /**
+     * @Assert\Callback()
+     * @param ExecutionContextInterface $context
+     */
+    public function validatePhone(ExecutionContextInterface $context)
+    {
+        if (!empty($this->phone) && !preg_match('/^(\+38\s0[0-9]{2}\s[0-9]{3}\s[0-9]{2}\s[0-9]{2})/', $this->phone)) {
+            $context->buildViolation('Bad phone format')
+                ->atPath('phone')
+                ->addViolation();
+        }
+    }
+
     /**
      * @return string
      */

@@ -1,13 +1,14 @@
 {% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
 
 {% block content %}
-    {% if error %}
-        <div class="error-msg-block"><p>{{ error|trans({}, 'FOSUserBundle') }}</p></div>
-    {% endif %}
+
 
 <!--BEGIN form-auth-->
 <div class="form-auth">
     <h2 class="h2 form-auth__title">{{ 'menu.login'|trans }}</h2>
+    {% if error %}
+        <div class="error-msg-block"><p>{{ error|trans({}, 'FOSUserBundle') }}</p></div>
+    {% endif %}
         {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'registrationLink':path('fos_user_registration_register'), 'queryLink':''} %}
 </div>
 {% endblock content %}

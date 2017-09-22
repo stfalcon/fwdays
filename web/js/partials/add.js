@@ -122,6 +122,16 @@ $(document).on('opening', '.remodal', function (e) {
 });
 
 $(document).ready(function () {
+    $('#payment').validate();
+
+    $( "#user_phone" ).rules( "add", {
+        required: true,
+        minlength: 17,
+        messages: {
+            required: "Required phone number",
+            minlength: jQuery.validator.format("Please, at least {0} characters are necessary")
+        }
+    });
 
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
