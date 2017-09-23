@@ -135,6 +135,24 @@ $(document).ready(function () {
         }
     });
 
+    $('#payment_user_email').rules("add", {
+        pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+        messages: {
+            pattern: "Please specify the correct email"
+        }
+    });
+    $('#payment_user_name').rules("add", {
+        pattern:/^\D+$/,
+        messages: {
+            pattern: "Please specify the correct name"
+        }
+    });
+    $('#payment_user_surname').rules("add", {
+        pattern:/^\D+$/,
+        messages: {
+            pattern: "Please specify the correct surname"
+        }
+    });
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
@@ -196,7 +214,6 @@ $(document).ready(function () {
         }
     });
     $('#buy-ticket-btn').on('click', function () {
-        console.log('here');
         if ($('#user_phone').valid()) {
             $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {
             });

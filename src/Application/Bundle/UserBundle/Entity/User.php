@@ -129,8 +129,8 @@ class User extends BaseUser
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/\d/",
-     *     match=false,
+     *     pattern="/\D+$/",
+     *     match=true,
      *     message="Your name cannot contain a number"
      * )
      */
@@ -141,8 +141,8 @@ class User extends BaseUser
      * @ORM\Column(name="surname", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/\d/",
-     *     match=false,
+     *     pattern="/\D+$/",
+     *     match=true,
      *     message="Your surname cannot contain a number"
      * )
      */
