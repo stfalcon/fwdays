@@ -83,11 +83,13 @@ $(document).ready(function () {
      */
     $('#ref-dropdown').on('change', function () {
         var value = $('option:selected', this).text(),
-            ref = $('option:selected', this).data('ref');
+            ref = $('option:selected', this).data('ref'),
+            image = $('option:selected', this).data('image');
 
         $('#ref-selected').text(value);
         $('#ref-input').val(ref);
-        $('#share-ref__facebook').attr("href", 'http://www.facebook.com/sharer.php?u='+ref+'%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse');
+        $('#share-ref__facebook').attr("href", 'http://www.facebook.com/sharer.php?u='+ref);
+        $("meta[property='og:image']").attr('content', image);
     });
 
     /**

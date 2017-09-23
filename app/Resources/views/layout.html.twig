@@ -1,9 +1,11 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}">
 <head>
-    <meta charset="UTF-8">
     <title>{% block title %}Frameworks Days{% endblock title %}</title>
+    {% block metatags %}
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    {% endblock metatags %}
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css') }}">
 </head>

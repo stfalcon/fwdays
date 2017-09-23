@@ -1,5 +1,13 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
+{% set firstEvent = events|first %}
+{% set fistLink = url('event_show_redesign', {'event_slug' : firstEvent.slug, 'ref': code}) %}
+{% set firstImage = absolute_url(vich_uploader_asset(firstEvent, 'logoFile')) %}
+
+{% block metatags %}
+    {{ parent() }}
+    <meta property="og:image" content="{{ firstImage }}" />
+{% endblock metatags %}
 {% block shareButtonsScripts %}
     {% if app.request.locale == 'uk' %}
         {% set lang = 'uk_UA' %}
@@ -64,13 +72,12 @@
                     <div class="share-ref__top">
                         <div class="share-ref__label">{{ 'referral.invaite.link.text'|trans }}</div>
                         <div class="share-ref__dropdown">
-                            {% set firstEvent = events|first %}
-                            {% set fistLink = url('event_show_redesign', {'event_slug' : firstEvent.slug, 'ref': code}) %}
                             <div id="ref-selected" class="share-ref__dropdown-selected">{{ firstEvent.name }}</div>
                             <select id="ref-dropdown" name="" class="share-ref__select">
                                 {% for event in events %}
                                 <option value="{{ loop.index }}"
-                                        data-ref="{{ url('event_show_redesign', {'event_slug' : event.slug, 'ref': code}) }}">
+                                        data-ref="{{ url('event_show_redesign', {'event_slug' : event.slug, 'ref': code}) }}"
+                                        data-image="{{ absolute_url(vich_uploader_asset(event, 'logoFile')) }}">
                                     {{ event.name }}
                                 </option>
                                 {% endfor %}
@@ -87,7 +94,7 @@
                                 <i class="icon-copy share-ref__copy-icon"></i>
                             </button>
                         </div>
-                        <a id="share-ref__facebook" href="http://www.facebook.com/sharer/sharer.php?u={{ fistLink }}%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                        <a id="share-ref__facebook" href="http://www.facebook.com/sharer/sharer.php?u={{ fistLink }}"
                            class="btn btn--md share-ref__facebook" target="_blank" data-layout="button" data-size="large" data-mobile-iframe="true"
                            onclick="popupwindow(this.href, 'facebook', 500, 350);">
                             <i class="btn__icon icon-facebook"></i>{{ 'referral.share.title'|trans }}
