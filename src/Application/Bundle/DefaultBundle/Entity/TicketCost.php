@@ -29,7 +29,7 @@ class TicketCost
     private $event;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="ticketCost")
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="ticketCost", cascade={"persist", "remove"})
      */
     private $tickets;
 

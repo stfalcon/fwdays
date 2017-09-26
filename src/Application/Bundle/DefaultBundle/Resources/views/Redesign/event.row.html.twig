@@ -4,7 +4,7 @@
 <div class="event-row event-row--inactive event-list__item">
 {% endif %}
     <div class="event-row__left">
-        <a href="{{ path('event_show_redesign', {'event_slug': event.slug } )}}" class="event-row__title">
+        <a href="{{ path('event_show_redesign', {'event_slug': event.slug } )}}">
             <img class="event-row__logo" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
         </a>
         <div class="event-row__details">

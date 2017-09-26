@@ -53,7 +53,7 @@ class SponsorRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         return
-            $qb->select('s', 'c.name', 'c.isWideContainer')
+            $qb->select('s', 'c.id')
             ->where('e.id = :eventId')
             ->join('s.sponsorEvents', 'se')
             ->join('se.event', 'e')
@@ -63,7 +63,6 @@ class SponsorRepository extends EntityRepository
             ->orderBy('s.sortOrder', 'DESC')
             ->getQuery()
             ->getResult();
-
     }
 
     public function getCheckedSponsorsOfActiveEvents()

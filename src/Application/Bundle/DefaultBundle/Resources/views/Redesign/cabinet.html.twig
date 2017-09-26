@@ -94,9 +94,9 @@
                                 <i class="icon-copy share-ref__copy-icon"></i>
                             </button>
                         </div>
-                        <a id="share-ref__facebook" href="http://www.facebook.com/sharer/sharer.php?u={{ fistLink }}"
+                        <a id="share-ref__facebook" data-href="http://www.facebook.com/sharer/sharer.php?u={{ fistLink }}"
                            class="btn btn--md share-ref__facebook" target="_blank" data-layout="button" data-size="large" data-mobile-iframe="true"
-                           onclick="popupwindow(this.href, 'facebook', 500, 350);">
+                           onclick="popupwindow($(this).data('href'), 'facebook', 500, 350);">
                             <i class="btn__icon icon-facebook"></i>{{ 'referral.share.title'|trans }}
                         </a>
                     </div>

@@ -116,12 +116,16 @@ class EventController extends Controller
         /** @var $partnerRepository \Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository */
         $partnerRepository = $this->getDoctrine()->getManager()
             ->getRepository('StfalconSponsorBundle:Sponsor');
-
+        $partnerCategoryRepository = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconSponsorBundle:Category');
         $partners = $partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
         foreach ($partners as $key => $partner){
-            $sortedPartners[$partner['isWideContainer']][$partner['name']][] = $partner[0];
+            $partnerCategory = $partnerCategoryRepository->find($partner['id']);
+            if ($partnerCategory) {
+                $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getName()][] = $partner[0];
+            }
         }
 
         return ['partners' => $sortedPartners];
@@ -130,22 +134,27 @@ class EventController extends Controller
     /**
      * Get event header
      *
-     * @Route(path="/get_modal_header/{slug}", name="get_modal_header",
+     * @Route(path="/get_modal_header/{slug}/{headerType}", name="get_modal_header",
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @param $slug
+     * @param $headerType
      *
      * @return JsonResponse
      */
-    public function getModalHeaderAction($slug)
+    public function getModalHeaderAction($slug, $headerType)
     {
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
-
-        $html = $this->get('translator')->trans('popup.header.title', ['%event_name%' => $event->getName()]);
+        $html = '';
+        if ('buy' === $headerType) {
+            $html = $this->get('translator')->trans('popup.header.title', ['%event_name%' => $event->getName()]);
+        } elseif ('reg' === $headerType) {
+            $html = $this->get('translator')->trans('popup.header_reg.title', ['%event_name%' => $event->getName()]);
+        }
 
         return new JsonResponse(['result' => true, 'error' => '', 'html' => $html]);
     }

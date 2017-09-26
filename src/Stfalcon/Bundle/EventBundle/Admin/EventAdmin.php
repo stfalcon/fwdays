@@ -109,8 +109,8 @@ class EventAdmin extends Admin
                 'logoFile',
                 'file',
                 array(
-                    'label' => 'Logo',
-                    'required' => is_null($subject->getLogo())
+                    'label' => 'Logo. Ширина изображения должна быть равна высоте.',
+                    'required' => is_null($subject->getLogo()),
                 )
             )
             ->add(

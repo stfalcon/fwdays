@@ -41,8 +41,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
-     *     minMessage = "Your company must be at least {{ limit }} characters long",
-     *     maxMessage = "Your company cannot be longer than {{ limit }} characters"
      * )
      */
     protected $company;
@@ -54,8 +52,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
-     *     minMessage = "Your post must be at least {{ limit }} characters long",
-     *     maxMessage = "Your post cannot be longer than {{ limit }} characters"
      * )
      */
     protected $post;
@@ -67,8 +63,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
-     *     minMessage = "Your country must be at least {{ limit }} characters long",
-     *     maxMessage = "Your country cannot be longer than {{ limit }} characters"
      * )
      */
     protected $country;
@@ -80,8 +74,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
-     *     minMessage = "Your city must be at least {{ limit }} characters long",
-     *     maxMessage = "Your city cannot be longer than {{ limit }} characters"
      * )
      */
     protected $city;
@@ -160,8 +152,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 32,
-     *     minMessage = "Your name must be at least {{ limit }} characters long",
-     *     maxMessage = "Your name cannot be longer than {{ limit }} characters"
      * )
      */
     protected $name;
@@ -178,8 +168,6 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 32,
-     *     minMessage = "Your surname must be at least {{ limit }} characters long",
-     *     maxMessage = "Your surname cannot be longer than {{ limit }} characters"
      * )
      */
     protected $surname;
@@ -203,6 +191,14 @@ class User extends BaseUser
      * @ORM\Column(name="google_id", type="string", nullable=true)
      */
     private $googleID;
+    /**
+     * @var string
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
+     */
+    protected $plainPassword;
 
     public function __construct() {
         parent::__construct();
@@ -211,12 +207,29 @@ class User extends BaseUser
     }
 
     /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return parent::getPlainPassword();
+    }
+
+    /**
+     * @param string $plainPassword
+     * @return $this
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        return parent::setPlainPassword($plainPassword);
+    }
+
+    /**
      * @Assert\Callback()
      * @param ExecutionContextInterface $context
      */
     public function validatePhone(ExecutionContextInterface $context)
     {
-        if (!empty($this->phone) && !preg_match('/^(\+38\s0[0-9]{2}\s[0-9]{3}\s[0-9]{2}\s[0-9]{2})/', $this->phone)) {
+        if (!empty($this->phone) && !preg_match('/\+[1-9]{1}[0-9]{11,15}/', $this->phone)) {
             $context->buildViolation('Bad phone format')
                 ->atPath('phone')
                 ->addViolation();

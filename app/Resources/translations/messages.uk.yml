@@ -86,6 +86,7 @@ referral.program.conditions.text: Получайте по %referal_bonus% грн
 referral.share.title: Поділитись
 referral.link.copied: Скопійовано
 popup.header.title: Оплата участі в конференції %event_name%
+popup.header_reg.title: Реєстрація на конференцію %event_name%
 cancel.title: Отмена
 add.title: Додати
 Dashboard: __Dashboard

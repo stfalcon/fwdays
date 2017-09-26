@@ -1,5 +1,5 @@
-function setModalHeader(e_slug) {
-    $.post(Routing.generate('get_modal_header', {slug: e_slug}), function (data) {
+function setModalHeader(e_slug, h_type) {
+    $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
         if (data.result) {
             $('.change-title').html(data.html);
         } else {
@@ -115,7 +115,7 @@ $(document).on('opening', '.remodal', function (e) {
         var e_slug = Cookies.get('event');
         if (e_slug) {
             Cookies.remove('event', { path: '/', http: false, secure : false });
-            setModalHeader(e_slug);
+            setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug, false);
         }
     }
@@ -127,7 +127,7 @@ $(document).ready(function () {
     $("#user_phone").rules( "add", {
         required: true,
         minlength: 17,
-        pattern: /^(\+38\s0[0-9]{2}\s[0-9]{3}\s[0-9]{2}\s[0-9]{2})/,
+        pattern: /\+[1-9]{1}[0-9]{11,15}/,
         messages: {
             required: "Required phone number",
             minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
@@ -173,7 +173,13 @@ $(document).ready(function () {
 
     $('.set-modal-header').on('click', function () {
         var e_slug = $(this).data('event');
-        setModalHeader(e_slug);
+        var h_type = '';
+        if ($(this).hasClass('get-payment')) {
+            h_type = 'buy';
+        } else {
+            h_type = 'reg';
+        }
+        setModalHeader(e_slug, h_type);
     });
 
     $('.get-payment').on('click', function () {
@@ -190,6 +196,7 @@ $(document).ready(function () {
                     if (data.result) {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
+                        $('#cancel-promo-code').click();
                     } else {
                         $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);
@@ -214,6 +221,8 @@ $(document).ready(function () {
                     if (data.result) {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
+                        $('#cancel-add-user').click();
+
                     } else {
                         $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);

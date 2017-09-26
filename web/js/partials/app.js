@@ -18,11 +18,11 @@ $(document).ready(function () {
     /**
      * Mask phone input
      */
-    $('.mask-phone-input--js').mask("+38 099 999 99 99",
-        {
-            placeholder: " ",
-            autoclear: false
-        });
+    // $('.mask-phone-input--js').mask("+38 099 999 99 99",
+    //     {
+    //         placeholder: " ",
+    //         autoclear: false
+    //     });
 
     /**
      * Payment popup

@@ -102,6 +102,7 @@ referral.program.conditions.text: __referral.program.conditions.text
 referral.share.title: Share
 referral.link.copied: Copied
 popup.header.title: Pay for event %event_name%
+popup.header_reg.title: Registration for the event %event_name%
 cancel.title: Cancel
 add.title: Add
 Dashboard: __Dashboard
