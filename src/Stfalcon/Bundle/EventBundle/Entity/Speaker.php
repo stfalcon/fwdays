@@ -130,6 +130,13 @@ class Speaker implements Translatable
     private $updatedAt;
 
     /**
+     * @var int $sortOrder
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false, options={"default":"1"})
+     */
+    protected $sortOrder = 1;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -138,6 +145,23 @@ class Speaker implements Translatable
         $this->candidateEvents = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int $sortOrder
+     * @return $this
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
     }
 
     /**

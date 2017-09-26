@@ -306,7 +306,7 @@ class TicketService
                 if ($isMob) {
                     $caption = $translator->trans('ticket.mob_status.pay');
                 } elseif ($position === 'price_block') {
-                    $caption = $translator->trans('ticket.status.pay_for').' '. $translator->trans('payment.price', ['%summ%' => number_format($ticketCost->getAmount(), 0,',','')]);
+                    $caption = $translator->trans('ticket.status.pay_for').' '. $translator->trans('payment.price', ['%summ%' => number_format($ticketCost->getAmount(), 0,',',' ')]);
                     if ($ticketCost->getAltAmount()) {
                         $caption .= '<span class="cost__dollars">'.$ticketCost->getAltAmount().'</span>';
                     }

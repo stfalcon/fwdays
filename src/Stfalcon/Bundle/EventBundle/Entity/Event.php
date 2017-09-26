@@ -205,6 +205,7 @@ class Event implements Translatable
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $speakers;
 
@@ -214,6 +215,7 @@ class Event implements Translatable
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="candidateEvents")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $candidateSpeakers;
 

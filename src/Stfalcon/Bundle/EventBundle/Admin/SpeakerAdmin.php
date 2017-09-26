@@ -60,6 +60,7 @@ class SpeakerAdmin extends Admin
                 ->add('slug')
                 ->add('email')
                 ->add('company')
+                ->add('sortOrder')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', array(
                         'required' => false,

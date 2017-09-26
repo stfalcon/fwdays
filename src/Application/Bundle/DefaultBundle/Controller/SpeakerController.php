@@ -33,7 +33,11 @@ class SpeakerController extends Controller
         if (!$event) {
             return new JsonResponse(['result' => false, 'html' => 'Unable to find Event by slug: '.$event_slug]);
         }
-
+        /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
+        $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
+        $speaker->setReviews(
+            $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
+        );
         $html = $this->renderView('@ApplicationDefault/Redesign/speaker.popup.html.twig', [
             'speaker' => $speaker,
             'event' => $event,

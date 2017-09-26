@@ -53,19 +53,7 @@
         <div class="remodal__head">
             <h2 class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</h2>
         </div>
-        <form action="{{ url("fos_user_resetting_send_email") }}" method="post">
-            <div class="form-row form-row--align-bottom">
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <div class="form-group">
-                        <label class="form-label" for="forgot_user_email">{{ 'user.email.title'|trans }}</label>
-                        <input class="input" id="forgot_user_email" type="email" name="username" value="">
-                    </div>
-                </div>
-                <div class="form-col form-col--6 form-col--xs-12">
-                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.reset_password.title'|trans }}</button>
-                </div>
-            </div>
-        </form>
+        {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' %}
     </div>
 </div>
 <!--END forgot-password-popup-->

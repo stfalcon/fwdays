@@ -275,10 +275,11 @@ $(document).ready(function () {
         } else {
             sumOffset = 0;
         }
-
-        $('html, body').animate({
-            scrollTop: ($(target).offset().top - sumOffset)
-        }, 500);
+        if ($(target).length) {
+            $('html, body').animate({
+                scrollTop: ($(target).offset().top - sumOffset)
+            }, 500);
+        }
     }
 
     function closeMenu() {

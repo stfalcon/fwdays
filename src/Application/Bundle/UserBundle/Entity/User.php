@@ -38,6 +38,12 @@ class User extends BaseUser
      * @var string $company
      *
      * @ORM\Column(name="company", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     *     minMessage = "Your company must be at least {{ limit }} characters long",
+     *     maxMessage = "Your company cannot be longer than {{ limit }} characters"
+     * )
      */
     protected $company;
 
@@ -45,6 +51,12 @@ class User extends BaseUser
      * @var string $post
      *
      * @ORM\Column(name="post", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     *     minMessage = "Your post must be at least {{ limit }} characters long",
+     *     maxMessage = "Your post cannot be longer than {{ limit }} characters"
+     * )
      */
     protected $post;
 
@@ -52,6 +64,12 @@ class User extends BaseUser
      * @var string $country
      *
      * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     *     minMessage = "Your country must be at least {{ limit }} characters long",
+     *     maxMessage = "Your country cannot be longer than {{ limit }} characters"
+     * )
      */
     protected $country;
 
@@ -59,6 +77,12 @@ class User extends BaseUser
      * @var string $city
      *
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     *     minMessage = "Your city must be at least {{ limit }} characters long",
+     *     maxMessage = "Your city cannot be longer than {{ limit }} characters"
+     * )
      */
     protected $city;
 
@@ -133,6 +157,12 @@ class User extends BaseUser
      *     match=true,
      *     message="Your name cannot contain a number"
      * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 32,
+     *     minMessage = "Your name must be at least {{ limit }} characters long",
+     *     maxMessage = "Your name cannot be longer than {{ limit }} characters"
+     * )
      */
     protected $name;
     /**
@@ -144,6 +174,12 @@ class User extends BaseUser
      *     pattern="/\D+$/",
      *     match=true,
      *     message="Your surname cannot contain a number"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 32,
+     *     minMessage = "Your surname must be at least {{ limit }} characters long",
+     *     maxMessage = "Your surname cannot be longer than {{ limit }} characters"
      * )
      */
     protected $surname;

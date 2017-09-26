@@ -10,7 +10,7 @@
             {% if ticket.hasPromoCode %}
                 {{ 'payment.discount.cupon'|trans({'%summ%':ticket.getPromoCode.discountAmount}) }}&nbsp;
             {% else %}
-                {{ 'payment.discount.member'|trans({'%discountAmount%':discountAmount}) }}&nbsp;
+                {{ 'payment.discount.member'|trans({'%summ%':discountAmount}) }}&nbsp;
             {% endif %}
         {% endif %}
         {% if ticket.payment.tickets.count > 1 %}

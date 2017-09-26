@@ -9,17 +9,17 @@
     <div class="user-payment__right">
     {% if ticket.hasDiscount %}
         <div class="user-payment__price">
-            <span class="user-payment__price-strike">{{ 'payment.price'|trans({'%summ%':ticket.amountWithoutDiscount|number_format(0,',','')})|raw }}</span>{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
+            <span class="user-payment__price-strike">{{ 'payment.price'|trans({'%summ%':ticket.amountWithoutDiscount|number_format(0,',',' ')})|raw }}</span>{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
         </div>
         <div class="user-payment__discount">
         {% if ticket.hasPromoCode %}
-            {{ 'payment.discount.cupon'|trans({'%summ%':ticket.getPromoCode.discountAmount|number_format(0,',','')})|raw }}&nbsp;
+            {{ 'payment.discount.cupon'|trans({'%summ%':ticket.getPromoCode.discountAmount|number_format(0,',',' ')})|raw }}&nbsp;
         {% else %}
-            {{ 'payment.discount.member'|trans({'%summ%':discountAmount|number_format(0,',','')})|raw }}&nbsp;
+            {{ 'payment.discount.member'|trans({'%summ%':discountAmount|number_format(0,',',' ')})|raw }}&nbsp;
         {% endif %}
         </div>
     {% else %}
-        <div class="user-payment__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',','')})|raw }}</div>
+        <div class="user-payment__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')})|raw }}</div>
     {% endif %}
     </div>
 </div>

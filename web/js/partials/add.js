@@ -143,14 +143,22 @@ $(document).ready(function () {
     });
     $('#payment_user_name').rules("add", {
         pattern:/^\D+$/,
+        minlength: 2,
+        maxlength: 32,
         messages: {
-            pattern: "Please specify the correct name"
+            pattern: "Please specify the correct name",
+            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
+            maxLength: jQuery.validator.format("Please, at least {0} characters are necessary")
         }
     });
     $('#payment_user_surname').rules("add", {
         pattern:/^\D+$/,
+        minlength: 2,
+        maxlength: 32,
         messages: {
-            pattern: "Please specify the correct surname"
+            pattern: "Please specify the correct surname",
+            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
+            maxLength: jQuery.validator.format("Please, at least {0} characters are necessary")
         }
     });
     $('.speaker-card__top').on('click', function () {
