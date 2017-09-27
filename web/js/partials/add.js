@@ -126,7 +126,7 @@ $(document).ready(function () {
 
     $("#user_phone").rules( "add", {
         required: true,
-        minlength: 17,
+        minlength: 13,
         pattern: /\+[1-9]{1}[0-9]{11,15}/,
         messages: {
             required: "Required phone number",

@@ -63,7 +63,6 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-        // Get references for event fixtures
         $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
         $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
@@ -78,7 +77,8 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setSlug('andrew-vorobey')
             ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventJsDay, $eventNotActive])
-            ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad]);
+            ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad])
+            ->setSortOrder(1);
         $manager->persist($speaker);
         $this->addReference('speaker-shkodyak', $speaker);
 
@@ -90,7 +90,8 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setSlug('valeriy-pitersky')
             ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventPHPDay2018, $eventNotActive])
-            ->setCandidateEvents([$eventPHPDay2017]);
+            ->setCandidateEvents([$eventPHPDay2017])
+            ->setSortOrder(11);
         $manager->persist($speaker);
         $this->addReference('speaker-rabievskiy', $speaker);
 
@@ -103,14 +104,11 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
                 ->setSlug('speaker'.$i)
                 ->setFile($this->_generateUploadedFile('speaker-'.($i+4).'.jpg'))
                 ->setEvents([$eventPHPDay2017, $eventHighLoad])
-                ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018]);
+                ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018])
+                ->setSortOrder(5);
             $manager->persist($speaker);
             $this->addReference('speaker-'.$i, $speaker);
         }
-
-
-
-
         $manager->flush();
     }
 
