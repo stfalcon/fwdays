@@ -1,3 +1,4 @@
+var payment_close = false;
 function setModalHeader(e_slug, h_type) {
     $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
         if (data.result) {
@@ -26,8 +27,10 @@ function setPaymentHtml(e_slug, open) {
                     window.location.replace('?event=' + e_slug + '#modal-payment');
                 }
             } else {
-                $('#close-payment').click();
+                payment_close = true;
                 console.log('Error:' + data.error);
+                var inst = $('[data-remodal-id=modal-payment]').remodal();
+                inst.close();
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -49,7 +52,8 @@ function setSpeakerHtml(e_slug, s_slug, open) {
                     window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
                 }
             } else {
-                $('.remodal-is-opened').hide();
+                var inst = $('[data-remodal-id=modal-speaker]').remodal();
+                inst.close();
                 console.log('Error:' + data.html);
             }
         });
@@ -125,6 +129,13 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         });
 });
 
+$(document).on('opened', '.remodal', function () {
+    if (window.location.hash === '#modal-payment' && payment_close) {
+        var inst = $('[data-remodal-id=modal-payment]').remodal();
+        inst.close();
+    }
+});
+
 $(document).on('opening', '.remodal', function (e) {
     var e_slug = null;
     var s_slug = null;
@@ -136,6 +147,7 @@ $(document).on('opening', '.remodal', function (e) {
             Cookies.remove('event', { path: '/', http: false, secure : false });
         }
         if (e_slug) {
+            payment_close = false;
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug, false);
         }
@@ -147,7 +159,9 @@ $(document).on('opening', '.remodal', function (e) {
 });
 
 function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
+    if (!url) {
+        url = window.location.href;
+    }
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
