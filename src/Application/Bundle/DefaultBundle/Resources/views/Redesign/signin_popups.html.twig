@@ -60,12 +60,12 @@
 
 <!--BEGIN payment-popup-->
 <div class="remodal remodal--md" data-remodal-id="modal-payment">
-    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <button id="close-payment" data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head remodal__head--payment">
             <h2 class="h2 remodal__title change-title"></h2>
         </div>
-        <form id="payment" name="payment" action="https://sci.interkassa.com/?test" method="post" enctype="utf-8" accept-charset="UTF-8">
+        <form id="payment" name="payment" action="https://sci.interkassa.com/" method="post" enctype="utf-8" accept-charset="UTF-8">
             <p id="pay-form"><!-- render html --></p>
             <div id="payment-add-user" class="form-add">
                 <div class="form-add__hint"> {{ 'pay.event.pay_for_other'|trans }}
@@ -130,7 +130,7 @@
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
                         <label class="form-label" for="user_phone">{{ 'user.phone.title'|trans }}</label>
-                        <input class="input mask-phone-input--js" placeholder="+380000000000" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}" required>
+                        <input class="input mask-phone-input--js" placeholder="+38" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}" required>
                     </div>
                 </div>
                 <div class="form-col form-col--6 form-col--xs-12">

@@ -313,7 +313,7 @@ class TicketService
                 } else {
                     $caption = $translator->trans('ticket.status.pay');
                 }
-                $class .=' set-modal-header get-payment';
+                $class .=' get-payment';
             }
         } else {
             $isDiv = true;
