@@ -26,7 +26,7 @@ function setPaymentHtml(e_slug, open) {
                     window.location.replace('?event=' + e_slug + '#modal-payment');
                 }
             } else {
-                $('.remodal-is-opened').hide();
+                $('#close-payment').click();
                 console.log('Error:' + data.error);
             }
         },
