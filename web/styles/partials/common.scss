@@ -144,6 +144,14 @@ ul {
   &:focus {
     border-color: rgba(151, 151, 151, 0.8);
   }
+
+  &--error {
+    border-color: rgba(204, 82, 61, 0.53);
+
+    &:hover {
+      border-color: rgba(204, 82, 61, 0.53);
+    }
+  }
 }
 
 .input-password {
@@ -516,4 +524,11 @@ ul {
   &__title {
     margin-bottom: 28px;
   }
+}
+
+.text-error {
+  font-size: 12px;
+  line-height: 16px;
+  color: $red-light-color;
+  margin-top: 10px;
 }
