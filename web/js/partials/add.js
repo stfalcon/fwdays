@@ -23,10 +23,10 @@ function setPaymentHtml(e_slug, open) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
                 if (open === true) {
-                    window.location.replace('#modal-payment');
+                    window.location.replace('?event=' + e_slug + '#modal-payment');
                 }
             } else {
-                $('#pay-form').html(data.html);
+                $('.remodal-is-opened').hide();
                 console.log('Error:' + data.error);
             }
         },
@@ -40,6 +40,21 @@ function setPaymentHtml(e_slug, open) {
         }
     });
 }
+function setSpeakerHtml(e_slug, s_slug, open) {
+    $.get(Routing.generate('speaker_popup', { event_slug: e_slug, speaker_slug:s_slug}),
+        function (data) {
+            if (data.result) {
+                $('#speaker-popup-content').html(data.html);
+                if (open === true) {
+                    window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
+                }
+            } else {
+                $('.remodal-is-opened').hide();
+                console.log('Error:' + data.html);
+            }
+        });
+}
+
 
 $(document).on('click', '.user-payment__remove', function () {
         console.log('here');
@@ -111,15 +126,35 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 });
 
 $(document).on('opening', '.remodal', function (e) {
+    var e_slug = null;
+    var s_slug = null;
     if (window.location.hash === '#modal-payment') {
-        var e_slug = Cookies.get('event');
-        if (e_slug) {
+        e_slug = Cookies.get('event');
+        if (!e_slug){
+            e_slug = getParameterByName('event');
+        } else {
             Cookies.remove('event', { path: '/', http: false, secure : false });
+        }
+        if (e_slug) {
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug, false);
         }
+    } else if (window.location.hash === '#modal-speaker') {
+        e_slug = getParameterByName('event');
+        s_slug = getParameterByName('speaker');
+        setSpeakerHtml(e_slug, s_slug, false);
     }
 });
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 $(document).ready(function () {
     $('#payment').validate();
@@ -134,7 +169,6 @@ $(document).ready(function () {
             pattern: "Please specify the correct phone"
         }
     });
-
     $('#payment_user_email').rules("add", {
         pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
         messages: {
@@ -161,14 +195,12 @@ $(document).ready(function () {
             maxLength: jQuery.validator.format("Please, at least {0} characters are necessary")
         }
     });
+
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
-
-        $.get(Routing.generate('speaker_popup', { event_slug: e_slug, speaker_slug:s_slug}), function (data) {
-            $('#speaker-popup-content').html(data.html);
-            window.location.replace('#modal-speaker');
-        });
+        //setSpeakerHtml(e_slug, s_slug, true);
+        window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
     });
 
     $('.set-modal-header').on('click', function () {
@@ -185,7 +217,7 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
-        setPaymentHtml(e_slug, true);
+        window.location.replace('?event=' + e_slug + '#modal-payment');
     });
 
     $('.add-promo-code-btn').on('click', function () {
