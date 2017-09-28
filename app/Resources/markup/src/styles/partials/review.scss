@@ -1,4 +1,3 @@
-
 .review-layout {
   position: relative;
   display: flex;
@@ -6,28 +5,27 @@
 
   &__header {
     margin-bottom: 36px;
-    padding-right: 296px;
   }
 
-  &__speaker {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 232px;
+  &__content {
+    display: flex;
+    flex-direction: row;
   }
 
   &__info {
-    padding-right: 296px;
+    margin-right: 64px;
+  }
+
+  &__speaker {
+    width: 232px;
+    flex-shrink: 0;
+    order: 1;
   }
 }
 
 .review-header {
   &__title {
     margin-bottom: 8px;
-  }
-
-  &__likes {
-    width: 176px;
   }
 }
 
@@ -111,6 +109,10 @@
       }
     }
   }
+}
+
+.review-speaker + .review-speaker {
+  margin-top: 24px;
 }
 
 .share-buttons {

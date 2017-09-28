@@ -180,77 +180,83 @@
                 <div class="review-layout">
                     <div class="review-header review-layout__header">
                         <h2 class="h2 review-header__title">Reactive Music Apps in Angular and RxJS</h2>
-                        <div class="like-btn review-header__likes">
-                            <a href="#" class="like-btn__action">Хочу послушать</a>
-                            <div class="like-btn__amount">
-                                <i class="icon-like like-btn__icon"></i>5
+                        <div class="review-header__likes">
+                            <div class="like-btn">
+                                <a href="#" class="like-btn__action">Хочу послушать</a>
+                                <div class="like-btn__amount">
+                                    <i class="icon-like like-btn__icon"></i>5
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="review-speaker review-layout__speaker">
-                        <img class="review-speaker__photo" src="img/speakers/speaker-4.jpg" alt="">
-                        <div class="review-speaker__description">
-                            <div class="review-speaker__name">Андрій Шумада</div>
-                            <div class="review-speaker__position">Ciklum/Debitoor</div>
-                            <div id="show-speaker-info" class="review-speaker__info-show">О докладчеке</div>
-                            <div class="review-speaker__info">
-                                <p>
-                                    — An independent software developer, writer of programming books and articles, and
-                                    an
-                                    Angular 2 documentation author.
-                                </p>
-                                <p>
-                                    — Tero is the two-time organizer of the <a href="#">Clojure Cup</a> programming
-                                    competition,
-                                    and the author
-                                    of <a href="#">Build Your Own AngularJS</a>
-                                </p>
-                                <p>
-                                    — <a href="#">Blog</a> and <a href="#">Twitter</a>
-                                </p>
+                    <div class="review-layout__content">
+                        <div class="review-layout__speaker">
+                            <div class="review-speaker">
+                                <img class="review-speaker__photo" src="img/speakers/speaker-4.jpg" alt="">
+                                <div class="review-speaker__description">
+                                    <div class="review-speaker__name">Андрій Шумада</div>
+                                    <div class="review-speaker__position">Ciklum/Debitoor</div>
+                                    <div id="show-speaker-info" class="review-speaker__info-show">О докладчеке</div>
+                                    <div class="review-speaker__info">
+                                        <p>
+                                            — An independent software developer, writer of programming books and articles, and
+                                            an
+                                            Angular 2 documentation author.
+                                        </p>
+                                        <p>
+                                            — Tero is the two-time organizer of the <a href="#">Clojure Cup</a> programming
+                                            competition,
+                                            and the author
+                                            of <a href="#">Build Your Own AngularJS</a>
+                                        </p>
+                                        <p>
+                                            — <a href="#">Blog</a> and <a href="#">Twitter</a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <article class="review-info review-layout__info">
+                            <div class="review-video">
+                                <p class="review-video__label">Видео доклада</p>
+                                <div class="review-video__frame">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/UOmAaTWz4oc?ecver=1"
+                                            frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="review-description">
+                                <p>
+                                    Angular 2 combined with RxJS, @ngrx/store, and Immutable.js is a fantastic platform for
+                                    reactive web applications. If we also add hot loading and the Web Audio API to the mix,
+                                    we
+                                    have something truly exciting: A platform for reactive music creation.
+                                </p>
+                                <p>
+                                    This talk is about creating musical systems on the Angular platform. We’ll see how we
+                                    can
+                                    model a process that generates music right in the browser and allows the user to control
+                                    it
+                                    on the fly. It’s a really enjoyable way to learn reactive Angular application
+                                    development.
+                                </p>
+                            </div>
+                            <div class="share-buttons">
+                                <div class="share-buttons__item">
+                                    <a class="twitter-share-button"
+                                       href="https://twitter.com/intent/tweet">
+                                        Tweet</a>
+                                </div>
+                                <div class="share-buttons__item">
+                                    <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
+                                         data-layout="button" data-action="like" data-size="small" data-show-faces="true"
+                                         data-share="false"></div>
+                                </div>
+                                <div class="share-buttons__item">
+                                    <div class="g-plusone" data-size="medium"></div>
+                                </div>
+                            </div>
+                        </article>
                     </div>
-                    <article class="review-info review-layout__info">
-                        <div class="review-video">
-                            <p class="review-video__label">Видео доклада</p>
-                            <div class="review-video__frame">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/UOmAaTWz4oc?ecver=1"
-                                        frameborder="0" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="review-description">
-                            <p>
-                                Angular 2 combined with RxJS, @ngrx/store, and Immutable.js is a fantastic platform for
-                                reactive web applications. If we also add hot loading and the Web Audio API to the mix,
-                                we
-                                have something truly exciting: A platform for reactive music creation.
-                            </p>
-                            <p>
-                                This talk is about creating musical systems on the Angular platform. We’ll see how we
-                                can
-                                model a process that generates music right in the browser and allows the user to control
-                                it
-                                on the fly. It’s a really enjoyable way to learn reactive Angular application
-                                development.
-                            </p>
-                        </div>
-                        <div class="share-buttons">
-                            <div class="share-buttons__item">
-                                <a class="twitter-share-button"
-                                   href="https://twitter.com/intent/tweet">
-                                    Tweet</a>
-                            </div>
-                            <div class="share-buttons__item">
-                                <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/"
-                                     data-layout="button" data-action="like" data-size="small" data-show-faces="true"
-                                     data-share="false"></div>
-                            </div>
-                            <div class="share-buttons__item">
-                                <div class="g-plusone" data-size="medium"></div>
-                            </div>
-                        </div>
-                    </article>
                 </div>
             </div>
         </section>

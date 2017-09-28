@@ -82,14 +82,15 @@
                             <a href="#program-event" class="event-header__program go-to-block">Программа</a>
                         </div>
                         <div class="event-header__details-right">
-                            <a href="#location-event" class="event-header__location go-to-block">Киев, Конференц-центр отеля Ramada Encore,
+                            <a href="#location-event" class="event-header__location go-to-block">Киев, Конференц-центр
+                                отеля Ramada Encore,
                                 Столичное
                                 шоссе,
                                 103</a>
                         </div>
                     </div>
                     <div class="event-header__action">
-                        <button class="btn btn--primary btn--lg event-header__btn">Купить билет</button>
+                        <span class="event-header__done">Событие состоялось</span>
                         <a href="#price-event" class="event-header__tickets go-to-block">Билеты от 550 грн</a>
                     </div>
                 </div>
@@ -125,8 +126,8 @@
                         </li>
                     </ul>
                 </nav>
-                <a href="#" class="btn btn--primary btn--lg fix-event-header__btn">Купить билет</a>
-                <a href="#" class="btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob">Купить</a>
+                <span class="fix-event-header__done">Событие состоялось</span>
+                <span class="fix-event-header__done fix-event-header__done--mob">Состоялось</span>
             </div>
         </section>
         <!--END fix-event-header-->
@@ -134,7 +135,7 @@
         <!--BEGIN event-buy-mob-->
         <section class="event-action-mob">
             <div class="container">
-                <button class="btn btn--primary btn--lg event-action-mob__btn">Купить билет</button>
+                <a href="#" class="event-action-mob__done">Событие состоялось</a>
             </div>
         </section>
         <!--END event-buy-mob-->
@@ -214,7 +215,7 @@
                             <div class="speaker-card__box">
                                 <a href="#" class="speaker-card__top">
                                     <img class="speaker-card__photo" src="img/speakers/speaker-5.jpg" alt="">
-                                    <span class="speaker-card__name">Прототипій Назгул-Арагорнський</span>
+                                    <span class="speaker-card__name">Евгений Жарков</span>
                                     <span class="speaker-card__position">Juno</span>
                                 </a>
                                 <div class="speaker-card__bottom">
@@ -1058,12 +1059,10 @@
         </div>
         <div class="report-popup">
             <a href="#" class="report-popup__title">Reactive Music Apps in Angular and RxJS</a>
-            <div class="report-popup__likes">
-                <div class="like-btn">
-                    <a href="#" class="like-btn__action">Хочу послушать</a>
-                    <div class="like-btn__amount">
-                        <i class="icon-like like-btn__icon"></i>5
-                    </div>
+            <div class="like-btn report-popup__likes">
+                <a href="#" class="like-btn__action">Хочу послушать</a>
+                <div class="like-btn__amount">
+                    <i class="icon-like like-btn__icon"></i>5
                 </div>
             </div>
             <div class="report-popup__description">
@@ -1083,7 +1082,7 @@
     </div>
 </div>
 <!--END speaker-popup-->
-<button class="btn-up" style="background-color: #4690C9;"></button>
+
 <script type="text/javascript"
         src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
 <script src="js/main.js"></script>

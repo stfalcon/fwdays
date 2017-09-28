@@ -277,6 +277,16 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.4);
       text-decoration: none;
     }
+
+    &__done {
+      font-weight: 500;
+      margin-top: 12px;
+      display: inline-block;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: $dark-color;
+      text-decoration: none;
+    }
   }
 
   .event-description {
@@ -419,6 +429,10 @@
       width: 55%;
     }
 
+    &__logo-link {
+      margin-right: 0;
+    }
+
     &__logo {
       display: none;
     }
@@ -448,14 +462,19 @@
       margin-bottom: 30px;
     }
 
+    &__content {
+      flex-direction: column;
+    }
+
     &__speaker {
       position: static;
       width: auto;
       margin-bottom: 36px;
+      order: 0;
     }
 
     &__info {
-      padding-right: 0;
+      margin-right: 0;
       margin-bottom: 24px;
     }
   }
@@ -1271,8 +1290,9 @@
     }
 
     &__title {
+      display: inline;
       white-space: normal;
-      line-height: 20px;
+      line-height: 22px;
     }
 
     &__location {
@@ -1403,6 +1423,15 @@
     &__btn--mob {
       display: block;
       width: 110px;
+    }
+
+    &__done {
+      display: none;
+    }
+
+    &__done--mob {
+      display: block;
+      margin-right: 16px;
     }
   }
 
