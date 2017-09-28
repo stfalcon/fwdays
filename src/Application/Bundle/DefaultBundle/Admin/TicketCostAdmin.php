@@ -43,7 +43,6 @@ class TicketCostAdmin extends Admin
             ->add('amount')
             ->add('altAmount')
             ->add('count')
-            ->add('soldCount')
             ->add('enabled')
             ->add('unlimited');
     }

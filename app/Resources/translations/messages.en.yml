@@ -168,3 +168,6 @@ pay.event.cupon: pay by event cupon
 news_and_anonce.title: __news_and_anonce.title
 contact_info.title: Contact info
 candidate.speaker.title: In consideration
+error.phone_bad_format: Bad phone format
+error.name.not_number: Your name cannot contain a number
+error.surname.not_number: Your surname cannot contain a number

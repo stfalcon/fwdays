@@ -13,3 +13,4 @@
 //= partials/app.js
 //= partials/location.js
 //= partials/add.js
+//= partials/localization.js

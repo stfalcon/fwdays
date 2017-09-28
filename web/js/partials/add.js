@@ -134,35 +134,37 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         });
 });
 
-function getParameterByName(name, url) {
-    if (!url) {
-        url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 $(document).ready(function () {
-    $('#payment').validate();
+    $('#payment').validate({
+        debug: false,
+        errorClass: "text-error",
+        errorElement: "p",
+        highlight: function(element) {
+            $(element).addClass('input--error');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('input--error');
+        }
+    });
 
     $("#user_phone").rules( "add", {
         required: true,
         minlength: 13,
-        pattern: /\+[1-9]{1}[0-9]{11,15}/,
+        maxlength: 17,
+        pattern: /\+[1-9]{1}[0-9]{11,15}$/i,
         messages: {
-            required: "Required phone number",
-            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
-            pattern: "Please specify the correct phone"
+            required: Messages[locale].FIELD_REQUIRED,
+            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
+            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            pattern: Messages[locale].CORRECT_PHONE
         }
     });
     $('#payment_user_email').rules("add", {
         pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
         messages: {
-            pattern: "Please specify the correct email"
+            pattern: Messages[locale].CORRECT_EMAIL,
+            required: Messages[locale].FIELD_REQUIRED,
+            email: Messages[locale].CORRECT_EMAIL,
         }
     });
     $('#payment_user_name').rules("add", {
@@ -170,9 +172,10 @@ $(document).ready(function () {
         minlength: 2,
         maxlength: 32,
         messages: {
-            pattern: "Please specify the correct name",
-            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
-            maxLength: jQuery.validator.format("Please, at least {0} characters are necessary")
+            pattern: Messages[locale].CORRECT_NAME,
+            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
+            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            required: Messages[locale].FIELD_REQUIRED,
         }
     });
     $('#payment_user_surname').rules("add", {
@@ -180,9 +183,18 @@ $(document).ready(function () {
         minlength: 2,
         maxlength: 32,
         messages: {
-            pattern: "Please specify the correct surname",
-            minlength: jQuery.validator.format("Please, at least {0} characters are necessary"),
-            maxLength: jQuery.validator.format("Please, at least {0} characters are necessary")
+            pattern: Messages[locale].CORRECT_SURNAME,
+            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
+            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            required: Messages[locale].FIELD_REQUIRED,
+        }
+    });
+
+    $('#user_promo_code').rules("add", {
+        minlength: 2,
+        messages: {
+            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
+            required: Messages[locale].FIELD_REQUIRED,
         }
     });
 

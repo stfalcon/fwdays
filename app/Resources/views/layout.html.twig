@@ -42,6 +42,9 @@
             paymentAfterLogin();
         </script>
     {% endif %}
+    <script>
+        var locale = "{{ app.request.locale }}";
+    </script>
 {% endblock scripts %}
 </body>
 </html>

@@ -160,3 +160,6 @@ pay.event.cupon: __pay.event.cupon
 news_and_anonce.title: __news_and_anonce.title
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
+error.phone_bad_format: Невірний формат номеру
+error.name.not_number: "І'мя не може містити цифри"
+error.surname.not_number: 'Прізвище не може містити цифри'

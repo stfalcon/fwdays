@@ -136,7 +136,6 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
-     *
      */
     protected $balance = 0;
     /**
@@ -147,7 +146,7 @@ class User extends BaseUser
      * @Assert\Regex(
      *     pattern="/\D+$/",
      *     match=true,
-     *     message="Your name cannot contain a number"
+     *     message="error.name.not_number"
      * )
      * @Assert\Length(
      *     min = 2,
@@ -163,7 +162,7 @@ class User extends BaseUser
      * @Assert\Regex(
      *     pattern="/\D+$/",
      *     match=true,
-     *     message="Your surname cannot contain a number"
+     *     message="error.surname.not_number"
      * )
      * @Assert\Length(
      *     min = 2,
@@ -175,6 +174,11 @@ class User extends BaseUser
      * @var string $phone
      *
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
+     * @Assert\Regex(
+     *     pattern="/\+[1-9]{1}[0-9]{11,15}$/i",
+     *     match=true,
+     *     message="error.phone_bad_format"
+     * )
      */
     protected $phone;
 
@@ -221,19 +225,6 @@ class User extends BaseUser
     public function setPlainPassword($plainPassword)
     {
         return parent::setPlainPassword($plainPassword);
-    }
-
-    /**
-     * @Assert\Callback()
-     * @param ExecutionContextInterface $context
-     */
-    public function validatePhone(ExecutionContextInterface $context)
-    {
-        if (!empty($this->phone) && !preg_match('/\+[1-9]{1}[0-9]{11,15}/', $this->phone)) {
-            $context->buildViolation('Bad phone format')
-                ->atPath('phone')
-                ->addViolation();
-        }
     }
 
     /**
