@@ -1,9 +1,4 @@
-var payment_close = true;
-var speaker_close = true;
-
-var payment_load = false;
-var speaker_load = false;
-
+var payment_close = false;
 function setModalHeader(e_slug, h_type) {
     $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
         if (data.result) {
@@ -21,7 +16,6 @@ function popupwindow(url, title, w, h) {
 }
 
 function setPaymentHtml(e_slug, open) {
-    var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
         type: 'POST',
         url: Routing.generate('event_pay', {event_slug: e_slug}),
@@ -29,13 +23,13 @@ function setPaymentHtml(e_slug, open) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
-                payment_close = false;
                 if (open === true) {
-                    inst.open();
+                    window.location.replace('?event=' + e_slug + '#modal-payment');
                 }
             } else {
                 payment_close = true;
                 console.log('Error:' + data.error);
+                var inst = $('[data-remodal-id=modal-payment]').remodal();
                 inst.close();
             }
         },
@@ -50,17 +44,15 @@ function setPaymentHtml(e_slug, open) {
     });
 }
 function setSpeakerHtml(e_slug, s_slug, open) {
-    var inst = $('[data-remodal-id=modal-speaker]').remodal();
     $.get(Routing.generate('speaker_popup', { event_slug: e_slug, speaker_slug:s_slug}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
-                speaker_close = false;
                 if (open === true) {
-                    inst.open();
+                    window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
                 }
             } else {
-                speaker_close = true;
+                var inst = $('[data-remodal-id=modal-speaker]').remodal();
                 inst.close();
                 console.log('Error:' + data.html);
             }
@@ -138,25 +130,31 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 });
 
 $(document).on('opened', '.remodal', function () {
-    if (window.location.hash === '#modal-payment' && payment_close === true) {
+    if (window.location.hash === '#modal-payment' && payment_close) {
         var inst = $('[data-remodal-id=modal-payment]').remodal();
-        inst.close();
-    } else if (window.location.hash === '#modal-speaker' && speaker_close === true) {
-        var inst = $('[data-remodal-id=modal-speaker]').remodal();
         inst.close();
     }
 });
 
-$(document).on('opening', '.remodal', function () {
+$(document).on('opening', '.remodal', function (e) {
     var e_slug = null;
+    var s_slug = null;
     if (window.location.hash === '#modal-payment') {
         e_slug = Cookies.get('event');
+        if (!e_slug){
+            e_slug = getParameterByName('event');
+        } else {
+            Cookies.remove('event', { path: '/', http: false, secure : false });
+        }
         if (e_slug) {
             payment_close = false;
-            Cookies.remove('event', { path: '/', http: false, secure : false });
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug, false);
         }
+    } else if (window.location.hash === '#modal-speaker') {
+        e_slug = getParameterByName('event');
+        s_slug = getParameterByName('speaker');
+        setSpeakerHtml(e_slug, s_slug, false);
     }
 });
 
@@ -215,7 +213,8 @@ $(document).ready(function () {
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
-        setSpeakerHtml(e_slug, s_slug, true);
+        //setSpeakerHtml(e_slug, s_slug, true);
+        window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
     });
 
     $('.set-modal-header').on('click', function () {
@@ -230,9 +229,9 @@ $(document).ready(function () {
     });
 
     $('.get-payment').on('click', function () {
-        var e_slug = $(this).data('event');
-        setModalHeader(e_slug, 'buy');
-        setPaymentHtml(e_slug, true);
+        var elem = $(this);
+        var e_slug = elem.data('event');
+        window.location.replace('?event=' + e_slug + '#modal-payment');
     });
 
     $('.add-promo-code-btn').on('click', function () {
