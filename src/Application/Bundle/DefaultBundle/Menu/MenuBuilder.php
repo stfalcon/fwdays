@@ -62,8 +62,12 @@ class MenuBuilder
             $menu->addChild($this->translator->trans( 'main.menu.cabinet'), ['route' => 'cabinet'])
                 ->setAttribute('class','header-nav__item header-nav__item--mob');
         } else {
-            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#modal-signin'])
-                ->setAttribute('class','header-nav__item header-nav__item--mob');
+            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#'])
+                ->setAttributes(
+                    [
+                        'class'=>'header-nav__item header-nav__item--mob',
+                        'data-remodal-target' => 'modal-signin',
+                    ]);
         }
 
         return $menu;
@@ -86,7 +90,8 @@ class MenuBuilder
         if ($user instanceof User) {
             $menu->addChild($this->translator->trans( 'main.menu.cabinet'), ['route' => 'cabinet']);
         } else {
-            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#modal-signin']);
+            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#'])
+                ->setAttributes(['data-remodal-target' => 'modal-signin']);
         }
 
         return $menu;

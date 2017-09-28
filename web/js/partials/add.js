@@ -1,4 +1,3 @@
-var payment_close = false;
 function setModalHeader(e_slug, h_type) {
     $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
         if (data.result) {
@@ -15,7 +14,8 @@ function popupwindow(url, title, w, h) {
     return window.open(url, title, 'width='+w+', height='+h+', top='+top+', left='+left);
 }
 
-function setPaymentHtml(e_slug, open) {
+function setPaymentHtml(e_slug) {
+    var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
         type: 'POST',
         url: Routing.generate('event_pay', {event_slug: e_slug}),
@@ -23,42 +23,46 @@ function setPaymentHtml(e_slug, open) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
-                if (open === true) {
-                    window.location.replace('?event=' + e_slug + '#modal-payment');
-                }
+                inst.open();
             } else {
-                payment_close = true;
                 console.log('Error:' + data.error);
-                var inst = $('[data-remodal-id=modal-payment]').remodal();
                 inst.close();
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             switch (jqXHR.status) {
                 case 401:
-                    window.location.replace('#modal-signin-payment');
+                    var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
+                    inst.open();
                     break;
                 case 403: window.location.reload(true);
             }
         }
     });
 }
-function setSpeakerHtml(e_slug, s_slug, open) {
+function setSpeakerHtml(e_slug, s_slug) {
+    var inst = $('[data-remodal-id=modal-speaker]').remodal();
     $.get(Routing.generate('speaker_popup', { event_slug: e_slug, speaker_slug:s_slug}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
-                if (open === true) {
-                    window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
-                }
+                inst.open();
             } else {
-                var inst = $('[data-remodal-id=modal-speaker]').remodal();
                 inst.close();
                 console.log('Error:' + data.html);
             }
         });
 }
 
+function paymentAfterLogin() {
+    var e_slug = Cookies.get('event');
+    if (e_slug) {
+        console.log('run');
+        Cookies.remove('event', { path: '/', http: false, secure : false });
+        setModalHeader(e_slug, 'buy');
+        setPaymentHtml(e_slug);
+    }
+}
 
 $(document).on('click', '.user-payment__remove', function () {
         console.log('here');
@@ -102,7 +106,8 @@ $(document).on('click', '.add-wants-visit-event', function () {
             error: function(jqXHR, textStatus, errorThrown) {
                 switch (jqXHR.status) {
                     case 401:
-                        window.location.replace('#modal-signin-payment');
+                        var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
+                        inst.open();
                         break;
                     case 403:
                         window.location.reload(true);
@@ -127,35 +132,6 @@ $(document).on('click', '.sub-wants-visit-event', function () {
                 console.log('Error:'+data.error);
             }
         });
-});
-
-$(document).on('opened', '.remodal', function () {
-    if (window.location.hash === '#modal-payment' && payment_close) {
-        var inst = $('[data-remodal-id=modal-payment]').remodal();
-        inst.close();
-    }
-});
-
-$(document).on('opening', '.remodal', function (e) {
-    var e_slug = null;
-    var s_slug = null;
-    if (window.location.hash === '#modal-payment') {
-        e_slug = Cookies.get('event');
-        if (!e_slug){
-            e_slug = getParameterByName('event');
-        } else {
-            Cookies.remove('event', { path: '/', http: false, secure : false });
-        }
-        if (e_slug) {
-            payment_close = false;
-            setModalHeader(e_slug, 'buy');
-            setPaymentHtml(e_slug, false);
-        }
-    } else if (window.location.hash === '#modal-speaker') {
-        e_slug = getParameterByName('event');
-        s_slug = getParameterByName('speaker');
-        setSpeakerHtml(e_slug, s_slug, false);
-    }
 });
 
 function getParameterByName(name, url) {
@@ -213,8 +189,7 @@ $(document).ready(function () {
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
-        //setSpeakerHtml(e_slug, s_slug, true);
-        window.location.replace('?event=' + e_slug + '&speaker=' + s_slug + '#modal-speaker');
+        setSpeakerHtml(e_slug, s_slug);
     });
 
     $('.set-modal-header').on('click', function () {
@@ -231,7 +206,8 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
-        window.location.replace('?event=' + e_slug + '#modal-payment');
+        setModalHeader(e_slug, 'buy');
+        setPaymentHtml(e_slug);
     });
 
     $('.add-promo-code-btn').on('click', function () {

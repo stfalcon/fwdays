@@ -85,7 +85,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
                     if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
                         $url = $this->router->generate('homepage');
                     }
-                    $response = new RedirectResponse($url . '#modal-payment');
+                    $response = new RedirectResponse($url);
                     $cookie = new Cookie('event', $requestParams['event_slug'], time() + 3600, '/', null, false, false);
                     $response->headers->setCookie($cookie);
 

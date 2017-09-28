@@ -12,11 +12,11 @@
 {% endblock %}
 
 {% block linkElement %}
-     <a href="{{ item.uri }}"
+    {% set remodal = item.attribute('data-remodal-target') is not empty ? item.attribute('data-remodal-target') : '' %}
+    {% set class="header-nav__link" %}
     {% if matcher.isCurrent(item) %}
-        class="header-nav__link header-nav__link--active">
-    {% else %}
-        class="header-nav__link">
+        {% set class= class ~ " header-nav__link--active" %}
     {% endif %}
-         {{ block('label') }}</a>
+    <a href="{{ item.uri }}" class="{{ class }}" {% if remodal is not empty%} data-remodal-target ="{{ remodal }}"{% endif %}> {{ block('label') }}</a>
 {% endblock %}
+

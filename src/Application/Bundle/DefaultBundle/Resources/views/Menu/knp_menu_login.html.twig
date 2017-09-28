@@ -9,11 +9,10 @@
 {% endblock %}
 
 {% block linkElement %}
-     <a href="{{ item.uri }}"
+    {% set remodal = item.attribute('data-remodal-target') is not empty ? item.attribute('data-remodal-target') : '' %}
+    {% set class="header__auth" %}
     {% if matcher.isCurrent(item) %}
-        class="header__auth header__auth--active">
-    {% else %}
-        class="header__auth">
+      {% set class= class ~ " header__auth--active" %}
     {% endif %}
-         {{ block('label') }}</a>
+    <a href="{{ item.uri }}" class="{{ class }}" {% if remodal is not empty%} data-remodal-target ="{{ remodal }}"{% endif %}> {{ block('label') }}</a>
 {% endblock %}

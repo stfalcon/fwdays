@@ -7,6 +7,6 @@
     {% if error %}
         <div class="error-msg-block"><p>{{ error|trans({}, 'FOSUserBundle') }}</p></div>
     {% endif %}
-        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'registrationLink':path('fos_user_registration_register'), 'queryLink':''} %}
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'remodal':'', 'queryLink':''} %}
 </div>
 {% endblock content %}

@@ -32,7 +32,7 @@
                     <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
                 </div>
                 <div class="cabinet-head__right">
-                    <a href="#modal-profile" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                    <a data-remodal-target="modal-profile" href="#" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
                     <a href="{{ path('fos_user_security_logout') }}" class="cabinet-head__link">{{ 'menu.logout'|trans }}</a>
                 </div>
             </div>
@@ -108,7 +108,7 @@
 {% endblock content%}
 {% block popups %}
     <!--BEGIN profile-popup-->
-    <div class="remodal remodal--md" data-remodal-id="modal-profile">
+    <div class="remodal remodal--md" data-remodal-id="modal-profile" data-remodal-options="hashTracking: false">
         <button data-remodal-action="close" class="remodal-close icon-close"></button>
         <div class="remodal__body">
             <div class="remodal__head">
