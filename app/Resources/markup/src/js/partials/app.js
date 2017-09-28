@@ -278,7 +278,7 @@ $(document).ready(function () {
     /**
      *  Button for scroll top page
      */
-    if ($('.btn-up').length && $(window).width() > 1023) {
+    if ($('.btn-up').length && $(window).width() > 1024) {
         $(window).scroll(function () {
             var headerHeight = $('.header').outerHeight(),
                 eventHeaderHeight = $('.event-header').outerHeight(),
