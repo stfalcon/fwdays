@@ -118,12 +118,12 @@ class InterkassaController extends Controller
             $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
             if (!$payment) {
-                return $this->forward('StfalconEventBundle:Interkassa:fail');
+                return $this->forward('ApplicationDefaultBundle:Interkassa:fail');
             }
         }
 
         if ($payment->isPaid()) {
-            return $this->forward('StfalconEventBundle:Interkassa:success');
+            return $this->forward('ApplicationDefaultBundle:Interkassa:success');
         }
 
         return [];

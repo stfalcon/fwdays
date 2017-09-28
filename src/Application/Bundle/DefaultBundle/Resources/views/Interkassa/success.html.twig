@@ -1,9 +1,9 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
-    <div class="event-description__text">
-    <h2>{{ 'interkassa.payment.success'|trans }}</h2>
+    <div class="container container--sm">
+        <h2>{{ 'interkassa.payment.success'|trans }}</h2>
 
-    {{ 'interkassa.payment.success.emailsend'|trans|raw }} "<a href="{{ path("cabinet") }}">{{ 'main.menu.cabinet'|trans }}</a>".
+        {{ 'interkassa.payment.success.emailsend'|trans|raw }} "<a href="{{ path("cabinet") }}">{{ 'main.menu.cabinet'|trans }}</a>".
     </div>
 {% endblock %}

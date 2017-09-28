@@ -1,22 +1,17 @@
 {% extends '::layout.html.twig' %}
 
 {% block content %}
-    <section class="contacts">
+    <section class="error">
         <div class="container container--sm">
-            <h1 class="h2 contacts__title">{{ 'page.error.notfound'|trans }}</h1>
-
-                <h4>{{ 'page.error.notfound.error'|trans }}</h4>
-                <div class="error-msg-block">
-                    <p>{{ 'page.error.notfound.message'|trans|raw }}</p>
-                </div>
-                <strong> {{ 'page.error.notfound.you_can'|trans|raw }}</strong>
-                <ul>
-                    <li><a href="{{ path('homepage') }}">{{ 'page.error.notfound.you_can1'|trans|raw }}</a> </li>
-                    <li>{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
-                </ul>
-
-
+            <h2 class="h2 error__title">{{ 'page.error.notfound.error'|trans }}. {{ 'page.error.notfound'|trans }}</h2>
+            <p class="error__text">{{ 'page.error.notfound.message'|trans|raw }}</p>
+            <div class="numbered-list-caption">
+                {{ 'page.error.notfound.you_can'|trans|raw }}
+            </div>
+            <ul class="numbered-list">
+                <li class="numbered-list__item"><a href="{{ path('homepage') }}" class="numbered-list__link">{{ 'page.error.notfound.you_can1'|trans|raw }}</a></li>
+                <li class="numbered-list__item">{{ 'page.error.notfound.you_can2'|trans|raw }}</li>
+            </ul>
         </div>
     </section>
 {% endblock %}
-
