@@ -1,4 +1,3 @@
-
 .event-header {
   position: relative;
   display: flex;
@@ -106,6 +105,18 @@
     }
   }
 
+  &__done {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    margin-right: 16px;
+    color: $white-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
   &__tickets {
     border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
     color: $white-color;
@@ -209,7 +220,7 @@
   &__item {
     display: flex;
     flex-direction: column;
-    margin-bottom: 46px;
+    margin-bottom: 56px;
     padding: 0 20px;
     width: 20%;
   }
@@ -217,7 +228,6 @@
 
 .speaker-card {
   position: relative;
-  overflow: hidden;
   height: 236px;
 
   &:after {
@@ -233,6 +243,7 @@
       margin-top: -20px;
       background-color: $white-color;
       overflow: visible;
+      z-index: 1;
 
       .speaker-card__box {
         box-shadow: 0 -10px 50px 0 rgba(115, 115, 115, 0.52);
@@ -241,6 +252,7 @@
       .speaker-card__top {
         padding: 0;
         height: auto;
+        background-color: $white-color;
       }
 
       .speaker-card__photo {
@@ -275,7 +287,6 @@
     flex-direction: column;
     overflow: hidden;
     padding: 0 20px;
-    height: 236px;
     text-decoration: none;
     cursor: pointer;
   }
@@ -293,6 +304,7 @@
     margin-bottom: 10px;
     width: 100%;
     filter: grayscale(1);
+    flex-shrink: 0;
   }
 
   &__name {
@@ -323,42 +335,8 @@
   }
 
   &__likes {
-    margin-top: 18px;
-  }
-}
-
-.like-btn {
-  display: flex;
-  flex-direction: row;
-  height: 15px;
-  justify-content: space-between;
-
-  &__action {
-    border-bottom: 1px dashed rgba(0, 145, 173, 0.4);
-    color: $blue-light-color;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 17px;
-    flex-shrink: 0;
-
-    &:hover {
-      border-color: transparent;
-    }
-  }
-
-  &__amount {
     display: flex;
-    color: $blue-light-color;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 18px;
-  }
-
-  &__icon {
-    margin: -1px 4px 0 0;
+    margin-top: 18px;
   }
 }
 
@@ -878,6 +856,19 @@
   }
 
   &__download--mob {
+    display: none;
+  }
+
+  &__done {
+    margin-right: 32px;
+    color: $white-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  &__done--mob {
     display: none;
   }
 }
