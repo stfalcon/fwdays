@@ -60,6 +60,7 @@ user.refresh.title: Refresh
 user.password.title: Password
 user.forgot_password.title: Forgot password?
 user.reset_password.title: Reset password
+user.reset_password.caption: Reset password
 user.show_password.title: show password
 user.remember_me.title: Remember me
 user.by_user.title: Enter as user
@@ -138,13 +139,13 @@ ticket.event.programm: 'Agenda:'
 ticket.print.ticket.text1: 'Please, print this invitation and take it with you - this is Your entrance ticket to %event_name%.'
 ticket.print.ticket.text2: We are looking forward to meeting You!
 ticket.print.ticket.text3: Best regards,<br> %event_name% organizers
-ticket.status.download: __ticket.status.download
+ticket.status.download: download ticket
 ticket.mob_status.download: Download
 ticket.status.pay: Buy ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
 ticket.summ_from: Tickets from %summ% grn
-ticket.status.event.add: __ticket.status.event.add
+ticket.status.event.add: event added
 ticket.status.paid: Participation paid
 ticket.status.paid_mov: Paid
 ticket.status.take_apart: register

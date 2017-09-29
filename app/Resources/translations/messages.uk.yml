@@ -46,7 +46,8 @@ user.subscribe.title: Я згоден отримувати важливі нов
 user.refresh.title: Оновити
 user.password.title: Пароль
 user.forgot_password.title: Забули пароль?
-user.reset_password.title: Скинути пароль
+user.reset_password.caption: Скинути пароль
+user.reset_password.title: Скидання паролю
 user.show_password.title: показати пароль
 user.remember_me.title: Запомнити мене
 user.by_user.title: Війдіть як користувач
