@@ -20,51 +20,50 @@
             <div class="review-layout">
                 <div class="review-header review-layout__header">
                     <h2 class="h2 review-header__title">{{ review.title }}</h2>
-                    <div class="like-btn review-header__likes">
-                        {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                    <div class="review-header__likes">
+                        <div class="like-btn">
+                            {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                        </div>
                     </div>
                 </div>
-                <div class="review-layout__content">
-                <div class="review-layout__speaker">
-                    {% for speaker in review.speakers %}
-                    <div class="review-speaker review">
-                        <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
-                        <div class="review-speaker__description">
-                            <div class="review-speaker__name">{{ speaker.name }}</div>
-                            <div class="review-speaker__position">{{ speaker.company }}</div>
-                            <div class="review-speaker__info-show show-speaker-info-trigger">{{ 'speaker.about'|trans }}</div>
-                            <div class="review-speaker__info">
-                                {{ speaker.about|raw }}
+                <div class="review-layout__content static-styles">
+                    <div class="review-layout__speaker">
+                        {% for speaker in review.speakers %}
+                            <div class="review-speaker review">
+                                <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file') }}"
+                                     alt="">
+                                <div class="review-speaker__description">
+                                    <div class="review-speaker__name">{{ speaker.name }}</div>
+                                    <div class="review-speaker__position">{{ speaker.company }}</div>
+                                    <div class="review-speaker__info-show show-speaker-info-trigger">{{ 'speaker.about'|trans }}</div>
+                                    <div class="review-speaker__info">
+                                        {{ speaker.about|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <article class="review-info review-layout__info">
+                        <div class="review-description">
+                            {{ review.text|raw }}
+                        </div>
+                        <div class="share-buttons">
+                            <div class="share-buttons__item">
+                                <a class="twitter-share-button"
+                                   href="https://twitter.com/intent/tweet">
+                                    Tweet</a>
+                            </div>
+                            <div class="share-buttons__item">
+                                <div class="fb-like" data-send="false" data-layout="button_count" data-width="450"
+                                     data-show-faces="false"></div>
+                            </div>
+
+
+                            <div class="share-buttons__item">
+                                <div class="g-plusone" data-size="medium"></div>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <article class="review-info review-layout__info">
-
-                    <div class="review-video">
-                        <p class="review-video__label"></p>
-                    </div>
-
-                    <div class="review-description">
-                        {{ review.text|raw }}
-                    </div>
-                    <div class="share-buttons">
-                        <div class="share-buttons__item">
-                            <a class="twitter-share-button"
-                               href="https://twitter.com/intent/tweet">
-                                Tweet</a>
-                        </div>
-                        <div class="share-buttons__item">
-                            <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
-                        </div>
-
-
-                        <div class="share-buttons__item">
-                            <div class="g-plusone" data-size="medium"></div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
                 </div>
             </div>
         </div>

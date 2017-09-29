@@ -12,13 +12,8 @@
 
     <!--BEGIN event-description-->
     <section class="event-description">
-        <div class="event-description__title"></div>
-        <div class="video-list">
-            <div class="video-list__items">
-            </div>
-        </div>
         <div class="container container--sm">
-            <div class="event-description__text">
+            <div class="event-description__text static-styles">
             {{ event.about|raw }}
             </div>
         </div>
@@ -65,7 +60,7 @@
 <div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
     <button data-remodal-action="close"
             class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
-    <div id="speaker-popup-content" class="remodal__body">
+    <div id="speaker-popup-content" class="remodal__body static-styles">
     <!-- popup content  -->
     </div>
 </div>

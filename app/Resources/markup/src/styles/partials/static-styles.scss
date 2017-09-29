@@ -1,0 +1,213 @@
+
+.static-styles {
+  h1 {
+    margin: 40px 0 20px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  h2,
+  h3 {
+    margin: 40px 0 15px;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  h4,
+  h5,
+  h6 {
+    margin: 16px 0 8px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  p {
+    margin: 0 0 16px;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  a {
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    font-size: 18px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+  ul {
+    li {
+      position: relative;
+      margin: 10px 0;
+      text-indent: 16px;
+      font-size: 18px;
+      line-height: 26px;
+
+      &:before {
+        position: absolute;
+        top: 9px;
+        left: 0;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 11px;
+        height: 1px;
+        background-color: #121314;
+        content: '';
+      }
+    }
+
+    ul {
+      padding-left: 24px;
+
+      li {
+        margin: 10px 0;
+
+        &:before {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  iframe {
+    max-width: 560px;
+    width: 100%;
+  }
+
+  iframe.speakerdeck-iframe {
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.static-styles .review-speaker__info ul,
+.static-styles .speaker-popup__info ul {
+  li {
+    position: relative;
+    margin: 10px 0;
+    text-indent: 16px;
+    font-size: 14px;
+    line-height: 20px;
+
+    &:before {
+      position: absolute;
+      top: 9px;
+      left: 0;
+      display: inline-block;
+      box-sizing: border-box;
+      width: 11px;
+      height: 1px;
+      background-color: $dark-color;
+      content: '';
+    }
+  }
+
+  a {
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}
+
+.static-styles .review-description,
+.static-styles .report-popup__description {
+  iframe {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.static-styles .like-btn {
+  display: inline-flex;
+  flex-direction: row;
+  height: 15px;
+  justify-content: space-between;
+
+  &__action {
+    border-bottom: 1px dashed rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 17px;
+    flex-shrink: 0;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+  &__amount {
+    display: flex;
+    margin-left: 12px;
+    color: $blue-light-color;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  &__icon {
+    margin: -1px 4px 0 0;
+  }
+}
+
+.static-styles .report-popup__title {
+  border-bottom: 1px solid rgba(18, 19, 20, 0.4);
+  color: $dark-color;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 28px;
+
+  &:hover {
+    border-color: transparent;
+  }
+}
+
+table.event-details {
+  border-collapse: collapse;
+
+  td {
+    padding: 16px 8px;
+    border: 0 none;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background: transparent;
+    font-size: 18px;
+    vertical-align: top;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    p {
+      margin: 4px 0 0;
+    }
+  }
+}
+
+.event-details-h {
+  font-weight: 700;
+}

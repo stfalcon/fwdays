@@ -1,19 +1,22 @@
-        <div class="speaker-popup">
-            <img class="speaker-popup__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
-            <div class="speaker-popup__description">
-                <div class="speaker-popup__name">{{ speaker.name }}</div>
-                <div class="speaker-popup__position">{{ speaker.company }}</div>
-                <div class="speaker-popup__info">
-                    {{ speaker.about|raw }}
-                </div>
-            </div>
+<div class="speaker-popup">
+    <img class="speaker-popup__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
+    <div class="speaker-popup__description">
+        <div class="speaker-popup__name">{{ speaker.name }}</div>
+        <div class="speaker-popup__position">{{ speaker.company }}</div>
+        <div class="speaker-popup__info">
+            {{ speaker.about|raw }}
         </div>
+    </div>
+</div>
 {% if speaker.reviews %}
     {% for review in speaker.reviews %}
         <div class="report-popup">
-            <a href="{{ path('event_review_show_redesign', {'event_slug':event.slug, 'review_slug':review.slug }) }}" class="report-popup__title">{{ review.title }}</a>
-            <div class="like-btn report-popup__likes">
-                {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+            <a href="{{ path('event_review_show_redesign', {'event_slug':event.slug, 'review_slug':review.slug }) }}"
+               class="report-popup__title">{{ review.title }}</a>
+            <div class="report-popup__likes">
+                <div class="like-btn">
+                    {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                </div>
             </div>
             <div class="report-popup__description">
                 {{ review.text|raw }}

@@ -6,6 +6,6 @@ module.exports = {
         "selector-pseudo-element-colon-notation": "single",
         "no-missing-end-of-source-newline": null,
         "color-hex-length": "long",
-        "max-nesting-depth": 3
+        "max-nesting-depth": 4
     }
 }
