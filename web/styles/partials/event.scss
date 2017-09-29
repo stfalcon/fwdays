@@ -321,7 +321,7 @@
   }
 
   &__report {
-    margin-bottom: 18px;
+    display: inline-block;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     color: $dark-color;
     text-decoration: none;
@@ -338,6 +338,10 @@
     display: flex;
     margin-top: 18px;
   }
+}
+
+.speaker-card__likes + .speaker-card__report {
+  margin-top: 16px;
 }
 
 .schedule {

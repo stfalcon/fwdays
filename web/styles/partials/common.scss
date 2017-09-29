@@ -46,6 +46,7 @@ ul {
 }
 
 .h2 {
+  margin-bottom: 26px;
   font-weight: 700;
   font-size: 26px;
   line-height: 32px;
@@ -646,11 +647,11 @@ ul {
 
   &__amount {
     display: flex;
+    margin-left: 12px;
     color: $blue-light-color;
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
-    margin-left: 12px;
   }
 
   &__icon {
