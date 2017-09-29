@@ -151,8 +151,8 @@ $(document).ready(function () {
     $("#user_phone").rules( "add", {
         required: true,
         minlength: 13,
-        maxlength: 17,
-        pattern: /\+[1-9]{1}[0-9]{11,15}$/i,
+        maxlength: 16,
+        pattern: /\+[1-9]{1}[0-9]{11,14}$/i,
         messages: {
             required: Messages[locale].FIELD_REQUIRED,
             minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),

@@ -36,10 +36,5 @@
     </div>
     {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block', 'ticketCost':ticket }) %}
     {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob', 'ticketCost':ticket}) %}
-    {% if ticketStatus is defined and ticketStatus == 'status_download' %}
-        <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
-            {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
-        </div>
-    {% endif %}
 </div>
 {% endif %}

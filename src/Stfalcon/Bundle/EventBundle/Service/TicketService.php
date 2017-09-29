@@ -272,12 +272,10 @@ class TicketService
                     ],
                 'price_block_mob' =>
                     [
-//                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
                     ],
                 'price_block' =>
                     [
-//                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE =>'btn btn--primary btn--lg cost__buy',
                     ]
         ];
