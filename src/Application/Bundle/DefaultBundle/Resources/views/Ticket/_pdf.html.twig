@@ -158,12 +158,16 @@
         </div>
 
         <div class="top">
-            <div class="dear-user">{{ 'ticket.dear_user'|trans({'%user_name%':ticket.user.fullname})|raw }}</div>
+            {% set fullname = ticket.user.fullname %}
+            {% if fullname is empty %}
+                {% set fullname = ticket.user.name~' '~ticket.user.surname %}
+            {% endif %}
+            <div class="dear-user">{{ 'ticket.dear_user'|trans({'%user_name%':fullname})|raw }}</div>
             <div class="date-n-address">
                 <div class="wait-for-you">{{ 'ticket.wait_for_you'|trans }}</div>
                 <div class="date-addr">
                     {% if event.date %}
-                        {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }}
+                        {{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }}
                     {% endif %}
                     <br />
                     {{ 'ticket.city'|trans({'%city_name%':event.city}) }}
@@ -171,7 +175,7 @@
                         {{ event.place }}
                     {% endif %}
                 </div>
-                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', 'ru', 'Europe/Kiev') }}.</div>
+                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}.</div>
             </div>
         </div>
 
@@ -189,8 +193,8 @@
                 <p>{{ 'ticket.print.ticket.text3'|trans({'%event_name%':event.name})|raw }}</p>
             </div>
             <div class="links">
-                <p>Сайт: <a href="http://fwdays.com">fwdays.com</a></p>
-                <p>Facebook: <a href="http://www.facebook.com/fwdays">facebook.com/fwdays</a></p>
+                <p>Сайт: <a href="https://frameworksdays.com/">fwdays.com</a></p>
+                <p>Facebook: <a href="https://www.facebook.com/fwdays">facebook.com/fwdays</a></p>
                 <p>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search?q=fwdays&src=hash">#fwdays</a>)</p>
             </div>
         </div>

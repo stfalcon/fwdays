@@ -135,7 +135,7 @@ class PdfGeneratorHelper
         $this->qrCode->setSize(105);
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
-        $templateContent = $twig->loadTemplate('ApplicationDefaultBundle:Ticket:_pdf.html.twig');
+        $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_pdf.html.twig');
         $body = $templateContent->render(array(
                 'ticket'       => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,

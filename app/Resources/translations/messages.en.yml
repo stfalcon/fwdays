@@ -145,7 +145,8 @@ ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
 ticket.summ_from: Tickets from %summ% grn
 ticket.status.event.add: __ticket.status.event.add
-ticket.status.paid: Paid
+ticket.status.paid: Participation paid
+ticket.status.paid_mov: Paid
 ticket.status.take_apart: register
 ticket.status.not_take_apart : Remove visit
 referral.invaite.title: __referral.invaite.title

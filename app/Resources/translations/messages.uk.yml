@@ -138,7 +138,8 @@ ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
 ticket.summ_from: Квитки від %summ% грн
 ticket.status.event.add: __ticket.status.event.add
-ticket.status.paid: __ticket.status.paid
+ticket.status.paid: Участь сплачено
+ticket.status.paid_mob: сплачено
 ticket.status.take_apart: Зареєструватися
 ticket.status.not_take_apart : Відписатись
 referral.invaite.title: __referral.invaite.title

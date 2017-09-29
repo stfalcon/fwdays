@@ -335,7 +335,7 @@ class User extends BaseUser
     public function setName($name)
     {
         $this->name = $name;
-        $this->setFullname($this->surname.' '.$this->name);
+        $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
     }
@@ -355,7 +355,7 @@ class User extends BaseUser
     public function setSurname($surname)
     {
         $this->surname = $surname;
-        $this->setFullname($this->surname.' '.$this->name);
+        $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
     }

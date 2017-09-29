@@ -266,14 +266,18 @@ class TicketService
                 'event_action_mob' =>
                     [
                         self::EVENT_DONE => 'event-action-mob__done',
+                        self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
+                        self::PAID_FOR_ANOTHER => 'event-action-mob__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' =>
                     [
+//                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
                     ],
                 'price_block' =>
                     [
+//                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE =>'btn btn--primary btn--lg cost__buy',
                     ]
         ];
@@ -291,7 +295,11 @@ class TicketService
                 $caption = $translator->trans('ticket.status.event.add');
                 $isDiv = true;
             } elseif ($eventState === self::PAID_FOR_ANOTHER) {
-                $caption = $translator->trans('ticket.status.paid');
+                if ($isMob) {
+                    $caption = $translator->trans('ticket.status.paid_mob');
+                } else {
+                    $caption = $translator->trans('ticket.status.paid');
+                }
 
             } elseif ($eventState === self::CAN_WANNA_VISIT && (!$user || !$user->isEventInWants($event))) {
                 $class .= ' set-modal-header add-wants-visit-event';
