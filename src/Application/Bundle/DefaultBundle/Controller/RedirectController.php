@@ -18,6 +18,14 @@ class RedirectController extends Controller
     }
 
     /**
+     * @Route(path="/page/contacts")
+     * @return RedirectResponse
+     */
+    public function oldContactsAction()
+    {
+        return new RedirectResponse($this->generateUrl('contacts'));
+    }
+    /**
      * @Route(path="/event/{event_slug}/speakers")
      * @param string $event_slug
      * @return RedirectResponse

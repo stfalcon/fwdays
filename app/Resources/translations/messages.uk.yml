@@ -1,7 +1,7 @@
 menu.events.my: Мої події
 menu.user.info: Особиста інфомація
-menu.referral.title: __menu.referral.title
-menu.check.ticket.bynumber: __menu.check.ticket.bynumber
+menu.referral.title: Запроси друзів
+menu.check.ticket.bynumber: Перевірка квитка за номером
 menu.logout: Вихід
 menu.user.registration: Реєстрація
 menu.login: Увійти
@@ -17,7 +17,7 @@ main.menu.participants: Участники
 main.menu.cabinet: Кабінет
 email: email
 madeby: розроблено
-tweets.text: __tweets.text
+tweets.text: Твіти користувача @fwdays
 page.error.notfound: Страница не найдена
 page.error.notfound.error: Ошибка 404
 page.error.notfound.message: Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.
@@ -30,8 +30,8 @@ sponsor.partners.call_us: <a href="/contacts">Свяжитесь</a> с нами
 event.get_more_info: Узнать больше
 sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
 news.all: все новости
-news.title: __news.title
-event.get_more_info: __event.get_more_info
+news.title: Новини
+event.get_more_info: Дізнатися більше
 events.past: Минулі події
 user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Імя
@@ -54,7 +54,7 @@ user.by_email.title: Або по почті
 user.create.title: Створити аккаунт
 user.already_have_account.title: У мене вже є обліковий запис
 pay.i_have_promo.title: У мени є промокод
-pay.enter_promo.title: Введите промокод для получения скидки&nbsp;&nbsp;
+pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
 pay.bonus.bold.title: 'Ваші бонусы fwdays: <b>%sum% грн</b>'
 pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'
@@ -62,10 +62,10 @@ event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.other.title: всі інші квитки
 sold_out.title: Продано
-sponsor.partners.can_be_your_logo: __sponsor.partners.can_be_your_logo
-sponsor.partners.title: __sponsor.partners.title
-sponsor.partners.call_us: __sponsor.partners.call_us
-sponsor.and.partners: __sponsor.and.partners
+sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
+sponsor.partners.title: Партнери
+sponsor.partners.call_us: <a href="/page/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
+sponsor.and.partners: Спонсори та партнери
 share_contact.text: __share_contact.text
 share_contact.agree: __share_contact.agree
 share_contact.not_agree: __share_contact.not_agree
@@ -83,7 +83,7 @@ in.lang.link: In English
 ticket.status.event_done: Событие состоялось
 ticket.status.event_done_mob: состоялось
 referral.program.conditions.title: Умови програмы
-referral.program.conditions.text: Получайте по %referal_bonus% грн за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
+referral.program.conditions.text: Получайте по %referal_bonus% ₴ за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
 referral.share.title: Поділитись
 referral.link.copied: Скопійовано
 popup.header.title: Оплата участі в конференції %event_name%
@@ -143,11 +143,11 @@ ticket.status.paid_mob: сплачено
 ticket.status.take_apart: Зареєструватися
 ticket.status.not_take_apart : Відписатись
 referral.invaite.title: __referral.invaite.title
-referral.invaite.title2: Приглашайте друзей и накапливайте бонусы
+referral.invaite.title2: Приглашайте друзів і накопичте бонуси
 referral.invaite.text1: __referral.invaite.text1
 referral.invaite.text2: __referral.invaite.text2
 referral.balance: __referral.balance
-referral.balance.redesign: 'Ваш баланс: %user_balance% грн'
+referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
 delete: __delete
 payment.price: '%summ% грн'
@@ -158,10 +158,21 @@ pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
 pay.event.members_already_paid: __pay.event.members_already_paid
 pay.event.members_without_dicount: __pay.event.members_without_dicount
-pay.event.cupon: __pay.event.cupon
+pay.event.cupon: Купон на знижку:
 news_and_anonce.title: __news_and_anonce.title
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
 error.phone_bad_format: Невірний формат номеру
 error.name.not_number: "І'мя не може містити цифри"
 error.surname.not_number: 'Прізвище не може містити цифри'
+
+contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
+contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
+contacts.partners.title: Питання інфопартнерства, мітапи і майстер-класи
+contacts.organization.title: 'Організатори:'
+contacts.address.title: 'Адреса:'
+contacts.facebook.title: 'Facebook спільнота:'
+contacts.address.address: 'Київ, вул. Виборзька, 42а'
+contacts.person.tatyana: Тетяна Буханова
+contacts.person.irina: Ірина Божик
+contacts.person.lara: Лара Лукьянюк
