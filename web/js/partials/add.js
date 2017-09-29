@@ -139,6 +139,7 @@ $(document).ready(function () {
         debug: false,
         errorClass: "text-error",
         errorElement: "p",
+        onkeyup: false,
         highlight: function(element) {
             $(element).addClass('input--error');
         },
@@ -231,6 +232,7 @@ $(document).ready(function () {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-promo-code').click();
+                        $("input[name='promo-code']").val('');
                     } else {
                         $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);
@@ -256,7 +258,9 @@ $(document).ready(function () {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-add-user').click();
-
+                        $("input[name='user-name']").val('');
+                        $("input[name='user-surname']").val('');
+                        $("input[name='user-email']").val('');
                     } else {
                         $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);

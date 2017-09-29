@@ -24,19 +24,22 @@
                         {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
                     </div>
                 </div>
-                {% for speaker in review.speakers %}
-                <div class="review-speaker review-layout__speaker">
-                    <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
-                    <div class="review-speaker__description">
-                        <div class="review-speaker__name">{{ speaker.name }}</div>
-                        <div class="review-speaker__position">{{ speaker.company }}</div>
-                        <div id="show-speaker-info" class="review-speaker__info-show">{{ 'speaker.about'|trans }}</div>
-                        <div class="review-speaker__info">
-                            {{ speaker.about|raw }}
+                <div class="review-layout__content">
+                <div class="review-layout__speaker">
+                    {% for speaker in review.speakers %}
+                    <div class="review-speaker review">
+                        <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file') }}" alt="">
+                        <div class="review-speaker__description">
+                            <div class="review-speaker__name">{{ speaker.name }}</div>
+                            <div class="review-speaker__position">{{ speaker.company }}</div>
+                            <div id="show-speaker-info" class="review-speaker__info-show">{{ 'speaker.about'|trans }}</div>
+                            <div class="review-speaker__info">
+                                {{ speaker.about|raw }}
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
                 <article class="review-info review-layout__info">
 
                     <div class="review-video">
@@ -62,6 +65,7 @@
                         </div>
                     </div>
                 </article>
+                </div>
             </div>
         </div>
     </section>

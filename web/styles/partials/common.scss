@@ -1,4 +1,3 @@
-
 html {
   min-height: 100%;
   height: 100%;
@@ -155,10 +154,10 @@ ul {
 }
 
 .text-error {
+  margin-top: 10px;
+  color: $red-light-color;
   font-size: 12px;
   line-height: 16px;
-  color: $red-light-color;
-  margin-top: 10px;
 }
 
 .input-password {
@@ -538,37 +537,37 @@ ul {
 }
 
 .btn-up {
-  opacity: 0;
-  visibility: hidden;
   position: fixed;
   right: 32px;
   bottom: 79px;
+  z-index: 2;
   display: inline-block;
+  visibility: hidden;
+  padding: 0;
   width: 80px;
   height: 80px;
-  padding: 0;
   border: none;
+  opacity: 0;
   cursor: pointer;
-  z-index: 2;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
 
   &:after {
     position: absolute;
     top: 38px;
     left: 34px;
-    content: '';
     display: inline-block;
     width: 12px;
     height: 12px;
     border: solid #FFFFFF;
     border-width: 1px 0 0 1px;
-    transform: rotate(45deg);
+    content: '';
     vertical-align: middle;
+    transform: rotate(45deg);
   }
 
   &--visible {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
   }
 }
 
@@ -592,22 +591,22 @@ ul {
 
 .numbered-list {
   &__item {
-    margin: 10px 0;
     position: relative;
+    margin: 10px 0;
     text-indent: 16px;
     font-size: 14px;
     line-height: 20px;
 
     &:before {
-      content: '';
       position: absolute;
       top: 9px;
       left: 0;
       display: inline-block;
+      box-sizing: border-box;
       width: 11px;
       height: 1px;
       background-color: #121314;
-      box-sizing: border-box;
+      content: '';
     }
   }
 
@@ -620,5 +619,41 @@ ul {
     &:hover {
       border-color: transparent;
     }
+  }
+}
+
+.like-btn {
+  display: inline-flex;
+  flex-direction: row;
+  height: 15px;
+  justify-content: space-between;
+
+  &__action {
+    border-bottom: 1px dashed rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 17px;
+    flex-shrink: 0;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+  &__amount {
+    display: flex;
+    color: $blue-light-color;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    margin-left: 12px;
+  }
+
+  &__icon {
+    margin: -1px 4px 0 0;
   }
 }

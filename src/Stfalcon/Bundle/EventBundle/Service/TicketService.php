@@ -245,8 +245,8 @@ class TicketService
                 'event_header' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'event-header__download',
-                        self::PAID_FOR_ANOTHER => 'event-card__done',
-                        self::EVENT_DONE => 'event-card__done',
+                        self::PAID_FOR_ANOTHER => 'event-header__done',
+                        self::EVENT_DONE => 'event-header__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' =>
@@ -265,6 +265,7 @@ class TicketService
                     ],
                 'event_action_mob' =>
                     [
+                        self::EVENT_DONE => 'event-action-mob__done',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' =>
@@ -278,10 +279,9 @@ class TicketService
         ];
 
         $class = isset($states[$position][$eventState]) ? $states[$position][$eventState] : $states[$position][self::EVENT_DEFAULT_STATE];
+        $isMob = in_array($position, ['event_fix_header_mob', 'price_block_mob']);
 
         if ($event->isActiveAndFuture()) {
-            $isMob = in_array($position, ['event_fix_header_mob', 'event_action_mob', 'price_block_mob']);
-
             $data = $event->getSlug();
             if ($eventState === self::CAN_DOWNLOAD_TICKET) {
                 $caption = $isMob ? $translator->trans('ticket.mob_status.download') : $translator->trans('ticket.status.download');
@@ -317,7 +317,11 @@ class TicketService
             }
         } else {
             $isDiv = true;
-            $caption = $translator->trans('ticket.status.event_done');
+            if ($isMob) {
+                $caption = $translator->trans('ticket.status.event_done_mob');
+            } else {
+                $caption = $translator->trans('ticket.status.event_done');
+            }
         }
 
         $result['class'] = $class;
