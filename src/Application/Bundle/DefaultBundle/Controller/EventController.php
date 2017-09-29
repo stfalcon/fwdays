@@ -52,6 +52,7 @@ class EventController extends Controller
      * Show event
      *
      * @Route("/event/{event_slug}", name="event_show_redesign")
+     * @Route("/event/{event_slug}", name="event_show")
      * @param string $event_slug
      * @Template("ApplicationDefaultBundle:Redesign:event.html.twig")
      *

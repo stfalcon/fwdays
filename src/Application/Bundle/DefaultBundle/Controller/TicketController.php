@@ -96,7 +96,7 @@ class TicketController  extends Controller
         //bag fix test ticket.feature:33
         // любопытных пользователей перенаправляем на страницу события
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_VOLUNTEER')) {
-            return $this->redirect($this->generateUrl('event_show', array('event_slug' => $ticket->getEvent()->getSlug())));
+            return $this->redirect($this->generateUrl('event_show', ['event_slug' => $ticket->getEvent()->getSlug()]));
         }
 
         // проверяем существует ли оплата
