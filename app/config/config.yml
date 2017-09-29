@@ -8,6 +8,7 @@ parameters:
     graylog.fromname: "https://frameworksdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
+    google_apikey: "%google_api_key%"
 
 framework:
     #esi:             ~
@@ -26,6 +27,7 @@ framework:
         handler_id: session.handler.native_file
         save_path: "%kernel.root_dir%/sessions/"
 
+
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
@@ -33,6 +35,8 @@ twig:
     form:
         resources:
             - 'SonataCoreBundle:Form:colorpicker.html.twig'
+    globals:
+        google_apikey: "%google_api_key%"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

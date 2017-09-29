@@ -52,6 +52,7 @@ class EventController extends Controller
      * Show event
      *
      * @Route("/event/{event_slug}", name="event_show_redesign")
+     * @Route("/event/{event_slug}", name="event_show")
      * @param string $event_slug
      * @Template("ApplicationDefaultBundle:Redesign:event.html.twig")
      *
@@ -180,8 +181,9 @@ class EventController extends Controller
         $lng = 0;
 
         $address = $event->getCity().','.$event->getPlace();
+        $googleApiKey = $this->getParameter('google_api_key');
         $json = $this->container->get('buzz')->get(
-            'https://maps.google.com/maps/api/geocode/json?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&address='.urlencode($address)
+            'https://maps.google.com/maps/api/geocode/json?key='.$googleApiKey.'&address='.urlencode($address)
         );
         $response = json_decode(
             $json->getContent(),

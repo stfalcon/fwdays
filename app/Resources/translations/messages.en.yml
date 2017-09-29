@@ -1,7 +1,7 @@
 menu.events.my: My events
 menu.user.info: User info
 menu.referral.title: Invite friends
-menu.check.ticket.bynumber: __menu.check.ticket.bynumber
+menu.check.ticket.bynumber: Ticket checking by number
 menu.logout: Logout
 menu.user.registration: Registration
 menu.login: Login
@@ -68,7 +68,7 @@ user.create.title: Create account
 user.already_have_account.title: I already have an account
 
 pay.i_have_promo.title: I have promo-code
-pay.enter_promo.title: Enter promo code
+pay.enter_promo.title: Enter a promo-code to get a discount
 pay.sum.bold.title: 'Sum: <b>%sum% grn</b>'
 pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% grn</b>'
 pay.sum_for_pay.bold.title: 'For pay: <b>%sum% grn</b>'
@@ -98,7 +98,7 @@ in.lang.link: На Українській
 ticket.status.event_done: Event done
 ticket.status.event_done_mob: done
 referral.program.conditions.title: Program conditions
-referral.program.conditions.text: __referral.program.conditions.text
+referral.program.conditions.text: Get %referal_bonus% ₴ for each ticket purchase on your link. Use bonuses when buying tickets for our events.
 referral.share.title: Share
 referral.link.copied: Copied
 popup.header.title: Pay for event %event_name%
@@ -149,13 +149,14 @@ ticket.status.paid: Participation paid
 ticket.status.paid_mov: Paid
 ticket.status.take_apart: register
 ticket.status.not_take_apart : Remove visit
-referral.invaite.title: __referral.invaite.title
-referral.invaite.title2: __referral.invaite.title2
+referral.invaite.title: Invite friends
+referral.invaite.title2: Invite your friends and collect bonuses!
 referral.invaite.text1: __referral.invaite.text1
 referral.invaite.text2: __referral.invaite.text2
-referral.balance: __referral.balance
-referral.balance.redesign: 'Ваш баланс: %user_balance% грн'
 referral.invaite.link.text: your referral link
+referral.balance: __referral.balance
+referral.balance.redesign: 'Your balance: %user_balance% ₴'
+
 delete: __delete
 payment.price: '%summ% grn'
 payment.discount.cupon: __payment.discount.cupon
@@ -165,10 +166,21 @@ pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: more participant
 pay.event.members_already_paid: __pay.event.members_already_paid
 pay.event.members_without_dicount: __pay.event.members_without_dicount
-pay.event.cupon: pay by event cupon
+pay.event.cupon: Promo code:
 news_and_anonce.title: __news_and_anonce.title
 contact_info.title: Contact info
 candidate.speaker.title: In consideration
 error.phone_bad_format: Bad phone format
 error.name.not_number: Your name cannot contain a number
 error.surname.not_number: Your surname cannot contain a number
+
+contacts.registration.title: Questions about registration and payment for participation in conferences
+contacts.cooperation.title: Issues of cooperation and partnership with Fwdays
+contacts.partners.title: The questions of informational partnerships, mitigation and master classes
+contacts.organization.title: 'Organizers:'
+contacts.address.title: 'Address:'
+contacts.facebook.title: 'Facebook community:'
+contacts.address.address: 'Київ, вул. Виборзька, 42а'
+contacts.person.tatyana: Тетяна Буханова
+contacts.person.irina: Ірина Божик
+contacts.person.lara: Лара Лукьянюк

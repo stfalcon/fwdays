@@ -53,7 +53,7 @@
     {% endif %}
     <!--END location-->
 
-    <button class="btn-up" style="background-color: #4690C9;"></button>
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
 {% endblock content %}
 {% block popups %}
 <!--BEGIN speaker-popup-->
@@ -68,6 +68,6 @@
 {% endblock popups %}
 {% block scripts %}
     <script type="text/javascript"
-            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
+            src="http://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places"></script>
     {{ parent() }}
 {% endblock scripts %}
