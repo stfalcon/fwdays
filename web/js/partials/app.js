@@ -156,9 +156,9 @@ $(document).ready(function () {
     /**
      * Show speaker info for mobile devices
      */
-    $('#show-speaker-info').on('click', function () {
+    $('.show-speaker-info-trigger').on('click', function () {
         $(this).hide();
-        $('.review-speaker__info').show();
+        $(this).siblings('.review-speaker__info').show();
     });
 
 
