@@ -23,6 +23,8 @@ function setPaymentHtml(e_slug) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
+                $('#cancel-promo-code').click();
+                $('#cancel-add-user').click();
                 inst.open();
             } else {
                 console.log('Error:' + data.error);
@@ -78,7 +80,6 @@ $(document).on('click', '.user-payment__remove', function () {
                     $('#pay-form').html(data.html);
                     $('#payment-sums').html(data.paymentSums);
                 } else {
-                    $('#pay-form').html(data.html);
                     console.log('Error:'+data.error);
                 }
             });
@@ -98,7 +99,6 @@ $(document).on('click', '.add-wants-visit-event', function () {
                         }
                     });
                 } else {
-                    elem.html(data.html);
                     console.log('Error:'+data.error);
                 }
             },
@@ -127,7 +127,6 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 
                 });
             } else {
-                elem.html(data.html);
                 console.log('Error:'+data.error);
             }
         });
@@ -231,9 +230,7 @@ $(document).ready(function () {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-promo-code').click();
-                        $("input[name='promo-code']").val('');
                     } else {
-                        $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);
                     }
                 });
@@ -257,11 +254,7 @@ $(document).ready(function () {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-add-user').click();
-                        $("input[name='user-name']").val('');
-                        $("input[name='user-surname']").val('');
-                        $("input[name='user-email']").val('');
                     } else {
-                        $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);
                     }
                 });
