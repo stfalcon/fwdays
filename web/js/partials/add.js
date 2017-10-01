@@ -224,13 +224,16 @@ $(document).ready(function () {
     $('.add-promo-code-btn').on('click', function () {
         if ($('#user_promo_code').valid()) {
             var e_slug = $('#pay-form').data('event');
-            $.post(Routing.generate('add_promo_code', {code: $("input[name='promo-code']").val(), event_slug: e_slug}),
+            $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), event_slug: e_slug}),
                 function (data) {
                     if (data.result) {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-promo-code').click();
                     } else {
+                        var validator = $('#payment').validate();
+                        errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
+                        validator.showErrors(errors);
                         console.log('Error:' + data.error);
                     }
                 });

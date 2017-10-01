@@ -59,7 +59,7 @@ $(document).ready(function () {
     $('#cancel-promo-code').on('click', function (e) {
         e.preventDefault();
         $('#add-promo-code').hide();
-        $("input[name='promo-code']").val('').removeClass('input--error').next('p.text-error').remove();
+        $("input[name='user_promo_code']").val('').removeClass('input--error').next('p.text-error').remove();
         $("#user_promo_code").prop('required', false);
         $('#promo-code-trigger').show();
     });

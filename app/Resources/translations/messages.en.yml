@@ -161,7 +161,7 @@ referral.balance.redesign: 'Your balance: %user_balance% ₴'
 
 delete: __delete
 payment.price: '%summ% grn'
-payment.discount.cupon: __payment.discount.cupon
+payment.discount.cupon: (coupon discount %summ%%)
 payment.discount.member: (Permanent member discount %summ%%)
 pay.event.title: __pay.event.title
 pay.event.pay_for_other: Pay for other participants
