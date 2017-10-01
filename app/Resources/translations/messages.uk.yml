@@ -48,6 +48,7 @@ user.password.title: Пароль
 user.forgot_password.title: Забули пароль?
 user.reset_password.caption: Скинути пароль
 user.reset_password.title: Скидання паролю
+user.change_password.title: Зміна паролю
 user.show_password.title: показати пароль
 user.remember_me.title: Запомнити мене
 user.by_user.title: Війдіть як користувач
@@ -177,3 +178,5 @@ contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
+
+fos_user.password.mismatch: Невідповідність нового пароля

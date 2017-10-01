@@ -44,7 +44,7 @@ class ProfileController extends Controller
 
         return $this->container->get('templating')->renderResponse(
             'FOSUserBundle:Profile:edit.html.'.$this->container->getParameter('fos_user.template.engine'),
-            array('form' => $form->createView())
+            ['profileForm' => $form->createView()]
         );
     }
 

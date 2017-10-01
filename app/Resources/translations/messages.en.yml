@@ -61,6 +61,7 @@ user.password.title: Password
 user.forgot_password.title: Forgot password?
 user.reset_password.title: Reset password
 user.reset_password.caption: Reset password
+user.change_password.title: Change password
 user.show_password.title: show password
 user.remember_me.title: Remember me
 user.by_user.title: Enter as user
@@ -185,3 +186,4 @@ contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
+fos_user.password.mismatch: New password mismatch

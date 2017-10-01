@@ -50,7 +50,7 @@ class RegistrationController extends BaseController
         }
 
         return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
-            'form' => $form->createView(),
+            'regForm' => $form->createView(),
         ));
     }
 
