@@ -92,12 +92,11 @@ $(document).on('click', '.add-wants-visit-event', function () {
             url: Routing.generate('add_wants_to_visit_event', { slug: e_slug}),
             success: function(data) {
                 if (data.result) {
-                    if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
-                        $('.event-header__btn').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                        $('.fix-event-header').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                    } else {
-                        elem.removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                    }
+                    $('.add-wants-visit-event').each(function() {
+                        if ($( this ).data('event') === e_slug) {
+                            $( this ).removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
+                        }
+                    });
                 } else {
                     elem.html(data.html);
                     console.log('Error:'+data.error);
@@ -121,12 +120,12 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         var e_slug = elem.data('event');
         $.post(Routing.generate('sub_wants_to_visit_event', {slug: e_slug}), function (data) {
             if (data.result) {
-                if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
-                    $('.event-header__btn').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                    $('.fix-event-header').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                } else {
-                    elem.removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                }
+                $('.sub-wants-visit-event').each(function() {
+                    if ($( this ).data('event') === e_slug) {
+                        $( this ).removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
+                    }
+
+                });
             } else {
                 elem.html(data.html);
                 console.log('Error:'+data.error);
