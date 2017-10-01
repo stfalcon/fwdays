@@ -42,9 +42,9 @@ $(document).ready(function () {
         $("#payment_user_name").prop('required', false);
         $("#payment_user_surname").prop('required', false);
         $("#payment_user_email").prop('required', false);
-        $("input[name='user-name']").val('');
-        $("input[name='user-surname']").val('');
-        $("input[name='user-email']").val('');
+        $("input[name='user-name']").val('').removeClass('input--error').next('p.text-error').remove();
+        $("input[name='user-surname']").val('').removeClass('input--error').next('p.text-error').remove();
+        $("input[name='user-email']").val('').removeClass('input--error').next('p.text-error').remove();
         $('#payment-add-user').hide();
         $('#add-user-trigger').show();
     });
@@ -59,7 +59,7 @@ $(document).ready(function () {
     $('#cancel-promo-code').on('click', function (e) {
         e.preventDefault();
         $('#add-promo-code').hide();
-        $("input[name='promo-code']").val('');
+        $("input[name='promo-code']").val('').removeClass('input--error').next('p.text-error').remove();
         $("#user_promo_code").prop('required', false);
         $('#promo-code-trigger').show();
     });
