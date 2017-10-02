@@ -230,44 +230,44 @@ class TicketService
             [
                 'row' =>
                     [
-                        self::CAN_DOWNLOAD_TICKET => 'event-row__download',
-                        self::PAID_FOR_ANOTHER => 'event-row__done',
-                        self::EVENT_DONE => 'event-row__done',
+                        self::CAN_DOWNLOAD_TICKET => 'event-row__btn btn btn--tertiary btn--sm',
+                        self::PAID_FOR_ANOTHER => 'event-row__status',
+                        self::EVENT_DONE => 'event-row__status',
                         self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
                     ],
                 'card' =>
                     [
-                        self::CAN_DOWNLOAD_TICKET => 'event-card__download',
-                        self::PAID_FOR_ANOTHER => 'event-card__done',
-                        self::EVENT_DONE => 'event-card__done',
+                        self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--sm event-card__btn',
+                        self::PAID_FOR_ANOTHER => 'event-card__status',
+                        self::EVENT_DONE => 'event-card__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--sm event-card__btn',
                     ],
                 'event_header' =>
                     [
-                        self::CAN_DOWNLOAD_TICKET => 'event-header__download',
-                        self::PAID_FOR_ANOTHER => 'event-header__done',
-                        self::EVENT_DONE => 'event-header__done',
+                        self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--lg event-header__btn',
+                        self::PAID_FOR_ANOTHER => 'event-header__status',
+                        self::EVENT_DONE => 'event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download',
-                        self::PAID_FOR_ANOTHER => 'fix-event-header__done',
-                        self::EVENT_DONE => 'fix-event-header__done',
+                        self::PAID_FOR_ANOTHER => 'fix-event-header__status',
+                        self::EVENT_DONE => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' =>
                     [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download fix-event-header__download--mob',
-                        self::PAID_FOR_ANOTHER => 'fix-event-header__done fix-event-header__done--mob',
-                        self::EVENT_DONE => 'fix-event-header__done fix-event-header__done--mob',
+                        self::PAID_FOR_ANOTHER => 'fix-event-header__status fix-event-header__status--mob',
+                        self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' =>
                     [
-                        self::EVENT_DONE => 'event-action-mob__done',
-                        self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
-                        self::PAID_FOR_ANOTHER => 'event-action-mob__done',
+                        self::EVENT_DONE => 'event-action-mob__status',
+                        self::CAN_DOWNLOAD_TICKET => 'btn btn--tertiary btn--lg event-action-mob__btn',
+                        self::PAID_FOR_ANOTHER => 'event-action-mob__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' =>

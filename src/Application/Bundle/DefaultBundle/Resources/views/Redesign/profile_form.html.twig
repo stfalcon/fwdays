@@ -63,11 +63,11 @@
         <div class="form-col">
             <div class="checkbox">
                 {% if user.subscribe == true %}
-                    <input id="check1" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]" checked>
+                    <input id="profile-check" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]" checked>
                 {% else %}
-                    <input id="check1" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]">
+                    <input id="profile-check" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]">
                 {% endif %}
-                <label for="check1" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
+                <label for="profile-check" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
             </div>
         </div>
     </div>
