@@ -98,36 +98,14 @@
     flex-shrink: 0;
   }
 
-  &__download {
+  &__status {
     width: 220px;
-    color: $dark-color;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 12px;
+    flex-shrink: 0;
     text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 12px;
-    flex-shrink: 0;
-
-    &:hover {
-      span {
-        border-bottom: 0;
-      }
-    }
-
-    span {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    }
-  }
-
-  &__done {
-    width: 220px;
-    text-align: right;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 12px;
-    line-height: 12px;
-    flex-shrink: 0;
   }
 }
 

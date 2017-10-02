@@ -156,9 +156,13 @@
   &__facebook {
     width: 172px;
     background-color: #344E87;
-    box-shadow: 0 2px 10px 0 #344E87;
     font-size: 12px;
     line-height: 54px;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 2px 10px 0 #344E87;
+    }
   }
 }
 

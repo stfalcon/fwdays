@@ -108,7 +108,7 @@
       line-height: 16px;
     }
 
-    &__done {
+    &__status {
       bottom: 13px;
     }
 
@@ -267,18 +267,7 @@
       width: 100%;
     }
 
-    &__download {
-      font-weight: 500;
-      margin-top: 12px;
-      display: inline-block;
-      font-size: 16px;
-      text-transform: uppercase;
-      color: $dark-color;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-      text-decoration: none;
-    }
-
-    &__done {
+    &__status {
       font-weight: 500;
       margin-top: 12px;
       display: inline-block;
@@ -879,6 +868,10 @@
 
   .event-card {
     padding: 0;
+
+    &__photo {
+      right: 0;
+    }
   }
 
   .video {
@@ -1312,11 +1305,8 @@
       width: 200px;
     }
 
-    &__download {
-      width: 200px;
-    }
-
-    &__done {
+    &__status {
+      text-align: right;
       width: 200px;
     }
   }
@@ -1425,11 +1415,11 @@
       width: 110px;
     }
 
-    &__done {
+    &__status {
       display: none;
     }
 
-    &__done--mob {
+    &__status--mob {
       display: block;
       margin-right: 16px;
     }
@@ -1503,7 +1493,7 @@
       right: 0;
     }
 
-    &__done {
+    &__status {
       line-height: 14px;
       bottom: 0;
     }
