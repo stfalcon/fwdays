@@ -85,14 +85,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-row form-row--align-bottom">
+                <div class="form-row ">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="payment_user_email">{{ 'user.email.title'|trans }}</label>
                             <input class="input" type="email" id="payment_user_email" name="user-email" value="">
                         </div>
                     </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
                         <button type="button" class="btn btn--secondary btn--md form-col__btn add-user-btn">{{ 'add.title'|trans }}</button>
                     </div>
                 </div>
@@ -101,14 +101,14 @@
                 <div class="form-add__hint"> {{ 'pay.enter_promo.title'|trans }}
                     <a id="cancel-promo-code" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
                 </div>
-                <div class="form-row form-row--align-bottom">
+                <div class="form-row">
                     <div class="form-col form-col--6 form-col--xs-12">
                         <div class="form-group">
                             <label class="form-label" for="user_promo_code">{{ 'pay.event.cupon'|trans }}</label>
                             <input name="user_promo_code" class="input" id="user_promo_code" type="text" value="">
                         </div>
                     </div>
-                    <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
                         <button type="button" class="btn btn--secondary btn--md form-col__btn add-promo-code-btn">{{ 'add.title'|trans }}</button>
                     </div>
                 </div>
@@ -126,14 +126,14 @@
                 </div>
             </div>
 
-            <div class="form-row form-row--align-bottom">
+            <div class="form-row">
                 <div class="form-col form-col--6 form-col--xs-12">
                     <div class="form-group">
                         <label class="form-label" for="user_phone">{{ 'user.phone.title'|trans }}</label>
                         <input class="input mask-phone-input--js" placeholder="+38" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}" required>
                     </div>
                 </div>
-                <div class="form-col form-col--6 form-col--xs-12">
+                <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">
                     <button id="buy-ticket-btn" class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
                 </div>
             </div>
