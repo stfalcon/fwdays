@@ -187,3 +187,13 @@ contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 fos_user.password.mismatch: New password mismatch
+
+resetting:
+    email:
+        message: |
+            Hello %username%!
+
+            To reset your password - please visit %confirmationUrl%
+
+            Regards,
+            the Team.

@@ -25,6 +25,7 @@ function setPaymentHtml(e_slug) {
                 $('#payment-sums').html(data.paymentSums);
                 $('#cancel-promo-code').click();
                 $('#cancel-add-user').click();
+                $('#user_phone').val(data.phoneNumber);
                 inst.open();
             } else {
                 console.log('Error:' + data.error);
@@ -133,6 +134,13 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 });
 
 $(document).ready(function () {
+
+    $('.mask-phone-input--js').bind('input', function(){
+        $(this).val(function(_, v){
+            return v.replace(/[-\s\(\)]+/g, '');
+        });
+    });
+
     $('#payment').validate({
         debug: false,
         errorClass: "text-error",

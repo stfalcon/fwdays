@@ -180,3 +180,13 @@ contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 
 fos_user.password.mismatch: Невідповідність нового пароля
+
+resetting:
+    email:
+        message: |
+            Вітаємо %username%!
+
+            Для скидання пароля - будь ласка, перейдіть за посиланням %confirmationUrl%
+
+            З найкращими побажаннями,
+            команда сайту.
