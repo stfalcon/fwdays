@@ -39,7 +39,6 @@ class RedirectController extends Controller
 
     /**
      * @Route(path="/event/{event_slug}/participants")
-     * @Route(path="/event/{event_slug}/page/{page_slug}")
      * @param string $event_slug
      * @param string $page_slug
      * @return RedirectResponse

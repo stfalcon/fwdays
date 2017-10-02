@@ -363,4 +363,41 @@ class EventController extends Controller
             'eventCurrentAmount' => $eventCurrentAmount,
         ];
     }
+
+    /**
+     *
+     * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
+     * @param string $eventSlug
+     * @param string $pageSlug
+     *
+     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
+     *
+     * @return array
+     */
+    public function showEventPageInStaticAction($eventSlug, $pageSlug)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        if (!$event) {
+            throw $this->createNotFoundException('Unable to find event by slug: '.$eventSlug);
+        }
+        /** @var ArrayCollection $pages */
+        $pages = $this->getEventPages($event);
+        $myPage = null;
+        /** @var EventPage $page */
+        foreach ($pages as $page) {
+            if ($pageSlug === $page->getSlug()) {
+                $myPage = $page;
+                break;
+            }
+        }
+
+        if (!$myPage) {
+            throw $this->createNotFoundException('Unable to find event page by slug: '.$pageSlug);
+        }
+        $newText = $myPage->getTextNew();
+        $text = isset($newText) ? $newText : $myPage->getText();
+
+        return ['text' => $text];
+    }
 }

@@ -38,6 +38,7 @@ event.get_more_info: __event.get_more_info
 events.past: Past events
 event.page.program: Program
 event.page.venue: Venue
+event.page.venue_how: How to get there
 event_cost.title: Event Cost
 events.my: __events.my
 event.detail.info2: __event.detail.info2
@@ -187,6 +188,8 @@ contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 fos_user.password.mismatch: New password mismatch
+
+
 
 resetting:
     email:
