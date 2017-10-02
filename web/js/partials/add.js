@@ -23,6 +23,8 @@ function setPaymentHtml(e_slug) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
                 $('#payment-sums').html(data.paymentSums);
+                $('#cancel-promo-code').click();
+                $('#cancel-add-user').click();
                 inst.open();
             } else {
                 console.log('Error:' + data.error);
@@ -78,7 +80,6 @@ $(document).on('click', '.user-payment__remove', function () {
                     $('#pay-form').html(data.html);
                     $('#payment-sums').html(data.paymentSums);
                 } else {
-                    $('#pay-form').html(data.html);
                     console.log('Error:'+data.error);
                 }
             });
@@ -92,14 +93,12 @@ $(document).on('click', '.add-wants-visit-event', function () {
             url: Routing.generate('add_wants_to_visit_event', { slug: e_slug}),
             success: function(data) {
                 if (data.result) {
-                    if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
-                        $('.event-header__btn').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                        $('.fix-event-header').removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                    } else {
-                        elem.removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
-                    }
+                    $('.add-wants-visit-event').each(function() {
+                        if ($( this ).data('event') === e_slug) {
+                            $( this ).removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
+                        }
+                    });
                 } else {
-                    elem.html(data.html);
                     console.log('Error:'+data.error);
                 }
             },
@@ -121,14 +120,13 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         var e_slug = elem.data('event');
         $.post(Routing.generate('sub_wants_to_visit_event', {slug: e_slug}), function (data) {
             if (data.result) {
-                if (elem.hasClass('.event-header__btn') || elem.hasClass('.fix-event-header')) {
-                    $('.event-header__btn').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                    $('.fix-event-header').removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                } else {
-                    elem.removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
-                }
+                $('.sub-wants-visit-event').each(function() {
+                    if ($( this ).data('event') === e_slug) {
+                        $( this ).removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
+                    }
+
+                });
             } else {
-                elem.html(data.html);
                 console.log('Error:'+data.error);
             }
         });
@@ -226,15 +224,16 @@ $(document).ready(function () {
     $('.add-promo-code-btn').on('click', function () {
         if ($('#user_promo_code').valid()) {
             var e_slug = $('#pay-form').data('event');
-            $.post(Routing.generate('add_promo_code', {code: $("input[name='promo-code']").val(), event_slug: e_slug}),
+            $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), event_slug: e_slug}),
                 function (data) {
                     if (data.result) {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-promo-code').click();
-                        $("input[name='promo-code']").val('');
                     } else {
-                        $('#pay-form').html(data.html);
+                        var validator = $('#payment').validate();
+                        errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
+                        validator.showErrors(errors);
                         console.log('Error:' + data.error);
                     }
                 });
@@ -258,11 +257,7 @@ $(document).ready(function () {
                         $('#pay-form').html(data.html);
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-add-user').click();
-                        $("input[name='user-name']").val('');
-                        $("input[name='user-surname']").val('');
-                        $("input[name='user-email']").val('');
                     } else {
-                        $('#pay-form').html(data.html);
                         console.log('Error:' + data.error);
                     }
                 });

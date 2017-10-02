@@ -11,7 +11,7 @@
     {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
         <a href="{{ path('cabinet') }}" class="{{ class }}">{{ 'main.menu.cabinet'|trans }}</a>
     {% else %}
-        <a href="#modal-signin" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        <a data-remodal-target="modal-signin" href="#" class="{{ class }}">{{ 'menu.login'|trans }}</a>
     {% endif %}
 
 {% if position in ['header', 'footer'] %}

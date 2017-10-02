@@ -46,7 +46,9 @@ user.subscribe.title: Я згоден отримувати важливі нов
 user.refresh.title: Оновити
 user.password.title: Пароль
 user.forgot_password.title: Забули пароль?
-user.reset_password.title: Скинути пароль
+user.reset_password.caption: Скинути пароль
+user.reset_password.title: Скидання паролю
+user.change_password.title: Зміна паролю
 user.show_password.title: показати пароль
 user.remember_me.title: Запомнити мене
 user.by_user.title: Війдіть як користувач
@@ -151,7 +153,7 @@ referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
 delete: __delete
 payment.price: '%summ% грн'
-payment.discount.cupon: __payment.discount.cupon
+payment.discount.cupon: (знижка %summ%% по купону)
 payment.discount.member: (знижка %summ%% постійного учасника)
 pay.event.title: __pay.event.title
 pay.event.pay_for_other: Оплатити інших учасників
@@ -176,3 +178,5 @@ contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
+
+fos_user.password.mismatch: Невідповідність нового пароля

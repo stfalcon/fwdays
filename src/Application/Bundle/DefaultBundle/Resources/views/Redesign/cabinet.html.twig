@@ -2,7 +2,11 @@
 
 {% set firstEvent = events|first %}
 {% set fistLink = url('event_show_redesign', {'event_slug' : firstEvent.slug, 'ref': code}) %}
-{% set firstImage = absolute_url(vich_uploader_asset(firstEvent, 'logoFile')) %}
+{% if firstEvent.logoFile is not empty %}
+    {% set firstImage = absolute_url(vich_uploader_asset(firstEvent, 'logoFile')) %}
+{% else %}
+    {% set firstImage = '' %}
+{% endif %}
 
 {% block metatags %}
     {{ parent() }}
@@ -75,11 +79,16 @@
                             <div id="ref-selected" class="share-ref__dropdown-selected">{{ firstEvent.name }}</div>
                             <select id="ref-dropdown" name="" class="share-ref__select">
                                 {% for event in events %}
-                                <option value="{{ loop.index }}"
+                                    {% if firstEvent.logoFile is not empty %}
+                                        {% set image = absolute_url(vich_uploader_asset(event, 'logoFile')) %}
+                                    {% else %}
+                                        {% set image = '' %}
+                                    {% endif %}
+                                    <option value="{{ loop.index }}"
                                         data-ref="{{ url('event_show_redesign', {'event_slug' : event.slug, 'ref': code}) }}"
-                                        data-image="{{ absolute_url(vich_uploader_asset(event, 'logoFile')) }}">
+                                        data-image="{{ image }}">
                                     {{ event.name }}
-                                </option>
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>

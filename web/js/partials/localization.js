@@ -2,6 +2,7 @@ Messages =
     {
         'en':
             {
+                PROMO_NOT_VALID:'Not valid promotional code',
                 FIELD_REQUIRED:'This field is required.',
                 CORRECT_NAME:'Please specify the correct name.',
                 CORRECT_SURNAME:'Please specify the correct surname.',
@@ -13,6 +14,7 @@ Messages =
 
         'uk':
             {
+                PROMO_NOT_VALID:'Не вірний промокод',
                 FIELD_REQUIRED:'Це поле є обов\'язковим.',
                 CORRECT_NAME:"Вкажіть правильне і'мя.",
                 CORRECT_SURNAME:'Вкажіть правильне прізвище.',

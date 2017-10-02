@@ -5,7 +5,9 @@
 {% endif %}
     <div class="event-row__left">
         <a href="{{ path('event_show_redesign', {'event_slug': event.slug } )}}" class="event-row__logo-link">
-            <img class="event-row__logo" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
+            {% if event.logoFile is not empty %}
+                <img class="event-row__logo" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
+            {% endif %}
         </a>
         <div class="event-row__details">
             <a href="{{ path('event_show_redesign', {'event_slug': event.slug } )}}" class="event-row__title">{{ event.name }}</a>
