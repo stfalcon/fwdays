@@ -27,7 +27,11 @@
     <section id="program-event" class="schedule">
         <div class="container schedule__container">
             <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
-            {{ programPage.text|raw }}
+            {% if programPage.textNew is not empty %}
+                {{ programPage.textNew|raw }}
+            {% else %}
+                {{ programPage.text|raw }}
+            {% endif %}
         </div>
     </section>
     {% endif %}

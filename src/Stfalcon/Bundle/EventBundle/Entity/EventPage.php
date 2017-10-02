@@ -46,6 +46,31 @@ class EventPage extends AbstractPage implements Translatable
     protected $event;
 
     /**
+     * @var text $text
+     * @Gedmo\Translatable(fallback=true)
+     * @ORM\Column(name="text_new", type="text")
+     */
+    protected $textNew;
+
+    /**
+     * @return text
+     */
+    public function getTextNew()
+    {
+        return $this->textNew;
+    }
+
+    /**
+     * @param text $textNew
+     * @return $this
+     */
+    public function setTextNew($textNew)
+    {
+        $this->textNew = $textNew;
+        return $this;
+    }
+
+    /**
      * @var int $sortOrder
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
