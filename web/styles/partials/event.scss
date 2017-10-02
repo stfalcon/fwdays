@@ -306,7 +306,7 @@
   }
 
   &__report {
-    display: inline-block;
+    display: inline;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     color: $dark-color;
     text-decoration: none;
@@ -320,7 +320,6 @@
   }
 
   &__likes {
-    display: flex;
     margin-top: 18px;
   }
 }
