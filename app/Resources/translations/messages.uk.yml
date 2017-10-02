@@ -16,7 +16,7 @@ main.menu.speakers: Доповідачі
 main.menu.participants: Участники
 main.menu.cabinet: Кабінет
 email: email
-madeby: розроблено
+madeby: 'Зроблено в '
 tweets.text: Твіти користувача @fwdays
 page.error.notfound: Страница не найдена
 page.error.notfound.error: Ошибка 404
