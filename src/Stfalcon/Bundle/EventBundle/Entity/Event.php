@@ -267,6 +267,7 @@ class Event implements Translatable
 
     /**
      * @param bool $useApproximateDate
+     * @return $this
      */
     public function setUseApproximateDate($useApproximateDate)
     {

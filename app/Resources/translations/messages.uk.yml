@@ -124,6 +124,7 @@ events.future: Майбутні події
 event.detail.info1: __event.detail.info1
 event.page.program: Програма
 event.page.venue: Місце проведення
+event.page.venue_how: Як дістатися
 event_cost.title: Вартість участі
 ticket.dear_user: Шановний учасник <b>%user_name%</b>,
 ticket.wait_for_you: 'чекаємо на Вас:'
@@ -180,3 +181,13 @@ contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 
 fos_user.password.mismatch: Невідповідність нового пароля
+
+resetting:
+    email:
+        message: |
+            Вітаємо %username%!
+
+            Для скидання пароля - будь ласка, перейдіть за посиланням %confirmationUrl%
+
+            З найкращими побажаннями,
+            команда сайту.

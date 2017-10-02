@@ -229,13 +229,17 @@ class PaymentController extends Controller
         ]);
 
         $paymentSums = $this->renderView('@ApplicationDefault/Redesign/payment.sums.html.twig', ['payment' => $payment]);
-
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
         return new JsonResponse([
             'result' => true,
             'error' => "",
             'html' => $html,
             'paymentSums' => $paymentSums,
             'notUsedPromoCode' => $notUsedPromoCode,
+            'phoneNumber' => $user->getPhone(),
         ]);
     }
 

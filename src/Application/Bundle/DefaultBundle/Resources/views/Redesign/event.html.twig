@@ -49,8 +49,9 @@
         <div class="container container--sm">
             <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
             <div class="location__description">
-                {{ venuePage.text|raw }}
+                {{ event.city }}, {{ event.place }}
             </div>
+            <a href="{{ path('show_event_page', {'eventSlug': event.slug, 'pageSlug':venuePage.slug}) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
         </div>
         <div id="map" data-event="{{ event.slug }}" class="location__map"></div>
     </section>
