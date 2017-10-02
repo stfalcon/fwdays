@@ -90,22 +90,7 @@
     width: 318px;
   }
 
-  &__download {
-    display: inline-block;
-    margin-right: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    color: $white-color;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 16px;
-
-    &:hover {
-      border: none;
-    }
-  }
-
-  &__done {
+  &__status {
     position: relative;
     top: 1px;
     display: inline-block;
@@ -863,7 +848,7 @@
     display: none;
   }
 
-  &__done {
+  &__status {
     margin-right: 32px;
     color: $white-color;
     text-decoration: none;
@@ -872,7 +857,7 @@
     font-size: 14px;
   }
 
-  &__done--mob {
+  &__status--mob {
     display: none;
   }
 }

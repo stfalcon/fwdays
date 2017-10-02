@@ -109,6 +109,27 @@ ul {
   }
 }
 
+.btn--tertiary {
+  border: 1px solid #727272;
+  background: transparent;
+  color: #727272;
+
+  &:hover {
+    border-color: $dark-color;
+    color: $dark-color;
+  }
+}
+
+.btn--quaternary {
+  border: 1px solid $white-color;
+  background-color: $white-color;
+  color: $dark-color;
+
+  &:hover {
+    box-shadow: 0 2px 10px 0 $white-color;
+  }
+}
+
 .btn--facebook {
   background-color: $blue-dark-color;
 
