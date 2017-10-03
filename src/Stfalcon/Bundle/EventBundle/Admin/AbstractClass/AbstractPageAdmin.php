@@ -64,10 +64,7 @@ abstract class AbstractPageAdmin extends Admin
                             'label' => 'text',
                             'locale_options' => $localOptions
                         ],
-                        'textNew' => [
-                            'label' => 'new text',
-                            'locale_options' => $localOptions
-                        ],
+
                         'metaKeywords' => [
                             'label' => 'metaKeywords',
                             'locale_options' => $localOptionsAllFalse

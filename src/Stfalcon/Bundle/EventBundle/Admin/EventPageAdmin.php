@@ -27,6 +27,8 @@ class EventPageAdmin extends AbstractPageAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper = parent::configureFormFields($formMapper);
         $formMapper
             ->with('General')
@@ -39,6 +41,17 @@ class EventPageAdmin extends AbstractPageAdmin
                         'min' => 1
                     )
                 ))
+            ->end()
+            ->with('Переводы')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'textNew' => [
+                            'label' => 'new text',
+                            'locale_options' => $localOptionsAllFalse
+                        ],
+                    ]
+                ])
             ->end()
         ;
     }
