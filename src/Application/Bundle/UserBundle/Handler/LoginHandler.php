@@ -27,14 +27,25 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
     /** @var $homePages */
     private $homePages = [];
 
+    private $authorizationUrls = [];
+
     public function __construct(I18nRouter $router, $locales, $referralService, $userManager)
     {
         $this->router = $router;
         $this->referralService = $referralService;
         $this->userManager = $userManager;
+
+        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login',[], true);
+        $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register',[], true);
+        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email',[], true);
+        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email',[], true);
+
         $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
         foreach ($locales as $locale) {
             $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
+            $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register',['_locale' => $locale], true);
+            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email',['_locale' => $locale], true);
+            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email',['_locale' => $locale], true);
         }
     }
 
@@ -69,8 +80,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             return new RedirectResponse($url);
         }
 
-        $loginCodeUrl = $this->router->generate('fos_user_security_login',[], true);
-        $registerCodeUrl = $this->router->generate('fos_user_registration_register',[], true);
         $referrer = $request->headers->get('referer');
         $cabinetUrl = $this->router->generate('cabinet');
 
@@ -82,7 +91,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             if ($request->query->has('exception_login')) {
                 $url = $referrer;
                 if ('event_pay' === $requestParams['_route']) {
-                    if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
+                    if (in_array($referrer, $this->authorizationUrls)) {
                         $url = $this->router->generate('homepage');
                     }
                     $response = new RedirectResponse($url);
@@ -102,7 +111,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             return new RedirectResponse($cabinetUrl);
         }
 
-        if (in_array($referrer, [$loginCodeUrl, $registerCodeUrl])) {
+        if (in_array($referrer, $this->authorizationUrls)) {
             return new RedirectResponse($this->router->generate('homepage'));
         } else {
             return new RedirectResponse($referrer);
