@@ -5,7 +5,7 @@
 <p style="font-family: Arial; font-size: 15px; line-height: 22px; font-weight: normal; color: #000000; padding-right: 20px; margin-top: 0; margin-bottom: 0;">
     {{ 'interkassa.mail.msg.thanks'|trans({'%event_name%': event.name})|raw }}
     <br/>
-    {{ 'interkassa.mail.msg.remember'|trans }} {{ event.date|localizeddate('none', 'none', 'ru-RU', null, "d MMMM Y") }} {{ 'interkassa.mail.msg.remember1'|trans }} {{ event.place }}.
+    {{ 'interkassa.mail.msg.remember'|trans }} {{ event.date|localizeddate('none', 'none', app.request.locale, null, "d MMMM Y") }} {{ 'interkassa.mail.msg.remember1'|trans }} {{ event.place }}.
     <br>
     {{ 'interkassa.mail.msg.ticket'|trans }}
 </p>

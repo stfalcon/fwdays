@@ -181,6 +181,8 @@ contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 
 fos_user.password.mismatch: Невідповідність нового пароля
+'Bad credentials.': 'Невірна електронна адреса або пароль'
+'User account is disabled.': 'Обліковий запис не активовано'
 
 resetting:
     email:

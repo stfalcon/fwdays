@@ -5,7 +5,7 @@
 <div class="form-auth">
     <h2 class="h2 form-auth__title">{{ 'menu.login'|trans }}</h2>
     {% if error %}
-        <div class="error-msg-block"><p>{{ error|trans({}, 'FOSUserBundle') }}</p></div>
+        <div><p class="text-error">{{ error|trans }}</p></div>
     {% endif %}
         {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'remodal':'', 'queryLink':''} %}
 </div>
