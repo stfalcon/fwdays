@@ -114,7 +114,7 @@ class Payment
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getTickets()
     {

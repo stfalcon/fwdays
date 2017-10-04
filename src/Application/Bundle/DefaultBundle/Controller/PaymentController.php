@@ -185,7 +185,7 @@ class PaymentController extends Controller
             return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => '']);
         }
 
-        if (!$ticket->isPaid()) {
+        if (!$ticket->isPaid() && $payment->getTickets()->count() > 1 ) {
             $paymentService = $this->get('stfalcon_event.payment.service');
             $paymentService->removeTicketFromPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);

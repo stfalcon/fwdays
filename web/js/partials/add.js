@@ -68,7 +68,6 @@ function paymentAfterLogin() {
 }
 
 $(document).on('click', '.user-payment__remove', function () {
-        console.log('here');
         var elem = $(this);
         var e_slug = $('#pay-form').data('event');
         $.post(Routing.generate('remove_ticket_from_payment',
@@ -266,6 +265,9 @@ $(document).ready(function () {
                         $('#payment-sums').html(data.paymentSums);
                         $('#cancel-add-user').click();
                     } else {
+                        var validator = $('#payment').validate();
+                        errors = { payment_user_name: data.error };
+                        validator.showErrors(errors);
                         console.log('Error:' + data.error);
                     }
                 });
