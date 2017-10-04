@@ -4,6 +4,6 @@
     <!--BEGIN form-auth-->
     <div class="form-auth">
         <h2 class="h2 form-auth__title">{{ 'user.forgot_password.title'|trans }}</h2>
-        {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' %}
+        {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' with {'modal': true} %}
     </div>
 {% endblock content %}
