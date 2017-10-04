@@ -316,4 +316,12 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     *  Check single program
+     */
+
+    if (!$('.program').children('.program-header').length){
+        $('.schedule__container').addClass('schedule__container--single');
+    }
+
 });
