@@ -324,8 +324,12 @@
   }
 }
 
-.speaker-card__likes + .speaker-card__report {
-  margin-top: 16px;
+.speaker-card__likes + .speaker-card__report:before  {
+    content: '';
+    display: block;
+    height: 16px;
+    width: 100%;
+    cursor: default;
 }
 
 .schedule {
