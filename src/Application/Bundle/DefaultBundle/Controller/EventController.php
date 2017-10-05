@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Buzz\Message\RequestInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -396,7 +395,7 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find event page by slug: '.$pageSlug);
         }
         $newText = $myPage->getTextNew();
-        $text = isset($newText) ? $newText : $myPage->getText();
+        $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
 
         return ['text' => $text];
     }
