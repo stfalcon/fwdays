@@ -183,6 +183,15 @@ class User extends BaseUser
     protected $phone;
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/",
+     *     match=true,
+     *     message="error.phone_bad_format"
+     * )
+     */
+    protected $email;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="facebook_id", type="string", nullable=true)
