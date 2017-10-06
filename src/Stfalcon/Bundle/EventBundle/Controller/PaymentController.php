@@ -121,7 +121,7 @@ class PaymentController extends BaseController
      * Добавления участников к платежу
      *
      * @param string $slug
-     *
+     * @Secure(roles="ROLE_USER")
      * @return RedirectResponse
      *
      * @Route("/event/{slug}/payment/participants/add", name="add_participants_to_payment")
@@ -190,7 +190,7 @@ class PaymentController extends BaseController
      * @param string $event_slug
      * @param int    $payment_id
      * @param Ticket $ticket
-     *
+     * @Secure(roles="ROLE_USER")
      * @return RedirectResponse
      * @throws NotFoundHttpException
      *

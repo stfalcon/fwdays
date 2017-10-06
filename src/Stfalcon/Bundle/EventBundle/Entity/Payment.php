@@ -120,6 +120,7 @@ class Payment
     {
         return $this->tickets;
     }
+
     /**
      * Constructor. Set default status to new payment.
      */
@@ -147,6 +148,19 @@ class Payment
         return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
     }
 
+    /**
+     * @param Ticket $ticket
+     */
+    public function removePaidTicket(Ticket $ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            if ($ticket->isPaid()) {
+                $this->amount -= $ticket->getAmount();
+            }
+            $ticket->setPayment(null);
+            $this->tickets->removeElement($ticket);
+        }
+    }
     /**
      * Get id
      *
