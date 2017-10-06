@@ -6,14 +6,13 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *
  * @ORM\Table(name="event__ticketsCost")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\TicketCostRepository")
  */
 class TicketCost
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -34,55 +33,60 @@ class TicketCost
     private $tickets;
 
     /**
-     * @var int $count
+     * @var int
      *
      * @ORM\Column(name="count", type="integer", nullable=true)
      */
     private $count;
     /**
-     * Сумма для оплаты
+     * Сумма для оплаты.
      *
-     * @var float $amount
+     * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
 
     /**
-     * Альтернативна сума оплати
-     * @var string $altAmount
+     * Альтернативна сума оплати.
+     *
+     * @var string
      *
      * @ORM\Column(name="alt_amount", type="string", length=10, nullable=true)
      */
     private $altAmount = '';
     /**
-     * @var int $soldCount
+     * @var int
      *
      * @ORM\Column(name="sold_count", type="integer", nullable=true)
      */
     private $soldCount = 0;
 
     /**
-     * @var bool $enabled
+     * @var bool
+     *
      * @ORM\Column(name="enabled", type="boolean", nullable=false, options={"default":"1"})
      */
     private $enabled = true;
 
     /**
-     * @var bool $enabled
+     * @var bool
+     *
      * @ORM\Column(name="unlimited", type="boolean", nullable=false, options={"default":"0"})
      */
     private $unlimited = false;
 
     /**
-     * @var string $name
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
     /**
-     * @var int $temporaryCount
+     * @var int
      */
     private $temporaryCount = 0;
+
     /**
      * @return int
      */
@@ -91,17 +95,24 @@ class TicketCost
         return $this->id;
     }
 
+    /**
+     * @return float
+     */
     public function getAmountByTemporaryCount()
     {
-        $this->temporaryCount++;
+        ++$this->temporaryCount;
 
         return $this->getAmount();
     }
 
+    /**
+     * @return bool
+     */
     public function isHaveTemporaryCount()
     {
         return $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count;
     }
+
     /**
      * @return mixed
      */
@@ -112,11 +123,13 @@ class TicketCost
 
     /**
      * @param mixed $tickets
+     *
      * @return $this
      */
     public function setTickets($tickets)
     {
         $this->tickets = $tickets;
+
         return $this;
     }
 
@@ -130,11 +143,13 @@ class TicketCost
 
     /**
      * @param string $altAmount
+     *
      * @return $this
      */
     public function setAltAmount($altAmount)
     {
         $this->altAmount = $altAmount;
+
         return $this;
     }
 
@@ -148,11 +163,13 @@ class TicketCost
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -166,11 +183,13 @@ class TicketCost
 
     /**
      * @param Event $event
+     *
      * @return $this
      */
     public function setEvent($event)
     {
         $this->event = $event;
+
         return $this;
     }
 
@@ -184,11 +203,13 @@ class TicketCost
 
     /**
      * @param int $count
+     *
      * @return $this
      */
     public function setCount($count)
     {
         $this->count = $count;
+
         return $this;
     }
 
@@ -202,11 +223,13 @@ class TicketCost
 
     /**
      * @param float $amount
+     *
      * @return $this
      */
     public function setAmount($amount)
     {
         $this->amount = $amount;
+
         return $this;
     }
 
@@ -220,21 +243,29 @@ class TicketCost
 
     /**
      * @param int $soldCount
+     *
      * @return $this
      */
     public function setSoldCount($soldCount)
     {
         $this->soldCount = $soldCount;
+
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function incSoldCount()
     {
-        $this->soldCount ++;
+        ++$this->soldCount;
         if (!$this->unlimited) {
             $this->setEnabled($this->count > $this->soldCount);
         }
+
+        return $this;
     }
+
     /**
      * @return bool
      */
@@ -245,11 +276,13 @@ class TicketCost
 
     /**
      * @param bool $enabled
+     *
      * @return $this
      */
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+
         return $this;
     }
 
@@ -263,11 +296,13 @@ class TicketCost
 
     /**
      * @param bool $unlimited
+     *
      * @return $this
      */
     public function setUnlimited($unlimited)
     {
         $this->unlimited = $unlimited;
+
         return $this;
     }
 }
