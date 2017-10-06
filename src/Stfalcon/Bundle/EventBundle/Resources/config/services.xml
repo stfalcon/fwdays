@@ -210,6 +210,7 @@
 
         <service id="stfalcon_event.payment.service" class="Stfalcon\Bundle\EventBundle\Service\PaymentService">
             <argument type="service" id="service_container"/>
+            <argument type="service" id="stfalcon.user_balance.service"/>
         </service>
 
         <service id="stfalcon_event.referral.service" class="%stfalcon_event.referral.service.class%">

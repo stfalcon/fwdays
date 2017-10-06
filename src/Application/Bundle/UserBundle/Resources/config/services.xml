@@ -59,6 +59,9 @@
             <argument type="service" id="service_container" />
         </service>
 
+        <service id="stfalcon.user_balance.service" class="Application\Bundle\UserBundle\Services\UserBalanceService">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
     </services>
 
 </container>
