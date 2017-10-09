@@ -1,3 +1,3 @@
-label_type_stfalcon_mail_yes: __label_type_stfalcon_mail_yes
-label_type_stfalcon_mail_no: __label_type_stfalcon_mail_no
-label_mail_to_admin: __label_mail_to_admin
+label_type_stfalcon_mail_yes: start
+label_type_stfalcon_mail_no: stop
+label_mail_to_admin: mail to admins
