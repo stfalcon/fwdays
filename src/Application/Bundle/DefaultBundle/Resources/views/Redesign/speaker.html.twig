@@ -13,7 +13,7 @@
         <div class="speaker-card__bottom">
             {% if speaker.reviews %}
                 {% for review in speaker.reviews %}
-                    <a href="{{ path('event_review_show_redesign', {'event_slug':event.slug, 'review_slug':review.slug }) }}" class="speaker-card__report">{{ review.title }}</a>
+                    <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}" class="speaker-card__report">{{ review.title }}</a>
                     <div class="like-btn speaker-card__likes">
                     {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
                     </div>

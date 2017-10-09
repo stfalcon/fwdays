@@ -1,10 +1,16 @@
 imports:
     - { resource: config_dev.yml }
 
+parameters:
+     spool_path: '%kernel.root_dir%/spool'
+
 framework:
     test: ~
     session:
-        storage_id: session.storage.filesystem
+        storage_id: session.storage.mock_file
+    profiler:
+#        only_exceptions: false
+        collect: false
 
 web_profiler:
     toolbar: false
@@ -18,10 +24,6 @@ doctrine:
         dbname:   fwdays_com_testing
 
 liip_functional_test: ~
-#doctrine:
-#    dbal:
-#        driver:   pdo_sqlite
-#        path:     %kernel.cache_dir%/test.db
 
 vich_uploader:
      db_driver: orm
@@ -35,3 +37,13 @@ vich_uploader:
           event_image:
               uri_prefix: /tmp/uploads/events
               upload_destination: %kernel.root_dir%/../web/tmp/uploads/events
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    transport: sendmail
+    spool:
+        type: file
+        path: "%spool_path%"

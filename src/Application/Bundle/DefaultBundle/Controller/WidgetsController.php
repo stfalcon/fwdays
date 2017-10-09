@@ -35,12 +35,12 @@ class WidgetsController extends Controller
     /**
      * Like review
      *
-     * @Route(path="/like/{review_slug}", name="like_review",
+     * @Route(path="/like/{reviewSlug}", name="like_review",
      *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')"))
-     * @ParamConverter("review", options={"mapping": {"review_slug": "slug"}})
+     * @ParamConverter("review", options={"mapping": {"reviewSlug": "slug"}})
      * @param Review  $review
      *
      * @return JsonResponse

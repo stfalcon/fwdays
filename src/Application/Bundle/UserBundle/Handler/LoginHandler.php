@@ -95,7 +95,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
                         $url = $this->router->generate('homepage');
                     }
                     $response = new RedirectResponse($url);
-                    $cookie = new Cookie('event', $requestParams['event_slug'], time() + 3600, '/', null, false, false);
+                    $cookie = new Cookie('event', $requestParams['eventSlug'], time() + 3600, '/', null, false, false);
                     $response->headers->setCookie($cookie);
 
                     return $response;

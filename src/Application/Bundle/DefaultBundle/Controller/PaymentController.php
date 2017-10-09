@@ -18,12 +18,12 @@ class PaymentController extends Controller
     /**
      * Event pay
      *
-     * @Route("/event/{event_slug}/pay", name="event_pay",
+     * @Route("/event/{eventSlug}/pay", name="event_pay",
      *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
-     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      * @param Event $event
      *
      * @return JsonResponse
@@ -75,11 +75,11 @@ class PaymentController extends Controller
     }
 
     /**
-     * @Route(path="/addPromoCode/{code}/{event_slug}", name="add_promo_code",
+     * @Route(path="/addPromoCode/{code}/{eventSlug}", name="add_promo_code",
      *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      * @Security("has_role('ROLE_USER')")
      * @param string $code
      * @param Event $event
@@ -108,13 +108,13 @@ class PaymentController extends Controller
     /**
      * Add user to payment
      *
-     * @Route("/event/{event_slug}/payment/participant/add/{name}/{surname}/{email}", name="add_participant_to_payment",
+     * @Route("/event/{eventSlug}/payment/participant/add/{name}/{surname}/{email}", name="add_participant_to_payment",
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
      * @Security("has_role('ROLE_USER')")
-     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      * @param Event $event
      * @param String $name
      * @param String $surname
@@ -165,12 +165,12 @@ class PaymentController extends Controller
     /**
      * Remove user/ticket from payment
      *
-     * @Route("/event/{event_slug}/ticket/{id}/remove", name="remove_ticket_from_payment",
+     * @Route("/event/{eventSlug}/ticket/{id}/remove", name="remove_ticket_from_payment",
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
-     * @ParamConverter("event", options={"mapping": {"event_slug": "slug"}})
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      * @param Event $event
      * @param Ticket $ticket
      *

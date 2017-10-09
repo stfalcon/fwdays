@@ -287,7 +287,7 @@ class TicketService
             $data = $event->getSlug();
             if ($eventState === self::CAN_DOWNLOAD_TICKET) {
                 $caption = $isMob ? $translator->trans('ticket.mob_status.download') : $translator->trans('ticket.status.download');
-                $href = $this->container->get('router')->generate('event_ticket_download', ['event_slug' => $event->getSlug()]);
+                $href = $this->container->get('router')->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
 
             } elseif ($eventState === self::WAIT_FOR_PAYMENT_RECEIVE) {
                 $caption = $translator->trans('ticket.status.event.add');

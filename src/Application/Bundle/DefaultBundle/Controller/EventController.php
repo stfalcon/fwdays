@@ -4,27 +4,24 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Application event controller
+ * Application event controller.
  */
 class EventController extends Controller
 {
     /**
-     * Show all events
+     * Show all events.
      *
      * @Route("/events", name="events")
      * @Template("ApplicationDefaultBundle:Redesign:events.html.twig")
@@ -48,27 +45,30 @@ class EventController extends Controller
     }
 
     /**
-     * Show event
+     * Show event.
      *
-     * @Route("/event/{event_slug}", name="event_show_redesign")
-     * @Route("/event/{event_slug}", name="event_show")
-     * @param string $event_slug
+     * @Route("/event/{eventSlug}", name="event_show_redesign")
+     * @Route("/event/{eventSlug}", name="event_show")
+     *
+     * @param string $eventSlug
+     *
      * @Template("ApplicationDefaultBundle:Redesign:event.html.twig")
      *
      * @return array
      */
-    public function showAction($event_slug)
+    public function showAction($eventSlug)
     {
         $referralService = $this->get('stfalcon_event.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->getEventPagesArr($event_slug);
+        return $this->getEventPagesArr($eventSlug);
     }
 
     /**
-     * Get event costs
+     * Get event costs.
      *
      * @param Event $event
+     *
      * @Template("ApplicationDefaultBundle:Redesign:event_price.html.twig")
      *
      * @return array
@@ -89,22 +89,24 @@ class EventController extends Controller
     }
 
     /**
-     * Finds and displays a event review
+     * Finds and displays a event review.
      *
-     * @Route("/event/{event_slug}/review/{review_slug}", name="event_review_show_redesign")
-     * @param string $event_slug
-     * @param string $review_slug
+     * @Route("/event/{eventSlug}/review/{reviewSlug}", name="event_review_show_redesign")
+     *
+     * @param string $eventSlug
+     * @param string $reviewSlug
+     *
      * @Template("ApplicationDefaultBundle:Redesign:report_review.html.twig")
      *
      * @return array
      */
-    public function showEventReviewAction($event_slug, $review_slug)
+    public function showEventReviewAction($eventSlug, $reviewSlug)
     {
-        return $this->getEventPagesArr($event_slug, $review_slug);
+        return $this->getEventPagesArr($eventSlug, $reviewSlug);
     }
 
     /**
-     * List of sponsors of event
+     * List of sponsors of event.
      *
      * @param Event $event
      * @Template("ApplicationDefaultBundle:Redesign:partners.html.twig")
@@ -121,7 +123,7 @@ class EventController extends Controller
         $partners = $partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
-        foreach ($partners as $key => $partner){
+        foreach ($partners as $key => $partner) {
             $partnerCategory = $partnerCategoryRepository->find($partner['id']);
             if ($partnerCategory) {
                 $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getName()][] = $partner[0];
@@ -132,11 +134,12 @@ class EventController extends Controller
     }
 
     /**
-     * Get event header
+     * Get event header.
      *
      * @Route(path="/get_modal_header/{slug}/{headerType}", name="get_modal_header",
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
+     *
      * @param $slug
      * @param $headerType
      *
@@ -160,11 +163,12 @@ class EventController extends Controller
     }
 
     /**
-     * Get event map position
+     * Get event map position.
      *
      * @Route(path="/get_map_pos/{slug}", name="get_event_map_position",
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
+     *
      * @param string $slug
      *
      * @return JsonResponse
@@ -189,23 +193,26 @@ class EventController extends Controller
             true
         );
 
-        if (isset($response['status']) && $response['status'] === 'OK') {
+        if (isset($response['status']) && 'OK' === $response['status']) {
             $lat = isset($response['results'][0]['geometry']['location']['lat']) ? $response['results'][0]['geometry']['location']['lat'] : 0;
             $lng = isset($response['results'][0]['geometry']['location']['lng']) ? $response['results'][0]['geometry']['location']['lng'] : 0;
         } else {
-            return new JsonResponse(['result' => false, 'lat'=> $lat, 'lng' => $lng]);
+            return new JsonResponse(['result' => false, 'lat' => $lat, 'lng' => $lng]);
         }
 
-        return new JsonResponse(['result' => true, 'lat'=> $lat, 'lng' => $lng]);
+        return new JsonResponse(['result' => true, 'lat' => $lat, 'lng' => $lng]);
     }
+
     /**
-     * User wanna visit an event
+     * User wanna visit an event.
      *
      * @Route(path="/addwantstovisitevent/{slug}", name="add_wants_to_visit_event",
      *     options = {"expose"=true})
      * @Security("has_role('ROLE_USER')")
-     * @param string $slug
+     *
+     * @param string  $slug
      * @param Request $request
+     *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse|Response|NotFoundHttpException
@@ -222,9 +229,9 @@ class EventController extends Controller
 
         if (!$event) {
             if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: ' . $slug]);
+                return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
             } else {
-                throw $this->createNotFoundException('Unable to find Event by slug: ' . $slug);
+                throw $this->createNotFoundException('Unable to find Event by slug: '.$slug);
             }
         }
 
@@ -252,7 +259,7 @@ class EventController extends Controller
     }
 
     /**
-     * User dont want to visit an event
+     * User dont want to visit an event.
      *
      * @Route("/subwantstovisitevent/{slug}", name="sub_wants_to_visit_event",
      *     methods={"POST"},
@@ -294,9 +301,10 @@ class EventController extends Controller
     }
 
     /**
-     * Get event pages that may show
+     * Get event pages that may show.
      *
      * @param Event $event
+     *
      * @return array
      */
     private function getEventPages(Event $event)
@@ -313,23 +321,23 @@ class EventController extends Controller
     }
 
     /**
-     * Return array of event with pages
+     * Return array of event with pages.
      *
-     * @param string      $event_slug
-     * @param string|null $review_slug
+     * @param string      $eventSlug
+     * @param string|null $reviewSlug
      *
      * @return array
      */
-    private function getEventPagesArr($event_slug, $review_slug = null)
+    private function getEventPagesArr($eventSlug, $reviewSlug = null)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $event_slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
-            throw $this->createNotFoundException('Unable to find event by slug: '.$event_slug);
+            throw $this->createNotFoundException('Unable to find event by slug: '.$eventSlug);
         }
         $review = null;
-        if ($review_slug) {
-            $review = $this->getDoctrine()->getRepository('StfalconEventBundle:Review')->findOneBy(['slug' => $review_slug]);
+        if ($reviewSlug) {
+            $review = $this->getDoctrine()->getRepository('StfalconEventBundle:Review')->findOneBy(['slug' => $reviewSlug]);
 
             if (!$review) {
                 throw $this->createNotFoundException('Unable to find Review entity.');
@@ -353,19 +361,20 @@ class EventController extends Controller
         }
 
         $eventCurrentAmount = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:TicketCost')->getEventCurrentCost($event);
+
         return [
-            'event'       => $event,
+            'event' => $event,
             'programPage' => $programPage,
-            'venuePage'   => $venuePage,
-            'pages'       => $pages,
-            'review'      => $review,
+            'venuePage' => $venuePage,
+            'pages' => $pages,
+            'review' => $review,
             'eventCurrentAmount' => $eventCurrentAmount,
         ];
     }
 
     /**
-     *
      * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
+     *
      * @param string $eventSlug
      * @param string $pageSlug
      *

@@ -1,0 +1,16 @@
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "%kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64"
+        options:
+#            - { name: 'viewport-size', value: ‘1024x768’ }
+            page-size: A5
+            orientation: Landscape
+            no-outline: true
+            encoding: UTF-8
+            margin-left : 0
+            margin-right: 0
+            margin-top: 0
+            margin-bottom: 0
+
+    temporary_folder: "%kernel.cache_dir%/snappy"

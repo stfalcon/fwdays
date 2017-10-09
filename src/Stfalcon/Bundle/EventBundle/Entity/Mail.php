@@ -243,7 +243,19 @@ class Mail
      */
     public function getStatistic()
     {
-        return $this->sentMessages . '/' . $this->totalMessages . (($this->sentMessages == $this->totalMessages) ? ' - complete' : '');
+        $isOpenCount = 0;
+        $isUnsubscribeCount = 0;
+        /** @var MailQueue $mailQueue */
+        foreach ($this->getMailQueues() as $mailQueue) {
+            if ($mailQueue->getIsOpen()) {
+                $isOpenCount ++;
+            }
+            if ($mailQueue->getIsUnsubscribe()) {
+                $isUnsubscribeCount ++;
+            }
+        }
+
+        return $this->totalMessages.'/'.$this->sentMessages.'/'.$isOpenCount.'/'.$isUnsubscribeCount.(($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
 
     /**

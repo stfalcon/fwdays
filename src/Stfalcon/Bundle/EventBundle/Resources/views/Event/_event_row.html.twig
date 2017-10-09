@@ -1,6 +1,6 @@
 <tr>
     <td class="conf-logo">
-        <a href="{{ path('event_show', {'event_slug': event.slug } )}}">
+        <a href="{{ path('event_show', {'eventSlug': event.slug } )}}">
             <img src="{{ vich_uploader_asset(event, 'logoFile') }}" width="88" height="87" alt="{{ event.name }}">
         </a>
     </td>
@@ -14,7 +14,7 @@
         <div class="conf-info-links">
             {% render controller("StfalconEventBundle:Ticket:status", { 'event': event }) %}
 
-            <a href="{{ path('event_show', {'event_slug': event.slug } )}}" title="{{ 'event.detail.info1'|trans({'%event_name%':event.name}) }}">{{ 'event.detail.info2'|trans }}</a>
+            <a href="{{ path('event_show', {'eventSlug': event.slug } )}}" title="{{ 'event.detail.info1'|trans({'%event_name%':event.name}) }}">{{ 'event.detail.info2'|trans }}</a>
         </div>
     </td>
 </tr>

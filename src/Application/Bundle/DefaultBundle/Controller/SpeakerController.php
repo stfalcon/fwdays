@@ -11,16 +11,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class SpeakerController extends Controller
 {
     /**
-     * @Route(path="/speaker_popup/{event_slug}/{speaker_slug}", name="speaker_popup",
+     * @Route(path="/speaker_popup/{eventSlug}/{speaker_slug}", name="speaker_popup",
      *     methods={"GET"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @param string $speaker_slug
-     * @param string $event_slug
+     * @param string $eventSlug
      *
      * @return JsonResponse
      */
-    public function speakerPopupAction($speaker_slug, $event_slug)
+    public function speakerPopupAction($speaker_slug, $eventSlug)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -29,9 +29,9 @@ class SpeakerController extends Controller
             return new JsonResponse(['result' => false, 'html' => 'Unable to find Speaker by slug: '.$speaker_slug]);
         }
 
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $event_slug]);
+        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
-            return new JsonResponse(['result' => false, 'html' => 'Unable to find Event by slug: '.$event_slug]);
+            return new JsonResponse(['result' => false, 'html' => 'Unable to find Event by slug: '.$eventSlug]);
         }
         /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
         $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');

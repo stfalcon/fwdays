@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * EmailSubscribe controller
@@ -110,6 +111,6 @@ class EmailSubscribeController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl("homepage"));
+        return new JsonResponse([]);
     }
 }

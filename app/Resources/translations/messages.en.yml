@@ -190,7 +190,10 @@ contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лукьянюк
 fos_user.password.mismatch: New password mismatch
 
-
+mail.unsubscribe.no_more_news: We will no longer send you news about the Framework Days
+mail.unsubscribe.you_can_suscribe1: If you unsubscribed by mistake, you can
+mail.unsubscribe.you_can_suscribe2: subscribe again
+mail.subcribe: You are subscribed to the Framework Days newsletter
 
 resetting:
     email:

@@ -47,7 +47,7 @@ class ReferralController extends Controller
         $event = $em->getRepository('StfalconEventBundle:Event')->findBy(['slug' => $eventSlug]);
 
         if ($event) {
-            $url = $this->generateUrl('event_show', ['event_slug' => $eventSlug]);
+            $url = $this->generateUrl('event_show', ['eventSlug' => $eventSlug]);
         } else {
             $url = $this->generateUrl('homepage');
         }

@@ -25,7 +25,7 @@
                         {% include 'StfalconEventBundle:Review:_like_button.html.twig' with {'event': event, 'speaker': speaker} %}
                         <div class="presenter-presentation {{ is_granted('ROLE_USER') and event.active?'with-likes' }}">{{ 'speaker.review.title'|trans }} :
                             {% for review in speaker.reviews %}
-                                <a href="{{ path('event_review_show', {'event_slug': event.slug, 'review_slug': review.slug} ) }}">{{ review.title}}</a>
+                                <a href="{{ path('event_review_show', {'eventSlug': event.slug, 'reviewSlug': review.slug} ) }}">{{ review.title}}</a>
                             {% endfor %}
                         </div>
                     {% endif %}

@@ -18,7 +18,7 @@ function setPaymentHtml(e_slug) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
         type: 'POST',
-        url: Routing.generate('event_pay', {event_slug: e_slug}),
+        url: Routing.generate('event_pay', {eventSlug: e_slug}),
         success: function (data) {
             if (data.result) {
                 $('#pay-form').html(data.html).data('event', e_slug);
@@ -45,7 +45,7 @@ function setPaymentHtml(e_slug) {
 }
 function setSpeakerHtml(e_slug, s_slug) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
-    $.get(Routing.generate('speaker_popup', { event_slug: e_slug, speaker_slug:s_slug}),
+    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speaker_slug:s_slug}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
@@ -72,7 +72,7 @@ $(document).on('click', '.user-payment__remove', function () {
         var e_slug = $('#pay-form').data('event');
         $.post(Routing.generate('remove_ticket_from_payment',
             {
-                event_slug: e_slug,
+                eventSlug: e_slug,
                 id: elem.data('ticket')
             }),
             function (data) {
@@ -231,7 +231,7 @@ $(document).ready(function () {
     $('.add-promo-code-btn').on('click', function () {
         if ($('#user_promo_code').valid()) {
             var e_slug = $('#pay-form').data('event');
-            $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), event_slug: e_slug}),
+            $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), eventSlug: e_slug}),
                 function (data) {
                     if (data.result) {
                         $('#pay-form').html(data.html);
@@ -254,7 +254,7 @@ $(document).ready(function () {
             var e_slug = $('#pay-form').data('event');
             $.post(Routing.generate('add_participant_to_payment',
                 {
-                    event_slug: e_slug,
+                    eventSlug: e_slug,
                     name: $("input[name='user-name']").val(),
                     surname: $("input[name='user-surname']").val(),
                     email: $("input[name='user-email']").val()
@@ -283,7 +283,7 @@ $(document).ready(function () {
     $(document).on('click', '.like-btn-js', function (e) {
         e.preventDefault();
         var rv_slug = $(this).data('review');
-        $.post(Routing.generate('like_review', {review_slug: rv_slug}),
+        $.post(Routing.generate('like_review', {reviewSlug: rv_slug}),
             function (data) {
                 if (data.result) {
                     $("div[data-review='"+ rv_slug+"']").html('<i class="icon-like like-btn__icon"></i>'+data.likesCount);

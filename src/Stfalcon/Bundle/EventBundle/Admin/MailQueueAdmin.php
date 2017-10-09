@@ -29,6 +29,8 @@ class MailQueueAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('isSent')
+            ->add('isOpen')
+            ->add('isUnsubscribe')
             ->add('user.fullname')
             ->add('mail.title')
             ->add('_action', 'actions', array(

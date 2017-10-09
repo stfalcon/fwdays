@@ -26,27 +26,27 @@ class RedirectController extends Controller
         return new RedirectResponse($this->generateUrl('contacts'));
     }
     /**
-     * @Route(path="/event/{event_slug}/speakers")
-     * @param string $event_slug
+     * @Route(path="/event/{eventSlug}/speakers")
+     * @param string $eventSlug
      * @return RedirectResponse
      */
-    public function oldEventSpeakerPage($event_slug)
+    public function oldEventSpeakerPage($eventSlug)
     {
-        $url = $this->generateUrl('event_show_redesign', ['event_slug' => $event_slug]);
+        $url = $this->generateUrl('event_show_redesign', ['eventSlug' => $eventSlug]);
         return new RedirectResponse($url.'#speakers-event');
     }
 
 
     /**
-     * @Route(path="/event/{event_slug}/participants")
-     * @param string $event_slug
+     * @Route(path="/event/{eventSlug}/participants")
+     * @param string $eventSlug
      * @param string $page_slug
      * @return RedirectResponse
      */
-    public function oldEventPages($event_slug, $page_slug = '')
+    public function oldEventPages($eventSlug, $page_slug = '')
     {
         $addHash = '';
-        $url = $this->generateUrl('event_show_redesign', ['event_slug' => $event_slug]);
+        $url = $this->generateUrl('event_show_redesign', ['eventSlug' => $eventSlug]);
         switch ($page_slug) {
             case 'venue' :
                 $addHash = '#venue-event';

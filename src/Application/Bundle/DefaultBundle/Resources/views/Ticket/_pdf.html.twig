@@ -6,145 +6,7 @@
         <meta charset="UTF-8" />
         <title>{{ event.name }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-        <style media="print">
-            *{margin:0;padding:0}
-            html, body {width:1000px;}
-            body{
-                font:15px/21px 'Opensans', sans-serif;
-                color:#000;
-                background:#fff;
-            }
-            /* =Misc(links)----------------------------------------------------------------------------- */
-            a img,fieldset{border:none}
-            a{color:#0375bc}
-            a:visited{color:#8ab1ca;}
-            a:hover{color:#009dff}
-            .clr{
-                clear:both;
-                height:0;
-                font-size:0px;
-                line-height:0px;
-                overflow: hidden;
-            }
-            /* =Main styles----------------------------------------------------------------------------- */
-            .left-element {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 199px;
-                height: 156px;
-                overflow: visible;
-                z-index: 1;
-            }
-            .logo {
-                position: fixed;
-                right: 0;
-                top: 0;
-                padding: 39px 66px 0 0;
-                width: 105px;
-                height: 103px;
-                overflow: visible;
-                z-index: 1;
-            }
-            .top,
-            .bottom {
-                position: fixed;
-                z-index: 2;
-            }
-            .top {
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-            .dear-user {
-                padding: 85px 0 0 185px;
-                font-size: 16px;
-                letter-spacing: .015em;
-            }
-            .date-n-address {
-                padding: 38px 0 0 185px;
-            }
-            .wait-for-you {
-                float: left;
-                margin-left: -110px;
-                padding-top: 5px;
-                width: 110px;
-                font-size: 16px;
-                letter-spacing: .015em;
-            }
-            .date-addr {
-                font-size: 32px;
-                line-height: 38px;
-                font-weight: bold;
-                letter-spacing: -2px;
-                color: #0375bc;
-            }
-            .registration-begins {
-                padding-top: 20px;
-                font-size: 24px;
-                letter-spacing: .01em;
-            }
-            .bottom {
-                left: 0;
-                bottom: 65px;
-                padding: 80px 0 0 75px;
-                overflow: hidden;
-            }
-            .qr-code {
-                float: left;
-                padding-right: 10px;
-                width: 105px;
-                font-size: 12px;
-                line-height: 17px;
-            }
-            .qr-code-h {
-                padding-bottom: 19px;
-            }
-            .qr-code-num {
-                padding-top: 2px;
-                font-size: 11px;
-            }
-            .invitation-text {
-                float: left;
-                padding-left: 118px;
-                width: 281px;
-                font-size: 12px;
-                line-height: 17px;
-            }
-            .invitation-text p {
-                margin: 0;
-                padding-bottom: 7px;
-            }
-            .invitation-text p.main-text {
-                padding-bottom: 26px;
-                width: 200px;
-            }
-            .links {
-                float: left;
-                font-size: 12px;
-                line-height: 17px;
-            }
-            .links p {
-                margin: 0;
-                padding: 0 0 7px 0;
-            }
-            .border-frame,
-            .border-frame2 {
-                position: absolute;
-                left:     0;
-                top:      0;
-                width:    100%;
-                height:   100%;
-                border:   1px dashed #676767;
-            }
-            .border-frame2 {
-                left:   auto;
-                top:    auto;
-                right:  0;
-                bottom: 0;
-            }
-        </style>
+        <link href="{{ absolute_url(asset('styles/partials/pdf.css')) }}" rel="stylesheet" type="text/css">
     </head>
 
     <body>
@@ -152,7 +14,7 @@
             <img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />
         </div>
         <div class="logo">
-            <a href="{{ path('event_show_redesign', {'event_slug': event.slug } ) }}" title="{{ event.name }}">
+            <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } ) }}" title="{{ event.name }}">
                 <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
             </a>
         </div>

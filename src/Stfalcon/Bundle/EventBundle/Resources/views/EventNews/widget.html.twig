@@ -1,9 +1,9 @@
 <ul class="side-news">
     {% for one_news in news %}
         <li>
-            <a href="{{ path('event_news_show', { 'event_slug': event.slug, 'news_slug':one_news.slug }) }}">{{one_news.title }}</a>
+            <a href="{{ path('event_news_show', { 'eventSlug': event.slug, 'news_slug':one_news.slug }) }}">{{one_news.title }}</a>
             <div class="sn-date">{{one_news.createdat|date('d M Y') }}</div>
         </li>
     {% endfor %}
 </ul>
-<div class="allnews-link"><a href="{{ path('event_news', { 'event_slug': event.slug }) }}">{{ 'news.all'|trans }}</a></div>
+<div class="allnews-link"><a href="{{ path('event_news', { 'eventSlug': event.slug }) }}">{{ 'news.all'|trans }}</a></div>

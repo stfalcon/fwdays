@@ -43,7 +43,7 @@ class MailAdmin extends Admin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('admin_send', $this->getRouterIdParameter() . '/admin-send');
+        $collection->add('admin_send', $this->getRouterIdParameter().'/admin-send');
         $collection->add('user_send', 'user-send');
     }
 
@@ -54,7 +54,7 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('title')
-            ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
+            ->add('statistic', 'string', array('label' => 'Statistic total/sent/open/unsubscribe'))
             ->add('events')
             ->add('_action', 'actions', array(
                 'actions'   => array(
@@ -123,11 +123,13 @@ class MailAdmin extends Admin
         if (isset($users)) {
             $countSubscribers = 0;
             foreach ($users as $user) {
-                $mailQueue = new MailQueue();
-                $mailQueue->setUser($user);
-                $mailQueue->setMail($mail);
-                $em->persist($mailQueue);
-                $countSubscribers++;
+                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+                    $mailQueue = new MailQueue();
+                    $mailQueue->setUser($user);
+                    $mailQueue->setMail($mail);
+                    $em->persist($mailQueue);
+                    $countSubscribers++;
+                }
             }
             $mail->setTotalMessages($countSubscribers);
         }
@@ -153,6 +155,6 @@ class MailAdmin extends Admin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('mail_queue', array('id' => $id))));
+        $menu->addChild('Line items', array('uri' => $admin->generateUrl('stfalcon_event.admin.mail_queue.list', array('id' => $id))));
     }
 }

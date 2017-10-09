@@ -43,34 +43,45 @@ class TicketController  extends Controller
     /**
      * Generating ticket with QR-code to event
      *
-     * @Route("/event/{event_slug}/ticket", name="event_ticket_download")
+     * @Route("/event/{eventSlug}/ticket", name="event_ticket_download")
      * @Security("has_role('ROLE_USER')")
-     * @param string $event_slug
+     * @param string $eventSlug
      *
      * @return array|Response
      */
-    public function downloadAction($event_slug)
+    public function downloadAction($eventSlug)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $event_slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug'  => $eventSlug]);
         /** @var Ticket $ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
 
         if (!$ticket || !$ticket->isPaid()) {
-            return new Response('Вы не оплачивали участие в "' . $event->getName() . '"', 402);
+            return new Response('Вы не оплачивали участие в "'.$event->getName().'"', 402);
         }
 
         /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
         $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
         $html = $pdfGen->generateHTML($ticket);
 
+//        $filename = sprintf('ticket-'.$event->getSlug().'.pdf');
+
+//        return new Response(
+//            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+//            200,
+//            [
+//                'Content-Type'        => 'application/pdf',
+//                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+//            ]
+//        );
+
         return new Response(
             $pdfGen->generatePdfFile($ticket, $html),
             200,
             [
                 'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => 'attach; filename="' . $ticket->generatePdfFilename() . '"'
+                'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
             ]
         );
     }
@@ -96,7 +107,7 @@ class TicketController  extends Controller
         //bag fix test ticket.feature:33
         // любопытных пользователей перенаправляем на страницу события
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_VOLUNTEER')) {
-            return $this->redirect($this->generateUrl('event_show', ['event_slug' => $ticket->getEvent()->getSlug()]));
+            return $this->redirect($this->generateUrl('event_show', ['eventSlug' => $ticket->getEvent()->getSlug()]));
         }
 
         // проверяем существует ли оплата

@@ -3,6 +3,7 @@ imports:
     - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
+    - { resource: knp_snappy.yml }
 
 parameters:
     graylog.fromname: "https://frameworksdays.com"
