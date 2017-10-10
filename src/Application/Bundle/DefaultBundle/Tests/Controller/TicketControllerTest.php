@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const FILE_HASH = '24e14bc5ead54a1438e370e2bdca6c68';
+    const FILE_HASH = 'ce378f57d915388123e29fb50f52755b';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -25,16 +25,18 @@ class TicketControllerTest extends WebTestCase
     /** set up fixtures */
     public function setUp()
     {
+        $connection = $this->getContainer()->get('doctrine')->getConnection();
+
+        $connection->exec("DELETE FROM event__tickets;");
+        $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
+
         $this->loadFixtures(
             [
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-            ],
-            null,
-            'doctrine',
-            ORMPurger::PURGE_MODE_DELETE
+            ]
         );
         $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
@@ -69,7 +71,7 @@ class TicketControllerTest extends WebTestCase
         $filePath = $this->getContainer()->getParameter('kernel.cache_dir').'/spool/ticket-javaScript-framework-day-2018.pdf';
         file_put_contents($filePath, $this->client->getResponse()->getContent());
         $file = new UploadedFile($filePath, 'ticket.pdf');
-        $hash = md5_file($file);
+        $hash = hash_file("md5", $filePath);
         $hashContent = md5($this->client->getResponse()->getContent());
 
         $this->assertEquals($hashContent, self::FILE_HASH);

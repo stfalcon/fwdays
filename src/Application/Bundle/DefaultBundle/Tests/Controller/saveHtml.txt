@@ -1,10 +1,9 @@
-{% set event = ticket.event %}
 
 <!DOCTYPE HTML>
 <html lang="ru-RU">
     <head>
         <meta charset="UTF-8" />
-        <title>{{ event.name }}</title>
+        <title>Конференция JavaScript fwdays &#039;18</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style media="print">
             *{margin:0;padding:0}
@@ -148,50 +147,33 @@
 
     <body>
         <div class="left-element">
-            <img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />
+            <img src="/home/webdev/stfalcon/fwdays_work/web//tmp/uploads/events/left-element.png" width="199" height="156" />
         </div>
         <div class="logo">
-            <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } ) }}" title="{{ event.name }}">
-                <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
+            <a href="/en/event/javaScript-framework-day-2018" title="Конференция JavaScript fwdays &#039;18">
+                <img src="/home/webdev/stfalcon/fwdays_work/web//tmp/uploads/events/event-1.png" width="105" height="103" alt="Конференция JavaScript fwdays &#039;18" title="Конференция JavaScript fwdays &#039;18" />
             </a>
         </div>
 
         <div class="top">
-            {% set fullname = ticket.user.fullname %}
-            {% if fullname is empty %}
-                {% set fullname = ticket.user.name~' '~ticket.user.surname %}
-            {% endif %}
-            <div class="dear-user">{{ 'ticket.dear_user'|trans({'%user_name%':fullname})|raw }}</div>
+                                    <div class="dear-user">Dear participant <b>Michael Jordan</b>,</div>
             <div class="date-n-address">
-                <div class="wait-for-you">{{ 'ticket.wait_for_you'|trans }}</div>
+                <div class="wait-for-you">We are waiting for you:</div>
                 <div class="date-addr">
-                    {% if event.date %}
-                        {{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }}
-                    {% endif %}
-                    <br />
-                    {{ 'ticket.city'|trans({'%city_name%':event.city}) }}
-                    {% if event.place %}
-                        {{ event.place }}
-                    {% endif %}
-                </div>
-                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}.</div>
+                                            19 April 2018
+                                        <br />
+                    Киев,
+                                            отель &quot;Казацкий&quot;
+                                    </div>
+                <div class="registration-begins">Registration starts at 11:10.</div>
             </div>
         </div>
 
         <div class="bottom">
-            {% if app.environment != 'test' %}
-            <div class="qr-code">
-                <div class="qr-code-h">{{ 'ticket.event.programm'|trans }}</div>
-                <div class="qr-code-img">
-                    <img src="data:image/png;base64,{{ qrCodeBase64 }}" />
-                </div>
-                   <div class="qr-code-num">№{{ ticket.id }}</div>
-            </div>
-            {% endif %}
-            <div class="invitation-text">
-                <p class="main-text">{{ 'ticket.print.ticket.text1'|trans({'%event_name%':event.name})|raw }}</p>
-                <p>{{ 'ticket.print.ticket.text2'|trans|raw }}</p>
-                <p>{{ 'ticket.print.ticket.text3'|trans({'%event_name%':event.name})|raw }}</p>
+                        <div class="invitation-text">
+                <p class="main-text">Please, print this invitation and take it with you - this is Your entrance ticket to Конференция JavaScript fwdays '18.</p>
+                <p>We are looking forward to meeting You!</p>
+                <p>Best regards,<br> Конференция JavaScript fwdays '18 organizers</p>
             </div>
             <div class="links">
                 <p>Сайт: <a href="https://frameworksdays.com/">fwdays.com</a></p>
