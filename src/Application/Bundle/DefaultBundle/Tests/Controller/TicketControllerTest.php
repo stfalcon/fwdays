@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const FILE_HASH = 'ce378f57d915388123e29fb50f52755b';
+    const EN_FILE_HASH = 'c2cd581afc002aaec829611c1497b51b';
+    const UK_FILE_HASH = 'fbb4bbbab50c4568c75e0673163e14f8';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -49,34 +50,32 @@ class TicketControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    public function testGetMd5()
-    {
-        $filePath = $this->getContainer()->getParameter('kernel.cache_dir').'/spool/ticket-javaScript-framework-day-2018_1.pdf';
-        $file = new UploadedFile($filePath, 'ticket1.pdf');
-        $hash1 = md5_file($file);
-
-        $filePath = $this->getContainer()->getParameter('kernel.cache_dir').'/spool/ticket-javaScript-framework-day-2018_2.pdf';
-        $file = new UploadedFile($filePath, 'ticket2.pdf');
-        $hash2 = md5_file($file);
-
-    }
     /**
      * test login user
      */
     public function testEnTicketHash()
     {
         $this->loginUser('user@fwdays.com', 'qwerty');
-        $this->client->request('GET', '/en/event/javaScript-framework-day-2018/ticket');
+        $this->client->request('GET', '/en/event/javaScript-framework-day-2018/ticket/html');
 
-        $filePath = $this->getContainer()->getParameter('kernel.cache_dir').'/spool/ticket-javaScript-framework-day-2018.pdf';
-        file_put_contents($filePath, $this->client->getResponse()->getContent());
-        $file = new UploadedFile($filePath, 'ticket.pdf');
-        $hash = hash_file("md5", $filePath);
         $hashContent = md5($this->client->getResponse()->getContent());
 
-        $this->assertEquals($hashContent, self::FILE_HASH);
+        $this->assertEquals($hashContent, self::EN_FILE_HASH);
     }
-//db6ab3496eacacc113bbe0b1319156b2
+
+    /**
+     * test login user
+     */
+    public function testUkTicketHash()
+    {
+        $this->loginUser('user@fwdays.com', 'qwerty');
+        $this->client->request('GET', '/uk/event/javaScript-framework-day-2018/ticket/html');
+
+        $hashContent = md5($this->client->getResponse()->getContent());
+
+        $this->assertEquals($hashContent, self::UK_FILE_HASH);
+    }
+
     /**
      * @param string $userName
      * @param string $userPass

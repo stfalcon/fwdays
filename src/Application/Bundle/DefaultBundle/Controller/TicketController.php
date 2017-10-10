@@ -47,12 +47,16 @@ class TicketController extends Controller
      * Generating ticket with QR-code to event
      *
      * @Route("/event/{eventSlug}/ticket", name="event_ticket_download")
+     * @Route("/event/{eventSlug}/ticket/{asHtml}", name="event_ticket_download_html")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
      * @param string $eventSlug
+     * @param string $asHtml
      *
      * @return array|Response
      */
-    public function downloadAction($eventSlug)
+    public function downloadAction($eventSlug, $asHtml = null)
     {
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug'  => $eventSlug]);
@@ -67,6 +71,17 @@ class TicketController extends Controller
         /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
         $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
         $html = $pdfGen->generateHTML($ticket);
+
+        if ($asHtml && 'html' === $asHtml && 'test' === $this->getParameter('kernel.environment')) {
+            return new Response(
+                $html,
+                200,
+                [
+                    'Content-Type'        => 'application/txt',
+                    'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
+                ]
+            );
+        }
 
         return new Response(
             $pdfGen->generatePdfFile($ticket, $html),
