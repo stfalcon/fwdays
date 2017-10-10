@@ -45,10 +45,7 @@
         "jms/i18n-routing-bundle": "^2.0",
         "gedmo/doctrine-extensions": "^2.4",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "hwi/oauth-bundle": "^0.5.3",
-        "knplabs/knp-snappy": "^0.4.3",
-        "knplabs/knp-snappy-bundle": "^1.4",
-        "h4cc/wkhtmltopdf-amd64": "0.12.3"
+        "hwi/oauth-bundle": "^0.5.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",

@@ -39,7 +39,6 @@ class AppKernel extends Kernel
             new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
 
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),

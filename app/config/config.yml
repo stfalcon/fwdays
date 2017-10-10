@@ -3,7 +3,6 @@ imports:
     - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
-    - { resource: knp_snappy.yml }
 
 parameters:
     graylog.fromname: "https://frameworksdays.com"
@@ -31,8 +30,8 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
     form:
         resources:
             - 'SonataCoreBundle:Form:colorpicker.html.twig'
@@ -43,7 +42,7 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+    debug:          "%kernel.debug%"
     use_controller: false
     filters:
         yui_css:
@@ -56,15 +55,15 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   fwdays_com_testing
+        user:     "%database_user%"
+        password: "%database_password%"
         charset:  UTF8
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         mappings:
             StofDoctrineExtensionsBundle: false
@@ -82,11 +81,11 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    port:      %mailer_port%
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    port:      "%mailer_port%"
 
 # KnpMenuBundle
 knp_menu:

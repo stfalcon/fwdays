@@ -5,7 +5,7 @@
     backupGlobals               = "false"
     backupStaticAttributes      = "false"
     colors                      = "true"
-    convertErrorsToExceptions   = "true"
+    convertErrorsToExceptions   = "false"
     convertNoticesToExceptions  = "false"
     convertWarningsToExceptions = "false"
     processIsolation            = "false"
@@ -25,9 +25,6 @@
         <server name="KERNEL_DIR" value="/path/to/your/app/" />
     </php>
     -->
-    <php>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
-    </php>
     <filter>
         <whitelist>
             <directory>../src</directory>

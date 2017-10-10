@@ -13,13 +13,16 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class TicketController  extends Controller
+/**
+ * Class TicketController
+ */
+class TicketController extends Controller
 {
     /**
      * Show event ticket status (for current user)
      *
-     * @param Event $event
-     * @param string $position
+     * @param Event      $event
+     * @param string     $position
      * @param TicketCost $ticketCost
      *
      * @return Response
@@ -64,17 +67,6 @@ class TicketController  extends Controller
         /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
         $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
         $html = $pdfGen->generateHTML($ticket);
-
-//        $filename = sprintf('ticket-'.$event->getSlug().'.pdf');
-
-//        return new Response(
-//            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-//            200,
-//            [
-//                'Content-Type'        => 'application/pdf',
-//                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-//            ]
-//        );
 
         return new Response(
             $pdfGen->generatePdfFile($ticket, $html),
