@@ -49,7 +49,6 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalled();
         $payment->markedAsPaid()->shouldBeCalled();
 
-
         $container->has('doctrine')->willReturn(true);
         $container->get('doctrine')->willReturn($doctrine);
 
