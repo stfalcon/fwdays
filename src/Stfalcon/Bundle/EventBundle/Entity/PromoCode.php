@@ -77,12 +77,49 @@ class PromoCode
      */
     protected $endDate;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $usedCount = 0;
+
     public function __construct()
     {
         $this->code = substr(strtoupper(md5(uniqid())), 0, 10);
         $this->discountAmount = 10;
         $this->endDate = new \DateTime('+10 days');
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsedCount()
+    {
+        return $this->usedCount;
+    }
+
+    /**
+     * @param int $usedCount
+     *
+     * @return $this
+     */
+    public function setUsedCount($usedCount)
+    {
+        $this->usedCount = $usedCount;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function incUsedCount()
+    {
+        ++$this->usedCount;
+
+        return $this;
     }
 
     /**

@@ -234,23 +234,6 @@ class TicketRepository extends EntityRepository
     }
 
     /**
-     *  Find ticket for event by user
-     *
-     * @param Event $event
-     * @param User $user
-     *
-     * @return Ticket
-     */
-    public function getTicketForEventByUser(Event $event, User $user) {
-        return $this->findOneBy(
-            array(
-                'event' => $event->getId(),
-                'user'  => $user->getId()
-            )
-        );
-    }
-
-    /**
      * Get all tickets for payment
      *
      * @param Payment $payment

@@ -54,6 +54,7 @@ class PaymentRepository extends EntityRepository
             ->andWhere('p.user = :user')
             ->setParameter('user', $user)
             ->setParameter('event', $event)
+            ->setMaxResults(1)
             ->getQuery();
 
         return $query->getOneOrNullResult();

@@ -60,9 +60,11 @@ class TicketController extends Controller
     {
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        /** @var User $user */
+        $user = $this->getUser();
         /** @var Ticket $ticket */
-        $ticket = $this->container->get('stfalcon_event.ticket.service')
-            ->findTicketForEventByCurrentUser($event);
+        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket || !$ticket->isPaid()) {
             return new Response('Вы не оплачивали участие в "'.$event->getName().'"', 402);
