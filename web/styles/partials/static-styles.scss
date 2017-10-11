@@ -42,40 +42,40 @@
   }
 
   ul {
-     li {
-       position: relative;
-       margin: 10px 0;
-       text-indent: 16px;
-       font-size: 18px;
-       line-height: 26px;
+    li {
+      position: relative;
+      margin: 10px 0;
+      text-indent: 16px;
+      font-size: 18px;
+      line-height: 26px;
 
-       &:before {
-         position: absolute;
-         top: 9px;
-         left: 0;
-         display: inline-block;
-         box-sizing: border-box;
-         width: 11px;
-         height: 1px;
-         background-color: #121314;
-         content: '';
-       }
-     }
+      &:before {
+        position: absolute;
+        top: 9px;
+        left: 0;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 11px;
+        height: 1px;
+        background-color: #121314;
+        content: '';
+      }
+    }
 
-     ul {
-       padding-left: 24px;
+    ul {
+      padding-left: 24px;
 
-       li {
-         margin: 10px 0;
+      li {
+        margin: 10px 0;
 
-         &:before {
-           width: 5px;
-           height: 5px;
-           border-radius: 50%;
-         }
-       }
-     }
-   }
+        &:before {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
 
   ol {
     padding: 0;
