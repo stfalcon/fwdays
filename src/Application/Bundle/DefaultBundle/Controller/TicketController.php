@@ -14,12 +14,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class TicketController
+ * Class TicketController.
  */
 class TicketController extends Controller
 {
     /**
-     * Show event ticket status (for current user)
+     * Show event ticket status (for current user).
      *
      * @param Event      $event
      * @param string     $position
@@ -35,16 +35,16 @@ class TicketController extends Controller
         $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData($user, $event, $position, $ticketCost);
 
         return $this->render('@ApplicationDefault/Redesign/event.ticket.status.html.twig', [
-            'class'   => $result['class'],
+            'class' => $result['class'],
             'caption' => $result['caption'],
-            'href'    => $result['href'],
-            'isDiv'   => $result['isDiv'],
-            'data'    => $result['data'],
+            'href' => $result['href'],
+            'isDiv' => $result['isDiv'],
+            'data' => $result['data'],
         ]);
     }
 
     /**
-     * Generating ticket with QR-code to event
+     * Generating ticket with QR-code to event.
      *
      * @Route("/event/{eventSlug}/ticket", name="event_ticket_download")
      * @Route("/event/{eventSlug}/ticket/{asHtml}", name="event_ticket_download_html")
@@ -59,7 +59,7 @@ class TicketController extends Controller
     public function downloadAction($eventSlug, $asHtml = null)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug'  => $eventSlug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
         /** @var Ticket $ticket */
         $ticket = $this->container->get('stfalcon_event.ticket.service')
             ->findTicketForEventByCurrentUser($event);
@@ -77,7 +77,7 @@ class TicketController extends Controller
                 $html,
                 200,
                 [
-                    'Content-Type'        => 'application/txt',
+                    'Content-Type' => 'application/txt',
                     'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
                 ]
             );
@@ -87,14 +87,14 @@ class TicketController extends Controller
             $pdfGen->generatePdfFile($ticket, $html),
             200,
             [
-                'Content-Type'        => 'application/pdf',
+                'Content-Type' => 'application/pdf',
                 'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
             ]
         );
     }
 
     /**
-     * Check that QR-code is valid, and register ticket
+     * Check that QR-code is valid, and register ticket.
      *
      * @param Ticket $ticket Ticket
      * @param string $hash   Hash
@@ -107,8 +107,8 @@ class TicketController extends Controller
     {
         //bag fix test ticket.feature:27
         // сверяем хеш билета и хеш из урла
-        if ($ticket->getHash() != $hash) {
-            return new Response('<h1 style="color:red">Невалидный хеш для билета №' . $ticket->getId() . '</h1>', 403);
+        if ($ticket->getHash() !== $hash) {
+            return new Response('<h1 style="color:red">Невалидный хеш для билета №'.$ticket->getId().'</h1>', 403);
         }
 
         //bag fix test ticket.feature:33
@@ -126,13 +126,13 @@ class TicketController extends Controller
                     $timeNow = new \DateTime();
                     $timeDiff = $timeNow->diff($ticket->getUpdatedAt());
 
-                    return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' был использован ' . $timeDiff->format('%i мин. назад') . '</h1>', 409);
+                    return new Response('<h1 style="color:orange">Билет №'.$ticket->getId().' был использован '.$timeDiff->format('%i мин. назад').'</h1>', 409);
                 }
             } else {
-                return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' не оплачен' . '</h1>');
+                return new Response('<h1 style="color:orange">Билет №'.$ticket->getId().' не оплачен'.'</h1>');
             }
         } else {
-            return new Response('<h1 style="color:orange">Билет №' . $ticket->getId() . ' оплата не существует' . '</h1>');
+            return new Response('<h1 style="color:orange">Билет №'.$ticket->getId().' оплата не существует'.'</h1>');
         }
 
         // отмечаем билет как использованный
@@ -140,17 +140,19 @@ class TicketController extends Controller
         $ticket->setUsed(true);
         $em->flush();
 
-        return new Response('<h1 style="color:green">Все ок. Билет №' . $ticket->getId() .' отмечаем как использованный</h1>');
+        return new Response('<h1 style="color:green">Все ок. Билет №'.$ticket->getId().' отмечаем как использованный</h1>');
     }
 
     /**
-     * Check that ticket number is valid
-     *
-     * @return array
+     * Check that ticket number is valid.
      *
      * @Security("has_role('ROLE_VOLUNTEER')")
+     *
      * @Route("/check/", name="check_ticket_by_number")
+     *
      * @Template()
+     *
+     * @return array
      */
     public function checkByNumAction()
     {
@@ -159,7 +161,7 @@ class TicketController extends Controller
 
         if (!$ticketId) {
             return array(
-                'action' => $this->generateUrl('check_ticket_by_number')
+                'action' => $this->generateUrl('check_ticket_by_number'),
             );
         }
 
@@ -171,20 +173,20 @@ class TicketController extends Controller
                 'event_ticket_registration',
                 array(
                     'ticket' => $ticket->getId(),
-                    'hash'   => $ticket->getHash()
+                    'hash' => $ticket->getHash(),
                 ),
                 true
             );
 
-            return array(
-                'action'    => $this->generateUrl('check_ticket_by_number'),
-                'ticketUrl' => $url
-            );
-        } else {
-            return array(
-                'message' => 'Not Found',
-                'action'  => $this->generateUrl('check_ticket_by_number')
-            );
+            return [
+                'action' => $this->generateUrl('check_ticket_by_number'),
+                'ticketUrl' => $url,
+            ];
         }
+
+        return [
+            'message' => 'Not Found',
+            'action' => $this->generateUrl('check_ticket_by_number'),
+        ];
     }
 }

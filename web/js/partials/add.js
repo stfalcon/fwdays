@@ -45,7 +45,7 @@ function setPaymentHtml(e_slug) {
 }
 function setSpeakerHtml(e_slug, s_slug) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
-    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speaker_slug:s_slug}),
+    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);

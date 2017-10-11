@@ -79,12 +79,12 @@
             <argument />
         </service>
 
-        <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>
-            <argument />
-            <argument>%stfalcon_event.admin.news.entity%</argument>
-            <argument />
-        </service>
+        <!--<service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">-->
+            <!--<tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>-->
+            <!--<argument />-->
+            <!--<argument>%stfalcon_event.admin.news.entity%</argument>-->
+            <!--<argument />-->
+        <!--</service>-->
 
         <service id="user_mail_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconMailerCommand">
          <call method="setContainer">
@@ -122,12 +122,12 @@
             <argument>%stfalcon_event.admin.speaker.controller%</argument>
         </service>
 
-        <service id="stfalcon_event.admin.event_news" class="%stfalcon_event.admin.event_news.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>
-            <argument />
-            <argument>%stfalcon_event.admin.event_news.entity%</argument>
-            <argument>%stfalcon_event.admin.event_news.controller%</argument>
-        </service>
+        <!--<service id="stfalcon_event.admin.event_news" class="%stfalcon_event.admin.event_news.class%">-->
+            <!--<tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>-->
+            <!--<argument />-->
+            <!--<argument>%stfalcon_event.admin.event_news.entity%</argument>-->
+            <!--<argument>%stfalcon_event.admin.event_news.controller%</argument>-->
+        <!--</service>-->
 
         <service id="stfalcon_event.admin.event_page" class="%stfalcon_event.admin.event_page.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Страницы"/>

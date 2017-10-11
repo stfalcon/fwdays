@@ -8,25 +8,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Class SpeakerController.
+ */
 class SpeakerController extends Controller
 {
     /**
-     * @Route(path="/speaker_popup/{eventSlug}/{speaker_slug}", name="speaker_popup",
+     * @Route(path="/speaker_popup/{eventSlug}/{speakerSlug}", name="speaker_popup",
      *     methods={"GET"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     * @param string $speaker_slug
+     *
+     * @param string $speakerSlug
      * @param string $eventSlug
      *
      * @return JsonResponse
      */
-    public function speakerPopupAction($speaker_slug, $eventSlug)
+    public function speakerPopupAction($speakerSlug, $eventSlug)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $speaker = $em->getRepository('StfalconEventBundle:Speaker')->findOneBy(['slug' => $speaker_slug]);
+        $speaker = $em->getRepository('StfalconEventBundle:Speaker')->findOneBy(['slug' => $speakerSlug]);
         if (!$speaker) {
-            return new JsonResponse(['result' => false, 'html' => 'Unable to find Speaker by slug: '.$speaker_slug]);
+            return new JsonResponse(['result' => false, 'html' => 'Unable to find Speaker by slug: '.$speakerSlug]);
         }
 
         $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
@@ -47,10 +51,11 @@ class SpeakerController extends Controller
     }
 
     /**
-     * Lists all speakers for event
+     * Lists all speakers for event.
      *
      * @param Event $event
-     * @param bool $isCandidates
+     * @param bool  $isCandidates
+     *
      * @Template("ApplicationDefaultBundle:Redesign:speaker.html.twig")
      *
      * @return array
@@ -74,7 +79,7 @@ class SpeakerController extends Controller
         }
 
         return [
-            'event'    => $event,
+            'event' => $event,
             'speakers' => $speakers,
         ];
     }

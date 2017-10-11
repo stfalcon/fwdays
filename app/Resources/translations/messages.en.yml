@@ -69,7 +69,7 @@ user.by_user.title: Enter as user
 user.by_email.title: Or by mail
 user.create.title: Create account
 user.already_have_account.title: I already have an account
-
+speaker.about: about speaker
 pay.i_have_promo.title: I have promo-code
 pay.enter_promo.title: Enter a promo-code to get a discount
 pay.sum.bold.title: 'Sum: <b>%sum% grn</b>'

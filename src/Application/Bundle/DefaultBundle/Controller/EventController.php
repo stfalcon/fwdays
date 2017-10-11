@@ -24,6 +24,7 @@ class EventController extends Controller
      * Show all events.
      *
      * @Route("/events", name="events")
+     *
      * @Template("ApplicationDefaultBundle:Redesign:events.html.twig")
      *
      * @return array
@@ -109,6 +110,7 @@ class EventController extends Controller
      * List of sponsors of event.
      *
      * @param Event $event
+     *
      * @Template("ApplicationDefaultBundle:Redesign:partners.html.twig")
      *
      * @return array
@@ -140,8 +142,8 @@ class EventController extends Controller
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param $slug
-     * @param $headerType
+     * @param string $slug
+     * @param string $headerType
      *
      * @return JsonResponse
      */
@@ -230,9 +232,8 @@ class EventController extends Controller
         if (!$event) {
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
-            } else {
-                throw $this->createNotFoundException('Unable to find Event by slug: '.$slug);
             }
+            throw $this->createNotFoundException(sprintf('Unable to find Event by slug: %s', $slug));
         }
 
         $result = false;
@@ -248,14 +249,15 @@ class EventController extends Controller
             $html = $this->get('translator')->trans('ticket.status.not_take_apart');
             $em->flush();
         }
+
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
-        } else {
-            $url = $request->headers->has('referer') ? $request->headers->get('referer')
-                : $this->generateUrl('homepage');
-
-            return $this->redirect($url);
         }
+
+        $url = $request->headers->has('referer') ? $request->headers->get('referer')
+            : $this->generateUrl('homepage');
+
+        return $this->redirect($url);
     }
 
     /**
@@ -301,6 +303,43 @@ class EventController extends Controller
     }
 
     /**
+     * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
+     *
+     * @param string $eventSlug
+     * @param string $pageSlug
+     *
+     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
+     *
+     * @return array
+     */
+    public function showEventPageInStaticAction($eventSlug, $pageSlug)
+    {
+        $event = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        if (!$event) {
+            throw $this->createNotFoundException(sprintf('Unable to find event by slug: ', $eventSlug));
+        }
+        /** @var ArrayCollection $pages */
+        $pages = $this->getEventPages($event);
+        $myPage = null;
+        /** @var EventPage $page */
+        foreach ($pages as $page) {
+            if ($pageSlug === $page->getSlug()) {
+                $myPage = $page;
+                break;
+            }
+        }
+
+        if (!$myPage) {
+            throw $this->createNotFoundException(sprintf('Unable to find event page by slug: %s', $pageSlug));
+        }
+        $newText = $myPage->getTextNew();
+        $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
+
+        return ['text' => $text];
+    }
+
+    /**
      * Get event pages that may show.
      *
      * @param Event $event
@@ -333,7 +372,7 @@ class EventController extends Controller
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
-            throw $this->createNotFoundException('Unable to find event by slug: '.$eventSlug);
+            throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
         }
         $review = null;
         if ($reviewSlug) {
@@ -351,10 +390,10 @@ class EventController extends Controller
         $programPage = null;
         $venuePage = null;
         foreach ($pages as $key => $page) {
-            if ('program' == $page->getSlug()) {
+            if ('program' === $page->getSlug()) {
                 $programPage = $page;
                 unset($pages[$key]);
-            } elseif ('venue' == $page->getSlug()) {
+            } elseif ('venue' === $page->getSlug()) {
                 $venuePage = $page;
                 unset($pages[$key]);
             }
@@ -370,42 +409,5 @@ class EventController extends Controller
             'review' => $review,
             'eventCurrentAmount' => $eventCurrentAmount,
         ];
-    }
-
-    /**
-     * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
-     *
-     * @param string $eventSlug
-     * @param string $pageSlug
-     *
-     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
-     *
-     * @return array
-     */
-    public function showEventPageInStaticAction($eventSlug, $pageSlug)
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
-        if (!$event) {
-            throw $this->createNotFoundException('Unable to find event by slug: '.$eventSlug);
-        }
-        /** @var ArrayCollection $pages */
-        $pages = $this->getEventPages($event);
-        $myPage = null;
-        /** @var EventPage $page */
-        foreach ($pages as $page) {
-            if ($pageSlug === $page->getSlug()) {
-                $myPage = $page;
-                break;
-            }
-        }
-
-        if (!$myPage) {
-            throw $this->createNotFoundException('Unable to find event page by slug: '.$pageSlug);
-        }
-        $newText = $myPage->getTextNew();
-        $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
-
-        return ['text' => $text];
     }
 }

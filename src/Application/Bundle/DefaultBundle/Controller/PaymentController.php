@@ -13,17 +13,22 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Class PaymentController.
+ */
 class PaymentController extends Controller
 {
     /**
-     * Event pay
+     * Event pay.
      *
      * @Route("/event/{eventSlug}/pay", name="event_pay",
      *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
+     *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
      * @param Event $event
      *
      * @return JsonResponse
@@ -57,11 +62,11 @@ class PaymentController extends Controller
         }
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => $html]);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => $html]);
         }
 
         if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => "Payment is paid", 'html' => $html]);
+            return new JsonResponse(['result' => false, 'error' => 'Payment is paid', 'html' => $html]);
         }
 
         if ($payment->isPending()) {
@@ -80,9 +85,11 @@ class PaymentController extends Controller
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
      * @Security("has_role('ROLE_USER')")
+     *
      * @param string $code
-     * @param Event $event
+     * @param Event  $event
      *
      * @return JsonResponse
      */
@@ -91,7 +98,7 @@ class PaymentController extends Controller
         $payment = $this->getPaymentFromSession();
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -99,14 +106,14 @@ class PaymentController extends Controller
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
         if (!$promoCode) {
-            return new JsonResponse(['result' => false, 'error' => "Promo-code not found!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Promo-code not found!', 'html' => '']);
         }
 
         return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 
     /**
-     * Add user to payment
+     * Add user to payment.
      *
      * @Route("/event/{eventSlug}/payment/participant/add/{name}/{surname}/{email}", name="add_participant_to_payment",
      *     methods={"POST"},
@@ -114,11 +121,13 @@ class PaymentController extends Controller
      *     condition="request.isXmlHttpRequest()")
      *
      * @Security("has_role('ROLE_USER')")
+     *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
-     * @param Event $event
-     * @param String $name
-     * @param String $surname
-     * @param String $email
+     *
+     * @param Event  $event
+     * @param string $name
+     * @param string $surname
+     * @param string $email
      *
      * @return JsonResponse
      */
@@ -127,11 +136,11 @@ class PaymentController extends Controller
         $payment = $this->getPaymentFromSession();
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
         }
 
         if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => "Can not allow paid!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Can not allow paid!', 'html' => '']);
         }
         /** @var User $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
@@ -156,48 +165,49 @@ class PaymentController extends Controller
             $paymentService->addTicketToPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
-            return new JsonResponse(['result' => false, 'error' => "User".$user->getName(). $user->getSurName()." already paid ticket!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'User'.$user->getName().$user->getSurName().' already paid ticket!', 'html' => '']);
         }
 
         return $this->getPaymentHtml($event, $payment);
     }
 
     /**
-     * Remove user/ticket from payment
+     * Remove user/ticket from payment.
      *
      * @Route("/event/{eventSlug}/ticket/{id}/remove", name="remove_ticket_from_payment",
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
+     *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
-     * @param Event $event
+     *
+     * @param Event  $event
      * @param Ticket $ticket
      *
      * @return JsonResponse
-     *
      */
     public function removeTicketFromPaymentAction(Event $event, Ticket $ticket)
     {
         $payment = $this->getPaymentFromSession();
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => "Payment not found!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
         }
 
-        if (!$ticket->isPaid() && $payment->getTickets()->count() > 1 ) {
+        if (!$ticket->isPaid() && $payment->getTickets()->count() > 1) {
             $paymentService = $this->get('stfalcon_event.payment.service');
             $paymentService->removeTicketFromPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
-            return new JsonResponse(['result' => false, 'error' => "Already paid ticket!", 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Already paid ticket!', 'html' => '']);
         }
 
         return $this->getPaymentHtml($event, $payment);
     }
 
     /**
-     * Get payment html for popup
+     * Get payment html for popup.
      *
      * @param Event     $event
      * @param Payment   $payment
@@ -209,7 +219,7 @@ class PaymentController extends Controller
     {
         $ikData = $this->get('stfalcon_event.interkassa.service')->getData($payment, $event);
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
-        $discountAmount = 100 * (float)$paymentsConfig['discount'];
+        $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         $notUsedPromoCode = [];
         $paymentService = $this->get('stfalcon_event.payment.service');
@@ -230,12 +240,13 @@ class PaymentController extends Controller
 
         $paymentSums = $this->renderView('@ApplicationDefault/Redesign/payment.sums.html.twig', ['payment' => $payment]);
         /**
-         * @var User $user
+         * @var User
          */
         $user = $this->getUser();
+
         return new JsonResponse([
             'result' => true,
-            'error' => "",
+            'error' => '',
             'html' => $html,
             'paymentSums' => $paymentSums,
             'notUsedPromoCode' => $notUsedPromoCode,
@@ -244,7 +255,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * Check if payment correct and give it by id
+     * Check if payment correct and give it by id.
      *
      * @return Payment $payment
      */
@@ -254,7 +265,7 @@ class PaymentController extends Controller
         $payment = null;
         if ($this->get('session')->has('active_payment_id')) {
             $paymentId = $this->get('session')->get('active_payment_id');
-            $payment = $em->getRepository("StfalconEventBundle:Payment")->find($paymentId);
+            $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
         }
         $payment = $payment && $payment->getUser() === $this->getUser() ? $payment : null;
 

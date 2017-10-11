@@ -3,35 +3,42 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class DefaultController
+ */
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage",
      *     options = {"expose"=true})
      * @Template("ApplicationDefaultBundle:Redesign:index.html.twig")
+     *
+     * @return array
      */
     public function indexAction()
     {
         $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true ], ['date' => 'ASC']);
+            ->findBy(['active' => true], ['date' => 'ASC']);
 
         return ['events' => $events];
     }
 
     /**
      * @Route(path="/cabinet", name="cabinet")
+     *
      * @Security("has_role('ROLE_USER')")
+     *
      * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
+     *
+     * @return array
      */
     public function cabinetAction()
     {
@@ -46,7 +53,7 @@ class DefaultController extends Controller
 
         $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true ]);
+            ->findBy(['active' => true]);
 
         return [
             'user' => $user,
@@ -59,7 +66,10 @@ class DefaultController extends Controller
 
     /**
      * @Route("/contacts", name="contacts")
+     *
      * @Template("ApplicationDefaultBundle:Redesign:contacts.html.twig")
+     *
+     * @return array
      */
     public function contactsAction()
     {
@@ -68,7 +78,10 @@ class DefaultController extends Controller
 
     /**
      * @Route("/about", name="about")
+     *
      * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
+     *
+     * @return array
      */
     public function aboutAction()
     {
@@ -85,6 +98,7 @@ class DefaultController extends Controller
      * @Route("/page/{slug}", name="show_page")
      *
      * @param string $slug
+     *
      * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
      *
      * @return array
@@ -94,7 +108,7 @@ class DefaultController extends Controller
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
             ->findOneBy(['slug' => $slug]);
         if (!$staticPage) {
-            throw $this->createNotFoundException('Page not found! '.$slug);
+            throw $this->createNotFoundException(sprintf('Page not found! %s', $slug));
         }
 
         return ['text' => $staticPage->getText()];
@@ -111,12 +125,10 @@ class DefaultController extends Controller
      */
     public function shareContactsAction($reply = 'no')
     {
-        /**
-         * @var User $user
-         */
+        /** @var User */
         $user = $this->getUser();
 
-        if ('yes' == $reply) {
+        if ('yes' === $reply) {
             $user->setAllowShareContacts(true);
         } else {
             $user->setAllowShareContacts(false);
@@ -126,7 +138,7 @@ class DefaultController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $url = $this->getRequest()->headers->get("referer");
+        $url = $this->getRequest()->headers->get('referer');
 
         return new RedirectResponse($url);
     }

@@ -2,26 +2,23 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-
 /**
- * Class TicketAdminController
- * @package Stfalcon\Bundle\EventBundle\Controller
+ * Class TicketAdminController.
  */
 class TicketAdminController extends CoreController
 {
     /**
-     * Check that ticket number is valid
+     * Check that ticket number is valid.
      *
      * @param Request $request
-     * @return array
+     *
      * @Template()
+     *
+     * @return array
      */
     public function checkAction(Request $request)
     {
@@ -30,7 +27,7 @@ class TicketAdminController extends CoreController
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
                 'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
-                'form_action' => $this->generateUrl('sonata_admin_ticket_check')
+                'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             ];
         }
 
@@ -42,7 +39,7 @@ class TicketAdminController extends CoreController
                 'event_ticket_registration',
                 [
                     'ticket' => $ticket->getId(),
-                    'hash' => $ticket->getHash()
+                    'hash' => $ticket->getHash(),
                 ],
                 true
             );
@@ -52,17 +49,16 @@ class TicketAdminController extends CoreController
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
                 'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
-                'ticket_url' => $url
-            ];
-
-        } else {
-            return [
-                'base_template' => $this->getBaseTemplate(),
-                'admin_pool' => $this->container->get('sonata.admin.pool'),
-                'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
-                'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
-                'message' => 'Not Found',
+                'ticket_url' => $url,
             ];
         }
+
+        return [
+            'base_template' => $this->getBaseTemplate(),
+            'admin_pool' => $this->container->get('sonata.admin.pool'),
+            'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
+            'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
+            'message' => 'Not Found',
+        ];
     }
 }

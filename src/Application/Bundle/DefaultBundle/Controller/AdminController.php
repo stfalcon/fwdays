@@ -15,16 +15,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class AdminController.
+ */
 class AdminController extends Controller
 {
     /**
      * @Route("/admin/event/{slug}/users/add", name="adminusersadd")
+     *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Event $event
+     *
      * @Template()
+     *
+     * @return array
      */
-    public function addUsersAction(Event $event) {
+    public function addUsersAction(Event $event)
+    {
         // @todo удалить этот метод. одноразовый харкод
         $em = $this->getDoctrine()->getManager();
 
@@ -35,7 +44,7 @@ class AdminController extends Controller
                 // данные с формы
                 $dt = explode(' ', $data);
                 unset($data);
-                $data['name'] = $dt[0] . ' ' . $dt[1];
+                $data['name'] = $dt[0].' '.$dt[1];
                 $data['email'] = $dt[2];
                 $data['discount'] = isset($dt[3]);
 
@@ -55,20 +64,20 @@ class AdminController extends Controller
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $text = "Приветствуем " . $user->getFullname() ."!
+                    $text = 'Приветствуем '.$user->getFullname().'!
 
 Вы были автоматически зарегистрированы на сайте Frameworks Days.
 
-Ваш временный пароль: " . $password . "
-Его можно сменить на странице " . $this->generateUrl('fos_user_change_password', array(), true) . "
+Ваш временный пароль: '.$password.'
+Его можно сменить на странице '.$this->generateUrl('fos_user_change_password', array(), true).'
 
 
 ---
 С уважением,
-Команда Frameworks Days";
+Команда Frameworks Days';
 
                     $message = \Swift_Message::newInstance()
-                        ->setSubject("Регистрация на сайте Frameworks Days")
+                        ->setSubject('Регистрация на сайте Frameworks Days')
                         // @todo refact
                         ->setFrom('orgs@fwdays.com', 'Frameworks Days')
                         ->setTo($user->getEmail())
@@ -106,7 +115,7 @@ class AdminController extends Controller
                 }
 
                 if ($ticket->isPaid()) {
-                    echo "<b>he has already paid participation in the conference!</b><br>";
+                    echo '<b>he has already paid participation in the conference!</b><br>';
                 } else {
                     // цена участия (с учетом скидки)
                     $amount = $data['discount'] ? $_POST['amount'] * 0.8 : $_POST['amount'];
@@ -120,7 +129,7 @@ class AdminController extends Controller
                         $oldPayment->removeTicket($ticket);
                         $em->persist($oldPayment);
                     }
-                    echo "create a new payment<br>";
+                    echo 'create a new payment<br>';
                     $payment = new Payment();
 
                     $payment->setUser($user);
@@ -135,7 +144,7 @@ class AdminController extends Controller
                     // сохраняем все изменения
                     $em->flush();
 
-                    echo "mark as paid<br>";
+                    echo 'mark as paid<br>';
                 }
             }
 
@@ -147,17 +156,16 @@ class AdminController extends Controller
     }
 
     /**
-     * Widget share contacts
+     * Widget share contacts.
      *
      * @return Response
      */
     public function widgetShareContactsAction()
     {
-        /**
-         * @var User $user
+        /*
+         * @var User
          */
         if (null !== ($user = $this->getUser())) {
-
             if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
                 return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
             }
@@ -167,7 +175,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Show Statistic
+     * Show Statistic.
      *
      *
      * @return Response
@@ -176,7 +184,7 @@ class AdminController extends Controller
      */
     public function showStatisticAction()
     {
-        $repo = $this   ->getDoctrine()
+        $repo = $this->getDoctrine()
             ->getManager()
             ->getRepository('ApplicationUserBundle:User');
 
@@ -202,22 +210,22 @@ class AdminController extends Controller
         $qb->where($qb->expr()->isNotNull('u.userReferral'));
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
-
         return $this->render('@StfalconEvent/Statistic/statistic.html.twig', [
-            'admin_pool'  => $this->container->get('sonata.admin.pool'),
-            'data'        => [
+            'admin_pool' => $this->container->get('sonata.admin.pool'),
+            'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
-                'countAgreedProvideData'  => $countAgreedProvideData,
-                'countNotAnswered'        => $countNotAnswered,
-                'countUseReferralProgram' => $countUseReferralProgram
-            ]
+                'countAgreedProvideData' => $countAgreedProvideData,
+                'countNotAnswered' => $countNotAnswered,
+                'countUseReferralProgram' => $countUseReferralProgram,
+            ],
         ]);
     }
 
     /**
-     * Start mail action
+     * Start mail action.
      *
      * @Route("/mail/{id}/start/{value}", name="admin_start_mail")
+     *
      * @param Request $request Request
      * @param Mail    $mail    Mail
      * @param int     $value   Value
@@ -238,7 +246,7 @@ class AdminController extends Controller
 
         return new JsonResponse([
             'status' => true,
-            'value'  => $value,
+            'value' => $value,
         ]);
     }
 }

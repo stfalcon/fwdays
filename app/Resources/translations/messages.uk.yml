@@ -55,6 +55,7 @@ user.by_user.title: Війдіть як користувач
 user.by_email.title: Або по почті
 user.create.title: Створити аккаунт
 user.already_have_account.title: У мене вже є обліковий запис
+speaker.about: про доповідача
 pay.i_have_promo.title: У мени є промокод
 pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'

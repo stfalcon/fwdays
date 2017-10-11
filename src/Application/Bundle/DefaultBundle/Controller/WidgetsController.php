@@ -9,14 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class WidgetsController extends Controller
 {
     /**
      * @param Request $request
-     * @param string $position
+     * @param string  $position
+     *
      * @Template("ApplicationDefaultBundle:Redesign:language_switcher.html.twig")
      *
      * @return array
@@ -33,15 +33,17 @@ class WidgetsController extends Controller
     }
 
     /**
-     * Like review
+     * Like review.
      *
      * @Route(path="/like/{reviewSlug}", name="like_review",
      *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')"))
+     *
      * @ParamConverter("review", options={"mapping": {"reviewSlug": "slug"}})
-     * @param Review  $review
+     *
+     * @param Review $review
      *
      * @return JsonResponse
      */
@@ -56,14 +58,14 @@ class WidgetsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return new JsonResponse(['result'=> true, 'likesCount' => $review->getLikedUsers()->count()]);
+        return new JsonResponse(['result' => true, 'likesCount' => $review->getLikedUsers()->count()]);
     }
 
     /**
-     * Localize current route
+     * Localize current route.
      *
      * @param Request $request
-     * @param string $locale
+     * @param string  $locale
      *
      * @return string
      */
@@ -73,17 +75,26 @@ class WidgetsController extends Controller
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
         if (in_array($currentLocal, $locales)) {
-            $path = str_replace('/'.$currentLocal, '',$path);
+            $path = str_replace('/'.$currentLocal, '', $path);
         }
         $params = $request->query->all();
 
         return $request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : '');
     }
 
-    private function getInnerSubstring($string, $delim, $KeyNumber = 1)
+    /**
+     * Get inner sub string in position number.
+     *
+     * @param string $string
+     * @param string $delim
+     * @param int    $keyNumber
+     *
+     * @return string
+     */
+    private function getInnerSubstring($string, $delim, $keyNumber = 1)
     {
         $string = explode($delim, $string, 3);
 
-        return isset($string[$KeyNumber]) ? $string[$KeyNumber] : '';
+        return isset($string[$keyNumber]) ? $string[$keyNumber] : '';
     }
 }

@@ -5,21 +5,18 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 use Stfalcon\Bundle\EventBundle\Service\ReferralService;
 
 /**
- * Referral controller
+ * Referral controller.
  */
 class ReferralController extends Controller
 {
     /**
-     * @param string $code  Code
+     * @param string $code      Code
      * @param string $eventSlug Event
      *
      * @Route("/ref/{code}/event/{eventSlug}", name="referral_link")
@@ -29,7 +26,7 @@ class ReferralController extends Controller
     public function referralAction($code, $eventSlug)
     {
         /**
-         * @var User $user
+         * @var User
          */
         $user = $this->getUser();
 
