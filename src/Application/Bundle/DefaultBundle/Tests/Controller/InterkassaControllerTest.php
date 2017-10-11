@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Tests\Controller;
 
-use Stfalcon\Bundle\EventBundle\Controller\InterkassaController;
+use Application\Bundle\DefaultBundle\Controller\InterkassaController;
 use Symfony\Component\HttpFoundation\Request;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,12 +30,13 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $request->willExtend('Symfony\Component\HttpFoundation\Request');
 
         $interkassaService = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Service\InterkassaService');
+        $paymentService = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Service\PaymentService');
+
         $container = $this->prophet->prophesize('Symfony\Component\DependencyInjection\Container');
         $doctrine = $this->prophet->prophesize('Doctrine\Bundle\DoctrineBundle\Registry');
         $em = $this->prophet->prophesize('Doctrine\ORM\EntityManager');
         $paymentRepository = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Repository\PaymentRepository');
         $payment = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Entity\Payment');
-
 
         $doctrine->getRepository('StfalconEventBundle:Payment')
             ->shouldBeCalled()
@@ -56,10 +57,14 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
 
         $container->get('stfalcon_event.interkassa.service')
             ->willReturn($interkassaService);
+        $container->get('stfalcon_event.payment.service')
+            ->willReturn($paymentService);
 
         $interkassaService->checkPayment(Argument::any(), Argument::any())
             ->willReturn(true)
             ->shouldBeCalled();
+        $paymentService->setTicketsCostAsSold(Argument::any())->shouldBeCalled();
+        $paymentService->calculateTicketsPromocode(Argument::any())->shouldBeCalled();
 
         $em->flush()->shouldBeCalled();
 

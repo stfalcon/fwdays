@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Tests;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -83,6 +84,8 @@ class TicketControllerTest extends WebTestCase
     public function testGotEmail()
     {
         $user = $this->loginUser('user@fwdays.com', 'qwerty');
+        $this->client->request('GET', '/uk', ['_locale' => 'uk']);
+
         $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
         $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
@@ -96,6 +99,8 @@ class TicketControllerTest extends WebTestCase
     /**
      * @param string $userName
      * @param string $userPass
+     *
+     * @return User $user
      */
     private function loginUser($userName, $userPass)
     {
