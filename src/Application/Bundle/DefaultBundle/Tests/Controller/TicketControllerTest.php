@@ -77,6 +77,13 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
+     * test user got email
+     */
+    public function testGotEmail()
+    {
+
+    }
+    /**
      * @param string $userName
      * @param string $userPass
      */

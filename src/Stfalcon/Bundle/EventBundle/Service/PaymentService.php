@@ -211,6 +211,28 @@ class PaymentService
             $this->em->flush();
         }
     }
+
+    /**
+     * Calculate using promocode
+     *
+     * @param Payment $payment
+     */
+    public function calculateTicketsPromocode($payment)
+    {
+        if ($payment->isPaid()) {
+            /** @var Ticket $ticket */
+            foreach ($payment->getTickets() as $ticket) {
+                if ($ticket->hasPromoCode()) {
+                    $promoCode = $ticket->getPromoCode();
+                    if ($promoCode) {
+                        $promoCode->incUsedCount();
+                    }
+                }
+            }
+            $this->em->flush();
+        }
+    }
+
     /**
      * Correct pay amount by user referral money
      *
