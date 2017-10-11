@@ -77,6 +77,27 @@
     }
   }
 
+  ol {
+    padding: 0;
+
+    li {
+      position: relative;
+      margin: 10px 0;
+      text-indent: initial;
+      font-size: 18px;
+      line-height: 26px;
+      list-style-position: inside;
+    }
+
+    ol {
+      padding-left: 24px;
+
+      li {
+        margin: 10px 0;
+      }
+    }
+  }
+
   iframe {
     max-width: 560px;
     width: 100%;
@@ -111,6 +132,31 @@
       background-color: $dark-color;
       content: '';
     }
+  }
+
+  a {
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}
+
+.static-styles .review-speaker__info ol,
+.static-styles .speaker-popup__info ol {
+  padding: 0;
+
+  li {
+    position: relative;
+    margin: 10px 0;
+    text-indent: initial;
+    font-size: 14px;
+    line-height: 20px;
+    list-style-position: inside;
   }
 
   a {

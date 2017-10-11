@@ -42,37 +42,58 @@
   }
 
   ul {
+     li {
+       position: relative;
+       margin: 10px 0;
+       text-indent: 16px;
+       font-size: 18px;
+       line-height: 26px;
+
+       &:before {
+         position: absolute;
+         top: 9px;
+         left: 0;
+         display: inline-block;
+         box-sizing: border-box;
+         width: 11px;
+         height: 1px;
+         background-color: #121314;
+         content: '';
+       }
+     }
+
+     ul {
+       padding-left: 24px;
+
+       li {
+         margin: 10px 0;
+
+         &:before {
+           width: 5px;
+           height: 5px;
+           border-radius: 50%;
+         }
+       }
+     }
+   }
+
+  ol {
+    padding: 0;
+
     li {
       position: relative;
       margin: 10px 0;
-      text-indent: 16px;
+      text-indent: initial;
       font-size: 18px;
       line-height: 26px;
-
-      &:before {
-        position: absolute;
-        top: 9px;
-        left: 0;
-        display: inline-block;
-        box-sizing: border-box;
-        width: 11px;
-        height: 1px;
-        background-color: #121314;
-        content: '';
-      }
+      list-style-position: inside;
     }
 
-    ul {
+    ol {
       padding-left: 24px;
 
       li {
         margin: 10px 0;
-
-        &:before {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-        }
       }
     }
   }
@@ -111,6 +132,31 @@
       background-color: $dark-color;
       content: '';
     }
+  }
+
+  a {
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}
+
+.static-styles .review-speaker__info ol,
+.static-styles .speaker-popup__info ol {
+  padding: 0;
+
+  li {
+    position: relative;
+    margin: 10px 0;
+    text-indent: initial;
+    font-size: 14px;
+    line-height: 20px;
+    list-style-position: inside;
   }
 
   a {
