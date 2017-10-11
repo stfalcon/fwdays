@@ -39,15 +39,15 @@ class PaymentController extends Controller
         if (!$event->getReceivePayments()) {
             return new JsonResponse(['result' => false, 'error' => "Оплата за участие в {$event->getName()} не принимается.", 'html' => $html]);
         }
-
-        /* @var $ticket Ticket */
-        $ticket = $this->get('stfalcon_event.ticket.service')
-            ->findTicketForEventByCurrentUser($event);
-
-        $paymentService = $this->get('stfalcon_event.payment.service');
-
         /* @var  User $user */
         $user = $this->getUser();
+
+        /* @var $ticket Ticket */
+        $ticket = $this->getDoctrine()->getManager()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
+
+        $paymentService = $this->get('stfalcon_event.payment.service');
 
         /** @var Payment $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
