@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,6 +46,15 @@ class InterkassaController extends Controller
         $interkassa = $this->container->get('stfalcon_event.interkassa.service');
         if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
+            /** @var Ticket $ticket */
+            foreach ($payment->getTickets() as $ticket) {
+                if ($ticket->hasPromoCode()) {
+                    $promoCode = $ticket->getPromoCode();
+                    if ($promoCode) {
+                        $promoCode->incUsedCount();
+                    }
+                }
+            }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 

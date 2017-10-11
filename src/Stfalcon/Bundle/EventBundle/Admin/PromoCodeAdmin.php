@@ -22,6 +22,7 @@ class PromoCodeAdmin extends Admin
             ->add('discountAmount')
             ->add('code')
             ->add('event')
+            ->add('usedCount')
             ->add('endDate');
     }
 
