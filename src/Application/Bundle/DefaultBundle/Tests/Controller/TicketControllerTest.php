@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Tests;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DomCrawler\Crawler;
@@ -81,7 +82,16 @@ class TicketControllerTest extends WebTestCase
      */
     public function testGotEmail()
     {
-
+        $user = $this->loginUser('user@fwdays.com', 'qwerty');
+        $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
+            ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
+        /**
+         * @var Payment $payment
+         */
+        $payment = $ticket->getPayment();
+        $payment->markedAsPaid();
+        $this->em->flush($payment);
     }
     /**
      * @param string $userName
@@ -99,9 +109,11 @@ class TicketControllerTest extends WebTestCase
         $form['_username'] = $user->getEmail();
         $form['_password'] = $userPass;
         $this->client->followRedirects();
-        $crawler = $this->client->submit($form);
+        $this->client->submit($form);
         /** end Login */
         $crawler = $this->client->request('GET', '/');
         $this->assertGreaterThan(0, $crawler->filter('a:contains(" Сabinet")')->count());
+
+        return $user;
     }
 }

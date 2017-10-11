@@ -2,7 +2,7 @@ imports:
     - { resource: config_dev.yml }
 
 parameters:
-    spool_path: '%kernel.root_dir%/spool'
+    spool_path: '%kernel.cache_dir%/spool'
 
 framework:
     test: ~
