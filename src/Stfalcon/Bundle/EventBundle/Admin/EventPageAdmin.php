@@ -4,7 +4,6 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
 class EventPageAdmin extends AbstractPageAdmin
@@ -27,9 +26,39 @@ class EventPageAdmin extends AbstractPageAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper = parent::configureFormFields($formMapper);
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
+            ->with('Переводы')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'title' => [
+                        'label' => 'title',
+                        'locale_options' => $localOptions,
+                    ],
+                    'text' => [
+                        'label' => 'text',
+                        'locale_options' => $localOptions,
+                    ],
+                    'textNew' => [
+                        'label' => 'текст для нового дизайна',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                    'metaKeywords' => [
+                        'label' => 'metaKeywords',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                    'metaDescription' => [
+                        'label' => 'metaDescription',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                ],
+            ])
+            ->end()
             ->with('General')
+                ->add('slug')
                 ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                 ])

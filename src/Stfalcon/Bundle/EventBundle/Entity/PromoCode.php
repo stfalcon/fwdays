@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
 use Gedmo\Translatable\Translatable;
@@ -14,6 +15,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="event__promo_code")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PromoCodeRepository")
+ *
+ * @UniqueEntity(
+ *     "code",
+ *     errorPath="code",
+ *     message="Поле code повинне бути унікальне."
+ * )
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation")
  */
 class PromoCode
@@ -60,7 +67,6 @@ class PromoCode
      * @Assert\NotBlank()
      */
     protected $code;
-
 
     /**
      * @var Event

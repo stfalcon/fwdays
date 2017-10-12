@@ -16,20 +16,23 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Stfalcon\Bundle\EventBundle\Entity\Event
  *
  * @Vich\Uploadable
+ *
  * @ORM\Table(name="event__events")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventRepository")
+ *
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
  *     message="Поле slug повинне бути унікальне."
  * )
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventRepository")
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
  */
 class Event implements Translatable
 {
     use Translate;
     /**
-     * @var integer $id
+     * @var int $id
      *
      * @ORM\Column(type="integer")
      * @ORM\Id

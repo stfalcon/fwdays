@@ -9,13 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Review
+ * Stfalcon\Bundle\EventBundle\Entity\Review.
  *
  * @ORM\Table(name="event__reviews")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
+ *
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation")
  */
 class Review extends AbstractPage implements Translatable
@@ -37,7 +44,7 @@ class Review extends AbstractPage implements Translatable
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -71,21 +78,25 @@ class Review extends AbstractPage implements Translatable
         $this->translations = new ArrayCollection();
     }
 
-    public function getEvent() {
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setEvent($event) {
+    public function setEvent($event)
+    {
         $this->event = $event;
 
         return $this;
     }
-    
-    public function getSpeakers() {
+
+    public function getSpeakers()
+    {
         return $this->speakers;
     }
 
-    public function setSpeaker($speakers) {
+    public function setSpeaker($speakers)
+    {
         $this->speakers = $speakers;
 
         return $this;
