@@ -2,26 +2,42 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\EventListener\PaymentListener;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PaymentListenerTest extends WebTestCase
 {
+    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Вітаємо, <br/>%s.';
+    const INTERKASSA_MAIL_MSG_THANKS_UK = 'Дякуємо Вам за оплату участі у конференції %s.';
+    const INTERKASSA_MAIL_MSG_REMEMBER_UK = 'Нагадуємо, що конференція відбудеться';
+    const INTERKASSA_MAIL_MSG_REMEMBER1_UK = 'року,';
+    const INTERKASSA_MAIL_MSG_TICKET_UK = 'Ваш квиток знаходиться у вкладенні.';
+
+    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Hello, <br/>%s';
+    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Thank you for paying for the %s conference.';
+    const INTERKASSA_MAIL_MSG_REMEMBER_EN = 'We remind that the conference will be held';
+    const INTERKASSA_MAIL_MSG_REMEMBER1_EN = 'year,';
+    const INTERKASSA_MAIL_MSG_TICKET_EN = 'Find your ticket attached.';
+
     /** @var Client */
     protected $client;
     /** @var EntityManager */
     protected $em;
+
     /** set up fixtures */
     public function setUp()
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
-        $connection->exec("DELETE FROM event__tickets;");
-        $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
+        $connection->exec('DELETE FROM event__tickets;');
+        $connection->exec('ALTER TABLE event__tickets AUTO_INCREMENT = 1;');
 
         $this->loadFixtures(
             [
@@ -40,18 +56,48 @@ class PaymentListenerTest extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
+        $this->clearSpoolFolder();
     }
 
+    /**
+     * Test payment listener with send email.
+     */
     public function testPostUpdate()
     {
+        $this->getEmailWithLocal('uk');
+        $this->findEmailWithText('ticket-php-day-2017.pdf');
+        $this->findEmailWithText('user@fwdays.com');
+    }
+
+    /**
+     * Test uk translate in email.
+     */
+    public function testEmailUkTranslate()
+    {
+        $this->getEmailWithLocal('uk');
+        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_HELLO_UK, 'Michael Jordan'));
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_TICKET_UK);
+        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_THANKS_UK, 'PHP Day'));
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER_UK);
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER1_UK);
+    }
+
+    /**
+     * Get email from listener.
+     *
+     * @param string $lang
+     */
+    private function getEmailWithLocal($lang)
+    {
+        $this->client->followRedirects();
         $user = $this->loginUser('user@fwdays.com', 'qwerty');
-        $this->client->request('GET', '/uk', ['_locale' => 'uk']);
+        $this->client->request('GET', '/'.$lang, ['_locale' => $lang]);
 
         $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
         $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
         /**
-         * @var Payment $payment
+         * @var Payment
          */
         $payment = $ticket->getPayment();
         $payment->markedAsPaid();
@@ -87,30 +133,37 @@ class PaymentListenerTest extends WebTestCase
 
         return $user;
     }
+
     /**
-     * Ищем в спуле письмо с определенным получателем и текстом
+     * Finc file in spool folder
      *
      * @param string $text
-     * @param string $recipient
+     *
+     * @return string
      */
-    private function findEmailWithTextAndRecipientInSpoolFolder($text, $recipient)
+    private function findEmailWithText($text)
     {
         $finder = $this->getFilesFromSpoolFolder();
 
-        $this->assertGreaterThan(0, count($finder), "no emails in spool folder");
+        $this->assertGreaterThan(0, count($finder), 'no emails in spool folder');
         $found = false;
+        $hashFile = '';
         foreach ($finder as $file) {
             $message = quoted_printable_decode(unserialize(file_get_contents($file)));
-            if (strpos($message, $text) && strpos($message, $recipient)) {
+            if (strpos($message, $text)) {
                 $found = true;
+                $hashFile = md5($file);
                 break;
             }
         }
 
-        $this->assertTrue($found, sprintf('In spool folder not found email with text "%s" for recipient "%s"', $text, $recipient));
+        $this->assertTrue($found, sprintf('In spool folder not found email with text "%s"', $text));
+
+        return $hashFile;
     }
+
     /**
-     * Очистка спула
+     * clear spool folder
      */
     private function clearSpoolFolder()
     {
@@ -119,6 +172,7 @@ class PaymentListenerTest extends WebTestCase
 
         $fs->remove($files);
     }
+
     /**
      * @return Finder
      */

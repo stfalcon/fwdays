@@ -17,7 +17,10 @@ web_profiler:
     intercept_redirects: false
 
 swiftmailer:
-    disable_delivery: true
+    transport: sendmail
+    spool:
+        type: file
+        path: "%spool_path%"
 
 doctrine:
     dbal:

@@ -108,11 +108,11 @@ news.to_the_list: __news.to_the_list
 news.title: __news.title
 interkassa.payment.fail: Не вдалося провести платіж!
 interkassa.payment.fail.back: Будь ласка, поверніться на сторінку оплати квитка і спробуйте ще раз.
-interkassa.mail.msg.hello: __interkassa.mail.msg.hello
-interkassa.mail.msg.thanks: __interkassa.mail.msg.thanks
-interkassa.mail.msg.remember: __interkassa.mail.msg.remember
-interkassa.mail.msg.remember1: __interkassa.mail.msg.remember1
-interkassa.mail.msg.ticket: __interkassa.mail.msg.ticket
+interkassa.mail.msg.hello: Вітаємо, <br/>%user_fullname%.
+interkassa.mail.msg.thanks: Дякуємо Вам за оплату участі у конференції %event_name%.
+interkassa.mail.msg.remember: Нагадуємо, що конференція відбудеться
+interkassa.mail.msg.remember1: року,
+interkassa.mail.msg.ticket: Ваш квиток знаходиться у вкладенні.
 interkassa.payment.success: Оплата пройшла успішно!
 interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також, Ви можете скачати квиток на сторінці
 interkassa.payment.pending: Оплата ще не завершена!

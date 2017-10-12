@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = 'c2cd581afc002aaec829611c1497b51b';
-    const UK_FILE_HASH = 'fbb4bbbab50c4568c75e0673163e14f8';
+    const EN_FILE_HASH = '58585b0231b715db87dbf60685c5d8f9';
+    const UK_FILE_HASH = '183bcfac5d61c02c67da86fffdabe18f';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -53,48 +53,72 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * test login user
+     * test en html ticket hash
      */
     public function testEnTicketHash()
     {
-        $this->loginUser('user@fwdays.com', 'qwerty');
-        $this->client->request('GET', '/en/event/javaScript-framework-day-2018/ticket/html');
-
-        $hashContent = md5($this->client->getResponse()->getContent());
-
-        $this->assertEquals($hashContent, self::EN_FILE_HASH);
+        $this->assertEquals($this->getFileHash('en'), self::EN_FILE_HASH);
     }
 
     /**
-     * test login user
+     * test uk html ticket hash
      */
     public function testUkTicketHash()
     {
-        $this->loginUser('user@fwdays.com', 'qwerty');
-        $this->client->request('GET', '/uk/event/javaScript-framework-day-2018/ticket/html');
-
-        $hashContent = md5($this->client->getResponse()->getContent());
-
-        $this->assertEquals($hashContent, self::UK_FILE_HASH);
+        $this->assertEquals($this->getFileHash('uk'), self::UK_FILE_HASH);
     }
 
     /**
-     * test user got email
+     * Test uk local in cookie
      */
-    public function testGotEmail()
+    public function testUkCookieLocale()
     {
-        $user = $this->loginUser('user@fwdays.com', 'qwerty');
-        $this->client->request('GET', '/uk', ['_locale' => 'uk']);
+        $this->assertEquals($this->getLangCookie('uk'), 'uk');
+    }
 
-        $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
-        $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
-            ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
-        /**
-         * @var Payment $payment
-         */
-        $payment = $ticket->getPayment();
-        $payment->markedAsPaid();
-        $this->em->flush($payment);
+    /**
+     * Test en local in cookie
+     */
+    public function testEnCookieLocale()
+    {
+        $this->assertEquals($this->getLangCookie('en'), 'en');
+    }
+    /**
+     * get current local from cookie
+     *
+     * @param string $lang
+     *
+     * @return string
+     */
+    private function getLangCookie($lang)
+    {
+        if (!empty($lang)) {
+            $this->client->followRedirects();
+            $this->client->request('GET', sprintf('/%s', $lang));
+
+            return $this->client->getRequest()->cookies->get('hl');
+        }
+
+        return '';
+    }
+
+    /**
+     * get file hash by lang
+     *
+     * @param  string $lang
+     *
+     * @return string
+     */
+    private function getFileHash($lang)
+    {
+        if (!empty($lang)) {
+            $this->loginUser('user@fwdays.com', 'qwerty');
+            $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
+
+            return md5($this->client->getResponse()->getContent());
+        }
+
+        return '';
     }
     /**
      * @param string $userName

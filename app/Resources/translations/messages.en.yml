@@ -123,11 +123,11 @@ news.to_the_list: __news.to_the_list
 news.title: __news.title
 interkassa.payment.fail: Payment is fail
 interkassa.payment.fail.back: Please, go back to the payment page and try again.
-interkassa.mail.msg.hello: __interkassa.mail.msg.hello
-interkassa.mail.msg.thanks: __interkassa.mail.msg.thanks
-interkassa.mail.msg.remember: __interkassa.mail.msg.remember
-interkassa.mail.msg.remember1: __interkassa.mail.msg.remember1
-interkassa.mail.msg.ticket: __interkassa.mail.msg.ticket
+interkassa.mail.msg.hello: Hello, <br/>%user_fullname%.
+interkassa.mail.msg.thanks: Thank you for paying for the %event_name% conference.
+interkassa.mail.msg.remember: We remind that the conference will be held
+interkassa.mail.msg.remember1: year,
+interkassa.mail.msg.ticket: Find your ticket attached.
 interkassa.payment.success: Payment successful!
 interkassa.payment.success.emailsend: Message confirming the payment and the ticket have been sent to your e-mail. Also you can download the ticket on the page
 interkassa.payment.pending: Payment is pending!
