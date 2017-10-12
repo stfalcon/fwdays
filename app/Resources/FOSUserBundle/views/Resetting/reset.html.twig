@@ -1,8 +1,8 @@
 {% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
 
 {% block content %}
-<div class="form-auth">
-    <h2 class="h2 form-auth__title">{{ 'user.change_password.title'|trans }}</h2>
+<div class="form-box">
+    <h2 class="h2 form-box__title">{{ 'user.change_password.title'|trans }}</h2>
     <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
         <div class="form-row">
             <div class="form-col form-col--6 form-col--xs-6">

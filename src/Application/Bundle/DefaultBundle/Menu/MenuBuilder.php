@@ -5,12 +5,10 @@ namespace Application\Bundle\DefaultBundle\Menu;
 use Application\Bundle\UserBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Knp\Menu\Util\MenuManipulator;
 use Symfony\Component\Translation\Translator;
 
 /**
- * MenuBuilder Class
+ * MenuBuilder Class.
  */
 class MenuBuilder
 {
@@ -24,23 +22,28 @@ class MenuBuilder
     private $locales;
 
     private $tokenService;
+
+    private $mobileDetector;
+
     /**
      * @param \Knp\Menu\FactoryInterface $factory
-     * @param Translator $translator
+     * @param Translator                 $translator
      * @param $locales
      * @param $tokenService
+     * @param $mobileDetector
      */
-    public function __construct(FactoryInterface $factory, $translator, $locales, $tokenService)
+    public function __construct(FactoryInterface $factory, $translator, $locales, $tokenService, $mobileDetector)
     {
         $this->factory = $factory;
         $this->translator = $translator;
         $this->locales = $locales;
         $this->tokenService = $tokenService;
-
+        $this->mobileDetector = $mobileDetector;
     }
 
     /**
      * @param Request $request
+     *
      * @return \Knp\Menu\ItemInterface
      */
     public function createMainMenuRedesign(Request $request)
@@ -50,33 +53,42 @@ class MenuBuilder
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'header-nav');
 
-        $menu->addChild($this->translator->trans('main.menu.events'), ['route' => 'events', ])
-            ->setAttribute('class','header-nav__item');
+        $menu->addChild($this->translator->trans('main.menu.events'), ['route' => 'events'])
+            ->setAttribute('class', 'header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.contacts'), ['route' => 'contacts'])
-            ->setAttribute('class','header-nav__item');
+            ->setAttribute('class', 'header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'about'])
-            ->setAttribute('class','header-nav__item');
+            ->setAttribute('class', 'header-nav__item');
         $token = $this->tokenService->getToken();
         $user = $token ? $token->getUser() : null;
         if ($user instanceof User) {
-            $menu->addChild($this->translator->trans( 'main.menu.cabinet'), ['route' => 'cabinet'])
-                ->setAttribute('class','header-nav__item header-nav__item--mob');
+            $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet'])
+                ->setAttribute('class', 'header-nav__item header-nav__item--mob');
         } else {
-            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#'])
-                ->setAttributes(
-                    [
-                        'class'=>'header-nav__item header-nav__item--mob',
-                        'data-remodal-target' => 'modal-signin',
-                    ]);
+            if ($this->mobileDetector->isMobile() || $this->mobileDetector->isTablet()) {
+                $menu->addChild($this->translator->trans('menu.login'), ['route' => 'fos_user_security_login'])
+                    ->setAttributes(
+                        [
+                            'class' => 'header-nav__item header-nav__item--mob',
+                        ]);
+            } else {
+                $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])
+                    ->setAttributes(
+                        [
+                            'class' => 'header-nav__item header-nav__item--mob',
+                            'data-remodal-target' => 'modal-signin',
+                        ]);
+            }
         }
 
         return $menu;
     }
 
     /**
-     * Login menu
+     * Login menu.
      *
      * @param Request $request
+     *
      * @return \Knp\Menu\ItemInterface
      */
     public function createLoginMenu(Request $request)
@@ -88,9 +100,9 @@ class MenuBuilder
         $token = $this->tokenService->getToken();
         $user = $token ? $token->getUser() : null;
         if ($user instanceof User) {
-            $menu->addChild($this->translator->trans( 'main.menu.cabinet'), ['route' => 'cabinet']);
+            $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet']);
         } else {
-            $menu->addChild($this->translator->trans( 'menu.login'), ['uri' => '#'])
+            $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])
                 ->setAttributes(['data-remodal-target' => 'modal-signin']);
         }
 

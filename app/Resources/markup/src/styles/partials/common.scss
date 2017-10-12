@@ -162,21 +162,21 @@ ul {
     font-family: 'FwDaysFont', sans-serif;
     font-weight: 400;
     color: #7B7B7B;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   &::-moz-placeholder {
     font-family: 'FwDaysFont', sans-serif;
     font-weight: 400;
     color: #7B7B7B;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   &:-ms-input-placeholder {
     font-family: 'FwDaysFont', sans-serif;
     font-weight: 400;
     color: #7B7B7B;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   &:hover {
@@ -569,7 +569,7 @@ ul {
   }
 }
 
-.form-auth {
+.form-box {
   margin: 32px auto 0;
   padding: 32px;
   max-width: 616px;

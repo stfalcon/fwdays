@@ -1,3 +1,19 @@
+function detectmob() {
+    if( navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i)
+    ){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 function setModalHeader(e_slug, h_type) {
     $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
         if (data.result) {
@@ -26,17 +42,25 @@ function setPaymentHtml(e_slug) {
                 $('#cancel-promo-code').click();
                 $('#cancel-add-user').click();
                 $('#user_phone').val(data.phoneNumber);
-                inst.open();
+                if (!detectmob()) {
+                    inst.open();
+                }
             } else {
                 console.log('Error:' + data.error);
-                inst.close();
+                if (!detectmob()) {
+                    inst.close();
+                }
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             switch (jqXHR.status) {
                 case 401:
-                    var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
-                    inst.open();
+                    if (detectmob()) {
+                        window.location.pathname = devpath+'/login?exception_login=1';
+                    } else {
+                        var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
+                        inst.open();
+                    }
                     break;
                 case 403: window.location.reload(true);
             }
@@ -105,8 +129,12 @@ $(document).on('click', '.add-wants-visit-event', function () {
             error: function(jqXHR, textStatus, errorThrown) {
                 switch (jqXHR.status) {
                     case 401:
-                        var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
-                        inst.open();
+                        if (detectmob()) {
+                            window.location.pathname = devpath+'/login?exception_login=1';
+                        } else {
+                            var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
+                            inst.open();
+                        }
                         break;
                     case 403:
                         window.location.reload(true);
@@ -224,8 +252,12 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
-        setModalHeader(e_slug, 'buy');
-        setPaymentHtml(e_slug);
+        if (detectmob()) {
+            window.location.pathname = devpath+'/payment/'+e_slug;
+        } else {
+            setModalHeader(e_slug, 'buy');
+            setPaymentHtml(e_slug);
+        }
     });
 
     $('.add-promo-code-btn').on('click', function () {

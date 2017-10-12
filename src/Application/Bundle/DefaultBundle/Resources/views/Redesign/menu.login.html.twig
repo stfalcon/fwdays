@@ -11,7 +11,11 @@
     {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
         <a href="{{ path('cabinet') }}" class="{{ class }}">{{ 'main.menu.cabinet'|trans }}</a>
     {% else %}
-        <a data-remodal-target="modal-signin" href="#" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        {% if is_mobile() or is_tablet() %}
+            <a href="{{ path('fos_user_security_login') }}" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        {% else %}
+            <a data-remodal-target="modal-signin" href="#" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        {% endif %}
     {% endif %}
 
 {% if position in ['header', 'footer'] %}

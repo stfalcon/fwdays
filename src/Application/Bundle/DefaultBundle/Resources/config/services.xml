@@ -15,6 +15,7 @@
             <argument type="service" id="translator" />
             <argument>%jms_i18n_routing.locales%</argument>
             <argument type="service" id="security.token_storage" />
+            <argument type="service" id="mobile_detect.mobile_detector" />
         </service>
 
         <!-- main menu -->

@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -12,6 +13,7 @@ use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PaymentController.
@@ -110,6 +112,33 @@ class PaymentController extends Controller
         }
 
         return $this->getPaymentHtml($event, $payment, $promoCode);
+    }
+
+    /**
+     * static payment.
+     *
+     * @Route("/payment/{eventSlug}")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
+     * @param Event $event
+     *
+     * @Template("@ApplicationDefault/Redesign/payment.html.twig")
+     *
+     * @return array|Response
+     */
+    public function paymentAction(Event $event)
+    {
+        if (!$event->getReceivePayments()) {
+            return $this->render(
+                '@ApplicationDefault/Redesign/static.page.html.twig',
+                ['text' => sprintf("Оплата за участие в %s не принимается.", $event->getName())]
+            );
+        }
+
+        return ['event' => $event];
     }
 
     /**
