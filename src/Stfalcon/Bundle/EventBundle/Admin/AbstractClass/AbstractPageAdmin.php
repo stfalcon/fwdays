@@ -24,7 +24,7 @@ abstract class AbstractPageAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
 
     /**
@@ -58,22 +58,22 @@ abstract class AbstractPageAdmin extends Admin
                     'fields' => [
                         'title' => [
                             'label' => 'title',
-                            'locale_options' => $localOptions
+                            'locale_options' => $localOptions,
                         ],
                         'text' => [
                             'label' => 'text',
-                            'locale_options' => $localOptions
+                            'locale_options' => $localOptions,
                         ],
 
                         'metaKeywords' => [
                             'label' => 'metaKeywords',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
                         'metaDescription' => [
                             'label' => 'metaDescription',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
-                    ]
+                    ],
                 ])
             ->end()
             ->with('General')

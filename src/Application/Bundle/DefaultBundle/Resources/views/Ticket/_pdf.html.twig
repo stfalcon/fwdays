@@ -1,4 +1,6 @@
 {% set event = ticket.event %}
+{% set locale = 'uk' %}
+{% if app.request is not null %} {% set locale = app.request.locale %} {% endif %}
 
 <!DOCTYPE HTML>
 <html lang="ru-RU">
@@ -166,7 +168,7 @@
                 <div class="wait-for-you">{{ 'ticket.wait_for_you'|trans }}</div>
                 <div class="date-addr">
                     {% if event.date %}
-                        {{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }}
+                        {{ event.date|format_date('d MMMM Y', locale, 'Europe/Kiev') }}
                     {% endif %}
                     <br />
                     {{ 'ticket.city'|trans({'%city_name%':event.city}) }}
@@ -174,7 +176,7 @@
                         {{ event.place }}
                     {% endif %}
                 </div>
-                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}.</div>
+                <div class="registration-begins">{{ 'ticket.registration.begin'|trans }} {{ event.date|format_date('HH:mm', locale, 'Europe/Kiev') }}.</div>
             </div>
         </div>
 

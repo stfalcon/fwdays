@@ -30,15 +30,13 @@ class EventPageAdmin extends AbstractPageAdmin
         $formMapper = parent::configureFormFields($formMapper);
         $formMapper
             ->with('General')
-                ->add('event', 'entity',  array(
+                ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                ))
-                ->add('showInMenu', null, array('required' => false))
-                ->add('sortOrder', null, array(
-                    'attr' => array(
-                        'min' => 1
-                    )
-                ))
+                ])
+                ->add('showInMenu', null, ['required' => false])
+                ->add('sortOrder', null, [
+                    'attr' => ['min' => 1],
+                ])
             ->end()
         ;
     }

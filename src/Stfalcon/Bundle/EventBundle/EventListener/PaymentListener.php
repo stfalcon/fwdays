@@ -68,15 +68,13 @@ class PaymentListener
                     $message = $this->mailerHelper->formatMessage($user, $mail);
 
                     $message->setSubject($event->getName());
-                    /** костиль: тестовому середовищі виникає виключення при парсінгу html тексту для створення pdf */
-                    if ('test' != $this->container->get('kernel')->getEnvironment()) {
-                        $message->attach(
-                            \Swift_Attachment::newInstance(
-                                $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
-                                $ticket->generatePdfFilename()
-                            )
-                        );
-                    }
+                    $message->attach(
+                        \Swift_Attachment::newInstance(
+                            $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
+                            $ticket->generatePdfFilename()
+                        )
+                    );
+
                     $this->mailer->send($message);
                 }
             }

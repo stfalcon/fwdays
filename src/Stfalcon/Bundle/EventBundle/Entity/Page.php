@@ -12,6 +12,7 @@ use Stfalcon\Bundle\EventBundle\Traits\Translate;
 /**
  * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation")
  */
 class Page extends AbstractPage implements Translatable

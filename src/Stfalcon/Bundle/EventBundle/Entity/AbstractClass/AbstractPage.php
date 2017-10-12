@@ -40,7 +40,7 @@ abstract class AbstractPage
     protected $title;
 
     /**
-     * @var text $text
+     * @var string $text
      * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(name="text", type="text")
      */
