@@ -36,7 +36,11 @@
                     <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
                 </div>
                 <div class="cabinet-head__right">
+                {% if is_mobile() or is_tablet() %}
+                    <a href="{{ path('fos_user_profile_edit') }}" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                {% else %}
                     <a data-remodal-target="modal-profile" href="#" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                {% endif %}
                     <a href="{{ path('fos_user_security_logout') }}" class="cabinet-head__link">{{ 'menu.logout'|trans }}</a>
                 </div>
             </div>
