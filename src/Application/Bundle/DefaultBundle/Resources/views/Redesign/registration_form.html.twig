@@ -70,7 +70,7 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="help-links">
                 <div class="help-links__item">
-                    <a {% if remodal is not empty and not is_mobile() and not is_tablet() %}data-remodal-target="{{ remodal }}" href="#"{% else %}href="{{ path('fos_user_security_login') }}"{% endif %} class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
+                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}" href="#"{% else %}href="{{ path('fos_user_security_login') }}"{% endif %} class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
                 </div>
             </div>
         </div>
