@@ -10,3 +10,7 @@ services:
         class: Application\Bundle\DefaultBundle\Twig\AppExtension
         tags:
             - { name: twig.extension}
+
+    app.url_for_redirect:
+        class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
+        arguments: ["@router", "%locales%"]

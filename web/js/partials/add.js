@@ -56,7 +56,8 @@ function setPaymentHtml(e_slug) {
             switch (jqXHR.status) {
                 case 401:
                     if (detectmob()) {
-                        window.location.pathname = devpath+'/login?exception_login=1';
+                        window.location.search = "?exception_login=1";
+                        window.location.pathname = devpath+"/login";
                     } else {
                         var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
                         inst.open();
@@ -130,7 +131,7 @@ $(document).on('click', '.add-wants-visit-event', function () {
                 switch (jqXHR.status) {
                     case 401:
                         if (detectmob()) {
-                            window.location.pathname = devpath+'/login?exception_login=1';
+                            window.location.href = devpath+"/login?exception_login=1";
                         } else {
                             var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
                             inst.open();
@@ -253,7 +254,7 @@ $(document).ready(function () {
         var elem = $(this);
         var e_slug = elem.data('event');
         if (detectmob()) {
-            window.location.pathname = devpath+'/payment/'+e_slug;
+            window.location.pathname = devpath+"/payment/"+e_slug;
         } else {
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug);

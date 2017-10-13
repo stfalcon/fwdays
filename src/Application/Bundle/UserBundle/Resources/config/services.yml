@@ -5,7 +5,7 @@ services:
 
     user.handler.login_handler:
         class: Application\Bundle\UserBundle\Handler\LoginHandler
-        arguments: ["@router", "%locales%", "@stfalcon_event.referral.service", "@stfalcon.user_manager" ]
+        arguments: ["@router", "@stfalcon_event.referral.service", "@stfalcon.user_manager", "@app.url_for_redirect" ]
 
     app.provider.oauth:
         class: Application\Bundle\UserBundle\Security\OAuthUserProvider

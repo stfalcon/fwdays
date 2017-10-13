@@ -24,29 +24,32 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
 
     protected $referralService;
 
+    protected $urlForRedirectService;
+
     /** @var $homePages */
     private $homePages = [];
 
     private $authorizationUrls = [];
 
-    public function __construct(I18nRouter $router, $locales, $referralService, $userManager)
+    public function __construct(I18nRouter $router, $referralService, $userManager, $urlForRedirectService)
     {
         $this->router = $router;
         $this->referralService = $referralService;
+        $this->urlForRedirectService = $urlForRedirectService;
         $this->userManager = $userManager;
 
-        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login',[], true);
-        $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register',[], true);
-        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email',[], true);
-        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email',[], true);
-
-        $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
-        foreach ($locales as $locale) {
-            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register',['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email',['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email',['_locale' => $locale], true);
-        }
+//        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], true);
+//        $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', [], true);
+//        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], true);
+//        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
+//
+//        $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
+//        foreach ($locales as $locale) {
+//            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
+//            $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', ['_locale' => $locale], true);
+//            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
+//            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
+//        }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
@@ -81,7 +84,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         }
 
         $referrer = $request->headers->get('referer');
-        $cabinetUrl = $this->router->generate('cabinet');
 
         $session = $request->getSession();
         if ($session->has('request_params')) {
@@ -91,9 +93,9 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             if ($request->query->has('exception_login')) {
                 $url = $referrer;
                 if ('event_pay' === $requestParams['_route']) {
-                    if (in_array($referrer, $this->authorizationUrls)) {
-                        $url = $this->router->generate('homepage');
-                    }
+//                    if (in_array($referrer, $this->authorizationUrls)) {
+//                        $url = $this->router->generate('homepage');
+//                    }
                     $response = new RedirectResponse($url);
                     $cookie = new Cookie('event', $requestParams['eventSlug'], time() + 3600, '/', null, false, false);
                     $response->headers->setCookie($cookie);
@@ -105,16 +107,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             }
         }
 
-        $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referrer), '\/');
-
-        if (in_array($clearReferrer, $this->homePages)) {
-            return new RedirectResponse($cabinetUrl);
-        }
-
-        if (in_array($referrer, $this->authorizationUrls)) {
-            return new RedirectResponse($this->router->generate('homepage'));
-        } else {
-            return new RedirectResponse($referrer);
-        }
+        return new RedirectResponse($this->urlForRedirectService->getRedirectUrl($referrer));
     }
 }
