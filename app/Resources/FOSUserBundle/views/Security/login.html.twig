@@ -7,6 +7,6 @@
     {% if error %}
         <div><p class="text-error">{{ error|trans }}</p></div>
     {% endif %}
-    {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'remodal':'', 'queryLink':app.request.queryString } %}
+    {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'remodal':'', 'queryLink':'?'~app.request.queryString} %}
 </div>
 {% endblock content %}

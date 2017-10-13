@@ -254,10 +254,7 @@ class EventController extends Controller
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
         }
 
-        $url = $request->headers->has('referer') ? $request->headers->get('referer')
-            : $this->generateUrl('homepage');
-
-        return $this->redirect($url);
+        return $this->redirect($this->get('app.url_for_redirect')->getRedirectUrl($request->headers->get('referer')));
     }
 
     /**
