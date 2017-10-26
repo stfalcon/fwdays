@@ -41,4 +41,31 @@ class UserRepository extends EntityRepository
                     ->select('COUNT(u)')
         ;
     }
+
+    /**
+     * Users registered for events
+     *
+     * @param $events
+     *
+     * @return array
+     */
+    public function getRegisteredUsers($events)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->Join('u.wantsToVisitEvents', 'wve')
+            ->where($qb->expr()->in('wve.id', ':events'))
+            ->setParameter(':events', $events->toArray())
+            ->andWhere('u.subscribe = 1')
+            ->groupBy('u');
+
+
+//        $users = [];
+//
+//        foreach ($qb->getQuery()->execute() as $result) {
+//            $users[] = $result->getUser();
+//        }
+
+        return $qb->getQuery()->execute();
+    }
 }
