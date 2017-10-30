@@ -100,7 +100,11 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
+        }
+
+        if ($payment->isPaid()) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -165,11 +169,11 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
         }
 
         if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => 'Can not allow paid!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
         }
         /** @var User $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
@@ -221,7 +225,7 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess($ticket);
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
         }
 
         if (!$ticket->isPaid() && $payment->getTickets()->count() > 1) {
