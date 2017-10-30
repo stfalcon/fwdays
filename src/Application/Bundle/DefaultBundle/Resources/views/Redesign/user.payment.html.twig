@@ -1,5 +1,5 @@
 <div class="user-payment">
-{% if ticket.payment.tickets.count > 1 %}
+{% if ticket.payment.tickets.count > 1 and (payment.user == app.user or ticket.user == app.user) %}
     <button type="button" class="icon-circle-close user-payment__remove" data-ticket="{{ ticket.id }}"></button>
 {% endif %}
     <div class="user-payment__left">

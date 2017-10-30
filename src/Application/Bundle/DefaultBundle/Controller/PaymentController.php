@@ -97,7 +97,7 @@ class PaymentController extends Controller
      */
     public function addPromoCodeAction($code, Event $event)
     {
-        $payment = $this->getPaymentFromSession();
+        $payment = $this->getPaymentIfAccess();
 
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
@@ -134,7 +134,7 @@ class PaymentController extends Controller
         if (!$event->getReceivePayments()) {
             return $this->render(
                 '@ApplicationDefault/Redesign/static.page.html.twig',
-                ['text' => sprintf("Оплата за участие в %s не принимается.", $event->getName())]
+                ['text' => sprintf('Оплата за участие в %s не принимается.', $event->getName())]
             );
         }
 
@@ -162,7 +162,7 @@ class PaymentController extends Controller
      */
     public function addParticipantToPaymentAction(Event $event, $name, $surname, $email)
     {
-        $payment = $this->getPaymentFromSession();
+        $payment = $this->getPaymentIfAccess();
 
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
@@ -218,7 +218,7 @@ class PaymentController extends Controller
      */
     public function removeTicketFromPaymentAction(Event $event, Ticket $ticket)
     {
-        $payment = $this->getPaymentFromSession();
+        $payment = $this->getPaymentIfAccess($ticket);
 
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => '']);
@@ -286,9 +286,11 @@ class PaymentController extends Controller
     /**
      * Check if payment correct and give it by id.
      *
+     * @param Ticket $removeTicket
+     *
      * @return Payment $payment
      */
-    private function getPaymentFromSession()
+    private function getPaymentIfAccess($removeTicket = null)
     {
         $em = $this->getDoctrine()->getManager();
         $payment = null;
@@ -296,7 +298,11 @@ class PaymentController extends Controller
             $paymentId = $this->get('session')->get('active_payment_id');
             $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
         }
-        $payment = $payment && $payment->getUser() === $this->getUser() ? $payment : null;
+        if ($removeTicket instanceof Ticket) {
+            $payment = $payment && $removeTicket->getUser() === $this->getUser() ? $payment : null;
+        } else {
+            $payment = $payment && $payment->getUser() === $this->getUser() ? $payment : null;
+        }
 
         return $payment;
     }
