@@ -284,6 +284,7 @@ class PaymentController extends Controller
             'paymentSums' => $paymentSums,
             'notUsedPromoCode' => $notUsedPromoCode,
             'phoneNumber' => $user->getPhone(),
+            'is_user_create_payment' => $user === $payment->getUser(),
         ]);
     }
 

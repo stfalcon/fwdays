@@ -42,6 +42,10 @@ function setPaymentHtml(e_slug) {
                 $('#cancel-promo-code').click();
                 $('#cancel-add-user').click();
                 $('#user_phone').val(data.phoneNumber);
+                if (!data.is_user_create_payment) {
+                    $('#add-user-trigger').hide();
+                    $('#promo-code-trigger').hide();
+                }
                 if (!detectmob()) {
                     inst.open();
                 }

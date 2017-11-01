@@ -1,5 +1,6 @@
 <form id="payment" name="payment" action="https://sci.interkassa.com/" method="post" enctype="utf-8" accept-charset="UTF-8">
     <p id="pay-form"><!-- render html --></p>
+
     <div id="payment-add-user" class="form-add">
         <div class="form-add__hint"> {{ 'pay.event.pay_for_other'|trans }}
             <a id="cancel-add-user" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
@@ -46,6 +47,7 @@
             </div>
         </div>
     </div>
+
     <div class="payment-info">
         <div class="payment-info__left">
             <div class="payment-info__btn-link">
