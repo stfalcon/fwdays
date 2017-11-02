@@ -5,20 +5,20 @@
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
-                <label class="form-label" for="user_email">{{ 'user.email.title'|trans }}</label>
-                <input class="input" type="email" id="user_email" name="_username" value="">
+                <label class="form-label" for="user_email_{{ remodal }}">{{ 'user.email.title'|trans }}</label>
+                <input class="input" type="email" id="user_email_{{ remodal }}" name="_username" value="">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <label class="form-label" for="user_password">{{ 'user.password.title'|trans }}</label>
-            <input class="input" type="password" id="user_password" name="_password" value="">
+            <label class="form-label" for="user_password_{{ remodal }}">{{ 'user.password.title'|trans }}</label>
+            <input class="input" type="password" id="user_password_{{ remodal }}" name="_password" value="">
         </div>
     </div>
     <div class="form-row form-row--checkbox">
         <div class="form-col">
             <div class="checkbox">
-                <input id="login-check" type="checkbox" name="_remember_me" class="checkbox__input">
-                <label for="login-check" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
+                <input id="login-check_{{ remodal }}" type="checkbox" name="_remember_me" class="checkbox__input">
+                <label for="login-check_{{ remodal }}" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
             </div>
         </div>
     </div>
