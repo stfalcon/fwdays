@@ -5,9 +5,19 @@ services:
 
     user.handler.login_handler:
         class: Application\Bundle\UserBundle\Handler\LoginHandler
-        arguments: ["@router", "@stfalcon_event.referral.service", "@stfalcon.user_manager", "@app.url_for_redirect" ]
+        arguments:
+            - "@router"
+            - "@stfalcon_event.referral.service"
+            - "@stfalcon.user_manager"
+            - "@app.url_for_redirect"
+#        tags:
+#            - {name: "kernel.event_listener", event: "security.interactive_login", method: "onInteractiveLogin"}
+#            - {name: "kernel.event_listener", event: "security.authentication.success", method: "onInteractiveLogin"}
 
     app.provider.oauth:
         class: Application\Bundle\UserBundle\Security\OAuthUserProvider
-        arguments: ["@fos_user.user_manager",{facebook: facebookID, google: googleID}]
+        arguments:
+            - "@fos_user.user_manager"
+            - {facebook: facebookID, google: googleID}
+            - "@request_stack"
 

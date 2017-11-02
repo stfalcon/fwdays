@@ -21,6 +21,7 @@ security:
                     google: "/login/check-google"
                 oauth_user_provider:
                     service: app.provider.oauth
+                success_handler: user.handler.login_handler
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider

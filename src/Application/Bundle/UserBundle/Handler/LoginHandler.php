@@ -7,15 +7,18 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Stfalcon\Bundle\EventBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginHandler implements AuthenticationSuccessHandlerInterface
 {
     /**
-     * @var UserManagerInterface $userManager User manager
+     * @var UserManagerInterface User manager
      */
     protected $userManager;
 
@@ -26,35 +29,26 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
 
     protected $urlForRedirectService;
 
-    /** @var $homePages */
-    private $homePages = [];
-
-    private $authorizationUrls = [];
-
     public function __construct(I18nRouter $router, $referralService, $userManager, $urlForRedirectService)
     {
         $this->router = $router;
         $this->referralService = $referralService;
         $this->urlForRedirectService = $urlForRedirectService;
         $this->userManager = $userManager;
-
-//        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], true);
-//        $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', [], true);
-//        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], true);
-//        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
-//
-//        $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
-//        foreach ($locales as $locale) {
-//            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
-//            $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', ['_locale' => $locale], true);
-//            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
-//            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
-//        }
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         return $this->processAuthSuccess($request, $token->getUser());
+    }
+
+    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        if ($event->getAuthenticationToken()->getUser() instanceof User) {
+            $user = $event->getAuthenticationToken()->getUser();
+
+            return $this->processAuthSuccess($event->getRequest(), $user);
+        }
     }
 
     public function processAuthSuccess(Request $request, User $user)
@@ -64,7 +58,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
 
             //check self referral code
             if ($this->referralService->getReferralCode($user) !== $referralCode) {
-
                 $userReferral = $this->userManager->findUserBy(['referralCode' => $referralCode]);
 
                 if ($userReferral) {
@@ -90,15 +83,17 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             $requestParams = $session->get('request_params');
             $request->getSession()->remove('request_params');
 
-            if ($request->query->has('exception_login')) {
+            if ($request->query->has('exception_login') || $session->has('login_by_provider')) {
+                if ($session->has('login_by_provider')) {
+                    $request->getSession()->remove('login_by_provider');
+                }
+
                 $url = $referrer;
                 if ('event_pay' === $requestParams['_route']) {
-//                    if (in_array($referrer, $this->authorizationUrls)) {
-//                        $url = $this->router->generate('homepage');
-//                    }
                     $response = new RedirectResponse($url);
                     $cookie = new Cookie('event', $requestParams['eventSlug'], time() + 3600, '/', null, false, false);
                     $response->headers->setCookie($cookie);
+
 
                     return $response;
                 }
