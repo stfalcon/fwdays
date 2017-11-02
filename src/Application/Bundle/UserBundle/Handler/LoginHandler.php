@@ -7,13 +7,10 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Stfalcon\Bundle\EventBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginHandler implements AuthenticationSuccessHandlerInterface
 {
@@ -40,15 +37,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         return $this->processAuthSuccess($request, $token->getUser());
-    }
-
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
-    {
-        if ($event->getAuthenticationToken()->getUser() instanceof User) {
-            $user = $event->getAuthenticationToken()->getUser();
-
-            return $this->processAuthSuccess($event->getRequest(), $user);
-        }
     }
 
     public function processAuthSuccess(Request $request, User $user)
@@ -93,7 +81,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
                     $response = new RedirectResponse($url);
                     $cookie = new Cookie('event', $requestParams['eventSlug'], time() + 3600, '/', null, false, false);
                     $response->headers->setCookie($cookie);
-
 
                     return $response;
                 }

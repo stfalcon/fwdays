@@ -10,9 +10,6 @@ services:
             - "@stfalcon_event.referral.service"
             - "@stfalcon.user_manager"
             - "@app.url_for_redirect"
-#        tags:
-#            - {name: "kernel.event_listener", event: "security.interactive_login", method: "onInteractiveLogin"}
-#            - {name: "kernel.event_listener", event: "security.authentication.success", method: "onInteractiveLogin"}
 
     app.provider.oauth:
         class: Application\Bundle\UserBundle\Security\OAuthUserProvider
