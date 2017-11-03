@@ -17,7 +17,7 @@
             <a href="{{ link }}#program-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
         </li>
     {% endif %}
-    {% if event.activeAndFuture and event.receivePayments %}
+    {% if event.activeAndFuture and event.receivePayments and event.TicketsCost|length > 0 %}
         <li class="event-menu__item">
             <a href="{{ link }}#price-event" class="event-menu__link{{ scrollClass }}">{{ 'event_cost.title'|trans }}</a>
         </li>
@@ -27,10 +27,5 @@
             <a href="{{ link }}#location-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.venue'|trans }}</a>
         </li>
     {% endif %}
-    {#{% for page in pages %}#}
-        {#<li class="event-menu__item">#}
-            {#<a href="{{ link }}#{{ page.slug }}-event" class="event-menu__link{{ scrollClass }}">{{ page.title }}</a>#}
-        {#</li>#}
-    {#{% endfor %}#}
     </ul>
 </nav>
