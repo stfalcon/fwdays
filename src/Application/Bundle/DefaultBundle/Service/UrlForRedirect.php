@@ -12,7 +12,7 @@ class UrlForRedirect
     /** @var $homePages */
     private $homePages = [];
     private $authorizationUrls = [];
-    private $cabinetUrl;
+
     /**
      * GetUrlForRedirect constructor.
      * @param I18nRouter $router
@@ -28,8 +28,10 @@ class UrlForRedirect
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
 
         $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
+        $this->homePages[] = trim($router->generate('cabinet', [], true), '\/');
         foreach ($locales as $locale) {
             $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
+            $this->homePages[] = $router->generate('cabinet', ['_locale' => $locale], true);
             $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', ['_locale' => $locale], true);
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
@@ -40,10 +42,11 @@ class UrlForRedirect
      * get redirect url for referral url
      *
      * @param string $referralUrl
+     * @param string $host
      *
      * @return string
      */
-    public function getRedirectUrl($referralUrl)
+    public function getRedirectUrl($referralUrl, $host = '')
     {
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
         if (in_array($clearReferrer, $this->homePages)) {
@@ -51,6 +54,10 @@ class UrlForRedirect
         }
 
         if (in_array($clearReferrer, $this->authorizationUrls)) {
+            return $this->router->generate('homepage');
+        }
+
+        if (!empty($host) && false === strpos($clearReferrer, $host)) {
             return $this->router->generate('homepage');
         }
 

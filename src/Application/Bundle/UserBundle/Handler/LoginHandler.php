@@ -95,7 +95,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             $request->getSession()->remove('request_params');
 
             if ($request->query->has('exception_login') || $request->cookies->has('bye-event')) {
-                $url = $referrer;
+                $url = $this->urlForRedirectService->getRedirectUrl($referrer, $request->getHost());
                 if ('event_pay' === $requestParams['_route']) {
                     $response = new RedirectResponse($url);
                     $cookie = new Cookie('event', $requestParams['eventSlug'], time() + 3600, '/', null, false, false);
@@ -108,6 +108,6 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             }
         }
 
-        return new RedirectResponse($this->urlForRedirectService->getRedirectUrl($referrer));
+        return new RedirectResponse($this->urlForRedirectService->getRedirectUrl($referrer, $request->getHost()));
     }
 }
