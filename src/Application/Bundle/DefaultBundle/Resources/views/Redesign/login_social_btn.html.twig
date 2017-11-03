@@ -2,12 +2,12 @@
     <div class="form-hint">{{ 'user.by_user.title'|trans }}</div>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
-            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}{{ queryLink }}" class="btn btn--lg btn--facebook form-col__btn">
+            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" class="btn btn--lg btn--facebook form-col__btn {{ add_class }}">
                 <i class="icon-login-facebook"></i>
             </a>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}{{ queryLink }}" class="btn btn--lg btn--google form-col__btn">
+            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" class="btn btn--lg btn--google form-col__btn {{ add_class }}">
                 <i class="icon-login-google"></i>
             </a>
         </div>

@@ -15,15 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class OAuthUserProvider extends BaseClass
 {
-
-    protected $requestStack;
-
-    public function __construct(UserManagerInterface $userManager, array $properties, RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-        parent::__construct($userManager, $properties);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -63,8 +54,6 @@ class OAuthUserProvider extends BaseClass
             $checker = new UserChecker();
             $checker->checkPreAuth($user);
         }
-        $request = $this->requestStack->getCurrentRequest();
-        $request->getSession()->set('login_by_provider', true);
 
         return $user;
     }

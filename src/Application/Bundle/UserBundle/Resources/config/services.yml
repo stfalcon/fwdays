@@ -16,5 +16,4 @@ services:
         arguments:
             - "@fos_user.user_manager"
             - {facebook: facebookID, google: googleID}
-            - "@request_stack"
 

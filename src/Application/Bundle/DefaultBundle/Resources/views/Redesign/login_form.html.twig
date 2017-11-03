@@ -1,6 +1,11 @@
 <form id="login-form" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-    {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' with{'queryLink':queryLink} %}
+    {% set add_class = 'social-login' %}
+    {% if queryLink != '' %}
+        {% set add_class = 'social-login bye-after-login' %}
+    {% endif %}
+
+    {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' with{'add_class':add_class} %}
     <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">

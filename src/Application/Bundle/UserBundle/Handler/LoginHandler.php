@@ -12,6 +12,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Class LoginHandler.
+ */
 class LoginHandler implements AuthenticationSuccessHandlerInterface
 {
     /**
@@ -26,6 +29,14 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
 
     protected $urlForRedirectService;
 
+    /**
+     * LoginHandler constructor.
+     *
+     * @param I18nRouter $router
+     * @param $referralService
+     * @param $userManager
+     * @param $urlForRedirectService
+     */
     public function __construct(I18nRouter $router, $referralService, $userManager, $urlForRedirectService)
     {
         $this->router = $router;
@@ -34,11 +45,23 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         $this->userManager = $userManager;
     }
 
+    /**
+     * @param Request        $request
+     * @param TokenInterface $token
+     *
+     * @return RedirectResponse
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         return $this->processAuthSuccess($request, $token->getUser());
     }
 
+    /**
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return RedirectResponse
+     */
     public function processAuthSuccess(Request $request, User $user)
     {
         if ($request->cookies->has(ReferralService::REFERRAL_CODE)) {
@@ -71,11 +94,7 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             $requestParams = $session->get('request_params');
             $request->getSession()->remove('request_params');
 
-            if ($request->query->has('exception_login') || $session->has('login_by_provider')) {
-                if ($session->has('login_by_provider')) {
-                    $request->getSession()->remove('login_by_provider');
-                }
-
+            if ($request->query->has('exception_login') || $request->cookies->has('bye-event')) {
                 $url = $referrer;
                 if ('event_pay' === $requestParams['_route']) {
                     $response = new RedirectResponse($url);

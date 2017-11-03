@@ -22,12 +22,14 @@ security:
                 oauth_user_provider:
                     service: app.provider.oauth
                 success_handler: user.handler.login_handler
+
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
                 remember_me: true
                 use_referer: true
                 success_handler: user.handler.login_handler
+
             entry_point: user.login_entry_point
             remember_me:
                 key: %secret%

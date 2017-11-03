@@ -90,27 +90,37 @@ function paymentAfterLogin() {
     var e_slug = Cookies.get('event');
     if (e_slug) {
         Cookies.remove('event', { path: '/', http: false, secure : false });
+        Cookies.remove('bye-event', { path: '/', http: false, secure : false });
         setModalHeader(e_slug, 'buy');
         setPaymentHtml(e_slug);
     }
 }
 
 $(document).on('click', '.user-payment__remove', function () {
-        var elem = $(this);
-        var e_slug = $('#pay-form').data('event');
-        $.post(Routing.generate('remove_ticket_from_payment',
-            {
-                eventSlug: e_slug,
-                id: elem.data('ticket')
-            }),
-            function (data) {
-                if (data.result) {
-                    $('#pay-form').html(data.html);
-                    $('#payment-sums').html(data.paymentSums);
-                } else {
-                    console.log('Error:'+data.error);
-                }
-            });
+    var elem = $(this);
+    var e_slug = $('#pay-form').data('event');
+    $.post(Routing.generate('remove_ticket_from_payment',
+        {
+            eventSlug: e_slug,
+            id: elem.data('ticket')
+        }),
+        function (data) {
+            if (data.result) {
+                $('#pay-form').html(data.html);
+                $('#payment-sums').html(data.paymentSums);
+            } else {
+                console.log('Error:'+data.error);
+            }
+        });
+});
+
+$(document).on('click', '.social-login', function () {
+    var elem = $(this);
+    if (elem.hasClass('bye-after-login')) {
+        Cookies.set('bye-event', 'event');
+    } else {
+        Cookies.remove('bye-event', { path: '/', http: false, secure : false });
+    }
 });
 
 $(document).on('click', '.add-wants-visit-event', function () {
