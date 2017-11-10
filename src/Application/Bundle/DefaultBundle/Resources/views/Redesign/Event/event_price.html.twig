@@ -8,7 +8,9 @@
             {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}
         {% endfor %}
         </div>
+        {% if event.useDiscounts %}
         <div class="price-list__hint"> {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;</div>
+        {% endif %}
     </div>
 </section>
 <!--END price-list-->

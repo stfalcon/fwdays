@@ -25,7 +25,7 @@ class EventController extends Controller
      *
      * @Route("/events", name="events")
      *
-     * @Template("ApplicationDefaultBundle:Redesign:events.html.twig")
+     * @Template("@ApplicationDefault/Redesign/Event/events.html.twig")
      *
      * @return array
      */
@@ -53,7 +53,7 @@ class EventController extends Controller
      *
      * @param string $eventSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:event.html.twig")
+     * @Template("@ApplicationDefault/Redesign/Event/event.html.twig")
      *
      * @return array
      */
@@ -70,7 +70,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign:event_price.html.twig")
+     * @Template("@ApplicationDefault/Redesign/Event/event_price.html.twig")
      *
      * @return array
      */

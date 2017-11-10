@@ -34,7 +34,7 @@ class TicketController extends Controller
 
         $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData($user, $event, $position, $ticketCost);
 
-        return $this->render('@ApplicationDefault/Redesign/event.ticket.status.html.twig', [
+        return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', [
             'class' => $result['class'],
             'caption' => $result['caption'],
             'href' => $result['href'],

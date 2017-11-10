@@ -53,10 +53,10 @@
         <div class="container">
             <div class="events__box">
                 {% for event in wannaVisit %}
-                    {% include '@ApplicationDefault/Redesign/event.card.html.twig' with {'event': event} %}
+                    {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
                 {% endfor %}
                 {% for ticket in tickets %}
-                    {% include '@ApplicationDefault/Redesign/event.card.html.twig' with {'event': ticket.event} %}
+                    {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': ticket.event} %}
                 {% endfor %}
             </div>
         </div>

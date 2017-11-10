@@ -59,7 +59,7 @@
         <div class="fix-event-header__title">{{ event.name }}</div>
     </div>
     <div class="fix-event-header__right">
-        {% include 'ApplicationDefaultBundle:Redesign:event.menu.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position': position} %}
+        {% include '@ApplicationDefault/Redesign/Event/event.menu.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position': position} %}
         {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_fix_header'}) %}
         {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_fix_header_mob'}) %}
     </div>

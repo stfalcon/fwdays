@@ -15,7 +15,7 @@
     <div class="container">
         <div class="events__box">
             {% for event in events %}
-                {% include '@ApplicationDefault/Redesign/event.card.html.twig' with {'event': event} %}
+                {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
             {% endfor %}
         </div>
         <a href="{{ path('events') }}" class="more-link events__more">{{ 'event.events.title'|trans }}</a>

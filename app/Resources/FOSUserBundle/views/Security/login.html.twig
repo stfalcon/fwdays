@@ -5,7 +5,7 @@
 <div class="form-box">
     <h2 class="h2 form-box__title">{{ 'menu.login'|trans }}</h2>
     {% if error %}
-        <div><p class="text-error">{{ error|trans }}</p></div>
+        <div><p class="text-error">{{ error|trans({},'FOSUserBundle') }}</p></div>
     {% endif %}
     {% include '@ApplicationDefault/Redesign/login_form.html.twig' with {'remodal':'', 'queryLink':'?'~app.request.queryString} %}
 </div>

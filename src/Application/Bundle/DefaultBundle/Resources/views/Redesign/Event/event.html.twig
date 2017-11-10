@@ -1,7 +1,7 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
 {% block content %}
-    {% include '@ApplicationDefault/Redesign/event.header.html.twig' with {
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
     'event':event,
     'programPage':programPage,
     'venuePage':venuePage,
@@ -20,7 +20,7 @@
     </section>
     <!--END event-description-->
     <!--BEGIN speakers-->
-    {% include '@ApplicationDefault/Redesign/event.speakers.html.twig' with {'event':event} %}
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig' with {'event':event} %}
     <!--END speakers-->
     <!--BEGIN program-->
     {% if programPage %}
