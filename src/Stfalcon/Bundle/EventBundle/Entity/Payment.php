@@ -225,6 +225,9 @@ class Payment
      * @param string $status
      */
     // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
+    /**
+     * @param string $status
+     */
     public function setStatus($status)
     {
         $this->status = $status;
@@ -256,41 +259,65 @@ class Payment
         return $this->user;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param $createdAt
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param $updatedAt
+     */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @return bool
+     */
     public function isPaid()
     {
-        return self::STATUS_PAID == $this->getStatus();
+        return self::STATUS_PAID === $this->getStatus();
     }
 
+    /**
+     * @return bool
+     */
     public function isPending()
     {
-        return self::STATUS_PENDING == $this->getStatus();
+        return self::STATUS_PENDING === $this->getStatus();
     }
 
+    /**
+     * @return string
+     */
     public function getGate()
     {
         return $this->gate;
     }
 
+    /**
+     * @param $gate
+     */
     public function setGate($gate)
     {
         $this->gate = $gate;
@@ -307,6 +334,9 @@ class Payment
         return $string;
     }
 
+    /**
+     *
+     */
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);

@@ -29,15 +29,21 @@ class TicketCRUDController extends CRUDController
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
-        /**
-         * @var Payment $payment
-         */
-        if ($object instanceof Ticket && $payment = $object->getPayment() && $payment->isPaid()) {
-            $payment->removePaidTicket($object);
-        }
         $em = $this->getDoctrine()->getManager();
-        $em->flush();
-        $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
+        /**
+         * @var Ticket $ticket
+         */
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->find($id);
+
+        if ($ticket) {
+            $payment = $ticket->getPayment();
+            if ($payment && $payment->isPaid()) {
+                $payment->removePaidTicket($ticket);
+
+                $em->flush();
+                $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
+            }
+        }
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
