@@ -31,6 +31,7 @@ class PaymentAdmin extends Admin
             ->addIdentifier('id')
             ->add('amount')
             ->add('fwdaysAmount')
+            ->add('refundedAmount')
             ->add('status')
             ->add('user')
             ->add('tickets', 'string', array(
