@@ -203,7 +203,7 @@ $(document).ready(function () {
         messages: {
             required: Messages[locale].FIELD_REQUIRED,
             minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
             pattern: Messages[locale].CORRECT_PHONE
         }
     });
@@ -222,7 +222,7 @@ $(document).ready(function () {
         messages: {
             pattern: Messages[locale].CORRECT_NAME,
             minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
             required: Messages[locale].FIELD_REQUIRED,
         }
     });
@@ -233,7 +233,7 @@ $(document).ready(function () {
         messages: {
             pattern: Messages[locale].CORRECT_SURNAME,
             minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxLength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
+            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
             required: Messages[locale].FIELD_REQUIRED,
         }
     });
@@ -285,9 +285,9 @@ $(document).ready(function () {
                         $('#cancel-promo-code').click();
                     } else {
                         var validator = $('#payment').validate();
-                        errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
+                        var errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
                         validator.showErrors(errors);
-                        console.log('Error:' + data.error);
+                        // console.log('Error:' + data.error);
                     }
                 });
         }
@@ -312,9 +312,9 @@ $(document).ready(function () {
                         $('#cancel-add-user').click();
                     } else {
                         var validator = $('#payment').validate();
-                        errors = { payment_user_name: data.error };
+                        var errors = { payment_user_name: data.error };
                         validator.showErrors(errors);
-                        console.log('Error:' + data.error);
+                        // console.log('Error:' + data.error);
                     }
                 });
         }
