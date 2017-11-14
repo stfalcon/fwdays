@@ -172,7 +172,6 @@ class Event implements Translatable
      *
      * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
      */
-    // @todo переименовать в Price
     protected $cost;
 
     /**

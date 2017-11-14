@@ -278,8 +278,9 @@ class TicketService
                 if ($isMob) {
                     $caption = $translator->trans('ticket.mob_status.pay');
                 } elseif ('price_block' === $position) {
-                    $caption = $translator->trans('ticket.status.pay_for').' '.$translator->trans('payment.price', ['%summ%' => number_format($ticketCost->getAmount(), 0, ',', ' ')]);
-                    if ($ticketCost->getAltAmount()) {
+                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getCost();
+                    $caption = $translator->trans('ticket.status.pay_for').' '.$translator->trans('payment.price', ['%summ%' => number_format($amount, 0, ',', ' ')]);
+                    if ($ticketCost && $ticketCost->getAltAmount()) {
                         $caption .= '<span class="cost__dollars">'.$ticketCost->getAltAmount().'</span>';
                     }
                 } else {

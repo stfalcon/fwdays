@@ -144,6 +144,7 @@ ticket.print.ticket.text3: Best regards,<br> %event_name% organizers
 ticket.status.download: download ticket
 ticket.mob_status.download: Download
 ticket.status.pay: Buy ticket
+ticket.title: ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
 ticket.summ_from: Tickets from %summ% grn

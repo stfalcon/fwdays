@@ -138,6 +138,7 @@ ticket.print.ticket.text3: 'З повагою,<br> Організатори %eve
 ticket.status.download: Отримати квиток
 ticket.mob_status.download: Скачати
 ticket.status.pay: Купити квиток
+ticket.title: квиток
 ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
 ticket.summ_from: Квитки від %summ% грн
