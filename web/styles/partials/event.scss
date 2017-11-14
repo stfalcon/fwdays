@@ -214,6 +214,7 @@
 .speaker-card {
   position: relative;
   height: 236px;
+  overflow: hidden;
 
   &:after {
     position: absolute;
@@ -225,7 +226,7 @@
 
   @media (min-width: 1025px) {
     &:hover {
-      margin-top: -20px;
+      transform: translateY(-20px);
       background-color: $white-color;
       overflow: visible;
       z-index: 1;
