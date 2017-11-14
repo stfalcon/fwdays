@@ -18,6 +18,7 @@ class Version20171113123043 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE event__mails ADD wants_visit_event TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE payments ADD refunded_amount NUMERIC(10, 2) DEFAULT NULL');
     }
 
@@ -29,6 +30,7 @@ class Version20171113123043 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE event__mails DROP wants_visit_event');
         $this->addSql('ALTER TABLE payments DROP refunded_amount');
     }
 }
