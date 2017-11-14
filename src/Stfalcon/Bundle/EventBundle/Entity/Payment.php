@@ -148,15 +148,21 @@ class Payment
     /**
      * @param Ticket $ticket
      *
-     * @return false
+     * @return bool
      */
     public function removeTicket(Ticket $ticket)
     {
+        if ($ticket->isPaid()) {
+            return $this->removePaidTicket($ticket);
+        }
+
         return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
     }
 
     /**
      * @param Ticket $ticket
+     *
+     * @return bool
      */
     public function removePaidTicket(Ticket $ticket)
     {
@@ -165,8 +171,11 @@ class Payment
                 $this->refundedAmount += $ticket->getAmount();
             }
             $ticket->setPayment(null);
-            $this->tickets->removeElement($ticket);
+
+            return $this->tickets->removeElement($ticket);
         }
+
+        return false;
     }
 
     /**
@@ -225,6 +234,7 @@ class Payment
      * @param string $status
      */
     // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
+
     /**
      * @param string $status
      */
@@ -334,9 +344,6 @@ class Payment
         return $string;
     }
 
-    /**
-     *
-     */
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);
