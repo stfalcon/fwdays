@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Class EventDateValidator
+ * Class EventDateValidator.
  */
 class EventDateValidator extends ConstraintValidator
 {
