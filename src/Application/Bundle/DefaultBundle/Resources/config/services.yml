@@ -14,3 +14,8 @@ services:
     app.url_for_redirect:
         class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
         arguments: ["@router", "%locales%"]
+
+    app.event.validator:
+        class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventDateValidator
+        tags:
+            - { name: validator.constraint_validator, alias: event }

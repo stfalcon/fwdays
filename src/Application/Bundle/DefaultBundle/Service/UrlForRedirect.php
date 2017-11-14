@@ -23,7 +23,7 @@ class UrlForRedirect
         $this->router = $router;
 
         $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], true);
-        $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', [], true);
+        $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', [], true), '\/');
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], true);
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
 
@@ -32,7 +32,8 @@ class UrlForRedirect
         foreach ($locales as $locale) {
             $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
             $this->homePages[] = $router->generate('cabinet', ['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('fos_user_registration_register', ['_locale' => $locale], true);
+
+            $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', ['_locale' => $locale], true), '\/');
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
         }
