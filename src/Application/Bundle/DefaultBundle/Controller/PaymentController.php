@@ -303,8 +303,10 @@ class PaymentController extends Controller
             $paymentId = $this->get('session')->get('active_payment_id');
             $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
         }
+
         if ($removeTicket instanceof Ticket) {
-            $payment = $payment && $removeTicket->getUser() === $this->getUser() ? $payment : null;
+            $payment = $payment && ($removeTicket->getUser() === $this->getUser() ||
+                $payment->getUser() === $this->getUser()) ? $payment : null;
         } else {
             $payment = $payment && $payment->getUser() === $this->getUser() ? $payment : null;
         }
