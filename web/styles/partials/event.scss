@@ -364,6 +364,7 @@
   margin-bottom: 26px;
   margin-left: 90px;
   height: 72px;
+  transform: translate3d(0,0,0);
 
   &__td {
     display: flex;
@@ -383,7 +384,7 @@
   right: 0;
   left: 0;
   margin: 0 auto;
-  width: 1120px;
+  max-width: 1120px;
 
   .program-header__td {
     &:first-child {
@@ -804,7 +805,7 @@
   height: 65px;
   opacity: 0;
   transition: 0.2s ease-in-out;
-  transform: translate(0, -20px);
+  transform: translate3d(0, -20px);
   align-items: center;
   justify-content: space-between;
 
@@ -881,7 +882,7 @@
 .fix-event-header--show {
   visibility: visible;
   opacity: 1;
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .event-menu {

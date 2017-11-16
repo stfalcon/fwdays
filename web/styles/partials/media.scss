@@ -1,3 +1,9 @@
+@media only screen and (max-width: 1167px) {
+  .program-header--fixed {
+    margin: 0 24px;
+  }
+}
+
 @media only screen and (max-width: 1150px) {
   .footer {
     flex-direction: column;
@@ -581,6 +587,7 @@
   .program-header--fixed {
     width: 100%;
     top: 18px;
+    margin: 0;
 
     .program-header__td {
       &:first-child {
