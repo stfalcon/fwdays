@@ -181,8 +181,7 @@ resetting:
             Hello %username%,
 
             You recently requested to reset your password.
-	        To complete your request, please click the link below:
-	        %confirmationUrl%
+            To complete your request, please click the link below: %confirmationUrl%
 
             Thanks,
             FWDays Team.
