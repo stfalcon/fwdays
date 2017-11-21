@@ -55,11 +55,11 @@ class UrlForRedirect
         }
 
         if (in_array($clearReferrer, $this->authorizationUrls)) {
-            return $this->router->generate('homepage');
+            return $this->router->generate('cabinet');
         }
 
         if (!empty($host) && false === strpos($clearReferrer, $host)) {
-            return $this->router->generate('homepage');
+            return $this->router->generate('cabinet');
         }
 
         return $referralUrl;

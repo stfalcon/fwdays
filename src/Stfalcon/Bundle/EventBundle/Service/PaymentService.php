@@ -15,10 +15,10 @@ use Application\Bundle\UserBundle\Entity\User;
 class PaymentService
 {
     /**
-     * @var Container $container
+     * @var Container
      */
     protected $container;
-    /** @var $em EntityManager  */
+    /** @var $em EntityManager */
     protected $em;
 
     /**
@@ -31,9 +31,10 @@ class PaymentService
     }
 
     /**
-     * Create payment for current user ticket
+     * Create payment for current user ticket.
      *
      * @param Ticket $ticket
+     *
      * @return Payment
      */
     public function createPaymentForCurrentUserWithTicket($ticket)
@@ -48,8 +49,9 @@ class PaymentService
 
         return $payment;
     }
+
     /**
-     * додаем тикет до оплати
+     * додаем тикет до оплати.
      *
      * @param Payment $payment
      * @param Ticket  $ticket
@@ -62,8 +64,9 @@ class PaymentService
             $this->recalculatePaymentAmount($payment);
         }
     }
+
     /**
-     * видаляем тикет з оплати
+     * видаляем тикет з оплати.
      *
      * @param Payment $payment
      * @param Ticket  $ticket
@@ -78,34 +81,37 @@ class PaymentService
     }
 
     /**
-     * Recalculate amount of payment
+     * Recalculate amount of payment.
+     *
      * @param Payment $payment
      */
     public function recalculatePaymentAmount($payment)
     {
         $paymentAmount = 0;
         $paymentAmountWithoutDiscount = 0;
-        /** @var Ticket $ticket*/
+        /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             $paymentAmount += $ticket->getAmount();
             $paymentAmountWithoutDiscount += $ticket->getAmountWithoutDiscount();
         }
-        $payment->setAmount($paymentAmount - $payment->getFwdaysAmount());
+        $payment->setAmount($paymentAmount);
         $payment->setBaseAmount($paymentAmountWithoutDiscount);
-
+        $this->payByReferralMoney($payment);
         $this->em->flush();
     }
 
     /**
-     * Get promo code from tickets if it have
+     * Get promo code from tickets if it have.
+     *
      * @param Payment $payment
+     *
      * @return null|PromoCode
      */
     public function getPromoCodeFromPaymentTickets($payment)
     {
         $promoCode = null;
         foreach ($payment->getTickets() as $ticket) {
-            /** @var  Ticket $ticket */
+            /** @var Ticket $ticket */
             if ($promoCode = $ticket->getPromoCode()) {
                 return $promoCode;
             }
@@ -115,8 +121,10 @@ class PaymentService
     }
 
     /**
-     * Get ticket number for payment
+     * Get ticket number for payment.
+     *
      * @param Payment $payment
+     *
      * @return int|void
      */
     public function getTicketNumberFromPayment($payment)
@@ -128,12 +136,13 @@ class PaymentService
             return $tickets->first()->getId();
         }
 
-        return ;
+        return;
     }
+
     /**
      * Add promo code for all tickets in payment
      * if ticket already not have discount and
-     * recalculate payment amount
+     * recalculate payment amount.
      *
      * @param Payment   $payment
      * @param PromoCode $promoCode
@@ -145,7 +154,7 @@ class PaymentService
         $notUsedPromoCode = [];
 
         $ticketService = $this->container->get('stfalcon_event.ticket.service');
-        /** @var  Ticket $ticket */
+        /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             if ($ticketService->isMustBeDiscount($ticket)) {
                 $ticketService->setTicketBestDiscount($ticket, $promoCode);
@@ -163,7 +172,7 @@ class PaymentService
 
     /**
      * Пересчитываем итоговую сумму платежа по всем билетам
-     * с учетом скидки
+     * с учетом скидки.
      *
      * @param Payment $payment
      * @param Event   $event
@@ -196,7 +205,7 @@ class PaymentService
     }
 
     /**
-     * Check ticket costs as sold
+     * Check ticket costs as sold.
      *
      * @param Payment $payment
      */
@@ -206,14 +215,16 @@ class PaymentService
             /** @var Ticket $ticket */
             foreach ($payment->getTickets() as $ticket) {
                 $ticketCost = $ticket->getTicketCost();
-                $ticketCost->incSoldCount();
+                if ($ticketCost) {
+                    $ticketCost->incSoldCount();
+                }
             }
             $this->em->flush();
         }
     }
 
     /**
-     * Calculate using promocode
+     * Calculate using promocode.
      *
      * @param Payment $payment
      */
@@ -234,26 +245,53 @@ class PaymentService
     }
 
     /**
-     * Correct pay amount by user referral money
+     * Correct pay amount by user referral money.
      *
      * @param Payment $payment
      */
     public function payByReferralMoney(Payment $payment)
     {
         /* @var  User $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
-        if ($user->getBalance() > 0) {
+        $user = $payment->getUser();
+        if ($user instanceof User && $user->getBalance() > 0) {
             $amount = $user->getBalance() - $payment->getAmount();
             if ($amount < 0) {
                 $payment->setAmount(-$amount);
                 $payment->setFwdaysAmount($user->getBalance());
             } else {
-                $payment->setAmount(0);
                 $payment->setFwdaysAmount($payment->getAmount());
-//                $payment->markedAsPaid();
-//                $this->container->get('stfalcon_event.referral.service')->utilizeBalance($payment);
+                $payment->setAmount(0);
             }
             $this->em->flush();
         }
+    }
+
+    /**
+     * set payment paid if have referral money.
+     *
+     * @param Payment $payment
+     * @param Event   $event
+     *
+     * @return bool
+     */
+    public function setPaidByReferralMoney(Payment $payment, Event $event)
+    {
+        $result = false;
+        $this->checkTicketsPricesInPayment($payment, $event);
+        if ($payment->isPending() && 0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
+            $payment->markedAsPaid();
+            $payment->setGate('fwdays-amount');
+
+            $referralService = $this->container->get('stfalcon_event.referral.service');
+            $referralService->utilizeBalance($payment);
+
+            $this->setTicketsCostAsSold($payment);
+            $this->calculateTicketsPromocode($payment);
+
+            $this->em->flush();
+            $result = true;
+        }
+
+        return $result;
     }
 }

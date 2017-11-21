@@ -1,8 +1,10 @@
-{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
-    <a href="#" data-review="{{ review.slug }}" class="like-btn__action like-btn-js">{{ 'review.wonna.listen'|trans }}</a>
-{% else %}
-    <a data-remodal-target="modal-signin" href="#" class="like-btn__action">{{ 'review.wonna.listen'|trans }}</a>
+{% if review.event.isActiveAndFuture %}
+    {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+        <a href="#" data-review="{{ review.slug }}" class="like-btn__action like-btn-js">{{ 'review.wonna.listen'|trans }}</a>
+    {% else %}
+        <a data-remodal-target="modal-signin" href="#" class="like-btn__action">{{ 'review.wonna.listen'|trans }}</a>
+    {% endif %}
+    <div class="like-btn__amount" data-review="{{ review.slug }}">
+        <i class="icon-like like-btn__icon"></i>{{ review.likedUsers.count?review.likedUsers.count }}
+    </div>
 {% endif %}
-<div class="like-btn__amount" data-review="{{ review.slug }}">
-    <i class="icon-like like-btn__icon"></i>{{ review.likedUsers.count?review.likedUsers.count }}
-</div>

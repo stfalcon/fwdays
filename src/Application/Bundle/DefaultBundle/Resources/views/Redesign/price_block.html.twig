@@ -6,7 +6,7 @@
         <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
     </div>
     <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
-        {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
+        {% if ticket.altAmount %}<span class="cost__dollars"> {{ ticket.altAmount }}</span>{% endif %}
     </div>
 </div>
 {% elseif currentPrice < ticket.amount %}
@@ -18,7 +18,7 @@
         <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
     {% endif %}
     <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
-        {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
+        {% if ticket.altAmount %}<span class="cost__dollars"> {{ ticket.altAmount }}</span>{% endif %}
     </div>
 </div>
 {% else %}
@@ -32,7 +32,7 @@
     {% endif %}
 
     <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
-        {% if ticket.altAmount %}<span class="cost__dollars">{{ ticket.altAmount }}</span>{% endif %}
+        {% if ticket.altAmount %}<span class="cost__dollars"> {{ ticket.altAmount }}</span>{% endif %}
     </div>
     {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block', 'ticketCost':ticket }) %}
     {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob', 'ticketCost':ticket}) %}

@@ -60,8 +60,6 @@ class TicketCostRepository extends EntityRepository
         $qb = $this->createQueryBuilder('tc');
         $qb->where('tc.event = :event')
             ->andWhere('tc.enabled = 1')
-            ->andWhere('tc.count > 0')
-            ->andWhere('tc.count > tc.soldCount')
             ->setParameter(':event', $event)
             ->orderBy('tc.amount');
         $query = $qb->getQuery();

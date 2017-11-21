@@ -53,6 +53,11 @@ class TicketService
         $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
             ->findPaidPaymentsForUser($ticket->getUser());
 
+        if (0 === count($paidPayments)) {
+            $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
+                ->findPaidPaymentsForUserInPayment($ticket->getUser());
+        }
+
         return count($paidPayments) > 0 && $ticket->getEvent()->getUseDiscounts();
     }
 
@@ -281,7 +286,7 @@ class TicketService
                     $amount = $ticketCost ? $ticketCost->getAmount() : $event->getCost();
                     $caption = $translator->trans('ticket.status.pay_for').' '.$translator->trans('payment.price', ['%summ%' => number_format($amount, 0, ',', ' ')]);
                     if ($ticketCost && $ticketCost->getAltAmount()) {
-                        $caption .= '<span class="cost__dollars">'.$ticketCost->getAltAmount().'</span>';
+                        $caption .= '<span class="cost__dollars"> '.$ticketCost->getAltAmount().'</span>';
                     }
                 } else {
                     $caption = $translator->trans('ticket.status.pay');

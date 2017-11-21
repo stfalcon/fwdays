@@ -123,7 +123,8 @@ class PaymentAdmin extends Admin
                 ->add('gate', 'choice', array(
                     'choices'   => array(
                         'interkassa'   => 'interkassa',
-                        'admin' => 'admin'
+                        'admin' => 'admin',
+                        'fwdays-amount' => 'fwdays-amount',
                     )
                 ))
                 ->add('user')

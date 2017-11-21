@@ -30,22 +30,27 @@ function popupwindow(url, title, w, h) {
     return window.open(url, title, 'width='+w+', height='+h+', top='+top+', left='+left);
 }
 
+function setPaymentHtmlbyData(data, e_slug) {
+    $('#payment').attr('action', data.form_action);
+    $('#pay-form').html(data.html).data('event', e_slug);
+    $('#payment-sums').html(data.paymentSums);
+    $('#cancel-promo-code').click();
+    $('#cancel-add-user').click();
+    $('#user_phone').val(data.phoneNumber);
+    if (!data.is_user_create_payment) {
+        $('#add-user-trigger').hide();
+        $('#promo-code-trigger').hide();
+    }
+}
+
 function setPaymentHtml(e_slug) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: Routing.generate('event_pay', {eventSlug: e_slug}),
         success: function (data) {
             if (data.result) {
-                $('#pay-form').html(data.html).data('event', e_slug);
-                $('#payment-sums').html(data.paymentSums);
-                $('#cancel-promo-code').click();
-                $('#cancel-add-user').click();
-                $('#user_phone').val(data.phoneNumber);
-                if (!data.is_user_create_payment) {
-                    $('#add-user-trigger').hide();
-                    $('#promo-code-trigger').hide();
-                }
+                setPaymentHtmlbyData(data, e_slug);
                 if (!detectmob()) {
                     inst.open();
                 }
@@ -106,8 +111,7 @@ $(document).on('click', '.user-payment__remove', function () {
         }),
         function (data) {
             if (data.result) {
-                $('#pay-form').html(data.html);
-                $('#payment-sums').html(data.paymentSums);
+                setPaymentHtmlbyData(data, e_slug)
             } else {
                 console.log('Error:'+data.error);
             }
@@ -280,9 +284,7 @@ $(document).ready(function () {
             $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), eventSlug: e_slug}),
                 function (data) {
                     if (data.result) {
-                        $('#pay-form').html(data.html);
-                        $('#payment-sums').html(data.paymentSums);
-                        $('#cancel-promo-code').click();
+                        setPaymentHtmlbyData(data, e_slug);
                     } else {
                         var validator = $('#payment').validate();
                         var errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
@@ -307,9 +309,7 @@ $(document).ready(function () {
                 }),
                 function (data) {
                     if (data.result) {
-                        $('#pay-form').html(data.html);
-                        $('#payment-sums').html(data.paymentSums);
-                        $('#cancel-add-user').click();
+                        setPaymentHtmlbyData(data, e_slug);
                     } else {
                         var validator = $('#payment').validate();
                         var errors = { payment_user_name: data.error };

@@ -22,7 +22,7 @@ class EventDateValidator extends ConstraintValidator
                 $this->context
                     ->addViolation(
                         sprintf(
-                            'Повина бути заповнення хотяб одна дата початку події!'
+                            'Повинна бути заповнена хоча б одна дата події у відповідному полі!'
                         )
                     );
 

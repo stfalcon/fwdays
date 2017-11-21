@@ -24,7 +24,6 @@ class PaymentController extends Controller
      * Event pay.
      *
      * @Route("/event/{eventSlug}/pay", name="event_pay",
-     *     methods={"POST"},
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
@@ -73,7 +72,6 @@ class PaymentController extends Controller
 
         if ($payment->isPending()) {
             $paymentService->checkTicketsPricesInPayment($payment, $event);
-            $paymentService->payByReferralMoney($payment);
         }
 
         $this->get('session')->set('active_payment_id', $payment->getId());
@@ -113,6 +111,11 @@ class PaymentController extends Controller
 
         if (!$promoCode) {
             return new JsonResponse(['result' => false, 'error' => 'Promo-code not found!', 'html' => '']);
+        }
+
+        if ($payment->isPending()) {
+            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService->checkTicketsPricesInPayment($payment, $event);
         }
 
         return $this->getPaymentHtml($event, $payment, $promoCode);
@@ -240,6 +243,34 @@ class PaymentController extends Controller
     }
 
     /**
+     * Pay for payment by referral amount.
+     *
+     * @Route("/event/{eventSlug}/pay-by-referral", name="event_pay_by_referral")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
+     * @param Event $event
+     *
+     * @return Response
+     */
+    public function setPaidByReferralMoneyAction(Event $event)
+    {
+        $result = false;
+        $payment = $this->getPaymentIfAccess();
+
+        if ($payment && $payment->isPending()) {
+            $paymentService = $this->get('stfalcon_event.payment.service');
+            $result = $paymentService->setPaidByReferralMoney($payment, $event);
+        }
+
+        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+
+        return $this->redirect($redirectUrl);
+    }
+
+    /**
      * Get payment html for popup.
      *
      * @param Event     $event
@@ -276,6 +307,8 @@ class PaymentController extends Controller
          * @var User
          */
         $user = $this->getUser();
+        $formAction =  (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
+            $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://sci.interkassa.com/';
 
         return new JsonResponse([
             'result' => true,
@@ -285,6 +318,7 @@ class PaymentController extends Controller
             'notUsedPromoCode' => $notUsedPromoCode,
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
+            'form_action' => $formAction,
         ]);
     }
 
