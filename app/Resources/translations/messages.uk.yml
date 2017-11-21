@@ -1,6 +1,6 @@
 menu.events.my: Мої події
-menu.user.info: Особиста інфомація
-menu.referral.title: Запроси друзів
+menu.user.info: Особиста інформація
+menu.referral.title: Запити друзів
 menu.check.ticket.bynumber: Перевірка квитка за номером
 menu.logout: Вихід
 menu.user.registration: Реєстрація
@@ -13,31 +13,31 @@ main.menu.contacts: Контакти
 main.menu.partners: Партнери
 main.menu.about_event: Про подію
 main.menu.speakers: Доповідачі
-main.menu.participants: Участники
+main.menu.participants: Учасники
 main.menu.cabinet: Кабінет
 email: email
 madeby: 'Зроблено в '
 tweets.text: Твіти користувача @fwdays
-page.error.notfound: Страница не найдена
-page.error.notfound.error: Ошибка 404
-page.error.notfound.message: Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.
-page.error.notfound.you_can: 'Вы можете:'
-page.error.notfound.you_can1: Вернуться на главную
-page.error.notfound.you_can2: Перейти в любой раздел сайта через верхнее меню
-sponsor.and.partners: Спонсоры и партнеры
-sponsor.partners.title: Партнеры
-sponsor.partners.call_us: <a href="/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
-event.get_more_info: Узнать больше
-sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
-news.all: все новости
+page.error.notfound: Сторінка не знайдена
+page.error.notfound.error: Помилка 404
+page.error.notfound.message: Можливо, такої сторінки більше не існує або вона була видалена. <br />Будь ласка, перевірте коректність посілання.
+page.error.notfound.you_can: 'Ви можете:'
+page.error.notfound.you_can1: Повернутись на головну
+page.error.notfound.you_can2: Перейти в будь-який розділ сайту через меню
+sponsor.and.partners: Спонсори та партнери
+sponsor.partners.title: Партнери
+sponsor.partners.call_us: <a href="/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
+event.get_more_info: Дізнатися більше
+sponsor.partners.can_be_your_logo: Тут може<br> бути Ваш логотип
+news.all: Всі новини
 news.title: Новини
 event.get_more_info: Дізнатися більше
 events.past: Минулі події
 user.fullname.title: Ваше ім'я та прізвище
-user.name.title: Імя
+user.name.title: Ім'я
 user.surname.title: Прізвище
 user.email.title: Електронна пошта
-user.phone.title: Номер телефона
+user.phone.title: Номер телефону
 user.country.title: Країна
 user.city.title: Місто
 user.company.title: Компанія
@@ -49,64 +49,49 @@ user.forgot_password.title: Забули пароль?
 user.reset_password.caption: Скинути пароль
 user.reset_password.title: Скидання паролю
 user.change_password.title: Зміна паролю
-user.show_password.title: показати пароль
-user.remember_me.title: Запомнити мене
-user.by_user.title: Війдіть як користувач
-user.by_email.title: Або по почті
+user.show_password.title: Показати пароль
+user.remember_me.title: Запам'ятати мене
+user.by_user.title: Увійдіть як користувач
+user.by_email.title: Або поштою
 user.create.title: Створити аккаунт
 user.already_have_account.title: У мене вже є обліковий запис
-speaker.about: про доповідача
-pay.i_have_promo.title: У мени є промокод
+speaker.about: Про доповідача
+pay.i_have_promo.title: У мене є промокод
 pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
-pay.bonus.bold.title: 'Ваші бонусы fwdays: <b>%sum% грн</b>'
-pay.sum_for_pay.bold.title: 'К оплате: <b>%sum% грн</b>'
+pay.bonus.bold.title: 'Ваші бонуси fwdays: <b>%sum% грн</b>'
+pay.sum_for_pay.bold.title: 'До сплати: <b>%sum% грн</b>'
 event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
-tickets.other.title: всі інші квитки
+tickets.other.title: Всі інші квитки
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
 sponsor.partners.title: Партнери
 sponsor.partners.call_us: <a href="/page/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
 sponsor.and.partners: Спонсори та партнери
-share_contact.text: __share_contact.text
-share_contact.agree: __share_contact.agree
-share_contact.not_agree: __share_contact.not_agree
-share_contact.title: __share_contact.title
-add_user.company: __add_user.company
-add_user.city: __add_user.city
-add_user.price: __add_user.price
-add_user.user_list: __add_user.user_list
-image.home.title: Series of high-caliber developer events in Ukraine
-image.home.description: Since 2007, more then 30 events
-video.description.text: '<p> Ми традиційно обрали для вас усі актуальні та корисні теми доповідей від відомих іноземних та українських ексертів з великим практичним досвідом роботи. </p> <p> На вас чекають доповіді в три потоки, спілкування зі спікерами, перерви на смачні кава-брейки та поживний обід. </p>'
+
+image.home.title: Якісні заходи для розробників і менеджерів в Україні
+image.home.description: Організовано більше 30 заходів з 2011 року
+video.description.text: '<p>Ми обираємо корисні теми доповідей від іноземних та українських експертів.</p> <p>На вас чекають  три потоки лекцій, спілкування зі спікерами та учасниками, перерви на смачні кава-паузи і обід.</p>'
 our.youtube.channel: Наш YouTube канал
-more.gallery.link: Все галереи на Flickr
+more.gallery.link: Більше фото на Flickr
 in.lang.link: In English
-ticket.status.event_done: Событие состоялось
-ticket.status.event_done_mob: состоялось
-referral.program.conditions.title: Умови програмы
-referral.program.conditions.text: Получайте по %referal_bonus% ₴ за каждую покупку билета по вашей ссылке. Используйте бонусы при покупке билетов на наши мероприятия.
+ticket.status.event_done: Подія відбулась
+ticket.status.event_done_mob: Відбулась
+referral.program.conditions.title: Умови програми
+referral.program.conditions.text: Отримуйте по %referal_bonus% грн за кожну купівлю білета за вашим посиланням. Використовуйте ці бонуси під час купівлі білетів на наші наступні івенти.
 referral.share.title: Поділитись
 referral.link.copied: Скопійовано
 popup.header.title: Оплата участі в конференції %event_name%
 popup.header_reg.title: Реєстрація на конференцію %event_name%
-cancel.title: Отмена
+cancel.title: Відміна
 add.title: Додати
-Dashboard: __Dashboard
-parcipiant.list.all: __parcipiant.list.all
-parcipiant.speakers.title: __parcipiant.speakers.title
-parcipiant.title: __parcipiant.title
+
 review.wonna.listen: Хочу послухати
-speaker.list.all: __speaker.list.all
+
 speaker.title: Спікери
-speaker.review.title: __speaker.review.title
-ticket.email.waitfornews: __ticket.email.waitfornews
-ticket.email.unsubscribe: __ticket.email.unsubscribe
-ticket.email.team: __ticket.email.team
-news.to_the_list: __news.to_the_list
-news.title: __news.title
-interkassa.payment.fail: Не вдалося провести платіж!
+
+interkassa.payment.fail: Не вдалося провести оплату!
 interkassa.payment.fail.back: Будь ласка, поверніться на сторінку оплати квитка і спробуйте ще раз.
 interkassa.mail.msg.hello: Вітаємо, <br/>%user_fullname%.
 interkassa.mail.msg.thanks: Дякуємо Вам за оплату участі у конференції %event_name%.
@@ -114,74 +99,66 @@ interkassa.mail.msg.remember: Нагадуємо, що конференція в
 interkassa.mail.msg.remember1: року,
 interkassa.mail.msg.ticket: Ваш квиток знаходиться у вкладенні.
 interkassa.payment.success: Оплата пройшла успішно!
-interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також, Ви можете скачати квиток на сторінці
+interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також Ви можете завантажити квиток на сторінці
 interkassa.payment.pending: Оплата ще не завершена!
 interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
-events.my: __events.my
-event.detail.info2: __event.detail.info2
-event.about: __event.about
+
 event.events.title: Інші події
 events.future: Майбутні події
-event.detail.info1: __event.detail.info1
-event.page.program: Програма
+t.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися
 event_cost.title: Вартість участі
 ticket.dear_user: Шановний учасник <b>%user_name%</b>,
 ticket.wait_for_you: 'чекаємо на Вас:'
 ticket.city: м. %city_name%,
-ticket.registration.begin: Реєстрація починається в
+ticket.registration.begin: Реєстрація починається о(об)
 ticket.event.programm: 'Програма конференції:'
 ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це запрошення і візьміть його з собою - це Ваш квиток на %event_name%.'
 ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
 ticket.status.download: Отримати квиток
-ticket.mob_status.download: Скачати
+ticket.mob_status.download: Завантажити
 ticket.status.pay: Купити квиток
-ticket.title: квиток
 ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
 ticket.summ_from: Квитки від %summ% грн
-ticket.status.event.add: __ticket.status.event.add
+
 ticket.status.paid: Участь сплачено
 ticket.status.paid_mob: сплачено
-ticket.status.take_apart: Зареєструватися
+ticket.status.take_apart: Зареєструватись
 ticket.status.not_take_apart : Відписатись
-referral.invaite.title: __referral.invaite.title
-referral.invaite.title2: Приглашайте друзів і накопичте бонуси
-referral.invaite.text1: __referral.invaite.text1
-referral.invaite.text2: __referral.invaite.text2
-referral.balance: __referral.balance
+referral.invaite.title2: Запрошуйте друзів та накопичуйте бонуси
+
 referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
-delete: __delete
+
 payment.price: '%summ% грн'
-payment.discount.cupon: (знижка %summ%% по купону)
+payment.discount.cupon: (знижка %summ%% за купоном)
 payment.discount.member: (знижка %summ%% постійного учасника)
-pay.event.title: __pay.event.title
+
 pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
-pay.event.members_already_paid: __pay.event.members_already_paid
-pay.event.members_without_dicount: __pay.event.members_without_dicount
-pay.event.cupon: Купон на знижку:
-news_and_anonce.title: __news_and_anonce.title
-contact_info.title: Контактна інформація
+
+pay.event.cupon: 'Купон на знижку:'
+
+contact_info.title: Контакти
 candidate.speaker.title: На розгляді
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
-error.name.not_number: "І'мя не може містити цифри"
+error.name.not_number: "Ім'я не може містити цифри"
 error.surname.not_number: 'Прізвище не може містити цифри'
 
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
-contacts.partners.title: Питання інфопартнерства, мітапи і майстер-класи
+contacts.partners.title: Питання інфопартнерства, мітапів, майстер-класів
 contacts.organization.title: 'Організатори:'
-contacts.address.title: 'Адреса:'
-contacts.facebook.title: 'Facebook спільнота:'
+contacts.address.title: 'Адреса'
+contacts.facebook.title: 'Facebook'
 contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
-contacts.person.lara: Лара Лукьянюк
+contacts.person.lara: Лара Лук’янюк
 
 fos_user.password.mismatch: Невідповідність нового пароля
 'Bad credentials.': 'Невірна електронна адреса або пароль'
@@ -189,7 +166,7 @@ fos_user.password.mismatch: Невідповідність нового паро
 
 mail.unsubscribe.no_more_news: Ми більше не будемо надсилати Вам новини Framework Days
 mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете
-mail.unsubscribe.you_can_suscribe2: підписатися заново
+mail.unsubscribe.you_can_suscribe2: Підписатися знову
 mail.subcribe: Ви підписані на новини Framework Days
 
 resetting:
@@ -197,7 +174,7 @@ resetting:
         message: |
             Вітаємо %username%!
 
-            Для скидання пароля - будь ласка, перейдіть за посиланням %confirmationUrl%
+            Для скидання пароля, будь ласка, перейдіть за посиланням %confirmationUrl%
 
             З найкращими побажаннями,
             команда сайту.
