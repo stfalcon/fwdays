@@ -14,7 +14,7 @@ Messages =
 
         'uk':
             {
-                PROMO_NOT_VALID:'Не вірний промокод',
+                PROMO_NOT_VALID:'Невірний промокод',
                 FIELD_REQUIRED:'Це поле є обов\'язковим.',
                 CORRECT_NAME:"Вкажіть правильне і'мя.",
                 CORRECT_SURNAME:'Вкажіть правильне прізвище.',
