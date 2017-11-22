@@ -103,7 +103,7 @@ interkassa.payment.success.emailsend: На ваш e-mail надіслано по
 interkassa.payment.pending: Оплата ще не завершена!
 interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
 
-event.events.title: Інші події
+event.events.title: Всі події
 events.future: Майбутні події
 t.page.program: Програма
 event.page.venue: Місце проведення
