@@ -175,7 +175,7 @@ class User extends BaseUser
      *
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      * @Assert\Regex(
-     *     pattern="/\+[1-9]{1}[0-9]{11,14}$/i",
+     *     pattern="/\+[1-9]{1}[0-9]{10,14}$/i",
      *     match=true,
      *     message="error.phone_bad_format"
      * )
