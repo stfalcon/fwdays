@@ -506,15 +506,21 @@
     height: 45px;
     padding-left: 1px;
 
+    &__left {
+      padding-left: 16px;
+    }
+
     &__trigger-menu {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
       width: 45px;
       height: 45px;
       cursor: pointer;
       transition: 0.2s ease-in-out;
+      margin-left: -16px;
 
       .icon-arrow {
         margin-top: -8px;
