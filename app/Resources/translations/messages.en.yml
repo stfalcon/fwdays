@@ -79,7 +79,7 @@ tickets.other.title: other tickets
 sold_out.title: Sold out
 
 image.home.title: High-caliber events for developers and PMs in Ukraine
-image.home.description: More than 30 events, since 2007
+image.home.description: More than 30 events, since 2011
 video.description.text: "<p> As usual, we’ve chosen for you the most current and useful topics from foreign and Ukrainian experts with great practical experience. </p> <p> 3 tracks of lectures, communication with speakers, delicious coffee breaks and a nutritious lunch are waiting for you. </p><p></p>"
 our.youtube.channel: Our YouTube channel
 more.gallery.link: All photos on Flickr
@@ -94,7 +94,7 @@ popup.header.title: Pay for event %event_name%
 popup.header_reg.title: Registration for the event %event_name%
 cancel.title: Cancel
 add.title: Add
-
+ticket.title: ticket
 review.wonna.listen: Wanna listen
 
 speaker.title: Speakers
