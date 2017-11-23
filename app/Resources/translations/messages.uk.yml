@@ -31,7 +31,6 @@ event.get_more_info: Дізнатися більше
 sponsor.partners.can_be_your_logo: Тут може<br> бути Ваш логотип
 news.all: Всі новини
 news.title: Новини
-event.get_more_info: Дізнатися більше
 events.past: Минулі події
 user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Ім'я
@@ -105,7 +104,7 @@ interkassa.payment.pending.wait: Будь ласка, зачекайте ще т
 
 event.events.title: Всі події
 events.future: Майбутні події
-t.page.program: Програма
+event.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися
 event_cost.title: Вартість участі
@@ -161,8 +160,8 @@ contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лук’янюк
 
 fos_user.password.mismatch: Невідповідність нового пароля
-'Bad credentials.': 'Невірна електронна адреса або пароль'
-'User account is disabled.': 'Обліковий запис не активовано'
+Bad credentials.: 'Невірна електронна адреса або пароль'
+User account is disabled.: 'Обліковий запис не активовано'
 
 mail.unsubscribe.no_more_news: Ми більше не будемо надсилати Вам новини Framework Days
 mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете

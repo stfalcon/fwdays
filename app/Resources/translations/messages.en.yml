@@ -132,11 +132,8 @@ ticket.status.take_apart: Register
 ticket.status.not_take_apart : Unsubscribe
 referral.invaite.title: Invite friends
 referral.invaite.title2: Invite your friends and collect bonuses!
-
 referral.invaite.link.text: your referral link
-
 referral.balance.redesign: 'Your balance: %user_balance% UAH'
-
 
 payment.price: '%summ% UAH'
 payment.discount.cupon: (coupon discount %summ%%)
@@ -167,8 +164,8 @@ contacts.person.lara: Lara Lukianiuk
 fos_user.password.mismatch: Password does not match
 
 fos_user.password.mismatch: Uncorrect new password
-'Bad credentials.': 'Uncorrect email address or password'
-'User account is disabled.': 'Account does not activated'
+Bad credentials.: 'Uncorrect email address or password'
+User account is disabled.: 'Account does not activated'
 
 mail.unsubscribe.no_more_news: We will not send you news about the Framework Days anymore
 mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
