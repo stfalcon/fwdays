@@ -17,11 +17,13 @@
         <div class="report-popup">
             <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
                class="report-popup__title">{{ review.title }}</a>
-            <div class="report-popup__likes">
-                <div class="like-btn">
-                    {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+            {% if review.event.isActiveAndFuture %}
+                <div class="report-popup__likes">
+                    <div class="like-btn">
+                        {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
             <div class="report-popup__description">
                 {{ review.text|raw }}
             </div>

@@ -20,11 +20,13 @@
             <div class="review-layout">
                 <div class="review-header review-layout__header">
                     <h2 class="h2 review-header__title">{{ review.title }}</h2>
-                    <div class="review-header__likes">
-                        <div class="like-btn">
-                            {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                    {% if review.event.isActiveAndFuture %}
+                        <div class="review-header__likes">
+                            <div class="like-btn">
+                                {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
                 <div class="review-layout__content static-styles">
                     <div class="review-layout__speaker">

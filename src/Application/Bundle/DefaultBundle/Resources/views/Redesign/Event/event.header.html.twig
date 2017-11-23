@@ -53,9 +53,15 @@
 <!--BEGIN fix-event-header-->
 <section class="fix-event-header" style="background-color: {{ event.backgroundColor }};">
     <div class="fix-event-header__left">
-        <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
-            <i class="icon-arrow"></i>
-        </div>
+        {% if (event.speakers is defined and event.speakers|length > 0) or
+                programPage or venuePage or
+                (event.activeAndFuture and event.receivePayments and event.TicketsCost|length > 0)
+
+        %}
+            <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
+                <i class="icon-arrow"></i>
+            </div>
+        {% endif %}
         <div class="fix-event-header__title">{{ event.name }}</div>
     </div>
     <div class="fix-event-header__right">
