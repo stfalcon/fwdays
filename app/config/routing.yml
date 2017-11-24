@@ -30,6 +30,8 @@ admin:
     prefix: /admin
     options:
         i18n: false
+    defaults:
+        _locale: %locale%
 
 _sonata_admin:
     resource: .
@@ -37,18 +39,24 @@ _sonata_admin:
     prefix: /admin
     options:
         i18n: false
+    defaults:
+        _locale: %locale%
 
 sonata_admin_ticket_check:
     pattern:  /admin/ticket/check
     defaults: { _controller: ApplicationDefaultBundle:TicketAdmin:check }
     options:
         i18n: false
+    defaults:
+        _locale: %locale%
 
 admin_show_statistic:
     pattern:  /admin/statistic
     defaults: { _controller: ApplicationDefaultBundle:Admin:showStatistic }
     options:
         i18n: false
+    defaults:
+        _locale: %locale%
 
 # Internal routing configuration to handle ESI
 #_internal:
@@ -63,8 +71,6 @@ _imagine:
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
-    options:
-        i18n: false
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
@@ -90,7 +96,6 @@ hwi_oauth_redirect:
     prefix:   /connect
     options:
         i18n: false
-
 
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"

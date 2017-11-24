@@ -24,19 +24,21 @@ security:
                 success_handler: user.handler.login_handler
 
             form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
                 remember_me: true
                 use_referer: true
                 success_handler: user.handler.login_handler
-
             entry_point: user.login_entry_point
             remember_me:
                 key: %secret%
                 lifetime: 31536000 # 365 days in seconds
                 path: ~
                 domain: ~
-            logout:       true
+            logout:
+                path: fos_user_security_logout
             anonymous:    true
 
     access_control:
