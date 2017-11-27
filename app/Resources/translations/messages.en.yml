@@ -85,6 +85,8 @@ our.youtube.channel: Our YouTube channel
 more.gallery.link: All photos on Flickr
 in.lang.link: Українською
 ticket.status.event_done: Event is over
+ticket.status.payment_returned: Payment returned
+ticket.status.payment_returned_mob: Payment returned
 ticket.status.event_done_mob: done
 referral.program.conditions.title: Program terms
 referral.program.conditions.text: Get %referal_bonus% UAH per ticket purchased by your link. Use bonuses buying our next events tickets.

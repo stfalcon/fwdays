@@ -318,6 +318,14 @@ class Payment
     }
 
     /**
+     * @return bool
+     */
+    public function isReturned()
+    {
+        return self::STATUS_RETURNED === $this->getStatus();
+    }
+
+    /**
      * @return string
      */
     public function getGate()

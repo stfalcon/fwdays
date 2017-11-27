@@ -21,6 +21,7 @@ class TicketService
     const CAN_WANNA_VISIT = 'can wanna visit';
     const WAIT_FOR_PAYMENT_RECEIVE = 'wit for payment receive';
     const PAID_FOR_ANOTHER = 'paid for another';
+    const PAID_IS_RETURNED = 'paid is return';
     const EVENT_DONE = 'event done';
     const EVENT_DEFAULT_STATE = 'event default state';
 
@@ -205,6 +206,8 @@ class TicketService
                 $eventState = self::CAN_WANNA_VISIT;
             } elseif (!$payment || ($payment && $payment->isPending())) {
                 $eventState = self::CAN_BUY_TICKET;
+            } elseif ($payment && $payment->isReturned()) {
+                $eventState = self::PAID_IS_RETURNED;
             }
         } else {
             $eventState = self::EVENT_DONE;
@@ -216,34 +219,40 @@ class TicketService
                         self::CAN_DOWNLOAD_TICKET => 'event-row__btn btn btn--tertiary btn--sm',
                         self::PAID_FOR_ANOTHER => 'event-row__status',
                         self::EVENT_DONE => 'event-row__status',
+                        self::PAID_IS_RETURNED => 'event-row__status',
                         self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
                     ],
                 'card' => [
                         self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--sm event-card__btn',
                         self::PAID_FOR_ANOTHER => 'event-card__status',
                         self::EVENT_DONE => 'event-card__status',
+                        self::PAID_IS_RETURNED => 'event-card__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--sm event-card__btn',
                     ],
                 'event_header' => [
                         self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--lg event-header__btn',
                         self::PAID_FOR_ANOTHER => 'event-header__status',
                         self::EVENT_DONE => 'event-header__status',
+                        self::PAID_IS_RETURNED => 'event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' => [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download',
                         self::PAID_FOR_ANOTHER => 'fix-event-header__status',
                         self::EVENT_DONE => 'fix-event-header__status',
+                        self::PAID_IS_RETURNED => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' => [
                         self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download fix-event-header__download--mob',
                         self::PAID_FOR_ANOTHER => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
+                        self::PAID_IS_RETURNED => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' => [
                         self::EVENT_DONE => 'event-action-mob__status',
+                        self::PAID_IS_RETURNED => 'event-action-mob__status',
                         self::CAN_DOWNLOAD_TICKET => 'btn btn--tertiary btn--lg event-action-mob__btn',
                         self::PAID_FOR_ANOTHER => 'event-action-mob__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
@@ -292,6 +301,12 @@ class TicketService
                     $caption = $translator->trans('ticket.status.pay');
                 }
                 $class .= ' get-payment';
+            } elseif (self::PAID_IS_RETURNED === $eventState) {
+                if ($isMob) {
+                    $caption = $translator->trans('ticket.status.payment_returned_mob');
+                } else {
+                    $caption = $translator->trans('ticket.status.payment_returned');
+                }
             }
         } else {
             $isDiv = true;
