@@ -1081,7 +1081,7 @@
 
   .program-header {
     margin-bottom: 20px;
-    border-bottom: 1px solid #F5F3EA;
+    overflow-x: auto;
 
     &__td {
       display: block;
@@ -1095,11 +1095,11 @@
       &:after {
         position: absolute;
         right: 0;
-        bottom: -1px;
+        bottom: 0;
         left: 0;
         display: block;
         height: 1px;
-        background-color: transparent;
+        background-color: #F5F3EA;
         content: '';
       }
 
