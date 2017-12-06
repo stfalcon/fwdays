@@ -5,7 +5,7 @@ menu.check.ticket.bynumber: Ticket is checking by number
 menu.logout: Sign out
 menu.user.registration: Sign up
 menu.login: Sign in
-menu.profile.my: Profile
+menu.profile.my: Account
 
 main.menu.go_head: ← Main
 main.menu.about: About us
@@ -15,7 +15,7 @@ main.menu.partners: Partners
 main.menu.about_event: About event
 main.menu.speakers: Speakers
 main.menu.participants: Participants
-main.menu.cabinet: Profile
+main.menu.cabinet: Account
 
 email: Email
 madeby: made by
@@ -152,7 +152,7 @@ error.phone_bad_format: Please enter a valid phone number
 error.email_bad_format: Please enter a valid email address
 error.name.not_number: Name must contain only letters
 error.surname.not_number: Surname must contain only letters
-
+error.user.already.paid: the %email% has already paid the ticket
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays
 contacts.partners.title: Informational partnerships, meetups and master classes

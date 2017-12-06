@@ -312,7 +312,7 @@ $(document).ready(function () {
                         setPaymentHtmlbyData(data, e_slug);
                     } else {
                         var validator = $('#payment').validate();
-                        var errors = { payment_user_name: data.error };
+                        var errors = { "user-email": data.error };
                         validator.showErrors(errors);
                         // console.log('Error:' + data.error);
                     }

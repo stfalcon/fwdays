@@ -197,7 +197,8 @@ class PaymentService
             $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
 
             if (($ticket->getTicketCost() !== $currentTicketCost) ||
-                ($ticket->getHasDiscount() != ($isMustBeDiscount || $ticket->hasPromoCode()))) {
+                ($ticket->getAmountWithoutDiscount() !== $eventCost) ||
+                ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode()))) {
                 $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
         }

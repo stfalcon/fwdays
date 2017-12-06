@@ -201,7 +201,13 @@ class PaymentController extends Controller
             $paymentService->addTicketToPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
-            return new JsonResponse(['result' => false, 'error' => 'User'.$user->getName().$user->getSurName().' already paid ticket!', 'html' => '']);
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()]),
+                    'html' => ''
+                ]
+            );
         }
 
         return $this->getPaymentHtml($event, $payment);
