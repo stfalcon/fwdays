@@ -99,6 +99,8 @@ class TicketAdmin extends Admin
     {
         $datagridMapper
             ->add('event')
+            ->add('user')
+            ->add('user.email')
             ->add('used')
             ->add(
                 'payment.status',

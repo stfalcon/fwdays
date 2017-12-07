@@ -43,41 +43,41 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->with('General')
-            ->add('name')
-            ->add('surname')
-            ->add('email')
-            ->add('phone')
-            ->add('company', null, array('required' => false))
-            ->add('balance')
-            ->add('post', null, array('required' => false))
-            ->add('subscribe', null, array('required' => false))
-            ->add('plainPassword', 'text', array('required' => false))
-            ->add(
-                'tickets',
-                'sonata_type_collection',
-                [
-                    'by_reference' => false,
-                    'disabled' => true,
-                ],
-                [
-                    'readonly' => true,
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                    'sortable' => 'id',
-                ]
-            )
+                ->add('name')
+                ->add('surname')
+                ->add('email')
+                ->add('phone')
+                ->add('company', null, array('required' => false))
+                ->add('balance')
+                ->add('post', null, array('required' => false))
+                ->add('subscribe', null, array('required' => false))
+                ->add('plainPassword', 'text', array('required' => false))
+//                ->add(
+//                    'tickets',
+//                    'sonata_type_collection',
+//                    [
+//                        'by_reference' => false,
+//                        'disabled' => true,
+//                    ],
+//                    [
+//                        'readonly' => true,
+//                        'edit' => 'inline',
+//                        'inline' => 'table',
+//                        'sortable' => 'id',
+//                    ]
+//                )
             ->end()
             ->with('Management')
-            ->add('enabled', null, array('required' => false))
-            ->add(
-                'roles',
-                'choice',
-                array(
-                    'choices' => $this->getAvailableRoles(),
-                    'multiple' => true,
-                    'required' => false
+                ->add('enabled', null, array('required' => false))
+                ->add(
+                    'roles',
+                    'choice',
+                    array(
+                        'choices' => $this->getAvailableRoles(),
+                        'multiple' => true,
+                        'required' => false
+                    )
                 )
-            )
             ->end();
     }
 
