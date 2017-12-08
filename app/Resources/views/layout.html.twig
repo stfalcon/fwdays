@@ -49,15 +49,15 @@
         var locale = "{{ app.request.locale }}";
         var devpath = "{{ path('homepage') }}"
     </script>
-    {% if app.environment == 'prod' %}
-        {% include "::ga.html.twig" %}
-    {% else %}
+    {#{% if app.environment == 'prod' %}#}
+        {#{% include "::ga.html.twig" %}#}
+    {#{% else %}#}
     <script>
         function ga(send, event, eventName, click) {
             console.log('ga', send, event, eventName, click);
         }
     </script>
-    {% endif %}
+    {#{% endif %}#}
 {% endblock scripts %}
 </body>
 </html>
