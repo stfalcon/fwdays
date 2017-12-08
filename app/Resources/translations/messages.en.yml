@@ -150,8 +150,8 @@ contact_info.title: Contact info
 candidate.speaker.title: On consideration
 error.phone_bad_format: Please enter a valid phone number
 error.email_bad_format: Please enter a valid email address
-error.name.not_number: Name must contain only letters
-error.surname.not_number: Surname must contain only letters
+error.surname.only_letters: Surname must contain only letters
+error.name.only_letters: Name must contain only letters
 error.user.already.paid: the %email% has already paid the ticket
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays

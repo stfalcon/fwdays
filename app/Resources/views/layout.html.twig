@@ -1,11 +1,14 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}">
 <head>
-    <title>{% block title %}Frameworks Days{% endblock title %}</title>
+    <title>{% block title %}Frameworks Days. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
     {% block metatags %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
     {% endblock metatags %}
+    {% block meta_description %}
+    <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
+    {% endblock meta_description %}
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css') }}">
 </head>
@@ -44,8 +47,17 @@
     {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
-        var devpath = "{% if 'dev' == app.environment %}/app_dev.php{% endif %}"
+        var devpath = "{{ path('homepage') }}"
     </script>
+    {% if app.environment == 'prod' %}
+        {% include "::ga.html.twig" %}
+    {% else %}
+    <script>
+        function ga(send, event, eventName, click) {
+            console.log('ga', send, event, eventName, click);
+        }
+    </script>
+    {% endif %}
 {% endblock scripts %}
 </body>
 </html>

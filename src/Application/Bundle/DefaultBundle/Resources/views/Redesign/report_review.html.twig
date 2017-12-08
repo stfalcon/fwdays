@@ -1,5 +1,15 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
+{% block title %}{% if review.title is not null %}{{ review.title }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if review.metaDescription is not null %}
+        <meta name="description" content="{{ review.metaDescription }}">
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
 {% block shareButtonsScripts %}
     {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
 {% endblock shareButtonsScripts %}

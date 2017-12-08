@@ -1,5 +1,5 @@
 <form action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
-    <input type="hidden" id="fos_user_registration_form__token" name="fos_user_registration_form[_token]"
+    <input type="hidden" id="fos_user_registration_form__token_{{ remodal }}" name="fos_user_registration_form[_token]"
            value="{{ csrf_token('registration') }}"/>
     {#<div class="form-hint">{{ 'menu.user.registration'|trans }}</div>#}
     <div class="form-row">
@@ -65,6 +65,13 @@
     <div class="form-row form-row--align-center">
         <div class="form-col form-col--6 form-col--xs-12">
             <button class="btn btn--primary btn--lg form-col__btn"
+                    {% if queryLink is not empty %}
+                        {% set ga_label = 'main' %}
+                        {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
+                            {% set ga_label = 'event' %}
+                        {% endif %}
+                        onclick="ga('send', 'button', 'register', {{ ga_label }});"
+                    {% endif %}
                     type="submit">{{ 'user.create.title'|trans }}</button>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">

@@ -148,8 +148,8 @@ contact_info.title: Контакти
 candidate.speaker.title: На розгляді
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
-error.name.not_number: "Ім'я не може містити цифри"
-error.surname.not_number: 'Прізвище не може містити цифри'
+error.surname.only_letters: 'Прізвище може містити лише літери'
+error.name.only_letters: "Ім'я може містити лише літери"
 
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays

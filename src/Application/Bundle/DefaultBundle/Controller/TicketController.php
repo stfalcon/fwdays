@@ -40,6 +40,7 @@ class TicketController extends Controller
             'href' => $result['href'],
             'isDiv' => $result['isDiv'],
             'data' => $result['data'],
+            'onClick' => $result['onClick'],
         ]);
     }
 

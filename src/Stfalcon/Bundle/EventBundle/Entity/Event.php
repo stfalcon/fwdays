@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Event
+ * Stfalcon\Bundle\EventBundle\Entity\Event.
  *
  * @Vich\Uploadable
  *
@@ -35,7 +35,7 @@ class Event implements Translatable
 {
     use Translate;
     /**
-     * @var int $id
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -53,7 +53,7 @@ class Event implements Translatable
     private $translations;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
@@ -62,7 +62,7 @@ class Event implements Translatable
     protected $name = '';
 
     /**
-     * @var string $slug
+     * @var string
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
@@ -70,7 +70,7 @@ class Event implements Translatable
     protected $slug;
 
     /**
-     * @var string $city
+     * @var string
      *
      * @ORM\Column(type="string", nullable=true)
      * @Gedmo\Translatable(fallback=true)
@@ -78,7 +78,7 @@ class Event implements Translatable
     protected $city;
 
     /**
-     * @var string $place
+     * @var string
      *
      * @ORM\Column(type="string", nullable=true)
      * @Gedmo\Translatable(fallback=true)
@@ -86,7 +86,7 @@ class Event implements Translatable
     protected $place;
 
     /**
-     * @var string $approximateDate
+     * @var string
      *
      * @ORM\Column(type="string", nullable=true)
      * @Gedmo\Translatable(fallback=true)
@@ -94,28 +94,28 @@ class Event implements Translatable
     protected $approximateDate = '';
 
     /**
-     * @var bool $useApproximateDate
+     * @var bool
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $useApproximateDate = false;
 
     /**
-     * @var \DateTime $date
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $date;
 
     /**
-     * @var \DateTime $dateEnd
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $dateEnd;
 
     /**
-     * @var string $description
+     * @var string
      *
      * @ORM\Column(type="text")
      * @Gedmo\Translatable(fallback=true)
@@ -124,54 +124,54 @@ class Event implements Translatable
     protected $description;
 
     /**
-     * Краткий текст в слайдере
+     * Краткий текст в слайдере.
      *
-     * @var string $about
+     * @var string
      * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(type="text", nullable=true)
      */
     protected $about;
 
     /**
-     * Wants to visit event users count;
+     * Wants to visit event users count;.
      *
-     * @var int $wantsToVisitCount
+     * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $wantsToVisitCount = 0;
 
     /**
-     * @var string $logo
+     * @var string
      *
      * @ORM\Column(type="string")
      */
     protected $logo;
 
     /**
-     * @var string $emailBackground
+     * @var string
      *
      * @ORM\Column(name="email_background", type="string", nullable=true)
      */
     protected $emailBackground = 'bg-common.png';
 
     /**
-     * Фон для PDF билетов
+     * Фон для PDF билетов.
      *
-     * @var string $pdfBackgroundImage
+     * @var string
      *
      * @ORM\Column(name="background_image", type="string", nullable=true)
      */
     protected $pdfBackgroundImage = 'left-element.png';
 
     /**
-     * @var boolean $active
+     * @var bool
      *
      * @ORM\Column(type="boolean")
      */
     protected $active = true;
 
     /**
-     * @var float $cost
+     * @var float
      *
      * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
      */
@@ -182,25 +182,25 @@ class Event implements Translatable
      */
     protected $ticketsCost;
     /**
-     * @var boolean $receivePayments
+     * @var bool
      *
      * @ORM\Column(name="receive_payments", type="boolean")
      */
     protected $receivePayments = false;
 
     /**
-     * Можно ли применять скидку для постоянных участников
+     * Можно ли применять скидку для постоянных участников.
      *
-     * @var boolean $useDiscounts
+     * @var bool
      *
      * @ORM\Column(name="use_discounts", type="boolean")
      */
     protected $useDiscounts = true;
 
     /**
-     * Background color for event card
+     * Background color for event card.
      *
-     * @var $backgroundColor
+     * @var
      * @Assert\NotBlank()
      * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#4e4e84"})
      */
@@ -221,7 +221,7 @@ class Event implements Translatable
     protected $speakers;
 
     /**
-     * Спикери які знаходяться на розгляді участі в евенті
+     * Спикери які знаходяться на розгляді участі в евенті.
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -229,7 +229,6 @@ class Event implements Translatable
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $candidateSpeakers;
-
 
     /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
@@ -252,13 +251,24 @@ class Event implements Translatable
 
     /**
      * @Assert\File(maxSize="6000000")
+     *
      * @Assert\Image
+     *
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="pdfBackgroundImage")
      */
     protected $pdfBackgroundFile;
 
     /**
-     * Constructor
+     * @var string
+     *
+     * @Gedmo\Translatable(fallback=true)
+     *
+     * @ORM\Column(name="meta_description", type="string", length=255, nullable=true)
+     */
+    protected $metaDescription;
+
+    /**
+     * Constructor.
      */
     public function __construct()
     {
@@ -266,6 +276,26 @@ class Event implements Translatable
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @param string $metaDescription
+     *
+     * @return $this
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
     }
 
     /**
@@ -278,13 +308,16 @@ class Event implements Translatable
 
     /**
      * @param bool $useApproximateDate
+     *
      * @return $this
      */
     public function setUseApproximateDate($useApproximateDate)
     {
         $this->useApproximateDate = $useApproximateDate;
+
         return $this;
     }
+
     /**
      * @return string
      */
@@ -295,11 +328,13 @@ class Event implements Translatable
 
     /**
      * @param string $approximateDate
+     *
      * @return $this
      */
     public function setApproximateDate($approximateDate)
     {
         $this->approximateDate = $approximateDate;
+
         return $this;
     }
 
@@ -313,11 +348,13 @@ class Event implements Translatable
 
     /**
      * @param mixed $ticketsCost
+     *
      * @return $this
      */
     public function setTicketsCost($ticketsCost)
     {
         $this->ticketsCost = $ticketsCost;
+
         return $this;
     }
 
@@ -331,6 +368,7 @@ class Event implements Translatable
 
     /**
      * @param mixed $wantsToVisitCount
+     *
      * @return $this
      */
     public function setWantsToVisitCount($wantsToVisitCount)
@@ -345,7 +383,7 @@ class Event implements Translatable
      */
     public function addWantsToVisitCount()
     {
-        $this->wantsToVisitCount++;
+        ++$this->wantsToVisitCount;
 
         return true;
     }
@@ -355,15 +393,15 @@ class Event implements Translatable
      */
     public function subtractWantsToVisitCount()
     {
-        $this->wantsToVisitCount--;
+        --$this->wantsToVisitCount;
 
         return true;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -391,7 +429,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set event name
+     * Set event name.
      *
      * @param string $name
      */
@@ -403,7 +441,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get event name
+     * Get event name.
      *
      * @return string
      */
@@ -413,18 +451,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -434,18 +473,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set city in which the conference takes place
+     * Set city in which the conference takes place.
      *
      * @param string|null $city
      */
     public function setCity($city)
     {
         $this->city = $city;
+
         return $this;
     }
 
     /**
-     * Get city in which the conference takes place
+     * Get city in which the conference takes place.
      *
      * @return string
      */
@@ -455,18 +495,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set place
+     * Set place.
      *
      * @param string|null $place
      */
     public function setPlace($place)
     {
         $this->place = $place;
+
         return $this;
     }
 
     /**
-     * Get place
+     * Get place.
      *
      * @return string
      */
@@ -476,7 +517,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime|null
      */
@@ -486,29 +527,31 @@ class Event implements Translatable
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime|null $date
      */
     public function setDate($date)
     {
         $this->date = $date;
+
         return $this;
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -518,18 +561,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set text about event (for main page of event)
+     * Set text about event (for main page of event).
      *
      * @param string $about
      */
     public function setAbout($about)
     {
         $this->about = $about;
+
         return $this;
     }
 
     /**
-     * Get text about event (for main page of event)
+     * Get text about event (for main page of event).
      *
      * @return string
      */
@@ -539,20 +583,21 @@ class Event implements Translatable
     }
 
     /**
-     * Set status of activity
+     * Set status of activity.
      *
-     * @param boolean $active
+     * @param bool $active
      */
     public function setActive($active)
     {
         $this->active = $active;
+
         return $this;
     }
 
     /**
      * Is this event active?
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -573,6 +618,7 @@ class Event implements Translatable
     public function setReceivePayments($receivePayments)
     {
         $this->receivePayments = $receivePayments;
+
         return $this;
     }
 
@@ -585,22 +631,25 @@ class Event implements Translatable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getUseDiscounts() {
+    public function getUseDiscounts()
+    {
         return $this->useDiscounts;
     }
 
     /**
-     * @param boolean $useDiscounts
+     * @param bool $useDiscounts
      */
-    public function setUseDiscounts($useDiscounts) {
+    public function setUseDiscounts($useDiscounts)
+    {
         $this->useDiscounts = $useDiscounts;
+
         return $this;
     }
 
     /**
-     * Get event speakers
+     * Get event speakers.
      *
      * @return ArrayCollection
      */
@@ -610,7 +659,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get tickets for event
+     * Get tickets for event.
      *
      * @return ArrayCollection
      */
@@ -620,7 +669,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set logo
+     * Set logo.
      *
      * @param string $logo logo
      *
@@ -634,7 +683,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set emailBackground
+     * Set emailBackground.
      *
      * @param string $emailBackground emailBackground
      *
@@ -648,7 +697,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set pdfBackgroundImage
+     * Set pdfBackgroundImage.
      *
      * @param string $pdfBackgroundImage pdfBackgroundImage
      *
@@ -662,7 +711,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set pages
+     * Set pages.
      *
      * @param ArrayCollection $pages
      *
@@ -676,7 +725,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set speakers
+     * Set speakers.
      *
      * @param ArrayCollection $speakers speakers
      *
@@ -690,7 +739,7 @@ class Event implements Translatable
     }
 
     /**
-     * Set tickets
+     * Set tickets.
      *
      * @param mixed $tickets tickets
      *
@@ -704,7 +753,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get path to logo
+     * Get path to logo.
      *
      * @return string
      */
@@ -714,7 +763,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get path to pdfBackgroundImage
+     * Get path to pdfBackgroundImage.
      *
      * @return string
      */
@@ -724,7 +773,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get event name if object treated like a string
+     * Get event name if object treated like a string.
      *
      * @return string
      */
@@ -734,18 +783,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set logoFile
+     * Set logoFile.
      *
      * @param UploadedFile|null $logoFile
      */
     public function setLogoFile($logoFile)
     {
         $this->logoFile = $logoFile;
+
         return $this;
     }
 
     /**
-     * Get logoFile
+     * Get logoFile.
      *
      * @return UploadedFile
      */
@@ -755,18 +805,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set emailBackgroundFile
+     * Set emailBackgroundFile.
      *
      * @param UploadedFile|null $emailBackgroundFile
      */
     public function setEmailBackgroundFile($emailBackgroundFile)
     {
         $this->emailBackgroundFile = $emailBackgroundFile;
+
         return $this;
     }
 
     /**
-     * Get emailBackgroundFile
+     * Get emailBackgroundFile.
      *
      * @return UploadedFile
      */
@@ -776,7 +827,7 @@ class Event implements Translatable
     }
 
     /**
-     * Get path to emailBackground
+     * Get path to emailBackground.
      *
      * @return string
      */
@@ -786,18 +837,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set pdfBackgroundFile (used in tickets PDF)
+     * Set pdfBackgroundFile (used in tickets PDF).
      *
      * @param UploadedFile|null $pdfBackgroundFile
      */
     public function setPdfBackgroundFile($pdfBackgroundFile)
     {
         $this->pdfBackgroundFile = $pdfBackgroundFile;
+
         return $this;
     }
 
     /**
-     * Get pdfBackgroundFile
+     * Get pdfBackgroundFile.
      *
      * @return UploadedFile
      */
@@ -818,18 +870,19 @@ class Event implements Translatable
     }
 
     /**
-     * Set cost
+     * Set cost.
      *
      * @param float $cost
      */
     public function setCost($cost)
     {
         $this->cost = $cost;
+
         return $this;
     }
 
     /**
-     * Get cost
+     * Get cost.
      *
      * @return float
      */

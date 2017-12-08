@@ -7,11 +7,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * Class EventAdmin
+ * Class EventAdmin.
  */
 class EventAdmin extends Admin
 {
-
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
@@ -28,8 +27,9 @@ class EventAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
+
     /**
      * @param ListMapper $listMapper
      */
@@ -48,7 +48,7 @@ class EventAdmin extends Admin
                 'images',
                 'string',
                 array(
-                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
+                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig',
                 )
             );
     }
@@ -67,29 +67,33 @@ class EventAdmin extends Admin
             ->add('translations', 'a2lix_translations_gedmo', [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
-                    'name'=> [
+                    'name' => [
                         'label' => 'name',
-                        'locale_options' => $localOptions
+                        'locale_options' => $localOptions,
                     ],
-                    'city'=> [
+                    'city' => [
                         'label' => 'city',
-                        'locale_options' => $localOptions
+                        'locale_options' => $localOptions,
                     ],
-                    'place'=> [
+                    'place' => [
                         'label' => 'place',
-                        'locale_options' => $localOptions
+                        'locale_options' => $localOptions,
                     ],
-                    'description'=> [
+                    'description' => [
                         'label' => 'description',
-                        'locale_options' => $localOptions
+                        'locale_options' => $localOptions,
                     ],
-                    'about'=> [
+                    'about' => [
                         'label' => 'about',
-                        'locale_options' => $localOptions
+                        'locale_options' => $localOptions,
                     ],
-                    'approximateDate'=> [
+                    'approximateDate' => [
                         'label' => 'Приблизительная дата',
-                        'locale_options' => $localAllFalse
+                        'locale_options' => $localAllFalse,
+                    ],
+                    'metaDescription' => [
+                        'label' => 'metaDescription',
+                        'locale_options' => $localAllFalse,
                     ],
                 ],
                 'label' => 'Перевод',

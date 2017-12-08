@@ -194,6 +194,7 @@ class TicketService
         $href = null;
         $isMob = null;
         $caption = '';
+        $onClick = null;
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
@@ -265,6 +266,31 @@ class TicketService
                     ],
         ];
 
+        if (self::CAN_BUY_TICKET === $eventState) {
+            $addUserSign = $user instanceof User ? '_user' : '';
+            $mainGaPart = "ga('send', 'button', 'buy',";
+            switch ($position) {
+                case 'row':
+                case 'card':
+                    $onClick = $mainGaPart." 'main".$addUserSign."')";
+                    break;
+                case 'event_header':
+                case 'event_fix_header':
+                    $onClick = $mainGaPart." 'event".$addUserSign."')";
+                    break;
+                case 'event_fix_header_mob':
+                case 'event_action_mob':
+                    $onClick = $mainGaPart." 'event_mob".$addUserSign."')";
+                    break;
+                case 'price_block_mob':
+                    $onClick = $mainGaPart." 'event_pay_mob".$addUserSign."')";
+                    break;
+                case 'price_block':
+                    $onClick = $mainGaPart." 'event_pay".$addUserSign."')";
+                    break;
+            }
+        }
+
         $class = isset($states[$position][$eventState]) ? $states[$position][$eventState] : $states[$position][self::EVENT_DEFAULT_STATE];
         $isMob = in_array($position, ['event_fix_header_mob', 'price_block_mob']);
 
@@ -317,11 +343,15 @@ class TicketService
             }
         }
 
-        $result['class'] = $class;
-        $result['caption'] = $caption;
-        $result['href'] = $href;
-        $result['isDiv'] = $isDiv;
-        $result['data'] = $data;
+        $result =
+            [
+                'class' => $class,
+                'caption' => $caption,
+                'href' => $href,
+                'isDiv' => $isDiv,
+                'data' => $data,
+                'onClick' => $onClick,
+            ];
 
         return $result;
     }

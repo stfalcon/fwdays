@@ -43,6 +43,23 @@ function setPaymentHtmlbyData(data, e_slug) {
     }
 }
 
+function sendGA(ga_event) {
+    var place = 'empty';
+    if (elem.hasClass('cost__buy--mob')) {
+        place = 'event_pay_mob';
+    } else if (elem.hasClass('cost__buy')) {
+        place = 'event_pay';
+    } else if (elem.hasClass('event_fix_header_mob') || elem.hasClass('event-action-mob__btn')) {
+        place = 'event_mob';
+    } else if (elem.hasClass('fix-event-header__btn') || elem.hasClass('event-header__btn')) {
+        place = 'event';
+    } else if (elem.hasClass('event-card__btn') || elem.hasClass('event-row__btn')) {
+        place = 'main';
+    }
+    ga('send', ga_event, 'pay', place);
+}
+
+
 function setPaymentHtml(e_slug) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
@@ -51,6 +68,7 @@ function setPaymentHtml(e_slug) {
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
+                sendGA('view');
                 if (!detectmob()) {
                     inst.open();
                 }
@@ -271,6 +289,7 @@ $(document).ready(function () {
         var elem = $(this);
         var e_slug = elem.data('event');
         if (detectmob()) {
+            sendGA('view');
             window.location.pathname = devpath+"/payment/"+e_slug;
         } else {
             setModalHeader(e_slug, 'buy');

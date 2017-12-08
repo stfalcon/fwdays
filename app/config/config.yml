@@ -38,6 +38,7 @@ twig:
             - 'SonataCoreBundle:Form:colorpicker.html.twig'
     globals:
         google_apikey: "%google_api_key%"
+        ga_tracking_id : "%tracking_id%"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

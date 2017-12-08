@@ -1,4 +1,4 @@
-<form id="login-form" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
+<form id="login-form-{{ remodal }}" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
     {% set add_class = 'social-login' %}
     {% if queryLink != '' %}
@@ -29,7 +29,16 @@
     </div>
     <div class="form-row form-row--align-center">
         <div class="form-col form-col--6 form-col--xs-12">
-            <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'menu.login'|trans }}</button>
+            <button class="btn btn--primary btn--lg form-col__btn"
+                    {% if queryLink is not empty %}
+                        {% set ga_label = 'main' %}
+                        {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
+                            {% set ga_label = 'event' %}
+                        {% endif %}
+                        onclick="ga('send', 'button', 'enter', {{ ga_label }});"
+                    {% endif %}
+                    type="submit">{{ 'menu.login'|trans }}
+            </button>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="help-links">
