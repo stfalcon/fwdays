@@ -70,7 +70,7 @@
                         {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
                             {% set ga_label = 'event' %}
                         {% endif %}
-                        onclick="ga('send', 'button', 'register', {{ ga_label }});"
+                        onclick="ga('send', 'button', 'register', '{{ ga_label }}');"
                     {% endif %}
                     type="submit">{{ 'user.create.title'|trans }}</button>
         </div>
