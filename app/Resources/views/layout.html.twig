@@ -11,6 +11,13 @@
     {% endblock meta_description %}
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css') }}">
+
+    <script type="text/javascript" src="path_to_jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('bundles/sonatacore/vendor/moment/min/moment-with-locales.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" />
 </head>
 <body>
 {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}

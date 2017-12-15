@@ -62,77 +62,109 @@ class EventAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $datetimePickerOptions =
+            [
+                'dp_use_seconds' => false,
+                'dp_language' => 'ru',
+                'format' => 'dd.MM.y, HH:mm',
+                'dp_minute_stepping' => 10,
+            ];
+
         $formMapper
-            ->with('General')
-            ->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => $this->getClass(),
-                'fields' => [
-                    'name' => [
-                        'label' => 'name',
-                        'locale_options' => $localOptions,
+            ->with('Перекладаємі')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'name' => [
+                            'label' => 'Назва',
+                            'locale_options' => $localOptions,
+                        ],
+                        'city' => [
+                            'label' => 'Місто (використувується для пошуку координат на мапі)',
+                            'locale_options' => $localOptions,
+                        ],
+                        'place' => [
+                            'label' => 'Місце (використувується для пошуку координат на мапі)',
+                            'locale_options' => $localOptions,
+                        ],
+                        'description' => [
+                            'label' => 'Корткий опис',
+                            'locale_options' => $localOptions,
+                        ],
+                        'about' => [
+                            'label' => 'Опис',
+                            'locale_options' => $localOptions,
+                        ],
+                        'approximateDate' => [
+                            'label' => 'Приблизна дата',
+                            'locale_options' => $localAllFalse,
+                        ],
+                        'metaDescription' => [
+                            'label' => 'metaDescription',
+                            'locale_options' => $localAllFalse,
+                        ],
                     ],
-                    'city' => [
-                        'label' => 'city',
-                        'locale_options' => $localOptions,
-                    ],
-                    'place' => [
-                        'label' => 'place',
-                        'locale_options' => $localOptions,
-                    ],
-                    'description' => [
-                        'label' => 'description',
-                        'locale_options' => $localOptions,
-                    ],
-                    'about' => [
-                        'label' => 'about',
-                        'locale_options' => $localOptions,
-                    ],
-                    'approximateDate' => [
-                        'label' => 'Приблизительная дата',
-                        'locale_options' => $localAllFalse,
-                    ],
-                    'metaDescription' => [
-                        'label' => 'metaDescription',
-                        'locale_options' => $localAllFalse,
-                    ],
-                ],
-                'label' => 'Перевод',
-            ])
-            ->add('slug')
-            ->add('useApproximateDate')
-            ->add('date', null, ['required' => false])
-            ->add('dateEnd', null, ['required' => false])
-            ->add('active', null, ['required' => false])
-            ->add('backgroundColor', 'sonata_type_color_selector')
-            ->add('receivePayments', null, ['required' => false])
-            ->add('useDiscounts', null, ['required' => false])
-            ->add('cost', null, ['required' => true])
+                    'label' => 'Перевод',
+                ])
             ->end()
-            ->with('Images')
-            ->add(
-                'logoFile',
-                'file',
-                array(
-                    'label' => 'Logo. Ширина изображения должна быть равна высоте.',
-                    'required' => is_null($subject->getLogo()),
+            ->with('Налаштування', ['class' => 'col-md-4'])
+                ->add('slug')
+                ->add('cost', null, ['required' => true, 'label' => 'Вартість квитка'])
+                ->add('active', null, ['required' => false])
+                ->add('receivePayments', null, ['required' => false, 'label' => 'Приймати платежі'])
+                ->add('useDiscounts', null, ['required' => false, 'label' => 'Можлива знижка'])
+            ->end()
+            ->with('Дата початку та закінчення', ['class' => 'col-md-4'])
+                ->add('useApproximateDate', null, ['required' => false, 'label' => 'Використовувати приблизну дату'])
+                ->add(
+                    'date',
+                    'sonata_type_datetime_picker',
+                    array_merge(
+                        [
+                            'required' => false,
+                            'label' => 'Дата початку',
+                        ],
+                        $datetimePickerOptions
+                    )
                 )
-            )
-            ->add(
-                'pdfBackgroundFile',
-                'file',
-                array(
-                    'label' => 'Background image',
-                    'required' => false,
+                ->add(
+                    'dateEnd',
+                    'sonata_type_datetime_picker',
+                    array_merge(
+                        [
+                            'required' => false,
+                            'label' => 'Дата закінчення',
+                        ],
+                        $datetimePickerOptions
+                    )
                 )
-            )
-            ->add(
-                'emailBackgroundFile',
-                'file',
-                array(
-                    'label' => 'Email background',
-                    'required' => false,
+            ->end()
+            ->with('Зображення та колір', ['class' => 'col-md-4'])
+                ->add('backgroundColor', 'sonata_type_color_selector', ['required' => false, 'label' => 'Колір фону'])
+                ->add(
+                    'logoFile',
+                    'file',
+                    [
+                        'label' => 'Logo. Ширина зображення повина дорівнювати висоті.',
+                        'required' => is_null($subject->getLogo()),
+                    ]
                 )
-            )
+                ->add(
+                    'pdfBackgroundFile',
+                    'file',
+                    [
+                        'label' => 'Background image',
+                        'required' => false,
+                    ]
+                )
+                ->add(
+                    'emailBackgroundFile',
+                    'file',
+                    [
+                        'label' => 'Email background',
+                        'required' => false,
+                    ]
+                )
             ->end();
     }
 

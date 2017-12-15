@@ -36,6 +36,8 @@ twig:
     form:
         resources:
             - 'SonataCoreBundle:Form:colorpicker.html.twig'
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
     globals:
         google_apikey: "%google_api_key%"
         ga_tracking_id : "%tracking_id%"
