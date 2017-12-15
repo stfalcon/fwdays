@@ -148,7 +148,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ]+$/",
+     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ\-]+$/",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -165,7 +165,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ]+$/",
+     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ\-]+$/",
      *     match=true,
      *     message="error.surname.only_letters"
      * )
@@ -212,6 +212,7 @@ class User extends BaseUser
     private $googleID;
     /**
      * @var string
+     *
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
@@ -313,9 +314,9 @@ class User extends BaseUser
     {
         if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
             return $event->addWantsToVisitCount();
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -327,9 +328,9 @@ class User extends BaseUser
     {
         if ($this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->removeElement($event)) {
             return $event->subtractWantsToVisitCount();
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
