@@ -90,7 +90,7 @@ add.title: Додати
 ticket.title: квиток
 review.wonna.listen: Хочу послухати
 
-speaker.title: Спікери
+speaker.title: Доповідачі
 
 interkassa.payment.fail: Не вдалося провести оплату!
 interkassa.payment.fail.back: Будь ласка, поверніться на сторінку оплати квитка і спробуйте ще раз.
@@ -144,7 +144,7 @@ pay.event.one_more_participants: Ще учасники
 
 pay.event.cupon: 'Купон на знижку:'
 
-contact_info.title: Контакти
+contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти

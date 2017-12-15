@@ -1,13 +1,10 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-
-use Knp\Bundle\MenuBundle\MenuItem;
 
 class SpeakerAdmin extends Admin
 {
@@ -27,7 +24,7 @@ class SpeakerAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper)
@@ -43,20 +40,22 @@ class SpeakerAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
-            ->with('General')
+            ->with('Переклади')
                 ->add('translations', 'a2lix_translations_gedmo', [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
-                            'name'=> [
+                            'name' => [
                                 'label' => 'name',
-                                'locale_options' => $localOptions
+                                'locale_options' => $localOptions,
                             ],
-                            'about'=> [
+                            'about' => [
                                 'label' => 'about',
-                                'locale_options' => $localOptions
+                                'locale_options' => $localOptions,
                             ],
-                        ]
+                        ],
                 ])
+            ->end()
+            ->with('Загальні')
                 ->add('slug')
                 ->add('email')
                 ->add('company')
@@ -65,23 +64,22 @@ class SpeakerAdmin extends Admin
                 ->add('file', 'file', array(
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                        'property_path' => 'file'
+                        'property_path' => 'file',
                 ))
-                ->end()
-                ->with('Events', ['class' => 'col-md-6'])
-                    ->add('events', 'entity',  [
-                        'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                        'multiple' => true,
-                        'expanded' => true,
-                    ])
-                ->end()
-                ->with('Candidate events', ['class' => 'col-md-6'])
-                    ->add('candidateEvents', 'entity',  [
-                        'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                        'multiple' => true,
-                        'expanded' => true,
-                    ])
-                ->end()
+            ->end()
+            ->with('Events', ['class' => 'col-md-6'])
+                ->add('events', 'entity', [
+                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple' => true,
+                    'expanded' => true,
+                ])
+            ->end()
+            ->with('Candidate events', ['class' => 'col-md-6'])
+                ->add('candidateEvents', 'entity', [
+                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple' => true,
+                    'expanded' => true,
+                ])
             ->end()
         ;
     }

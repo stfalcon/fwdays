@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class CategoryAdmin extends Admin
 {
@@ -27,7 +27,7 @@ class CategoryAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
 
     /**
@@ -42,7 +42,7 @@ class CategoryAdmin extends Admin
             ->add('isWideContainer')
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'   => [],
+                    'edit' => [],
                     'delete' => [],
                 ],
             ]);
@@ -56,19 +56,24 @@ class CategoryAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
-            ->with('General')
-                ->add('translations', 'a2lix_translations_gedmo', [
-                    'translatable_class' => $this->getClass(),
-                    'fields' => [
-                        'name'=> [
-                            'label' => 'name',
-                            'locale_options' => $localOptions
+            ->with('Переклади')
+                ->add(
+                    'translations',
+                    'a2lix_translations_gedmo',
+                    [
+                        'translatable_class' => $this->getClass(),
+                        'fields' => [
+                            'name' => [
+                                'label' => 'name',
+                                'locale_options' => $localOptions,
+                            ],
                         ],
                     ]
-                ])
-                ->add('isWideContainer')
+                )
+            ->end()
+            ->with('Загальні')
+                ->add('isWideContainer', null, ['required' => false, 'label' => 'Головна категорія (широкий контейнер)'])
                 ->add('sortOrder')
             ->end();
     }
-
 }

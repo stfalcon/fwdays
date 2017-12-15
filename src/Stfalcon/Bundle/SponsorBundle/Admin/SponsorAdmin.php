@@ -4,12 +4,10 @@ namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class SponsorAdmin extends Admin
 {
@@ -29,7 +27,7 @@ class SponsorAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
 
     /**
@@ -46,7 +44,7 @@ class SponsorAdmin extends Admin
             ->add('sortOrder')
             ->add('_action', 'actions', [
                 'actions' => [
-                    'edit'   => [],
+                    'edit' => [],
                     'delete' => [],
                 ],
             ]);
@@ -61,44 +59,49 @@ class SponsorAdmin extends Admin
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
-            ->with('General')
+            ->with('Переклади')
                 ->add('translations', 'a2lix_translations_gedmo', [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
-                            'name'=> [
+                            'name' => [
                                 'label' => 'name',
-                                'locale_options' => $localOptions
+                                'locale_options' => $localOptions,
                             ],
-                            'about'=> [
+                            'about' => [
                                 'label' => 'about',
-                                'locale_options' => $localOptionsAllFalse
+                                'locale_options' => $localOptionsAllFalse,
                             ],
-                        ]
+                        ],
                 ])
+            ->end()
+            ->with('Загальні')
                 ->add('slug')
+                ->add('onMain', null, ['required' => false])
                 ->add('site')
-                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
-                ->add('file', 'file', array(
-                      'required' => false,
-                      'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                      'property_path' => 'file')
-                      )
-                ->add('sortOrder', null, array(
-                    'attr' => array(
-                        'min' => 1
-                    )
-                ))
-                ->add('onMain', null, array('required' => false))
+                ->add(
+                    'file',
+                    'file',
+                    [
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'file',
+                    ]
+                )
+                ->add('sortOrder', null, ['attr' => ['min' => 1]])
             ->end()
             ->with('Events')
-                ->add('sponsorEvents', 'sonata_type_collection',
-                    array(
+                ->add(
+                    'sponsorEvents',
+                    'sonata_type_collection',
+                    [
                         'label' => 'Events',
-                        'by_reference' => false
-                    ), array(
+                        'by_reference' => false,
+                    ],
+                    [
                         'edit' => 'inline',
                         'inline' => 'table',
-                ))
+                    ]
+                )
             ->end();
     }
 

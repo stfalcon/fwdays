@@ -71,7 +71,7 @@ class EventAdmin extends Admin
             ];
 
         $formMapper
-            ->with('Перекладаємі')
+            ->with('Переклади')
                 ->add('translations', 'a2lix_translations_gedmo', [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
@@ -107,13 +107,6 @@ class EventAdmin extends Admin
                     'label' => 'Перевод',
                 ])
             ->end()
-            ->with('Налаштування', ['class' => 'col-md-4'])
-                ->add('slug')
-                ->add('cost', null, ['required' => true, 'label' => 'Вартість квитка'])
-                ->add('active', null, ['required' => false])
-                ->add('receivePayments', null, ['required' => false, 'label' => 'Приймати платежі'])
-                ->add('useDiscounts', null, ['required' => false, 'label' => 'Можлива знижка'])
-            ->end()
             ->with('Дата початку та закінчення', ['class' => 'col-md-4'])
                 ->add('useApproximateDate', null, ['required' => false, 'label' => 'Використовувати приблизну дату'])
                 ->add(
@@ -138,6 +131,13 @@ class EventAdmin extends Admin
                         $datetimePickerOptions
                     )
                 )
+            ->end()
+            ->with('Налаштування', ['class' => 'col-md-4'])
+                ->add('slug')
+                ->add('cost', null, ['required' => true, 'label' => 'Вартість квитка'])
+                ->add('active', null, ['required' => false])
+                ->add('receivePayments', null, ['required' => false, 'label' => 'Приймати платежі'])
+                ->add('useDiscounts', null, ['required' => false, 'label' => 'Можлива знижка'])
             ->end()
             ->with('Зображення та колір', ['class' => 'col-md-4'])
                 ->add('backgroundColor', 'sonata_type_color_selector', ['required' => false, 'label' => 'Колір фону'])

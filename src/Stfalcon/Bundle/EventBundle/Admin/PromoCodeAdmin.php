@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * Class PromoCodeAdmin
+ * Class PromoCodeAdmin.
  */
 class PromoCodeAdmin extends Admin
 {
@@ -27,7 +27,7 @@ class PromoCodeAdmin extends Admin
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }
-        };
+        }
     }
 
     /**
@@ -51,27 +51,40 @@ class PromoCodeAdmin extends Admin
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $datetimePickerOptions =
+            [
+                'format' => 'dd.MM.y',
+            ];
         $formMapper
-            ->with('General')
+            ->with('Переклади')
                 ->add('translations', 'a2lix_translations_gedmo', [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
-                        'title'=> [
+                        'title' => [
                             'label' => 'title',
-                            'locale_options' => $localOptions
-                        ]
-                    ]
+                            'locale_options' => $localOptions,
+                        ],
+                    ],
                 ])
-                ->add('title')
-                ->add('discountAmount')
+            ->end()
+            ->with('Загальні')
+                ->add('discountAmount', null, ['required' => true, 'label' => 'Знижка (%)'])
                 ->add('code')
-                ->add('event', null, array(
+                ->add('event', null, [
                     'required' => true,
-                    'placeholder' => 'Choose event'
-                ))
-                ->add('endDate', 'date', array(
-                    'widget' => 'single_text'
-                ))
+                    'placeholder' => 'Choose event',
+                ])
+                ->add(
+                    'endDate',
+                    'sonata_type_date_picker',
+                    array_merge(
+                        [
+                            'required' => true,
+                            'label' => 'Дата закінчення дії',
+                        ],
+                        $datetimePickerOptions
+                    )
+                )
             ->end();
     }
 }
