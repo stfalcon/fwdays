@@ -198,6 +198,13 @@ class User extends BaseUser
     protected $email;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="email_confirmed_by_pixel", nullable=true, options = {"default" : 0})
+     */
+    protected $emailConfirmedByPixel = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="facebook_id", type="string", nullable=true)
@@ -220,11 +227,34 @@ class User extends BaseUser
      */
     protected $plainPassword;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->tickets = new ArrayCollection();
         $this->wantsToVisitEvents = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmailConfirmedByPixel()
+    {
+        return $this->emailConfirmedByPixel;
+    }
+
+    /**
+     * @param bool $emailConfirmedByPixel
+     *
+     * @return $this
+     */
+    public function setEmailConfirmedByPixel($emailConfirmedByPixel)
+    {
+        $this->emailConfirmedByPixel = $emailConfirmedByPixel;
+
+        return $this;
     }
 
     /**

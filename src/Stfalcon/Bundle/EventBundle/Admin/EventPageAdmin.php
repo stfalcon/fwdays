@@ -17,7 +17,7 @@ class EventPageAdmin extends AbstractPageAdmin
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
-            ->add('event')
+            ->add('event', null, ['label' => 'Событие'])
             ->add('sortOrder');
     }
 
@@ -31,33 +31,33 @@ class EventPageAdmin extends AbstractPageAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
             ->with('Переводы')
-            ->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => $this->getClass(),
-                'fields' => [
-                    'title' => [
-                        'label' => 'title',
-                        'locale_options' => $localOptions,
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'title' => [
+                            'label' => 'Название',
+                            'locale_options' => $localOptions,
+                        ],
+                        'text' => [
+                            'label' => 'text',
+                            'locale_options' => $localOptions,
+                        ],
+                        'textNew' => [
+                            'label' => 'текст для нового дизайна',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
+                        'metaKeywords' => [
+                            'label' => 'metaKeywords',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
+                        'metaDescription' => [
+                            'label' => 'metaDescription',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
                     ],
-                    'text' => [
-                        'label' => 'text',
-                        'locale_options' => $localOptions,
-                    ],
-                    'textNew' => [
-                        'label' => 'текст для нового дизайна',
-                        'locale_options' => $localOptionsAllFalse,
-                    ],
-                    'metaKeywords' => [
-                        'label' => 'metaKeywords',
-                        'locale_options' => $localOptionsAllFalse,
-                    ],
-                    'metaDescription' => [
-                        'label' => 'metaDescription',
-                        'locale_options' => $localOptionsAllFalse,
-                    ],
-                ],
-            ])
+                ])
             ->end()
-            ->with('General')
+            ->with('Общие')
                 ->add('slug')
                 ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',

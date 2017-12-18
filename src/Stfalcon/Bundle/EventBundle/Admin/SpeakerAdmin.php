@@ -31,7 +31,7 @@ class SpeakerAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
-            ->add('name')
+            ->add('name', null, ['label' => 'Имя'])
         ;
     }
 
@@ -40,12 +40,12 @@ class SpeakerAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
-            ->with('Переклади')
+            ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
                             'name' => [
-                                'label' => 'name',
+                                'label' => 'Имя',
                                 'locale_options' => $localOptions,
                             ],
                             'about' => [
@@ -55,30 +55,33 @@ class SpeakerAdmin extends Admin
                         ],
                 ])
             ->end()
-            ->with('Загальні')
+            ->with('Общие')
                 ->add('slug')
                 ->add('email')
                 ->add('company')
                 ->add('sortOrder')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
-                ->add('file', 'file', array(
-                        'required' => false,
-                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                        'property_path' => 'file',
-                ))
+                ->add('file', 'file', [
+                    'required' => false,
+                    'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                    'property_path' => 'file',
+                    'label' => 'Фото',
+                ])
             ->end()
-            ->with('Events', ['class' => 'col-md-6'])
+            ->with('Участвует в событиях', ['class' => 'col-md-6'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true,
                     'expanded' => true,
+                    'label' => 'События',
                 ])
             ->end()
-            ->with('Candidate events', ['class' => 'col-md-6'])
+            ->with('Кандидат на события', ['class' => 'col-md-6'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true,
                     'expanded' => true,
+                    'label' => 'События',
                 ])
             ->end()
         ;

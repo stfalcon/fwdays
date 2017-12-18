@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
@@ -30,6 +31,7 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
  *
  * @AppAssert\Event\EventDate
+ * @AppAssert\Event\EventTicketCostCount
  */
 class Event implements Translatable
 {
@@ -178,7 +180,8 @@ class Event implements Translatable
     protected $cost;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
+     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $ticketsCost;
     /**
@@ -358,6 +361,34 @@ class Event implements Translatable
         return $this;
     }
 
+    /**
+     * @param TicketCost $ticketCost
+     *
+     * @return $this
+     */
+    public function addTicketsCost($ticketCost)
+    {
+        if (!$this->ticketsCost->contains($ticketCost)) {
+            $this->ticketsCost->add($ticketCost);
+            $ticketCost->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param TicketCost $ticketCost
+     *
+     * @return $this
+     */
+    public function removeTicketsCost($ticketCost)
+    {
+        if ($this->ticketsCost->contains($ticketCost)) {
+            $this->ticketsCost->removeElement($ticketCost);
+        }
+
+        return $this;
+    }
     /**
      * @return mixed
      */

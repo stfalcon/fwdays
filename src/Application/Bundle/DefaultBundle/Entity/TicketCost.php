@@ -4,10 +4,13 @@ namespace Application\Bundle\DefaultBundle\Entity;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
+use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 
 /**
  * @ORM\Table(name="event__ticketsCost")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\TicketCostRepository")
+ *
+ * @AppAssert\TicketCost\TicketCostCount
  */
 class TicketCost
 {
@@ -23,12 +26,12 @@ class TicketCost
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="cascade")
      */
     private $event;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="ticketCost", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="ticketCost", cascade={"persist"})
      */
     private $tickets;
 
@@ -52,9 +55,9 @@ class TicketCost
      *
      * @var string
      *
-     * @ORM\Column(name="alt_amount", type="string", length=10, nullable=true)
+     * @ORM\Column(name="alt_amount", type="decimal", precision=10, scale=2)
      */
-    private $altAmount = '';
+    private $altAmount;
     /**
      * @var int
      *
@@ -304,5 +307,15 @@ class TicketCost
         $this->unlimited = $unlimited;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $countText = $this->isUnlimited() ? ' count:unlimited' : ' count:'.$this->getCount();
+
+        return $this->getName().' price:'.$this->getAmount().$countText;
     }
 }

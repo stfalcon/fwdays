@@ -136,6 +136,7 @@ referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
 
 payment.price: '%summ% грн'
+payment.price.multi: '%summ% грн'
 payment.discount.cupon: (знижка %summ%% за купоном)
 payment.discount.member: (знижка %summ%% постійного учасника)
 

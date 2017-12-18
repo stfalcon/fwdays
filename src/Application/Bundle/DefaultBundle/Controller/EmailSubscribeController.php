@@ -108,6 +108,11 @@ class EmailSubscribeController extends Controller
                     $mailQueue->setIsOpen();
                     $em->flush();
                 }
+
+                if (!$user->isEmailConfirmedByPixel()) {
+                    $user->setEmailConfirmedByPixel(true);
+                    $em->flush();
+                }
             }
         }
 

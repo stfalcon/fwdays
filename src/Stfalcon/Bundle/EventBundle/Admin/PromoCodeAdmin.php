@@ -56,7 +56,7 @@ class PromoCodeAdmin extends Admin
                 'format' => 'dd.MM.y',
             ];
         $formMapper
-            ->with('Переклади')
+            ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
                     'translatable_class' => $this->getClass(),
                     'fields' => [

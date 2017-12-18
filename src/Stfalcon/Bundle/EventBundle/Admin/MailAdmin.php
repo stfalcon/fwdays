@@ -74,26 +74,28 @@ class MailAdmin extends Admin
         $isEdit = (bool) $this->getSubject()->getId();
 
         $formMapper
-            ->with('General')
-            ->add('title')
-            ->add('text')
-            ->add('events', 'entity', array(
-                'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                'multiple' => true,
-                'expanded' => false,
-                'required' => false,
-                'read_only' => $isEdit,
-            ))
-            ->add('start', null, array('required' => false))
-            ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
-            ->add('paymentStatus', 'choice', array(
-                'choices' => array(
-                    'paid' => 'Оплачено',
-                    'pending' => 'Не оплачено',
-                ),
-                'required' => false,
-                'read_only' => $isEdit,
-            ))
+            ->with('Общие')
+                ->add('title', null, ['label' => 'Название'])
+                ->add('text')
+                ->add('events', 'entity', [
+                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple' => true,
+                    'expanded' => false,
+                    'required' => false,
+                    'read_only' => $isEdit,
+                    'label' => 'События',
+                ])
+                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
+                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
+                ->add('paymentStatus', 'choice', array(
+                    'choices' => array(
+                        'paid' => 'Оплачено',
+                        'pending' => 'Не оплачено',
+                    ),
+                    'required' => false,
+                    'read_only' => $isEdit,
+                    'label' => 'Статус оплаты',
+                ))
             ->end();
     }
 

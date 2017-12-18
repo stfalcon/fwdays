@@ -28,11 +28,11 @@ class MailQueueAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('isSent')
-            ->add('isOpen')
-            ->add('isUnsubscribe')
-            ->add('user.fullname')
-            ->add('mail.title')
+            ->add('isSent', null, ['label' => 'Отправлено'])
+            ->add('isOpen', null, ['label' => 'Открыто'])
+            ->add('isUnsubscribe', null, ['label' => 'Отписался'])
+            ->add('user.fullname', null, ['label' => 'Имя пользователя'])
+            ->add('mail.title', null, ['label' => 'Название'])
             ->add('_action', 'actions', array(
                  'actions' => array(
                      'edit'   => array(),

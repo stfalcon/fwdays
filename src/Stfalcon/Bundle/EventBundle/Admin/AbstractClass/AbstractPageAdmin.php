@@ -36,7 +36,7 @@ abstract class AbstractPageAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
-            ->add('title');
+            ->add('title', null, ['label' => 'Название']);
 
         return $listMapper;
     }
@@ -57,7 +57,7 @@ abstract class AbstractPageAdmin extends Admin
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [
-                            'label' => 'title',
+                            'label' => 'Название',
                             'locale_options' => $localOptions,
                         ],
                         'text' => [
@@ -75,7 +75,7 @@ abstract class AbstractPageAdmin extends Admin
                     ],
                 ])
             ->end()
-            ->with('General')
+            ->with('Общие')
                 ->add('slug')
             ->end()
         ;

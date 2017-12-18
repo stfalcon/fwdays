@@ -38,12 +38,13 @@ class TicketCostAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name')
-            ->add('event')
-            ->add('amount')
-            ->add('altAmount')
-            ->add('count')
-            ->add('enabled')
-            ->add('unlimited');
+            ->add('name', null, ['label' => 'название'])
+            ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
+            ->add('amount', null, ['label' => 'цена'])
+            ->add('altAmount', null, ['label' => 'цена в валюте'])
+            ->add('count', null, ['label' => 'количество'])
+            ->add('soldCount', null, ['disabled' => true, 'label' => 'продано'])
+            ->add('enabled', null, ['label' => 'активный'])
+            ->add('unlimited', null, ['label' => 'безлимитный']);
     }
 }

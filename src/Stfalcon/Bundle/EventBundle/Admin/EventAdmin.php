@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 /**
  * Class EventAdmin.
@@ -38,18 +39,19 @@ class EventAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('slug')
-            ->add('name')
-            ->add('active')
-            ->add('wantsToVisitCount')
-            ->add('useDiscounts')
-            ->add('receivePayments')
-            ->add('cost')
+            ->add('name', null, ['label' => 'Название'])
+            ->add('active', null, ['label' => 'Активно'])
+            ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
+            ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
+            ->add('receivePayments', null, ['label' => 'Продавать билеты'])
+            ->add('cost', null, ['label' => 'Цена'])
             ->add(
                 'images',
                 'string',
-                array(
+                [
                     'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig',
-                )
+                    'label' => 'Изображения',
+                ]
             );
     }
 
@@ -71,32 +73,34 @@ class EventAdmin extends Admin
             ];
 
         $formMapper
-            ->with('Переклади')
+            ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'name' => [
-                            'label' => 'Назва',
+                            'label' => 'Название',
                             'locale_options' => $localOptions,
                         ],
                         'city' => [
-                            'label' => 'Місто (використувується для пошуку координат на мапі)',
+                            'label' => 'Город',
                             'locale_options' => $localOptions,
+                            'sonata_help' => 'используется для поиска координат на карте',
                         ],
                         'place' => [
-                            'label' => 'Місце (використувується для пошуку координат на мапі)',
+                            'label' => 'Место проведения',
                             'locale_options' => $localOptions,
+                            'sonata_help' => 'используется для поиска координат на карте',
                         ],
                         'description' => [
-                            'label' => 'Корткий опис',
+                            'label' => 'Краткое описание',
                             'locale_options' => $localOptions,
                         ],
                         'about' => [
-                            'label' => 'Опис',
+                            'label' => 'Описание',
                             'locale_options' => $localOptions,
                         ],
                         'approximateDate' => [
-                            'label' => 'Приблизна дата',
+                            'label' => 'Приблизительная дата начала',
                             'locale_options' => $localAllFalse,
                         ],
                         'metaDescription' => [
@@ -107,15 +111,46 @@ class EventAdmin extends Admin
                     'label' => 'Перевод',
                 ])
             ->end()
-            ->with('Дата початку та закінчення', ['class' => 'col-md-4'])
-                ->add('useApproximateDate', null, ['required' => false, 'label' => 'Використовувати приблизну дату'])
+            ->with('Настройки')
+                ->add('slug')
+                ->add(
+                    'cost',
+                    null,
+                    [
+                        'required' => true,
+                        'label' => 'Цена билета',
+                        'help' => 'используется, если не задан ни один блок в ценах событий или билеты из блоков закончились',
+                    ]
+                )
+                ->add(
+                    'ticketsCost',
+                    'sonata_type_collection',
+                    [
+                        'label' => 'Цены события',
+                        'by_reference' => false,
+                        'type_options' => ['delete' => true],
+                        'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
+                        'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
+                            : 'добавте блоки с ценами на билеты',
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ]
+                )
+                ->add('active', null, ['required' => false, 'label' => 'Активно'])
+                ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
+            ->end()
+            ->with('Даты', ['class' => 'col-md-6'])
+                ->add('useApproximateDate', null, ['required' => false, 'label' => 'Показывать приблизительную дату'])
                 ->add(
                     'date',
                     'sonata_type_datetime_picker',
                     array_merge(
                         [
                             'required' => false,
-                            'label' => 'Дата початку',
+                            'label' => 'Дата начала',
                         ],
                         $datetimePickerOptions
                     )
@@ -126,43 +161,39 @@ class EventAdmin extends Admin
                     array_merge(
                         [
                             'required' => false,
-                            'label' => 'Дата закінчення',
+                            'label' => 'Дата окончания',
                         ],
                         $datetimePickerOptions
                     )
                 )
             ->end()
-            ->with('Налаштування', ['class' => 'col-md-4'])
-                ->add('slug')
-                ->add('cost', null, ['required' => true, 'label' => 'Вартість квитка'])
-                ->add('active', null, ['required' => false])
-                ->add('receivePayments', null, ['required' => false, 'label' => 'Приймати платежі'])
-                ->add('useDiscounts', null, ['required' => false, 'label' => 'Можлива знижка'])
-            ->end()
-            ->with('Зображення та колір', ['class' => 'col-md-4'])
-                ->add('backgroundColor', 'sonata_type_color_selector', ['required' => false, 'label' => 'Колір фону'])
+            ->with('Изображения и цвет', ['class' => 'col-md-6'])
+                ->add('backgroundColor', 'sonata_type_color_selector', ['required' => false, 'label' => 'Цвет фона'])
                 ->add(
                     'logoFile',
                     'file',
                     [
-                        'label' => 'Logo. Ширина зображення повина дорівнювати висоті.',
+                        'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
+                        'help' => 'Изображения должно быть квадратное.',
                     ]
                 )
                 ->add(
                     'pdfBackgroundFile',
                     'file',
                     [
-                        'label' => 'Background image',
+                        'label' => 'Изображение для pdf',
                         'required' => false,
+                        'help' => 'Левый верхний угол.',
                     ]
                 )
                 ->add(
                     'emailBackgroundFile',
                     'file',
                     [
-                        'label' => 'Email background',
+                        'label' => 'Изображение для писем',
                         'required' => false,
+                        'help' => 'Левый правый угол.',
                     ]
                 )
             ->end();

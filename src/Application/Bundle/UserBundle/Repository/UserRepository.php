@@ -59,13 +59,6 @@ class UserRepository extends EntityRepository
             ->andWhere('u.subscribe = 1')
             ->groupBy('u');
 
-
-//        $users = [];
-//
-//        foreach ($qb->getQuery()->execute() as $result) {
-//            $users[] = $result->getUser();
-//        }
-
         return $qb->getQuery()->execute();
     }
 }

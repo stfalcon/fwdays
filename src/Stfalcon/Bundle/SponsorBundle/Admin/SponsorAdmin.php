@@ -59,7 +59,7 @@ class SponsorAdmin extends Admin
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
-            ->with('Переклади')
+            ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
@@ -74,7 +74,7 @@ class SponsorAdmin extends Admin
                         ],
                 ])
             ->end()
-            ->with('Загальні')
+            ->with('Общие')
                 ->add('slug')
                 ->add('onMain', null, ['required' => false])
                 ->add('site')

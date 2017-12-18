@@ -12,13 +12,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class TicketAdmin extends Admin
 {
     /**
-     * Default Datagrid values
+     * Default Datagrid values.
      *
      * @var array
      */
     protected $datagridValues = array(
         '_sort_order' => 'DESC',
-        '_sort_by' => 'updatedAt'
+        '_sort_by' => 'updatedAt',
     );
 
     protected function configureRoutes(RouteCollection $collection)
@@ -31,40 +31,43 @@ class TicketAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->addIdentifier('event')
+            ->addIdentifier('event', null, ['label' => 'Событие'])
             ->add(
                 'user',
                 'string',
                 [
-                    'template' => 'StfalconEventBundle:Admin:user_link_field.html.twig'
+                    'template' => 'StfalconEventBundle:Admin:user_link_field.html.twig',
+                    'label' => 'Пользователь',
                 ]
             )
             ->add(
                 'amount',
                 'money',
                 [
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'label' => 'Цена',
                 ]
             )
             ->add(
                 'amountWithoutDiscount',
                 'money',
                 [
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'label' => 'Цена без скидки',
                 ]
             )
-            ->add('promoCode')
-            ->add('payment')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('used')
+            ->add('promoCode', null, ['label' => 'Промокод'])
+            ->add('payment', null, ['label' => 'Оплата'])
+            ->add('createdAt', null, ['label' => 'Дата создания'])
+            ->add('updatedAt', null, ['label' => 'Дата изменения'])
+            ->add('used', null, ['label' => 'Использован'])
             ->add('_action', null, [
                 'actions' => [
                     'removeTicket' => [
                         'ask_confirmation' => true,
                         'template' => 'StfalconEventBundle:Admin:list_action_remove_ticket.html.twig',
                     ],
-                ]
+                ],
             ])
         ;
     }
@@ -78,21 +81,23 @@ class TicketAdmin extends Admin
                 'amount',
                 'money',
                 [
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'label' => 'Цена',
                 ]
             )
             ->add(
                 'amountWithoutDiscount',
                 'money',
                 [
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'label' => 'Цена без скидки',
                 ]
             )
-            ->add('promoCode')
-            ->add('payment')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('used');
+            ->add('promoCode', null, ['label' => 'Промокод'])
+            ->add('payment', null, ['label' => 'Оплата'])
+            ->add('createdAt', null, ['label' => 'Дата создания'])
+            ->add('updatedAt', null, ['label' => 'Дата изменения'])
+            ->add('used', null, ['label' => 'Использован']);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -109,10 +114,10 @@ class TicketAdmin extends Admin
                     'field_options' => [
                         'choices' => [
                             'paid' => 'Paid',
-                            'pending' => 'Pending'
+                            'pending' => 'Pending',
                         ],
                     ],
-                    'field_type' => 'choice'
+                    'field_type' => 'choice',
                 ]
             );
     }
@@ -128,23 +133,24 @@ class TicketAdmin extends Admin
             'payment',
             'createdAt',
             'updatedAt',
-            'used'
+            'used',
         );
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event')
+            ->add('event', null, ['label' => 'Событие'])
             ->add(
                 'amount',
                 'money',
                 [
-                    'currency' => 'UAH'
+                    'currency' => 'UAH',
+                    'label' => 'Цена',
                 ]
             )
-            ->add('payment')
-            ->add('used')
+            ->add('payment', null, ['label' => 'Оплата'])
+            ->add('used', null, ['label' => 'Использован'])
         ;
     }
 }

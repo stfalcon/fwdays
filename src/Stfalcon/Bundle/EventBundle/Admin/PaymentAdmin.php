@@ -29,21 +29,25 @@ class PaymentAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('amount')
-            ->add('fwdaysAmount')
-            ->add('refundedAmount')
-            ->add('status')
-            ->add('user')
-            ->add('tickets', 'string', array(
-                    'route' => array(
-                        'name' => 'show'
-                    ),
-                    'template' => 'StfalconEventBundle:Admin:list_tickets.html.twig'
-                )
+            ->add('amount', null, ['label' => 'Сума оплаты'])
+            ->add('fwdaysAmount', null, ['label' => 'Сума реферальных'])
+            ->add('refundedAmount', null, ['label' => 'Сума возвратов'])
+            ->add('status', null, ['label' => 'Статус платежа'])
+            ->add('user', null, ['label' => 'Статус платежа'])
+            ->add(
+                'tickets',
+                'string',
+                [
+                    'label' => 'Билеты',
+                    'route' => [
+                        'name' => 'show',
+                    ],
+                    'template' => 'StfalconEventBundle:Admin:list_tickets.html.twig',
+                ]
             )
-            ->add('gate')
-            ->add('createdAt')
-            ->add('updatedAt');
+            ->add('gate', null, ['label' => 'Способ оплаты'])
+            ->add('createdAt', null, ['label' => 'Дата создания'])
+            ->add('updatedAt', null, ['label' => 'Дата изменения']);
 
         return $listMapper;
     }
@@ -105,7 +109,7 @@ class PaymentAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('General')
+            ->with('Общие')
                 ->add('amount', 'money', array(
                     'currency' => 'UAH'
                 ))
