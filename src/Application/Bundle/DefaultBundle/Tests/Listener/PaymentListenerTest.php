@@ -65,8 +65,10 @@ class PaymentListenerTest extends WebTestCase
     public function testPostUpdate()
     {
         $this->getEmailWithLocal('uk');
+        /** check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
-        $this->findEmailWithText('user@fwdays.com');
+        /** check email with string */
+        $this->findEmailWithText('Вітаємо, <br/>Michael Jordan');
     }
 
     /**
@@ -90,7 +92,7 @@ class PaymentListenerTest extends WebTestCase
     private function getEmailWithLocal($lang)
     {
         $this->client->followRedirects();
-        $user = $this->loginUser('user@fwdays.com', 'qwerty');
+        $user = $this->loginUser('user@fwdays.com', 'qwerty', $lang);
         $this->client->request('GET', '/'.$lang, ['_locale' => $lang]);
 
         $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
@@ -111,25 +113,36 @@ class PaymentListenerTest extends WebTestCase
     /**
      * @param string $userName
      * @param string $userPass
+     * @param string $lang
      *
      * @return User $user
      */
-    private function loginUser($userName, $userPass)
+    private function loginUser($userName, $userPass, $lang)
     {
         $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => $userName]);
+        $this->assertNotNull($user, sprintf('User %s not founded!', $userName));
 
+        $loginBtnCaption = 'Sign in';
+        $accountLinkCaption = ' Account';
+
+        if ('uk' === $lang) {
+            $loginBtnCaption = 'Увійти';
+            $accountLinkCaption = ' Кабінет';
+        }
         /** start Login */
-        $crawler = $this->client->request('GET', '/login');
+        $this->client->followRedirects();
+        $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">Login</button>', $crawler->html());
-        $form = $crawler->selectButton('Login')->form();
+        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" onclick="ga(\'send\', \'button\', \'enter\', \'event\');" type="submit">'.$loginBtnCaption.'
+            </button>', $crawler->html());
+        $form = $crawler->selectButton($loginBtnCaption)->form();
         $form['_username'] = $user->getEmail();
         $form['_password'] = $userPass;
-        $this->client->followRedirects();
+
         $this->client->submit($form);
         /** end Login */
-        $crawler = $this->client->request('GET', '/');
-        $this->assertGreaterThan(0, $crawler->filter('a:contains(" Сabinet")')->count());
+        $crawler = $this->client->request('GET', $lang.'/');
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("'.$accountLinkCaption.'")')->count());
 
         return $user;
     }

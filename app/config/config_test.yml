@@ -24,7 +24,7 @@ swiftmailer:
 
 doctrine:
     dbal:
-        dbname:   fwdays_com_testing
+        dbname:   fwdays_com_test
 
 liip_functional_test: ~
 

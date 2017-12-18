@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = '58585b0231b715db87dbf60685c5d8f9';
-    const UK_FILE_HASH = '183bcfac5d61c02c67da86fffdabe18f';
+    const EN_FILE_HASH = 'c1212249bb00811e3a2f9eb5602eef45';
+    const UK_FILE_HASH = 'dbd648a944202f10a8cd9189dc50986e';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -112,7 +112,7 @@ class TicketControllerTest extends WebTestCase
     private function getFileHash($lang)
     {
         if (!empty($lang)) {
-            $this->loginUser('user@fwdays.com', 'qwerty');
+            $this->loginUser('user@fwdays.com', 'qwerty', $lang);
             $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
 
             return md5($this->client->getResponse()->getContent());
@@ -123,25 +123,36 @@ class TicketControllerTest extends WebTestCase
     /**
      * @param string $userName
      * @param string $userPass
+     * @param string $lang
      *
      * @return User $user
      */
-    private function loginUser($userName, $userPass)
+    private function loginUser($userName, $userPass, $lang)
     {
         $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => $userName]);
+        $this->assertNotNull($user, sprintf('User %s not founded!', $userName));
 
+        $loginBtnCaption = 'Sign in';
+        $accountLinkCaption = ' Account';
+
+        if ('uk' === $lang) {
+            $loginBtnCaption = 'Увійти';
+            $accountLinkCaption = ' Кабінет';
+        }
         /** start Login */
-        $crawler = $this->client->request('GET', '/login');
+        $this->client->followRedirects();
+        $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">Login</button>', $crawler->html());
-        $form = $crawler->selectButton('Login')->form();
+        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" onclick="ga(\'send\', \'button\', \'enter\', \'event\');" type="submit">'.$loginBtnCaption.'
+            </button>', $crawler->html());
+        $form = $crawler->selectButton($loginBtnCaption)->form();
         $form['_username'] = $user->getEmail();
         $form['_password'] = $userPass;
-        $this->client->followRedirects();
+
         $this->client->submit($form);
         /** end Login */
         $crawler = $this->client->request('GET', '/');
-        $this->assertGreaterThan(0, $crawler->filter('a:contains(" Сabinet")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("'.$accountLinkCaption.'")')->count());
 
         return $user;
     }
