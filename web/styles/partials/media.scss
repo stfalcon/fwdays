@@ -247,7 +247,12 @@
     }
 
     &__details-left {
+      flex-basis: initial;
       margin-bottom: 24px;
+    }
+
+    &__details-right {
+      flex-basis: initial;
     }
 
     &__date {
