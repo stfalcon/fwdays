@@ -12,7 +12,11 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css') }}">
 </head>
+
+{% block body_class %}
 <body>
+{% endblock %}
+
 {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
 
 <!--BEGIN layout-box-->

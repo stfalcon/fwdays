@@ -43,10 +43,6 @@ class InterkassaController extends Controller
         if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
 
-            $paymentService = $this->get('stfalcon_event.payment.service');
-            $paymentService->setTicketsCostAsSold($payment);
-            $paymentService->calculateTicketsPromocode($payment);
-
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 

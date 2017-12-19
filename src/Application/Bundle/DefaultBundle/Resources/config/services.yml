@@ -28,3 +28,16 @@ services:
         class: Application\Bundle\DefaultBundle\Validator\Constraints\TicketCost\TicketCostCountValidator
         tags:
             - { name: validator.constraint_validator, alias: ticketCost }
+
+    app.ticket_cost.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketCostService
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    stfalcon_event.ticket.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%stfalcon_event.config%"
+            - "@translator"
+            - "@router"
+            - "@app.ticket_cost.service"

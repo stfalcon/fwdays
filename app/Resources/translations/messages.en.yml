@@ -126,6 +126,10 @@ ticket.mob_status.download: Download
 ticket.status.pay: Buy ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
+
+ticket.status.sold: Tickets sold out
+ticket.status.sold_mob: sold out
+
 ticket.summ_from: Tickets cost from %summ% UAH
 ticket.status.event.add: Event added
 ticket.status.paid: Participation is paid
@@ -138,7 +142,7 @@ referral.invaite.link.text: your referral link
 referral.balance.redesign: 'Your balance: %user_balance% UAH'
 
 payment.price: '%summ% UAH'
-payment.price.multi: '%summ% $'
+payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
 payment.discount.member: (Permanent member discount %summ%%)
 
@@ -174,6 +178,10 @@ mail.unsubscribe.no_more_news: We will not send you news about the Framework Day
 mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
 mail.unsubscribe.you_can_suscribe2: subscribe again
 mail.subcribe: You have subscribed on Framework Days news
+
+ticket.email.waitfornews: 'Слідкуйте за новинами:'
+ticket.email.unsubscribe: Відписатись від розсилки
+ticket.email.team: 'З повагою, <br/>команда Frameworks Days <br/>'
 
 resetting:
     email:

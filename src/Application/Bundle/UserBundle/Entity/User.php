@@ -148,7 +148,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ\-]+$/",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -165,7 +165,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁІЇa-zа-яёіїьъэ\-]+$/",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/",
      *     match=true,
      *     message="error.surname.only_letters"
      * )
@@ -200,9 +200,9 @@ class User extends BaseUser
     /**
      * @var bool
      *
-     * @ORM\Column(name="email_confirmed_by_pixel", nullable=true, options = {"default" : 0})
+     * @ORM\Column(name="email_exists", nullable=true, options = {"default" : 1})
      */
-    protected $emailConfirmedByPixel = false;
+    protected $emailExists = true;
 
     /**
      * @var string
@@ -240,19 +240,19 @@ class User extends BaseUser
     /**
      * @return bool
      */
-    public function isEmailConfirmedByPixel()
+    public function isEmailExists()
     {
-        return $this->emailConfirmedByPixel;
+        return $this->emailExists;
     }
 
     /**
-     * @param bool $emailConfirmedByPixel
+     * @param bool $emailExists
      *
      * @return $this
      */
-    public function setEmailConfirmedByPixel($emailConfirmedByPixel)
+    public function setEmailExists($emailExists)
     {
-        $this->emailConfirmedByPixel = $emailConfirmedByPixel;
+        $this->emailExists = $emailExists;
 
         return $this;
     }
@@ -444,6 +444,7 @@ class User extends BaseUser
     {
         parent::setEmail($email);
         $this->setUsername($email);
+        $this->setEmailValid(true);
 
         return $this;
     }

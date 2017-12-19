@@ -25,7 +25,7 @@ class OAuthUserProvider extends BaseClass
         $user = $this->userManager->findUserBy([$this->getProperty($response) => $socialID]);
         $email = $response->getEmail();
         //check if the user already has the corresponding social account
-        if (!$user) {
+        if (!$user && $email) {
             //check if the user has a normal account
             $user = $this->userManager->findUserByEmail($email);
 
@@ -49,8 +49,7 @@ class OAuthUserProvider extends BaseClass
                     break;
             }
             $this->userManager->updateUser($user);
-        } else {
-            //and then login the user
+        } elseif ($user) {
             $checker = new UserChecker();
             $checker->checkPreAuth($user);
         }

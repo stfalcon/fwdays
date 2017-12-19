@@ -37,7 +37,7 @@ class PaymentController extends Controller
     public function payAction(Event $event)
     {
         $html = '';
-        if (!$event->getReceivePayments()) {
+        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return new JsonResponse(['result' => false, 'error' => "Оплата за участие в {$event->getName()} не принимается.", 'html' => $html]);
         }
         /* @var  User $user */
@@ -138,7 +138,7 @@ class PaymentController extends Controller
      */
     public function paymentAction(Event $event)
     {
-        if (!$event->getReceivePayments()) {
+        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
                 '@ApplicationDefault/Redesign/static.page.html.twig',
                 ['text' => sprintf('Оплата за участие в %s не принимается.', $event->getName())]
@@ -169,6 +169,16 @@ class PaymentController extends Controller
      */
     public function addParticipantToPaymentAction(Event $event, $name, $surname, $email)
     {
+        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => "Оплата за участие в {$event->getName()} не принимается.",
+                    'html' => '',
+                ]
+            );
+        }
+
         $payment = $this->getPaymentIfAccess();
 
         if (!$payment) {
@@ -205,7 +215,7 @@ class PaymentController extends Controller
                 [
                     'result' => false,
                     'error' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()]),
-                    'html' => ''
+                    'html' => '',
                 ]
             );
         }

@@ -180,19 +180,11 @@ class PaymentService
     public function checkTicketsPricesInPayment($payment, $event)
     {
         $ticketService = $this->container->get('stfalcon_event.ticket.service');
-        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')->getEventEnabledTicketsCost($event);
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $currentTicketCost = null;
-            $eventCost = $event->getCost();
-            /** @var TicketCost $cost */
-            foreach ($eventCosts as $cost) {
-                if ($cost->isHaveTemporaryCount()) {
-                    $eventCost = $cost->getAmountByTemporaryCount();
-                    $currentTicketCost = $cost;
-                    break;
-                }
-            }
+            $currentTicketCost = $this->container->get('app.ticket_cost.service')->getCurrentEventTicketCost($event);
+            $eventCost = $currentTicketCost ? $currentTicketCost->getAmountByTemporaryCount()
+                : $event->getBiggestTicketCost();
 
             $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
 
@@ -220,6 +212,7 @@ class PaymentService
                     $ticketCost->incSoldCount();
                 }
             }
+
             $this->em->flush();
         }
     }

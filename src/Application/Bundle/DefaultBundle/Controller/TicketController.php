@@ -11,6 +11,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -31,8 +32,17 @@ class TicketController extends Controller
     {
         /* @var  User $user */
         $user = $this->getUser();
+        $request = $this->get('request_stack')->getCurrentRequest();
 
-        $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData($user, $event, $position, $ticketCost);
+        $local = $request instanceof Request ? $request->getLocale() : 'uk';
+
+        $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData(
+            $user,
+            $event,
+            $position,
+            $ticketCost,
+            $local
+        );
 
         return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', [
             'class' => $result['class'],

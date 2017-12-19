@@ -66,7 +66,12 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!($user && $mail) || !$user->isSubscribe() || !filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+            if (!($user && $mail) ||
+                !$user->isEnabled() ||
+                !$user->isEmailExists() ||
+                !$user->isSubscribe() ||
+                !filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
+            ) {
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -100,6 +105,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 true
             );
 
+            $headers->removeAll('List-Unsubscribe');
             $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
 
             if ($mailer->send($message)) {

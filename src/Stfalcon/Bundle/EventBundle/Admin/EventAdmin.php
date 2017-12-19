@@ -5,30 +5,48 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
 
 /**
  * Class EventAdmin.
  */
 class EventAdmin extends Admin
 {
+    /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
     }
 
-    private function removeNullTranslate($object)
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
     {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
+        $actions = array();
     }
 
     /**
@@ -44,7 +62,7 @@ class EventAdmin extends Admin
             ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
-            ->add('cost', null, ['label' => 'Цена'])
+//            ->add('cost', null, ['label' => 'Цена'])
             ->add(
                 'images',
                 'string',
@@ -141,6 +159,7 @@ class EventAdmin extends Admin
                 ->add('active', null, ['required' => false, 'label' => 'Активно'])
                 ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
                 ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
+                ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
             ->end()
             ->with('Даты', ['class' => 'col-md-6'])
                 ->add('useApproximateDate', null, ['required' => false, 'label' => 'Показывать приблизительную дату'])
@@ -200,10 +219,14 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @return array|void
+     * @param $object
      */
-    public function getBatchActions()
+    private function removeNullTranslate($object)
     {
-        $actions = array();
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }
