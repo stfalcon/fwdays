@@ -148,7 +148,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -165,7 +165,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
      *     match=true,
      *     message="error.surname.only_letters"
      * )
@@ -444,7 +444,7 @@ class User extends BaseUser
     {
         parent::setEmail($email);
         $this->setUsername($email);
-        $this->setEmailValid(true);
+        $this->isEmailExists(true);
 
         return $this;
     }
