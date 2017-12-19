@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20171219152709 extends AbstractMigration
+class Version20171219155432 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -38,7 +38,7 @@ class Version20171219152709 extends AbstractMigration
         $this->addSql('ALTER TABLE event__promo_code ADD usedCount INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE event__pages ADD text_new LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE sponsors_category ADD is_wide_container TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE users ADD name VARCHAR(255) NOT NULL, ADD surname VARCHAR(255) NOT NULL, ADD phone VARCHAR(20) DEFAULT NULL, ADD email_valid VARCHAR(255) DEFAULT \'1\', ADD facebook_id VARCHAR(255) DEFAULT NULL, ADD google_id VARCHAR(255) DEFAULT NULL, CHANGE fullname fullname VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE users ADD name VARCHAR(255) NOT NULL, ADD surname VARCHAR(255) NOT NULL, ADD phone VARCHAR(20) DEFAULT NULL, ADD email_exists VARCHAR(255) DEFAULT \'1\', ADD facebook_id VARCHAR(255) DEFAULT NULL, ADD google_id VARCHAR(255) DEFAULT NULL, CHANGE fullname fullname VARCHAR(255) DEFAULT NULL');
     }
 
     /**
@@ -64,6 +64,6 @@ class Version20171219152709 extends AbstractMigration
         $this->addSql('ALTER TABLE reviews_users_likes DROP FOREIGN KEY FK_8009513FA76ED395');
         $this->addSql('ALTER TABLE reviews_users_likes ADD CONSTRAINT FK_8009513FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
         $this->addSql('ALTER TABLE sponsors_category DROP is_wide_container');
-        $this->addSql('ALTER TABLE users DROP name, DROP surname, DROP phone, DROP email_valid, DROP facebook_id, DROP google_id, CHANGE fullname fullname VARCHAR(255) NOT NULL COLLATE utf8_general_ci');
+        $this->addSql('ALTER TABLE users DROP name, DROP surname, DROP phone, DROP email_exists, DROP facebook_id, DROP google_id, CHANGE fullname fullname VARCHAR(255) NOT NULL COLLATE utf8_general_ci');
     }
 }
