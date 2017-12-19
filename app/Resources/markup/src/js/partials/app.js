@@ -315,13 +315,4 @@ $(document).ready(function () {
             return false;
         });
     }
-
-    /**
-     *  Check single program
-     */
-
-    if (!$('.program').children('.program-header').length){
-        $('.schedule__container').addClass('schedule__container--single');
-    }
-
 });

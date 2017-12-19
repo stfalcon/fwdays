@@ -342,18 +342,6 @@
   }
 }
 
-.schedule__container--single {
-  .schedule__title {
-    text-align: center;
-    margin-left: 0;
-  }
-
-  .program {
-    max-width: 560px;
-    margin: 0 auto;
-  }
-}
-
 .program {
   position: relative;
 }
@@ -916,3 +904,45 @@
     }
   }
 }
+
+// BEGIN short event
+.short-event {
+  .speakers {
+    .container {
+      max-width: 696px;
+    }
+
+    &__title {
+      text-align: center;
+      margin: 0 0 36px;
+    }
+
+    &__item {
+      width: 33.33333333%;
+    }
+  }
+
+  .schedule {
+    .container {
+      max-width: 560px;
+    }
+
+    &__title {
+      text-align: center;
+      margin: 0 0 36px;
+    }
+  }
+
+  .price-list {
+    &__title {
+      text-align: center;
+    }
+  }
+
+  .location {
+    &__title {
+      text-align: center;
+    }
+  }
+}
+// END short event

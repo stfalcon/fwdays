@@ -358,12 +358,8 @@
   }
 
   .price-list {
-    &__title {
-      margin-bottom: 0;
-    }
-
     &__items {
-      margin: 0 -24px;
+      margin: 0 -24px 16px;
     }
   }
 
@@ -410,6 +406,26 @@
       margin: 0 44px 24px 0;
     }
   }
+
+  // BEGIN short event(max-width: 1023)
+  .short-event {
+    .speakers {
+      .container {
+        max-width: initial;
+      }
+
+      &__title {
+        margin: 0 0 20px;
+      }
+    }
+
+    .schedule {
+      &__title {
+        margin: 0 0 20px;
+      }
+    }
+  }
+  // END short event(max-width: 1023)
 
   .event-list {
     &__box {
@@ -1248,6 +1264,38 @@
       margin-top: 20px;
     }
   }
+
+  // BEGIN short event(max-width: 767)
+  .short-event {
+    .speakers {
+      &__title {
+        text-align: left;
+      }
+
+      &__item {
+        width: 50%;
+      }
+    }
+
+    .schedule {
+      &__title {
+        text-align: left;
+      }
+    }
+
+    .price-list {
+      &__title {
+        text-align: left;
+      }
+    }
+
+    .location {
+      &__title {
+        text-align: left;
+      }
+    }
+  }
+  // END short event(max-width: 767)
 
   .contacts {
     margin-top: 24px;
