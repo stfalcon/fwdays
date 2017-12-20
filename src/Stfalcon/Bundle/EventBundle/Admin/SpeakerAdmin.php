@@ -74,7 +74,7 @@ class SpeakerAdmin extends Admin
                     'query_builder' =>
                         function (\Doctrine\ORM\EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->where($qb->expr()->eq('e.active', '1'));
+                            $repository = $qb->orderBy('e.id', 'DESC');
 
                             return  $repository;
                         },
@@ -89,7 +89,7 @@ class SpeakerAdmin extends Admin
                     'query_builder' =>
                         function (\Doctrine\ORM\EntityRepository $repository) {
                             $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->where($qb->expr()->eq('e.active', '1'));
+                            $repository = $qb->orderBy('e.id', 'DESC');
 
                             return  $repository;
                         },

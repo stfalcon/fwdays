@@ -166,6 +166,7 @@ contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лук’янюк
+contacts.person.ksenia: Ксенія Грабевник
 
 fos_user.password.mismatch: Невідповідність нового пароля
 Bad credentials.: 'Невірна електронна адреса або пароль'

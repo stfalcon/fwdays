@@ -165,9 +165,12 @@ contacts.organization.title: 'Sponsors'
 contacts.address.title: 'Address'
 contacts.facebook.title: 'Facebook'
 contacts.address.address: '42a Viborzka street, Kyiv'
+
 contacts.person.tatyana: Tetiana Bukhanova
 contacts.person.irina: Iryna Bozhyk
 contacts.person.lara: Lara Lukianiuk
+contacts.person.ksenia: Kenya Grabevnyk
+
 fos_user.password.mismatch: Password does not match
 
 fos_user.password.mismatch: Uncorrect new password
