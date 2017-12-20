@@ -208,8 +208,8 @@ class Event implements Translatable
     /**
      * Background color for event card.
      *
-     * @var
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#4e4e84"})
      */
     protected $backgroundColor = '#4e4e84';
