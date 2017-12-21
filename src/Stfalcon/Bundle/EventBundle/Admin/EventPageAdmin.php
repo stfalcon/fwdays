@@ -39,7 +39,7 @@ class EventPageAdmin extends AbstractPageAdmin
                             'locale_options' => $localOptions,
                         ],
                         'text' => [
-                            'label' => 'text',
+                            'label' => 'текст',
                             'locale_options' => $localOptions,
                         ],
                         'textNew' => [

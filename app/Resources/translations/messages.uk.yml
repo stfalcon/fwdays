@@ -128,6 +128,10 @@ ticket.status.payment_returned: Оплата повернута
 ticket.status.payment_returned_mob: Оплата повернута
 ticket.status.paid: Участь сплачено
 ticket.status.paid_mob: сплачено
+
+ticket.status.sold: Квитки продані
+ticket.status.sold_mob: продано
+
 ticket.status.take_apart: Зареєструватись
 ticket.status.not_take_apart : Відписатись
 referral.invaite.title2: Запрошуйте друзів та накопичуйте бонуси
@@ -136,7 +140,7 @@ referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
 
 payment.price: '%summ% грн'
-payment.price.multi: '%summ% грн'
+payment.price.multi: '%summ% грн '
 payment.discount.cupon: (знижка %summ%% за купоном)
 payment.discount.member: (знижка %summ%% постійного учасника)
 
@@ -162,6 +166,7 @@ contacts.address.address: 'Київ, вул. Виборзька, 42а'
 contacts.person.tatyana: Тетяна Буханова
 contacts.person.irina: Ірина Божик
 contacts.person.lara: Лара Лук’янюк
+contacts.person.ksenia: Ксенія Грабевник
 
 fos_user.password.mismatch: Невідповідність нового пароля
 Bad credentials.: 'Невірна електронна адреса або пароль'
@@ -171,6 +176,10 @@ mail.unsubscribe.no_more_news: Ми більше не будемо надсил�
 mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете
 mail.unsubscribe.you_can_suscribe2: Підписатися знову
 mail.subcribe: Ви підписані на новини Framework Days
+
+ticket.email.waitfornews: 'Слідкуйте за новинами:'
+ticket.email.unsubscribe: Відписатись від розсилки
+ticket.email.team: 'З повагою, <br/>команда Frameworks Days <br/>'
 
 resetting:
     email:

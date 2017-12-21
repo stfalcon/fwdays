@@ -10,6 +10,14 @@
     {% endif %}
 {% endblock meta_description %}
 
+{% block body_class %}
+{% if event.smallEvent %}
+<body class="short-event">
+{% else %}
+{{ parent() }}
+{% endif %}
+{% endblock %}
+
 {% block content %}
     {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
     'event':event,
@@ -19,7 +27,6 @@
     'position':'event',
     'eventCurrentAmount':eventCurrentAmount
     } %}
-
     <!--BEGIN event-description-->
     <section class="event-description">
         <div class="container container--sm">
@@ -47,7 +54,7 @@
     {% endif %}
     <!--END program-->
 
-    {% if event.receivePayments %}
+    {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
         {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
     {% endif %}
 

@@ -64,7 +64,7 @@ class AppKernel extends Kernel
             new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle,
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
             new SunCat\MobileDetectBundle\MobileDetectBundle(),

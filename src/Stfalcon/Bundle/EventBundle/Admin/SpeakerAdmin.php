@@ -49,7 +49,7 @@ class SpeakerAdmin extends Admin
                                 'locale_options' => $localOptions,
                             ],
                             'about' => [
-                                'label' => 'about',
+                                'label' => 'Описание',
                                 'locale_options' => $localOptions,
                             ],
                         ],
@@ -58,7 +58,7 @@ class SpeakerAdmin extends Admin
             ->with('Общие')
                 ->add('slug')
                 ->add('email')
-                ->add('company')
+                ->add('company', null, ['label' => 'Место работы'])
                 ->add('sortOrder')
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', [
@@ -71,6 +71,13 @@ class SpeakerAdmin extends Admin
             ->with('Участвует в событиях', ['class' => 'col-md-6'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'query_builder' =>
+                        function (\Doctrine\ORM\EntityRepository $repository) {
+                            $qb = $repository->createQueryBuilder('e');
+                            $repository = $qb->orderBy('e.id', 'DESC');
+
+                            return  $repository;
+                        },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
@@ -79,6 +86,13 @@ class SpeakerAdmin extends Admin
             ->with('Кандидат на события', ['class' => 'col-md-6'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'query_builder' =>
+                        function (\Doctrine\ORM\EntityRepository $repository) {
+                            $qb = $repository->createQueryBuilder('e');
+                            $repository = $qb->orderBy('e.id', 'DESC');
+
+                            return  $repository;
+                        },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',

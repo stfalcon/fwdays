@@ -7,8 +7,8 @@
             {% for ticket in ticketCosts %}
                 {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}
             {% endfor %}
-        {% else %}
-            {% include '@ApplicationDefault/Redesign/price_block_default.html.twig' with {'currentPrice' : currentPrice, 'event':event}  %}
+        {#{% else %}#}
+            {#{% include '@ApplicationDefault/Redesign/price_block_default.html.twig' with {'currentPrice' : currentPrice, 'event':event}  %}#}
         {% endif %}
         </div>
         {% if event.useDiscounts %}

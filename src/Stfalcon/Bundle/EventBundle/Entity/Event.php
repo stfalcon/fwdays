@@ -171,13 +171,18 @@ class Event implements Translatable
      * @ORM\Column(type="boolean")
      */
     protected $active = true;
-
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $smallEvent = false;
     /**
      * @var float
      *
-     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="cost", type="decimal", precision=10, scale=2, nullable=true)
      */
-    protected $cost;
+    protected $cost = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
@@ -203,8 +208,8 @@ class Event implements Translatable
     /**
      * Background color for event card.
      *
-     * @var
      * @Assert\NotBlank()
+     *
      * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#4e4e84"})
      */
     protected $backgroundColor = '#4e4e84';
@@ -389,6 +394,7 @@ class Event implements Translatable
 
         return $this;
     }
+
     /**
      * @return mixed
      */
@@ -960,5 +966,54 @@ class Event implements Translatable
         $this->candidateSpeakers = $candidateSpeakers;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSmallEvent()
+    {
+        return $this->smallEvent;
+    }
+
+    /**
+     * @param bool $smallEvent
+     *
+     * @return $this
+     */
+    public function setSmallEvent($smallEvent)
+    {
+        $this->smallEvent = $smallEvent;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHaveFreeTickets()
+    {
+        /** @var TicketCost $cost */
+        foreach ($this->ticketsCost as $cost) {
+            if ($cost->isEnabled() && ($cost->isUnlimited() || $cost->getCount() > $cost->getSoldCount())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getBiggestTicketCost()
+    {
+        $result = null;
+        /** @var TicketCost $cost */
+        foreach ($this->ticketsCost as $cost) {
+            $result = $cost->getAmount() > $result ? $cost->getAmount() : $result;
+        }
+
+        return $result;
     }
 }

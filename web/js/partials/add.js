@@ -134,6 +134,18 @@ function paymentAfterLogin() {
     }
 }
 
+function submitRegistrationForm_form_registration_ (token) {
+    $('#form_registration_').submit();
+}
+
+function submitRegistrationForm_form_registration_modal_signin (token) {
+    $('#form_registration_modal_signin').submit();
+}
+
+function submitRegistrationForm_form_registration_modal_signin_payment (token) {
+    $('#form_registration_modal_signin_payment').submit();
+}
+
 $(document).on('click', '.user-payment__remove', function () {
     var elem = $(this);
     var e_slug = $('#pay-form').data('event');
@@ -376,4 +388,3 @@ $(document).ready(function () {
         });
     });
 });
-

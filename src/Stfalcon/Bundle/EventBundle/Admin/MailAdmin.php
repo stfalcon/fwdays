@@ -76,7 +76,7 @@ class MailAdmin extends Admin
         $formMapper
             ->with('Общие')
                 ->add('title', null, ['label' => 'Название'])
-                ->add('text')
+                ->add('text', null, ['label' => 'текст'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true,

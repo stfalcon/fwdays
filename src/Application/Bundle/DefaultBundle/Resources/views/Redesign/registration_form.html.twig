@@ -1,11 +1,11 @@
-<form action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
+{% set form_id = remodal|replace({'-': '_'}) %}
+
+<form id="form_registration_{{ form_id }}" action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
     <input type="hidden" id="fos_user_registration_form__token_{{ remodal }}" name="fos_user_registration_form[_token]"
            value="{{ csrf_token('registration') }}"/>
-    {#<div class="form-hint">{{ 'menu.user.registration'|trans }}</div>#}
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
-
                 <label class="form-label form-label--required"
                        for="fos_user_registration_form_name_{{ remodal }}">{{ 'user.name.title'|trans }}</label>
                 <input class="input {% if regForm is defined and regForm.name.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_registration_form_name_{{ remodal }}"
@@ -64,7 +64,9 @@
     </div>
     <div class="form-row form-row--align-center">
         <div class="form-col form-col--6 form-col--xs-12">
-            <button class="btn btn--primary btn--lg form-col__btn"
+            <button class="btn btn--primary btn--lg form-col__btn g-recaptcha"
+                    data-sitekey="{{ google_site_key }}"
+                    data-callback='submitRegistrationForm_form_registration_{{ form_id }}'
                     {% if queryLink is not empty %}
                         {% set ga_label = 'main' %}
                         {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
@@ -72,12 +74,15 @@
                         {% endif %}
                         onclick="ga('send', 'button', 'register', '{{ ga_label }}');"
                     {% endif %}
-                    type="submit">{{ 'user.create.title'|trans }}</button>
+                    >{{ 'user.create.title'|trans }}
+            </button>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="help-links">
                 <div class="help-links__item">
-                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}" href="#"{% else %}href="{{ path('fos_user_security_login') }}"{% endif %} class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
+                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}"
+                       href="#"{% else %}href="{{ path('fos_user_security_login') }}"{% endif %}
+                       class="form-link">{{ 'user.already_have_account.title'|trans }}</a>
                 </div>
             </div>
         </div>

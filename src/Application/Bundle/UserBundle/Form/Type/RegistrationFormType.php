@@ -12,51 +12,52 @@ class RegistrationFormType extends BaseRegistrationFormType
 {
     /**
      * @param FormBuilderInterface $builder
+     *
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', 'email', [
-                'required'           => true,
-                'label'              => 'fos_user_profile_form_email',
+                'required' => true,
+                'label' => 'fos_user_profile_form_email',
             ])
             ->add('surname', null, [
-                'required'           => true,
-                'label'              => 'fos_user_profile_form_surname',
+                'required' => true,
+                'label' => 'fos_user_profile_form_surname',
             ])
-            ->add('fullname', null,[
-                'label'              => 'fos_user_profile_form_fullname',
+            ->add('fullname', null, [
+                'label' => 'fos_user_profile_form_fullname',
             ])
-            ->add('name', null,[
-                'required'           => true,
-                'label'              => 'fos_user_profile_form_name',
+            ->add('name', null, [
+                'required' => true,
+                'label' => 'fos_user_profile_form_name',
             ])
             ->add('country', null, [
-                'label'              => 'fos_user_profile_form_country',
+                'label' => 'fos_user_profile_form_country',
             ])
             ->add('phone', null, [
-                'label'              => 'fos_user_profile_form_phone',
+                'label' => 'fos_user_profile_form_phone',
             ])
             ->add('city', null, [
-                'label'              => 'fos_user_profile_form_city',
+                'label' => 'fos_user_profile_form_city',
             ])
             ->add('company', null, [
-                'required'           => false,
-                'label'              => 'fos_user_registration_form_company',
+                'required' => false,
+                'label' => 'fos_user_registration_form_company',
             ])
             ->add('post', null, [
-                'required'           => false,
-                'label'              => 'fos_user_profile_form_post',
+                'required' => false,
+                'label' => 'fos_user_profile_form_post',
             ])
             ->add('plainPassword', 'password', [
-                'required'           => true,
-                'label'              => 'fos_user_profile_form_password',
+                'required' => true,
+                'label' => 'fos_user_profile_form_password',
             ])
             ->add('subscribe', 'checkbox', [
-                'required'           => false,
-                'data'               => true,
-                'label'              => 'fos_user_profile_form_subscribe',
+                'required' => false,
+                'data' => true,
+                'label' => 'fos_user_profile_form_subscribe',
             ]);
     }
 
