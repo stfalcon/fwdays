@@ -149,7 +149,7 @@ class EventAdmin extends Admin
                         'type_options' => ['delete' => true],
                         'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
                         'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
-                            : 'добавте блоки с ценами на билеты',
+                            : 'добавьте блоки с ценами на билеты',
                     ],
                     [
                         'edit' => 'inline',

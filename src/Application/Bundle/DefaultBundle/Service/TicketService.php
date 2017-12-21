@@ -146,7 +146,7 @@ class TicketService
         $amountWithDiscount = $ticket->getAmountWithoutDiscount() - ($ticket->getAmountWithoutDiscount() * $discount);
         $ticket
             ->setAmount($amountWithDiscount)
-            ->setHasDiscount($ticket->getAmount() !== $ticket->getAmountWithoutDiscount());
+            ->setHasDiscount((float) $ticket->getAmount() !== (float) $ticket->getAmountWithoutDiscount());
         $this->em->flush();
 
         return $ticket;
