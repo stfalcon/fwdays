@@ -16,7 +16,7 @@ class EventSponsorAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event')
-            ->add('category');
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('category', null, ['label' => 'Категория']);
     }
 }

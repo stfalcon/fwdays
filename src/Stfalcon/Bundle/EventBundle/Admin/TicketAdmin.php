@@ -23,12 +23,36 @@ class TicketAdmin extends Admin
             '_sort_by' => 'id',
         ];
 
+    /**
+     * @return array
+     */
+    public function getExportFields()
+    {
+        return [
+            'id',
+            'event',
+            'user.fullname',
+            'amount',
+            'amountWithoutDiscount',
+            'payment',
+            'createdAt',
+            'updatedAt',
+            'used',
+        ];
+    }
+
+    /**
+     * @param RouteCollection $collection
+     */
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
         $collection->add('remove_paid_ticket_from_payment', $this->getRouterIdParameter().'/remove_paid_ticket_from_payment');
     }
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -74,11 +98,14 @@ class TicketAdmin extends Admin
         ;
     }
 
+    /**
+     * @param ShowMapper $filter
+     */
     protected function configureShowFields(ShowMapper $filter)
     {
         $filter->add('id')
-            ->add('event')
-            ->add('user.fullname', null, ['label' => 'Fullname'])
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('user.fullname', null, ['label' => 'Имя пользователя'])
             ->add(
                 'amount',
                 'money',
@@ -102,21 +129,26 @@ class TicketAdmin extends Admin
             ->add('used', null, ['label' => 'Использован']);
     }
 
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('event')
-            ->add('user')
-            ->add('user.email')
-            ->add('used')
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('user', null, ['label' => 'Пользователь'])
+            ->add('user.email', null, ['label' => 'Почта'])
+            ->add('used', null, ['label' => 'Использован'])
             ->add(
                 'payment.status',
                 'doctrine_orm_choice',
                 [
+                    'label' => 'Статус оплаты',
                     'field_options' => [
                         'choices' => [
-                            'paid' => 'Paid',
-                            'pending' => 'Pending',
+                            'paid' => 'оплачено',
+                            'pending' => 'ожидание',
+                            'returned' => 'возращен',
                         ],
                     ],
                     'field_type' => 'choice',
@@ -124,25 +156,13 @@ class TicketAdmin extends Admin
             );
     }
 
-    public function getExportFields()
-    {
-        return array(
-            'id',
-            'event',
-            'user.fullname',
-            'amount',
-            'amountWithoutDiscount',
-            'payment',
-            'createdAt',
-            'updatedAt',
-            'used',
-        );
-    }
-
+    /**
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event', null, ['label' => 'Событие'])
+            ->add('event', null, ['required' => true, 'label' => 'Событие'])
             ->add(
                 'amount',
                 'money',

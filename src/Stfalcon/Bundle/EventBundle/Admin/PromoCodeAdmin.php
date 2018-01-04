@@ -36,12 +36,12 @@ class PromoCodeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title')
-            ->add('discountAmount')
-            ->add('code')
-            ->add('event')
-            ->add('usedCount')
-            ->add('endDate');
+            ->addIdentifier('title', null, ['label' => 'Название'])
+            ->add('discountAmount', null, ['label' => 'Скидка (%)'])
+            ->add('code', null, ['label' => 'Код'])
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('usedCount', null, ['label' => 'Количество использований'])
+            ->add('endDate', null, ['label' => 'Дата окончания']);
     }
 
     /**
@@ -58,19 +58,21 @@ class PromoCodeAdmin extends Admin
         $formMapper
             ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
+                    'label' => 'Переводы',
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [
-                            'label' => 'title',
+                            'label' => 'Название',
                             'locale_options' => $localOptions,
                         ],
                     ],
                 ])
             ->end()
-            ->with('Загальні')
-                ->add('discountAmount', null, ['required' => true, 'label' => 'Знижка (%)'])
-                ->add('code')
+            ->with('Общие')
+                ->add('discountAmount', null, ['required' => true, 'label' => 'Скидка (%)'])
+                ->add('code', null, ['label' => 'Код'])
                 ->add('event', null, [
+                    'label' => 'Событие',
                     'required' => true,
                     'placeholder' => 'Choose event',
                 ])
@@ -80,7 +82,7 @@ class PromoCodeAdmin extends Admin
                     array_merge(
                         [
                             'required' => true,
-                            'label' => 'Дата закінчення дії',
+                            'label' => 'Дата окончания',
                         ],
                         $datetimePickerOptions
                     )

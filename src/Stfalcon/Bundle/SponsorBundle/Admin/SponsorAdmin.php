@@ -11,23 +11,32 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
  */
 class SponsorAdmin extends Admin
 {
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
     }
 
-    private function removeNullTranslate($object)
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
     {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
+        $actions = [];
     }
 
     /**
@@ -37,12 +46,13 @@ class SponsorAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
-            ->add('name')
-            ->add('site')
-            ->add('about')
-            ->add('onMain')
-            ->add('sortOrder')
+            ->add('name', null, ['label' => 'Название'])
+            ->add('site', null, ['label' => 'Сайт'])
+            ->add('about', null, ['label' => 'Описание'])
+            ->add('onMain', null, ['label' => 'Использовать на главной'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('_action', 'actions', [
+                'label' => 'Действие',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
@@ -61,14 +71,15 @@ class SponsorAdmin extends Admin
         $formMapper
             ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
+                        'label' => 'Переводы',
                         'translatable_class' => $this->getClass(),
                         'fields' => [
                             'name' => [
-                                'label' => 'name',
+                                'label' => 'Название',
                                 'locale_options' => $localOptions,
                             ],
                             'about' => [
-                                'label' => 'about',
+                                'label' => 'Описание',
                                 'locale_options' => $localOptionsAllFalse,
                             ],
                         ],
@@ -76,25 +87,26 @@ class SponsorAdmin extends Admin
             ->end()
             ->with('Общие')
                 ->add('slug')
-                ->add('onMain', null, ['required' => false])
-                ->add('site')
+                ->add('onMain', null, ['required' => false, 'label' => 'Использовать на главной'])
+                ->add('site', null, ['label' => 'Сайт'])
                 ->add(
                     'file',
                     'file',
                     [
+                        'label' => 'Логотип',
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file',
                     ]
                 )
-                ->add('sortOrder', null, ['attr' => ['min' => 1]])
+                ->add('sortOrder', null, ['attr' => ['min' => 1], 'label' => 'Номер сортировки'])
             ->end()
-            ->with('Events')
+            ->with('События')
                 ->add(
                     'sponsorEvents',
                     'sonata_type_collection',
                     [
-                        'label' => 'Events',
+                        'label' => 'Спонсируємые события',
                         'by_reference' => false,
                     ],
                     [
@@ -106,10 +118,14 @@ class SponsorAdmin extends Admin
     }
 
     /**
-     * @return array|void
+     * @param $object
      */
-    public function getBatchActions()
+    private function removeNullTranslate($object)
     {
-        $actions = array();
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }

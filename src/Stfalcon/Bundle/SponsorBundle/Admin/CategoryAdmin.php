@@ -37,10 +37,11 @@ class CategoryAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name')
-            ->add('sortOrder')
-            ->add('isWideContainer')
+            ->add('name', null, ['label' => 'Название'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки'])
+            ->add('isWideContainer', null, ['label' => 'Главная категория'])
             ->add('_action', 'actions', [
+                'label' => 'Действия',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
@@ -56,24 +57,25 @@ class CategoryAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
-            ->with('Переклади')
+            ->with('Переводы')
                 ->add(
                     'translations',
                     'a2lix_translations_gedmo',
                     [
                         'translatable_class' => $this->getClass(),
+                        'label' => 'Переводы',
                         'fields' => [
                             'name' => [
-                                'label' => 'name',
+                                'label' => 'Название',
                                 'locale_options' => $localOptions,
                             ],
                         ],
                     ]
                 )
             ->end()
-            ->with('Загальні')
-                ->add('isWideContainer', null, ['required' => false, 'label' => 'Головна категорія (широкий контейнер)'])
-                ->add('sortOrder')
+            ->with('Общие')
+                ->add('isWideContainer', null, ['required' => false, 'label' => 'Головна категория (широкий контейнер)'])
+                ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
     }
 }

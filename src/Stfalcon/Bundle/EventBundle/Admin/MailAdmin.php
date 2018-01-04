@@ -49,21 +49,21 @@ class MailAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title')
-            ->add('statistic', 'string', array('label' => 'Statistic total/sent/open/unsubscribe'))
-            ->add('events')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'edit' => array(),
-                    'delete' => array(),
-                    'ispremium' => array(
+            ->addIdentifier('title', null, ['label' => 'Название'])
+            ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
+            ->add('events', null, ['label' => 'События'])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                    'ispremium' => [
                         'template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig',
-                    ),
-                    'start' => array(
+                    ],
+                    'start' => [
                         'template' => 'StfalconEventBundle:Admin:list__action_start.html.twig',
-                    ),
-                ),
-            ));
+                    ],
+                ],
+            ]);
     }
 
     /**
@@ -76,7 +76,7 @@ class MailAdmin extends Admin
         $formMapper
             ->with('Общие')
                 ->add('title', null, ['label' => 'Название'])
-                ->add('text', null, ['label' => 'текст'])
+                ->add('text', null, ['label' => 'Текст'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true,

@@ -20,11 +20,22 @@ class PaymentAdmin extends Admin
      *
      * @var array
      */
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_sort_order' => 'DESC',
-        '_sort_by' => 'updatedAt'
-    );
+        '_sort_by' => 'updatedAt',
+    ];
 
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
+    {
+        $actions = [];
+    }
+
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -48,10 +59,11 @@ class PaymentAdmin extends Admin
             ->add('gate', null, ['label' => 'Способ оплаты'])
             ->add('createdAt', null, ['label' => 'Дата создания'])
             ->add('updatedAt', null, ['label' => 'Дата изменения']);
-
-        return $listMapper;
     }
 
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -59,23 +71,23 @@ class PaymentAdmin extends Admin
             ->add(
                 'gate',
                 'doctrine_orm_choice',
-                array(),
+                ['label' => 'Способ оплаты'],
                 'choice',
-                array(
-                    'choices' => array(
+                [
+                    'choices' => [
                         'interkassa' => 'interkassa',
                         'admin' => 'admin',
-                    ),
+                    ],
                     'required' => false,
-                )
+                ]
             )
             ->add(
                 'events',
                 'doctrine_orm_callback',
-                array(
-                    'label' => 'Events',
+                [
+                    'label' => 'Событие',
                     'callback' => function ($queryBuilder, $alias, $field, $value) {
-                        $eventsId = array();
+                        $eventsId = [];
                         /** @var $event \Stfalcon\Bundle\EventBundle\Entity\Event */
                         foreach ($value['value'] as $event) {
                             $eventsId[] = $event->getId();
@@ -93,13 +105,13 @@ class PaymentAdmin extends Admin
                         return true;
                     },
                     'field_type' => 'entity',
-                    'field_options' => array(
+                    'field_options' => [
                         'class' => 'StfalconEventBundle:Event',
                         'choice_label' => 'name',
                         'multiple' => true,
-                        'required' => false
-                    )
-                )
+                        'required' => false,
+                    ],
+                ]
             );
     }
 
@@ -110,39 +122,30 @@ class PaymentAdmin extends Admin
     {
         $formMapper
             ->with('Общие')
-                ->add('amount', 'money', array(
-                    'currency' => 'UAH'
-                ))
-                ->add('fwdaysAmount', 'money', array(
+                ->add('amount', 'money', ['currency' => 'UAH', 'label' => 'Сума оплаты'])
+                ->add('fwdaysAmount', 'money', [
                     'currency' => 'UAH',
-                    'required' => false
-                ))
-                ->add('status', 'choice', array(
-                    'choices'   => array(
-                        'pending'   => 'pending',
-                        'paid' => 'paid',
-                        'returned' => 'returned',
-                    )
-                ))
-                ->add('gate', 'choice', array(
-                    'choices'   => array(
-                        'interkassa'   => 'interkassa',
+                    'required' => false,
+                    'label' => 'Сума реферальных',
+                ])
+                ->add('status', 'choice', [
+                    'label' => 'статус оплаты',
+                    'choices'   => [
+                        'pending'   => 'ожидание',
+                        'paid' => 'оплачено',
+                        'returned' => 'возвращенно',
+                    ],
+                ])
+                ->add('gate', 'choice', [
+                    'label' => 'способ оплаты',
+                    'choices' => [
+                        'interkassa' => 'interkassa',
                         'admin' => 'admin',
                         'fwdays-amount' => 'fwdays-amount',
-                    )
-                ))
-                ->add('user')
-                ->add('tickets', null, [
-                    'by_reference' => false
+                    ],
                 ])
+                ->add('user', null, ['required' => true, 'label' => 'Пользователь'])
+                ->add('tickets', null, ['by_reference' => false, 'label' => 'Билеты'])
             ->end();
-    }
-
-    /**
-     * @return array|void
-     */
-    public function getBatchActions()
-    {
-        $actions = array();
     }
 }
