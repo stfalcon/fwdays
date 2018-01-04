@@ -60,7 +60,7 @@ class DefaultController extends Controller
 
         foreach ($wannaVisit as $event) {
             if (!$userEvents->contains($event)) {
-                $userEvents->add($ticket->getEvent());
+                $userEvents->add($event);
             }
         }
 
