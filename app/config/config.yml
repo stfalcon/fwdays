@@ -42,7 +42,7 @@ twig:
         google_apikey: "%google_api_key%"
         ga_tracking_id: "%tracking_id%"
         google_site_key: "%google_captcha_site_key%"
-
+        facebook_api_id: "%facebook_client_id%"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

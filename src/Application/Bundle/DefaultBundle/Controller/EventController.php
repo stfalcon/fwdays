@@ -236,8 +236,6 @@ class EventController extends Controller
             throw $this->createNotFoundException(sprintf('Unable to find Event by slug: %s', $slug));
         }
 
-        $result = false;
-
         if ($event->isActiveAndFuture()) {
             $result = $user->addWantsToVisitEvents($event);
             $error = $result ? '' : 'cant remove event '.$slug;
@@ -247,6 +245,7 @@ class EventController extends Controller
 
         if ($result) {
             $html = $this->get('translator')->trans('ticket.status.not_take_apart');
+            $em->persist($user);
             $em->flush();
         }
 

@@ -3,8 +3,10 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Page;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -49,6 +51,19 @@ class DefaultController extends Controller
             ->getRepository('StfalconEventBundle:Ticket');
         $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
         $wannaVisit = $user->getWantsToVisitEvents();
+
+        $userEvents = new ArrayCollection();
+        /** @var Ticket $ticket */
+        foreach ($tickets as $ticket) {
+            $userEvents->add($ticket->getEvent());
+        }
+
+        foreach ($wannaVisit as $event) {
+            if (!$userEvents->contains($event)) {
+                $userEvents->add($ticket->getEvent());
+            }
+        }
+
         $referralService = $this->get('stfalcon_event.referral.service');
 
         $events = $this->getDoctrine()
@@ -57,8 +72,7 @@ class DefaultController extends Controller
 
         return [
             'user' => $user,
-            'wannaVisit' => $wannaVisit,
-            'tickets' => $tickets,
+            'user_events' => $userEvents,
             'events' => $events,
             'code' => $referralService->getReferralCode(),
         ];

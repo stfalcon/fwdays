@@ -23,7 +23,7 @@
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) return;
             js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/{{ lang }}/sdk.js#xfbml=1&version=v2.10&appId=1954646954821827";
+            js.src = "//connect.facebook.net/{{ lang }}/sdk.js#xfbml=1&version=v2.10&appId={{ facebook_api_id }}";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
 {% endblock shareButtonsScripts %}
@@ -47,16 +47,13 @@
         </div>
     </div>
     <!--END cabinet-head-->
-    {% if tickets|length > 0 %}
+    {% if user_events|length > 0 %}
     <!--BEGIN events-->
     <section class="events">
         <div class="container">
             <div class="events__box">
-                {% for event in wannaVisit %}
+                {% for event in user_events %}
                     {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
-                {% endfor %}
-                {% for ticket in tickets %}
-                    {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': ticket.event} %}
                 {% endfor %}
             </div>
         </div>
