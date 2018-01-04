@@ -72,6 +72,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 !$user->isSubscribe() ||
                 !filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             ) {
+                $mail->setTotalMessages($mail->getTotalMessages() - 1);
+                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
+                    $mail->setStart(false);
+                }
                 $em->remove($item);
                 $em->flush();
                 continue;

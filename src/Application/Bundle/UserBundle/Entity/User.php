@@ -388,7 +388,7 @@ class User extends BaseUser
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = strip_tags($name);
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
@@ -409,7 +409,7 @@ class User extends BaseUser
      */
     public function setSurname($surname)
     {
-        $this->surname = $surname;
+        $this->surname = strip_tags($surname);
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
@@ -439,12 +439,14 @@ class User extends BaseUser
      * Redefinition email setter for use email as username.
      *
      * @param string $email
+     *
+     * @return $this
      */
     public function setEmail($email)
     {
         parent::setEmail($email);
-        $this->setUsername($email);
-        $this->isEmailExists(true);
+        $this->setUsername($email)
+            ->setEmailExists(true);
 
         return $this;
     }

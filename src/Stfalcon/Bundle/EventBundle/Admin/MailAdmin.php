@@ -123,7 +123,10 @@ class MailAdmin extends Admin
         if (isset($users)) {
             $countSubscribers = 0;
             foreach ($users as $user) {
-                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
+                $user->isEnabled() &&
+                $user->isEmailExists()
+                ) {
                     $mailQueue = new MailQueue();
                     $mailQueue->setUser($user);
                     $mailQueue->setMail($mail);
