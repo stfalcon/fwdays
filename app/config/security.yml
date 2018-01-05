@@ -33,7 +33,7 @@ security:
                 success_handler: user.handler.login_handler
             entry_point: user.login_entry_point
             remember_me:
-                key: %secret%
+                key: "%secret%"
                 lifetime: 31536000 # 365 days in seconds
                 path: ~
                 domain: ~

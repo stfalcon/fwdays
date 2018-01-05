@@ -16,4 +16,5 @@ services:
         arguments:
             - "@fos_user.user_manager"
             - {facebook: facebookID, google: googleID}
+            - "@service_container"
 

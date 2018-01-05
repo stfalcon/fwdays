@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,13 @@ class RegistrationController extends BaseController
             } else {
                 $authUser = true;
                 $route = 'fos_user_registration_confirmed';
+
+                $this->container->get('stfalcon_event.mailer_helper')->sendEasyEmail(
+                    $this->container->get('translator')->trans('registration.email.subject'),
+                    '@FOSUser/Registration/email.on_registration.html.twig',
+                    ['user' => $user],
+                    $user
+                );
             }
 
             $request = $this->container->get('request_stack')->getCurrentRequest();
