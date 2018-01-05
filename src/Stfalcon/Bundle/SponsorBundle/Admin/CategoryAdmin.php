@@ -74,7 +74,7 @@ class CategoryAdmin extends Admin
                 )
             ->end()
             ->with('Общие')
-                ->add('isWideContainer', null, ['required' => false, 'label' => 'Головна категория (широкий контейнер)'])
+                ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
     }

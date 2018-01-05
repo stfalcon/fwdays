@@ -3,7 +3,7 @@
     <button type="button" class="icon-circle-close user-payment__remove" data-ticket="{{ ticket.id }}"></button>
 {% endif %}
     <div class="user-payment__left">
-        <div class="user-payment__name">{{ ticket.user.surname }} {{ ticket.user.name }}</div>
+        <div class="user-payment__name">{{ ticket.user.name }} {{ ticket.user.surname }}</div>
         <div class="user-payment__email">{{ ticket.user.email }}</div>
     </div>
     <div class="user-payment__right">
