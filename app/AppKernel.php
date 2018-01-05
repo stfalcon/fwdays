@@ -36,7 +36,7 @@ class AppKernel extends Kernel
 
             new FOS\UserBundle\FOSUserBundle(),
 
-            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
+//            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
@@ -68,6 +68,8 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
 
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
+
+            new Liip\ImagineBundle\LiipImagineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -97,12 +97,24 @@ swiftmailer:
 knp_menu:
     twig: true
 
-avalanche_imagine:
-    cache_prefix: /tmp/media/cache
-    filters:
-        speaker_thumb:
-            type:    thumbnail
-            options: { size: [64, 64], mode: outbound }
+#avalanche_imagine:
+#    cache_prefix: /tmp/media/cache
+#    filters:
+#        speaker_thumb:
+#            type:    thumbnail
+#            options: { size: [64, 64], mode: outbound }
+#        speaker_size:
+#            source_root: "%kernel.root_dir%/../web/uploads/speakers"
+#            type:    crop
+#            options: { start: [0, 0], size: [232, 232]}
+
+liip_imagine:
+    filter_sets:
+        cache: ~
+        speaker_size:
+            filters:
+                relative_resize: { widen: 232 }
+                crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
