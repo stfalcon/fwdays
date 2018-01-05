@@ -104,3 +104,7 @@ google_login:
     path: /login/check-google
     options:
         i18n: false
+
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /translations

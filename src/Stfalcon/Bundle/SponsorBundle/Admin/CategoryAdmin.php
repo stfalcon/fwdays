@@ -37,7 +37,7 @@ class CategoryAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name', null, ['label' => 'Название'])
+            ->addIdentifier('name', null, ['label' => 'Название'])
             ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('isWideContainer', null, ['label' => 'Главная категория'])
             ->add('_action', 'actions', [

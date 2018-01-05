@@ -46,6 +46,7 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/translations/, role: ROLE_ADMIN }
         - { path: ^/addwantstovisitevent/, role: ROLE_USER }
         - { path: ^/subwantstovisitevent/, role: ROLE_USER }
         - { path: /pay, role: ROLE_USER }

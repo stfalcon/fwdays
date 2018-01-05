@@ -46,7 +46,7 @@ user.refresh.title: Оновити
 user.password.title: Пароль
 user.forgot_password.title: Забули пароль?
 user.reset_password.caption: Скинути пароль
-user.reset_password.title: Скидання паролю
+user.reset_password.title: Скидання пароля
 user.change_password.title: Зміна паролю
 user.show_password.title: Показати пароль
 user.remember_me.title: Запам'ятати мене
@@ -142,7 +142,7 @@ referral.invaite.link.text: Ваше реферальне посилання н�
 payment.price: '%summ% грн'
 payment.price.multi: '%summ% грн '
 payment.discount.cupon: (знижка %summ%% за купоном)
-payment.discount.member: (знижка %summ%% постійного учасника)
+payment.discount.member: (знижка постійного учасника %summ%%)
 
 pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
@@ -182,6 +182,7 @@ ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Frameworks Days <br/>'
 
 resetting:
+    password_already_requested: Запит на зміну пароля для даного користувача вже був здійснений за останні 24 години.
     email:
         message: |
             Вітаємо %username%!
