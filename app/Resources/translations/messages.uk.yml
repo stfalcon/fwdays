@@ -183,6 +183,7 @@ ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Frameworks Days <br/>'
 
 resetting:
+    check_email: Листа на адресу %email% вже відправлено. Воно містить посилання, при переході за яким Ваш пароль буде скинуто.
     password_already_requested: Запит на зміну пароля для даного користувача вже був здійснений за останні 24 години.
     email:
         message: |
