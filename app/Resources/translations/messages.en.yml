@@ -187,6 +187,7 @@ ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Frameworks Days <br/>'
 
 resetting:
+    check_email: An email has been sent to %email%. It contains a link you have to click on to reset your password.
     email:
         message: |
             Hello %username%,
