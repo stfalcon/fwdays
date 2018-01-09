@@ -143,7 +143,7 @@ payment.price: '%summ% грн'
 payment.price.multi: '%summ% грн '
 payment.discount.cupon: (знижка %summ%% за купоном)
 payment.discount.member: (знижка постійного учасника %summ%%)
-payment.discount.tooltip: (знижка постійного учасника %summ%%)
+payment.discount.tooltip: 'якщо ви вже купляли квиток на будь-яку конференцію Fwdays, знижка нарахується вам автоматично у тому самому акаунті, де здійснювали покупку'
 
 pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники

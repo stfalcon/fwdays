@@ -95,7 +95,7 @@ function setPaymentHtml(e_slug) {
                 case 401:
                     if (detectmob()) {
                         window.location.search = "?exception_login=1";
-                        window.location.pathname = devpath+"/login";
+                        window.location.pathname = homePath+"login";
                     } else {
                         var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
                         inst.open();
@@ -194,7 +194,7 @@ $(document).on('click', '.add-wants-visit-event', function () {
                 switch (jqXHR.status) {
                     case 401:
                         if (detectmob()) {
-                            window.location.href = devpath+"/login?exception_login=1";
+                            window.location.href = homePath+"login?exception_login=1";
                         } else {
                             var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
                             inst.open();
@@ -318,7 +318,7 @@ $(document).ready(function () {
         var e_slug = elem.data('event');
         if (detectmob()) {
             sendGA(elem, 'view');
-            window.location.pathname = devpath+"/payment/"+e_slug;
+            window.location.pathname = homePath+"payment/"+e_slug;
         } else {
             setModalHeader(e_slug, 'buy');
             if (setPaymentHtml(e_slug)) {
