@@ -32,7 +32,7 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
          */
         parent::__construct(
             $this->container->get('fos_user.registration.form'),
-            $this->container->get('request'),
+            $this->container->get('request_stack')->getCurrentRequest(),
             $this->container->get('fos_user.user_manager'),
             $this->container->get('fos_user.mailer'),
             $this->container->get('fos_user.util.token_generator')
@@ -47,7 +47,7 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      */
     public function process($confirmation = false)
     {
-        $request = $this->container->get('request');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $captcha = $request->request->get('g-recaptcha-response');
 
         return $this->isGoogleCaptchaTrue($captcha) && parent::process($confirmation);

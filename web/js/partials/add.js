@@ -134,16 +134,17 @@ function paymentAfterLogin() {
     }
 }
 
-function submitRegistrationForm_form_registration_ (token) {
-    $('#form_registration_').submit();
+var registrationFormId = null;
+
+function setRegistrationFormId(rId) {
+    registrationFormId = rId;
 }
 
-function submitRegistrationForm_form_registration_modal_signin (token) {
-    $('#form_registration_modal_signin').submit();
-}
-
-function submitRegistrationForm_form_registration_modal_signin_payment (token) {
-    $('#form_registration_modal_signin_payment').submit();
+function submitRegistrationForm(token) {
+    if (null !== registrationFormId) {
+        $('#' + registrationFormId).submit();
+        registrationFormId = null;
+    }
 }
 
 $(document).on('click', '.user-payment__remove', function () {
