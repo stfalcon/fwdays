@@ -709,3 +709,49 @@ ul {
   width: 0 !important;
   height: 0 !important;
 }
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+
+  &__icon {
+    display: block;
+
+    &:hover {
+      + .tooltip__content {
+        display: block;
+      }
+    }
+  }
+
+  &__content {
+    display: none;
+    width: 250px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    color: #727272;
+    background-color: #F5F3EA;
+    text-align: left;
+    padding: 8px;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 8px;
+    margin-left: -125px;
+
+    &:after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 6px 6px;
+      border-color: transparent transparent #F5F3EA;
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      margin-left: 1px;
+      transform: rotate(180deg);
+    }
+  }
+}
