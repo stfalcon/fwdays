@@ -145,6 +145,7 @@ payment.price: '%summ% UAH'
 payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
 payment.discount.member: (%summ%% for regular participants)
+payment.discount.tooltip: (%summ%% for regular participants)
 
 pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: Add participants
