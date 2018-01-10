@@ -1,4 +1,103 @@
-<h2>{{ 'welcome.email.title'|trans|raw }}</h2>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table width="95%" border="0" cellpadding="0" cellspacing="0" style="min-width: 800px;">
+    <tr>
+        <td valign="top" align="center">
+            <table width="800" border="0" cellpadding="0" cellspacing="0" bgcolor="#dcdfe6">
+                <tr>
+                    <td height="45"></td>
+                    <td height="45"></td>
+                    <td height="45"></td>
+                </tr>
 
-<p>{{ 'dear_user.email.text'|trans({'%user_name%': user.name})|raw }}</p>
-<p>{{ 'ticket.email.team'|trans|raw }}</p>
+                <!-- middle -->
+                <tr>
+                    <td width="80"></td>
+                    <td width="640" valign="top" align="left" bgcolor="#ffffff">
+
+                        <!-- head table (logo & background) -->
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="top" align="left" style="padding-top: 20px; padding-left: 20px;">
+                                        <a href="{{ url('homepage') }}"
+                                           style="display: block;
+                                                   width: 113px;
+                                                   height: 92px;
+                                                   margin: 0 0 8px -7px;
+                                                   text-indent: -9999px;
+                                                   overflow: hidden;
+                                                   cursor: pointer;
+                                                   background: url('{{ asset('images/sprite-objects.png', null, true) }}') left top no-repeat;">
+                                        </a>
+                                </td>
+                                <td valign="top" align="right">
+                                    <img src="{{ asset('images/bg-common.png', null, true) }}" alt=""/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- END head table -->
+
+                        <!-- main body -->
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                            <tr>
+                                <td style="padding: 0 40px;" valign="top" align="left">
+                                    {{ 'dear_user.email.text'|trans({'%user_name%': user.fullname})|raw }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- END main body -->
+
+                    </td>
+                    <td width="80"></td>
+                </tr>
+                <!-- END middle -->
+
+                <!-- footer -->
+                <tr>
+                    <td width="80"></td>
+                    <td valign="top" align="left" style="padding-top: 25px; padding-left: 20px; padding-bottom: 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="top" align="left" width="450">
+                                    <div style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">
+                                        {{ 'ticket.email.waitfornews'|trans }}
+                                    </div>
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
+                                                <a href="https://twitter.com/fwdays"><img src="{{ asset('assets/img/social/icon_twitter.svg', null, true) }}" width="16" height="16" alt="@fwdays" style="vertical-align: middle;"/></a>
+                                                <a href="https://twitter.com/fwdays" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">@fwdays</a>
+                                            </td>
+                                            <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-right: 20px;">
+                                                <a href="http://www.facebook.com/fwdays"><img src="{{ asset('assets/img/social/icon_fb.svg', null, true) }}" width="16" height="16" alt="Facebook" style="vertical-align: middle;"/></a>
+                                                <a href="http://www.facebook.com/fwdays" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">Facebook</a>
+                                            </td>
+                                            <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981; padding-left: 50px;">
+                                                <a href="{{ url('unsubscribe', {'hash': user.salt, 'userId': user.id, 'mailId': null}) }}" style="font-family: Arial; font-size: 12px; line-height: 22px; color: #747981;">{{ 'ticket.email.unsubscribe'|trans}}</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td valign="top" align="left" style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">
+                                    {{ 'ticket.email.team'|trans|raw }}
+                                    <a href="https://frameworksdays.com/" style="font-family: Arial; font-size: 12px; line-height: 15px; color: #747981;">frameworksdays.com</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="80"></td>
+                </tr>
+                <!-- END footer -->
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

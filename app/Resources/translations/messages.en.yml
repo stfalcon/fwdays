@@ -186,10 +186,14 @@ mail.subcribe: You have subscribed on Framework Days news
 
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news
-ticket.email.team: 'Sincerely, <br/> Team Frameworks Days <br/>'
+ticket.email.team: 'Best regards, <br/> Team Frameworks Days <br/>'
 welcome.email.title: Welcome!
-registration.email.subject: Registration on Frameworks Days
-dear_user.email.text: "%user_name%, congratulations on the registration."
+registration.email.subject: Registration completed on fwdays.com
+dear_user.email.text: |
+                  Hello, %user_name%. <br/>
+                  <br/>
+                  Thank you for registering on fwdays.com <br/>
+                  We will be glad to see you at our tech events. If you have any questions - just reply to this email. <br/>
 resetting:
     check_email: An email has been sent to %email%. It contains a link you have to click on to reset your password.
     email:
