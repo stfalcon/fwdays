@@ -66,15 +66,14 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <button class="btn btn--primary btn--lg form-col__btn g-recaptcha"
                     data-sitekey="{{ google_site_key }}"
-                    data-callback='submitRegistrationForm'
+                    data-callback="submitRegistrationForm"
                     {% set ga_label = 'main' %}
                     {% if queryLink is not empty %}
                         {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
                             {% set ga_label = 'event' %}
                         {% endif %}
                     {% endif %}
-                    onclick="setRegistrationFormId('form_registration_{{ form_id }}');
-                            ga('send', 'button', 'register', '{{ ga_label }}');"
+                    onclick="setRegistrationFormId('form_registration_{{ form_id }}');ga('send', 'button', 'register', '{{ ga_label }}');"
                     >{{ 'user.create.title'|trans }}
             </button>
         </div>

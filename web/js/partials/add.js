@@ -142,8 +142,12 @@ function setRegistrationFormId(rId) {
 
 function submitRegistrationForm(token) {
     if (null !== registrationFormId) {
+        $('<input />').attr('type', 'hidden')
+            .attr('name', "g-recaptcha-response")
+            .attr('value', token)
+            .appendTo('#' + registrationFormId);
+
         $('#' + registrationFormId).submit();
-        registrationFormId = null;
     }
 }
 
