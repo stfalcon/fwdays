@@ -131,15 +131,15 @@ class EventAdmin extends Admin
             ->end()
             ->with('Настройки')
                 ->add('slug')
-                ->add(
-                    'cost',
-                    null,
-                    [
-                        'required' => true,
-                        'label' => 'Цена билета',
-                        'help' => 'используется, если не задан ни один блок в ценах событий или билеты из блоков закончились',
-                    ]
-                )
+//                ->add(
+//                    'cost',
+//                    null,
+//                    [
+//                        'required' => true,
+//                        'label' => 'Цена билета',
+//                        'help' => 'используется, если не задан ни один блок в ценах событий или билеты из блоков закончились',
+//                    ]
+//                )
                 ->add(
                     'ticketsCost',
                     'sonata_type_collection',
