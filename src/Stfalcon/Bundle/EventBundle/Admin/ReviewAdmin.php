@@ -39,6 +39,6 @@ class ReviewAdmin extends AbstractPageAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('event');
+            ->add('event', null, ['label' => 'Событие']);
     }
 }

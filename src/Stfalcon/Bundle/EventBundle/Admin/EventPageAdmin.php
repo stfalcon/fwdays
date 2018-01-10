@@ -18,7 +18,7 @@ class EventPageAdmin extends AbstractPageAdmin
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
             ->add('event', null, ['label' => 'Событие'])
-            ->add('sortOrder');
+            ->add('sortOrder', null, ['label' => 'Номер сортировки']);
     }
 
     /**
@@ -64,6 +64,7 @@ class EventPageAdmin extends AbstractPageAdmin
                 ])
                 ->add('showInMenu', null, ['required' => false])
                 ->add('sortOrder', null, [
+                    'label' => 'Номер сортировки',
                     'attr' => ['min' => 1],
                 ])
             ->end()

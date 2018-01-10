@@ -53,6 +53,7 @@ class MailAdmin extends Admin
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
             ->add('events', null, ['label' => 'События'])
             ->add('_action', 'actions', [
+                'label' => 'Действие',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

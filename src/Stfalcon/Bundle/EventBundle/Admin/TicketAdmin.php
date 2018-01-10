@@ -88,6 +88,7 @@ class TicketAdmin extends Admin
             ->add('updatedAt', null, ['label' => 'Дата изменения'])
             ->add('used', null, ['label' => 'Использован'])
             ->add('_action', null, [
+                'label' => 'Действие',
                 'actions' => [
                     'removeTicket' => [
                         'ask_confirmation' => true,

@@ -59,7 +59,7 @@ class SpeakerAdmin extends Admin
                 ->add('slug')
                 ->add('email')
                 ->add('company', null, ['label' => 'Место работы'])
-                ->add('sortOrder')
+                ->add('sortOrder', null, ['label' => 'Номер сортировки'])
                 // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', [
                     'required' => false,

@@ -41,7 +41,7 @@ class CategoryAdmin extends Admin
             ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('isWideContainer', null, ['label' => 'Главная категория'])
             ->add('_action', 'actions', [
-                'label' => 'Действия',
+                'label' => 'Действие',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
