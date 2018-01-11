@@ -6,8 +6,8 @@ services:
             - { name: sonata.admin, manager_type: orm}
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
 
-    app.twig.extemtion:
-        class: Application\Bundle\DefaultBundle\Twig\AppExtension
+    app.pluralization.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppPluralizationExtension
         tags:
             - { name: twig.extension}
 
@@ -15,10 +15,6 @@ services:
         class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
         arguments: ["@router", "%locales%"]
 
-    app.event.validator:
-        class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventDateValidator
-        tags:
-            - { name: validator.constraint_validator, alias: event }
     app.event_ticket_cost.validator:
         class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventTicketCostCountValidator
         tags:
@@ -41,3 +37,10 @@ services:
             - "@translator"
             - "@router"
             - "@app.ticket_cost.service"
+
+    app.datetime.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppDateTimeExtension
+        arguments:
+            - "@sonata.intl.twig.extension.datetime"
+        tags:
+            - { name: twig.extension}

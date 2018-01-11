@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Twig;
 
-class AppExtension extends \Twig_Extension
+class AppPluralizationExtension extends \Twig_Extension
 {
     public function getFilters()
     {

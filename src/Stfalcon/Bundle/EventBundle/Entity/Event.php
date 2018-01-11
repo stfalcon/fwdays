@@ -30,7 +30,6 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
  *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
  *
- * @AppAssert\Event\EventDate
  * @AppAssert\Event\EventTicketCostCount
  */
 class Event implements Translatable
@@ -67,6 +66,7 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
      */
     protected $slug;
@@ -75,6 +75,7 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $city;
@@ -83,6 +84,7 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $place;
@@ -91,6 +93,7 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $approximateDate = '';
@@ -103,9 +106,18 @@ class Event implements Translatable
     protected $useApproximateDate = false;
 
     /**
+     * @var string
+     *
+     * @Assert\NotBlank()
+     *
+     * @ORM\Column(type="string", nullable=true, options={"default":"d MMMM Y, HH:mm"})
+     */
+    protected $dateFormat = 'd MMMM Y, HH:mm';
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     protected $date;
 
@@ -120,7 +132,9 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="text")
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @Assert\NotBlank()
      */
     protected $description;
@@ -129,7 +143,9 @@ class Event implements Translatable
      * Краткий текст в слайдере.
      *
      * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     protected $about;
@@ -138,6 +154,7 @@ class Event implements Translatable
      * Wants to visit event users count;.
      *
      * @var int
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $wantsToVisitCount = 0;
@@ -246,6 +263,7 @@ class Event implements Translatable
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
+     *
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="logo")
      */
     protected $logoFile;
@@ -253,6 +271,7 @@ class Event implements Translatable
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
+     *
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="emailBackground")
      */
     protected $emailBackgroundFile;
@@ -284,6 +303,26 @@ class Event implements Translatable
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * @param string $dateFormat
+     *
+     * @return $this
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+
+        return $this;
     }
 
     /**

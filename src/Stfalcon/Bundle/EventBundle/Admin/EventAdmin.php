@@ -117,10 +117,6 @@ class EventAdmin extends Admin
                             'label' => 'Описание',
                             'locale_options' => $localOptions,
                         ],
-                        'approximateDate' => [
-                            'label' => 'Приблизительная дата начала',
-                            'locale_options' => $localAllFalse,
-                        ],
                         'metaDescription' => [
                             'label' => 'metaDescription',
                             'locale_options' => $localAllFalse,
@@ -131,15 +127,6 @@ class EventAdmin extends Admin
             ->end()
             ->with('Настройки')
                 ->add('slug')
-//                ->add(
-//                    'cost',
-//                    null,
-//                    [
-//                        'required' => true,
-//                        'label' => 'Цена билета',
-//                        'help' => 'используется, если не задан ни один блок в ценах событий или билеты из блоков закончились',
-//                    ]
-//                )
                 ->add(
                     'ticketsCost',
                     'sonata_type_collection',
@@ -162,7 +149,13 @@ class EventAdmin extends Admin
                 ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
             ->end()
             ->with('Даты', ['class' => 'col-md-6'])
-                ->add('useApproximateDate', null, ['required' => false, 'label' => 'Показывать приблизительную дату'])
+                ->add('dateFormat', null, [
+                    'required' => true,
+                    'label' => 'Формат даты',
+                    'help' => 'd - день (11), MMMM - полное название месяца (січень), MMM - сокращеное название месяца (січ.), 
+                    MM - числовой вид месяца (01), Y - год (2018), HH:mm - время (13:45), S - время года (зима), 
+                     одновремено можно использовать только либо S либо MMMM',
+                ])
                 ->add(
                     'date',
                     'sonata_type_datetime_picker',

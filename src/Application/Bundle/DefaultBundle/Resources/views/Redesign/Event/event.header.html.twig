@@ -14,16 +14,12 @@
             </div>
             <div class="event-header__details">
                 <div class="event-header__details-left">
-                    {% if event.isUseApproximateDate %}
-                        <time class="event-header__date">{{ event.approximateDate }}</time>
-                    {% else  %}
-                        {% if event.date|date("d/m/Y") == event.dateEnd|date("d/m/Y") %}
-                            <time class="event-header__date">{{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }},<br> {{ event.date|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}–{{ event.dateEnd|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}</time>
-                        {% elseif event.dateEnd %}
-                            <time class="event-header__date">{{ event.date|format_date('d MMMM Y, HH:mm', app.request.locale, 'Europe/Kiev') }}<br> – {{ event.dateEnd|format_date('d MMMM Y, HH:mm', app.request.locale, 'Europe/Kiev') }}</time>
-                        {% else %}
-                            <time class="event-header__date">{{ event.date|format_date('d MMMM Y', app.request.locale, 'Europe/Kiev') }},<br>{{ event.date|format_date('HH:mm', app.request.locale, 'Europe/Kiev') }}</time>
-                        {% endif %}
+                    {% if event.date|date("d/m/Y") == event.dateEnd|date("d/m/Y") %}
+                        <time class="event-header__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% if 'H' in event.dateFormat %},<br> {{ event.date|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}–{{ event.dateEnd|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% endif %}</time>
+                    {% elseif event.dateEnd %}
+                        <time class="event-header__date">{{ event.date|app_format_date(event.dateFormat, app.request.locale, 'Europe/Kiev') }}<br> – {{ event.dateEnd|app_format_date(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
+                    {% else %}
+                        <time class="event-header__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% if 'H' in event.dateFormat %},<br>{{ event.date|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% endif %}</time>
                     {% endif %}
                     {% if programPage %}
                     <a href="{{ link }}#program-event" class="event-header__program{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>

@@ -16,12 +16,8 @@
     </div>
     <div class="event-row__right">
         <time class="event-row__date">
-            {% if event.isUseApproximateDate %}
-                <b class="event-row__month">{{ event.ApproximateDate }}</b>
-            {% else %}
-                <b class="event-row__month">{{ event.date|format_date('d MMMM', app.request.locale, 'Europe/Kiev') }}</b>
-                <span class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</span>
-            {% endif %}
+            <b class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</b>
+            <span class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</span>
         </time>
         {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'row'}) %}
     </div>
