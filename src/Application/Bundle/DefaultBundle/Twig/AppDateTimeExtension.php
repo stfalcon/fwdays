@@ -210,7 +210,11 @@ class AppDateTimeExtension extends \Twig_Extension
     {
         $result = $formattedDate;
 
-        if (null !== $pattern && false === strpos($pattern, 'd') && false === strpos($pattern, 'j')) {
+        if (null !== $pattern &&
+            isset($this->months[$locale]) &&
+            false === strpos($pattern, 'd') &&
+            false === strpos($pattern, 'j')
+        ) {
             foreach ($this->months[$locale] as $key => $month) {
                 if (false !== strpos($formattedDate, $key)) {
                     $result = str_replace($key, $month[(int) $this->convertToSeason], $formattedDate);

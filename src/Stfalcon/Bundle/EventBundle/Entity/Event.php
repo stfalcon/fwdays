@@ -57,7 +57,9 @@ class Event implements Translatable
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $name = '';
@@ -626,7 +628,7 @@ class Event implements Translatable
 
     public function isActiveAndFuture()
     {
-        $eventEndDate = $this->dateEnd ? $this->dateEnd : $this->date;
+        $eventEndDate = $this->dateEnd ?: $this->date;
         $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
 
         return $this->active && ($eventEndDate ? $eventEndDate > $pastDate : true);
