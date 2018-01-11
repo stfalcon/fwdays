@@ -62,7 +62,6 @@ class EventAdmin extends Admin
             ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
-//            ->add('cost', null, ['label' => 'Цена'])
             ->add(
                 'images',
                 'string',

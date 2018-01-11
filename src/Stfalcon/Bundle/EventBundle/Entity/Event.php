@@ -629,7 +629,7 @@ class Event implements Translatable
         $eventEndDate = $this->dateEnd ? $this->dateEnd : $this->date;
         $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
 
-        return $this->active && ($this->useApproximateDate || ($eventEndDate ? $eventEndDate > $pastDate : true));
+        return $this->active && ($eventEndDate ? $eventEndDate > $pastDate : true);
     }
 
     /**
