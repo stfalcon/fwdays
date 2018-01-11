@@ -5,7 +5,7 @@ namespace Application\Bundle\DefaultBundle\Twig;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
 
 /**
- * Class AppDateTimeExtension for replace months name to nominative
+ * Class AppDateTimeExtension for replace months name to nominative or season
  */
 class AppDateTimeExtension extends \Twig_Extension
 {
@@ -113,6 +113,7 @@ class AppDateTimeExtension extends \Twig_Extension
 
         return $this->formatDate($date, $pattern, $locale, $timezone, $dateType);
     }
+
     /**
      * @param \Datetime|string|int $date
      * @param string|null          $pattern
@@ -130,6 +131,7 @@ class AppDateTimeExtension extends \Twig_Extension
 
         return $this->formatDate($date, $pattern, $locale, $timezone, $dateType);
     }
+
     /**
      * @param \Datetime|string|int $time
      * @param string|null          $pattern
@@ -200,6 +202,9 @@ class AppDateTimeExtension extends \Twig_Extension
     }
 
     /**
+     * if $pattern have not day, than do Nominative month name in locale,
+     * or, if it must be season, than replace month name with season name
+     *
      * @param string $formattedDate
      * @param string $pattern
      * @param string $locale
@@ -227,6 +232,8 @@ class AppDateTimeExtension extends \Twig_Extension
     }
 
     /**
+     * Check for YEAR_SEASON_FORMAT in $pattern and replace it for full month name
+     *
      * @param string|null $pattern
      *
      * @return mixed
