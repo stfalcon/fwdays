@@ -92,22 +92,6 @@ class Event implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Gedmo\Translatable(fallback=true)
-     */
-    protected $approximateDate = '';
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    protected $useApproximateDate = false;
-
-    /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @ORM\Column(type="string", nullable=true, options={"default":"d MMMM Y, HH:mm"})
@@ -341,46 +325,6 @@ class Event implements Translatable
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUseApproximateDate()
-    {
-        return $this->useApproximateDate;
-    }
-
-    /**
-     * @param bool $useApproximateDate
-     *
-     * @return $this
-     */
-    public function setUseApproximateDate($useApproximateDate)
-    {
-        $this->useApproximateDate = $useApproximateDate;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApproximateDate()
-    {
-        return $this->approximateDate;
-    }
-
-    /**
-     * @param string $approximateDate
-     *
-     * @return $this
-     */
-    public function setApproximateDate($approximateDate)
-    {
-        $this->approximateDate = $approximateDate;
 
         return $this;
     }
