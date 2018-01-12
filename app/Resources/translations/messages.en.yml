@@ -3,7 +3,7 @@ menu.user.info: User info
 menu.referral.title: Invite friends
 menu.check.ticket.bynumber: Ticket is checking by number
 menu.logout: Sign out
-menu.user.registration: Sign up
+menu.user.registration: Resigter with email
 menu.login: Sign in
 menu.profile.my: Account
 
@@ -63,7 +63,7 @@ user.reset_password.caption: Reset password
 user.change_password.title: Change password
 user.show_password.title: Show password
 user.remember_me.title: Remember me
-user.by_user.title: Sign in with
+user.by_user.title: login with social network
 user.by_email.title: Or by mail
 user.create.title: Create an account
 user.already_have_account.title: I already have an account
@@ -144,7 +144,7 @@ referral.balance.redesign: 'Your balance: %user_balance% UAH'
 payment.price: '%summ% UAH'
 payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
-payment.discount.member: (%summ%% for regular participants)
+payment.discount.member: (%summ%% discount for regular participants)
 payment.discount.tooltip: 'if you have bought a ticket to any previous Fwdays conference, the discount will be added automatically to your account, where you purchased a ticket previously'
 
 pay.event.pay_for_other: Pay for other participants
