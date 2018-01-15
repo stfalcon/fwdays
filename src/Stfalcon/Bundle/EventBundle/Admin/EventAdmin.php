@@ -161,7 +161,7 @@ class EventAdmin extends Admin
                     'sonata_type_datetime_picker',
                     array_merge(
                         [
-                            'required' => false,
+                            'required' => true,
                             'label' => 'Дата начала',
                         ],
                         $datetimePickerOptions
