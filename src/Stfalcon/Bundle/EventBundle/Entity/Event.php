@@ -54,6 +54,15 @@ class Event implements Translatable
     private $translations;
 
     /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="update")
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -151,6 +160,13 @@ class Event implements Translatable
      * @ORM\Column(type="string")
      */
     protected $logo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $smallLogo;
 
     /**
      * @var string
@@ -258,6 +274,14 @@ class Event implements Translatable
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      *
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="smallLogo")
+     */
+    protected $smallLogoFile;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     *
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="emailBackground")
      */
     protected $emailBackgroundFile;
@@ -296,6 +320,26 @@ class Event implements Translatable
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -839,6 +883,7 @@ class Event implements Translatable
     public function setLogoFile($logoFile)
     {
         $this->logoFile = $logoFile;
+        $this->setUpdatedAt(new \DateTime());
 
         return $this;
     }
@@ -854,6 +899,47 @@ class Event implements Translatable
     }
 
     /**
+     * @return string
+     */
+    public function getSmallLogo()
+    {
+        return $this->smallLogo;
+    }
+
+    /**
+     * @param string $smallLogo
+     *
+     * @return $this
+     */
+    public function setSmallLogo($smallLogo)
+    {
+        $this->smallLogo = $smallLogo;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSmallLogoFile()
+    {
+        return $this->smallLogoFile;
+    }
+
+    /**
+     * @param mixed $smallLogoFile
+     *
+     * @return $this
+     */
+    public function setSmallLogoFile($smallLogoFile)
+    {
+        $this->smallLogoFile = $smallLogoFile;
+        $this->setUpdatedAt(new \DateTime());
+
+        return $this;
+    }
+
+    /**
      * Set emailBackgroundFile.
      *
      * @param UploadedFile|null $emailBackgroundFile
@@ -861,6 +947,7 @@ class Event implements Translatable
     public function setEmailBackgroundFile($emailBackgroundFile)
     {
         $this->emailBackgroundFile = $emailBackgroundFile;
+        $this->setUpdatedAt(new \DateTime());
 
         return $this;
     }
@@ -893,6 +980,7 @@ class Event implements Translatable
     public function setPdfBackgroundFile($pdfBackgroundFile)
     {
         $this->pdfBackgroundFile = $pdfBackgroundFile;
+        $this->setUpdatedAt(new \DateTime());
 
         return $this;
     }

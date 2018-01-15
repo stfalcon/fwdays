@@ -187,7 +187,16 @@ class EventAdmin extends Admin
                     [
                         'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
-                        'help' => 'Изображения должно быть квадратное.',
+                        'help' => 'Осноное изображения.',
+                    ]
+                )
+                ->add(
+                    'smallLogoFile',
+                    'file',
+                    [
+                        'label' => 'Мини логотип',
+                        'required' => false,
+                        'help' => 'Если не указан, тогда используєтся основной.',
                     ]
                 )
                 ->add(
