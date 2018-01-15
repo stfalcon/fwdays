@@ -53,7 +53,9 @@
         <div class="container">
             <div class="events__box">
                 {% for event in user_events %}
-                    {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                    {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                        {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

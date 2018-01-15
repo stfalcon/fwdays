@@ -146,6 +146,7 @@ class EventAdmin extends Admin
                 ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
                 ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                 ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
+                ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
             ->end()
             ->with('Даты', ['class' => 'col-md-6'])
                 ->add('dateFormat', null, [

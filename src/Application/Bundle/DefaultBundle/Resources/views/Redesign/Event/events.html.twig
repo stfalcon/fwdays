@@ -8,7 +8,9 @@
                 <div class="event-list__label">{{ 'events.future'|trans }}</div>
                 <div class="event-list__items">
                     {% for event in activeEvents %}
-                        {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -16,7 +18,9 @@
                 <div class="event-list__label">{{ 'events.past'|trans }}</div>
                 <div class="event-list__items">
                     {% for event in pastEvents %}
-                        {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

@@ -367,7 +367,7 @@ class EventController extends Controller
     {
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
-        if (!$event) {
+        if (!$event || ($event->isAdminOnly() && !$this->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
         }
         $review = null;

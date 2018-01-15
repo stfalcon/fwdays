@@ -281,6 +281,13 @@ class Event implements Translatable
     protected $metaDescription;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="admin_only", type="boolean")
+     */
+    protected $adminOnly = false;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -289,6 +296,26 @@ class Event implements Translatable
         $this->candidateSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdminOnly()
+    {
+        return $this->adminOnly;
+    }
+
+    /**
+     * @param bool $adminOnly
+     *
+     * @return $this
+     */
+    public function setAdminOnly($adminOnly)
+    {
+        $this->adminOnly = $adminOnly;
+
+        return $this;
     }
 
     /**
