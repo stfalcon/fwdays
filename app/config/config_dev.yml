@@ -33,3 +33,8 @@ swiftmailer:
 parameters:
      graylog.hostname: localhost
      graylog.port: 12201
+
+stfalcon_event:
+    interkassa:
+        shop_id: "%interkassa_shop_id_test%"
+        secret: "%interkassa_secret_test%"

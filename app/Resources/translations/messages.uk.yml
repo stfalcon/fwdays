@@ -3,7 +3,7 @@ menu.user.info: Особиста інформація
 menu.referral.title: Запити друзів
 menu.check.ticket.bynumber: Перевірка квитка за номером
 menu.logout: Вихід
-menu.user.registration: Зареєструватись через e-mail
+menu.user.registration: Реєстрація через e-mail
 menu.login: Увійти
 menu.profile.my: Профіль
 main.menu.go_head: ← На головну
