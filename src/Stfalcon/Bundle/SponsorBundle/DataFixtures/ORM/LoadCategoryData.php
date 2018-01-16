@@ -33,13 +33,15 @@ class LoadCategoryData extends AbstractFixture
 
         $partner = (new Category())
             ->setName('Партнеры')
-            ->setSortOrder(20);
+            ->setSortOrder(20)
+            ->setIsWideContainer(false);
         $manager->persist($partner);
         $this->addReference('partner-sponsor', $partner);
 
         $partner = (new Category())
             ->setName('Инфо Партнеры')
-            ->setSortOrder(20);
+            ->setSortOrder(20)
+            ->setIsWideContainer(false);
         $manager->persist($partner);
         $this->addReference('info-partner-sponsor', $partner);
 
