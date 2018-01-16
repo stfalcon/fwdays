@@ -23,8 +23,8 @@ deploy_callbacks:
         - './console --no-interaction doctrine:migrations:migrate'
         - 'cp -a /stag/www/web/uploads/events/ /stag/www/web/uploads_events/'
         - 'rm -rf /stag/www/web/uploads/'
+        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'cp -a /stag/www/web/uploads_events/ /stag/www/web/uploads/events/'
         - 'rm -rf /stag/www/web/uploads_events/'
-        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
