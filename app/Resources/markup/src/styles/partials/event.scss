@@ -404,6 +404,7 @@
         right: -100%;
         bottom: 0;
         left: 100%;
+        left: calc(100% - 1px); // bag fix for program header color offset
         display: block;
         background-color: inherit;
         content: '';
