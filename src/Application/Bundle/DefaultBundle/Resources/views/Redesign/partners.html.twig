@@ -3,21 +3,24 @@
 <section id="partners-event" class="partners">
     <div class="container container--sm">
     {% if partners[1] is defined %}
-        {% for ctgname, partners in partners[1] %}
-        <div class="partners__box">
-            <div class="partners__title">{{ ctgname }}</div>
-            <ul class="partners__items">
-            {% for partner in partners %}
-                {% include '@ApplicationDefault/Redesign/partner.html.twig' with {'partner': partner} %}
+        {% for sort_order in partners[1] %}
+            {% for ctgname, partners in sort_order %}
+            <div class="partners__box">
+                <div class="partners__title">{{ ctgname }}</div>
+                <ul class="partners__items">
+                {% for partner in partners %}
+                    {% include '@ApplicationDefault/Redesign/partner.html.twig' with {'partner': partner} %}
+                {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
-            </ul>
-        </div>
         {% endfor %}
     {% endif %}
     {% if partners[0] is defined %}
         {% set class = 'right' %}
         <div class="partners__box">
-            {% for ctgname, partners in partners[0] %}
+        {% for sort_order in partners[0] %}
+            {% for ctgname, partners in sort_order %}
                 {% if class == 'left' %}
                     {% set class = 'right' %}
                 {% else %}
@@ -36,6 +39,7 @@
                  </div>
                 {% endif %}
            {% endfor %}
+        {% endfor %}
         </div>
     {% endif %}
     </div>

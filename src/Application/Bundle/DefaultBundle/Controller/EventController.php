@@ -128,8 +128,16 @@ class EventController extends Controller
         foreach ($partners as $key => $partner) {
             $partnerCategory = $partnerCategoryRepository->find($partner['id']);
             if ($partnerCategory) {
-                $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getName()][] = $partner[0];
+                $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getSortOrder()][$partnerCategory->getName()][] = $partner[0];
             }
+        }
+
+        if (isset($sortedPartners[0])) {
+            krsort($sortedPartners[0]);
+        }
+
+        if (isset($sortedPartners[1])) {
+            krsort($sortedPartners[1]);
         }
 
         return ['partners' => $sortedPartners];
