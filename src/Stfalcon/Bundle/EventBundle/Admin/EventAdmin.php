@@ -180,7 +180,8 @@ class EventAdmin extends Admin
                 )
             ->end()
             ->with('Изображения и цвет', ['class' => 'col-md-6'])
-                ->add('backgroundColor', 'sonata_type_color_selector', ['required' => true, 'label' => 'Цвет фона'])
+                ->add('backgroundColor', 'text', ['required' => true, 'label' => 'Цвет фона',
+                    'help' => 'цвет в формате #1F2B3C'])
                 ->add(
                     'logoFile',
                     'file',
