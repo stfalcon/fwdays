@@ -228,6 +228,11 @@ class Event implements Translatable
      * Background color for event card.
      *
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/\#[0-9a-fA-F]{6}$/i",
+     *     match=true,
+     *     message="не верный формат цвета"
+     * )
      *
      * @ORM\Column(name="background_color", type="string", length=7, options={"default":"#4e4e84"})
      */
