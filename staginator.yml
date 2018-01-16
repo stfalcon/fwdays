@@ -21,7 +21,7 @@ deploy_callbacks:
         - './console do:da:cr'
         - "mysql -u root -p`mysql_password` -h fwdays-mysql `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'` < /stag/shared/db.sql"
         - './console --no-interaction doctrine:migrations:migrate'
-        - 'rm -rf /stag/www/web/uploads/'
-        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
+#        - 'rm -rf /stag/www/web/uploads/'
+        - 'cp -a /stag/shared/uploads/ /stag/www/web/uploads/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
