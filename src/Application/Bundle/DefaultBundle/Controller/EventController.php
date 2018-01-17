@@ -307,6 +307,28 @@ class EventController extends Controller
     }
 
     /**
+     * @Route(path="/event/{eventSlug}/page/venue", name="show_event_venue_page")
+     *
+     * @param string $eventSlug
+     *
+     * @Template("ApplicationDefaultBundle:Redesign:venue_review.html.twig")
+     *
+     * @return array
+     */
+    public function showEventVenuePageAction($eventSlug)
+    {
+        $resultArray = $this->getEventPagesArr($eventSlug);
+        if (null === $resultArray['venuePage']) {
+            throw $this->createNotFoundException(sprintf('Unable to find page by slug: venue'));
+        }
+
+        $newText = $resultArray['venuePage']->getTextNew();
+        $text = isset($newText) && !empty($newText) ? $newText : $resultArray['venuePage']->getText();
+
+        return array_merge($resultArray, ['text' => $text]);
+    }
+
+    /**
      * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
      *
      * @param string $eventSlug

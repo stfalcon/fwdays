@@ -92,6 +92,12 @@
          </call>
         </service>
 
+        <service id="trans_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconChangeTranslationCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
         <service id="stfalcon_event.admin.mail_admin" class="%stfalcon_event.admin.mails.class%">
             <tag name="mail_admin" manager_type="orm" />
             <argument />

@@ -1,0 +1,27 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if event.metaDescription is not null %}
+        <meta name="description" content="{{ event.metaDescription }}">
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block content %}
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
+    'event':event,
+    'programPage':programPage,
+    'venuePage':venuePage,
+    'pages':pages,
+    'position':'report',
+    'eventCurrentAmount':eventCurrentAmount
+    } %}
+
+    <div class="container container--sm static-styles">
+        <p>{{ text|raw }}</p>
+    </div>
+
+{% endblock content %}
