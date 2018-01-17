@@ -2,8 +2,13 @@
   position: relative;
   display: flex;
   margin: -1px 0 50px;
-  padding: 65px 0 65px 103px;
   min-height: 520px;
+
+  .container {
+    width: 100%;
+    position: relative;
+    padding: 65px 24px;
+  }
 
   &__box {
     display: flex;
@@ -116,7 +121,7 @@
 
   &__photo {
     position: absolute;
-    right: 40px;
+    right: 0;
     bottom: 0;
     display: flex;
     overflow: hidden;
@@ -796,16 +801,19 @@
   right: 0;
   left: 0;
   z-index: 3;
-  display: flex;
   visibility: hidden;
-  flex-direction: row;
-  padding-left: 24px;
   height: 65px;
   opacity: 0;
   transition: 0.2s ease-in-out;
   transform: translate3d(0, -20px);
-  align-items: center;
-  justify-content: space-between;
+
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &__left {
     display: flex;
@@ -864,7 +872,6 @@
   }
 
   &__status {
-    margin-right: 32px;
     color: $white-color;
     text-decoration: none;
     text-transform: uppercase;

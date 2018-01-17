@@ -1,11 +1,15 @@
 
 .footer {
-  display: flex;
-  flex-direction: row;
-  padding: 11px 34px 22px 30px;
-  align-items: center;
-  justify-content: space-between;
+  //padding: 11px 34px 22px 30px;
+  padding: 11px 0 22px;
   margin-top: 22px;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &__left {
     display: flex;

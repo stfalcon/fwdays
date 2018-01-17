@@ -1,12 +1,15 @@
 
 .header {
-  display: flex;
-  flex-direction: row;
-  padding: 0 28px 0 16px;
+  //padding: 0 28px 0 16px;
   height: 75px;
-  align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid #DAE3E9;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &__left {
     display: flex;
