@@ -44,6 +44,7 @@ class StfalconChangeTranslationCommand extends ContainerAwareCommand
         $repositories[] = $em->getRepository('StfalconEventBundle:Event')->findAll();
         $repositories[] = $em->getRepository('StfalconSponsorBundle:Category')->findAll();
         $repositories[] = $em->getRepository('StfalconSponsorBundle:Sponsor')->findAll();
+        $repositories[] = $em->getRepository('StfalconEventBundle:Page')->findAll();
         foreach ($repositories as $repository) {
             foreach ($repository as $entity) {
                 $translations = $entity->getTranslations();

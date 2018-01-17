@@ -378,6 +378,12 @@ class User extends BaseUser
      */
     public function getName()
     {
+        if (empty($this->name) && !empty($this->fullname)) {
+            $name = explode(' ', $this->fullname, 2);
+            $firstName = isset($name[0]) ? trim($name[0]) : '';
+            $this->name = $firstName;
+        }
+
         return $this->name;
     }
 
@@ -399,6 +405,12 @@ class User extends BaseUser
      */
     public function getSurname()
     {
+        if (empty($this->surname) && !empty($this->fullname)) {
+            $name = explode(' ', $this->fullname, 2);
+            $lastName = isset($name[1]) ? trim($name[1]) : '';
+            $this->surname = $lastName;
+        }
+
         return $this->surname;
     }
 
