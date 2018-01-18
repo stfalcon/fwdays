@@ -75,8 +75,6 @@ sponsor.partners.title: Партнери
 sponsor.partners.call_us: <a href="/page/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
 sponsor.and.partners: Спонсори та партнери
 
-error.user.already.paid: '%email% вже оплатив квиток'
-
 image.home.title: Технічні конференції в Україні. Поширюємо ідеї, ділимося досвідом.
 image.home.description: Організовано більше 30 подій з 2010 року
 video.description.text: '<p>Ми обираємо корисні теми доповідей від іноземних та українських експертів.</p> <p>На вас чекають  два потоки лекцій, спілкування зі спікерами та учасниками, перерви на смачні кава-паузи і обід.</p>'
@@ -163,6 +161,9 @@ error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'
 error.name.only_letters: "Ім'я може містити лише літери"
+
+error.user.already.paid: '%email% вже оплатив квиток'
+error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
 
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays

@@ -164,6 +164,8 @@ error.email_bad_format: Please enter a valid email address
 error.surname.only_letters: Surname must contain only letters
 error.name.only_letters: Name must contain only letters
 error.user.already.paid: the %email% has already paid the ticket
+error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
+
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays
 contacts.partners.title: Informational partnerships, meetups and master classes

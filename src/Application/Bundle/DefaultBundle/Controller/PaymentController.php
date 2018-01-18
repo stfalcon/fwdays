@@ -162,7 +162,7 @@ class PaymentController extends Controller
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
                 '@ApplicationDefault/Redesign/static.page.html.twig',
-                ['text' => sprintf('<p></p><p>Оплата за участие в %s не принимается.</p>', $event->getName())]
+                ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
 
