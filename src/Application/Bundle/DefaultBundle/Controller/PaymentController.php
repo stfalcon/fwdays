@@ -38,7 +38,14 @@ class PaymentController extends Controller
     {
         $html = '';
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
-            return new JsonResponse(['result' => false, 'error' => "Оплата за участие в {$event->getName()} не принимается.", 'html' => $html]);
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error_code' => 1,
+                    'error' => "Оплата за участие в {$event->getName()} не принимается.",
+                    'html' => $html,
+                ]
+            );
         }
         /* @var  User $user */
         $user = $this->getUser();
@@ -63,11 +70,25 @@ class PaymentController extends Controller
         }
 
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment not found!', 'html' => $html]);
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error_code' => 2,
+                    'error' => 'Payment not found!',
+                    'html' => $html,
+                ]
+            );
         }
 
         if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment is paid', 'html' => $html]);
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error_code' => 3,
+                    'error' => 'Payment is paid',
+                    'html' => $html,
+                ]
+            );
         }
 
         if ($payment->isPending()) {
@@ -124,7 +145,7 @@ class PaymentController extends Controller
     /**
      * static payment.
      *
-     * @Route("/payment/{eventSlug}")
+     * @Route(path = "/payment/{eventSlug}")
      *
      * @Security("has_role('ROLE_USER')")
      *
@@ -141,7 +162,7 @@ class PaymentController extends Controller
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
                 '@ApplicationDefault/Redesign/static.page.html.twig',
-                ['text' => sprintf('Оплата за участие в %s не принимается.', $event->getName())]
+                ['text' => sprintf('<p></p><p>Оплата за участие в %s не принимается.</p>', $event->getName())]
             );
         }
 
@@ -323,7 +344,7 @@ class PaymentController extends Controller
          * @var User
          */
         $user = $this->getUser();
-        $formAction =  (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
+        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
             $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://sci.interkassa.com/';
 
         return new JsonResponse([

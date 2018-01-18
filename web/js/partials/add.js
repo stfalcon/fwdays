@@ -83,10 +83,14 @@ function setPaymentHtml(e_slug) {
                 $('#buy-ticket-btn').attr('onclick', "sendGA($(this), 'button');");
                 return true;
             } else {
+                if (data.error_code === 1) {
+                    window.location.pathname = homePath+"payment/"+e_slug;
+                }
                 console.log('Error:' + data.error);
                 if (!detectmob()) {
                     inst.close();
                 }
+
                 return false;
             }
         },
