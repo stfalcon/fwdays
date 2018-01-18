@@ -30,7 +30,11 @@
         </div>
     {% endfor %}
 {% else %}
-    <div class="speaker-card__hint-report">{{ 'speaker.no_review.text'|trans }}</div>
+    <div class="report-popup">
+        <div class="report-popup__description">
+            {{ 'speaker.no_review.text'|trans }}
+        </div>
+    </div>
 {% endif %}
 
 
