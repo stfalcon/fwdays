@@ -3,7 +3,7 @@ services:
     app.ticket_cost.admin:
         class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm}
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
 
     app.pluralization.twig.extension:
