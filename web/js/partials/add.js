@@ -84,7 +84,7 @@ function setPaymentHtml(e_slug) {
                 return true;
             } else {
                 if (data.error_code === 1) {
-                    window.location.pathname = homePath+"payment/"+e_slug;
+                    window.location.pathname = homePath+"static-payment/"+e_slug;
                 }
                 console.log('Error:' + data.error);
                 if (!detectmob()) {
@@ -326,7 +326,7 @@ $(document).ready(function () {
         var e_slug = elem.data('event');
         if (detectmob()) {
             sendGA(elem, 'view');
-            window.location.pathname = homePath+"payment/"+e_slug;
+            window.location.pathname = homePath+"static-payment/"+e_slug;
         } else {
             setModalHeader(e_slug, 'buy');
             if (setPaymentHtml(e_slug)) {
