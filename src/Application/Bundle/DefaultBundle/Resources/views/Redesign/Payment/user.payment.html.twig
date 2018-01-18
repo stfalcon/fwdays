@@ -9,7 +9,7 @@
     <div class="user-payment__right">
     {% if ticket.hasDiscount %}
         <div class="user-payment__price">
-            <span class="user-payment__price-strike">{{ 'payment.price'|trans({'%summ%':ticket.amountWithoutDiscount|number_format(0,',',' ')})|raw }}</span>{{ 'payment.price'|trans({'%summ%':ticket.amount}) }}
+            <span class="user-payment__price-strike">{{ 'payment.price'|trans({'%summ%':ticket.amountWithoutDiscount|number_format(0,',',' ')})|raw }}</span>{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
         </div>
         <div class="user-payment__discount">
         {% if ticket.hasPromoCode %}
