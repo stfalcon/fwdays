@@ -1,0 +1,10 @@
+<input type="hidden" name="ik_co_id" value="{{ data.ik_co_id }}" />
+<input type="hidden" name="ik_pm_no" value="{{ payment.id }}" />
+<input type="hidden" name="ik_am" value="{{ payment.amount }}" />
+<input type="hidden" name="ik_desc" value="{{ data.ik_desc|escape }}" />
+<input type="hidden" name="ik_loc" value="ru" />
+<input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
+
+{% for ticket in payment.tickets %}
+    {% include '@ApplicationDefault/Redesign/Payment/user.payment.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+{% endfor %}

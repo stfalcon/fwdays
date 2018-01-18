@@ -1,0 +1,43 @@
+{
+  "name": "fwdays",
+  "version": "1.0.0",
+  "description": "fwdays(html, cssm, js) markup",
+  "main": "gulpfile.js",
+  "scripts": {
+    "gulp-dev": "gulp --dev",
+    "gulp-prod": "gulp --prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp-uglify": "^3.0.0",
+    "jquery": "^3.2.1",
+    "jquery.maskedinput": "^1.4.1",
+    "normalize.css": "^7.0.0",
+    "remodal": "^1.1.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "doiuse": "^2.6.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-clean-css": "^3.2.0",
+    "gulp-cssimport": "^5.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.2.0",
+    "gulp-postcss": "^7.0.0",
+    "gulp-rigger": "^0.5.8",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-watch": "^4.3.11",
+    "imagemin-pngquant": "^5.0.0",
+    "postcss-reporter": "^3.0.0",
+    "postcss-scss": "^1.0.0",
+    "rimraf": "^2.6.1",
+    "run-sequence": "^1.2.2",
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
+    "yargs": "^8.0.1"
+  }
+}

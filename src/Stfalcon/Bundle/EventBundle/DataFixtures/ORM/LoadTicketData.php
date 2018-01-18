@@ -43,8 +43,8 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $userDefault3 = $manager->merge($this->getReference('user-default3'));
         $userAdmin    = $manager->merge($this->getReference('user-admin'));
 
-        $eventZfDay = $this->getReference('event-zfday');
-        $eventPHPDay = $this->getReference('event-phpday');
+        $eventZfDay = $this->getReference('event-jsday2018');
+        $eventPHPDay = $this->getReference('event-phpday2017');
         $eventNotActive = $this->getReference('event-not-active');
 
         // Ticket 1

@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:jessie-slim
 MAINTAINER Andrij Tomchyshyn
 RUN apt-get update && apt-get install -y aptitude wget curl ca-certificates procps locales git
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apache2 php-cache-lite php-db php-pear php5 php5-apcu php5-curl php5-dev php5-gd php5-imagick php5-intl php5-mcrypt php5-mysqlnd php5-sqlite php5-xdebug phpmyadmin ruby git

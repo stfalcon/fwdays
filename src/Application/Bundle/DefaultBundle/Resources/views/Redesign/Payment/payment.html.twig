@@ -1,0 +1,16 @@
+{% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
+
+{% block content %}
+    <!--BEGIN form-box-->
+    <div class="form-box">
+        <h2 class="h2 form-box__title change-title"></h2>
+        {% include '@ApplicationDefault/Redesign/Payment/payment_form.html.twig' %}
+    </div>
+{% endblock content %}
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        setModalHeader('{{ event.slug }}', 'buy');
+        setPaymentHtml('{{ event.slug }}');
+    </script>
+{% endblock scripts %}

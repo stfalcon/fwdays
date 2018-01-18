@@ -2,14 +2,16 @@
 
 namespace Application\Bundle\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Validator\Constraints as Assert;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * User Class
+ * User Class.
  *
  * @ORM\Entity
  * @ORM\Table(name="users")
@@ -25,58 +27,78 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @var string $fullname
+     * @var string
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
      */
     protected $fullname;
 
     /**
-     * @var string $company
+     * @var string
      *
      * @ORM\Column(name="company", type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
      */
     protected $company;
 
     /**
-     * @var string $post
+     * @var string
      *
      * @ORM\Column(name="post", type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
      */
     protected $post;
 
     /**
-     * @var string $country
+     * @var string
      *
      * @ORM\Column(name="country", type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
      */
     protected $country;
 
     /**
-     * @var string $city
+     * @var string
      *
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
      */
     protected $city;
 
     /**
-     * @var boolean $subscribe
+     * @var bool
      *
      * @ORM\Column(name="subscribe", type="boolean")
      */
     protected $subscribe = true;
 
     /**
-     * @var \DateTime $createdAt
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
     /**
-     * @var boolean $allowShareContacts Allow share contacts
+     * @var bool Allow share contacts
      *
      * @ORM\Column(name="allow_share_contacts", type="boolean", options={"default" : null}, nullable=true)
      */
@@ -89,7 +111,22 @@ class User extends BaseUser
     protected $tickets;
 
     /**
+     * Подіі в яких юзер бажає прийняти участь.
      *
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event")
+     * @ORM\JoinTable(name="user_wants_visit_event",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    protected $wantsToVisitEvents;
+    /**
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
      */
     protected $referralCode;
@@ -102,29 +139,332 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
-     *
      */
     protected $balance = 0;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
+     *     match=true,
+     *     message="error.name.only_letters"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 32,
+     * )
+     */
+    protected $name;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="surname", type="string", length=255, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
+     *     match=true,
+     *     message="error.surname.only_letters"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 32,
+     * )
+     */
+    protected $surname;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=20, nullable=true)
+     *
+     * @Assert\Regex(
+     *     pattern="/\+[1-9]{1}[0-9]{10,14}$/i",
+     *     match=true,
+     *     message="error.phone_bad_format"
+     * )
+     */
+    protected $phone;
 
+    /**
+     * @Assert\Regex(
+     *     pattern="/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/",
+     *     match=true,
+     *     message="error.phone_bad_format"
+     * )
+     */
+    protected $email;
 
-    public function __construct() {
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="email_exists", nullable=true, options = {"default" : 1})
+     */
+    protected $emailExists = true;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook_id", type="string", nullable=true)
+     */
+    private $facebookID;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="google_id", type="string", nullable=true)
+     */
+    private $googleID;
+    /**
+     * @var string
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 72,
+     * )
+     */
+    protected $plainPassword;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
         parent::__construct();
-        $this->tickets = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->wantsToVisitEvents = new ArrayCollection();
     }
 
     /**
-     * Redefinition email setter for use email as username
+     * @return bool
+     */
+    public function isEmailExists()
+    {
+        return $this->emailExists;
+    }
+
+    /**
+     * @param bool $emailExists
+     *
+     * @return $this
+     */
+    public function setEmailExists($emailExists)
+    {
+        $this->emailExists = $emailExists;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return parent::getPlainPassword();
+    }
+
+    /**
+     * @param string $plainPassword
+     *
+     * @return $this
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        return parent::setPlainPassword($plainPassword);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookID()
+    {
+        return $this->facebookID;
+    }
+
+    /**
+     * @param string $facebookID
+     *
+     * @return $this
+     */
+    public function setFacebookID($facebookID)
+    {
+        $this->facebookID = $facebookID;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleID()
+    {
+        return $this->googleID;
+    }
+
+    /**
+     * @param string $googleID
+     *
+     * @return $this
+     */
+    public function setGoogleID($googleID)
+    {
+        $this->googleID = $googleID;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getWantsToVisitEvents()
+    {
+        return $this->wantsToVisitEvents;
+    }
+
+    /**
+     * @param ArrayCollection $wantsToVisitEvents
+     *
+     * @return $this
+     */
+    public function setWantsToVisitEvents($wantsToVisitEvents)
+    {
+        $this->wantsToVisitEvents = $wantsToVisitEvents;
+
+        return $this;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function addWantsToVisitEvents(Event $event)
+    {
+        if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
+            return $event->addWantsToVisitCount();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function subtractWantsToVisitEvents(Event $event)
+    {
+        if ($this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->removeElement($event)) {
+            return $event->subtractWantsToVisitCount();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function isEventInWants(Event $event)
+    {
+        return $this->wantsToVisitEvents->contains($event);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        if (empty($this->name) && !empty($this->fullname)) {
+            $name = explode(' ', $this->fullname, 2);
+            $firstName = isset($name[0]) ? trim($name[0]) : '';
+            $this->name = $firstName;
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = strip_tags($name);
+        $this->setFullname($this->name.' '.$this->surname);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname()
+    {
+        if (empty($this->surname) && !empty($this->fullname)) {
+            $name = explode(' ', $this->fullname, 2);
+            $lastName = isset($name[1]) ? trim($name[1]) : '';
+            $this->surname = $lastName;
+        }
+
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     *
+     * @return $this
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = strip_tags($surname);
+        $this->setFullname($this->name.' '.$this->surname);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     *
+     * @return $this
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Redefinition email setter for use email as username.
      *
      * @param string $email
+     *
+     * @return $this
      */
     public function setEmail($email)
     {
         parent::setEmail($email);
-        $this->setUsername($email);
+        $this->setUsername($email)
+            ->setEmailExists(true);
+
+        return $this;
     }
 
     /**
-     * Get user fullname
+     * Get user fullname.
      *
      * @return string
      */
@@ -134,17 +474,19 @@ class User extends BaseUser
     }
 
     /**
-     * Set user fullname
+     * Set user fullname.
      *
      * @param string $fullname
      */
     public function setFullname($fullname)
     {
         $this->fullname = strip_tags($fullname);
+
+        return $this;
     }
 
     /**
-     * Get user company
+     * Get user company.
      *
      * @return string
      */
@@ -154,17 +496,19 @@ class User extends BaseUser
     }
 
     /**
-     * Set user company
+     * Set user company.
      *
      * @param string $company
      */
     public function setCompany($company)
     {
         $this->company = strip_tags($company);
+
+        return $this;
     }
 
     /**
-     * Get user post
+     * Get user post.
      *
      * @return string
      */
@@ -174,13 +518,15 @@ class User extends BaseUser
     }
 
     /**
-     * Set user post
+     * Set user post.
      *
      * @param string $post
      */
     public function setPost($post)
     {
         $this->post = strip_tags($post);
+
+        return $this;
     }
 
     /**
@@ -190,21 +536,23 @@ class User extends BaseUser
      */
     public function isSubscribe()
     {
-        return (boolean)$this->subscribe;
+        return (bool) $this->subscribe;
     }
 
     /**
-     * Set subscribe
+     * Set subscribe.
      *
-     * @param boolean $subscribe
+     * @param bool $subscribe
      */
     public function setSubscribe($subscribe)
     {
         $this->subscribe = $subscribe;
+
+        return $this;
     }
 
     /**
-     * Get createdAt
+     * Get createdAt.
      *
      * @return \DateTime
      */
@@ -214,27 +562,31 @@ class User extends BaseUser
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \DateTime $createdAt
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
-     * Set city
+     * Set city.
      *
      * @param string $city
      */
     public function setCity($city)
     {
         $this->city = strip_tags($city);
+
+        return $this;
     }
 
     /**
-     * Get city
+     * Get city.
      *
      * @return string
      */
@@ -244,17 +596,19 @@ class User extends BaseUser
     }
 
     /**
-     * Set country
+     * Set country.
      *
      * @param string $country
      */
     public function setCountry($country)
     {
         $this->country = strip_tags($country);
+
+        return $this;
     }
 
     /**
-     * Get country
+     * Get country.
      *
      * @return string
      */
@@ -262,7 +616,6 @@ class User extends BaseUser
     {
         return $this->country;
     }
-
 
     /**
      * @return mixed
@@ -274,6 +627,7 @@ class User extends BaseUser
 
     /**
      * @param mixed $tickets
+     *
      * @return $this
      */
     public function setTickets($tickets)
@@ -296,6 +650,8 @@ class User extends BaseUser
     public function removeTicket(Ticket $ticket)
     {
         $this->tickets->removeElement($ticket);
+
+        return $this;
     }
 
     /**
@@ -303,7 +659,7 @@ class User extends BaseUser
      */
     public function getBalance()
     {
-        return (is_null($this->balance)) ? 0 : (int)$this->balance;
+        return (is_null($this->balance)) ? 0 : (int) $this->balance;
     }
 
     /**
@@ -312,6 +668,8 @@ class User extends BaseUser
     public function setBalance($balance)
     {
         $this->balance = $balance;
+
+        return $this;
     }
 
     /**
@@ -328,6 +686,8 @@ class User extends BaseUser
     public function setReferralCode($referralCode)
     {
         $this->referralCode = $referralCode;
+
+        return $this;
     }
 
     /**
@@ -344,11 +704,12 @@ class User extends BaseUser
     public function setUserReferral($userReferral)
     {
         $this->userReferral = $userReferral;
+
+        return $this;
     }
 
-
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAllowShareContacts()
     {
@@ -356,10 +717,12 @@ class User extends BaseUser
     }
 
     /**
-     * @param boolean $allowShareContacts
+     * @param bool $allowShareContacts
      */
     public function setAllowShareContacts($allowShareContacts)
     {
         $this->allowShareContacts = $allowShareContacts;
+
+        return $this;
     }
 }

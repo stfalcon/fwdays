@@ -31,7 +31,7 @@
 
         <parameter key="stfalcon_event.admin.tickets.class">Stfalcon\Bundle\EventBundle\Admin\TicketAdmin</parameter>
         <parameter key="stfalcon_event.admin.tickets.entity">Stfalcon\Bundle\EventBundle\Entity\Ticket</parameter>
-        <parameter key="stfalcon_event.admin.tickets.controller">SonataAdminBundle:CRUD</parameter>
+        <parameter key="stfalcon_event.admin.tickets.controller">StfalconEventBundle:TicketCRUD</parameter>
 
         <parameter key="stfalcon_event.admin.mail_queue.class">Stfalcon\Bundle\EventBundle\Admin\MailQueueAdmin</parameter>
         <parameter key="stfalcon_event.admin.mail_queue.entity">Stfalcon\Bundle\EventBundle\Entity\MailQueue</parameter>
@@ -53,12 +53,6 @@
 
         <parameter key="stfalcon_event.promo_code.form.type.class">Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType</parameter>
 
-        <parameter key="stfalcon_event.interkassa.service.class">Stfalcon\Bundle\EventBundle\Service\InterkassaService</parameter>
-
-        <parameter key="stfalcon_event.ticket.service.class">Stfalcon\Bundle\EventBundle\Service\TicketService</parameter>
-
-        <parameter key="stfalcon_event.referral.service.class">Stfalcon\Bundle\EventBundle\Service\ReferralService</parameter>
-
         <parameter key="stfalcon_event.listener.payment.class">Stfalcon\Bundle\EventBundle\EventListener\PaymentListener</parameter>
 
         <parameter key="stfalcon_event.payment_manager.class">Stfalcon\Bundle\EventBundle\Entity\PaymentManager</parameter>
@@ -79,17 +73,23 @@
             <argument />
         </service>
 
-        <service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">
-            <tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>
-            <argument />
-            <argument>%stfalcon_event.admin.news.entity%</argument>
-            <argument />
-        </service>
+        <!--<service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">-->
+            <!--<tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>-->
+            <!--<argument />-->
+            <!--<argument>%stfalcon_event.admin.news.entity%</argument>-->
+            <!--<argument />-->
+        <!--</service>-->
 
         <service id="user_mail_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconMailerCommand">
          <call method="setContainer">
            <argument type="service" id="service_container"/>
          </call>
+        </service>
+
+        <service id="trans_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconChangeTranslationCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
         </service>
 
         <service id="stfalcon_event.admin.mail_admin" class="%stfalcon_event.admin.mails.class%">
@@ -122,12 +122,12 @@
             <argument>%stfalcon_event.admin.speaker.controller%</argument>
         </service>
 
-        <service id="stfalcon_event.admin.event_news" class="%stfalcon_event.admin.event_news.class%">
-            <tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>
-            <argument />
-            <argument>%stfalcon_event.admin.event_news.entity%</argument>
-            <argument>%stfalcon_event.admin.event_news.controller%</argument>
-        </service>
+        <!--<service id="stfalcon_event.admin.event_news" class="%stfalcon_event.admin.event_news.class%">-->
+            <!--<tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>-->
+            <!--<argument />-->
+            <!--<argument>%stfalcon_event.admin.event_news.entity%</argument>-->
+            <!--<argument>%stfalcon_event.admin.event_news.controller%</argument>-->
+        <!--</service>-->
 
         <service id="stfalcon_event.admin.event_page" class="%stfalcon_event.admin.event_page.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Страницы"/>
@@ -182,6 +182,7 @@
             <argument type="service" id="twig"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="router"/>
+            <argument type="service" id="mailer"/>
         </service>
 
         <service id="stfalcon_event.pdf_generator.helper" class="%stfalcon_event.pdf_generator.helper.class%">
@@ -200,42 +201,9 @@
             <tag name="form.type" alias="stfalcon_event_ticket" />
         </service>
 
-        <service id="stfalcon_event.interkassa.service" class="%stfalcon_event.interkassa.service.class%">
-            <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.ticket.service" class="%stfalcon_event.ticket.service.class%">
-            <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.payment.service" class="Stfalcon\Bundle\EventBundle\Service\PaymentService">
-            <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.referral.service" class="%stfalcon_event.referral.service.class%">
-            <argument type="service" id="service_container"/>
-        </service>
-
         <service id="stfalcon_event.listener.payment" class="%stfalcon_event.listener.payment.class%">
             <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
             <argument type="service" id="service_container"/>
         </service>
-
-        <service class="Stfalcon\Bundle\EventBundle\Service\GACommerce" id="stfalcon_event.gacommerce">
-            <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.listener.paymentGACommerce" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentGACommerceListener">
-            <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
-            <argument type="service" id="service_container"/>
-            <argument type="service" id="stfalcon_event.gacommerce"/>
-        </service>
-
-        <service id="sonata.block.service.statistic" class="Stfalcon\Bundle\EventBundle\Service\StatisticBlockService">
-            <tag name="sonata.block" />
-            <argument>sonata.block.service.statistic</argument>
-            <argument type="service" id="templating"/>
-        </service>
-
     </services>
 </container>

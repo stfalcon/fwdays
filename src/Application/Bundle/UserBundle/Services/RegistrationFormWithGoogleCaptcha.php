@@ -7,62 +7,66 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class RegistrationFormWithGoogleCaptcha
+ * Class RegistrationFormWithGoogleCaptcha.
  *
  * Класс для перевизначення/обертання сервіса fos_user.registration.form.handler, який викликається в registerAction
  * FOS бандла.
  * Перевизначений для додавання перевірки гугл капчі.
- *
  */
 class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
 {
     private $captchaSecretKey;
-    private $captchaCheckUrl;
+    private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
     private $container;
 
     /**
      * RegistrationFormWithGoogleCaptcha constructor.
+     *
      * @param Container $container
      */
     public function __construct($container)
     {
         $this->container = $container;
-        /**
+        /*
          * викликаем рідний конструктор fos_user.registration.form.handler
          */
         parent::__construct(
-            $this->container->get("fos_user.registration.form"),
-            $this->container->get("request"),
-            $this->container->get("fos_user.user_manager"),
-            $this->container->get("fos_user.mailer"),
-            $this->container->get("fos_user.util.token_generator")
+            $this->container->get('fos_user.registration.form'),
+            $this->container->get('request_stack')->getCurrentRequest(),
+            $this->container->get('fos_user.user_manager'),
+            $this->container->get('fos_user.mailer'),
+            $this->container->get('fos_user.util.token_generator')
         );
-        $this->captchaSecretKey = $this->container->getParameter('captcha_secret_key');
-        $this->captchaCheckUrl = $this->container->getParameter('captcha_check_url');
+        $this->captchaSecretKey = $this->container->getParameter('google_captcha_secret_key');
     }
 
     /**
-     * @param boolean $confirmation
+     * @param bool $confirmation
+     *
+     * @return bool
      */
     public function process($confirmation = false)
     {
-        $request = $this->container->get("request");
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $captcha = $request->request->get('g-recaptcha-response');
 
         return $this->isGoogleCaptchaTrue($captcha) && parent::process($confirmation);
     }
+
     /**
-     * Перевіряєм капчу
+     * Перевіряєм капчу.
      *
-     * @link https://www.google.com/recaptcha/admin#list
+     * @see https://www.google.com/recaptcha/admin#list
      *
      * @param string $captcha
+     *
      * @throws
+     *
      * @return bool
      */
     private function isGoogleCaptchaTrue($captcha)
     {
-        if ('prod' !== $this->container->get("kernel")->getEnvironment()) {
+        if ('prod' !== $this->container->get('kernel')->getEnvironment()) {
             return true;
         }
 
@@ -71,7 +75,7 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
         }
 
         $params = [
-            'secret'  => $this->captchaSecretKey,
+            'secret' => $this->captchaSecretKey,
             'response' => $captcha,
             'remoteip' => $_SERVER['REMOTE_ADDR'],
         ];

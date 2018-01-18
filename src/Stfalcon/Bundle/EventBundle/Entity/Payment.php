@@ -6,11 +6,9 @@ use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Payment
+ * Stfalcon\Bundle\EventBundle\Entity\Payment.
  *
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PaymentRepository")
@@ -18,11 +16,11 @@ use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 class Payment
 {
     const STATUS_PENDING = 'pending';
-    const STATUS_PAID    = 'paid';
+    const STATUS_PAID = 'paid';
     const STATUS_RETURNED = 'returned'; //доданий для статусу, коли платіж повернений користувачу
 
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -33,7 +31,7 @@ class Payment
     /**
      * Кто оплатил. Т.е. провел транзакцию.
      *
-     * @var User $user
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
@@ -41,18 +39,18 @@ class Payment
     private $user;
 
     /**
-     * Сумма для оплаты
+     * Сумма для оплаты.
      *
-     * @var float $amount
+     * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
     private $amount;
 
     /**
-     * Базова/початкова сума платежа, до застосування промокода чи скидки
+     * Базова/початкова сума платежа, до застосування промокода чи скидки.
      *
-     * @var float $baseAmount
+     * @var float
      *
      * @ORM\Column(name="base_amount", type="decimal", precision=10, scale=2)
      */
@@ -60,30 +58,30 @@ class Payment
 
     /**
      * Використанно валюти з балансу користувача,
-     * яку він отримує за рефералів або за повернення коштів при відсутності євента
+     * яку він отримує за рефералів або за повернення коштів при відсутності євента.
      *
-     * @var float $fwdaysAmount
+     * @var float
      *
      * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $fwdaysAmount;
 
     /**
-     * @var string $status
+     * @var string
      *
      * @ORM\Column(name="status", type="string")
      */
     private $status = '';
 
     /**
-     * @var string $gate
+     * @var string
      *
      * @ORM\Column()
      */
     private $gate = 'interkassa';
 
     /**
-     * @var \DateTime $createdAt
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
@@ -91,7 +89,7 @@ class Payment
     private $createdAt;
 
     /**
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -99,11 +97,18 @@ class Payment
     private $updatedAt;
 
     /**
-     * @var Ticket[]|ArrayCollection $tickets
+     * @var Ticket[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
      */
     private $tickets;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="refunded_amount", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $refundedAmount;
 
     /**
      * @param mixed $tickets
@@ -114,12 +119,13 @@ class Payment
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getTickets()
     {
         return $this->tickets;
     }
+
     /**
      * Constructor. Set default status to new payment.
      */
@@ -131,6 +137,7 @@ class Payment
 
     /**
      * @param Ticket $ticket
+     *
      * @return bool
      */
     public function addTicket(Ticket $ticket)
@@ -140,17 +147,61 @@ class Payment
 
     /**
      * @param Ticket $ticket
-     * @return false
+     *
+     * @return bool
      */
     public function removeTicket(Ticket $ticket)
     {
+        if ($ticket->isPaid()) {
+            return $this->removePaidTicket($ticket);
+        }
+
         return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
     }
 
     /**
-     * Get id
+     * @param Ticket $ticket
      *
-     * @return integer
+     * @return bool
+     */
+    public function removePaidTicket(Ticket $ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            if ($ticket->isPaid()) {
+                $this->refundedAmount += $ticket->getAmount();
+            }
+            $ticket->setPayment(null);
+
+            return $this->tickets->removeElement($ticket);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRefundedAmount()
+    {
+        return $this->refundedAmount;
+    }
+
+    /**
+     * @param float $refundedAmount
+     *
+     * @return $this
+     */
+    public function setRefundedAmount($refundedAmount)
+    {
+        $this->refundedAmount = $refundedAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -158,7 +209,7 @@ class Payment
     }
 
     /**
-     * Set amount
+     * Set amount.
      *
      * @param float $amount
      */
@@ -168,7 +219,7 @@ class Payment
     }
 
     /**
-     * Get amount
+     * Get amount.
      *
      * @return float
      */
@@ -178,18 +229,22 @@ class Payment
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param string $status
      */
     // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
+
+    /**
+     * @param string $status
+     */
     public function setStatus($status)
     {
         $this->status = $status;
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return string
      */
@@ -214,48 +269,80 @@ class Payment
         return $this->user;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param $createdAt
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param $updatedAt
+     */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @return bool
+     */
     public function isPaid()
     {
-        return ($this->getStatus() == self::STATUS_PAID);
+        return self::STATUS_PAID === $this->getStatus();
     }
 
+    /**
+     * @return bool
+     */
     public function isPending()
     {
-        return ($this->getStatus() == self::STATUS_PENDING);
+        return self::STATUS_PENDING === $this->getStatus();
     }
 
+    /**
+     * @return bool
+     */
+    public function isReturned()
+    {
+        return self::STATUS_RETURNED === $this->getStatus();
+    }
+
+    /**
+     * @return string
+     */
     public function getGate()
     {
         return $this->gate;
     }
 
+    /**
+     * @param $gate
+     */
     public function setGate($gate)
     {
         $this->gate = $gate;
     }
 
     /**
-     * Get status of payment
+     * Get status of payment.
      *
      * @return string
      */

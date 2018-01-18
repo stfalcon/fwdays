@@ -1,0 +1,35 @@
+{% set link = '' %}
+{% set static_style = '' %}
+
+{% if position == 'report' %}
+    {% set link = url('event_show_redesign', {'eventSlug': event.slug }) %}
+    {% set static_style = ' fix-event-header--static' %}
+{% endif %}
+
+<!--BEGIN fix-event-header-->
+<section class="fix-event-header{{ static_style }}" style="background-color: {{ event.backgroundColor }};">
+    <div class="container">
+        <div class="fix-event-header__left">
+            {% if (event.speakers is defined and event.speakers|length > 0) or
+                    programPage or venuePage or
+                    (event.activeAndFuture and event.receivePayments and event.TicketsCost|length > 0)
+
+            %}
+                <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
+                    <i class="icon-arrow"></i>
+                </div>
+            {% endif %}
+            {% if position == 'report' %}
+                <a href="{{ link }}" class="fix-event-header__title">{{ event.name }}</a>
+            {% else %}
+                <div class="fix-event-header__title">{{ event.name }}</div>
+            {% endif %}
+        </div>
+        <div class="fix-event-header__right">
+            {% include '@ApplicationDefault/Redesign/Event/event.menu.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position': position} %}
+            {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_fix_header'}) %}
+            {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_fix_header_mob'}) %}
+        </div>
+    </div>
+</section>
+<!--END fix-event-header-->

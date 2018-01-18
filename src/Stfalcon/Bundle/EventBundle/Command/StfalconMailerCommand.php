@@ -3,32 +3,30 @@
 namespace Stfalcon\Bundle\EventBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
-use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console\Output\OutputInterface;
-
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
- * Class StfalconMailerCommand
+ * Class StfalconMailerCommand.
  */
 class StfalconMailerCommand extends ContainerAwareCommand
 {
     /**
-     * Set options
+     * Set options.
      */
     protected function configure()
     {
         $this
             ->setName('stfalcon:mailer')
             ->setDescription('Send message from queue')
-            ->addOption('amount', null, InputOption::VALUE_OPTIONAL, 'Amount of mails which will send per operation. Default 10.');
+            ->addOption('amount', null, InputOption::VALUE_OPTIONAL, 'Amount of mails which will send per operation. Default 10.')
+            ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default frameworksdays.com.');
     }
 
     /**
-     * Execute command
+     * Execute command.
      *
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
@@ -48,6 +46,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $limit = (int) $input->getOption('amount');
         }
 
+        if ($input->getOption('host')) {
+            $context->setHost($input->getOption('host'));
+        }
+
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         /** @var $mailer \Swift_Mailer */
@@ -59,12 +61,21 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         $mailsQueue = $queueRepository->getMessages($limit);
 
-        /** @var $mail Mail */
+        /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!($user && $mail) || !$user->isSubscribe()) {
+            if (!($user && $mail) ||
+                !$user->isEnabled() ||
+                !$user->isEmailExists() ||
+                !$user->isSubscribe() ||
+                !filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
+            ) {
+                $mail->setTotalMessages($mail->getTotalMessages() - 1);
+                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
+                    $mail->setStart(false);
+                }
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -76,7 +87,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $this->getContainer()->get('logger')->addError($e->getMessage(), array('email' => $user->getEmail()));
 
                 $mail->setTotalMessages($mail->getTotalMessages() - 1);
-                if ($mail->getSentMessages() == $mail->getTotalMessages()) {
+                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
                     $mail->setStart(false);
                 }
 
@@ -86,23 +97,26 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 continue;
             }
 
-
             //add header tag for unsubscribe
             $headers = $message->getHeaders();
-            $http = $this->getContainer()->get('router')->generate('unsubscribe',
+            $http = $this->getContainer()->get('router')->generate(
+                'unsubscribe',
                 [
                     'hash' => $user->getSalt(),
                     'userId' => $user->getId(),
                     'mailId' => $mail->getId(),
-                ], true);
+                ],
+                true
+            );
 
-            $headers->addTextHeader('List-Unsubscribe', '<' . $http . '>');
+            $headers->removeAll('List-Unsubscribe');
+            $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
 
             if ($mailer->send($message)) {
                 $mail->setSentMessages($mail->getSentMessages() + 1);
                 $item->setIsSent(true);
 
-                if ($mail->getSentMessages() == $mail->getTotalMessages()) {
+                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
                     $mail->setStart(false);
                 }
 

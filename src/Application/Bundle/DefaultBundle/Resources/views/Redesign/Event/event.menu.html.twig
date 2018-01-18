@@ -1,0 +1,31 @@
+{% set link = '' %}
+{% if position == 'report' %}
+    {% set link = url('event_show_redesign', {'eventSlug': event.slug }) %}
+    {% set scrollClass = '' %}
+{% elseif position == 'event' %}
+    {% set scrollClass = ' go-to-block' %}
+{% endif %}
+<nav class="event-menu">
+    <ul class="event-menu__items">
+    {% if event.speakers is defined and event.speakers|length > 0 %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#speakers-event" class="event-menu__link{{ scrollClass }}">{{ 'speaker.title'|trans }}</a>
+        </li>
+    {% endif %}
+    {% if programPage %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#program-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
+        </li>
+    {% endif %}
+    {% if event.activeAndFuture and event.receivePayments and event.ticketsCost|length > 0 %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#price-event" class="event-menu__link{{ scrollClass }}">{{ 'event.price.title'|trans }}</a>
+        </li>
+    {% endif %}
+    {% if venuePage %}
+        <li class="event-menu__item">
+            <a href="{{ link }}#location-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.venue'|trans }}</a>
+        </li>
+    {% endif %}
+    </ul>
+</nav>

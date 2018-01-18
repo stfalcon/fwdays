@@ -1,0 +1,46 @@
+services:
+
+    app.ticket_cost.admin:
+        class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
+
+    app.pluralization.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppPluralizationExtension
+        tags:
+            - { name: twig.extension}
+
+    app.url_for_redirect:
+        class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
+        arguments: ["@router", "%locales%"]
+
+    app.event_ticket_cost.validator:
+        class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventTicketCostCountValidator
+        tags:
+            - { name: validator.constraint_validator, alias: event }
+
+    app.ticket_cost.validator:
+        class: Application\Bundle\DefaultBundle\Validator\Constraints\TicketCost\TicketCostCountValidator
+        tags:
+            - { name: validator.constraint_validator, alias: ticketCost }
+
+    app.ticket_cost.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketCostService
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    stfalcon_event.ticket.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%stfalcon_event.config%"
+            - "@translator"
+            - "@router"
+            - "@app.ticket_cost.service"
+
+    app.datetime.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppDateTimeExtension
+        arguments:
+            - "@sonata.intl.twig.extension.datetime"
+        tags:
+            - { name: twig.extension}

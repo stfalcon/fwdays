@@ -1,0 +1,28 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if event.metaDescription is not null %}
+        <meta name="description" content="{{ event.metaDescription }}">
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block content %}
+    {% include '@ApplicationDefault/Redesign/Event/event.fix_header.html.twig' with
+        {
+            'event':event,
+            'programPage':programPage,
+            'venuePage':venuePage,
+            'pages':pages,
+            'position': 'report'
+        }
+    %}
+
+    <div class="container container--sm container--flex-column static-styles section-after-event-header">
+        <p>{{ text|raw }}</p>
+    </div>
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+{% endblock content %}

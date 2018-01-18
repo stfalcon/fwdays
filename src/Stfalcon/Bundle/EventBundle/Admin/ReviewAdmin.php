@@ -13,22 +13,25 @@ class ReviewAdmin extends AbstractPageAdmin
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
-            ->add('event')
-            ->add('speakers');
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('speakers', null, ['label' => 'Докладчики']);
     }
     
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper = parent::configureFormFields($formMapper);
         $formMapper
-            ->with('General')
-                ->add('event', 'entity',  array(
+            ->with('Общие')
+                ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                ))
-                ->add('speakers', 'entity',  array(
+                    'label' => 'Событие',
+                ])
+                ->add('speakers', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Speaker',
-                    'multiple' => true, 'expanded' => true,
-                ))
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => 'Докладчики',
+                ])
             ->end()
         ;
     }
@@ -36,6 +39,6 @@ class ReviewAdmin extends AbstractPageAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('event');
+            ->add('event', null, ['label' => 'Событие']);
     }
 }
