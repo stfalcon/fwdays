@@ -157,7 +157,7 @@ class PaymentController extends Controller
      *
      * @return array|Response
      */
-    public function paymentAction(Event $event)
+    public function staticPaymentAction(Event $event)
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
