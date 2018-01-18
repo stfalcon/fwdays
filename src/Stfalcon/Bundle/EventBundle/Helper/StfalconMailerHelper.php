@@ -63,7 +63,7 @@ class StfalconMailerHelper
         );
 
         $body = $this->renderTwigTemplate(
-            'StfalconEventBundle::email.html.twig',
+            '@ApplicationDefault/Email/email.html.twig',
             [
                 'text'            => $text,
                 'mail'            => $mail,

@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
