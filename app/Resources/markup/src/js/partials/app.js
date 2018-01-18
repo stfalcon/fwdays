@@ -178,7 +178,7 @@ $(document).ready(function () {
     $(document).bind('scroll load', function () {
         var headerHeight = $('.header').outerHeight();
 
-        if ($(this).scrollTop() > headerHeight) {
+        if ($(this).scrollTop() >= headerHeight) {
             sectionAfterEventHeader.addClass('section-after-event-header--mr-t');
             eventHeaderFixedStat.addClass('fix-event-header--fixed');
         } else {

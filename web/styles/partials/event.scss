@@ -891,7 +891,7 @@
   }
 
   &--static {   //for review-page, venue-page
-    position: static;
+    position: relative;
     visibility: visible;
     opacity: 1;
     transition: none;
