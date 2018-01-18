@@ -8,7 +8,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\EventBundle\Entity\Mail,
     Application\Bundle\UserBundle\Entity\User;
-use Stfalcon\Bundle\EventBundle\Service\PaymentService;
+use Application\Bundle\DefaultBundle\Service\PaymentService;
 
 class PaymentListener
 {

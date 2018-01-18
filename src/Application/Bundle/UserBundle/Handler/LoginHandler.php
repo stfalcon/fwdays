@@ -5,7 +5,7 @@ namespace Application\Bundle\UserBundle\Handler;
 use Application\Bundle\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
-use Stfalcon\Bundle\EventBundle\Service\ReferralService;
+use Application\Bundle\DefaultBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

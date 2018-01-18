@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
-use Stfalcon\Bundle\EventBundle\Service\ReferralService;
+use Application\Bundle\DefaultBundle\Service\ReferralService;
 
 /**
  * Referral controller.

@@ -3,17 +3,17 @@
 ; Comments start with ';', as in php.ini
 [parameters]
     database_driver   = pdo_mysql
-    database_host     = db
-    database_port     = null
-    database_name     = fwdays_com_development
+    database_host     = localhost
+    database_port     =
+    database_name     = fwdays_com_dev
     database_user     = root
-    database_password = qwerty
+    database_password =
 
     mailer_transport  = smtp
-    mailer_host       = mailcatcher
+    mailer_host       = localhost
     mailer_user       =
     mailer_password   =
-    mailer_port       = 1025
+    mailer_port       = 25
 
     locale            = uk
     locales[0]        = uk
