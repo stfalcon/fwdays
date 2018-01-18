@@ -1,7 +1,0 @@
-{% if event.date %}
-    {{ event.date|format_date('d MMMM Y', 'ru', 'Europe/Kiev') }},
-{% endif %}
-{{ event.city }}<br>
-{% if event.place %}
-    {{ event.place }}
-{% endif %}

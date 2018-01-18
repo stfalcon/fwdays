@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Service;
+namespace Application\Bundle\DefaultBundle\Service;
 
 use Stfalcon\Bundle\EventBundle\Entity\Payment,
     Stfalcon\Bundle\EventBundle\Entity\Event;

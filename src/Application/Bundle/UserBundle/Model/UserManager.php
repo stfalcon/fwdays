@@ -72,7 +72,7 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
         );
 
         $message = $this->container->get('stfalcon_event.mailer_helper')->createMessage(
-            "Регистрация на сайте Frameworks Days",
+            $this->container->get('translator')->trans('registration.email.subject'),
             $user->getEmail(),
             $body
         );

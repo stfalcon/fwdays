@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Service;
+namespace Application\Bundle\DefaultBundle\Service;
 
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +33,7 @@ class StatisticBlockService extends BaseBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         return $this->renderResponse(
-            '@StfalconEvent/Statistic/block_admin_list.html.twig',
+            '@ApplicationDefault/Statistic/block_admin_list.html.twig',
             [
                 'block'         => $blockContext->getBlock(),
                 'block_context' => $blockContext

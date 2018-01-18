@@ -42,7 +42,7 @@ class SpeakerController extends Controller
         $speaker->setReviews(
             $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
         );
-        $html = $this->renderView('@ApplicationDefault/Redesign/speaker.popup.html.twig', [
+        $html = $this->renderView('@ApplicationDefault/Redesign/Speaker/speaker.popup.html.twig', [
             'speaker' => $speaker,
             'event' => $event,
         ]);
@@ -56,7 +56,7 @@ class SpeakerController extends Controller
      * @param Event $event
      * @param bool  $isCandidates
      *
-     * @Template("ApplicationDefaultBundle:Redesign:speaker.html.twig")
+     * @Template("ApplicationDefaultBundle:Redesign/Speaker:speaker.html.twig")
      *
      * @return array
      */

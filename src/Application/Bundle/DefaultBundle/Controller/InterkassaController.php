@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Service\InterkassaService;
+use Application\Bundle\DefaultBundle\Service\InterkassaService;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**

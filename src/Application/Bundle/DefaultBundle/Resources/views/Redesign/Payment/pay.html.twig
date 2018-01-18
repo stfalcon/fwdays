@@ -6,5 +6,5 @@
 <input type="hidden" name="ik_sign" value="{{ data.ik_sign }}" />
 
 {% for ticket in payment.tickets %}
-    {% include '@ApplicationDefault/Redesign/user.payment.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+    {% include '@ApplicationDefault/Redesign/Payment/user.payment.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
 {% endfor %}

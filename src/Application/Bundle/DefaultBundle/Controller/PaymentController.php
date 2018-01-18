@@ -132,7 +132,7 @@ class PaymentController extends Controller
      *
      * @param Event $event
      *
-     * @Template("@ApplicationDefault/Redesign/payment.html.twig")
+     * @Template("@ApplicationDefault/Redesign/Payment/payment.html.twig")
      *
      * @return array|Response
      */
@@ -311,14 +311,14 @@ class PaymentController extends Controller
             $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
         }
 
-        $html = $this->renderView('@ApplicationDefault/Redesign/pay.html.twig', [
+        $html = $this->renderView('@ApplicationDefault/Redesign/Payment/pay.html.twig', [
             'data' => $ikData,
             'event' => $event,
             'payment' => $payment,
             'discountAmount' => $discountAmount,
         ]);
 
-        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/payment.sums.html.twig', ['payment' => $payment]);
+        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
         /**
          * @var User
          */

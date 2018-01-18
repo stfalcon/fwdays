@@ -97,7 +97,7 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $reviewSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:report_review.html.twig")
+     * @Template("ApplicationDefaultBundle:Redesign/Speaker:report_review.html.twig")
      *
      * @return array
      */
@@ -111,7 +111,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign:partners.html.twig")
+     * @Template("ApplicationDefaultBundle:Redesign/Partner:partners.html.twig")
      *
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Service;
+namespace Application\Bundle\DefaultBundle\Service;
 
 use Symfony\Component\DependencyInjection\Container;
 use Buzz\Message\RequestInterface;

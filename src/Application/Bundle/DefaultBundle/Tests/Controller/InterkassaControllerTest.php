@@ -29,8 +29,8 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $request = $this->prophet->prophesize('Symfony\Component\HttpFoundatio\Request');
         $request->willExtend('Symfony\Component\HttpFoundation\Request');
 
-        $interkassaService = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Service\InterkassaService');
-        $paymentService = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Service\PaymentService');
+        $interkassaService = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Service\InterkassaService');
+        $paymentService = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Service\PaymentService');
 
         $container = $this->prophet->prophesize('Symfony\Component\DependencyInjection\Container');
         $doctrine = $this->prophet->prophesize('Doctrine\Bundle\DoctrineBundle\Registry');

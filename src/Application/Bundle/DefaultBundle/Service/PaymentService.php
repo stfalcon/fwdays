@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Service;
+namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
