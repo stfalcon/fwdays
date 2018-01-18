@@ -567,6 +567,10 @@
     }
   }
 
+  .section-after-event-header--mr-t {
+    margin-top: 45px;
+  }
+
   .event-menu {
     position: absolute;
     display: none;
@@ -1541,6 +1545,7 @@
 
     &__status--mob {
       display: block;
+      margin-right: 16px;
     }
   }
 

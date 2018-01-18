@@ -328,6 +328,11 @@
   &__likes {
     margin-top: 18px;
   }
+
+  &__hint-report {
+    font-size: 13px;
+    line-height: 15px;
+  }
 }
 
 .speaker-card__likes + .speaker-card__report:before {
@@ -813,6 +818,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding-right: 0;
   }
 
   &__left {
@@ -872,6 +878,7 @@
   }
 
   &__status {
+    margin-right: 32px;
     color: $white-color;
     text-decoration: none;
     text-transform: uppercase;
@@ -882,6 +889,35 @@
   &__status--mob {
     display: none;
   }
+
+  &--static {   //for review-page, venue-page
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+a.fix-event-header__title {   //for review-page, venue-page
+  display: inline-block;
+  width: auto;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  line-height: 22px;
+  margin-right: 16px;
+  padding-right: 0;
+
+  &:hover {
+    border-color: transparent;
+  }
+}
+
+.fix-event-header--fixed.fix-event-header--static {   // for review-page, venue-page
+  position: fixed;
+}
+
+.section-after-event-header--mr-t {   //for review-page, venue-page
+  margin-top: 65px;
 }
 
 .fix-event-header--show {
