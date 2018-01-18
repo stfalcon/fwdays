@@ -15,17 +15,18 @@
 {% endblock shareButtonsScripts %}
 
 {% block content %}
-    {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
-    'event':event,
-    'programPage':programPage,
-    'venuePage':venuePage,
-    'pages':pages,
-    'position':'report',
-    'eventCurrentAmount':eventCurrentAmount
-    } %}
+    {% include '@ApplicationDefault/Redesign/Event/event.fix_header.html.twig' with
+        {
+            'event':event,
+            'programPage':programPage,
+            'venuePage':venuePage,
+            'pages':pages,
+            'position': 'report'
+        }
+    %}
 
     <!--BEGIN report-review-->
-    <section class="report-review">
+    <section class="report-review section-after-event-header">
         <div class="container container--sm">
             <div class="review-layout">
                 <div class="review-header review-layout__header">

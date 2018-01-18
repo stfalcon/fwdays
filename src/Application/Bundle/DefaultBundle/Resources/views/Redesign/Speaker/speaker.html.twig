@@ -20,6 +20,8 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+            {% else %}
+                <div class="speaker-card__hint-report">{{ 'speaker.no_review.text'|trans }}</div>
             {% endif %}
         </div>
     </div>

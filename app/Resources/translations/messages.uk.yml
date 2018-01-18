@@ -60,6 +60,7 @@ user.by_email.title: Або поштою
 user.create.title: Створити аккаунт
 user.already_have_account.title: У мене вже є обліковий запис
 speaker.about: Про доповідача
+speaker.no_review.text: Тема доповіді уточнюється
 pay.i_have_promo.title: У мене є промокод
 pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'

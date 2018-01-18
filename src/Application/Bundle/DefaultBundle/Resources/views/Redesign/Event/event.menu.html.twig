@@ -17,7 +17,7 @@
             <a href="{{ link }}#program-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
         </li>
     {% endif %}
-    {% if event.activeAndFuture and event.receivePayments %}
+    {% if event.activeAndFuture and event.receivePayments and event.ticketsCost|length > 0 %}
         <li class="event-menu__item">
             <a href="{{ link }}#price-event" class="event-menu__link{{ scrollClass }}">{{ 'event.price.title'|trans }}</a>
         </li>

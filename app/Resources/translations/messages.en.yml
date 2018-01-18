@@ -72,6 +72,7 @@ user.by_email.title: Or by mail
 user.create.title: Create an account
 user.already_have_account.title: I already have an account
 speaker.about: Speaker's info
+speaker.no_review.text: The subject of the report is specified
 pay.i_have_promo.title: I have promo code
 pay.enter_promo.title: Add promo code to get discount
 pay.sum.bold.title: 'Sum: <b>%sum% UAH</b>'
