@@ -210,7 +210,7 @@ class AdminController extends Controller
         $qb->where($qb->expr()->isNotNull('u.userReferral'));
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
-        return $this->render('@StfalconEvent/Statistic/statistic.html.twig', [
+        return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
