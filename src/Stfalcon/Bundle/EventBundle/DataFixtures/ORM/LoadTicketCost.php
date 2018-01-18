@@ -30,7 +30,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
 
         $ticketCost->setName('early')
             ->setAmount(1000)
-            ->setAltAmount('= 40$')
+            ->setAltAmount(40)
             ->setCount(2)
             ->setEnabled(true)
             ->setEvent($manager->merge($eventJsDay));
@@ -39,7 +39,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
         $ticketCost1 = new TicketCost();
         $ticketCost1->setName('standart')
             ->setAmount(3000)
-            ->setAltAmount('= 120$')
+            ->setAltAmount(120)
             ->setUnlimited(true)
             ->setEnabled(true)
             ->setEvent($manager->merge($eventJsDay));
@@ -48,7 +48,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
         $ticketCost2 = new TicketCost();
         $ticketCost2->setName('next')
             ->setAmount(2000)
-            ->setAltAmount('= 80$')
+            ->setAltAmount(80)
             ->setCount(1)
             ->setEnabled(true)
             ->setEvent($manager->merge($eventJsDay));
@@ -57,7 +57,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
         $ticketCost3 = new TicketCost();
         $ticketCost3->setName('standart')
             ->setAmount(3000)
-            ->setAltAmount('= 120$')
+            ->setAltAmount(120)
             ->setUnlimited(true)
             ->setEnabled(true)
             ->setEvent($manager->merge($eventPHPDay2017));
@@ -66,7 +66,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
         $ticketCost4 = new TicketCost();
         $ticketCost4->setName('next')
             ->setAmount(2000)
-            ->setAltAmount('= 80$')
+            ->setAltAmount(80)
             ->setCount(1)
             ->setEnabled(true)
             ->setEvent($manager->merge($eventPHPDay2017));

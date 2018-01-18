@@ -50,7 +50,7 @@ class Category implements Translatable
      *
      * @var bool $isWideContainer
      *
-     * @ORM\Column(name="is_wide_container", type="boolean", options={"default":"false"})
+     * @ORM\Column(name="is_wide_container", type="boolean", options={"default":"0"})
      */
     private $isWideContainer = false;
 

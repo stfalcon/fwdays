@@ -34,8 +34,12 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         $event = (new Event())
             ->setName('Конференция JavaScript fwdays \'18')
             ->setSlug('javaScript-framework-day-2018')
+            ->setBackgroundColor('#1B91CD')
             ->setDescription('JavaScript Frameworks Day 2018 - V международная конференция, посвященная популярным JavaScript фреймворкам.')
-            ->setLogoFile($this->_generateUploadedFile('event-1.png'))
+            ->setLogoFile($this->_generateUploadedFile('JS_big.svg'))
+            ->setSmallLogoFile($this->_generateUploadedFile('JS_small.svg'))
+            ->setLogo('JS_big.svg')
+            ->setSmallLogo('JS_small.svg')
             ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
             ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
@@ -109,12 +113,17 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setCost(100);
         $manager->persist($event);
         $this->addReference('event-jsday2018', $event);
+        $manager->flush();
 
         $event = (new Event())
             ->setName('PHP Frameworks Day')
             ->setSlug('php-frameworks-day-2018')
+            ->setBackgroundColor('#7586D2')
             ->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)')
-            ->setLogoFile($this->_generateUploadedFile('event-2.png'))
+            ->setLogoFile($this->_generateUploadedFile('PHP_big.svg'))
+            ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
+            ->setLogo('PHP_big.svg')
+            ->setSmallLogo('PHP_small.svg')
             ->setEmailBackgroundFile($this->_generateUploadedFile('event-2.png'))
             ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
@@ -198,7 +207,10 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setName('Not Active Frameworks Day')
             ->setSlug('not-active-frameworks-day')
             ->setDescription('Это событие тестовое, но должно быть неактивным')
-            ->setLogoFile($this->_generateUploadedFile('event-5.png'))
+            ->setLogoFile($this->_generateUploadedFile('phpel_big.svg'))
+            ->setSmallLogoFile($this->_generateUploadedFile('phpel_small.svg'))
+            ->setLogo('phpel_big.svg')
+            ->setSmallLogo('phpel_small.svg')
             ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
             ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Где-то там')
@@ -210,12 +222,17 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setCost(100);
         $manager->persist($event);
         $this->addReference('event-not-active', $event);
+        $manager->flush();
 
         $event = (new Event())
             ->setName('Конференция Highload fwdays \'17')
             ->setSlug('Highload-frameworks-day-2017')
+            ->setBackgroundColor('#00776F')
             ->setDescription('Конференция Highload fwdays \'17')
-            ->setLogoFile($this->_generateUploadedFile('event-4.png'))
+            ->setLogoFile($this->_generateUploadedFile('highload_big.svg'))
+            ->setLogo('highload_big.svg')
+            ->setSmallLogoFile($this->_generateUploadedFile('highload_small.svg'))
+            ->setSmallLogo('highload_small.svg')
             ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
             ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
@@ -301,12 +318,17 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setCost(100);
         $manager->persist($event);
         $this->addReference('event-highload-day', $event);
+        $manager->flush();
 
         $event = (new Event())
             ->setName('PHP Day')
             ->setSlug('php-day-2017')
+            ->setBackgroundColor('#7586D2')
             ->setDescription('test description')
-            ->setLogoFile($this->_generateUploadedFile('event-3.png'))
+            ->setLogoFile($this->_generateUploadedFile('PHP_big.svg'))
+            ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
+            ->setLogo('PHP_big.svg')
+            ->setSmallLogo('PHP_small.svg')
             ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
             ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')

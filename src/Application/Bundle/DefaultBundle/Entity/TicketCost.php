@@ -55,7 +55,7 @@ class TicketCost
     /**
      * Альтернативна сума оплати.
      *
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="alt_amount", type="decimal", precision=10, scale=2)
      */
@@ -139,7 +139,7 @@ class TicketCost
     }
 
     /**
-     * @return string
+     * @return float
      */
     public function getAltAmount()
     {
@@ -147,7 +147,7 @@ class TicketCost
     }
 
     /**
-     * @param string $altAmount
+     * @param float $altAmount
      *
      * @return $this
      */

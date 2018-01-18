@@ -26,8 +26,6 @@ class Version20171220112033 extends AbstractMigration
         $this->addSql('ALTER TABLE event__ticketsCost ADD CONSTRAINT FK_3D5054F271F7E88B FOREIGN KEY (event_id) REFERENCES event__events (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE user_wants_visit_event ADD CONSTRAINT FK_D23C106DA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
         $this->addSql('ALTER TABLE user_wants_visit_event ADD CONSTRAINT FK_D23C106D71F7E88B FOREIGN KEY (event_id) REFERENCES event__events (id)');
-        $this->addSql('DROP TABLE ext_log_entries');
-        $this->addSql('DROP TABLE ext_translations');
         $this->addSql('ALTER TABLE event__speakers ADD sort_order INT DEFAULT 1 NOT NULL');
         $this->addSql('ALTER TABLE payments ADD refunded_amount NUMERIC(10, 2) DEFAULT NULL');
         $this->addSql('ALTER TABLE event__tickets ADD ticket_cost_id INT DEFAULT NULL');
