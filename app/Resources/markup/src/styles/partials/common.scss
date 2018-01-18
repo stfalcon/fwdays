@@ -234,6 +234,11 @@ ul {
   max-width: 940px;
 }
 
+.container--flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .made-by {
   color: #89898A;
   text-decoration: none;
