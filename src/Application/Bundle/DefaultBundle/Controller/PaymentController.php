@@ -145,7 +145,7 @@ class PaymentController extends Controller
     /**
      * static payment.
      *
-     * @Route(path = "/payment/{eventSlug}")
+     * @Route("/static-payment/{eventSlug}")
      *
      * @Security("has_role('ROLE_USER')")
      *
@@ -157,7 +157,7 @@ class PaymentController extends Controller
      *
      * @return array|Response
      */
-    public function paymentAction(Event $event)
+    public function staticPaymentAction(Event $event)
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
