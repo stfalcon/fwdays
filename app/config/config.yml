@@ -109,6 +109,10 @@ knp_menu:
 #            options: { start: [0, 0], size: [232, 232]}
 
 liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                locator: filesystem_insecure
     filter_sets:
         cache: ~
         speaker_size:
