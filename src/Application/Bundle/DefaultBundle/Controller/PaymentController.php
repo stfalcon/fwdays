@@ -145,7 +145,7 @@ class PaymentController extends Controller
     /**
      * static payment.
      *
-     * @Route(path = "/static-payment/{eventSlug}")
+     * @Route("/static-payment/{eventSlug}")
      *
      * @Security("has_role('ROLE_USER')")
      *
