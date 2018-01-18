@@ -667,10 +667,9 @@ ul {
 }
 
 .like-btn {
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
   height: 15px;
-  justify-content: space-between;
 
   &__action {
     border-bottom: 1px dashed rgba(0, 145, 173, 0.4);

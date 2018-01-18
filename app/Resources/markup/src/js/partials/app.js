@@ -151,7 +151,7 @@ $(document).ready(function () {
 
 
     /**
-     * Fixed event header on scroll
+     * Fixed event header on scroll for event-page
      */
     if ($('.event-header').length) {
         var eventHeader = $('.event-header'),
@@ -168,6 +168,24 @@ $(document).ready(function () {
             }
         });
     }
+
+    /**
+     * Fixed event static header on scroll for review-page, venue-page
+     */
+    var eventHeaderFixedStat = $('.fix-event-header--static'),
+        sectionAfterEventHeader = $('.section-after-event-header');
+
+    $(document).bind('scroll load', function () {
+        var headerHeight = $('.header').outerHeight();
+
+        if ($(this).scrollTop() >= headerHeight) {
+            sectionAfterEventHeader.addClass('section-after-event-header--mr-t');
+            eventHeaderFixedStat.addClass('fix-event-header--fixed');
+        } else {
+            sectionAfterEventHeader.removeClass('section-after-event-header--mr-t');
+            eventHeaderFixedStat.removeClass('fix-event-header--fixed');
+        }
+    });
 
     /**
      * Fixed program header on scroll
