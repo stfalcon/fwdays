@@ -94,7 +94,7 @@ class StfalconMailerHelper
     {
         return \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+            ->setFrom('orgs@fwdays.com', 'Fwdays')
             ->setTo($to)
             ->setBody($body, 'text/html');
     }

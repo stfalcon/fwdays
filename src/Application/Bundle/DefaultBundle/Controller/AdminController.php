@@ -64,24 +64,20 @@ class AdminController extends Controller
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $text = 'Приветствуем '.$user->getFullname().'!
-
-Вы были автоматически зарегистрированы на сайте Frameworks Days.
-
-Ваш временный пароль: '.$password.'
-Его можно сменить на странице '.$this->generateUrl('fos_user_change_password', array(), true).'
-
-
----
-С уважением,
-Команда Frameworks Days';
+                    $body = $this->container->get('stfalcon_event.mailer_helper')->renderTwigTemplate(
+                        'ApplicationUserBundle:Registration:automatically.html.twig',
+                        [
+                            'user' => $user,
+                            'plainPassword' => $password,
+                        ]
+                    );
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация на сайте Frameworks Days')
                         // @todo refact
-                        ->setFrom('orgs@fwdays.com', 'Frameworks Days')
+                        ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
-                        ->setBody($text);
+                        ->setBody($body);
 
                     // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
