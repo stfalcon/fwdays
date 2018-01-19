@@ -152,11 +152,20 @@
 
     <body>
         <div class="left-element">
-            <img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />
+            {#{% if event.pdfBackgroundFile is not empty %}#}
+                {#<img src="{{ path ~ vich_uploader_asset(event, 'pdfBackgroundFile') }}" width="199" height="156" />#}
+            {#{% else %}#}
+                <img src="{{ path ~ 'uploads/events/invite_pdf_deco-js.png' }}" width="199" height="156" />
+            {#{% endif %}#}
         </div>
         <div class="logo">
             <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } ) }}" title="{{ event.name }}">
-                <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
+                {#{% if event.smallLogoFile is not empty %}#}
+                    {#<img src="{{ path ~ vich_uploader_asset(event, 'smallLogoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />#}
+                {#{% elseif event.logoFile is not empty %}#}
+                    {#<img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />#}
+                {#{% endif %}#}
+                <img src="{{ path ~ 'uploads/events/JS_web.png' }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
             </a>
         </div>
 
