@@ -2,7 +2,7 @@
     {% set ticket_altAmount = '≈$'~ticket.altAmount|number_format(0,',',' ') %}
     {% set ticket_amount = ticket.amount|number_format(0,',',' ') %}
 {% else %}
-    {% set ticket_altAmount = '≈' ~ ticket.amount|number_format(0,',',' ') ~ 'UAH'%}
+    {% set ticket_altAmount = '≈' ~ ticket.amount|number_format(0,',',' ') ~ ' UAH'%}
     {% set ticket_amount = ticket.altAmount|number_format(0,',',' ') %}
 {% endif %}
 

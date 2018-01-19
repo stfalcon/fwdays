@@ -350,7 +350,7 @@ class TicketService
                     } else {
                         $amount = $ticketCost->getAltAmount();
                         $altAmount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
-                        $altAmount = '≈'.number_format($altAmount, 0, ',', ' ').'UAH';
+                        $altAmount = '≈'.number_format($altAmount, 0, ',', ' ').' UAH';
                     }
                     $caption = $this->translator->trans(
                         'ticket.status.pay_for').' '.
