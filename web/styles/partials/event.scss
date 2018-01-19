@@ -818,7 +818,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding-right: 0;
   }
 
   &__left {
@@ -878,7 +877,6 @@
   }
 
   &__status {
-    margin-right: 32px;
     color: $white-color;
     text-decoration: none;
     text-transform: uppercase;
