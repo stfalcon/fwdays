@@ -10,7 +10,7 @@
 <div class="cost cost--last price-list__item">
     <div class="cost__type">{{ ticket.name }}</div>
     <div class="cost__tickets">
-        <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.soldCount})|transchoice(ticket.soldCount|pluralization) }}</span>
+        <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</span>
         <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
     </div>
     <div class="cost__price">{{ 'payment.price.multi'|trans({'%summ%':ticket_amount}) }}
@@ -33,8 +33,7 @@
 <div class="cost cost--active price-list__item">
     <div class="cost__type">{{ ticket.name }}</div>
     {% if ticket.count %}
-        {% set count = ticket.count - ticket.soldCount %}
-        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': count})|transchoice(count|pluralization) }}</div>
+        <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</div>
     {% else %}
         <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
     {% endif %}
