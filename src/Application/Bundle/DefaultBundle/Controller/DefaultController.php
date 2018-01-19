@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DefaultController
@@ -81,13 +82,22 @@ class DefaultController extends Controller
     /**
      * @Route("/contacts", name="contacts")
      *
-     * @Template("ApplicationDefaultBundle:Redesign:contacts.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function contactsAction()
     {
-        return [];
+        $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
+            ->findOneBy(['slug' => 'contacts']);
+        if (!$staticPage) {
+            throw $this->createNotFoundException('Page not found! about');
+        }
+
+        return $this->render(
+            '@ApplicationDefault/Redesign/static_contacts.page.html.twig',
+            [
+                'text' => $staticPage->getText(),
+            ]
+        );
     }
 
     /**
