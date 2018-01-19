@@ -61,20 +61,20 @@
     {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
 
     <!--BEGIN location-->
-    {% if venuePage %}
     <section id="location-event" class="location">
         <div class="container container--sm">
             <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
             <div class="location__description">
                 {{ event.city }}, {{ event.place }}
             </div>
-            <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
+            {% if venuePage %}
+                <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
+            {% endif %}
         </div>
         <div class="container">
             <div id="map" data-event="{{ event.slug }}" class="location__map"></div>
         </div>
     </section>
-    {% endif %}
     <!--END location-->
 
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
