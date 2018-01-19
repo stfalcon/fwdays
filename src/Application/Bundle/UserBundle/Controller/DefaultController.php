@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\ConstraintViolation;
 
 class DefaultController extends Controller
 {
@@ -28,6 +29,16 @@ class DefaultController extends Controller
         $userManager = $this->get('stfalcon.user_manager');
         $validator = $this->get('validator');
         $user->setPhone($phoneNumber);
+        $errors = $validator->validate($user);
+        /** @var ConstraintViolation $error */
+        foreach ($errors as $error) {
+            if ('name' === $error->getPropertyPath()) {
+                $user->getName();
+            } elseif ('surname' === $error->getPropertyPath()) {
+                $user->getSurname();
+            }
+        }
+
         $errors = $validator->validate($user);
 
         if (count($errors) > 0) {
