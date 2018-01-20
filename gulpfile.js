@@ -17,6 +17,7 @@ var gulp = require('gulp'),
     gulpIf = require('gulp-if'),
     rigger = require('gulp-rigger'),
     browserSync = require('browser-sync'),
+    rev = require("gulp-rev"),
     runSequence = require('run-sequence'),
     rimraf = require('rimraf'),
     argv = require('yargs').argv,
@@ -55,7 +56,12 @@ gulp.task('js:build', function () {
         .pipe(rigger())
         .pipe(gulpIf(dev, (sourceMaps.init())))
         .pipe(gulpIf(prod, uglify()))
+        .pipe(rev())
         .pipe(gulpIf(dev, (sourceMaps.write())))
+        .pipe(gulp.dest(path.build.js))
+        .pipe(rev.manifest({
+            merge: true
+        }))
         .pipe(gulp.dest(path.build.js))
         .pipe(reload({stream: true}));
 });
@@ -85,7 +91,12 @@ gulp.task('styles:build', function () {
         .pipe(cssImport())
         .pipe(prefixer())
         .pipe(cssMin())
+        .pipe(rev())
         .pipe(gulpIf(dev, sourceMaps.write()))
+        .pipe(gulp.dest(path.build.styles))
+        .pipe(rev.manifest({
+            merge: true
+        }))
         .pipe(gulp.dest(path.build.styles))
         .pipe(reload({stream: true}));
 });
