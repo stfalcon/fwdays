@@ -253,8 +253,20 @@ $(document).ready(function () {
         }
     });
 
+    $('#user_phone').on('focus', function () {
+        if ($('#user_phone').val() === '') {
+            $('#user_phone').val('+380');
+        }
+    });
+
+    $('#user_phone').on('focusout', function () {
+        if ($('#user_phone').val() === '+380') {
+            $('#user_phone').val('');
+        }
+    });
+
     $("#user_phone").rules( "add", {
-        required: true,
+        required: false,
         minlength: 12,
         maxlength: 16,
         pattern: /\+[1-9]{1}[0-9]{10,14}$/i,

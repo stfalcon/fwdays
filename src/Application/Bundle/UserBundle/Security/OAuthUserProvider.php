@@ -76,6 +76,8 @@ class OAuthUserProvider extends BaseClass
         } elseif ($user) {
             $checker = new UserChecker();
             $checker->checkPreAuth($user);
+        } elseif (!$email) {
+
         }
 
         return $user;
