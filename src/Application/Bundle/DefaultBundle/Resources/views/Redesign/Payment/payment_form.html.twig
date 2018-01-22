@@ -65,7 +65,7 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label" for="user_phone">{{ 'user.phone.title'|trans }}</label>
-                <input class="input mask-phone-input--js" placeholder="+38" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}" required>
+                <input class="input mask-phone-input--js" placeholder="+380" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">

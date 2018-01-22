@@ -10,15 +10,9 @@
 <section class="fix-event-header{{ static_style }}" style="background-color: {{ event.backgroundColor }};">
     <div class="container">
         <div class="fix-event-header__left">
-            {% if (event.speakers is defined and event.speakers|length > 0) or
-                    programPage or venuePage or
-                    (event.activeAndFuture and event.receivePayments and event.TicketsCost|length > 0)
-
-            %}
-                <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
-                    <i class="icon-arrow"></i>
-                </div>
-            {% endif %}
+            <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
+                <i class="icon-arrow"></i>
+            </div>
             {% if position == 'report' %}
                 <a href="{{ link }}" class="fix-event-header__title">{{ event.name }}</a>
             {% else %}
