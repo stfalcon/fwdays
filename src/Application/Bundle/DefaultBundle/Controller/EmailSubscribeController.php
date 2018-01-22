@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
@@ -39,6 +40,10 @@ class EmailSubscribeController extends Controller
         }
 
         if ($mailId) {
+            $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+            if ($mail) {
+                $mail->addUnsubscribeMessagesCount();
+            }
             /** @var MailQueue $mailQueue */
             $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
                 ->findOneBy(['user' => $userId, 'mail' => $mailId]);
@@ -105,6 +110,11 @@ class EmailSubscribeController extends Controller
                 /** @var MailQueue $mailQueue */
                 $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
                 if ($mailQueue && !$mailQueue->getIsOpen()) {
+                    /** @var Mail $mail */
+                    $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+                    if ($mail) {
+                        $mail->addOpenMessagesCount();
+                    }
                     $mailQueue->setIsOpen();
                     $em->flush();
                 }

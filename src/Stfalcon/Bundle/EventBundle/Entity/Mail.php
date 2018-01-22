@@ -82,6 +82,20 @@ class Mail
     protected $sentMessages = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="unsubscribe_messages_cnt", type="integer")
+     */
+    protected $unsubscribeMessagesCount = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="open_messages_cnt", type="integer")
+     */
+    protected $openMessagesCount = 0;
+
+    /**
      * @var array
      *
      * @ORM\OneToMany(targetEntity="MailQueue", mappedBy="mail", cascade={"remove", "persist"}, orphanRemoval=true)
@@ -96,6 +110,70 @@ class Mail
     {
         $this->events = new ArrayCollection();
         $this->mailQueues = new ArrayCollection();
+    }
+
+    /**
+     * @param int $openMessagesCount
+     *
+     * @return $this
+     */
+    public function setOpenMessagesCount($openMessagesCount)
+    {
+        $this->openMessagesCount = $openMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @param int $unsubscribeMessagesCount
+     *
+     * @return $this
+     */
+    public function setUnsubscribeMessagesCount($unsubscribeMessagesCount)
+    {
+        $this->unsubscribeMessagesCount = $unsubscribeMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOpenMessagesCount()
+    {
+        return $this->openMessagesCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnsubscribeMessagesCount()
+    {
+        return $this->unsubscribeMessagesCount;
+    }
+
+    /**
+     * Add open messages count.
+     *
+     * @return $this
+     */
+    public function addOpenMessagesCount()
+    {
+        ++$this->openMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * Add unsubscribe messages count.
+     *
+     * @return $this
+     */
+    public function addUnsubscribeMessagesCount()
+    {
+        ++$this->unsubscribeMessagesCount;
+
+        return $this;
     }
 
     /**
@@ -268,21 +346,13 @@ class Mail
      */
     public function getStatistic()
     {
-        $isOpenCount = 0;
-        $isUnsubscribeCount = 0;
-        /** @var MailQueue $mailQueue */
-        foreach ($this->getMailQueues() as $mailQueue) {
-            if ($mailQueue->getIsOpen()) {
-                ++$isOpenCount ;
-            }
-            if ($mailQueue->getIsUnsubscribe()) {
-                ++$isUnsubscribeCount ;
-            }
-        }
-
-        return $this->totalMessages.'/'.$this->sentMessages.'/'.$isOpenCount.'/'.$isUnsubscribeCount.(($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
+        return
+            $this->totalMessages.'/'.
+            $this->sentMessages.'/'.
+            $this->openMessagesCount.'/'.
+            $this->unsubscribeMessagesCount.
+            (($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
-
     /**
      * Add event.
      *
