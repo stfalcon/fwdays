@@ -1,33 +1,29 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Show\ShowMapper;
-
-use Knp\Bundle\MenuBundle\MenuItem;
 use Knp\Menu\ItemInterface as MenuItemInterface;
-
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
- * Class MailAdmin
+ * Class MailAdmin.
  */
 class MailAdmin extends Admin
 {
     /**
-     * Default values to the datagrid
+     * Default values to the datagrid.
      *
      * @var array
      */
     protected $datagridValues = array(
-        '_sort_by'    => 'id',
-        '_sort_order' => 'DESC'
+        '_sort_by' => 'id',
+        '_sort_order' => 'DESC',
     );
 
     /**
@@ -43,7 +39,7 @@ class MailAdmin extends Admin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('admin_send', $this->getRouterIdParameter() . '/admin-send');
+        $collection->add('admin_send', $this->getRouterIdParameter().'/admin-send');
         $collection->add('user_send', 'user-send');
     }
 
@@ -53,21 +49,22 @@ class MailAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title')
-            ->add('statistic', 'string', array('label' => 'Statistic sent/total'))
-            ->add('events')
-            ->add('_action', 'actions', array(
-                'actions'   => array(
-                    'edit'      => array(),
-                    'delete'    => array(),
-                    'ispremium' => array(
+            ->addIdentifier('title', null, ['label' => 'Название'])
+            ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
+            ->add('events', null, ['label' => 'События'])
+            ->add('_action', 'actions', [
+                'label' => 'Действие',
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                    'ispremium' => [
                         'template' => 'StfalconEventBundle:Admin:list__action_adminsend.html.twig',
-                    ),
-                    'start' => array(
+                    ],
+                    'start' => [
                         'template' => 'StfalconEventBundle:Admin:list__action_start.html.twig',
-                    ),
-                ),
-            ));
+                    ],
+                ],
+            ]);
     }
 
     /**
@@ -78,25 +75,28 @@ class MailAdmin extends Admin
         $isEdit = (bool) $this->getSubject()->getId();
 
         $formMapper
-            ->with('General')
-            ->add('title')
-            ->add('text')
-            ->add('events', 'entity', array(
-                'class'     => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                'multiple'  => true,
-                'expanded'  => false,
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
-            ->add('start', null, array('required' => false))
-            ->add('paymentStatus', 'choice', array(
-                'choices'   => array(
-                    'paid'    => 'Оплачено',
-                    'pending' => 'Не оплачено'
-                ),
-                'required'  => false,
-                'read_only' => $isEdit
-            ))
+            ->with('Общие')
+                ->add('title', null, ['label' => 'Название'])
+                ->add('text', null, ['label' => 'Текст'])
+                ->add('events', 'entity', [
+                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'multiple' => true,
+                    'expanded' => false,
+                    'required' => false,
+                    'read_only' => $isEdit,
+                    'label' => 'События',
+                ])
+                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
+                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
+                ->add('paymentStatus', 'choice', array(
+                    'choices' => array(
+                        'paid' => 'Оплачено',
+                        'pending' => 'Не оплачено',
+                    ),
+                    'required' => false,
+                    'read_only' => $isEdit,
+                    'label' => 'Статус оплаты',
+                ))
             ->end();
     }
 
@@ -111,9 +111,10 @@ class MailAdmin extends Admin
 
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
-
-        /** @var $users \Application\Bundle\UserBundle\Entity\User[] */
-        if ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
+        if ($mail->getEvents()->count() > 0 && $mail->isWantsVisitEvent()) {
+            $users =  $em->getRepository('ApplicationUserBundle:User')->getRegisteredUsers($mail->getEvents());
+            /* @var $users \Application\Bundle\UserBundle\Entity\User[] */
+        } elseif ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findUsersSubscribedByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
         } else {
@@ -123,19 +124,22 @@ class MailAdmin extends Admin
         if (isset($users)) {
             $countSubscribers = 0;
             foreach ($users as $user) {
-                $mailQueue = new MailQueue();
-                $mailQueue->setUser($user);
-                $mailQueue->setMail($mail);
-                $em->persist($mailQueue);
-                $countSubscribers++;
+                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
+                $user->isEnabled() &&
+                $user->isEmailExists()
+                ) {
+                    $mailQueue = new MailQueue();
+                    $mailQueue->setUser($user);
+                    $mailQueue->setMail($mail);
+                    $em->persist($mailQueue);
+                    ++$countSubscribers;
+                }
             }
             $mail->setTotalMessages($countSubscribers);
         }
 
         $em->persist($mail);
         $em->flush();
-
-        return true;
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
 class EventPageAdmin extends AbstractPageAdmin
@@ -18,8 +17,8 @@ class EventPageAdmin extends AbstractPageAdmin
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper
-            ->add('event')
-            ->add('sortOrder');
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки']);
     }
 
     /**
@@ -27,18 +26,47 @@ class EventPageAdmin extends AbstractPageAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper = parent::configureFormFields($formMapper);
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
-            ->with('General')
-                ->add('event', 'entity',  array(
+            ->with('Переводы')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'title' => [
+                            'label' => 'Название',
+                            'locale_options' => $localOptions,
+                        ],
+                        'text' => [
+                            'label' => 'текст',
+                            'locale_options' => $localOptions,
+                        ],
+                        'textNew' => [
+                            'label' => 'текст для нового дизайна',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
+                        'metaKeywords' => [
+                            'label' => 'metaKeywords',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
+                        'metaDescription' => [
+                            'label' => 'metaDescription',
+                            'locale_options' => $localOptionsAllFalse,
+                        ],
+                    ],
+                ])
+            ->end()
+            ->with('Общие')
+                ->add('slug')
+                ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                ))
-                ->add('showInMenu', null, array('required' => false))
-                ->add('sortOrder', null, array(
-                    'attr' => array(
-                        'min' => 1
-                    )
-                ))
+                ])
+                ->add('showInMenu', null, ['required' => false])
+                ->add('sortOrder', null, [
+                    'label' => 'Номер сортировки',
+                    'attr' => ['min' => 1],
+                ])
             ->end()
         ;
     }

@@ -39,7 +39,7 @@ class LoadMailQueueData extends AbstractFixture implements DependentFixtureInter
         $mail->setTitle('test');
         $mail->setText('test');
         $mail->setPaymentStatus($manager->merge($this->getReference('payment')));
-        $mail->addEvent($manager->merge($this->getReference('event-zfday')));
+        $mail->addEvent($manager->merge($this->getReference('event-jsday2018')));
         $manager->persist($mail);
 
         $mq = new MailQueue();

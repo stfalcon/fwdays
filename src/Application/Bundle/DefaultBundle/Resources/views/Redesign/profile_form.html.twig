@@ -1,0 +1,79 @@
+{% if user is not defined %}
+    {% set user = app.user %}
+{% endif %}
+<form action="{{ path('fos_user_profile_edit') }}" method="POST">
+    <input type="hidden" id="fos_user_profile_form__token" name="fos_user_profile_form[_token]" value="{{csrf_token('profile')}}"/>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="fos_user_profile_form_name">{{ 'user.name.title'|trans }}</label>
+                <input class="input {% if profileForm is defined and profileForm.name.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_name" name="fos_user_profile_form[name]" required value="{{ user.name }}">
+                {% if profileForm is defined and profileForm.name.vars.errors|length %}<p class="text-error">{{ profileForm.name.vars.errors[0].message|trans }}</p>{% endif %}
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label form-label--required" for="fos_user_profile_form_surname">{{ 'user.surname.title'|trans }}</label>
+            <input class="input {% if profileForm is defined and profileForm.surname.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_surname" name="fos_user_profile_form[surname]" required value="{{ user.surname }}">
+            {% if profileForm is defined and profileForm.surname.vars.errors|length %}<p class="text-error">{{ profileForm.surname.vars.errors[0].message|trans }}</p>{% endif %}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="fos_user_profile_form_email">{{ 'user.email.title'|trans }}</label>
+                <input class="input {% if profileForm is defined and profileForm.email.vars.errors|length %}input--error{% endif %}" type="email" id="fos_user_profile_form_email" required name="fos_user_profile_form[email]" value="{{ user.email }}">
+                {% if profileForm is defined and profileForm.email.vars.errors|length %}<p class="text-error">{{ profileForm.email.vars.errors[0].message|trans }}</p>{% endif %}
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label" for="fos_user_profile_form_phone">{{ 'user.phone.title'|trans }}</label>
+            <input class="input mask-phone-input--js {% if profileForm is defined and profileForm.phone.vars.errors|length %}input--error{% endif %}" placeholder="+38" type="tel" id="fos_user_profile_form_phone" name="fos_user_profile_form[phone]" value="{{ user.phone }}">
+            {% if profileForm is defined and profileForm.phone.vars.errors|length %}<p class="text-error">{{ profileForm.phone.vars.errors[0].message|trans }}</p>{% endif %}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="fos_user_profile_form_country">{{ 'user.country.title'|trans }}</label>
+                <input class="input {% if profileForm is defined and profileForm.country.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_country" name="fos_user_profile_form[country]" value="{{ user.country }}">
+                {% if profileForm is defined and profileForm.country.vars.errors|length %}<p class="text-error">{{ profileForm.country.vars.errors[0].message|trans }}</p>{% endif %}
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label" for="fos_user_profile_form_city">{{ 'user.city.title'|trans }}</label>
+            <input class="input {% if profileForm is defined and profileForm.city.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_city" name="fos_user_profile_form[city]" value="{{ user.city }}">
+            {% if profileForm is defined and profileForm.city.vars.errors|length %}<p class="text-error">{{ profileForm.city.vars.errors[0].message|trans }}</p>{% endif %}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="fos_user_profile_form_company">{{ 'user.company.title'|trans }}</label>
+                <input class="input {% if profileForm is defined and profileForm.company.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_company" name="fos_user_profile_form[company]" value="{{ user.company }}">
+                {% if profileForm is defined and profileForm.company.vars.errors|length %}<p class="text-error">{{ profileForm.company.vars.errors[0].message|trans }}</p>{% endif %}
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label" for="fos_user_profile_form_post">{{ 'user.company_post.title'|trans }}</label>
+            <input class="input {% if profileForm is defined and profileForm.post.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_profile_form_post" name="fos_user_profile_form[post]" value="{{ user.post }}">
+            {% if profileForm is defined and profileForm.post.vars.errors|length %}<p class="text-error">{{ profileForm.post.vars.errors[0].message|trans }}</p>{% endif %}
+        </div>
+    </div>
+    <div class="form-row form-row--checkbox">
+        <div class="form-col">
+            <div class="checkbox">
+                {% if user.subscribe == true %}
+                    <input id="profile-check" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]" checked>
+                {% else %}
+                    <input id="profile-check" type="checkbox" class="checkbox__input" name="fos_user_profile_form[subscribe]">
+                {% endif %}
+                <label for="profile-check" class="checkbox__label">{{ 'user.subscribe.title'|trans }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <button class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'user.refresh.title'|trans }}</button>
+        </div>
+    </div>
+</form>

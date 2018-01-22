@@ -1,10 +1,10 @@
-Приветствуем, "{{ user.fullname }}"!
-
-Вы были автоматически зарегистрированы на сайте Frameworks Days.
-
-Ваш временный пароль: "{{ plainPassword }}"
-Его можно сменить на странице "{{ url('fos_user_change_password', [], false) }}"
-
----
-С уважением,
-Команда Frameworks Days
+<p>{{ 'interkassa.mail.msg.hello'|trans({'%user_fullname%':user.fullname})|raw }}</p>
+<p></p>
+<p>{{ 'autoreg.mail.text1'|trans|raw }}</p>
+<p>{{ 'autoreg.mail.text2'|trans({'%password%':plainPassword})|raw }}</p>
+<p></p>
+{% set url = '<a href="'~url('fos_user_change_password', [], false)~'">change password</a>' %}
+<p>{{ 'autoreg.mail.text3'|trans({'%url%':url})|raw }}</p>
+<p></p>
+<p>---</p>
+<p>{{ 'ticket.email.team'|trans|raw }}</p>

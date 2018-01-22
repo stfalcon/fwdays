@@ -34,7 +34,7 @@ abstract class AbstractPage
     protected $title;
 
     /**
-     * @var text $text
+     * @var string $text
      * @Gedmo\Translatable(fallback=true)
      * @ORM\Column(name="text", type="text")
      */
@@ -72,6 +72,8 @@ abstract class AbstractPage
     public function setText($text)
     {
         $this->text = $text;
+
+        return $this;
     }
 
     /**
@@ -92,6 +94,8 @@ abstract class AbstractPage
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -112,6 +116,8 @@ abstract class AbstractPage
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -130,6 +136,8 @@ abstract class AbstractPage
     public function setMetaKeywords($metaKeywords)
     {
         $this->metaKeywords = $metaKeywords;
+
+        return $this;
     }
 
     /**
@@ -146,6 +154,8 @@ abstract class AbstractPage
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
+
+        return $this;
     }
 
     /**

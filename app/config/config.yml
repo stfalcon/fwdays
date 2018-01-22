@@ -1,15 +1,15 @@
 imports:
     - { resource: parameters.ini }
+    - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
+    - { resource: mobile_detect.yml }
 
 parameters:
     graylog.fromname: "https://frameworksdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
-    captcha_secret_key: %google_captcha_secret_key%
-    captcha_site_key: %google_captcha_site_key%
-    captcha_check_url: https://www.google.com/recaptcha/api/siteverify
+    google_apikey: "%google_api_key%"
 
 framework:
     #esi:             ~
@@ -28,18 +28,27 @@ framework:
         handler_id: session.handler.native_file
         save_path: "%kernel.root_dir%/sessions/"
 
+
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - 'SonataCoreBundle:Form:colorpicker.html.twig'
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
     globals:
-        captcha_site_key: %captcha_site_key%
+        google_apikey: "%google_api_key%"
+        ga_tracking_id: "%tracking_id%"
+        google_site_key: "%google_captcha_site_key%"
+        facebook_api_id: "%facebook_client_id%"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+    debug:          "%kernel.debug%"
     use_controller: false
     filters:
         yui_css:
@@ -52,15 +61,15 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
         charset:  UTF8
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         mappings:
             StofDoctrineExtensionsBundle: false
@@ -78,22 +87,38 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    port:      %mailer_port%
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    port:      "%mailer_port%"
 
 # KnpMenuBundle
 knp_menu:
     twig: true
 
-avalanche_imagine:
-    cache_prefix: /tmp/media/cache
-    filters:
-        speaker_thumb:
-            type:    thumbnail
-            options: { size: [64, 64], mode: outbound }
+#avalanche_imagine:
+#    cache_prefix: /tmp/media/cache
+#    filters:
+#        speaker_thumb:
+#            type:    thumbnail
+#            options: { size: [64, 64], mode: outbound }
+#        speaker_size:
+#            source_root: "%kernel.root_dir%/../web/uploads/speakers"
+#            type:    crop
+#            options: { start: [0, 0], size: [232, 232]}
+
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                locator: filesystem_insecure
+    filter_sets:
+        cache: ~
+        speaker_size:
+            filters:
+                relative_resize: { widen: 232 }
+                crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
@@ -103,7 +128,7 @@ fos_user:
         form:
             type: application_user_registration
         confirmation:
-            enabled:    true
+            enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
@@ -118,7 +143,7 @@ fos_user:
 stfalcon_event:
     interkassa:
         shop_id: "533958fbbf4efc736a13bea5"
-        secret: %interkassa_secret%
+        secret: "%interkassa_secret%"
     discount: 0.2
 
 sonata_block:
@@ -191,3 +216,25 @@ ornicar_gravatar: ~
 accord_mandrill_swift_mailer:
     api_key: %mandrill_api_key%
 
+hwi_oauth:
+    firewall_names: [main]
+    connect:
+        account_connector: app.provider.oauth
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           "%facebook_client_id%"
+            client_secret:       "%facebook_client_secret%"
+            scope:               "email, public_profile"
+            infos_url:           "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name"
+            paths:
+                email: email
+            options:
+                display: page
+        google:
+            type:                google
+            client_id:           "%google_client_id%"
+            client_secret:       "%google_client_secret%"
+            scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email

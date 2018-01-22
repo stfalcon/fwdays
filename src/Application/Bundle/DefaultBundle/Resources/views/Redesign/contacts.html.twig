@@ -1,0 +1,58 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+    <!--BEGIN contacts-->
+    <section class="contacts">
+        <div class="container container--sm">
+            <h2 class="h2 contacts__title">{{ 'contact_info.title'|trans }}</h2>
+            <div class="contact-info">
+                <div class="contact-info__item">
+                    <div class="contact-info__label">{{ 'user.email.title'|trans }}</div>
+                    <a href="mailto:orgs@fwdays.com" class="contact-info__link contact-info__link--blue-light">orgs@fwdays.com</a>
+                </div>
+                <div class="contact-info__item">
+                    <div class="contact-info__label">{{ 'contacts.address.title'|trans }}</div>
+                    <a href="https://maps.google.com/?q={{ 'contacts.google.address'|trans }}" target="_blank" class="contact-info__link">{{ 'contacts.address.address'|trans }}</a>
+                </div>
+                <div class="contact-info__item">
+                    <div class="contact-info__label">{{ 'contacts.facebook.title'|trans }}</div>
+                    <a href="https://www.facebook.com/fwdays/" target="_blank"
+                       class="contact-info__link contact-info__link--blue-dark">fwdays</a>
+                </div>
+            </div>
+            <div class="organizers">
+                <div class="organizers__label">{{ 'contacts.organization.title'|trans }}</div>
+                <ul class="organizers__items">
+                    <li class="organizer-card organizers__item">
+                        <div class="organizer-card__caption">{{ 'contacts.registration.title'|trans }}</div>
+                        <img class="organizer-card__photo" src="{{ asset('assets/img/organizers/buhanova.png') }}" alt="" width="160"
+                             height="160">
+                        <div class="organizer-card__name">{{ 'contacts.person.tatyana'|trans }}</div>
+                        <a class="organizer-card__tel" href="tel:380992159622">+380 99 215-96-22</a>
+                        <a class="organizer-card__mail" href="mailto:tanyabukhanova@fwdays.com">tanyabukhanova@fwdays.com</a>
+                    </li>
+                    <li class="organizer-card organizers__item">
+                        <div class="organizer-card__caption">{{ 'contacts.cooperation.title'|trans }}
+                        </div>
+                        <img class="organizer-card__photo" src="{{ asset('assets/img/organizers/bojik.png') }}" alt="" width="160"
+                             height="160">
+                        <div class="organizer-card__name">{{ 'contacts.person.irina'|trans }}</div>
+                        <a class="organizer-card__tel" href="tel:380679995888">+380 67 999-5-888</a>
+                        <a class="organizer-card__mail"
+                           href="mailto:iryna.bozhyk@fwdays.com">iryna.bozhyk@fwdays.com</a>
+                    </li>
+                    <li class="organizer-card organizers__item">
+                        <div class="organizer-card__caption">{{ 'contacts.partners.title'|trans }}
+                        </div>
+                        <img class="organizer-card__photo" src="{{ asset('assets/img/organizers/ksenia.png') }}" alt="" width="160"
+                             height="160">
+                        <div class="organizer-card__name">{{ 'contacts.person.ksenia'|trans }}</div>
+                        <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                        <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!--END contacts-->
+{% endblock content %}

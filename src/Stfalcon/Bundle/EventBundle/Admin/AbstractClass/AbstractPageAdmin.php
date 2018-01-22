@@ -8,6 +8,25 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 abstract class AbstractPageAdmin extends Admin
 {
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
+    }
+
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
      *
@@ -17,7 +36,7 @@ abstract class AbstractPageAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
-            ->add('title');
+            ->add('title', null, ['label' => 'Название']);
 
         return $listMapper;
     }
@@ -38,25 +57,25 @@ abstract class AbstractPageAdmin extends Admin
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [
-                            'label' => 'title',
-                            'locale_options' => $localOptions
+                            'label' => 'Название',
+                            'locale_options' => $localOptions,
                         ],
                         'text' => [
-                            'label' => 'text',
-                            'locale_options' => $localOptions
+                            'label' => 'текст',
+                            'locale_options' => $localOptions,
                         ],
                         'metaKeywords' => [
                             'label' => 'metaKeywords',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
                         'metaDescription' => [
                             'label' => 'metaDescription',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
-                    ]
+                    ],
                 ])
             ->end()
-            ->with('General')
+            ->with('Общие')
                 ->add('slug')
             ->end()
         ;

@@ -1,0 +1,17 @@
+{% extends 'ApplicationDefaultBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="container container--sm static-styles">
+    <h2>{{ 'interkassa.payment.pending'|trans }}</h2>
+
+    <p>{{ 'interkassa.payment.pending.wait'|trans }}</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+    <script type="text/JavaScript">
+        // auto refresh page with js
+        setTimeout("location.reload(true);", 10000);
+    </script>
+{% endblock %}

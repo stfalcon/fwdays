@@ -40,9 +40,19 @@ class Category implements Translatable
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     private $name;
+
+    /**
+     * is category in wide container
+     *
+     * @var bool $isWideContainer
+     *
+     * @ORM\Column(name="is_wide_container", type="boolean", options={"default":"0"})
+     */
+    private $isWideContainer = false;
 
     /**
      * @var int $sortOrder
@@ -80,10 +90,13 @@ class Category implements Translatable
      * Set name
      *
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -100,10 +113,14 @@ class Category implements Translatable
      * Set sortOrder
      *
      * @param int $sortOrder
+     *
+     * @return $this
      */
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**
@@ -114,5 +131,25 @@ class Category implements Translatable
     public function getSortOrder()
     {
         return $this->sortOrder;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWideContainer()
+    {
+        return $this->isWideContainer;
+    }
+
+    /**
+     * @param bool $isWideContainer
+     *
+     * @return $this
+     */
+    public function setIsWideContainer($isWideContainer)
+    {
+        $this->isWideContainer = $isWideContainer;
+
+        return $this;
     }
 }

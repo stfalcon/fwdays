@@ -52,7 +52,9 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
          */
         $user = $this->createUser();
         $user->setEmail($participant['email']);
-        $user->setFullname($participant['name']);
+        $user->setName($participant['name']);
+        $user->setSurName($participant['surname']);
+        $user->setFullname($participant['surname'].' '.$participant['name']);
 
         //Generate a temporary password
         $plainPassword = substr(md5(uniqid(mt_rand(), true) . time()), 0, 8);
@@ -70,7 +72,7 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
         );
 
         $message = $this->container->get('stfalcon_event.mailer_helper')->createMessage(
-            "Регистрация на сайте Frameworks Days",
+            $this->container->get('translator')->trans('registration.email.subject'),
             $user->getEmail(),
             $body
         );

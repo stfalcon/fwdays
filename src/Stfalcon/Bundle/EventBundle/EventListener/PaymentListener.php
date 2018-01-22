@@ -8,6 +8,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment,
     Stfalcon\Bundle\EventBundle\Entity\Event,
     Stfalcon\Bundle\EventBundle\Entity\Mail,
     Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Service\PaymentService;
 
 class PaymentListener
 {
@@ -37,11 +38,14 @@ class PaymentListener
         $this->pdfGeneratorHelper = $this->container->get('stfalcon_event.pdf_generator.helper');
 
         if ($entity instanceof Payment) {
-            if ($entity->getStatus() === Payment::STATUS_PAID) {
+            if (Payment::STATUS_PAID === $entity->getStatus()) {
+                /** @var PaymentService $paymentService */
+                $paymentService = $this->container->get('stfalcon_event.payment.service');
+                $paymentService->setTicketsCostAsSold($entity);
+                $paymentService->calculateTicketsPromocode($entity);
+                $em = $this->container->get('doctrine.orm.entity_manager');
 
-                $tickets = $this->container->get('doctrine')
-                    ->getManager()
-                    ->getRepository('StfalconEventBundle:Ticket')
+                $tickets = $em->getRepository('StfalconEventBundle:Ticket')
                     ->getAllTicketsByPayment($entity);
 
                 /** @var Ticket $ticket */
@@ -53,7 +57,7 @@ class PaymentListener
                     $event = $ticket->getEvent();
 
                     $successPaymentTemplateContent = $this->mailerHelper->renderTwigTemplate(
-                        'StfalconEventBundle:Interkassa:_mail.html.twig',
+                        'ApplicationDefaultBundle:Interkassa:_mail.html.twig',
                         [
                             'user' => $user,
                             'event' => $event,
@@ -68,15 +72,13 @@ class PaymentListener
                     $message = $this->mailerHelper->formatMessage($user, $mail);
 
                     $message->setSubject($event->getName());
-                    /** костиль: тестовому середовищі виникає виключення при парсінгу html тексту для створення pdf */
-                    if ('test' != $this->container->get('kernel')->getEnvironment()) {
-                        $message->attach(
-                            \Swift_Attachment::newInstance(
-                                $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
-                                $ticket->generatePdfFilename()
-                            )
-                        );
-                    }
+                    $message->attach(
+                        \Swift_Attachment::newInstance(
+                            $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
+                            $ticket->generatePdfFilename()
+                        )
+                    );
+
                     $this->mailer->send($message);
                 }
             }

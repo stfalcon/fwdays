@@ -8,10 +8,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="pages")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PageRepository")
+ *
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation")
  */
 class Page extends AbstractPage implements Translatable

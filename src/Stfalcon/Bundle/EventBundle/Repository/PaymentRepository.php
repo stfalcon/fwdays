@@ -17,7 +17,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 class PaymentRepository extends EntityRepository
 {
     /**
-     * Find tickets of active events for some user
+     * Find paid payments user
      *
      * @param User $user
      *
@@ -30,7 +30,6 @@ class PaymentRepository extends EntityRepository
             ->leftJoin('t.event', 'e')
             ->andWhere('e.useDiscounts = :useDiscounts')
             ->andWhere('t.user = :user')
-            ->andWhere('t.user = :user')
             ->andWhere('p.status = :status')
             ->setParameter('user', $user)
             ->setParameter('useDiscounts', true)
@@ -40,6 +39,28 @@ class PaymentRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Find paid payments user in payments
+     *
+     * @param User $user
+     *
+     * @return array
+     */
+    public function findPaidPaymentsForUserInPayment(User $user)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->leftJoin('p.tickets', 't')
+            ->leftJoin('t.event', 'e')
+            ->andWhere('e.useDiscounts = :useDiscounts')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.status = :status')
+            ->setParameter('user', $user)
+            ->setParameter('useDiscounts', true)
+            ->setParameter('status', Payment::STATUS_PAID)
+            ->getQuery();
+
+        return $query->getResult();
+    }
     /**
      * @param User  $user
      * @param Event $event
@@ -54,6 +75,7 @@ class PaymentRepository extends EntityRepository
             ->andWhere('p.user = :user')
             ->setParameter('user', $user)
             ->setParameter('event', $event)
+            ->setMaxResults(1)
             ->getQuery();
 
         return $query->getOneOrNullResult();

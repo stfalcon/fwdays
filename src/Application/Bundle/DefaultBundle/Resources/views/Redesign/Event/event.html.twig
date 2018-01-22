@@ -1,0 +1,97 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if event.metaDescription is not null %}
+    <meta name="description" content="{{ event.metaDescription }}">
+    {% else %}
+    {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block body_class %}
+{% if event.smallEvent %}
+<body class="short-event">
+{% else %}
+{{ parent() }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
+    'event':event,
+    'programPage':programPage,
+    'venuePage':venuePage,
+    'pages':pages,
+    'position':'event',
+    'eventCurrentAmount':eventCurrentAmount
+    } %}
+    <!--BEGIN event-description-->
+    <section class="event-description">
+        <div class="container container--sm">
+            <div class="event-description__text static-styles">
+            {{ event.about|raw }}
+            </div>
+        </div>
+    </section>
+    <!--END event-description-->
+    <!--BEGIN speakers-->
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig' with {'event':event} %}
+    <!--END speakers-->
+    <!--BEGIN program-->
+    {% if programPage %}
+    <section id="program-event" class="schedule">
+        <div class="container schedule__container">
+            <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
+            {% if programPage.textNew is not empty %}
+                {{ programPage.textNew|raw }}
+            {% else %}
+                {{ programPage.text|raw }}
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+    <!--END program-->
+
+    {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
+        {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
+    {% endif %}
+
+    {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
+
+    <!--BEGIN location-->
+    <section id="location-event" class="location">
+        <div class="container container--sm">
+            <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
+            <div class="location__description">
+                {{ event.city }}, {{ event.place }}
+            </div>
+            {% if venuePage %}
+                <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
+            {% endif %}
+        </div>
+        <div class="container">
+            <div id="map" data-event="{{ event.slug }}" class="location__map"></div>
+        </div>
+    </section>
+    <!--END location-->
+
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+{% endblock content %}
+{% block popups %}
+<!--BEGIN speaker-popup-->
+<div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close"
+            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+    <div id="speaker-popup-content" class="remodal__body static-styles">
+    <!-- popup content  -->
+    </div>
+</div>
+<!--END speaker-popup-->
+{% endblock popups %}
+{% block scripts %}
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places"></script>
+    {{ parent() }}
+{% endblock scripts %}

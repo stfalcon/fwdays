@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\EventListener;
 
+use Application\Bundle\DefaultBundle\Service\GACommerce;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Stfalcon\Bundle\EventBundle\Entity\Payment,
     Stfalcon\Bundle\EventBundle\Entity\Ticket,
@@ -18,13 +19,13 @@ class PaymentGACommerceListener
     private $container;
 
     /**
-     * @var \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
+     * @var GACommerce $gacommerce
      */
     private $gacommerce;
 
     /**
-     * @param Container                                       $container
-     * @param \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
+     * @param Container  $container
+     * @param GACommerce $gacommerce
      */
     public function __construct($container, $gacommerce)
     {

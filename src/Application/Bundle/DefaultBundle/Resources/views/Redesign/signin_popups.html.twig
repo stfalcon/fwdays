@@ -1,0 +1,71 @@
+<!--BEGIN signin-popup ЛОГИН-->
+<div class="remodal remodal--md" data-remodal-id="modal-signin" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':''} %}
+    </div>
+</div>
+<!--END signin-popup-->
+
+<!--BEGIN signin-payment-popup  -->
+<div class="remodal remodal--md" data-remodal-id="modal-signin-payment" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1'} %}
+    </div>
+</div>
+<!--END signin-payment-popup-->
+
+<!--BEGIN signup-popup РЕГИСТРАЦИЯ-->
+<div class="remodal remodal--md" data-remodal-id="modal-signup" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'remodal':'modal-signin', 'queryLink':''} %}
+    </div>
+</div>
+<!--END signup-popup-->
+
+<!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
+<div class="remodal remodal--md" data-remodal-id="modal-signup-payment" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'remodal':'modal-signin-payment', 'queryLink':'?exception_login=1'} %}
+    </div>
+</div>
+<!--END signup-payment-popup-->
+
+<!--BEGIN forgot-password-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-forgot-password" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' with {'show_error': null} %}
+    </div>
+</div>
+<!--END forgot-password-popup-->
+
+<!--BEGIN payment-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-payment" data-remodal-options="hashTracking: false">
+    <button id="close-payment" data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head remodal__head--payment">
+            <h2 class="h2 remodal__title change-title"></h2>
+        </div>
+        {% include '@ApplicationDefault/Redesign/Payment/payment_form.html.twig' %}
+    </div>
+</div>
+<!--END payment-popup-->

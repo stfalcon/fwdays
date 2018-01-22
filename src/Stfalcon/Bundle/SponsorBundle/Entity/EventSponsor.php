@@ -78,6 +78,7 @@ class EventSponsor
     public function setCategory($category)
     {
         $this->category = $category;
+        return $this;
     }
 
     /**
@@ -94,6 +95,7 @@ class EventSponsor
     public function setEvent($event)
     {
         $this->event = $event;
+        return $this;
     }
 
     /**
@@ -110,6 +112,7 @@ class EventSponsor
     public function setSponsor($sponsor)
     {
         $this->sponsor = $sponsor;
+        return $this;
     }
 
     /**

@@ -1,9 +1,9 @@
 {% extends 'ApplicationDefaultBundle::layout.html.twig' %}
 
 {% block content %}
-    <h1>Мы больше не будем присылать Вам <br/>
-        новости Framework Days
-    </h1>
-    <p>Если вы отписались по ошибке, вы можете
-        <a href="{{ path('subscribe',{'hash':hash,'userId':userId}) }}">подписаться заново</a></p>
+    <div class="container container--sm static-styles">
+        <h2>{{ 'mail.unsubscribe.no_more_news'|trans }}</h2>
+        <p>{{ 'mail.unsubscribe.you_can_suscribe1'|trans }}
+            <a href="{{ path('subscribe',{'hash':hash,'userId':userId}) }}">{{ 'mail.unsubscribe.you_can_suscribe2'|trans }}</a></p>
+    </div>
 {% endblock %}

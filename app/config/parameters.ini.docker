@@ -15,13 +15,24 @@
     mailer_password   =
     mailer_port       = 1025
 
-    locale            = ru
+    locale            = uk
+    locales[0]        = uk
+    locales[1]        = en
 
     secret            = "012ZLNrkD4GbnlfNyzGb#HEM`m8]uX.J"
     google_captcha_secret_key = your_captcha_secret_key
     google_captcha_site_key = your_captcha_site_key
-    interkassa_secret      = "8GLHlDz1QzpYLduP"
-    interkassa_secret_test = "BQHpiDLt4efYBFQs"
-    tracking_id            = "UA-19310691-2"
+
+    interkassa_secret      = your_interkassa_secret_key
+    interkassa_shop_id = your_interkassa_shop_key
+
+    tracking_id            = your_ga_tracking_id
 
     mandrill_api_key = your_api_key
+
+    facebook_client_id = your_fb_client_id
+    facebook_client_secret = your_fb_client_secret
+
+    google_client_id = your_google_client_id
+    google_client_secret = your_google_client_secret
+    google_api_key = your_google_api_key
