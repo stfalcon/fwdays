@@ -41,7 +41,8 @@ user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Ім'я
 user.surname.title: Прізвище
 user.email.title: Електронна пошта
-user.phone.title: Номер телефону
+user.phone.title: Телефон
+user.phone.title_payment: Телефон (не обов'язково)
 user.country.title: Країна
 user.city.title: Місто
 user.company.title: Компанія

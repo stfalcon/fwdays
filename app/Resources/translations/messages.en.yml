@@ -54,6 +54,7 @@ user.name.title: Name
 user.surname.title: Surname
 user.email.title: Email
 user.phone.title: Phone
+user.phone.title_payment: Phone (optionally)
 user.country.title: Country
 user.city.title: City
 user.company.title: Company
