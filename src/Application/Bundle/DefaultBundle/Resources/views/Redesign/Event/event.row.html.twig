@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="event-row__right">
-        <time class="event-row__date">
-            <b class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</b>
-            <span class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</span>
-        </time>
+        <div class="event-row__date">
+            <time datetime="" class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
+            <time datetime="" class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</time>
+        </div>
         {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'row'}) %}
     </div>
 </div>

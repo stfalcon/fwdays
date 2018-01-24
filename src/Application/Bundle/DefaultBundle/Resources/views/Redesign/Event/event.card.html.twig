@@ -4,7 +4,7 @@
             <h2 class="h2 h2--white event-card__title">
                 <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } )}}">{{ event.name }}</a>
             </h2>
-            <time class="event-card__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
+            <time datetime="" class="event-card__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
             {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'card'}) %}
         </div>
         <div class="event-card__photo">
