@@ -35,6 +35,10 @@ ul {
   list-style: none;
 }
 
+iframe {
+  border: 0;
+}
+
 .layout-box {
   display: flex;
   flex-direction: column;
