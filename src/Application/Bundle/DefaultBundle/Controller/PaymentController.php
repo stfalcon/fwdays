@@ -353,8 +353,7 @@ class PaymentController extends Controller
             'html' => $html,
             'paymentSums' => $paymentSums,
             'notUsedPromoCode' => $notUsedPromoCode,
-            'phoneNumber' => $user->getPhone(),
-            'is_user_create_payment' => $user === $payment->getUser(),
+            'phoneNumber' => $user->getPhone(), 'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
         ]);
     }

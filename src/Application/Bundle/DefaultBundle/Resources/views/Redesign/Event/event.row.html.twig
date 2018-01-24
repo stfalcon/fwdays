@@ -18,8 +18,8 @@
     </div>
     <div class="event-row__right">
         <div class="event-row__date">
-            <time datetime="{{ event.date|format_date('Y-MM-d') }}" class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
-            <time datetime="{{ event.date|format_date('Y-MM-d') }}" class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</time>
+            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
+            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</time>
         </div>
         {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'row'}) %}
     </div>
