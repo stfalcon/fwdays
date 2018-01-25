@@ -14,12 +14,9 @@
         {% if event.useDiscounts %}
         <div class="price-list__hint">
              {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
-            <div class="tooltip price-list__tooltip">
-                <img src="{{ asset('img/icons/icon_tooltip.svg') }}" alt="" class="tooltip__icon">
-                <span class="tooltip__content">
-                        {{ 'payment.discount.tooltip'|trans}}
-                    </span>
-            </div>
+        </div>
+        <div class="price-list__hint-small">
+            {{ 'payment.discount.tooltip'|trans}}
         </div>
         {% endif %}
     </div>
