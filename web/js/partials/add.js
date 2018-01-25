@@ -194,6 +194,8 @@ $(document).on('click', '.add-wants-visit-event', function () {
                             $( this ).removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
                         }
                     });
+                    $('#flash-user-registration').addClass('alert--show');
+                    $('#flash-user-registration-content').html(data.flash);
                 } else {
                     console.log('Error:'+data.error);
                 }
@@ -224,8 +226,9 @@ $(document).on('click', '.sub-wants-visit-event', function () {
                     if ($( this ).data('event') === e_slug) {
                         $( this ).removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
                     }
-
                 });
+                $('#flash-user-registration').addClass('alert--show');
+                $('#flash-user-registration-content').html(data.flash);
             } else {
                 console.log('Error:'+data.error);
             }

@@ -49,7 +49,29 @@
     {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
 </div>
 <!--END layout-box-->
-{% block popups %}{% endblock popups %}
+{% block popups %}
+    <!--BEGIN alert-->
+    <div id="flash-user-registration" class="alert alert--success">
+        <div id="flash-user-registration-content" class="alert__content"></div>
+        <button class="alert__close icon-close icon-close--dark"></button>
+    </div>
+
+    {% for message in app.session.flashBag.get('fos_user_success') %}
+        {% set flash_message = '' %}
+        {% if message == 'profile.flash.updated' %}
+            {% set flash_message = 'flash_profile_updated.title'|trans %}
+        {% endif %}
+        {% if message is not empty %}
+            <div class="alert alert--success alert--show">
+                <div class="alert__content">{{ flash_message }}</div>
+                <button class="alert__close icon-close icon-close--dark"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <!--END alert-->
+{% endblock popups %}
+
 {% block scripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
