@@ -121,6 +121,7 @@
     <!--END share-->
 {% endblock content%}
 {% block popups %}
+    {{ parent() }}
     <!--BEGIN profile-popup-->
     <div class="remodal remodal--md" data-remodal-id="modal-profile" data-remodal-options="hashTracking: false">
         <button data-remodal-action="close" class="remodal-close icon-close"></button>

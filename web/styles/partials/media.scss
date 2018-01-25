@@ -118,6 +118,15 @@
     line-height: 42px;
   }
 
+  .alert {
+    min-height: 45px;
+    padding: 10px 16px;
+
+    &__content {
+      max-width: 700px;
+    }
+  }
+
   .home {
     margin-bottom: 24px;
     height: 392px;
@@ -660,6 +669,35 @@
 }
 
 @media only screen and (max-width: 767px) {
+  .alert {
+    justify-content: flex-start;
+
+    &__content {
+      font-size: 14px;
+      text-align: left;
+      margin-right: 30px;
+    }
+
+    &__close {
+      right: 16px;
+      height: 24px;
+      width: 24px;
+      margin-top: -12px;
+
+      &:after {
+        top: 0;
+        left: 12px;
+        height: 24px;
+      }
+
+      &:before {
+        top: 0;
+        left: 12px;
+        height: 24px;
+      }
+    }
+  }
+
   .form-row {
     &:last-child {
       margin-bottom: -24px;

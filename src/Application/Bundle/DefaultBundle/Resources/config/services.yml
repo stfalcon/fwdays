@@ -47,6 +47,6 @@ services:
 
     twig_asset_version_extension:
        class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
-       arguments: [%kernel.root_dir%]
+       arguments: ["%kernel.root_dir%"]
        tags:
            - { name: twig.extension }
