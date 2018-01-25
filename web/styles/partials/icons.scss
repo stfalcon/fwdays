@@ -52,6 +52,13 @@
   }
 }
 
+.icon-close--dark {
+  &:after,
+  &:before {
+    background-color: $dark-color;
+  }
+}
+
 .icon-close--circle {
   width: 54px;
   height: 54px;

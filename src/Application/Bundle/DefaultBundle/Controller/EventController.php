@@ -233,6 +233,7 @@ class EventController extends Controller
         $user = $this->getUser();
         $result = false;
         $html = '';
+        $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
@@ -252,13 +253,14 @@ class EventController extends Controller
         }
 
         if ($result) {
+            $flashContent = $this->get('translator')->trans('flash_you_registrated.title');
             $html = $this->get('translator')->trans('ticket.status.not_take_apart');
             $em->persist($user);
             $em->flush();
         }
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
+            return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
         }
 
         return $this->redirect($this->get('app.url_for_redirect')->getRedirectUrl($request->headers->get('referer')));
@@ -283,6 +285,7 @@ class EventController extends Controller
         $user = $this->getUser();
         $result = false;
         $html = '';
+        $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
@@ -299,11 +302,12 @@ class EventController extends Controller
         }
 
         if ($result) {
+            $flashContent = $this->get('translator')->trans('flash_you_unsubscribe.title');
             $html = $this->get('translator')->trans('ticket.status.take_apart');
             $em->flush();
         }
 
-        return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html]);
+        return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
     }
 
     /**

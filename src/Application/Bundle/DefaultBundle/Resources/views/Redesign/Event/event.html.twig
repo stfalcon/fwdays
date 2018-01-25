@@ -80,6 +80,7 @@
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
 {% endblock content %}
 {% block popups %}
+{{ parent() }}
 <!--BEGIN speaker-popup-->
 <div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
     <button data-remodal-action="close"

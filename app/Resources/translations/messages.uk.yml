@@ -155,6 +155,9 @@ pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
 
 pay.event.cupon: 'Купон на знижку:'
+flash_you_registrated.title: Ви зареєструвались на подію
+flash_you_unsubscribe.title: Ви скасували підписку на подію
+flash_profile_updated.title: Ваш профіль оновлено
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
