@@ -519,10 +519,8 @@
     }
 
     &__speaker {
-      position: static;
-      width: auto;
-      margin-bottom: 36px;
-      order: 0;
+      margin-top: 20px;
+      margin-bottom: 16px;
     }
 
     &__info {
@@ -540,20 +538,6 @@
       width: 82px;
       height: 82px;
       margin: 2px 16px 0 0;
-    }
-
-    &__info-show {
-      display: inline-block;
-      margin-top: 6px;
-      font-size: 14px;
-      line-height: 14px;
-      color: $blue-light-color;
-      border-bottom: 1px dashed rgba(0, 145, 173, 0.4);
-      cursor: pointer;
-    }
-
-    &__info {
-      display: none;
     }
   }
 
