@@ -1721,12 +1721,24 @@
     }
   }
 
+  .header-nav__item--sign-in {
+    .header-nav__link {
+      padding: 0 6px;
+    }
+  }
+
   .footer-nav {
     &__link {
       font-size: 10px;
       height: 22px;
       line-height: 22px;
       padding: 0;
+    }
+  }
+
+  .footer-nav__item--sign-in {
+    .footer-nav__link {
+      padding: 0 6px;
     }
   }
 }
