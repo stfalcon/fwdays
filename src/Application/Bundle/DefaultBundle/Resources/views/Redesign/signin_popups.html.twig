@@ -3,7 +3,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">{{ 'menu.login'|trans }}</h2>
+            <div class="h2 remodal__title">{{ 'menu.login'|trans }}</div>
         </div>
         {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':''} %}
     </div>
@@ -15,7 +15,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</h2>
+            <div class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</div>
         </div>
         {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1'} %}
     </div>
@@ -27,7 +27,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
+            <div class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</div>
         </div>
         {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'remodal':'modal-signin', 'queryLink':''} %}
     </div>
@@ -39,7 +39,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</h2>
+            <div class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</div>
         </div>
         {% include '@ApplicationDefault/Redesign/registration_form.html.twig' with {'remodal':'modal-signin-payment', 'queryLink':'?exception_login=1'} %}
     </div>
@@ -51,7 +51,7 @@
     <button data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head">
-            <h2 class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</h2>
+            <div class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</div>
         </div>
         {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' with {'show_error': null} %}
     </div>
@@ -63,7 +63,7 @@
     <button id="close-payment" data-remodal-action="close" class="remodal-close icon-close"></button>
     <div class="remodal__body">
         <div class="remodal__head remodal__head--payment">
-            <h2 class="h2 remodal__title change-title"></h2>
+            <div class="h2 remodal__title change-title"></div>
         </div>
         {% include '@ApplicationDefault/Redesign/Payment/payment_form.html.twig' %}
     </div>
