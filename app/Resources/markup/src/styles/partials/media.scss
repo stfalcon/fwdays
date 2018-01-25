@@ -59,12 +59,11 @@
       height: 26px;
       line-height: 26px;
       padding: 0 8px;
-      overflow: hidden;
     }
 
     &__link--active {
       &:after {
-        bottom: -14px;
+        bottom: -11px;
       }
     }
   }
@@ -939,12 +938,6 @@
     &__link {
       letter-spacing: 1px;
       font-size: 12px;
-    }
-
-    &__link--active {
-      &:after {
-        bottom: -12px;
-      }
     }
   }
 
