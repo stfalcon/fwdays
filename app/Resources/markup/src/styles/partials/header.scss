@@ -67,6 +67,10 @@
       border: 1px solid #727272;
       border-radius: 2px;
       padding: 0 8px;
+
+      &:hover {
+        border-color: $blue-light-color;
+      }
     }
 
     &--active {

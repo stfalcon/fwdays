@@ -69,13 +69,13 @@ class MenuBuilder
                 $menu->addChild($this->translator->trans('menu.login'), ['route' => 'fos_user_security_login'])
                     ->setAttributes(
                         [
-                            'class' => 'header-nav__item header-nav__item--mob',
+                            'class' => 'header-nav__item header-nav__item--mob header-nav__item--sign-in',
                         ]);
             } else {
                 $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])
                     ->setAttributes(
                         [
-                            'class' => 'header-nav__item header-nav__item--mob',
+                            'class' => 'header-nav__item header-nav__item--mob header-nav__item--sign-in',
                             'data-remodal-target' => 'modal-signin',
                         ]);
             }

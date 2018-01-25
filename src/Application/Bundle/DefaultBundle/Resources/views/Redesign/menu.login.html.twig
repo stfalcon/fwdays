@@ -2,7 +2,11 @@
     <li class="header-nav__item header-nav__item--mob">
     {% set class = position ~'-nav__link' %}
 {% elseif position == 'footer' %}
-    <li class="footer-nav__item">
+    {% if app.user is null or not is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+       <li class="footer-nav__item footer-nav__item--sign-in">
+    {% else %}
+       <li class="footer-nav__item">
+    {% endif %}
     {% set class = position ~'-nav__link' %}
 {% elseif position == 'header__auth' %}
     {% set class = position %}

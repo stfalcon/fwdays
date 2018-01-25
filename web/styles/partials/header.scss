@@ -1,6 +1,5 @@
 
 .header {
-  //padding: 0 28px 0 16px;
   height: 75px;
   border-bottom: 1px solid #DAE3E9;
 
@@ -51,6 +50,7 @@
   }
 
   &__auth {
+    position: relative;
     display: inline-block;
     height: 74px;
     color: $dark-color;
@@ -61,9 +61,31 @@
     font-size: 14px;
     line-height: 75px;
 
+    &--sign-in {
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #727272;
+      border-radius: 2px;
+      padding: 0 8px;
+
+      &:hover {
+        border-color: $blue-light-color;
+      }
+    }
+
     &--active {
-      border-bottom: 1px solid $blue-light-color;
       color: $blue-light-color;
+
+      &:after {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 1px;
+        display: block;
+        height: 1px;
+        background-color: $blue-light-color;
+        content: '';
+      }
     }
 
     &:hover {
@@ -106,7 +128,7 @@
       position: absolute;
       right: 0;
       left: 0;
-      bottom: 0;
+      bottom: 1px;
       display: block;
       height: 1px;
       background-color: transparent;

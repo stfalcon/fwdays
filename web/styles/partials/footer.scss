@@ -1,6 +1,5 @@
 
 .footer {
-  //padding: 11px 34px 22px 30px;
   padding: 11px 0 22px;
   margin-top: 22px;
 
@@ -61,7 +60,13 @@
   }
 
   &__item {
-    margin-right: 30px;
+    margin-right: 14px;
+
+    &:first-child {
+      .footer-nav__link {
+        padding-left: 0;
+      }
+    }
 
     &:last-child {
       margin-right: 0;
@@ -76,10 +81,23 @@
     letter-spacing: 1px;
     font-weight: 700;
     font-size: 12px;
-    line-height: 18px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 8px;
 
     &:hover {
       color: $blue-light-color;
+    }
+  }
+}
+
+.footer-nav__item--sign-in {
+  .footer-nav__link {
+    border: 1px solid #727272;
+    border-radius: 2px;
+
+    &:hover {
+      border-color: $blue-light-color;
     }
   }
 }

@@ -711,20 +711,23 @@ iframe {
 }
 
 .alert {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 65px;
-  visibility: hidden;
-  color: $white-color;
-  text-align: center;
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
   pointer-events: none;
-  padding: 16px;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 65px;
+    color: $white-color;
+    text-align: center;
+    padding: 16px;
+  }
 
   &__content {
     font-weight: 700;
@@ -749,40 +752,10 @@ iframe {
   background-color: $green-light-color;
 }
 
-.alert--show {
-  pointer-events: initial;
-  visibility: visible !important;
-  animation: fadein 0.3s, fadeout 0.3s 3s;
-}
-
 .grecaptcha-badge {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   width: 0 !important;
   height: 0 !important;
-}
-
-@keyframes fadein {
-  from {
-    top: -30px;
-    opacity: 0;
-  }
-
-  to {
-    top: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes fadeout {
-  from {
-    top: 0;
-    opacity: 1;
-  }
-
-  to {
-    top: -30px;
-    opacity: 0;
-  }
 }

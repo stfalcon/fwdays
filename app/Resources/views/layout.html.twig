@@ -52,8 +52,10 @@
 {% block popups %}
     <!--BEGIN alert-->
     <div id="flash-user" class="alert alert--success">
-        <div id="flash-user-content" class="alert__content"></div>
-        <button class="alert__close icon-close icon-close--dark"></button>
+        <div class="alert__container">
+            <div id="flash-user-content" class="alert__content"></div>
+            <button class="alert__close icon-close icon-close--dark"></button>
+        </div>
     </div>
     <!--END alert-->
 {% endblock popups %}
