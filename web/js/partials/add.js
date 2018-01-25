@@ -183,22 +183,23 @@ $(document).on('click', '.social-login', function () {
 
 var hideTimer = null;
 
-function hideFlash() {
-    $('#flash-user').removeClass('alert--show').fadeOut();
+function hideFlash(text) {
+    $('#flash-user').removeClass('alert--show').fadeOut(400, function () {
+        $('#flash-user-content').html(text);
+    });
 }
 
 function showFlash(text) {
     var flashContent = $('#flash-user-content');
-    flashContent.html('');
-    $('#flash-user').addClass('alert--show').fadeIn(400, function () {
-        flashContent.html(text);
-    } );
+    $('#flash-user').addClass('alert--show').fadeIn();
 }
 
 function setFlashTextAndShow(text) {
     var flashDiv = $('#flash-user');
     if (flashDiv.hasClass('alert--show')) {
-        hideFlash();
+        hideFlash(text);
+    } else {
+        $('#flash-user-content').html(text);
     }
     showFlash(text);
     if (hideTimer) {
