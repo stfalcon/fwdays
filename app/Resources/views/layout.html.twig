@@ -51,24 +51,10 @@
 <!--END layout-box-->
 {% block popups %}
     <!--BEGIN alert-->
-    <div id="flash-user-registration" class="alert alert--success">
-        <div id="flash-user-registration-content" class="alert__content"></div>
+    <div id="flash-user" class="alert alert--success">
+        <div id="flash-user-content" class="alert__content"></div>
         <button class="alert__close icon-close icon-close--dark"></button>
     </div>
-
-    {% for message in app.session.flashBag.get('fos_user_success') %}
-        {% set flash_message = '' %}
-        {% if message == 'profile.flash.updated' %}
-            {% set flash_message = 'flash_profile_updated.title'|trans %}
-        {% endif %}
-        {% if message is not empty %}
-            <div class="alert alert--success alert--show">
-                <div class="alert__content">{{ flash_message }}</div>
-                <button class="alert__close icon-close icon-close--dark"></button>
-            </div>
-        {% endif %}
-    {% endfor %}
-
     <!--END alert-->
 {% endblock popups %}
 
@@ -79,15 +65,22 @@
     <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    {% if app.request.cookies.has('event') %}
-        <script>
-            paymentAfterLogin();
-        </script>
-    {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}"
     </script>
+    {% if app.request.cookies.has('event') %}
+        <script>paymentAfterLogin();</script>
+    {% endif %}
+    {% for message in app.session.flashBag.get('fos_user_success') %}
+        {% set flash_message = '' %}
+        {% if message == 'profile.flash.updated' %}
+            {% set flash_message = 'flash_profile_updated.title'|trans %}
+        {% endif %}
+        {% if message is not empty %}
+        <script>setFlashTextAndShow('{{ flash_message }}');</script>
+        {% endif %}
+    {% endfor %}
     {% if app.environment == 'prod' %}
         {% include "::ga.html.twig" %}
     {% else %}
