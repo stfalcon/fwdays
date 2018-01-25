@@ -1,6 +1,5 @@
 
 .header {
-  //padding: 0 28px 0 16px;
   height: 75px;
   border-bottom: 1px solid #DAE3E9;
 
@@ -52,14 +51,17 @@
 
   &__auth {
     display: inline-block;
-    height: 74px;
+    height: 26px;
     color: $dark-color;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 700;
     font-size: 14px;
-    line-height: 75px;
+    line-height: 26px;
+    border: 1px solid #727272;
+    border-radius: 2px;
+    padding: 0 8px;
 
     &--active {
       border-bottom: 1px solid $blue-light-color;
