@@ -150,8 +150,8 @@ referral.balance.redesign: 'Your balance: %user_balance% UAH'
 payment.price: '%summ% UAH'
 payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
-payment.discount.member: (%summ%% discount for regular participants)
-payment.discount.tooltip: 'if you have bought a ticket to any previous Fwdays conference, the discount will be added automatically to your account, where you purchased a ticket previously'
+payment.discount.member: Discount for participants of previous conversations is %summ%%
+payment.discount.tooltip: 'It will be added automatically to account where you made a purchase previously'
 
 pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: Add participants
