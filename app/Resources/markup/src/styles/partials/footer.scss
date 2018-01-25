@@ -95,5 +95,9 @@
   .footer-nav__link {
     border: 1px solid #727272;
     border-radius: 2px;
+
+    &:hover {
+      border-color: $blue-light-color;
+    }
   }
 }
