@@ -141,14 +141,6 @@ $(document).ready(function () {
         $('.share-banner__hint').show();
     });
 
-    /**
-     * Show speaker info for mobile devices
-     */
-    $('.show-speaker-info-trigger').on('click', function () {
-        $(this).hide();
-        $(this).siblings('.review-speaker__info').show();
-    });
-
 
     /**
      * Fixed event header on scroll for event-page

@@ -9,17 +9,11 @@
 
   &__content {
     display: flex;
-    flex-direction: row;
-  }
-
-  &__info {
-    margin-right: 64px;
+    flex-direction: column;
   }
 
   &__speaker {
-    width: 232px;
-    flex-shrink: 0;
-    order: 1;
+    margin-top: 40px;
   }
 }
 
@@ -65,10 +59,15 @@
 }
 
 .review-speaker {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
   &__photo {
     display: block;
     margin-bottom: 26px;
-    width: 100%;
+    width: 232px;
+    margin-right: 24px;
   }
 
   &__name {
@@ -81,10 +80,6 @@
   &__position {
     font-size: 16px;
     line-height: 20px;
-  }
-
-  &__info-show {
-    display: none;
   }
 
   &__info {
