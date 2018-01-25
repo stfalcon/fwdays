@@ -28,7 +28,7 @@
     <!--BEGIN report-review-->
     <section class="report-review section-after-event-header">
         <div class="container container--sm">
-            <div class="review-layout">
+            <article class="review-layout">
                 <div class="review-header review-layout__header">
                     <h2 class="h2 review-header__title">{{ review.title }}</h2>
                     {% if review.event.isActiveAndFuture %}
@@ -40,29 +40,7 @@
                     {% endif %}
                 </div>
                 <div class="review-layout__content static-styles">
-                    <div class="review-layout__speaker">
-                        {% for speaker in review.speakers %}
-                            <div class="review-speaker review">
-                                {% if speaker.file is not empty %}
-                                    <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}"
-                                         alt="">
-                                {% else %}
-                                    <img class="review-speaker__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}"
-                                         alt="">
-                                {% endif %}
-                                <div class="review-speaker__description">
-                                    <div class="review-speaker__name">{{ speaker.name }}</div>
-                                    <div class="review-speaker__position">{{ speaker.company }}</div>
-                                    <div class="review-speaker__info-show show-speaker-info-trigger">{{ 'speaker.about'|trans }}</div>
-                                    <div class="review-speaker__info">
-                                        {{ speaker.about|raw }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <article class="review-info review-layout__info">
-
+                    <div class="review-info review-layout__info">
                         <div class="review-description">
                             {{ review.text|raw }}
                         </div>
@@ -78,13 +56,33 @@
                             </div>
 
 
-                        <div class="share-buttons__item">
-                            <div class="g-plusone" data-size="medium"></div>
+                            <div class="share-buttons__item">
+                                <div class="g-plusone" data-size="medium"></div>
+                            </div>
                         </div>
                     </div>
-                </article>
+                    <div class="review-layout__speaker">
+                        {% for speaker in review.speakers %}
+                            <div class="review-speaker review">
+                                {% if speaker.file is not empty %}
+                                    <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}"
+                                         alt="">
+                                {% else %}
+                                    <img class="review-speaker__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}"
+                                         alt="">
+                                {% endif %}
+                                <div class="review-speaker__description">
+                                    <div class="review-speaker__name">{{ speaker.name }}</div>
+                                    <div class="review-speaker__position">{{ speaker.company }}</div>
+                                    <div class="review-speaker__info">
+                                        {{ speaker.about|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
     <!--END report-review-->
