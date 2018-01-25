@@ -133,8 +133,10 @@
   }
 
   .alert {
-    min-height: 45px;
-    padding: 10px 16px;
+    &__container {
+      min-height: 45px;
+      padding: 10px 16px;
+    }
 
     &__content {
       max-width: 700px;
@@ -678,7 +680,9 @@
 
 @media only screen and (max-width: 767px) {
   .alert {
-    justify-content: flex-start;
+    &__container {
+      justify-content: flex-start;
+    }
 
     &__content {
       font-size: 14px;
