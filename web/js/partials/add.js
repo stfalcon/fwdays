@@ -184,7 +184,15 @@ $(document).on('click', '.social-login', function () {
 var hideTimer = null;
 
 function hideFlash() {
-    $('#flash-user').removeClass('alert--show');
+    $('#flash-user').removeClass('alert--show').fadeOut();
+}
+
+function showFlash(text) {
+    var flashContent = $('#flash-user-content');
+    flashContent.html('');
+    $('#flash-user').addClass('alert--show').fadeIn(400, function () {
+        flashContent.html(text);
+    } );
 }
 
 function setFlashTextAndShow(text) {
@@ -192,15 +200,18 @@ function setFlashTextAndShow(text) {
     if (flashDiv.hasClass('alert--show')) {
         hideFlash();
     }
-    $('#flash-user-content').html(text);
-    flashDiv.addClass('alert--show');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideFlash, 3300);
+    showFlash(text);
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+    }
+    hideTimer = setTimeout(hideFlash, 3000);
 }
 
 $(document).on('click', '.alert__close', function () {
     hideFlash();
-    clearTimeout(hideTimer);
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+    }
 });
 
 $(document).on('click', '.add-wants-visit-event', function () {
