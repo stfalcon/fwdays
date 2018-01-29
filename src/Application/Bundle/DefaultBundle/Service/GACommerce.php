@@ -42,12 +42,14 @@ class GACommerce
      * @param string $cid
      * @param string $trnId
      * @param int    $trnRevenue
+     * @param string $evenName
      *
      * @return \Buzz\Message\MessageInterface
      *
      * @throws \Exception
      */
-    public function sendTransaction($cid, $trnId, $trnRevenue) {
+    public function sendTransaction($cid, $trnId, $trnRevenue, $evenName)
+    {
         /*
          * Documentation by params:
          *
@@ -62,7 +64,8 @@ class GACommerce
             'ti'  => $trnId,                                            // transaction ID. Required.
             'ta'  => 'Frameworks Days',                                 // Transaction affiliation.
             'tr'  => $trnRevenue,                                       // Transaction revenue.
-            'cu'  => $this->currencyCode                                // Currency code.
+            'cu'  => $this->currencyCode,                               // Currency code.
+            'iv'  => $evenName,                                         // Item variation / category.
         ];
 
         return $this->container->get('buzz')->submit(
@@ -78,12 +81,13 @@ class GACommerce
      * @param string  $iName
      * @param int     $iPrice
      * @param int     $iQuantity
+     * @param string  $evenName
      *
      * @return \Buzz\Message\MessageInterface
      *
      * @throws \Exception
      */
-    public function sendItem($cid, $trnId, $iName, $iPrice, $iQuantity=1)
+    public function sendItem($cid, $trnId, $iName, $iPrice, $evenName, $iQuantity=1)
     {
         /*
          * Documentation by params:
@@ -100,7 +104,8 @@ class GACommerce
             'in'  => $iName,                                            // Item name. Required.
             'ip'  => $iPrice,                                           // Item price.
             'iq'  => $iQuantity,                                        // Item quantity.
-            'cu'  => $this->currencyCode                                // Currency code.
+            'cu'  => $this->currencyCode,                               // Currency code.
+            'iv'  => $evenName,                                         // Item variation / category.
         ];
 
         return $this->container->get('buzz')->submit(
