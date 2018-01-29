@@ -105,7 +105,10 @@ class LocaleUrlResponseListener
 
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
-        $request->setLocale($currentLocal);
+
+        if (in_array($currentLocal, $this->locales)) {
+            $request->setLocale($currentLocal);
+        }
 
         if ($currentLocal === $this->defaultLocale) {
             $params = $request->query->all();
