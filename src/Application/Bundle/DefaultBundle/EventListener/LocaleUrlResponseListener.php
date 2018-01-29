@@ -106,11 +106,14 @@ class LocaleUrlResponseListener
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
 
+        if (in_array($currentLocal, $this->locales)) {
+            $request->setLocale($currentLocal);
+        }
+
         if ($currentLocal === $this->defaultLocale) {
             $params = $request->query->all();
             unset($params[$this->cookieName]);
             $path = ltrim($path, '/'.$currentLocal);
-            $request->setLocale($currentLocal);
             $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$path.($params ? '?'.http_build_query($params) : ''), 301));
         }
     }
