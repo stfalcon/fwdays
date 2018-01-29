@@ -36,8 +36,6 @@ class AppKernel extends Kernel
 
             new FOS\UserBundle\FOSUserBundle(),
 
-//            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
-
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             new Sonata\IntlBundle\SonataIntlBundle(),

@@ -84,16 +84,18 @@
                             <div id="ref-selected" class="share-ref__dropdown-selected">{{ firstEvent.name }}</div>
                             <select id="ref-dropdown" name="" class="share-ref__select">
                                 {% for event in events %}
-                                    {% if firstEvent.logoFile is not empty %}
-                                        {% set image = absolute_url(vich_uploader_asset(event, 'logoFile')) %}
-                                    {% else %}
-                                        {% set image = '' %}
+                                    {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                                        {% if firstEvent.logoFile is not empty %}
+                                            {% set image = absolute_url(vich_uploader_asset(event, 'logoFile')) %}
+                                        {% else %}
+                                            {% set image = '' %}
+                                        {% endif %}
+                                        <option value="{{ loop.index }}"
+                                            data-ref="{{ url('event_show_redesign', {'eventSlug' : event.slug, 'ref': code}) }}"
+                                            data-image="{{ image }}">
+                                        {{ event.name }}
+                                        </option>
                                     {% endif %}
-                                    <option value="{{ loop.index }}"
-                                        data-ref="{{ url('event_show_redesign', {'eventSlug' : event.slug, 'ref': code}) }}"
-                                        data-image="{{ image }}">
-                                    {{ event.name }}
-                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
