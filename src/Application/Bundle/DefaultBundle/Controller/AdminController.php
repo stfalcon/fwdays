@@ -44,7 +44,8 @@ class AdminController extends Controller
                 // данные с формы
                 $dt = explode(' ', $data);
                 unset($data);
-                $data['name'] = $dt[0].' '.$dt[1];
+                $data['name'] = $dt[0];
+                $data['surname'] = $dt[1];
                 $data['email'] = $dt[2];
                 $data['discount'] = isset($dt[3]);
 
@@ -52,9 +53,12 @@ class AdminController extends Controller
 
                 // создаем нового пользователя
                 if (!$user) {
+                    /** @var User $user */
                     $user = $this->get('fos_user.user_manager')->createUser();
-                    $user->setEmail($data['email']);
-                    $user->setFullname($data['name']);
+                    $user->setEmail($data['email'])
+                        ->setName($data['name'])
+                        ->setSurname($data['surname']);
+
 
                     // генерация временного пароля
                     $password = substr(str_shuffle(md5(time())), 5, 8);
