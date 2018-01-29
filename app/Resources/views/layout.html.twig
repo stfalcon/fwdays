@@ -17,23 +17,10 @@
 <body>
 {% endblock %}
 
-{% if app.environment == 'prod' %}
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
-    <!-- End Google Tag Manager -->
-{% endif %}
-
 {% block shareButtonsScripts %}{% endblock shareButtonsScripts %}
 
 <!--BEGIN layout-box-->
 <div class="layout-box">
-
     <!--BEGIN layout-box__top-->
     <div class="layout-box__top">
         {% include '@ApplicationDefault/Redesign/header.html.twig' %}
@@ -46,7 +33,9 @@
         {% include '@ApplicationDefault/Redesign/footer.html.twig' %}
     </div>
     <!--END layout-box__bottom-->
-    {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
+    {% if not is_mobile() %}
+        {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
+    {% endif %}
 </div>
 <!--END layout-box-->
 {% block popups %}
@@ -75,12 +64,8 @@
         <script>paymentAfterLogin();</script>
     {% endif %}
     {% for message in app.session.flashBag.get('fos_user_success') %}
-        {% set flash_message = '' %}
         {% if message == 'profile.flash.updated' %}
-            {% set flash_message = 'flash_profile_updated.title'|trans %}
-        {% endif %}
-        {% if message is not empty %}
-        <script>setFlashTextAndShow('{{ flash_message }}');</script>
+            <script>setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');</script>
         {% endif %}
     {% endfor %}
     {% if app.environment == 'prod' %}
@@ -92,6 +77,19 @@
         }
     </script>
     {% endif %}
+
+    {% if app.environment == 'prod' %}
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
+    <!-- End Google Tag Manager -->
+    {% endif %}
+
 {% endblock scripts %}
 </body>
 </html>
