@@ -1,17 +1,12 @@
 function detectmob() {
-    if( navigator.userAgent.match(/Android/i)
+
+    return navigator.userAgent.match(/Android/i)
         || navigator.userAgent.match(/webOS/i)
         || navigator.userAgent.match(/iPhone/i)
         || navigator.userAgent.match(/iPad/i)
         || navigator.userAgent.match(/iPod/i)
         || navigator.userAgent.match(/BlackBerry/i)
-        || navigator.userAgent.match(/Windows Phone/i)
-    ){
-        return true;
-    }
-    else {
-        return false;
-    }
+        || navigator.userAgent.match(/Windows Phone/i);
 }
 
 function setModalHeader(e_slug, h_type) {
@@ -111,6 +106,7 @@ function setPaymentHtml(e_slug) {
         }
     });
 }
+
 function setSpeakerHtml(e_slug, s_slug) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
     $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug}),
@@ -189,8 +185,7 @@ function hideFlash(text) {
     });
 }
 
-function showFlash(text) {
-    var flashContent = $('#flash-user-content');
+function showFlash() {
     $('#flash-user').addClass('alert--show').fadeIn();
 }
 
@@ -201,7 +196,7 @@ function setFlashTextAndShow(text) {
     } else {
         $('#flash-user-content').html(text);
     }
-    showFlash(text);
+    showFlash();
     if (hideTimer) {
         clearTimeout(hideTimer);
     }
