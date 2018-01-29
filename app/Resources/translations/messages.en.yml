@@ -197,7 +197,7 @@ mail.subcribe: You have subscribed on Framework Days news
 
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news
-ticket.email.team: 'Best regards, <br/> Team Frameworks Days <br/>'
+ticket.email.team: 'Best regards, <br/> Team Fwdays <br/>'
 welcome.email.title: Welcome!
 registration.email.subject: Registration completed on fwdays.com
 dear_user.email.text: |
