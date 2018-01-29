@@ -136,6 +136,7 @@ class AdminController extends Controller
                     $payment->addTicket($ticket);
                     $payment->setAmount($ticket->getAmount());
                     $payment->setBaseAmount($ticket->getAmount());
+                    $ticket->setPayment($payment);
 
                     $em->persist($payment);
                     $em->flush();
