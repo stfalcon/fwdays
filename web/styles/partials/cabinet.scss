@@ -79,6 +79,7 @@
 
   &__dropdown {
     position: relative;
+    padding-right: 17px;
   }
 
   &__dropdown-selected {
@@ -88,7 +89,7 @@
     &:after {
       position: absolute;
       top: 6px;
-      right: -17px;
+      right: 0;
       width: 0;
       height: 0;
       border-width: 4px 4px 0;
@@ -99,6 +100,7 @@
   }
 
   &__select {
+    max-width: 100%;
     position: absolute;
     top: 0;
     right: 0;
