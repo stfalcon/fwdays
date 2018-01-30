@@ -3,7 +3,7 @@
 {% if app.request is not null %} {% set locale = app.request.locale %} {% endif %}
 
 <!DOCTYPE HTML>
-<html lang="ru-RU">
+<html lang="{{ locale }}">
     <head>
         <meta charset="UTF-8" />
         <title>{{ event.name }}</title>
@@ -209,7 +209,7 @@
                 <p>{{ 'ticket.print.ticket.text3'|trans({'%event_name%':event.name})|raw }}</p>
             </div>
             <div class="links">
-                <p>Сайт: <a href="https://frameworksdays.com/">fwdays.com</a></p>
+                <p>Site: <a href="https://frameworksdays.com/">fwdays.com</a></p>
                 <p>Facebook: <a href="https://www.facebook.com/fwdays">facebook.com/fwdays</a></p>
                 <p>Twitter: <a href="https://twitter.com/fwdays">@fwdays</a> (<a href="https://twitter.com/search?q=fwdays&src=hash">#fwdays</a>)</p>
             </div>
