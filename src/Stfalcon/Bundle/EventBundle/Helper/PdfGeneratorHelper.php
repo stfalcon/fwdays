@@ -76,13 +76,13 @@ class PdfGeneratorHelper
 
         $constructorArgs = array(
             'mode'          => 'BLANK',
-            'format'        => 'A5-L',
-            'margin_left'   => 0,
-            'margin_right'  => 0,
-            'margin_top'    => 0,
-            'margin_bottom' => 0,
-            'margin_header' => 0,
-            'margin_footer' => 0
+            'format'        => [87, 151],
+            'margin_left'   => 2,
+            'margin_right'  => 2,
+            'margin_top'    => 2,
+            'margin_bottom' => 2,
+            'margin_header' => 2,
+            'margin_footer' => 2
         );
 
         $mPDF = $mPDFService->getMpdf($constructorArgs);
