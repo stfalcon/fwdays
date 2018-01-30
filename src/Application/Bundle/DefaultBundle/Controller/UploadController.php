@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -12,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Class UploadController
+ */
 class UploadController extends Controller
 {
     /**
@@ -50,7 +54,7 @@ class UploadController extends Controller
 
         // Move uploaded file
         $newFileName = uniqid().'.'.$file->guessExtension();
-        $path = $this->container->getParameter('kernel.root_dir')."/../web".$uploadDir;
+        $path = $this->container->getParameter('kernel.root_dir')."/../web/".$uploadDir;
         try {
             $file->move($path, $newFileName);
         } catch (FileException $e) {
@@ -65,7 +69,7 @@ class UploadController extends Controller
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $uploadDir.'/'.$newFileName,
+                'src' => $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName,
                 'width' => $width,
                 'height' => $height,
             ]

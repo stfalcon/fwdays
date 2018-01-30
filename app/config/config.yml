@@ -10,7 +10,7 @@ parameters:
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
     google_apikey: "%google_api_key%"
-    upload_dir: "/uploads/images"
+    upload_dir: "uploads/images"
 
 framework:
     #esi:             ~
