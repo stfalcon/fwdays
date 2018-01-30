@@ -59,7 +59,7 @@ class UserAdmin extends Admin
                 ->add('post', null, ['required' => false, 'label' => 'Должность'])
                 ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
                 ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
-                ->add('plainPassword', 'text', ['required' => false, 'label' => 'Пароль'])
+                ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
             ->end()
             ->with('Management')
                 ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
