@@ -26,6 +26,7 @@ class UrlForRedirect
         $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', [], true), '\/');
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], true);
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
+        $this->authorizationUrls[] = $this->router->generate('password_already_requested', [], true);
 
         $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
         $this->homePages[] = trim($router->generate('cabinet', [], true), '\/');
@@ -36,6 +37,7 @@ class UrlForRedirect
             $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', ['_locale' => $locale], true), '\/');
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
+            $this->authorizationUrls[] = $this->router->generate('password_already_requested', ['_locale' => $locale], true);
         }
     }
 

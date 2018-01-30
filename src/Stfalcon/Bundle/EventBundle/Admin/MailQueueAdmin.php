@@ -48,7 +48,11 @@ class MailQueueAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('mail.id', null, ['label' => 'Рассылка']);
+            ->add('mail.id', null, ['label' => 'Id письма'])
+            ->add('isSent', null, ['label' => 'Отправлено'])
+            ->add('isOpen', null, ['label' => 'Открыто'])
+            ->add('isUnsubscribe', null, ['label' => 'Отписались'])
+        ;
     }
 
     /**

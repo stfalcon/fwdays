@@ -30,6 +30,6 @@ swiftmailer:
     transport: mail
     host:      localhost
 
-parameters:
-     graylog.hostname: localhost
-     graylog.port: 12201
+#parameters:
+#     graylog.hostname: localhost
+#     graylog.port: 12201

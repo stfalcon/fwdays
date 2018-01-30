@@ -68,6 +68,7 @@ class AppKernel extends Kernel
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
 
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Sentry\SentryBundle\SentryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

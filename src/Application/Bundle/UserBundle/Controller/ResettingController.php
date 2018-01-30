@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Controller\ResettingController as BaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Controller managing the resetting of the password.
@@ -45,7 +46,7 @@ class ResettingController extends BaseController
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:passwordAlreadyRequested.html.'.$this->getEngine());
+            return new RedirectResponse($this->container->get('router')->generate('password_already_requested'));
         }
 
         if (null === $user->getConfirmationToken()) {
@@ -60,5 +61,22 @@ class ResettingController extends BaseController
         $this->container->get('fos_user.user_manager')->updateUser($user);
 
         return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_check_email'));
+    }
+
+    /**
+     * @Route("/password-already-requested", name="password_already_requested")
+     *
+     * @return Response
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function passwordAlreadyRequestedAction()
+    {
+        $response = new Response();
+        $response->setContent($this->container->get('twig')->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig'));
+
+        return $response;
     }
 }

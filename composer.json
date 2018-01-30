@@ -46,7 +46,8 @@
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "hwi/oauth-bundle": "^0.5.3",
         "suncat/mobile-detect-bundle": "^0.10.3",
-        "liip/imagine-bundle": "^1.9"
+        "liip/imagine-bundle": "^1.9",
+        "sentry/sentry-symfony": "^0.8.7"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
