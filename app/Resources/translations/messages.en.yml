@@ -207,6 +207,7 @@ dear_user.email.text: |
                   We will be glad to see you at our tech events. If you have any questions - just reply to this email. <br/>
 resetting:
     check_email: An email has been sent to %email%. It contains a link you have to click on to reset your password.
+    password_already_requested: The password for this user has already been requested within the last 24 hours.
     email:
         message: |
             Hello %username%,

@@ -49,6 +49,7 @@ class MailAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id', null, ['label' => 'id'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
             ->add('events', null, ['label' => 'События'])
