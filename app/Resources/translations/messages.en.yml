@@ -147,7 +147,7 @@ referral.invaite.title2: Invite your friends and collect bonuses!
 referral.invaite.link.text: your referral link
 referral.balance.redesign: 'Your balance: %user_balance% UAH'
 
-payment.price: '%summ% UAH'
+payment.price: '%summ% UAH '
 payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
 payment.discount.member: Discount for participants of previous conversations is %summ%%
