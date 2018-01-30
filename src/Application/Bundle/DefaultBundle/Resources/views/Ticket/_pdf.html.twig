@@ -227,34 +227,15 @@
     <title>Fwdays</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style media="print">
-        @font-face {
-            font-family: 'FwDaysFont';
-            src: url('fonts/FwDaysFont-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'FwDaysFont';
-            src: url('fonts/FwDaysFont-Medium.woff') format('woff');
-            font-weight: 500;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'FwDaysFont';
-            src: url('fonts/FwDaysFont-Bold.woff') format('woff');
-            font-weight: 700;
-            font-style: normal;
-        }
-
         * {
             box-sizing: border-box;
         }
 
         body {
-            font-family:'FwDaysFont', arial;
+            font-family:'Fwdays', serif;
+            font-weight: 500;
             color: #121314;
+            background: #FFFFFF;
         }
 
         .ticket {
@@ -272,7 +253,8 @@
         }
 
         .ticket__bottom {
-            padding: 20px 0 12px;
+            padding: 24px 0 12px;
+            background: #FFFFFF;
         }
 
         .ticket__head {
@@ -297,6 +279,7 @@
         .ticket-info-table {
             width: 100%;
             border-collapse: collapse;
+            overflow: wrap;
         }
 
         .ticket-info-table td {
@@ -304,13 +287,14 @@
         }
 
 
-        .ticket-info-table .first-td {
-            width: 100%;
-            padding-right: 10px;
+        .ticket-info-table .second-td {
+            width: 110px;
+            padding-left: 10px;
         }
 
         .label-td {
             font-size: 10px;
+            font-weight: 500;
             line-height: 20px;
             color: #727272;
             text-transform: uppercase;
@@ -338,50 +322,56 @@
 <div class="ticket">
     <div class="ticket__top">
         <div class="ticket__head">
-            <img class="ticket__logo" src="{{ path ~ 'uploads/events/ticket_logo.png' }}" alt="" width="70">
+            <img class="ticket__logo" src="{{ path ~ 'uploads/ticket/ticket_logo.png' }}" alt="" width="70">
         </div>
         <table class="ticket-info-table">
             <tr>
                 <td colspan="2">
                     <div class="label-td">Событие</div>
+                    <br>
                     <div class="content-td">
-                        <b>JavaScript fwdays '18</b>
+                        JavaScript fwdays '18
                     </div>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     <div class="label-td">Адрес</div>
+                    <br>
                     <div class="content-td">
-                        <b>г. Киев, Конгресс-Холл "Mercure", ул. В. Гетьмана, 6</b>
+                        г. Киев, Конгресс-Холл "Mercure", ул. В. Гетьмана, 6
                     </div>
                 </td>
             </tr>
             <tr>
-                <td class="first-td">
+                <td>
                     <div class="label-td">Дата</div>
+                    <br>
                     <div class="content-td">
-                        <b>18 марта 2018</b>
+                        18 марта 2018
                     </div>
                 </td>
-                <td>
+                <td class="second-td">
                     <div class="label-td">Регистрация</div>
+                    <br>
                     <div class="content-td">
-                        <b>09:30</b>
+                        09:30
                     </div>
                 </td>
             </tr>
             <tr>
-                <td class="first-td">
+                <td>
                     <div class="label-td">Участник</div>
+                    <br>
                     <div class="content-td">
-                        <b>Максим Нестерук</b>
+                        Максим Нестерук
                     </div>
                 </td>
-                <td>
+                <td class="second-td">
                     <div class="label-td">Цена билета</div>
+                    <br>
                     <div class="content-td">
-                        <b>2 300 грн</b>
+                        2 300 грн
                     </div>
                 </td>
             </tr>
@@ -395,10 +385,10 @@
     </div>
 </div>
 <div class="icon-circle-left">
-    <img src="{{ path ~ 'uploads/events/circle_left.png' }}" alt="" width="13">
+    <img src="{{ path ~ 'uploads/ticket/circle_left.png' }}" alt="" width="14">
 </div>
 <div class="icon-circle-right">
-    <img src="{{ path ~ 'uploads/events/circle_right.png' }}" alt="" width="13">
+    <img src="{{ path ~ 'uploads/ticket/circle_right.png' }}" alt="" width="14">
 </div>
 </body>
 </html>
