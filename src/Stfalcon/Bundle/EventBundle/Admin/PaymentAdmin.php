@@ -44,7 +44,7 @@ class PaymentAdmin extends Admin
             ->add('fwdaysAmount', null, ['label' => 'Сума реферальных'])
             ->add('refundedAmount', null, ['label' => 'Сума возвратов'])
             ->add('status', null, ['label' => 'Статус платежа'])
-            ->add('user', null, ['label' => 'Статус платежа'])
+            ->add('user', null, ['label' => 'Пользователь'])
             ->add(
                 'tickets',
                 'string',
