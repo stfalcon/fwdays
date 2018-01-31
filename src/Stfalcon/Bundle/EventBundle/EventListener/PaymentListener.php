@@ -91,20 +91,11 @@ class PaymentListener
                     /** @var Event $event */
                     $event = $ticket->getEvent();
 
-                    $successPaymentTemplateContent = $this->mailerHelper->renderTwigTemplate(
-                        'ApplicationDefaultBundle:Interkassa:_mail.html.twig',
-                        [
-                            'user' => $user,
-                            'event' => $event,
-                        ]
-                    );
-
                     $mail = new Mail();
                     $mail->addEvent($event);
-                    $mail->setText($successPaymentTemplateContent);
 
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-                    $message = $this->mailerHelper->formatMessage($user, $mail);
+                    $message = $this->mailerHelper->formatMessage($user, $mail, false, true);
 
                     $message->setSubject($event->getName());
                     $message->attach(

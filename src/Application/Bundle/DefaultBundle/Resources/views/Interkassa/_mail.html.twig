@@ -1,13 +1,17 @@
-<h1 style="font-family: Arial; font-size: 18px; line-height: 22px; font-weight: normal; color: #000000; padding-bottom: 20px; margin-top: 0; margin-bottom: 0;">
-    {{ 'interkassa.mail.msg.hello'|trans({'%user_fullname%': user.fullname})|raw }}
-</h1>
-
-<p style="font-family: Arial; font-size: 15px; line-height: 22px; font-weight: normal; color: #000000; padding-right: 20px; margin-top: 0; margin-bottom: 0;">
-    {% set locale = 'uk' %}
-    {% if app.request is not null %} {% set locale = app.request.locale %} {% endif %}
-    {{ 'interkassa.mail.msg.thanks'|trans({'%event_name%': event.name})|raw }}
-    <br/>
-    {{ 'interkassa.mail.msg.remember'|trans }} {{ event.date|localizeddate('none', 'none', locale, null, "d MMMM Y") }} {{ 'interkassa.mail.msg.remember1'|trans }} {{ event.place }}.
-    <br>
-    {{ 'interkassa.mail.msg.ticket'|trans }}
-</p>
+<div style="">
+    <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+        {{ 'interkassa.mail.msg.hello'|trans({'%user_fullname%': user.fullname})|raw }}
+    </h2>
+    <p style="margin: 10px 0;">
+        {% set locale = 'uk' %}
+        {% if app.request is not null %} {% set locale = app.request.locale %} {% endif %}
+        {{ 'interkassa.mail.msg.thanks'|trans({'%event_name%': event.name})|raw }}
+        <br/>
+        {{ 'interkassa.mail.msg.remember'|trans }} {{ event.date|localizeddate('none', 'none', locale, null, "d MMMM Y") }} {{ 'interkassa.mail.msg.remember1'|trans }} {{ event.place }}.
+        <br>
+        {{ 'interkassa.mail.msg.ticket'|trans }}
+    </p>
+</div>

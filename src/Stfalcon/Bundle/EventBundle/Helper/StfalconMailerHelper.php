@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Twig_Environment;
 
@@ -50,37 +51,42 @@ class StfalconMailerHelper
      * @param User $user          User
      * @param Mail $mail          Mail
      * @param bool $isTestMessage Test message (needed for admin mails)
+     * @param bool $withTicket
      *
      * @return \Swift_Mime_MimePart
      */
-    public function formatMessage(User $user, Mail $mail, $isTestMessage = false)
+    public function formatMessage(User $user, Mail $mail, $isTestMessage = false, $withTicket = false)
     {
-        $text = $mail->replace(
-            array(
-                '%fullname%' => $user->getFullname(),
-                '%user_id%' => $user->getId(),
-            )
-        );
+        if ($withTicket) {
+            $event = isset($mail->getEvents()[0]) ? $mail->getEvents()[0] : null;
+            $params = ['event' => $event];
+            $template = '@ApplicationDefault/Email/email_with_ticket.html.twig';
+        } else {
+            $text = $mail->replace(
+                [
+                    '%fullname%' => $user->getFullname(),
+                    '%user_id%' => $user->getId(),
+                ]
+            );
+            $template = '@ApplicationDefault/Email/new_email.html.twig';
+            $params =
+                [
+                    'text'            => $text,
+                    'mail'            => $mail,
+                    'user'            => $user,
+                ];
+        }
 
-        $body = $this->renderTwigTemplate(
-            '@ApplicationDefault/Email/email.html.twig',
-            [
-                'text'            => $text,
-                'mail'            => $mail,
-                'user'            => $user,
-            ]
-        );
+        $body = $this->renderTwigTemplate($template, $params);
 
         $title = $mail->getTitle();
-        // Модифицируем заголовок, если рассылка является для админов, т.е. тестовой
+
         if ($isTestMessage) {
-            // Тестовая рассылка
             $title = 'Тестовая рассылка для админов! '.$title;
         }
 
         return $this->createMessage($title, $user->getEmail(), $body);
     }
-
 
     /**
      * Create message
@@ -88,6 +94,7 @@ class StfalconMailerHelper
      * @param  string $subject
      * @param  string $to
      * @param  string $body
+     *
      * @return \Swift_Message
      */
     public function createMessage($subject, $to, $body)
