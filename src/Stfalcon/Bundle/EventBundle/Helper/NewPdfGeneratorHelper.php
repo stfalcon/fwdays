@@ -126,11 +126,19 @@ class NewPdfGeneratorHelper
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_new_pdf.html.twig');
+
+
+        $imageData = new \Imagick($ticket->getEvent()->getSmallLogoFile()->getPathName());
+        $imageData->getFormat();
+        $imageData->setBackgroundColor('#FFFFFF');
+        $base64EventSmallLogo = base64_encode($imageData);
+
         $body = $templateContent->render(
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
                 'path' => realpath($this->kernel->getRootDir().'/../web').'/',
+                'event_logo' => $base64EventSmallLogo,
             ]
         );
 

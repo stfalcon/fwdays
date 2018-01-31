@@ -71,11 +71,11 @@ class PaymentListener
                 $tickets = $em->getRepository('StfalconEventBundle:Ticket')
                     ->getAllTicketsByPayment($entity);
 
-                if ($tickets && $tickets->count() > 0) {
+                if ($tickets && isset($tickets[0])) {
                     /** @var Event $currentEvent */
-                    $currentEvent = $tickets->first()->getEvent();
+                    $currentEvent = $tickets[0]->getEvent();
                     $js2018Event = $em->getRepository('StfalconEventBundle:Event')
-                        ->findBy(['slug' => 'js-fwdays-2018']);
+                        ->findOneBy(['slug' => 'js-fwdays-2018']);
                     if ($currentEvent instanceof Event &&
                         $js2018Event instanceof Event &&
                         $currentEvent->getDate() > $js2018Event->getDate()) {

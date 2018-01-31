@@ -198,6 +198,7 @@ ticket.email.event_date.title: 'Дата'
 ticket.email.event_reg.title: 'Реєстрація'
 ticket.email.event_member.title: 'Учасник'
 ticket.email.ticket_price.title: 'Ціна квитка'
+ticket.email.event.title: 'Подія'
 
 welcome.email.title: Ласкаво просимо!
 registration.email.subject: Ви успішно зареєстровані на сайті fwdays.com

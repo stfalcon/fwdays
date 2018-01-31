@@ -105,12 +105,12 @@
 <div class="ticket">
     <div class="ticket__top">
         <div class="ticket__head">
-            <img class="ticket__logo" src="{{ path ~ 'uploads/ticket/ticket_logo.png' }}" alt="" width="70">
+            <img class="ticket__logo" src="{{ path ~ vich_uploader_asset(event, 'smallLogoFile') }}" alt="" width="70">
         </div>
         <table class="ticket-info-table">
             <tr>
                 <td colspan="2">
-                    <div class="label-td">Событие</div>
+                    <div class="label-td">{{ 'ticket.email.event.title'|trans }}</div>
                     <br>
                     <div class="content-td">
                         {{ event.name }}
@@ -172,10 +172,10 @@
     </div>
 </div>
 <div class="icon-circle-left">
-    <img src="{{ path ~ 'uploads/ticket/circle_left.png' }}" alt="" width="14">
+    <img src="{{ asset('assets/img/email/circle_left.png', null, true) }}" alt="" width="14">
 </div>
 <div class="icon-circle-right">
-    <img src="{{ path ~ 'uploads/ticket/circle_right.png' }}" alt="" width="14">
+    <img src="{{ asset('assets/img/email/circle_right.png', null, true) }}" alt="" width="14">
 </div>
 </body>
 </html>
