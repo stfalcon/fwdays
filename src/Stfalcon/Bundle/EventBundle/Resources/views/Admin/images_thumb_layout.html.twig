@@ -3,7 +3,7 @@
 {% block field%}
     <div class="pull-left" style="padding-right: 10px">
         <span>Logo</span><br />
-        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto" />
+        <img src="{{vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto" style="background-color: {{ object.backgroundColor }};"/>
     </div>
     <div class="pull-left" style="padding-right: 10px">
         <span>Email Background</span><br />
