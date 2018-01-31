@@ -194,6 +194,11 @@ mail.subcribe: Ви підписані на новини Framework Days
 ticket.email.waitfornews: 'Слідкуйте за новинами:'
 ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Fwdays <br/>'
+ticket.email.event_date.title: 'Дата'
+ticket.email.event_reg.title: 'Реєстрація'
+ticket.email.event_member.title: 'Учасник'
+ticket.email.ticket_price.title: 'Ціна квитка'
+
 welcome.email.title: Ласкаво просимо!
 registration.email.subject: Ви успішно зареєстровані на сайті fwdays.com
 dear_user.email.text: |
