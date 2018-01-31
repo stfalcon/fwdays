@@ -190,7 +190,8 @@
             <argument type="service" id="router"/>
             <argument type="service" id="stfalcon_event.qr_code"/>
             <argument type="service" id="kernel"/>
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="tfox.mpdfport"/>
+            <argument type="service" id="app.svg_to_jpg.service"/>
         </service>
 
         <service id="stfalcon_event.promo_code.form.type" class="Stfalcon\Bundle\EventBundle\Form\Type\PromoCodeFormType">

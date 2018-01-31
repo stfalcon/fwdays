@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
+use Application\Bundle\DefaultBundle\Service\SvgToJpg;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use TFox\MpdfPortBundle\Service\MpdfService;
 use Twig_Environment;
@@ -40,6 +41,11 @@ class NewPdfGeneratorHelper
     protected $mPdfPort;
 
     /**
+     * @var SvgToJpg
+     */
+    protected $svgToJpgService;
+
+    /**
      * Constructor.
      *
      * @param Twig_Environment $templating Twig
@@ -47,14 +53,16 @@ class NewPdfGeneratorHelper
      * @param QrCode           $qrCode     QrCode generator
      * @param Kernel           $kernel     Kernel
      * @param MpdfService      $mPdfPort
+     * @param SvgToJpg         $svgToJpgService
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $mPdfPort)
+    public function __construct($templating, $router, $qrCode, $kernel, $mPdfPort, $svgToJpgService)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
         $this->kernel = $kernel;
         $this->mPdfPort = $mPdfPort;
+        $this->svgToJpgService = $svgToJpgService;
     }
 
     /**
@@ -126,11 +134,9 @@ class NewPdfGeneratorHelper
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_new_pdf.html.twig');
+        $logoFile = $ticket->getEvent()->getSmallLogoFile() ?: $ticket->getEvent()->getLogoFile();
+        $imageData = $this->svgToJpgService->convert($logoFile);
 
-
-        $imageData = new \Imagick($ticket->getEvent()->getSmallLogoFile()->getPathName());
-        $imageData->getFormat();
-        $imageData->setBackgroundColor('#FFFFFF');
         $base64EventSmallLogo = base64_encode($imageData);
 
         $body = $templateContent->render(

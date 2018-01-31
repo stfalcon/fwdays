@@ -59,3 +59,7 @@ services:
             - "@stfalcon_event.qr_code"
             - "@kernel"
             - "@tfox.mpdfport"
+            - "@app.svg_to_jpg.service"
+
+    app.svg_to_jpg.service:
+        class: Application\Bundle\DefaultBundle\Service\SvgToJpg

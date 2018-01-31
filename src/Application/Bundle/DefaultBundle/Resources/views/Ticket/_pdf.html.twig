@@ -160,12 +160,7 @@
         </div>
         <div class="logo">
             <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } ) }}" title="{{ event.name }}">
-                {% if event.smallLogoFile is not empty %}
-                    <img src="{{ path ~ vich_uploader_asset(event, 'smallLogoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
-                {% elseif event.logoFile is not empty %}
-                    <img src="{{ path ~ vich_uploader_asset(event, 'logoFile') }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
-                {% endif %}
-                <img src="{{ path ~ 'uploads/events/JS_web.png' }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
+                    <img src="data:image/jpeg;base64,{{ event_logo }}" width="105" height="103" alt="{{ event.name }}" title="{{ event.name }}" />
             </a>
         </div>
 
