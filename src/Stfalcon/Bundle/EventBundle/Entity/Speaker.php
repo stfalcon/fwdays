@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,6 +16,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @Vich\Uploadable
  * @ORM\Table(name="event__speakers")
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation")
  */
@@ -104,6 +110,15 @@ class Speaker implements Translatable
      * )
      */
     private $events;
+    /**
+     * Євенти в яких спикер знаходиться на розгляді
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
+     * @ORM\JoinTable(name="event_speakers_candidate")
+     */
+    private $candidateEvents;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -121,13 +136,38 @@ class Speaker implements Translatable
     private $updatedAt;
 
     /**
+     * @var int $sortOrder
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false, options={"default":"1"})
+     */
+    protected $sortOrder = 1;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->candidateEvents = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int $sortOrder
+     * @return $this
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
     }
 
     /**
@@ -162,6 +202,7 @@ class Speaker implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
+        return $this;
     }
 
     /**
@@ -182,6 +223,7 @@ class Speaker implements Translatable
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -202,6 +244,7 @@ class Speaker implements Translatable
     public function setEmail($eMail)
     {
         $this->email = $eMail;
+        return $this;
     }
 
     /**
@@ -222,6 +265,7 @@ class Speaker implements Translatable
     public function setCompany($company)
     {
         $this->company = $company;
+        return $this;
     }
 
     /**
@@ -242,6 +286,7 @@ class Speaker implements Translatable
     public function setAbout($about)
     {
         $this->about = $about;
+        return $this;
     }
 
     /**
@@ -259,38 +304,69 @@ class Speaker implements Translatable
      *
      * @return string
      */
-    public function getPhoto() {
+    public function getPhoto()
+    {
         return $this->photo;
     }
 
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
 
        $this->setUpdatedAt(new \DateTime());
+        return $this;
     }
 
-    public function getEvents() {
+    public function getEvents()
+    {
         return $this->events;
     }
 
-    public function setEvents($events) {
+    public function setEvents($events)
+    {
         $this->events = $events;
+        return $this;
     }
 
-    public function getReviews() {
+    /**
+     * @return ArrayCollection
+     */
+    public function getCandidateEvents()
+    {
+        return $this->candidateEvents;
+    }
+
+    /**
+     * @param ArrayCollection $candidateEvents
+     * @return $this
+     */
+    public function setCandidateEvents($candidateEvents)
+    {
+        $this->candidateEvents = $candidateEvents;
+
+        return $this;
+    }
+
+    public function getReviews()
+    {
         return $this->reviews;
     }
 
-    public function setReviews($reviews) {
+    public function setReviews($reviews)
+    {
         $this->reviews = $reviews;
+        return $this;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt) {
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**

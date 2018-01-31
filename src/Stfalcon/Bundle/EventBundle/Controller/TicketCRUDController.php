@@ -2,19 +2,26 @@
 
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Class TicketCRUDController
+ */
 class TicketCRUDController extends CRUDController
 {
     /**
-     * @param $id
+     * @param int $id
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @return RedirectResponse
      */
-    public function removeTicketFromPaymentAction($id)
+    public function removePaidTicketFromPaymentAction($id)
     {
         /** @var Ticket $object */
         $object = $this->admin->getSubject();
@@ -22,11 +29,21 @@ class TicketCRUDController extends CRUDController
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
-        if ($object instanceof Ticket && $payment = $object->getPayment()) {
-            $payment->removePaidTicket($object);
+        $em = $this->getDoctrine()->getManager();
+        /**
+         * @var Ticket $ticket
+         */
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->find($id);
+
+        if ($ticket) {
+            $payment = $ticket->getPayment();
+            if ($payment && $payment->isPaid()) {
+                $payment->removePaidTicket($ticket);
+
+                $em->flush();
+                $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
+            }
         }
-        $this->get('doctrine.orm.default_entity_manager')->flush();
-        $this->addFlash('sonata_flash_success', 'Removed successfully');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }

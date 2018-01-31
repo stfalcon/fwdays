@@ -1,0 +1,115 @@
+.event-list {
+  margin-top: 40px;
+
+  &__box {
+    margin-bottom: 68px;
+  }
+
+  &__label {
+    margin-bottom: 16px;
+  }
+}
+
+.event-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #DFDBCC;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 93px;
+
+  &__left {
+    display: flex;
+    flex-direction: row;
+    padding-right: 16px;
+    width: 60%;
+    align-items: center;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  &__logo-link {
+    margin-right: 26px;
+    text-decoration: none;
+  }
+
+  &__logo {
+    display: block;
+    width: 92px;
+    height: 92px;
+  }
+
+  &__details {
+    overflow: hidden;
+    margin-top: 6px;
+  }
+
+  &__title {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(18, 19, 20, 0.4);
+    color: $dark-color;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 16px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+
+  &__location {
+    margin-top: 12px;
+    font-size: 14px;
+  }
+
+  &__date {
+    margin: 12px 67px 0 0;
+    width: 80px;
+    text-align: left;
+  }
+
+  &__month {
+    display: block;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 12px;
+    white-space: nowrap;
+  }
+
+  &__year {
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  &__btn {
+    width: 220px;
+    flex-shrink: 0;
+  }
+
+  &__status {
+    width: 220px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 12px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+}
+
+.event-row--inactive {
+  opacity: 0.5;
+}

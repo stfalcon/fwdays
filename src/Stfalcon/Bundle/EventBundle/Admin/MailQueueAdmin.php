@@ -28,15 +28,18 @@ class MailQueueAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('isSent')
-            ->add('user.fullname')
-            ->add('mail.title')
-            ->add('_action', 'actions', array(
-                 'actions' => array(
-                     'edit'   => array(),
-                     'delete' => array(),
-                 ),
-            ));
+            ->add('isSent', null, ['label' => 'Отправлено'])
+            ->add('isOpen', null, ['label' => 'Открыто'])
+            ->add('isUnsubscribe', null, ['label' => 'Отписался'])
+            ->add('user.fullname', null, ['label' => 'Имя пользователя'])
+            ->add('mail.title', null, ['label' => 'Название'])
+            ->add('_action', 'actions', [
+                 'label' => 'Действие',
+                 'actions' => [
+                     'edit'   => [],
+                     'delete' => [],
+                 ],
+            ]);
     }
 
     /**
@@ -45,7 +48,11 @@ class MailQueueAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('mail.id', null, array('label' => 'Рассылка'));
+            ->add('mail.id', null, ['label' => 'Id письма'])
+            ->add('isSent', null, ['label' => 'Отправлено'])
+            ->add('isOpen', null, ['label' => 'Открыто'])
+            ->add('isUnsubscribe', null, ['label' => 'Отписались'])
+        ;
     }
 
     /**
@@ -54,10 +61,10 @@ class MailQueueAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('General')
-                ->add('user')
-                ->add('mail')
-                ->add('isSent', null, array('required' => false))
+            ->with('Общие')
+                ->add('user', null, ['label' => 'Пользователь'])
+                ->add('mail', null, ['label' => 'Почта'])
+                ->add('isSent', null, ['required' => false, 'label' => 'Отправлено'])
             ->end();
     }
 

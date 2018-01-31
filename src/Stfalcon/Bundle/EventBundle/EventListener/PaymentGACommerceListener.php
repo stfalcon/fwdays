@@ -2,55 +2,66 @@
 
 namespace Stfalcon\Bundle\EventBundle\EventListener;
 
+use Application\Bundle\DefaultBundle\Service\GACommerce;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Stfalcon\Bundle\EventBundle\Entity\Payment,
-    Stfalcon\Bundle\EventBundle\Entity\Ticket,
-    Stfalcon\Bundle\EventBundle\Entity\Event,
-    Application\Bundle\UserBundle\Entity\User;
-
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * Class PaymentGACommerceListener
+ */
 class PaymentGACommerceListener
 {
     /**
-     * @var Container $container
+     * @var Container
      */
     private $container;
 
     /**
-     * @var \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
+     * @var GACommerce
      */
     private $gacommerce;
 
+    /** @var string */
+    private $environment;
+
+    /** @var array */
+    protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
+
     /**
-     * @param Container                                       $container
-     * @param \Stfalcon\Bundle\EventBundle\Service\GACommerce $gacommerce
+     * @param Container  $container
+     * @param GACommerce $gacommerce
+     * @param string     $environment
      */
-    public function __construct($container, $gacommerce)
+    public function __construct($container, $gacommerce, $environment)
     {
-        $this->container  = $container;
+        $this->container = $container;
         $this->gacommerce = $gacommerce;
+        $this->environment = $environment;
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof Payment) {
-            if ($entity->getStatus() === Payment::STATUS_PAID) {
-
+        if ($entity instanceof Payment && 'prod' === $this->environment) {
+            if (Payment::STATUS_PAID === $entity->getStatus()) {
                 $tickets = $this->container->get('doctrine')
                     ->getManager()
                     ->getRepository('StfalconEventBundle:Ticket')
                     ->getAllTicketsByPayment($entity);
 
+                $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
                 //send GA transaction
                 $this->gacommerce->sendTransaction(
                     $entity->getUser()->getId(),
                     $entity->getId(),
-                    $entity->getAmount()
+                    $entity->getAmount(),
+                    $this->getItemVariant($eventName)
                 );
-
 
                 /** @var Ticket $ticket */
                 foreach ($tickets as $ticket) {
@@ -61,26 +72,43 @@ class PaymentGACommerceListener
                     $event = $ticket->getEvent();
 
                     $itemName = 'Оплата участия в конференции '
-                        . $event->getName()
-                        . '. Плательщик '
-                        . $entity->getUser()->getFullname()
-                        . ' (#' . $entity->getUser()->getId()
-                        . ')'
-                        . ', участник '
-                        . $user->getFullname()
-                        . ' (#' . $user->getId()
-                        . ');'
+                        .$event->getName()
+                        .'. Плательщик '
+                        .$entity->getUser()->getFullname()
+                        .' (#'.$entity->getUser()->getId()
+                        .')'
+                        .', участник '
+                        .$user->getFullname()
+                        .' (#'.$user->getId()
+                        .');'
                     ;
-
                     //send GA item
                     $this->gacommerce->sendItem(
                         $entity->getUser()->getId(),
                         $entity->getId(),
                         $itemName,
-                        $ticket->getAmount()
+                        $ticket->getAmount(),
+                        $this->getItemVariant($event->getName())
                     );
                 }
             }
         }
+    }
+
+    /**
+     * @param string $eventName
+     *
+     * @return string
+     */
+    private function getItemVariant($eventName)
+    {
+        foreach ($this->itemVariants as $itemVariant) {
+            $pattern = '/'.$itemVariant.'/';
+            if (preg_match($pattern, strtolower($eventName))) {
+                return $itemVariant;
+            }
+        }
+
+        return $eventName;
     }
 }

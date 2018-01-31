@@ -1,0 +1,27 @@
+{% if position == 'header' %}
+    <li class="header-nav__item header-nav__item--mob">
+    {% set class = position ~'-nav__link' %}
+{% elseif position == 'footer' %}
+    {% if app.user is null or not is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+       <li class="footer-nav__item footer-nav__item--sign-in">
+    {% else %}
+       <li class="footer-nav__item">
+    {% endif %}
+    {% set class = position ~'-nav__link' %}
+{% elseif position == 'header__auth' %}
+    {% set class = position %}
+{% endif %}
+
+    {% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+        <a href="{{ path('cabinet') }}" class="{{ class }}">{{ 'main.menu.cabinet'|trans }}</a>
+    {% else %}
+        {% if is_mobile() %}
+            <a href="{{ path('fos_user_security_login') }}" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        {% else %}
+            <a data-remodal-target="modal-signin" href="#" class="{{ class }}">{{ 'menu.login'|trans }}</a>
+        {% endif %}
+    {% endif %}
+
+{% if position in ['header', 'footer'] %}
+</li>
+{% endif %}

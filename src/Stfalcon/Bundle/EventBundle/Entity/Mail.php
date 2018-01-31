@@ -4,10 +4,9 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Mail
+ * Stfalcon\Bundle\EventBundle\Entity\Mail.
  *
  * @ORM\Table(name="event__mails")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\MailRepository")
@@ -15,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Mail
 {
     /**
-     * @var int $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -24,14 +23,14 @@ class Mail
     protected $id;
 
     /**
-     * @var string $title
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
     protected $title = '';
 
     /**
-     * @var string $text
+     * @var string
      *
      * @ORM\Column(name="text", type="text")
      */
@@ -46,7 +45,7 @@ class Mail
     protected $events;
 
     /**
-     * @var bool $start
+     * @var bool
      *
      * @ORM\Column(name="start", type="boolean")
      */
@@ -54,28 +53,50 @@ class Mail
 
     /**
      * @todo refact. это костыльное и временное решение
-     * @var string $paymentStatus
+     *
+     * @var string
      *
      * @ORM\Column(name="payment_status", type="string", nullable=true)
      */
     protected $paymentStatus = null;
 
     /**
-     * @var int $totalMessages
+     * @var bool
+     *
+     * @ORM\Column(name="wants_visit_event", type="boolean")
+     */
+    protected $wantsVisitEvent = false;
+
+    /**
+     * @var int
      *
      * @ORM\Column(name="total_messages", type="integer")
      */
     protected $totalMessages = 0;
 
     /**
-     * @var int $sentMessages
+     * @var int
      *
      * @ORM\Column(name="sent_messages", type="integer")
      */
     protected $sentMessages = 0;
 
     /**
-     * @var Array $mailQueues
+     * @var int
+     *
+     * @ORM\Column(name="unsubscribe_messages_cnt", type="integer")
+     */
+    protected $unsubscribeMessagesCount = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="open_messages_cnt", type="integer")
+     */
+    protected $openMessagesCount = 0;
+
+    /**
+     * @var array
      *
      * @ORM\OneToMany(targetEntity="MailQueue", mappedBy="mail", cascade={"remove", "persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
@@ -83,12 +104,96 @@ class Mail
     protected $mailQueues;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->mailQueues = new ArrayCollection();
+    }
+
+    /**
+     * @param int $openMessagesCount
+     *
+     * @return $this
+     */
+    public function setOpenMessagesCount($openMessagesCount)
+    {
+        $this->openMessagesCount = $openMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @param int $unsubscribeMessagesCount
+     *
+     * @return $this
+     */
+    public function setUnsubscribeMessagesCount($unsubscribeMessagesCount)
+    {
+        $this->unsubscribeMessagesCount = $unsubscribeMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOpenMessagesCount()
+    {
+        return $this->openMessagesCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUnsubscribeMessagesCount()
+    {
+        return $this->unsubscribeMessagesCount;
+    }
+
+    /**
+     * Add open messages count.
+     *
+     * @return $this
+     */
+    public function addOpenMessagesCount()
+    {
+        ++$this->openMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * Add unsubscribe messages count.
+     *
+     * @return $this
+     */
+    public function addUnsubscribeMessagesCount()
+    {
+        ++$this->unsubscribeMessagesCount;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWantsVisitEvent()
+    {
+        return $this->wantsVisitEvent;
+    }
+
+    /**
+     * @param bool $wantsVisitEvent
+     *
+     * @return $this
+     */
+    public function setWantsVisitEvent($wantsVisitEvent)
+    {
+        $this->wantsVisitEvent = $wantsVisitEvent;
+
+        return $this;
     }
 
     /**
@@ -132,9 +237,9 @@ class Mail
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -183,8 +288,6 @@ class Mail
 
     /**
      * @param ArrayCollection $events
-     *
-     * @return void
      */
     public function setEvents($events)
     {
@@ -243,11 +346,15 @@ class Mail
      */
     public function getStatistic()
     {
-        return $this->sentMessages . '/' . $this->totalMessages . (($this->sentMessages == $this->totalMessages) ? ' - complete' : '');
+        return
+            $this->totalMessages.'/'.
+            $this->sentMessages.'/'.
+            $this->openMessagesCount.'/'.
+            $this->unsubscribeMessagesCount.
+            (($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
-
     /**
-     * Add event
+     * Add event.
      *
      * @param Event $event
      *
@@ -261,7 +368,7 @@ class Mail
     }
 
     /**
-     * Remove events
+     * Remove events.
      *
      * @param Event $event
      */
@@ -271,7 +378,7 @@ class Mail
     }
 
     /**
-     * Add mailQueue
+     * Add mailQueue.
      *
      * @param \Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue
      *
@@ -285,7 +392,7 @@ class Mail
     }
 
     /**
-     * Remove mailQueue
+     * Remove mailQueue.
      *
      * @param \Stfalcon\Bundle\EventBundle\Entity\MailQueue $mailQueue
      */
@@ -295,7 +402,7 @@ class Mail
     }
 
     /**
-     * Get mailQueues
+     * Get mailQueues.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

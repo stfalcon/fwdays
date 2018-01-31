@@ -377,7 +377,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
      */
     public function interkassaApiIsAvailable()
     {
-        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Stfalcon\Bundle\EventBundle\Service\InterkassaService')
+        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Application\Bundle\DefaultBundle\Service\InterkassaService')
             ->shouldReceive('checkPayment')
             ->andReturn(true);
     }

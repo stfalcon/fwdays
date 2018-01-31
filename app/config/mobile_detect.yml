@@ -1,0 +1,6 @@
+mobile_detect:
+    redirect:
+        mobile: ~
+        tablet: ~
+        detect_tablet_as_mobile: true
+    switch_device_view: ~

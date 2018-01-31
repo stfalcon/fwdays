@@ -11,67 +11,68 @@ use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
 {
+    public function prePersist($project)
+    {
+        $project->setTickets($project->getTickets());
+    }
+
+    public function preUpdate($project)
+    {
+        $project->setTickets($project->getTickets());
+    }
 
     protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
         $datagrid
             ->add('id')
-            ->add('fullname')
-            ->add('email')
-            ->add('company')
-            ->add('balance')
-            ->add('enabled')
+            ->add('name', null, ['label' => 'Имя'])
+            ->add('surname', null, ['label' => 'Фамилия'])
+            ->add('phone', null, ['label' => 'Почта'])
+            ->add('company', null, ['label' => 'Компания'])
+            ->add('balance', null, ['label' => 'Баланс'])
+            ->add('enabled', null, ['label' => 'Активирован'])
         ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('fullname')
-            ->addIdentifier('email')
-            ->add('company')
-            ->add('balance')
-            ->add('enabled')
-            ->add('createdAt');
+            ->add('name', null, ['label' => 'Имя'])
+            ->add('surname', null, ['label' => 'Фамилия'])
+            ->addIdentifier('email', null, ['label' => 'Почта'])
+            ->add('phone', null, ['label' => 'Номер телефона'])
+            ->add('company', null, ['label' => 'Компания'])
+            ->add('balance', null, ['label' => 'Баланс'])
+            ->add('enabled', null, ['label' => 'Активирован'])
+            ->add('createdAt', null, ['label' => 'Дата создания']);
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('General')
-            ->add('fullname')
-            ->add('email')
-            ->add('company', null, array('required' => false))
-            ->add('balance')
-            ->add('post', null, array('required' => false))
-            ->add('subscribe', null, array('required' => false))
-            ->add('plainPassword', 'text', array('required' => false))
-            ->add(
-                'tickets',
-                'sonata_type_collection',
-                [
-                    'by_reference' => false,
-                    'disabled' => true,
-                ],
-                [
-                    'readonly' => true,
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                    'sortable' => 'id',
-                ]
-            )
+            ->with('Общие')
+                ->add('name', null, ['required' => true, 'label' => 'Имя'])
+                ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
+                ->add('email', null, ['required' => true, 'label' => 'Почта'])
+                ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
+                ->add('company', null, ['required' => false, 'label' => 'Компания'])
+                ->add('post', null, ['required' => false, 'label' => 'Должность'])
+                ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
+                ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
+                ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
             ->end()
             ->with('Management')
-            ->add('enabled', null, array('required' => false))
-            ->add(
-                'roles',
-                'choice',
-                array(
-                    'choices' => $this->getAvailableRoles(),
-                    'multiple' => true,
-                    'required' => false
+                ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
+                ->add(
+                    'roles',
+                    'choice',
+                    [
+                        'choices' => $this->getAvailableRoles(),
+                        'multiple' => true,
+                        'required' => false,
+                        'label' => 'Роли',
+                    ]
                 )
-            )
             ->end();
     }
 
@@ -89,15 +90,4 @@ class UserAdmin extends Admin
 
         return $roles;
     }
-
-    public function prePersist($project)
-    {
-        $project->setTickets($project->getTickets());
-    }
-
-    public function preUpdate($project)
-    {
-        $project->setTickets($project->getTickets());
-    }
-
 }

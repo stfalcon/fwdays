@@ -3,14 +3,12 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Response,
-    JMS\SecurityExtraBundle\Annotation\Secure;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * EmailSubscribe controller
@@ -20,13 +18,15 @@ class EmailSubscribeController extends Controller
     /**
      * Unsubscribe action.
      *
-     * @param integer $userId
-     * @param string $hash
-     * @param integer $mailId
-     * @Template()
-     * @return array
-     *
      * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
+     *
+     * @param string  $hash
+     * @param integer $userId
+     * @param integer $mailId
+     *
+     * @Template()
+     *
+     * @return array
      */
     public function unsubscribeAction($hash, $userId, $mailId = null)
     {
@@ -40,6 +40,10 @@ class EmailSubscribeController extends Controller
         }
 
         if ($mailId) {
+            $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+            if ($mail) {
+                $mail->addUnsubscribeMessagesCount();
+            }
             /** @var MailQueue $mailQueue */
             $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
                 ->findOneBy(['user' => $userId, 'mail' => $mailId]);
@@ -57,12 +61,14 @@ class EmailSubscribeController extends Controller
     /**
      * Subscribe action.
      *
-     * @param integer $userId
-     * @param string $hash
-     * @Template()
-     * @return array
-     *
      * @Route("/subscribe/{hash}/{userId}", name="subscribe")
+     *
+     * @param integer $userId
+     * @param string  $hash
+     *
+     * @Template()
+     *
+     * @return array
      */
     public function subscribeAction($userId, $hash)
     {
@@ -84,13 +90,13 @@ class EmailSubscribeController extends Controller
     /**
      * Open mail action.
      *
+     * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
+     *
      * @param integer $userId
      * @param string  $hash
      * @param integer $mailId
      *
      * @return RedirectResponse
-     *
-     * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
      */
     public function actionTrackOpenMail($userId, $hash, $mailId = null)
     {
@@ -104,6 +110,11 @@ class EmailSubscribeController extends Controller
                 /** @var MailQueue $mailQueue */
                 $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
                 if ($mailQueue && !$mailQueue->getIsOpen()) {
+                    /** @var Mail $mail */
+                    $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+                    if ($mail) {
+                        $mail->addOpenMessagesCount();
+                    }
                     $mailQueue->setIsOpen();
                     $em->flush();
                 }

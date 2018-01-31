@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -17,6 +18,11 @@ use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
  *
  * @Vich\Uploadable
  * @ORM\Table(name="sponsors")
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
@@ -153,6 +159,8 @@ class Sponsor implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     /**
@@ -173,6 +181,8 @@ class Sponsor implements Translatable
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -204,6 +214,8 @@ class Sponsor implements Translatable
     public function setLogo($logo)
     {
         $this->logo = $logo;
+
+        return $this;
     }
 
     /**
@@ -214,6 +226,8 @@ class Sponsor implements Translatable
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**
@@ -234,6 +248,8 @@ class Sponsor implements Translatable
     public function setSite($site)
     {
         $this->site = $site;
+
+        return $this;
     }
 
     /**
@@ -260,6 +276,8 @@ class Sponsor implements Translatable
     public function setFile($file)
     {
         $this->file = $file;
+
+        return $this;
     }
 
     /**
@@ -270,6 +288,8 @@ class Sponsor implements Translatable
     public function setAbout($about)
     {
         $this->about = $about;
+
+        return $this;
     }
 
     /**
@@ -289,6 +309,8 @@ class Sponsor implements Translatable
     public function addSponsorEvents(EventSponsor $sponsorEvent)
     {
         $this->sponsorEvents[] = $sponsorEvent;
+
+        return $this;
     }
 
     /**
@@ -300,6 +322,8 @@ class Sponsor implements Translatable
             $sponsorEvent->setSponsor($this);
         }
         $this->sponsorEvents = $sponsorEvents;
+
+        return $this;
     }
 
     /**
@@ -328,6 +352,8 @@ class Sponsor implements Translatable
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -348,6 +374,8 @@ class Sponsor implements Translatable
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -366,6 +394,8 @@ class Sponsor implements Translatable
     public function setOnMain($onMain)
     {
         $this->onMain = $onMain;
+
+        return $this;
     }
 
     /**

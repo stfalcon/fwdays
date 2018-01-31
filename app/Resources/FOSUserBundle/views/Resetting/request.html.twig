@@ -1,0 +1,9 @@
+{% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
+
+{% block content %}
+    <!--BEGIN form-box-->
+    <div class="form-box">
+        <h2 class="h2 form-box__title">{{ 'user.forgot_password.title'|trans }}</h2>
+        {% include '@ApplicationDefault/Redesign/forgot_password_form.html.twig' with {'show_error': true} %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,150 @@
+
+.header {
+  height: 75px;
+  border-bottom: 1px solid #DAE3E9;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: row;
+    padding-top: 2px;
+    align-items: center;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: row;
+    padding-top: 2px;
+    align-items: center;
+  }
+
+  &__logo {
+    margin-right: 50px;
+  }
+
+  &__language {
+    display: inline-block;
+    margin-right: 24px;
+    height: 74px;
+    color: $dark-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 75px;
+
+    &:hover {
+      color: $blue-light-color;
+    }
+  }
+
+  &__social {
+    margin-right: 32px;
+  }
+
+  &__auth {
+    position: relative;
+    display: inline-block;
+    height: 74px;
+    color: $dark-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 75px;
+
+    &--sign-in {
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #727272;
+      border-radius: 2px;
+      padding: 0 8px;
+
+      &:hover {
+        border-color: $blue-light-color;
+      }
+    }
+
+    &--active {
+      color: $blue-light-color;
+
+      &:after {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 1px;
+        display: block;
+        height: 1px;
+        background-color: $blue-light-color;
+        content: '';
+      }
+    }
+
+    &:hover {
+      color: $blue-light-color;
+    }
+  }
+}
+
+.header-nav {
+  &__items {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__item {
+    margin-right: 42px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &--mob {
+      display: none;
+    }
+  }
+
+  &__link {
+    position: relative;
+    display: inline-block;
+    height: 74px;
+    color: $dark-color;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 75px;
+
+    &:after {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 1px;
+      display: block;
+      height: 1px;
+      background-color: transparent;
+      content: '';
+    }
+
+    &--active {
+      color: $blue-light-color;
+
+      &:after {
+        background-color: $blue-light-color;
+      }
+    }
+
+    &:hover {
+      color: $blue-light-color;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{% set link = '' %}
+{% set scrollClass = '' %}
+{% if position == 'report' %}
+    {% set link = url('event_show_redesign', {'eventSlug': event.slug }) %}
+{% elseif position == 'event' %}
+    {% set scrollClass = ' go-to-block' %}
+{% endif %}
+<!--BEGIN event-header-->
+<section class="event-header" style="background-color: {{ event.backgroundColor }};">
+    <div class="container">
+        <div class="event-header__box">
+            <h1 class="event-header__title">{{ event.name }}</h1>
+            <div class="event-header__info">
+                <div class="event-header__description">{{ event.description|raw }}
+                </div>
+                <div class="event-header__details">
+                    <div class="event-header__details-left">
+                        {% if event.date|date("d/m/Y") == event.dateEnd|date("d/m/Y") %}
+                            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-header__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% if 'H' in event.dateFormat %},<br> {{ event.date|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}–{{ event.dateEnd|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% endif %}</time>
+                        {% elseif event.dateEnd %}
+                            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-header__date">{{ event.date|app_format_date(event.dateFormat, app.request.locale, 'Europe/Kiev') }}<br> – {{ event.dateEnd|app_format_date(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
+                        {% else %}
+                            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-header__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% if 'H' in event.dateFormat %},<br>{{ event.date|app_format_time_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}{% endif %}</time>
+                        {% endif %}
+                        {% if programPage %}
+                        <a href="{{ link }}#program-event" class="event-header__program{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="event-header__details-right">
+                        <a href="{{ link }}#location-event" class="event-header__location{{ scrollClass }}">{{ event.place|raw }}</a>
+                    </div>
+                </div>
+                <div class="event-header__action">
+                    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_header'}) %}
+                    {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
+                        <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="event-header__photo">
+            {% if event.logoFile is not empty %}
+                <img class="event-header__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="{{ event.name }}">
+            {% endif %}
+        </div>
+    </div>
+</section>
+<!--END event-header-->
+{% include '@ApplicationDefault/Redesign/Event/event.fix_header.html.twig' with
+    {
+        'event':event,
+        'programPage':programPage,
+        'venuePage':venuePage,
+        'pages':pages,
+        'position': position
+    }
+%}
+
+<!--BEGIN event-buy-mob-->
+<section class="event-action-mob">
+    <div class="container">
+        {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_action_mob'}) %}
+    </div>
+</section>
+<!--END event-buy-mob-->

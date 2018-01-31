@@ -23,9 +23,11 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
 
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
@@ -34,12 +36,9 @@ class AppKernel extends Kernel
 
             new FOS\UserBundle\FOSUserBundle(),
 
-            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
-
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             new Sonata\IntlBundle\SonataIntlBundle(),
-
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
@@ -62,7 +61,14 @@ class AppKernel extends Kernel
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
-            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+
+            new SunCat\MobileDetectBundle\MobileDetectBundle(),
+
+            new Liip\ImagineBundle\LiipImagineBundle(),
+            new Sentry\SentryBundle\SentryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -70,7 +76,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
-        if ($this->getEnvironment() == 'test') {
+        if ($this->getEnvironment() === 'test') {
             $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
         }
 
@@ -93,7 +99,7 @@ class AppKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        if ('test' == $this->getEnvironment()) {
+        if ('test' === $this->getEnvironment()) {
             return '\PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer';
         }
 

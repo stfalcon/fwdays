@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -60,6 +61,14 @@ class Ticket
     private $event;
 
     /**
+     * @var TicketCost $ticketCost
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets")
+     * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id")
+     */
+    private $ticketCost;
+
+    /**
      * На кого выписан билет. Т.е. участник не обязательно плательщик
      *
      * @var User
@@ -114,6 +123,23 @@ class Ticket
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return TicketCost
+     */
+    public function getTicketCost()
+    {
+        return $this->ticketCost;
+    }
+
+    /**
+     * @param TicketCost $ticketCost
+     */
+    public function setTicketCost($ticketCost)
+    {
+        $this->ticketCost = $ticketCost;
+        return $this;
     }
 
     /**

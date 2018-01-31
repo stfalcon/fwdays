@@ -1,0 +1,26 @@
+<!--BEGIN price-list-->
+<section id="price-event" class="price-list">
+    <div class="container container--sm">
+        <h2 class="h2 price-list__title">{{ 'event.price.title'|trans }}</h2>
+        <div class="price-list__items">
+        {% if ticketCosts is defined and ticketCosts|length > 0 %}
+            {% for ticket in ticketCosts %}
+                {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}
+            {% endfor %}
+        {#{% else %}#}
+            {#{% include '@ApplicationDefault/Redesign/price_block_default.html.twig' with {'currentPrice' : currentPrice, 'event':event}  %}#}
+        {% endif %}
+        </div>
+        {% if event.useDiscounts %}
+        <div class="price-list__hint">
+             {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
+        </div>
+        <div class="price-list__hint-small">
+            {{ 'payment.discount.tooltip'|trans}}
+        </div>
+        {% endif %}
+    </div>
+</section>
+<!--END price-list-->
+
+

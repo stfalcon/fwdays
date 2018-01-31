@@ -7,10 +7,47 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * Class EventAdmin
+ * Class EventAdmin.
  */
 class EventAdmin extends Admin
 {
+    /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * @param $object
+     *
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
+    {
+        $actions = array();
+    }
 
     /**
      * @param ListMapper $listMapper
@@ -18,18 +55,20 @@ class EventAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id')
             ->addIdentifier('slug')
-            ->add('name')
-            ->add('active')
-            ->add('useDiscounts')
-            ->add('receivePayments')
-            ->add('cost')
+            ->add('name', null, ['label' => 'Название'])
+            ->add('active', null, ['label' => 'Активно'])
+            ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
+            ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
+            ->add('receivePayments', null, ['label' => 'Продавать билеты'])
             ->add(
                 'images',
                 'string',
-                array(
-                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig'
-                )
+                [
+                    'template' => 'StfalconEventBundle:Admin:images_thumb_layout.html.twig',
+                    'label' => 'Изображения',
+                ]
             );
     }
 
@@ -41,75 +80,156 @@ class EventAdmin extends Admin
         $subject = $this->getSubject();
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $datetimePickerOptions =
+            [
+                'dp_use_seconds' => false,
+                'dp_language' => 'ru',
+                'format' => 'dd.MM.y, HH:mm',
+                'dp_minute_stepping' => 10,
+            ];
 
         $formMapper
-            ->with('General')
-            ->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => $this->getClass(),
-                'fields' => [
-                    'name'=> [
-                        'label' => 'name',
-                        'locale_options' => $localOptions
+            ->with('Переводы')
+                ->add('translations', 'a2lix_translations_gedmo', [
+                    'translatable_class' => $this->getClass(),
+                    'fields' => [
+                        'name' => [
+                            'label' => 'Название',
+                            'locale_options' => $localOptions,
+                        ],
+                        'city' => [
+                            'label' => 'Город',
+                            'locale_options' => $localOptions,
+                            'sonata_help' => 'указывать город в котором проводиться событие (используется для поиска координат на карте)',
+                        ],
+                        'place' => [
+                            'label' => 'Место проведения',
+                            'locale_options' => $localOptions,
+                            'sonata_help' => 'указывать либо точный адрес, либо название здания, где проводиться событие (используется для поиска координат на карте)',
+                        ],
+                        'description' => [
+                            'label' => 'Краткое описание',
+                            'locale_options' => $localOptions,
+                        ],
+                        'about' => [
+                            'label' => 'Описание',
+                            'locale_options' => $localOptions,
+                        ],
+                        'metaDescription' => [
+                            'label' => 'metaDescription',
+                            'locale_options' => $localAllFalse,
+                        ],
                     ],
-                    'city'=> [
-                        'label' => 'city',
-                        'locale_options' => $localOptions
-                    ],
-                    'place'=> [
-                        'label' => 'place',
-                        'locale_options' => $localOptions
-                    ],
-                    'description'=> [
-                        'label' => 'description',
-                        'locale_options' => $localOptions
-                    ],
-                    'about'=> [
-                        'label' => 'about',
-                        'locale_options' => $localOptions
-                    ],
-                ],
-                'label' => 'Перевод',
-            ])
-            ->add('slug')
-            ->add('date')
-            ->add('active', null, ['required' => false])
-            ->add('receivePayments', null, ['required' => false])
-            ->add('useDiscounts', null, ['required' => false])
-            ->add('cost', null, ['required' => true])
+                    'label' => 'Перевод',
+                ])
             ->end()
-            ->with('Images')
-            ->add(
-                'logoFile',
-                'file',
-                array(
-                    'label' => 'Logo',
-                    'required' => is_null($subject->getLogo())
+            ->with('Настройки')
+                ->add('slug')
+                ->add(
+                    'ticketsCost',
+                    'sonata_type_collection',
+                    [
+                        'label' => 'Цены события',
+                        'by_reference' => false,
+                        'type_options' => ['delete' => true],
+                        'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
+                        'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
+                            : 'добавьте блоки с ценами на билеты',
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ]
                 )
-            )
-            ->add(
-                'pdfBackgroundFile',
-                'file',
-                array(
-                    'label' => 'Background image',
-                    'required' => false,
+                ->add('active', null, ['required' => false, 'label' => 'Активно'])
+                ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
+                ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
+                ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
+            ->end()
+            ->with('Даты', ['class' => 'col-md-6'])
+                ->add('dateFormat', null, [
+                    'required' => true,
+                    'label' => 'Формат даты',
+                    'help' => 'd - день (11), MMMM - полное название месяца (січень), MMM - сокращеное название месяца (січ.), 
+                    MM - числовой вид месяца (01), Y - год (2018), HH:mm - время (13:45), S - время года (зима), 
+                     одновремено можно использовать только либо S либо MMMM',
+                ])
+                ->add(
+                    'date',
+                    'sonata_type_datetime_picker',
+                    array_merge(
+                        [
+                            'required' => true,
+                            'label' => 'Дата начала',
+                        ],
+                        $datetimePickerOptions
+                    )
                 )
-            )
-            ->add(
-                'emailBackgroundFile',
-                'file',
-                array(
-                    'label' => 'Email background',
-                    'required' => false,
+                ->add(
+                    'dateEnd',
+                    'sonata_type_datetime_picker',
+                    array_merge(
+                        [
+                            'required' => false,
+                            'label' => 'Дата окончания',
+                        ],
+                        $datetimePickerOptions
+                    )
                 )
-            )
+            ->end()
+            ->with('Изображения и цвет', ['class' => 'col-md-6'])
+                ->add('backgroundColor', 'text', ['required' => true, 'label' => 'Цвет фона',
+                    'help' => 'цвет в формате #1F2B3C'])
+                ->add(
+                    'logoFile',
+                    'file',
+                    [
+                        'label' => 'Логотип',
+                        'required' => is_null($subject->getLogo()),
+                        'help' => 'Осноное изображения.',
+                    ]
+                )
+                ->add(
+                    'smallLogoFile',
+                    'file',
+                    [
+                        'label' => 'Мини логотип',
+                        'required' => false,
+                        'help' => 'Если не указан, тогда используєтся основной.',
+                    ]
+                )
+                ->add(
+                    'pdfBackgroundFile',
+                    'file',
+                    [
+                        'label' => 'Изображение для pdf',
+                        'required' => false,
+                        'help' => 'Левый верхний угол.',
+                    ]
+                )
+                ->add(
+                    'emailBackgroundFile',
+                    'file',
+                    [
+                        'label' => 'Изображение для писем',
+                        'required' => false,
+                        'help' => 'Левый правый угол.',
+                    ]
+                )
             ->end();
     }
 
     /**
-     * @return array|void
+     * @param $object
      */
-    public function getBatchActions()
+    private function removeNullTranslate($object)
     {
-        $actions = array();
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }
