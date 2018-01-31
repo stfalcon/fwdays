@@ -308,7 +308,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_email').rules("add", {
-        pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+        pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$u/,
         messages: {
             pattern: Messages[locale].CORRECT_EMAIL,
             required: Messages[locale].FIELD_REQUIRED,
@@ -316,7 +316,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_name').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
@@ -327,7 +327,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_surname').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
