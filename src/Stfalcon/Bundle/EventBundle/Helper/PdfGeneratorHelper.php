@@ -1,46 +1,46 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpKernel\Kernel;
-use Container;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class PdfGeneratorHelper
+ * Class PdfGeneratorHelper.
  */
 class PdfGeneratorHelper
 {
     /**
-     * @var Twig_Environment $templating
+     * @var Twig_Environment
      */
     protected $templating;
 
     /**
-     * @var Router $router
+     * @var Router
      */
     protected $router;
 
     /**
-     * @var QrCode $qrCode
+     * @var QrCode
      */
     protected $qrCode;
 
     /**
-     * @var Kernel $kernel
+     * @var Kernel
      */
     protected $kernel;
 
     /**
-     * @var Container $container
+     * @var Container
      */
     protected $container;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Twig_Environment $templating Twig
      * @param Router           $router     Router
@@ -68,7 +68,7 @@ class PdfGeneratorHelper
     public function generatePdfFile(Ticket $ticket, $html)
     {
         // Override default fonts directory for mPDF
-        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/') . '/');
+        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/open-sans/') . '/');
 
         /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
         $mPDFService = $this->container->get('tfox.mpdfport');
@@ -76,24 +76,33 @@ class PdfGeneratorHelper
 
         $constructorArgs = array(
             'mode'          => 'BLANK',
-            'format'        => [87, 151],
-            'margin_left'   => 2,
-            'margin_right'  => 2,
-            'margin_top'    => 2,
-            'margin_bottom' => 2,
-            'margin_header' => 2,
-            'margin_footer' => 2
+            'format'        => 'A5-L',
+            'margin_left'   => 0,
+            'margin_right'  => 0,
+            'margin_top'    => 0,
+            'margin_bottom' => 0,
+            'margin_header' => 0,
+            'margin_footer' => 0
         );
 
         $mPDF = $mPDFService->getMpdf($constructorArgs);
 
-        // Fwdays font settings
-        $mPDF->fontdata['fwdays'] = array(
-            'R'  => 'FwDaysFont-Medium.ttf'
+        // Open Sans font settings
+        $mPDF->fontdata['opensans'] = array(
+            'R'  => 'OpenSans-Regular.ttf',
+            'B'  => 'OpenSans-Bold.ttf',
+            'I'  => 'OpenSans-Italic.ttf',
+            'BI' => 'OpenSans-BoldItalic.ttf',
         );
-        $mPDF->sans_fonts[]              = 'fwdays';
-        $mPDF->available_unifonts[]      = 'fwdays';
-        $mPDF->default_available_fonts[] = 'fwdays';
+        $mPDF->sans_fonts[]              = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensans';
+        $mPDF->available_unifonts[]      = 'opensansI';
+        $mPDF->available_unifonts[]      = 'opensansB';
+        $mPDF->available_unifonts[]      = 'opensansBI';
+        $mPDF->default_available_fonts[] = 'opensans';
+        $mPDF->default_available_fonts[] = 'opensansI';
+        $mPDF->default_available_fonts[] = 'opensansB';
+        $mPDF->default_available_fonts[] = 'opensansBI';
 
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
@@ -135,5 +144,4 @@ class PdfGeneratorHelper
 
         return $body;
     }
-
 }
