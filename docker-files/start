@@ -11,6 +11,9 @@ cd /var/www/html && ./composer.phar install
 cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz
 cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz
 cp -a /node-v6.11.3-linux-x64/* /
+npm install -g gulp
+npm install
+npm run gulp-dev
 
 ./console doctrine:database:create
 ./console doctrine:migrations:migrate
