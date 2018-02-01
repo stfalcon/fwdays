@@ -8,6 +8,13 @@ cd /var/www/html && ./composer.phar install
 
 /etc/init.d/apache2 start
 
+cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz
+cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz
+cp -a /node-v6.11.3-linux-x64/* /
+npm install -g gulp
+npm install
+npm run gulp-dev
+
 ./console doctrine:database:create
 ./console doctrine:migrations:migrate
 ./console doctrine:fixtures:load
@@ -15,6 +22,7 @@ cd /var/www/html && ./composer.phar install
 
 chmod -R 777 /var/www/html/app/cache
 chmod -R 777 /var/www/html/app/logs
+#chmod -R 777 /var/www/html/web/assets/styles/
 
 mkdir /var/www/html/web/tmp/media
 mkdir /var/www/html/web/tmp/media/cache
