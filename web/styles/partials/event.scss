@@ -246,8 +246,8 @@
         background-color: $white-color;
       }
 
-      .speaker-card__photo {
-        filter: none;
+      .speaker-card__img {
+        mix-blend-mode: initial;
       }
 
       .speaker-card__name {
@@ -293,9 +293,14 @@
 
   &__photo {
     margin-bottom: 10px;
+    background: #68675B;
+  }
+
+  &__img {
+    display: block;
     width: 100%;
-    filter: grayscale(1);
     flex-shrink: 0;
+    mix-blend-mode: luminosity;
   }
 
   &__name {
