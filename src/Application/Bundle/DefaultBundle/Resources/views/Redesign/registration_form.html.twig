@@ -3,6 +3,10 @@
 <form id="form_registration_{{ form_id }}" action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
     <input type="hidden" id="fos_user_registration_form__token_{{ remodal }}" name="fos_user_registration_form[_token]"
            value="{{ csrf_token('registration') }}"/>
+    <input type="hidden" id="fos_user_registration_form__facebookID_{{ remodal }}" name="fos_user_registration_form[facebookID]"
+           value="{% if regForm is defined and regForm.facebookID.vars.value %}{{ regForm.facebookID.vars.value }}{% endif %}"/>
+    <input type="hidden" id="fos_user_registration_form__googleID_{{ remodal }}" name="fos_user_registration_form[googleID]"
+           value="{% if regForm is defined and regForm.googleID.vars.value %}{{ regForm.googleID.vars.value }}{% endif %}"/>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">

@@ -46,7 +46,15 @@ services:
             - { name: twig.extension}
 
     twig_asset_version_extension:
-       class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
-       arguments: ["%kernel.root_dir%"]
-       tags:
-           - { name: twig.extension }
+        class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
+        arguments: ["%kernel.root_dir%"]
+        tags:
+            - { name: twig.extension }
+
+    app.need_user_data.exception:
+        class: Application\Bundle\DefaultBundle\EventListener\ExceptionListener
+        arguments: ["@session"]
+        calls:
+            - [setRouter, ['@router']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

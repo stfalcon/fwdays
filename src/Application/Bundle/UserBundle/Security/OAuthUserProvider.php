@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\UserBundle\Security;
 
+use Application\Bundle\DefaultBundle\Exception\NeedUserDataException;
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
-use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -22,7 +22,7 @@ class OAuthUserProvider extends BaseClass
      * OAuthUserProvider constructor.
      *
      * @param UserManagerInterface $userManager
-     * @param array $properties
+     * @param array                $properties
      * @param $container
      */
     public function __construct(UserManagerInterface $userManager, array $properties, $container)
@@ -41,19 +41,29 @@ class OAuthUserProvider extends BaseClass
         /** @var User $user */
         $user = $this->userManager->findUserBy([$this->getProperty($response) => $socialID]);
         $email = $response->getEmail();
-        //check if the user already has the corresponding social account
-        if (!$user && $email) {
-            //check if the user has a normal account
+        if (!$user) {
             $user = $this->userManager->findUserByEmail($email);
 
             if (!$user || !$user instanceof UserInterface) {
-                //if the user does not have a normal account, set it up:
-                $user = $this->userManager->createUser();
-                $user->setName($response->getFirstName());
-                $user->setSurname($response->getLastName());
-                $user->setEmail($email);
-                $user->setPlainPassword(md5(uniqid()));
-                $user->setEnabled(true);
+                try {
+                    $user = $this->userManager->createUser();
+                    $user->setName($response->getFirstName());
+                    $user->setSurname($response->getLastName());
+                    $user->setEmail($email);
+                    $user->setPlainPassword(md5(uniqid()));
+                    $user->setEnabled(true);
+                    $this->userManager->updateUser($user);
+                } catch (NotNullConstraintViolationException $e) {
+                    $needUserData = new NeedUserDataException('needUserData');
+                    $responseArr = $response->getResponse();
+                    $responseArr = array_merge(
+                        $responseArr,
+                        ['socialID' => $socialID],
+                        ['service' => $response->getResourceOwner()->getName()]
+                    );
+                    $needUserData->setResponse($responseArr);
+                    throw $needUserData;
+                }
 
                 $this->container->get('stfalcon_event.mailer_helper')->sendEasyEmail(
                     $this->container->get('translator')->trans('registration.email.subject'),
@@ -64,8 +74,8 @@ class OAuthUserProvider extends BaseClass
 
                 $this->container->get('session')->getFlashBag()->set('fos_user_success', 'registration.flash.user_created');
             }
-            //then set its corresponding social id
             $service = $response->getResourceOwner()->getName();
+            $socialID = $response->getUsername();
             switch ($service) {
                 case 'google':
                     $user->setGoogleID($socialID);
@@ -74,12 +84,11 @@ class OAuthUserProvider extends BaseClass
                     $user->setFacebookID($socialID);
                     break;
             }
+
             $this->userManager->updateUser($user);
-        } elseif ($user) {
+        } else {
             $checker = new UserChecker();
             $checker->checkPreAuth($user);
-        } elseif (!$email) {
-
         }
 
         return $user;
