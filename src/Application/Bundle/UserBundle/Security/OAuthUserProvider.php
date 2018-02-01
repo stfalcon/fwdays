@@ -61,6 +61,8 @@ class OAuthUserProvider extends BaseClass
                     ['user' => $user],
                     $user
                 );
+
+                $this->container->get('session')->getFlashBag()->set('fos_user_success', 'registration.flash.user_created');
             }
             //then set its corresponding social id
             $service = $response->getResourceOwner()->getName();

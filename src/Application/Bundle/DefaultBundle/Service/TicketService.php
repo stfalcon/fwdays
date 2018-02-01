@@ -344,18 +344,12 @@ class TicketService
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.mob_status.pay');
                 } elseif ('price_block' === $position) {
-                    if ('uk' === $local) {
-                        $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
-                        $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
-                    } else {
-                        $amount = $ticketCost->getAltAmount();
-                        $altAmount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
-                        $altAmount = '≈'.number_format($altAmount, 0, ',', ' ').' UAH';
-                    }
+                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
+                    $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
                     $caption = $this->translator->trans(
                         'ticket.status.pay_for').' '.
                         $this->translator->trans(
-                            'payment.price.multi',
+                            'payment.price',
                             [
                                 '%summ%' => number_format($amount, 0, ',', ' '),
                             ]
