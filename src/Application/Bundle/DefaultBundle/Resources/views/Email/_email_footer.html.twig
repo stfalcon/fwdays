@@ -73,11 +73,8 @@
                                               color: #747A88;
                                               margin: 0;">
                                     {% if mail != null %}
-                                        {% set mail_id = mail.id %}
-                                    {% else %}
-                                        {% set mail_id = null %}
+                                    <a href="{{ url('unsubscribe', {'hash': user.salt, 'userId': user.id, 'mailId': mail.id}) }}" style="color: #747A88;">{{ 'ticket.email.unsubscribe'|trans }}</a>
                                     {% endif %}
-                                    <a href="{{ url('unsubscribe', {'hash': user.salt, 'userId': user.id, 'mailId': mail_id}) }}" style="color: #747A88;">{{ 'ticket.email.unsubscribe'|trans }}</a>
                                 </p>
                             </div>
                             <div style="display: inline-block;

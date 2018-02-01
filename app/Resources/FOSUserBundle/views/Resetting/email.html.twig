@@ -1,0 +1,7 @@
+{% include '@ApplicationDefault/Email/_email_header.html.twig' %}
+{{ 'resetting.email.message'|trans({'%username%': user.username, '%confirmationUrl%': confirmationUrl})|raw }}
+{% include '@ApplicationDefault/Email/_email_end_table.html.twig' %}
+
+{% include '@ApplicationDefault/Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
+</center>
+</body>

@@ -57,6 +57,19 @@ class ResettingController extends BaseController
 
         $this->container->get('session')->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
         $this->container->get('fos_user.mailer')->sendResettingEmailMessage($user);
+
+        $url = $this->container->get('router')->generate('fos_user_resetting_reset', ['token' => $user->getConfirmationToken()], true);
+        $this->container->get('stfalcon_event.mailer_helper')->sendEasyEmail(
+            $this->container->get('translator')->trans(
+                'resetting.email.subject',
+                ['%username%' => $user->getUsername(), '%confirmationUrl%' => $user],
+                'FOSUserBundle'
+            ),
+            '@FOSUser/Resetting/email.html.twig',
+            ['user' => $user, 'confirmationUrl' => $url],
+            $user
+        );
+
         $user->setPasswordRequestedAt(new \DateTime());
         $this->container->get('fos_user.user_manager')->updateUser($user);
 
