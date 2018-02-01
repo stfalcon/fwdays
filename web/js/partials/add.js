@@ -308,7 +308,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_email').rules("add", {
-        pattern: /^\w+([\.\-\_]{0,1}\w)+\@([\w])+\.([\w]{2,4})$/,
+        pattern: /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/,
         messages: {
             pattern: Messages[locale].CORRECT_EMAIL,
             required: Messages[locale].FIELD_REQUIRED,

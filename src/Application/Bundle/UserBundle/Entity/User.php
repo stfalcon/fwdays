@@ -190,7 +190,7 @@ class User extends BaseUser
 
     /**
      * @Assert\Regex(
-     *     pattern="/^\w+([\.\-\_]{0,1}\w)+\@([\w])+\.([\w]{2,4})$/",
+     *     pattern="/^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/",
      *     match=true,
      *     message="error.email_bad_format"
      * )
