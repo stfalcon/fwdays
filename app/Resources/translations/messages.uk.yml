@@ -145,7 +145,7 @@ referral.invaite.title2: Запрошуйте друзів та накопичу
 referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
 referral.invaite.link.text: Ваше реферальне посилання на конференцію
 
-payment.price: '%summ% грн'
+payment.price: '%summ% грн '
 payment.price.multi: '%summ% грн '
 payment.discount.cupon: (знижка %summ%% за купоном)
 payment.discount.member: Для учасників попередніх конференцій знижка %summ%%
@@ -158,6 +158,7 @@ pay.event.cupon: 'Купон на знижку:'
 flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
 flash_profile_updated.title: Ваш профіль оновлено
+flash_user_created.title: Ви зареєструвались на сайті
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
