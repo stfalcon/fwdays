@@ -192,7 +192,7 @@ class User extends BaseUser
      * @Assert\Regex(
      *     pattern="/^\w+([\.\-]{0,1}\w)+\@([\w])+\.([\w]{2,4})$/",
      *     match=true,
-     *     message="error.phone_bad_format"
+     *     message="error.email_bad_format"
      * )
      */
     protected $email;
