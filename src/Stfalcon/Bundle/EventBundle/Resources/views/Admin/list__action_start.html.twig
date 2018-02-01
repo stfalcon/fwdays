@@ -3,14 +3,14 @@
     class="btn btn-sm btn-default edit_link mail mail-yes"
     {% if object.start == false %}style="display: none"{% endif %}>
     <i class="glyphicon glyphicon-remove-circle"></i>&nbsp;
-    <span>{{ 'label_type_stfalcon_mail_yes'|trans({}, 'SonataAdminBundle')|capitalize }}</span>
+    <span>{{ 'Запустить розсылку'|capitalize }}</span>
 </a>
 <a
     href="{{ path('admin_start_mail', {'id': object.id, 'value': 1}) }}"
     class="btn btn-sm btn-default edit_link mail mail-no"
     {% if object.start == true %}style="display: none"{% endif %}>
     <i class="glyphicon glyphicon-ok-circle"></i>&nbsp;
-    <span>{{ 'label_type_stfalcon_mail_no'|trans({}, 'SonataAdminBundle')|capitalize }}</span>
+    <span>{{ 'Остановить розсылку'|capitalize }}</span>
 </a>
 
 <script>
