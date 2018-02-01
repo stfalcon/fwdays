@@ -159,6 +159,7 @@ pay.event.cupon: 'Купон на знижку:'
 flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
 flash_profile_updated.title: Ваш профіль оновлено
+flash_user_created.title: Ви зареєструвались на сайті
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
