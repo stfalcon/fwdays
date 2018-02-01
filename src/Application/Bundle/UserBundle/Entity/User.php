@@ -190,7 +190,7 @@ class User extends BaseUser
 
     /**
      * @Assert\Regex(
-     *     pattern="/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/",
+     *     pattern="/^\w+([\.\-]{0,1}\w)+\@([\w])+\.([\w]{2,4})$/",
      *     match=true,
      *     message="error.phone_bad_format"
      * )
