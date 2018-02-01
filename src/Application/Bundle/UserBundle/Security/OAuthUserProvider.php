@@ -55,7 +55,11 @@ class OAuthUserProvider extends BaseClass
                     $this->userManager->updateUser($user);
                 } catch (NotNullConstraintViolationException $e) {
                     $needUserData = new NeedUserDataException('needUserData');
-                    $responseArr = $response->getResponse();
+                    $responseArr = [];
+                    $responseArr['first_name'] = $response->getFirstName();
+                    $responseArr['last_name'] = $response->getLastName();
+                    $responseArr['email'] = $email;
+
                     $responseArr = array_merge(
                         $responseArr,
                         ['socialID' => $socialID],
