@@ -19,8 +19,9 @@ deploy_callbacks:
     after_deploy:
         - './console do:da:dr --force'
         - './console do:da:cr'
-        - "mysql -u root -p`mysql_password` -h fwdays-mysql `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'` < /stag/shared/db.sql"
+#        - "mysql -u root -p`mysql_password` -h fwdays-mysql `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'` < /stag/shared/db.sql"
         - './console --no-interaction doctrine:migrations:migrate'
+        - './console --no-interaction do:fi:lo'
 #        - 'rm -rf /stag/www/web/uploads/'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'

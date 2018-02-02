@@ -1,6 +1,9 @@
 {% include '@ApplicationDefault/Email/_email_header.html.twig' %}
 <p style="margin: 10px 0;">
-{{ 'dear_user.email.text'|trans({'%user_name%': user.fullname})|raw }}
+{{ 'resetting.email.message'|trans({'%username%': user.fullname, '%confirmationUrl%': confirmationUrl})|raw }}
+</p>
+<p style="margin: 10px 0;">
+    {{ 'ticket.email.team'|trans|raw }}
 </p>
 {% include '@ApplicationDefault/Email/_email_end_table.html.twig' %}
 

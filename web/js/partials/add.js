@@ -64,7 +64,7 @@ function sendGA(elem, ga_event) {
     }
 }
 
-function setPaymentHtml(e_slug) {
+function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
         type: 'GET',
@@ -72,7 +72,7 @@ function setPaymentHtml(e_slug) {
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
-                if (!detectmob()) {
+                if (!detectmob() && !mobForce) {
                     inst.open();
                 }
                 $('#buy-ticket-btn').attr('onclick', "sendGA($(this), 'button');");
@@ -82,7 +82,7 @@ function setPaymentHtml(e_slug) {
                     window.location.pathname = homePath+"static-payment/"+e_slug;
                 }
                 console.log('Error:' + data.error);
-                if (!detectmob()) {
+                if (!detectmob() && !mobForce) {
                     inst.close();
                 }
 
@@ -316,7 +316,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_name').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
@@ -327,7 +327,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_surname').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
