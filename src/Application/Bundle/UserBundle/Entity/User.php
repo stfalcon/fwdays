@@ -189,11 +189,7 @@ class User extends BaseUser
     protected $phone;
 
     /**
-     * @Assert\Regex(
-     *     pattern="/^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/",
-     *     match=true,
-     *     message="error.email_bad_format"
-     * )
+     * @Assert\Email(message="error.email_bad_format", strict="true")
      */
     protected $email;
 
