@@ -133,12 +133,7 @@ function paymentAfterLogin() {
         }
     }
 }
-
 var registrationFormId = null;
-
-function setRegistrationFormId(rId) {
-    registrationFormId = rId;
-}
 
 function submitRegistrationForm(token) {
     if (null !== registrationFormId) {
@@ -148,6 +143,35 @@ function submitRegistrationForm(token) {
             .appendTo('#' + registrationFormId);
 
         $('#' + registrationFormId).submit();
+    }
+}
+
+function recapchaValidate(rId) {
+    registrationFormId = rId;
+    var form = $('#'+registrationFormId);
+    form.validate({
+        debug: false,
+        errorClass: "text-error",
+        errorElement: "p",
+        onkeyup: false,
+        highlight: function(element) {
+            $(element).addClass('input--error');
+            var p = $(element).next('p');
+            if ($(p).hasClass('text-error') && undefined === $(p).attr('id')) {
+                $(p).hide();
+            }
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('input--error');
+            var p = $(element).next('p');
+            if ($(p).hasClass('text-error') && undefined === $(p).attr('id')) {
+                $(p).hide();
+            }
+        }
+    });
+
+    if (form.valid()) {
+        grecaptcha.execute();
     }
 }
 
@@ -264,11 +288,23 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 
 $(document).ready(function () {
 
-    $('.mask-phone-input--js').bind('input', function(){
+    $('.mask-phone-input--js').bind('input', function() {
         $(this).val(function(_, v){
             return v.replace(/[-\s\(\)]+/g, '');
         });
+    }).on('focus', function () {
+        if ($(this).val() === '') {
+            $(this).val('+380');
+        }
+    }).on('focusout', function () {
+        if ($(this).val() === '+380') {
+            $(this).val('');
+        }
     });
+
+    $.validator.methods.email = function( value, element ) {
+        return this.optional( element ) || /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
+    };
 
     $('#payment').validate({
         debug: false,
@@ -283,65 +319,34 @@ $(document).ready(function () {
         }
     });
 
-    $('#user_phone').on('focus', function () {
-        if ($('#user_phone').val() === '') {
-            $('#user_phone').val('+380');
-        }
-    });
-
-    $('#user_phone').on('focusout', function () {
-        if ($('#user_phone').val() === '+380') {
-            $('#user_phone').val('');
-        }
-    });
-
-    $("#user_phone").rules( "add", {
-        required: false,
-        minlength: 12,
-        maxlength: 16,
-        pattern: /\+[1-9]{1}[0-9]{10,14}$/i,
-        messages: {
-            required: Messages[locale].FIELD_REQUIRED,
-            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
-            pattern: Messages[locale].CORRECT_PHONE
-        }
-    });
-    $('#payment_user_email').rules("add", {
-        pattern: /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/,
-        messages: {
-            pattern: Messages[locale].CORRECT_EMAIL,
-            required: Messages[locale].FIELD_REQUIRED,
-            email: Messages[locale].CORRECT_EMAIL,
-        }
-    });
-    $('#payment_user_name').rules("add", {
-        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
-        minlength: 2,
-        maxlength: 32,
-        messages: {
-            pattern: Messages[locale].CORRECT_NAME,
-            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
-            required: Messages[locale].FIELD_REQUIRED,
-        }
-    });
-    $('#payment_user_surname').rules("add", {
-        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
-        minlength: 2,
-        maxlength: 32,
-        messages: {
-            pattern: Messages[locale].CORRECT_SURNAME,
-            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
-            maxlength: jQuery.validator.format(Messages[locale].CORRECT_MAX),
-            required: Messages[locale].FIELD_REQUIRED,
+    $.validator.addClassRules({
+        'valid-name': {
+            required: true,
+            pattern: /^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
+            minlength: 2,
+            maxlength: 32,
+        },
+        'valid-plainPassword' : {
+            required: true,
+            minlength: 2,
+            maxlength: 72,
+        },
+        'valid-email' : {
+            required: true,
+            email: true,
+        },
+        'valid-phone' : {
+            required: false,
+            minlength: 12,
+            maxlength: 16,
+            pattern: /\+[1-9]{1}[0-9]{10,14}$/i,
         }
     });
 
     $('#user_promo_code').rules("add", {
         minlength: 2,
         messages: {
-            minlength: jQuery.validator.format(Messages[locale].CORRECT_MIN),
+            minlength: $.validator.format(Messages[locale].CORRECT_MIN),
             required: Messages[locale].FIELD_REQUIRED,
         }
     });
@@ -389,7 +394,6 @@ $(document).ready(function () {
                         var validator = $('#payment').validate();
                         var errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
                         validator.showErrors(errors);
-                        // console.log('Error:' + data.error);
                     }
                 });
         }
@@ -414,7 +418,6 @@ $(document).ready(function () {
                         var validator = $('#payment').validate();
                         var errors = { "user-email": data.error };
                         validator.showErrors(errors);
-                        // console.log('Error:' + data.error);
                     }
                 });
         }

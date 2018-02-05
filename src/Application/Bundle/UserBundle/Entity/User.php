@@ -213,6 +213,7 @@ class User extends BaseUser
      * @ORM\Column(name="google_id", type="string", nullable=true)
      */
     private $googleID;
+
     /**
      * @var string
      *
