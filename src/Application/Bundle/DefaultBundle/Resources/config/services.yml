@@ -46,7 +46,20 @@ services:
             - { name: twig.extension}
 
     twig_asset_version_extension:
-       class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
-       arguments: ["%kernel.root_dir%"]
-       tags:
-           - { name: twig.extension }
+        class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
+        arguments: ["%kernel.root_dir%"]
+        tags:
+            - { name: twig.extension }
+
+    app.helper.new_pdf_generator:
+        class: Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper
+        arguments:
+            - "@twig"
+            - "@router"
+            - "@stfalcon_event.qr_code"
+            - "@kernel"
+            - "@tfox.mpdfport"
+            - "@app.svg_to_jpg.service"
+
+    app.svg_to_jpg.service:
+        class: Application\Bundle\DefaultBundle\Service\SvgToJpg

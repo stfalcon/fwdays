@@ -8,10 +8,12 @@
     </div>
 {% endblock content %}
 
+{% block payment_popup %}{% endblock %}
+
 {% block scripts %}
     {{ parent() }}
     <script>
         setModalHeader('{{ event.slug }}', 'buy');
-        setPaymentHtml('{{ event.slug }}');
+        setPaymentHtml('{{ event.slug }}', true);
     </script>
 {% endblock scripts %}

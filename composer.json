@@ -47,7 +47,8 @@
         "hwi/oauth-bundle": "^0.5.3",
         "suncat/mobile-detect-bundle": "^0.10.3",
         "liip/imagine-bundle": "^1.9",
-        "sentry/sentry-symfony": "^0.8.7"
+        "sentry/sentry-symfony": "^0.8.7",
+        "egulias/email-validator": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
