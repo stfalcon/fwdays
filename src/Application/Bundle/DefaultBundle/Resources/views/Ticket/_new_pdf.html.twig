@@ -131,7 +131,11 @@
                     <div class="label-td">{{ 'ticket.email.event_date.title'|trans }}</div>
                     <br>
                     <div class="content-td">
-                        {{ event.date|format_date('dd MMMM Y', locale, 'Europe/Kiev') }}
+                        {% if 'uk' != locale %}
+                            {{ event.date|format_date('MMMM dd, Y', locale, 'Europe/Kiev') }}
+                        {% else %}
+                            {{ event.date|format_date('dd MMMM Y', locale, 'Europe/Kiev') }}
+                        {% endif %}
                     </div>
                 </td>
                 <td class="second-td">
