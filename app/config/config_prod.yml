@@ -23,6 +23,7 @@ monolog:
         sentry:
             type:  raven
 #            dsn: "http://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
+            dsn: "http://localhost/48"
             level: error
 #        gelf:
 #           type: service
