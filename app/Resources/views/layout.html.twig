@@ -69,8 +69,8 @@
     <script src="{{ asset('assets/js/main.js'|app_asset_version) }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    {% if 'en' != app.request.locale %}
-        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/localization/messages_{{ app.request.locale }}.js"></script>
+    {% if 'uk' == app.request.locale %}
+        <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
     {% endif %}
     <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
     {% if app.request.cookies.has('event') %}
