@@ -56,9 +56,12 @@
 {% endblock popups %}
 
 {% block scripts %}
+    <script>
+        var locale = "{{ app.request.locale }}";
+        var homePath = "{{ path('homepage') }}"
+    </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
     {#{% if app.environment == 'prod' %}#}
     {#<script src="https://cdn.ravenjs.com/3.22.1/raven.min.js" crossorigin="anonymous"></script>#}
     {#<script>Raven.config('http://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>#}
@@ -66,14 +69,14 @@
     <script src="{{ asset('assets/js/main.js'|app_asset_version) }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-
-    <script>
-        var locale = "{{ app.request.locale }}";
-        var homePath = "{{ path('homepage') }}"
-    </script>
+    {% if 'uk' == app.request.locale %}
+        <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
+    {% endif %}
+    <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
     {% if app.request.cookies.has('event') %}
         <script>paymentAfterLogin();</script>
     {% endif %}
+
     {% for message in app.session.flashBag.get('fos_user_success') %}
     <script>
         {% if message == 'profile.flash.updated' %}
@@ -83,6 +86,7 @@
         {% endif %}
     </script>
     {% endfor %}
+
     {% if app.environment == 'prod' %}
         {% include "::ga.html.twig" %}
     {% else %}
