@@ -1,64 +1,73 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
+use Application\Bundle\DefaultBundle\Service\SvgToJpg;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use TFox\MpdfPortBundle\TFoxMpdfPortBundle;
+use TFox\MpdfPortBundle\Service\MpdfService;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpKernel\Kernel;
-use Container;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class PdfGeneratorHelper
+ * Class PdfGeneratorHelper.
  */
 class PdfGeneratorHelper
 {
     /**
-     * @var Twig_Environment $templating
+     * @var Twig_Environment
      */
     protected $templating;
 
     /**
-     * @var Router $router
+     * @var Router
      */
     protected $router;
 
     /**
-     * @var QrCode $qrCode
+     * @var QrCode
      */
     protected $qrCode;
 
     /**
-     * @var Kernel $kernel
+     * @var Kernel
      */
     protected $kernel;
 
     /**
-     * @var Container $container
+     * @var MpdfService
      */
-    protected $container;
+    protected $mPdfPort;
 
     /**
-     * Constructor
-     *
-     * @param Twig_Environment $templating Twig
-     * @param Router           $router     Router
-     * @param QrCode           $qrCode     QrCode generator
-     * @param Kernel           $kernel     Kernel
-     * @param Container        $container
+     * @var SvgToJpg
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $container)
+    protected $svgToJpgService;
+
+    /**
+     * Constructor.
+     *
+     * @param Twig_Environment $templating
+     * @param Router           $router
+     * @param QrCode           $qrCode
+     * @param Kernel           $kernel
+     * @param MpdfService      $mPdfPort
+     * @param SvgToJpg         $svgToJpgService
+     */
+    public function __construct($templating, $router, $qrCode, $kernel, $mPdfPort, $svgToJpgService)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
         $this->kernel = $kernel;
-        $this->container = $container;
+        $this->mPdfPort = $mPdfPort;
+        $this->svgToJpgService = $svgToJpgService;
     }
 
     /**
-     * Generate PDF-file of ticket
+     * Generate PDF-file of ticket.
      *
      * @param Ticket $ticket
      * @param string $html
@@ -68,37 +77,35 @@ class PdfGeneratorHelper
     public function generatePdfFile(Ticket $ticket, $html)
     {
         // Override default fonts directory for mPDF
-        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir() . '/../web/fonts/open-sans/') . '/');
+        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir().'/../web/fonts/open-sans/').'/');
 
-        /** @var \TFox\MpdfPortBundle\Service\MpdfService $mPDFService */
-        $mPDFService = $this->container->get('tfox.mpdfport');
-        $mPDFService->setAddDefaultConstructorArgs(false);
+        $this->mPdfPort->setAddDefaultConstructorArgs(false);
 
         $constructorArgs = array(
-            'mode'          => 'BLANK',
-            'format'        => 'A5-L',
-            'margin_left'   => 0,
-            'margin_right'  => 0,
-            'margin_top'    => 0,
+            'mode' => 'BLANK',
+            'format' => 'A5-L',
+            'margin_left' => 0,
+            'margin_right' => 0,
+            'margin_top' => 0,
             'margin_bottom' => 0,
             'margin_header' => 0,
-            'margin_footer' => 0
+            'margin_footer' => 0,
         );
 
-        $mPDF = $mPDFService->getMpdf($constructorArgs);
+        $mPDF = $this->mPdfPort->getMpdf($constructorArgs);
 
         // Open Sans font settings
         $mPDF->fontdata['opensans'] = array(
-            'R'  => 'OpenSans-Regular.ttf',
-            'B'  => 'OpenSans-Bold.ttf',
-            'I'  => 'OpenSans-Italic.ttf',
+            'R' => 'OpenSans-Regular.ttf',
+            'B' => 'OpenSans-Bold.ttf',
+            'I' => 'OpenSans-Italic.ttf',
             'BI' => 'OpenSans-BoldItalic.ttf',
         );
-        $mPDF->sans_fonts[]              = 'opensans';
-        $mPDF->available_unifonts[]      = 'opensans';
-        $mPDF->available_unifonts[]      = 'opensansI';
-        $mPDF->available_unifonts[]      = 'opensansB';
-        $mPDF->available_unifonts[]      = 'opensansBI';
+        $mPDF->sans_fonts[] = 'opensans';
+        $mPDF->available_unifonts[] = 'opensans';
+        $mPDF->available_unifonts[] = 'opensansI';
+        $mPDF->available_unifonts[] = 'opensansB';
+        $mPDF->available_unifonts[] = 'opensansBI';
         $mPDF->default_available_fonts[] = 'opensans';
         $mPDF->default_available_fonts[] = 'opensansI';
         $mPDF->default_available_fonts[] = 'opensansB';
@@ -112,7 +119,7 @@ class PdfGeneratorHelper
     }
 
     /**
-     * Create HTML template for ticket invitation
+     * Create HTML template for ticket invitation.
      *
      * @param Ticket $ticket
      *
@@ -126,7 +133,7 @@ class PdfGeneratorHelper
             'event_ticket_registration',
             array(
                 'ticket' => $ticket->getId(),
-                'hash'   => $ticket->getHash()
+                'hash' => $ticket->getHash(),
             ),
             true
         );
@@ -136,13 +143,20 @@ class PdfGeneratorHelper
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_pdf.html.twig');
-        $body = $templateContent->render(array(
-                'ticket'       => $ticket,
+
+        $logoFile = $ticket->getEvent()->getSmallLogoFile() ?: $ticket->getEvent()->getLogoFile();
+        $imageData = $this->svgToJpgService->convert($logoFile, '#FFFFFF');
+        $base64EventSmallLogo = base64_encode($imageData);
+
+        $body = $templateContent->render(
+            [
+                'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
-                'path'         => realpath($this->kernel->getRootDir() . '/../web') . '/'
-            ));
+                'path' => realpath($this->kernel->getRootDir().'/../web').'/',
+                'event_logo' => $base64EventSmallLogo,
+            ]
+        );
 
         return $body;
     }
-
 }

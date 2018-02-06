@@ -1,0 +1,16 @@
+{% include '@ApplicationDefault/Email/_email_header.html.twig' %}
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text0'|trans }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text1'|trans }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="{{ url('event_show_redesign', {'eventSlug': event.slug }) }}#program-event" style="color: #0c9db9;">{{ 'new_ticket.event.programm'|trans }}</a>
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="https://twitter.com/fwdays" style="color: #0c9db9;">{{ 'mail.news.title'|trans({'%site%':'Twitter'}) }}</a>
+                                        </p>
+{% include '@ApplicationDefault/Email/_email_end_table.html.twig' %}
+</center>
+</body>

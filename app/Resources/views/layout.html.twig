@@ -36,6 +36,12 @@
     {% if not is_mobile() %}
         {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
     {% endif %}
+
+    {% block payment_popup %}
+        {% if not is_mobile() %}
+            {% include '@ApplicationDefault/Redesign/Payment/_payment.popup.html.twig' %}
+        {% endif %}
+    {% endblock %}
 </div>
 <!--END layout-box-->
 {% block popups %}
@@ -69,9 +75,13 @@
         <script>paymentAfterLogin();</script>
     {% endif %}
     {% for message in app.session.flashBag.get('fos_user_success') %}
+    <script>
         {% if message == 'profile.flash.updated' %}
-            <script>setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');</script>
+            setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
+        {% elseif message == 'registration.flash.user_created' %}
+            setFlashTextAndShow('{{ 'flash_user_created.title'|trans }}');
         {% endif %}
+    </script>
     {% endfor %}
     {% if app.environment == 'prod' %}
         {% include "::ga.html.twig" %}

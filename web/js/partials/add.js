@@ -64,7 +64,7 @@ function sendGA(elem, ga_event) {
     }
 }
 
-function setPaymentHtml(e_slug) {
+function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
         type: 'GET',
@@ -72,7 +72,7 @@ function setPaymentHtml(e_slug) {
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
-                if (!detectmob()) {
+                if (!detectmob() && !mobForce) {
                     inst.open();
                 }
                 $('#buy-ticket-btn').attr('onclick', "sendGA($(this), 'button');");
@@ -82,7 +82,7 @@ function setPaymentHtml(e_slug) {
                     window.location.pathname = homePath+"static-payment/"+e_slug;
                 }
                 console.log('Error:' + data.error);
-                if (!detectmob()) {
+                if (!detectmob() && !mobForce) {
                     inst.close();
                 }
 
@@ -308,7 +308,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_email').rules("add", {
-        pattern:/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+        pattern: /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/,
         messages: {
             pattern: Messages[locale].CORRECT_EMAIL,
             required: Messages[locale].FIELD_REQUIRED,
@@ -316,7 +316,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_name').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
@@ -327,7 +327,7 @@ $(document).ready(function () {
         }
     });
     $('#payment_user_surname').rules("add", {
-        pattern:/^\D+$/,
+        pattern:/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
         minlength: 2,
         maxlength: 32,
         messages: {
