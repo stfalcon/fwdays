@@ -81,22 +81,12 @@ class TicketController extends Controller
             return new Response('Вы не оплачивали участие в "'.$event->getName().'"', 402);
         }
 
-        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper */
-        $pdfGen = $this->get('stfalcon_event.pdf_generator.helper');
-
-        /** @var Event $currentEvent */
-        $currentEvent = $ticket->getEvent();
-        $js2018Event = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')
-            ->findOneBy(['slug' => 'js-fwdays-2018']);
-        if ($currentEvent instanceof Event &&
-            $js2018Event instanceof Event &&
-            $currentEvent->getDate() > $js2018Event->getDate()) {
-            $pdfGen = $this->get('app.helper.new_pdf_generator');
-        }
+        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper */
+        $pdfGen = $this->get('app.helper.new_pdf_generator');
 
         $html = $pdfGen->generateHTML($ticket);
 
-        if ($asHtml && 'html' === $asHtml && 'test' === $this->getParameter('kernel.environment')) {
+        if ('html' === $asHtml && 'test' === $this->getParameter('kernel.environment')) {
             return new Response(
                 $html,
                 200,
