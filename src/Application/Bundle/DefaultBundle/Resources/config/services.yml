@@ -63,3 +63,5 @@ services:
 
     app.svg_to_jpg.service:
         class: Application\Bundle\DefaultBundle\Service\SvgToJpg
+        arguments:
+            - "@monolog.logger"
