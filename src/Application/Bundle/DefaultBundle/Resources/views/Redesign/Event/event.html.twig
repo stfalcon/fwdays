@@ -2,14 +2,6 @@
 
 {% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
 
-{% block metatags %}
-    {{ parent() }}
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_4.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_6.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_8.jpg', null, true) }}" />
-{% endblock metatags %}
-
 {% block meta_description %}
     {% if event.metaDescription is not null %}
     <meta name="description" content="{{ event.metaDescription }}">
