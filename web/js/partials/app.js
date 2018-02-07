@@ -87,14 +87,15 @@ $(document).ready(function () {
      */
     $('#ref-dropdown').on('change', function () {
         var value = $('option:selected', this).text(),
-            ref = $('option:selected', this).data('ref'),
-            image = $('option:selected', this).data('image');
+            ref = $('option:selected', this).data('ref');
+            // image = $('option:selected', this).data('image');
 
         $('#ref-selected').text(value);
         $('#ref-input').val(ref);
-        $('#share-ref__facebook').attr("href", 'http://www.facebook.com/sharer.php?u='+ref);
-        $('#share-ref__facebook').attr("data-href", 'http://www.facebook.com/sharer.php?u='+ref);
-        $("meta[property='og:image']").attr('content', image);
+        var fb_share = $('#share-ref__facebook');
+        fb_share.attr("href", 'http://www.facebook.com/sharer.php?u='+ref);
+        fb_share.attr("data-href", 'http://www.facebook.com/sharer.php?u='+ref);
+        // $("meta[property='og:image']").attr('content', image);
     });
 
     /**
