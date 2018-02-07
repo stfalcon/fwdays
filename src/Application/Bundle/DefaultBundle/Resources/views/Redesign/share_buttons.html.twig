@@ -5,21 +5,25 @@
     {% set lang = 'en_US' %}
 {% endif %}
 <div id="fb-root"></div>
-<script>(function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/{{ lang }}/all.js#appId=147663055321186&xfbml=1";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId            : '{{ facebook_api_id }}',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v2.12'
+        });
+    };
 
-<script src="https://apis.google.com/js/platform.js" async defer>
-    {
-        lang: '{{ app.request.locale }}'
-    }
-</script>
-<script>window.twttr = (function (d, s, id) {
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    window.twttr = (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],
             t = window.twttr || {};
         if (d.getElementById(id)) return t;
@@ -34,5 +38,12 @@
         };
 
         return t;
-    }(document, "script", "twitter-wjs"));</script>
+    }(document, "script", "twitter-wjs"));
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+    {
+        lang: '{{ app.request.locale }}'
+    }
+</script>
+
 <!--END Share buttons scripts-->
