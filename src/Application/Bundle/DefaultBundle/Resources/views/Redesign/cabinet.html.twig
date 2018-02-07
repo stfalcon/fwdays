@@ -3,13 +3,6 @@
 {% set firstEvent = events|first %}
 {% set fistLink = url('event_show_redesign', {'eventSlug' : firstEvent.slug, 'ref': code}) %}
 
-{% block metatags %}
-    {{ parent() }}
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_4.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_6.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_8.jpg', null, true) }}" />
-{% endblock metatags %}
 {% block shareButtonsScripts %}
     {% if app.request.locale == 'uk' %}
         {% set lang = 'uk_UA' %}
