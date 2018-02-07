@@ -107,9 +107,9 @@ function setPaymentHtml(e_slug, mobForce) {
     });
 }
 
-function setSpeakerHtml(e_slug, s_slug) {
+function setSpeakerHtml(e_slug, s_slug, with_review) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
-    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug}),
+    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug, withReview:with_review}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
@@ -354,7 +354,8 @@ $(document).ready(function () {
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
-        setSpeakerHtml(e_slug, s_slug);
+        var with_review = $(this).data('review');
+        setSpeakerHtml(e_slug, s_slug, with_review);
     });
 
     $('.set-modal-header').on('click', function () {

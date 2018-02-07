@@ -873,7 +873,7 @@
 
   .speaker-popup {
     flex-direction: column;
-    margin: -32px -32px 20px;
+    margin: -32px -32px 0;
     padding-bottom: 5px;
 
     &__photo {
@@ -892,6 +892,8 @@
   }
 
   .report-popup {
+    margin-top: 0;
+
     &__title {
       line-height: 32px;
     }
@@ -1709,7 +1711,7 @@
   }
 
   .speaker-popup {
-    margin: -16px -16px 20px;
+    margin: -16px -16px 0;
 
     &__description {
       margin: 22px 16px 0;

@@ -263,6 +263,16 @@ class Event implements Translatable
     protected $candidateSpeakers;
 
     /**
+     * Speakers event .
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="committeeEvents")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     */
+    protected $committeeSpeakers;
+
+    /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
      */
     protected $tickets;
@@ -323,6 +333,7 @@ class Event implements Translatable
     {
         $this->speakers = new ArrayCollection();
         $this->candidateSpeakers = new ArrayCollection();
+        $this->committeeSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
     }
@@ -1069,6 +1080,26 @@ class Event implements Translatable
     public function setCandidateSpeakers($candidateSpeakers)
     {
         $this->candidateSpeakers = $candidateSpeakers;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCommitteeSpeakers()
+    {
+        return $this->committeeSpeakers;
+    }
+
+    /**
+     * @param ArrayCollection $committeeSpeakers
+     *
+     * @return $this
+     */
+    public function setCommitteeSpeakers($committeeSpeakers)
+    {
+        $this->committeeSpeakers = $committeeSpeakers;
 
         return $this;
     }

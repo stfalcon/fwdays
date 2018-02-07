@@ -241,7 +241,7 @@
       }
 
       .speaker-card__top {
-        padding: 0;
+        padding: 0 0 20px;
         height: auto;
         background-color: $white-color;
       }
@@ -277,7 +277,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 0 20px;
+    padding: 0 20px 20px;
     text-decoration: none;
     cursor: pointer;
   }
@@ -286,7 +286,7 @@
     position: relative;
     z-index: 2;
     visibility: hidden;
-    padding: 20px;
+    padding: 0 20px 20px;
     background-color: $white-color;
     opacity: 0;
   }
