@@ -22,8 +22,8 @@ monolog:
             level: debug
         sentry:
             type:  raven
-            dsn: "http://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
-#            dsn: "http://localhost/48"
+#            dsn: "http://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
+            dsn: "http://xxx:xxx@sentry.stfalcon.com/48"
             level: error
         grouped_main:
             type:    group
