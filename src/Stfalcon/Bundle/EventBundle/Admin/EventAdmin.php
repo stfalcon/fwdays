@@ -200,24 +200,6 @@ class EventAdmin extends Admin
                         'help' => 'Если не указан, тогда используєтся основной.',
                     ]
                 )
-                ->add(
-                    'pdfBackgroundFile',
-                    'file',
-                    [
-                        'label' => 'Изображение для pdf',
-                        'required' => false,
-                        'help' => 'Левый верхний угол.',
-                    ]
-                )
-                ->add(
-                    'emailBackgroundFile',
-                    'file',
-                    [
-                        'label' => 'Изображение для писем',
-                        'required' => false,
-                        'help' => 'Левый правый угол.',
-                    ]
-                )
             ->end();
     }
 
