@@ -58,3 +58,18 @@ services:
             - [setRouter, ['@router']]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    app.helper.new_pdf_generator:
+        class: Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper
+        arguments:
+            - "@twig"
+            - "@router"
+            - "@stfalcon_event.qr_code"
+            - "@kernel"
+            - "@tfox.mpdfport"
+            - "@app.svg_to_jpg.service"
+
+    app.svg_to_jpg.service:
+        class: Application\Bundle\DefaultBundle\Service\SvgToJpg
+        arguments:
+            - "@monolog.logger"

@@ -9,13 +9,13 @@
             <div class="form-col form-col--6 form-col--xs-12">
                 <div class="form-group">
                     <label class="form-label" for="payment_user_name">{{ 'user.name.title'|trans }}</label>
-                    <input class="input" type="text" id="payment_user_name" name="user-name" value="">
+                    <input class="input valid-name" type="text" id="payment_user_name" name="user-name" value="">
                 </div>
             </div>
             <div class="form-col form-col--6 form-col--xs-12">
                 <div class="form-group">
                     <label class="form-label" for="payment_user_surname">{{ 'user.surname.title'|trans }}</label>
-                    <input class="input" type="text" id="payment_user_surname" name="user-surname" value="">
+                    <input class="input valid-name" type="text" id="payment_user_surname" name="user-surname" value="">
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="form-col form-col--6 form-col--xs-12">
                 <div class="form-group">
                     <label class="form-label" for="payment_user_email">{{ 'user.email.title'|trans }}</label>
-                    <input class="input" type="email" id="payment_user_email" name="user-email" value="">
+                    <input class="input valid-email" type="email" id="payment_user_email" name="user-email" value="">
                 </div>
             </div>
             <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
@@ -65,7 +65,7 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label" for="user_phone">{{ 'user.phone.title_payment'|trans }}</label>
-                <input class="input mask-phone-input--js" placeholder="+380" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
+                <input class="input valid-phone mask-phone-input--js" placeholder="+380" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">

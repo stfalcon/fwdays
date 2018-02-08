@@ -124,6 +124,7 @@ ticket.wait_for_you: 'We are waiting for you:'
 ticket.city: %city_name%,
 ticket.registration.begin: Registration starts at
 ticket.event.programm: 'Agenda:'
+new_ticket.event.programm: 'Agenda'
 ticket.print.ticket.text1: 'Please, print this invitation and take it with you. It is your entrance ticket to %event_name%.'
 ticket.print.ticket.text2: We are looking forward to meet you!
 ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
@@ -164,6 +165,7 @@ flash_user_created.title: You are registrated on the site
 
 contact_info.title: Contact info
 candidate.speaker.title: On consideration
+committee.speaker.title: Program Committee
 error.phone_bad_format: Please enter a valid phone number
 error.email_bad_format: Please enter a valid email address
 error.surname.only_letters: Surname must contain only letters
@@ -195,10 +197,19 @@ mail.unsubscribe.no_more_news: We will not send you news about the Framework Day
 mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
 mail.unsubscribe.you_can_suscribe2: subscribe again
 mail.subcribe: You have subscribed on Framework Days news
+mail.with_ticket.text0: Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper
+mail.with_ticket.text1: Looking forward to meeting!
+mail.news.title: '%site% news'
 
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news
 ticket.email.team: 'Best regards, <br/> Team Fwdays <br/>'
+ticket.email.event_date.title: 'Date'
+ticket.email.event_reg.title: 'Registration'
+ticket.email.event_member.title: 'Participant'
+ticket.email.ticket_price.title: 'Ticket price'
+ticket.email.event.title: 'Event'
+
 welcome.email.title: Welcome!
 registration.email.subject: Registration completed on fwdays.com
 dear_user.email.text: |
@@ -211,10 +222,7 @@ resetting:
     password_already_requested: The password for this user has already been requested within the last 24 hours.
     email:
         message: |
-            Hello %username%,
-
+            Hello %username%!  <br/>
+            <br/>
             You recently requested to reset your password.
-            To complete your request, please click the link below: %confirmationUrl%
-
-            Thanks,
-            FWDays Team.
+            To complete your request, please click the link below: <a href="%confirmationUrl%">%confirmationUrl%</a>

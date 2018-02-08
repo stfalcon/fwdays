@@ -149,7 +149,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -167,7 +167,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-]+$/u",
+     *     pattern="/^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u",
      *     match=true,
      *     message="error.surname.only_letters"
      * )
@@ -192,11 +192,7 @@ class User extends BaseUser
     protected $phone;
 
     /**
-     * @Assert\Regex(
-     *     pattern="/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/",
-     *     match=true,
-     *     message="error.phone_bad_format"
-     * )
+     * @Assert\Email(message="error.email_bad_format", strict="true")
      */
     protected $email;
 
