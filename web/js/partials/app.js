@@ -92,8 +92,6 @@ $(document).ready(function () {
 
         $('#ref-selected').text(value);
         $('#ref-input').val(ref);
-        $('#share-ref__facebook').attr("href", 'http://www.facebook.com/sharer.php?u='+ref);
-        $('#share-ref__facebook').attr("data-href", 'http://www.facebook.com/sharer.php?u='+ref);
         $("meta[property='og:image']").attr('content', image);
     });
 
