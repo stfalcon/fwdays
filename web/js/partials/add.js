@@ -288,6 +288,10 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 
 $(document).ready(function () {
 
+    $('#share-ref__facebook').on('click', function () {
+        popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
+    });
+
     $('.mask-phone-input--js').bind('input', function() {
         $(this).val(function(_, v){
             return v.replace(/[-\s\(\)]+/g, '');
