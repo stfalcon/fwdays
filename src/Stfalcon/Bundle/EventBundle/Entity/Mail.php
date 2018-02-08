@@ -237,6 +237,22 @@ class Mail
     }
 
     /**
+     * @param bool $checkStop
+     *
+     * @return $this
+     */
+    public function decSentMessage($checkStop = true)
+    {
+        --$this->sentMessages;
+
+        if ($checkStop) {
+            $this->stopIfMailed();
+        }
+
+        return $this;
+    }
+
+    /**
      * Stop Mail if all mailed
      *
      * @return $this
@@ -274,6 +290,22 @@ class Mail
     public function decTotalMessages($checkStop = true)
     {
         --$this->totalMessages;
+
+        if ($checkStop) {
+            $this->stopIfMailed();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param bool $checkStop
+     *
+     * @return $this
+     */
+    public function incTotalMessages($checkStop = true)
+    {
+        ++$this->totalMessages;
 
         if ($checkStop) {
             $this->stopIfMailed();
