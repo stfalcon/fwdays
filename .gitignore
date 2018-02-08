@@ -3,6 +3,7 @@
 /app/logs/*
 /app/cache/*
 /app/sessions/*
+/app/config/parameters.ini
 !/app/sessions/.gitkeep
 /vendor/
 /bin/
@@ -12,7 +13,6 @@
 # Application
 /web/tmp/*
 /web/uploads/*
-!/web/uploads/events
 /node_modules
 .idea
 /web/assets
