@@ -41,6 +41,7 @@ events.past: Past events
 event.page.program: Program
 event.page.venue: Venue
 event.page.venue_how: How to get
+event.page.partners_detail: More about partners
 event_cost.title: Event cost
 
 event.detail.info2: Details
