@@ -135,6 +135,12 @@
   .btn-up {
     display: none;
   }
+
+  .speaker-card {
+    &__img {
+      mix-blend-mode: initial;
+    }
+  }
 }
 
 @media only screen and (max-width: 1023px) {
