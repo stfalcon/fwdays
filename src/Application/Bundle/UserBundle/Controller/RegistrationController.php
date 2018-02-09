@@ -5,6 +5,7 @@ namespace Application\Bundle\UserBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,19 +25,26 @@ class RegistrationController extends BaseController
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');
+        $fromOAuth = false;
         if ($this->container->get('session')->has('social-response')) {
             $oAuthData = $this->container->get('session')->get('social-response');
             $user = new User();
             $user = $this->setUserFromOAuthResponse($user, $oAuthData);
+            $user->setPlainPassword(md5(uniqid()));
             if ($user instanceof User) {
                 $form = $this->container->get('form.factory')->create('application_user_registration', $user);
+                $errors = $this->container->get('validator')->validate($user);
+                foreach ($errors as $error) {
+                    $form->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
+                }
+                $fromOAuth = true;
             }
             $this->container->get('session')->remove('social-response');
         }
         $formHandler = $this->container->get('fos_user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
-        $process = $formHandler->process($confirmationEnabled);
+        $process = $fromOAuth ? false : $formHandler->process($confirmationEnabled);
         if ($process) {
             $user = $form->getData();
 

@@ -193,6 +193,7 @@ class User extends BaseUser
 
     /**
      * @Assert\Email(message="error.email_bad_format", strict="true")
+     * @Assert\NotBlank()
      */
     protected $email;
 

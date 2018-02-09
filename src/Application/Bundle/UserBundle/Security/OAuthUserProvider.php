@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -23,7 +24,7 @@ class OAuthUserProvider extends BaseClass
      *
      * @param UserManagerInterface $userManager
      * @param array                $properties
-     * @param $container
+     * @param Container            $container
      */
     public function __construct(UserManagerInterface $userManager, array $properties, $container)
     {
@@ -52,8 +53,12 @@ class OAuthUserProvider extends BaseClass
                     $user->setEmail($email);
                     $user->setPlainPassword(md5(uniqid()));
                     $user->setEnabled(true);
+                    $errors = $this->container->get('validator')->validate($user);
+                    if ($errors->count() > 0) {
+                        throw new \Exception('need_data');
+                    }
                     $this->userManager->updateUser($user);
-                } catch (NotNullConstraintViolationException $e) {
+                } catch (\Exception $e) {
                     $needUserData = new NeedUserDataException('needUserData');
                     $responseArr = [];
                     $responseArr['first_name'] = $response->getFirstName();
