@@ -448,8 +448,16 @@
     }
 
     &__left {
-      margin: 0 44px 24px 0;
+      margin: 24px 44px 0 0;
     }
+
+    &__right {
+      margin-top: 24px;
+    }
+  }
+
+  .partners__box--cols {
+    margin: -24px 0 0;
   }
 
   // BEGIN short event(max-width: 1023)
@@ -1316,10 +1324,6 @@
 
     &__cols {
       flex-direction: column;
-    }
-
-    &__left {
-      margin: 0 0 24px;
     }
   }
 

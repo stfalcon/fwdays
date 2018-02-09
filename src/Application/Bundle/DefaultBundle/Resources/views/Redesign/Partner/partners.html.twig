@@ -18,7 +18,7 @@
     {% endif %}
     {% if partners[0] is defined %}
         {% set class = 'right' %}
-        <div class="partners__box">
+        <div class="partners__box partners__box--cols">
         {% for sort_order in partners[0] %}
             {% for ctgname, partners in sort_order %}
                 {% if class == 'left' %}
@@ -42,8 +42,8 @@
         {% endfor %}
         </div>
     {% endif %}
+        <a href="{{ path('show_page', {'slug': 'partners' }) }}" class="partners__detail-link">{{ 'event.page.partners_detail'|trans }}</a>
     </div>
-    {#<a href="{{ path('show_page', {'slug': 'partners' }) }}" class="location__help">{{ 'event.page.partners_detail'|trans }}</a>#}
 </section>
 <!--END partners-->
 {% endif %}
