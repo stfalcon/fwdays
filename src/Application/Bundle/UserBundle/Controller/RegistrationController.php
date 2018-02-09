@@ -30,7 +30,6 @@ class RegistrationController extends BaseController
             $oAuthData = $this->container->get('session')->get('social-response');
             $user = new User();
             $user = $this->setUserFromOAuthResponse($user, $oAuthData);
-            $user->setPlainPassword(md5(uniqid()));
             if ($user instanceof User) {
                 $form = $this->container->get('form.factory')->create('application_user_registration', $user);
                 $errors = $this->container->get('validator')->validate($user);
