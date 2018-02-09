@@ -2,22 +2,22 @@
 
 <form id="form_registration_{{ form_id }}" action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
     <input type="hidden" id="fos_user_registration_form__token_{{ remodal }}" name="fos_user_registration_form[_token]"
-           value="{{ csrf_token('registration') }}"/>
+           value="{{ csrf_token('registration') }}" required/>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label form-label--required"
                        for="fos_user_registration_form_name_{{ remodal }}">{{ 'user.name.title'|trans }}</label>
-                <input class="input {% if regForm is defined and regForm.name.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_registration_form_name_{{ remodal }}"
-                       name="fos_user_registration_form[name]" value="{% if regForm is defined and regForm.name.vars.value %}{{ regForm.name.vars.value }}{% endif %}">
+                <input class="input valid-name {% if regForm is defined and regForm.name.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_registration_form_name_{{ remodal }}"
+                       name="fos_user_registration_form[name]" value="{% if regForm is defined and regForm.name.vars.value %}{{ regForm.name.vars.value }}{% endif %}" required/>
                     {% if regForm is defined and regForm.name.vars.errors|length %}<p class="text-error">{{ regForm.name.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">
             <label class="form-label form-label--required"
                    for="fos_user_registration_form_surname_{{ remodal }}">{{ 'user.surname.title'|trans }}</label>
-            <input class="input {% if regForm is defined and regForm.surname.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_registration_form_surname_{{ remodal }}"
-                   name="fos_user_registration_form[surname]" value="{% if regForm is defined and regForm.surname.vars.value %}{{ regForm.surname.vars.value }}{% endif %}">
+            <input class="input valid-name {% if regForm is defined and regForm.surname.vars.errors|length %}input--error{% endif %}" type="text" id="fos_user_registration_form_surname_{{ remodal }}"
+                   name="fos_user_registration_form[surname]" value="{% if regForm is defined and regForm.surname.vars.value %}{{ regForm.surname.vars.value }}{% endif %}" required/>
                     {% if regForm is defined and regForm.surname.vars.errors|length %}<p class="text-error">{{ regForm.surname.vars.errors[0].message|trans }}</p>{% endif %}
         </div>
     </div>
@@ -26,8 +26,8 @@
             <div class="form-group">
                 <label class="form-label form-label--required"
                        for="fos_user_registration_form_email_{{ remodal }}">{{ 'user.email.title'|trans }}</label>
-                <input class="input {% if regForm is defined and regForm.email.vars.errors|length %}input--error{% endif %}" type="email" id="fos_user_registration_form_email_{{ remodal }}"
-                       name="fos_user_registration_form[email]" value="{% if regForm is defined and regForm.email.vars.value %}{{ regForm.email.vars.value }}{% endif %}">
+                <input class="input valid-email {% if regForm is defined and regForm.email.vars.errors|length %}input--error{% endif %}" type="email" id="fos_user_registration_form_email_{{ remodal }}"
+                       name="fos_user_registration_form[email]" value="{% if regForm is defined and regForm.email.vars.value %}{{ regForm.email.vars.value }}{% endif %}" required/>
                 {% if regForm is defined and regForm.email.vars.errors|length %}<p class="text-error">{{ regForm.email.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
@@ -35,8 +35,8 @@
             <label class="form-label form-label--required"
                    for="fos_user_registration_form_plainPassword_{{ remodal }}">{{ 'user.password.title'|trans }}</label>
             <div class="input-password">
-                <input class="input input-password__field {% if regForm is defined and regForm.plainPassword.vars.errors|length %}input--error{% endif %}" type="password" id="fos_user_registration_form_plainPassword_{{ remodal }}"
-                       name="fos_user_registration_form[plainPassword]" value="">
+                <input class="input input-password__field valid-plainPassword {% if regForm is defined and regForm.plainPassword.vars.errors|length %}input--error{% endif %}" type="password" id="fos_user_registration_form_plainPassword_{{ remodal }}"
+                       name="fos_user_registration_form[plainPassword]" value="" required/>
                 <i class="input-password__icon icon-eye icon-password--js"></i>
                 {% if regForm is defined and regForm.plainPassword.vars.errors|length %}<p class="text-error">{{ regForm.plainPassword.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
@@ -46,8 +46,8 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label" for="fos_user_registration_form_phone_{{ remodal }}">{{ 'user.phone.title'|trans }}</label>
-                <input class="input mask-phone-input--js {% if regForm is defined and regForm.phone.vars.errors|length %}input--error{% endif %}" type="tel" id="fos_user_registration_form_phone_{{ remodal }}"
-                       name="fos_user_registration_form[phone]" placeholder="+38" value="{% if regForm is defined and regForm.phone.vars.value %}{{ regForm.phone.vars.value }}{% endif %}">
+                <input class="input valid-phone mask-phone-input--js {% if regForm is defined and regForm.phone.vars.errors|length %}input--error{% endif %}" type="tel" id="fos_user_registration_form_phone_{{ remodal }}"
+                       name="fos_user_registration_form[phone]" placeholder="+380" value="{% if regForm is defined and regForm.phone.vars.value %}{{ regForm.phone.vars.value }}{% endif %}">
                 {% if regForm is defined and regForm.phone.vars.errors|length %}<p class="text-error">{{ regForm.phone.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
@@ -63,17 +63,22 @@
         </div>
     </div>
     <div class="form-row form-row--align-center">
+        <div class="g-recaptcha"
+             data-sitekey="{{ google_site_key }}"
+             data-callback="submitRegistrationForm"
+             data-size="invisible">
+        </div>
         <div class="form-col form-col--6 form-col--xs-12">
-            <button class="btn btn--primary btn--lg form-col__btn g-recaptcha"
-                    data-sitekey="{{ google_site_key }}"
-                    data-callback="submitRegistrationForm"
+            <button class="btn btn--primary btn--lg form-col__btn"
                     {% set ga_label = 'main' %}
                     {% if queryLink is not empty %}
                         {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
                             {% set ga_label = 'event' %}
                         {% endif %}
                     {% endif %}
-                    onclick="setRegistrationFormId('form_registration_{{ form_id }}');ga('send', 'button', 'register', '{{ ga_label }}');"
+                    onclick="recapchaValidate('form_registration_{{ form_id }}');
+                             ga('send', 'button', 'register', '{{ ga_label }}');
+                             return false;"
                     >{{ 'user.create.title'|trans }}
             </button>
         </div>

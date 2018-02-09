@@ -13,7 +13,12 @@
         <div class="speakers__box">
             <h2 class="h2 speakers__title">{{ 'candidate.speaker.title'|trans }}</h2>
             <ul class="speakers__items">
-                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers', {'event':event, 'isCandidates':true }) %}
+                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers',
+                    {
+                        'event':event,
+                        'speakerType':constant('Application\\Bundle\\DefaultBundle\\Controller\\SpeakerController::SPEAKER_TYPE_CANDIDATE')
+                    })
+                %}
             </ul>
         </div>
     {% endif %}

@@ -5,7 +5,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title">{{ 'menu.login'|trans }}</div>
         </div>
-        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':''} %}
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':'', 'error':null} %}
     </div>
 </div>
 <!--END signin-popup-->
@@ -17,7 +17,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</div>
         </div>
-        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1'} %}
+        {% include '@ApplicationDefault/Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1', 'error':null} %}
     </div>
 </div>
 <!--END signin-payment-popup-->
@@ -57,15 +57,3 @@
     </div>
 </div>
 <!--END forgot-password-popup-->
-
-<!--BEGIN payment-popup-->
-<div class="remodal remodal--md" data-remodal-id="modal-payment" data-remodal-options="hashTracking: false">
-    <button id="close-payment" data-remodal-action="close" class="remodal-close icon-close"></button>
-    <div class="remodal__body">
-        <div class="remodal__head remodal__head--payment">
-            <div class="h2 remodal__title change-title"></div>
-        </div>
-        {% include '@ApplicationDefault/Redesign/Payment/payment_form.html.twig' %}
-    </div>
-</div>
-<!--END payment-popup-->
