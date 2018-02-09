@@ -115,6 +115,7 @@ events.future: Майбутні події
 event.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися
+event.page.partners_detail: Докладніше про партнерів
 event_cost.title: Вартість участі
 ticket.dear_user: Шановний учасник <b>%user_name%</b>,
 ticket.wait_for_you: 'чекаємо на Вас:'
