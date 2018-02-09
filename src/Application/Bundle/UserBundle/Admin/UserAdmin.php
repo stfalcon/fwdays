@@ -21,13 +21,14 @@ class UserAdmin extends Admin
         $project->setTickets($project->getTickets());
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagrid)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagrid
+        $datagridMapper
             ->add('id')
             ->add('name', null, ['label' => 'Имя'])
             ->add('surname', null, ['label' => 'Фамилия'])
-            ->add('phone', null, ['label' => 'Почта'])
+            ->add('phone', null, ['label' => 'Телефон'])
+            ->add('email', null, ['label' => 'Почта'])
             ->add('company', null, ['label' => 'Компания'])
             ->add('balance', null, ['label' => 'Баланс'])
             ->add('enabled', null, ['label' => 'Активирован'])

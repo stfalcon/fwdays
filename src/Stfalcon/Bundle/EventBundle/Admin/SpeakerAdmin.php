@@ -68,7 +68,7 @@ class SpeakerAdmin extends Admin
                     'label' => 'Фото',
                 ])
             ->end()
-            ->with('Участвует в событиях', ['class' => 'col-md-6'])
+            ->with('Участвует в событиях', ['class' => 'col-md-4'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'query_builder' =>
@@ -83,8 +83,23 @@ class SpeakerAdmin extends Admin
                     'label' => 'События',
                 ])
             ->end()
-            ->with('Кандидат на события', ['class' => 'col-md-6'])
+            ->with('Кандидат на события', ['class' => 'col-md-4'])
                 ->add('candidateEvents', 'entity', [
+                    'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
+                    'query_builder' =>
+                        function (\Doctrine\ORM\EntityRepository $repository) {
+                            $qb = $repository->createQueryBuilder('e');
+                            $repository = $qb->orderBy('e.id', 'DESC');
+
+                            return  $repository;
+                        },
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => 'События',
+                ])
+            ->end()
+            ->with('Программный комитет', ['class' => 'col-md-4'])
+                ->add('committeeEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'query_builder' =>
                         function (\Doctrine\ORM\EntityRepository $repository) {

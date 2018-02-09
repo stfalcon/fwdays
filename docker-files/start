@@ -10,8 +10,9 @@ cd /var/www/html && ./composer.phar install
 
 ./console doctrine:database:create
 ./console doctrine:migrations:migrate
-./console doctrine:fixtures:load
+
 ./console assets:install web --symlink
+./console lexik:translations:import
 
 chmod -R 777 /var/www/html/app/cache
 chmod -R 777 /var/www/html/app/logs
@@ -24,7 +25,15 @@ mkdir /var/www/html/web/uploads/sponsors
 mkdir /var/www/html/web/uploads/speakers
 mkdir /var/www/html/web/uploads/events
 chmod -R 777 /var/www/html/web/uploads
-
 chmod -R 777 /var/www/html/app/sessions
+
+./console doctrine:fixtures:load
+
+cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz
+cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz
+cp -a /node-v6.11.3-linux-x64/* /
+npm install -g gulp
+cd /var/www/html && npm install
+cd /var/www/html && npm run gulp-dev
 
 while true; do sleep 10000; done

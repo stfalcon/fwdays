@@ -126,7 +126,7 @@ class LocaleUrlResponseListener
     private function getCurrentLocale($request)
     {
         return $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), $this->locales)
-            ? $request->cookies->get($this->cookieName) : $this->defaultLocale;
+            ? $request->cookies->get($this->cookieName) : $request->getPreferredLanguage($this->locales);
     }
 
     /**

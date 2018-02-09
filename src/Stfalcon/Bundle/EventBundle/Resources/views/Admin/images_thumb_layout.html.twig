@@ -2,15 +2,13 @@
 
 {% block field%}
     <div class="pull-left" style="padding-right: 10px">
-        <span>Logo</span><br />
+        <span>Логотип</span><br />
         <img src="{{vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto" style="background-color: {{ object.backgroundColor }};"/>
     </div>
+    {% if object.smallLogoFile is not empty %}
     <div class="pull-left" style="padding-right: 10px">
-        <span>Email Background</span><br />
-        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'emailBackgroundFile') }}" title="email background image" width="100px" height="auto" />
+        <span>Мини логотип</span><br />
+        <img src="{{vich_uploader_asset(object, 'smallLogoFile') }}" title="small logo image" width="100px" height="auto" />
     </div>
-    <div class="pull-left">
-        <span>Pdf Background</span><br />
-        <img src="{{ url('homepage') ~ vich_uploader_asset(object, 'pdfBackgroundFile') }}" title="PDF background image" width="100px" height="auto" />
-    </div>
+    {% endif %}
 {% endblock %}

@@ -12,30 +12,31 @@
         </div>
     </div>
 </div>
-{% if speaker.reviews %}
-    {% for review in speaker.reviews %}
-        <div class="report-popup">
-            <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
-               class="report-popup__title">{{ review.title }}</a>
-            {% if review.event.isActiveAndFuture %}
-                <div class="report-popup__likes">
-                    <div class="like-btn">
-                        {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+{% if with_review %}
+    {% if speaker.reviews %}
+        {% for review in speaker.reviews %}
+            <div class="report-popup">
+                <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
+                   class="report-popup__title">{{ review.title }}</a>
+                {% if review.event.isActiveAndFuture %}
+                    <div class="report-popup__likes">
+                        <div class="like-btn">
+                            {% include '@ApplicationDefault/Redesign/like.html.twig' with {'review':review} %}
+                        </div>
                     </div>
+                {% endif %}
+                <div class="report-popup__description">
+                    {{ review.text|raw }}
                 </div>
-            {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="report-popup">
             <div class="report-popup__description">
-                {{ review.text|raw }}
+                {{ 'speaker.no_review.text'|trans }}
             </div>
         </div>
-    {% endfor %}
-{% else %}
-    <div class="report-popup">
-        <div class="report-popup__description">
-            {{ 'speaker.no_review.text'|trans }}
-        </div>
-    </div>
+    {% endif %}
 {% endif %}
-
 
 

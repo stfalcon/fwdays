@@ -35,7 +35,7 @@ sponsor.partners.call_us: <a href="/contacts">Зв'яжіться</a> з нам�
 event.get_more_info: Дізнатися більше
 sponsor.partners.can_be_your_logo: Тут може<br> бути Ваш логотип
 news.all: Всі новини
-news.title: Новини
+
 events.past: Минулі події
 user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Ім'я
@@ -115,12 +115,14 @@ events.future: Майбутні події
 event.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися
+event.page.partners_detail: Докладніше про партнерів
 event_cost.title: Вартість участі
 ticket.dear_user: Шановний учасник <b>%user_name%</b>,
 ticket.wait_for_you: 'чекаємо на Вас:'
 ticket.city: м. %city_name%,
 ticket.registration.begin: Реєстрація починається о(об)
 ticket.event.programm: 'Програма конференції:'
+new_ticket.event.programm: 'Програма конференції'
 ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це запрошення і візьміть його з собою - це Ваш квиток на %event_name%.'
 ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
@@ -158,9 +160,11 @@ pay.event.cupon: 'Купон на знижку:'
 flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
 flash_profile_updated.title: Ваш профіль оновлено
+flash_user_created.title: Ви зареєструвались на сайті
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
+committee.speaker.title: Програмний комітет
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'
@@ -190,10 +194,19 @@ mail.unsubscribe.no_more_news: Ми більше не будемо надсил�
 mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете
 mail.unsubscribe.you_can_suscribe2: Підписатися знову
 mail.subcribe: Ви підписані на новини Framework Days
+mail.with_ticket.text0: Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.
+mail.with_ticket.text1: З нетерпінням чекаємо на зустріч!
+mail.news.title: 'Новини в %site%'
 
 ticket.email.waitfornews: 'Слідкуйте за новинами:'
 ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Fwdays <br/>'
+ticket.email.event_date.title: 'Дата'
+ticket.email.event_reg.title: 'Реєстрація'
+ticket.email.event_member.title: 'Учасник'
+ticket.email.ticket_price.title: 'Ціна квитка'
+ticket.email.event.title: 'Подія'
+
 welcome.email.title: Ласкаво просимо!
 registration.email.subject: Ви успішно зареєстровані на сайті fwdays.com
 dear_user.email.text: |
@@ -206,9 +219,6 @@ resetting:
     password_already_requested: Запит на зміну пароля для даного користувача вже був здійснений за останні 24 години.
     email:
         message: |
-            Вітаємо %username%!
-
-            Для скидання пароля, будь ласка, перейдіть за посиланням %confirmationUrl%
-
-            З найкращими побажаннями,
-            команда сайту.
+              Вітаємо %username%! <br/>
+               <br/>
+              Для скидання пароля, будь ласка, перейдіть за посиланням <a href="%confirmationUrl%">%confirmationUrl%</a>

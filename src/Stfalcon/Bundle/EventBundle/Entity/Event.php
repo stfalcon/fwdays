@@ -169,22 +169,6 @@ class Event implements Translatable
     protected $smallLogo;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email_background", type="string", nullable=true)
-     */
-    protected $emailBackground = 'bg-common.png';
-
-    /**
-     * Фон для PDF билетов.
-     *
-     * @var string
-     *
-     * @ORM\Column(name="background_image", type="string", nullable=true)
-     */
-    protected $pdfBackgroundImage = 'left-element.png';
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -263,6 +247,16 @@ class Event implements Translatable
     protected $candidateSpeakers;
 
     /**
+     * Speakers event .
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="committeeEvents")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     */
+    protected $committeeSpeakers;
+
+    /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
      */
     protected $tickets;
@@ -282,23 +276,6 @@ class Event implements Translatable
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="smallLogo")
      */
     protected $smallLogoFile;
-
-    /**
-     * @Assert\File(maxSize="6000000")
-     * @Assert\Image
-     *
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="emailBackground")
-     */
-    protected $emailBackgroundFile;
-
-    /**
-     * @Assert\File(maxSize="6000000")
-     *
-     * @Assert\Image
-     *
-     * @Vich\UploadableField(mapping="event_image", fileNameProperty="pdfBackgroundImage")
-     */
-    protected $pdfBackgroundFile;
 
     /**
      * @var string
@@ -323,6 +300,7 @@ class Event implements Translatable
     {
         $this->speakers = new ArrayCollection();
         $this->candidateSpeakers = new ArrayCollection();
+        $this->committeeSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
     }
@@ -781,34 +759,6 @@ class Event implements Translatable
     }
 
     /**
-     * Set emailBackground.
-     *
-     * @param string $emailBackground emailBackground
-     *
-     * @return $this
-     */
-    public function setEmailBackground($emailBackground)
-    {
-        $this->emailBackground = $emailBackground;
-
-        return $this;
-    }
-
-    /**
-     * Set pdfBackgroundImage.
-     *
-     * @param string $pdfBackgroundImage pdfBackgroundImage
-     *
-     * @return $this
-     */
-    public function setPdfBackgroundImage($pdfBackgroundImage)
-    {
-        $this->pdfBackgroundImage = $pdfBackgroundImage;
-
-        return $this;
-    }
-
-    /**
      * Set pages.
      *
      * @param ArrayCollection $pages
@@ -858,16 +808,6 @@ class Event implements Translatable
     public function getLogo()
     {
         return $this->logo;
-    }
-
-    /**
-     * Get path to pdfBackgroundImage.
-     *
-     * @return string
-     */
-    public function getPdfBackgroundImage()
-    {
-        return $this->pdfBackgroundImage;
     }
 
     /**
@@ -945,62 +885,6 @@ class Event implements Translatable
     }
 
     /**
-     * Set emailBackgroundFile.
-     *
-     * @param UploadedFile|null $emailBackgroundFile
-     */
-    public function setEmailBackgroundFile($emailBackgroundFile)
-    {
-        $this->emailBackgroundFile = $emailBackgroundFile;
-        $this->setUpdatedAt(new \DateTime());
-
-        return $this;
-    }
-
-    /**
-     * Get emailBackgroundFile.
-     *
-     * @return UploadedFile
-     */
-    public function getEmailBackgroundFile()
-    {
-        return $this->emailBackgroundFile;
-    }
-
-    /**
-     * Get path to emailBackground.
-     *
-     * @return string
-     */
-    public function getEmailBackground()
-    {
-        return $this->emailBackground;
-    }
-
-    /**
-     * Set pdfBackgroundFile (used in tickets PDF).
-     *
-     * @param UploadedFile|null $pdfBackgroundFile
-     */
-    public function setPdfBackgroundFile($pdfBackgroundFile)
-    {
-        $this->pdfBackgroundFile = $pdfBackgroundFile;
-        $this->setUpdatedAt(new \DateTime());
-
-        return $this;
-    }
-
-    /**
-     * Get pdfBackgroundFile.
-     *
-     * @return UploadedFile
-     */
-    public function getPdfBackgroundFile()
-    {
-        return $this->pdfBackgroundFile;
-    }
-
-    /**
      * @todo remove this method (and try remove property)
      * Get event pages
      *
@@ -1069,6 +953,26 @@ class Event implements Translatable
     public function setCandidateSpeakers($candidateSpeakers)
     {
         $this->candidateSpeakers = $candidateSpeakers;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCommitteeSpeakers()
+    {
+        return $this->committeeSpeakers;
+    }
+
+    /**
+     * @param ArrayCollection $committeeSpeakers
+     *
+     * @return $this
+     */
+    public function setCommitteeSpeakers($committeeSpeakers)
+    {
+        $this->committeeSpeakers = $committeeSpeakers;
 
         return $this;
     }

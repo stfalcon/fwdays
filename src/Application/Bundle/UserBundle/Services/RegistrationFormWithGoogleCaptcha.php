@@ -66,10 +66,6 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      */
     private function isGoogleCaptchaTrue($captcha)
     {
-        if ('prod' !== $this->container->get('kernel')->getEnvironment()) {
-            return true;
-        }
-
         if (empty($captcha)) {
             return false;
         }
