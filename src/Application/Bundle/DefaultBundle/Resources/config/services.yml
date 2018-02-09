@@ -65,3 +65,6 @@ services:
         class: Application\Bundle\DefaultBundle\Service\SvgToJpg
         arguments:
             - "@monolog.logger"
+            - "%kernel.root_dir%"
+            - "%upload_dir%"
+
