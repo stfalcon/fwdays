@@ -14,6 +14,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * Class PaymentController.
@@ -213,7 +214,17 @@ class PaymentController extends Controller
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
 
         if (!$user) {
-            $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+            try {
+                $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+            } catch (BadCredentialsException $e) {
+                $this->get('logger')->addError('autoRegistration with bad params');
+
+                return new JsonResponse(['result' => false, 'error' => 'Bad credentials!', 'html' => '']);
+            }
+        }
+
+        if (!$user) {
+            return new JsonResponse(['result' => false, 'error' => 'Cant create user!', 'html' => '']);
         }
 
         $em = $this->getDoctrine()->getManager();
