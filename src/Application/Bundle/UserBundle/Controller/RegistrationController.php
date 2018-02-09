@@ -25,9 +25,9 @@ class RegistrationController extends BaseController
     {
         $form = $this->container->get('fos_user.registration.form');
         if ($this->container->get('session')->has('social-response')) {
-            $response = $this->container->get('session')->get('social-response');
+            $oAuthData = $this->container->get('session')->get('social-response');
             $user = new User();
-            $user = $this->setUserFromOAuthResponse($user, $response);
+            $user = $this->setUserFromOAuthResponse($user, $oAuthData);
             if ($user instanceof User) {
                 $form = $this->container->get('form.factory')->create('application_user_registration', $user);
             }
