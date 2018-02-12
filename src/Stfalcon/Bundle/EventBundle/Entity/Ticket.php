@@ -31,10 +31,6 @@ class Ticket
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
-    //@todo переименовать в price
-    /**
-     * @var float
-     */
     private $amount;
 
     /**
