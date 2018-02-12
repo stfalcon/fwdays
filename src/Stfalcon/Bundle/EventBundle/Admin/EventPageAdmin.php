@@ -62,7 +62,7 @@ class EventPageAdmin extends AbstractPageAdmin
                 ->add('event', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                 ])
-                ->add('showInMenu', null, ['required' => false])
+                ->add('showInMenu', null, ['required' => false, 'label' => 'Показывать страницу'])
                 ->add('sortOrder', null, [
                     'label' => 'Номер сортировки',
                     'attr' => ['min' => 1],
