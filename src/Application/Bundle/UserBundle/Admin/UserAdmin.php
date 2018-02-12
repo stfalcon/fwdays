@@ -21,6 +21,14 @@ class UserAdmin extends Admin
         $project->setTickets($project->getTickets());
     }
 
+    public function getFormTheme()
+    {
+        return array_merge(
+            parent::getFormTheme(),
+            ['@ApplicationDefault/Admin/admin.light_theme.html.twig']
+        );
+    }
+
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -61,6 +69,24 @@ class UserAdmin extends Admin
                 ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
                 ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
                 ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
+            ->end()
+            ->with('Билеты')
+                ->add(
+                    'tickets',
+                    'sonata_type_collection',
+                    [
+                        'by_reference' => false,
+                        'disabled' => true,
+                        'type_options' => [
+                            'delete' => false,
+                        ],
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'id',
+                    ]
+                )
             ->end()
             ->with('Management')
                 ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])

@@ -642,15 +642,31 @@ class User extends BaseUser
         return $this;
     }
 
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
     public function addTicket(Ticket $ticket)
     {
-        $ticket->setUser($this);
-        $this->tickets->add($ticket);
+        if (!$this->tickets->contains($ticket)) {
+            $ticket->setUser($this);
+            $this->tickets->add($ticket);
+        }
+
+        return $this;
     }
 
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
     public function removeTicket(Ticket $ticket)
     {
-        $this->tickets->removeElement($ticket);
+        if ($this->tickets->contains($ticket)) {
+            $this->tickets->removeElement($ticket);
+        }
 
         return $this;
     }
