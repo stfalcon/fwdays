@@ -59,47 +59,54 @@ class UserAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Общие')
-                ->add('name', null, ['required' => true, 'label' => 'Имя'])
-                ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
-                ->add('email', null, ['required' => true, 'label' => 'Почта'])
-                ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
-                ->add('company', null, ['required' => false, 'label' => 'Компания'])
-                ->add('post', null, ['required' => false, 'label' => 'Должность'])
-                ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
-                ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
-                ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
+            ->tab('Общие')
+                ->with('Общие')
+                    ->add('name', null, ['required' => true, 'label' => 'Имя'])
+                    ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
+                    ->add('email', null, ['required' => true, 'label' => 'Почта'])
+                    ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
+                    ->add('company', null, ['required' => false, 'label' => 'Компания'])
+                    ->add('post', null, ['required' => false, 'label' => 'Должность'])
+                    ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
+                    ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
+
+                ->end()
             ->end()
-            ->with('Билеты')
-                ->add(
-                    'tickets',
-                    'sonata_type_collection',
-                    [
-                        'by_reference' => false,
-                        'disabled' => true,
-                        'type_options' => [
-                            'delete' => false,
+            ->tab('Билеты')
+                ->with('Билеты')
+                    ->add(
+                        'tickets',
+                        'sonata_type_collection',
+                        [
+                            'by_reference' => false,
+                            'disabled' => true,
+                            'type_options' => [
+                                'delete' => false,
+                            ],
                         ],
-                    ],
-                    [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                        'sortable' => 'id',
-                    ]
-                )
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                            'sortable' => 'id',
+                        ]
+                    )
+                ->end()
             ->end()
-            ->with('Management')
-                ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
-                ->add(
-                    'roles',
-                    'choice',
-                    [
-                        'choices' => $this->getAvailableRoles(),
-                        'multiple' => true,
-                        'required' => false,
-                        'label' => 'Роли',
-                    ]
-                )
+            ->tab('Management')
+                ->with('Management')
+                    ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
+                    ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
+                    ->add(
+                        'roles',
+                        'choice',
+                        [
+                            'choices' => $this->getAvailableRoles(),
+                            'multiple' => true,
+                            'required' => false,
+                            'label' => 'Роли',
+                        ]
+                    )
+                ->end()
             ->end();
     }
 
