@@ -60,6 +60,8 @@
 
     {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
 
+    {% include '@ApplicationDefault/Redesign/Event/event.speakers_committee.html.twig' with {'event':event} %}
+
     <!--BEGIN location-->
     <section id="location-event" class="location">
         <div class="container container--sm">

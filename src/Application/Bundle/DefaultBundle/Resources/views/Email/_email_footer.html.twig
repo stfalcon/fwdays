@@ -73,6 +73,7 @@
                                               color: #747A88;
                                               margin: 0;">
                                     {% if mail != null %}
+                                    <img src="{{ url('trackopenmail', {'hash': user.salt, 'userId': user.id, 'mailId': mail.id}) }}" style="display: none">
                                     <a href="{{ url('unsubscribe', {'hash': user.salt, 'userId': user.id, 'mailId': mail.id}) }}" style="color: #747A88;">{{ 'ticket.email.unsubscribe'|trans }}</a>
                                     {% endif %}
                                 </p>

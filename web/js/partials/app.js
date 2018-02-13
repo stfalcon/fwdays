@@ -88,14 +88,9 @@ $(document).ready(function () {
     $('#ref-dropdown').on('change', function () {
         var value = $('option:selected', this).text(),
             ref = $('option:selected', this).data('ref');
-            // image = $('option:selected', this).data('image');
 
         $('#ref-selected').text(value);
         $('#ref-input').val(ref);
-        var fb_share = $('#share-ref__facebook');
-        fb_share.attr("href", 'http://www.facebook.com/sharer.php?u='+ref);
-        fb_share.attr("data-href", 'http://www.facebook.com/sharer.php?u='+ref);
-        // $("meta[property='og:image']").attr('content', image);
     });
 
     /**

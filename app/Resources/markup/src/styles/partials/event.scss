@@ -241,7 +241,7 @@
       }
 
       .speaker-card__top {
-        padding: 0;
+        padding: 0 0 20px;
         height: auto;
         background-color: $white-color;
       }
@@ -277,7 +277,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 0 20px;
+    padding: 0 20px 20px;
     text-decoration: none;
     cursor: pointer;
   }
@@ -286,7 +286,7 @@
     position: relative;
     z-index: 2;
     visibility: hidden;
-    padding: 20px;
+    padding: 0 20px 20px;
     background-color: $white-color;
     opacity: 0;
   }
@@ -702,7 +702,7 @@
 }
 
 .partners {
-  margin-bottom: 36px;
+  margin-bottom: 80px;
 
   &__box {
     margin-bottom: 36px;
@@ -726,7 +726,11 @@
   }
 
   &__left {
-    margin: 0 64px 36px 0;
+    margin: 36px 64px 0 0;
+  }
+
+  &__right {
+    margin-top: 36px;
   }
 
   &__title {
@@ -776,6 +780,25 @@
     transition: 0.2s ease-in-out;
     background-blend-mode: multiply;
   }
+
+  &__detail-link {
+    display: inline-block;
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: #0091AD;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    margin-top: 16px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}
+
+.partners__box--cols {
+  margin: -36px 0 0;
 }
 
 .location {

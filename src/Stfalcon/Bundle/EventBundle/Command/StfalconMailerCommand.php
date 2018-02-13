@@ -26,12 +26,12 @@ class StfalconMailerCommand extends ContainerAwareCommand
     }
 
     /**
-     * Execute command.
-     *
-     * @param InputInterface  $input  Input
-     * @param OutputInterface $output Output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @return int|null|void
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -66,16 +66,15 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!($user && $mail) ||
-                !$user->isEnabled() ||
-                !$user->isEmailExists() ||
-                !$user->isSubscribe() ||
-                !filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
-            ) {
-                $mail->setTotalMessages($mail->getTotalMessages() - 1);
-                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
-                    $mail->setStart(false);
-                }
+            if (!(
+                $user &&
+                $mail &&
+                $user->isEnabled() &&
+                $user->isSubscribe() &&
+                $user->isEmailExists() &&
+                filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
+            )) {
+                $mail->decTotalMessages();
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -86,18 +85,12 @@ class StfalconMailerCommand extends ContainerAwareCommand
             } catch (\Exception $e) {
                 $this->getContainer()->get('logger')->addError($e->getMessage(), array('email' => $user->getEmail()));
 
-                $mail->setTotalMessages($mail->getTotalMessages() - 1);
-                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
-                    $mail->setStart(false);
-                }
-
-                $em->persist($mail);
+                $mail->decTotalMessages();
                 $em->remove($item);
                 $em->flush();
                 continue;
             }
 
-            //add header tag for unsubscribe
             $headers = $message->getHeaders();
             $http = $this->getContainer()->get('router')->generate(
                 'unsubscribe',
@@ -113,15 +106,9 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
 
             if ($mailer->send($message)) {
-                $mail->setSentMessages($mail->getSentMessages() + 1);
+                $mail->incSentMessage();
                 $item->setIsSent(true);
 
-                if ($mail->getSentMessages() === $mail->getTotalMessages()) {
-                    $mail->setStart(false);
-                }
-
-                $em->persist($mail);
-                $em->persist($item);
                 $em->flush();
             }
         }

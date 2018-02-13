@@ -11,7 +11,7 @@ use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class PaymentGACommerceListener
+ * Class PaymentGACommerceListener.
  */
 class PaymentGACommerceListener
 {
@@ -82,13 +82,17 @@ class PaymentGACommerceListener
                         .' (#'.$user->getId()
                         .');'
                     ;
+
+                        $priceBlockName = null === $ticket->getTicketCost() ? 'admin' : $ticket->getTicketCost()->getName();
+
                     //send GA item
                     $this->gacommerce->sendItem(
                         $entity->getUser()->getId(),
                         $entity->getId(),
                         $itemName,
                         $ticket->getAmount(),
-                        $this->getItemVariant($event->getName())
+                        $this->getItemVariant($event->getName()),
+                        $priceBlockName
                     );
                 }
             }

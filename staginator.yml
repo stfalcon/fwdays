@@ -4,18 +4,21 @@ deploy_callbacks:
         - 'cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz'
         - 'cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz'
         - 'cp -a /node-v6.11.3-linux-x64/* /'
+        - 'npm install -g gulp'
+        - 'npm install'
+        - 'npm run gulp-prod'
+
+    before_composer:
+        - 'sed -i "s/google_captcha_secret_key = .*/google_captcha_secret_key = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
+        - 'sed -i "s/google_captcha_site_key = .*/google_captcha_site_key = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
         - 'sed -i "s/database_host     =.*/database_host     = fwdays-mysql/" app/config/parameters.ini'
         - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
         - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
-        - 'sed -i "s/google_captcha_secret_key =.*/google_captcha_secret_key     = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
-        - 'sed -i "s/google_captcha_site_key =.*/google_captcha_site_key     = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
         - 'sed -i "s/facebook_client_id =.*/facebook_client_id = `echo -n $APP_FACEBOOK_CLIENT_ID`/" app/config/parameters.ini'
         - 'sed -i "s/facebook_client_secret =.*/facebook_client_secret = `echo -n $APP_FACEBOOK_CLIENT_SECRET`/" app/config/parameters.ini'
         - 'sed -i "s/google_client_id =.*/google_client_id = `echo -n $APP_GOOGLE_CLIENT_ID`/" app/config/parameters.ini'
         - 'sed -i "s/google_client_secret =.*/google_client_secret = `echo -n $APP_GOOGLE_CLIENT_SECRET`/" app/config/parameters.ini'
-        - 'npm install -g gulp'
-        - 'npm install'
-        - 'npm run gulp-prod'
+
     after_deploy:
         - './console do:da:dr --force'
         - './console do:da:cr'
@@ -24,5 +27,6 @@ deploy_callbacks:
         - './console --no-interaction do:fi:lo'
 #        - 'rm -rf /stag/www/web/uploads/'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
+        - 'cp -a web/app_stag.php web/app.php'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"

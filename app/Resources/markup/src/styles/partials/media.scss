@@ -135,6 +135,12 @@
   .btn-up {
     display: none;
   }
+
+  .speaker-card {
+    &__img {
+      mix-blend-mode: initial;
+    }
+  }
 }
 
 @media only screen and (max-width: 1023px) {
@@ -448,8 +454,16 @@
     }
 
     &__left {
-      margin: 0 44px 24px 0;
+      margin: 24px 44px 0 0;
     }
+
+    &__right {
+      margin-top: 24px;
+    }
+  }
+
+  .partners__box--cols {
+    margin: -24px 0 0;
   }
 
   // BEGIN short event(max-width: 1023)
@@ -873,7 +887,7 @@
 
   .speaker-popup {
     flex-direction: column;
-    margin: -32px -32px 20px;
+    margin: -32px -32px 0;
     padding-bottom: 5px;
 
     &__photo {
@@ -892,6 +906,8 @@
   }
 
   .report-popup {
+    margin-top: 0;
+
     &__title {
       line-height: 32px;
     }
@@ -1315,10 +1331,6 @@
     &__cols {
       flex-direction: column;
     }
-
-    &__left {
-      margin: 0 0 24px;
-    }
   }
 
   .location {
@@ -1709,7 +1721,7 @@
   }
 
   .speaker-popup {
-    margin: -16px -16px 20px;
+    margin: -16px -16px 0;
 
     &__description {
       margin: 22px 16px 0;

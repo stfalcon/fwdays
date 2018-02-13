@@ -41,6 +41,7 @@ events.past: Past events
 event.page.program: Program
 event.page.venue: Venue
 event.page.venue_how: How to get
+event.page.partners_detail: More about partners
 event_cost.title: Event cost
 
 event.detail.info2: Details
@@ -165,6 +166,7 @@ flash_user_created.title: You are registrated on the site
 
 contact_info.title: Contact info
 candidate.speaker.title: On consideration
+committee.speaker.title: Program Committee
 error.phone_bad_format: Please enter a valid phone number
 error.email_bad_format: Please enter a valid email address
 error.surname.only_letters: Surname must contain only letters

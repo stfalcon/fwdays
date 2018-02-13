@@ -40,8 +40,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->_generateUploadedFile('JS_small.svg'))
             ->setLogo('JS_big.svg')
             ->setSmallLogo('JS_small.svg')
-            ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
-            ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h3>Как прошла конференция</h3>
@@ -124,8 +122,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
             ->setLogo('PHP_big.svg')
             ->setSmallLogo('PHP_small.svg')
-            ->setEmailBackgroundFile($this->_generateUploadedFile('event-2.png'))
-            ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
             ->setPlace('Пока неизвестно')
             ->setAbout('<h3>Панельная дискуссия</h3>
@@ -211,8 +207,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->_generateUploadedFile('phpel_small.svg'))
             ->setLogo('phpel_big.svg')
             ->setSmallLogo('phpel_small.svg')
-            ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
-            ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Где-то там')
             ->setPlace('Пока неизвестно')
             ->setAbout('Описание события')
@@ -233,8 +227,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setLogo('highload_big.svg')
             ->setSmallLogoFile($this->_generateUploadedFile('highload_small.svg'))
             ->setSmallLogo('highload_small.svg')
-            ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
-            ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('
@@ -329,8 +321,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
             ->setLogo('PHP_big.svg')
             ->setSmallLogo('PHP_small.svg')
-            ->setEmailBackgroundFile($this->_generateUploadedFile('bg-blue.png'))
-            ->setPdfBackgroundFile($this->_generateUploadedFile('left-element.png'))
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h2>Панельная дискуссия</h2>

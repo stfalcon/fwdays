@@ -107,9 +107,9 @@ function setPaymentHtml(e_slug, mobForce) {
     });
 }
 
-function setSpeakerHtml(e_slug, s_slug) {
+function setSpeakerHtml(e_slug, s_slug, with_review) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
-    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug}),
+    $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug, withReview:with_review}),
         function (data) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
@@ -288,6 +288,10 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 
 $(document).ready(function () {
 
+    $('#share-ref__facebook').on('click', function () {
+        popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
+    });
+
     $('.mask-phone-input--js').bind('input', function() {
         $(this).val(function(_, v){
             return v.replace(/[-\s\(\)]+/g, '');
@@ -322,7 +326,7 @@ $(document).ready(function () {
     $.validator.addClassRules({
         'valid-name': {
             required: true,
-            pattern: /^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
+            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/,
             minlength: 2,
             maxlength: 32,
         },
@@ -354,7 +358,8 @@ $(document).ready(function () {
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
-        setSpeakerHtml(e_slug, s_slug);
+        var with_review = $(this).data('review');
+        setSpeakerHtml(e_slug, s_slug, with_review);
     });
 
     $('.set-modal-header').on('click', function () {

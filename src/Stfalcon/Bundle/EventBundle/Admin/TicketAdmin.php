@@ -163,7 +163,7 @@ class TicketAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event', null, ['required' => true, 'label' => 'Событие'])
+            ->add('event', 'text', ['required' => true, 'label' => 'Событие', 'disabled' => true])
             ->add(
                 'amount',
                 'money',
@@ -172,8 +172,8 @@ class TicketAdmin extends Admin
                     'label' => 'Цена',
                 ]
             )
-            ->add('payment', null, ['label' => 'Оплата'])
-            ->add('used', null, ['label' => 'Использован'])
+            ->add('payment', 'text', ['label' => 'Оплата', 'disabled' => true])
+            ->add('used', null, ['label' => 'Использован', 'disabled' => true])
         ;
     }
 }

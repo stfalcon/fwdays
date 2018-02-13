@@ -115,6 +115,7 @@ events.future: Майбутні події
 event.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися
+event.page.partners_detail: Докладніше про партнерів
 event_cost.title: Вартість участі
 ticket.dear_user: Шановний учасник <b>%user_name%</b>,
 ticket.wait_for_you: 'чекаємо на Вас:'
@@ -163,6 +164,7 @@ flash_user_created.title: Ви зареєструвались на сайті
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
+committee.speaker.title: Програмний комітет
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'
