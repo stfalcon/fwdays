@@ -68,7 +68,7 @@ class UserAdmin extends Admin
                     ->add('company', null, ['required' => false, 'label' => 'Компания'])
                     ->add('post', null, ['required' => false, 'label' => 'Должность'])
                     ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
-                    ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
+                    ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на рассылку'])
 
                 ->end()
             ->end()
