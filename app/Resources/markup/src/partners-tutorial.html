@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <h2 class="h2">Our Partners</h2>
+    <div class="partner">
+        <a href="http://svitla.com/" target="_blank" class="partner__logo">
+            <img src="img/partners/partner-4.jpg" alt="" class="partner__img">
+        </a>
+        <div class="partner__description">
+            <a href="http://svitla.com/" target="_blank" class="partner__title">Svitla Systems</a>
+            <p class="partner__text">Svitla Systems is a proven software development company and testing provider
+                headquartered in Silicon Valley. Founded in 2003, Svitla Systems has grown a large number of sales
+                and development offices throughout the US, Mexico and Europe. Svitla is serving a wide range of customers,
+                including Monster.com, BMC Software, Inflection, Ancestry, Ingenico, Logitech and Stanford University.
+            </p>
+        </div>
+    </div>
+    <div class="partner">
+        <a href="http://sigma.software/" target="_blank" class="partner__logo">
+            <img src="img/partners/partner-3.jpg" alt="" class="partner__img">
+        </a>
+        <div class="partner__description">
+            <a href="http://sigma.software/" target="_blank" class="partner__title">Sigma Software</a>
+            <p class="partner__text">Sigma Software provides cutting-edge technology solutions within IT. We deliver smartest solutions for over
+                15 years to our customersin the areas of government, telecommunications, media & advertising, aerospace, automotive, gaming industry,
+                tourism and entertainment. Being a part of Sigma Group, one of the largest Nordic IT corporations headquartered in Stockholm, we are a
+                global player with more than 3000 employees in eleven countries and over 800 in Ukraine.
+                The company`s offices are located in four major Ukrainian IT hubs (Kharkiv, Odesa, Kyiv, and Lviv), as well as in Poland, Sweden, and the USA.</p>
+        </div>
+    </div>
+    <div class="partner">
+        <a href="https://www.valtech.com/" target="_blank" class="partner__logo">
+            <img src="img/partners/Valtech_173_73.jpg" alt="" class="partner__img">
+        </a>
+        <div class="partner__description">
+            <a href="http://sigma.software/" target="_blank" class="partner__title">Valtech</a>
+            <p class="partner__text">Valtech is a global digital agency where experiences are engineered. We are revolutionizing how our clients connect with their consumers,
+                closing the experience gap and orchestrating omni-channel customer journeys. We are 2500 innovators, design thinkers, marketers, creatives and developers spanning
+                5 continents with offices in 16 countries (France, USA, UK, Canada, China, Germany, Netherlands, Sweden, Switzerland, Denmark, India, Australia, Singapore, Argentina,
+                Brazil, Ukraine). 170 people in Ukraine: Kyiv, Dnipro, Kharkiv, Chernihiv, Chernivtsi.
+                While our expertise is in technology, marketing and experience design, our passion is in addressing transformational business challenges for our clients. With a strong belief that
+                differentiation comes from orchestrating seamless experiences around the customer, we close this gap by redesigning the customer journey and implementing the right, fully connected solution.
+                With a renowned commitment to innovation and agility, Valtech creates unprecedented success for our Global 500 clients while optimizing time-to-market and return on investment.
+                We invite you to join Valtech on our exciting journey into the future, be a part of our vision and share in our success. Valtech. Where Experiences are Engineered.</p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+        <h2 class="h2">Our Partners</h2>
+
+        <!--BEGIN PARTNERS-->
+        <div class="partner">
+
+             <!--BEGIN PARTNERS-logo-->
+                    <a href="http://svitla.com/" target="_blank" class="partner__logo">
+                        <img src="/uploads/sponsors/Svitla_140.png" alt="" class="partner__img">
+                    </a>
+            <!--END PARTNERS-logo-->
+
+            <!--BEGIN PARTNERS-description-->
+                    <div class="partner__description">
+                        <a href="http://svitla.com/" target="_blank" class="partner__title">Svitla Systems</a>
+                        <p class="partner__text">Svitla Systems is a proven software development company and testing provider
+                            headquartered in Silicon Valley. Founded in 2003, Svitla Systems has grown a large number of sales
+                            and development offices throughout the US, Mexico and Europe. Svitla is serving a wide range of customers,
+                            including Monster.com, BMC Software, Inflection, Ancestry, Ingenico, Logitech and Stanford University.
+                        </p>
+                    </div>
+            <!--END PARTNERS-description-->
+
+        </div>
+        <!--END PARTNERS-->
+
+        <!--BEGIN PARTNERS-->
+        <div class="partner">
+
+             <!--BEGIN PARTNERS-logo-->
+                    <a href="https://www.valtech.com/" target="_blank" class="partner__logo">
+                        <img src="/uploads/sponsors/Software_cmyk.png" alt="" class="partner__img">
+                    </a>
+            <!--END PARTNERS-logo-->
+
+            <!--BEGIN PARTNERS-description-->
+                    <div class="partner__description">
+                        <a href="http://sigma.software/" target="_blank" class="partner__title">Sigma Software</a>
+                        <p class="partner__text">Sigma Software provides cutting-edge technology solutions within IT. We deliver smartest solutions for over
+                            15 years to our customersin the areas of government, telecommunications, media & advertising, aerospace, automotive, gaming industry,
+                            tourism and entertainment. Being a part of Sigma Group, one of the largest Nordic IT corporations headquartered in Stockholm, we are a
+                            global player with more than 3000 employees in eleven countries and over 800 in Ukraine.
+                            The company`s offices are located in four major Ukrainian IT hubs (Kharkiv, Odesa, Kyiv,
+                            and Lviv), as well as in Poland, Sweden, and the USA.</p>
+                    </div>
+            <!--END PARTNERS-description-->
+
+        </div>
+        <!--END PARTNERS-->
+
+        <!--BEGIN PARTNERS-->
+        <div class="partner">
+
+             <!--BEGIN PARTNERS-logo-->
+                    <a href="http://sigma.software/" target="_blank" class="partner__logo">
+                        <img src="/uploads/sponsors/Valtech_173_73.jpg" alt="" class="partner__img">
+                    </a>
+            <!--END PARTNERS-logo-->
+
+            <!--BEGIN PARTNERS-description-->
+                    <div class="partner__description">
+                        <a href="http://sigma.software/" target="_blank" class="partner__title">Sigma Software</a>
+                        <div class="partner__description">
+                            <a href="http://sigma.software/" target="_blank" class="partner__title">Valtech</a>
+                            <p class="partner__text">Valtech is a global digital agency where experiences are engineered. We are revolutionizing how our clients
+                                connect with their consumers, closing the experience gap and orchestrating omni-channel customer journeys. We are 2500 innovators,
+                                design thinkers, marketers, creatives and developers spanning 5 continents with offices in 16 countries (France, USA, UK, Canada, China,
+                                Germany, Netherlands, Sweden, Switzerland, Denmark, India, Australia, Singapore, Argentina,
+                                Brazil, Ukraine). 170 people in Ukraine: Kyiv, Dnipro, Kharkiv, Chernihiv, Chernivtsi.
+                                While our expertise is in technology, marketing and experience design, our passion is in addressing transformational business
+                                challenges for our clients. With a strong belief that differentiation comes from orchestrating seamless experiences around the
+                                customer, we close this gap by redesigning the customer journey and implementing the right, fully connected solution.
+                                With a renowned commitment to innovation and agility, Valtech creates unprecedented success for our Global 500 clients while
+                                optimizing time-to-market and return on investment. We invite you to join Valtech on our exciting journey into the future,
+                                be a part of our vision and share in our success. Valtech.
+                                Where Experiences are Engineered.</p>
+                        </div>
+                    </div>
+            <!--END PARTNERS-description-->
+
+        </div>
+        <!--END PARTNERS-->
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+</div>
+<script src="js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+
+    doHighlight1();
+</script>
+</html>

@@ -1615,6 +1615,17 @@
       }
     }
   }
+
+  .partner {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 40px;
+
+    &__logo {
+      margin-right: 0;
+      margin-bottom: 30px;
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
