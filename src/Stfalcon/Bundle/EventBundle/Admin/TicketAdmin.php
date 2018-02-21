@@ -136,6 +136,7 @@ class TicketAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id')
             ->add('event', null, ['label' => 'Событие'])
             ->add('user', null, ['label' => 'Пользователь'])
             ->add('user.email', null, ['label' => 'Почта'])
