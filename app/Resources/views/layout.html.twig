@@ -71,6 +71,24 @@
 {% endblock popups %}
 
 {% block scripts %}
+    {% if app.environment == 'prod' %}
+        {% include "::ga.html.twig" %}
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
+        <!-- End Google Tag Manager -->
+    {% else %}
+        <script>
+            function ga(send, event, eventName, click) {
+                console.log('ga', send, event, eventName, click);
+            }
+        </script>
+    {% endif %}
     {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
     <script>
         var locale = "{{ app.request.locale }}";
@@ -105,25 +123,6 @@
         {% endif %}
     </script>
     {% endfor %}
-
-    {% if app.environment == 'prod' %}
-    {% include "::ga.html.twig" %}
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
-    <!-- End Google Tag Manager -->
-    {% else %}
-    <script>
-        function ga(send, event, eventName, click) {
-            console.log('ga', send, event, eventName, click);
-        }
-    </script>
-    {% endif %}
 
 {% endblock scripts %}
 </body>
