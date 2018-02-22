@@ -288,6 +288,8 @@ $(document).on('click', '.sub-wants-visit-event', function () {
 
 $(document).ready(function () {
 
+    $('[data-testid="dialog_iframe"]').removeClass('fb_customer_chat_bounce_in').addClass('fb_customer_chat_bounce_out').hide();
+
     $('#share-ref__facebook').on('click', function () {
         popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
     });

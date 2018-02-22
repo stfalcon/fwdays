@@ -9,7 +9,7 @@
     // We create the DIV dynamically to work correctly with Tag Manager
     var chatDiv = document.createElement('div');
     chatDiv.className = 'fb-customerchat';
-    chatDiv.setAttribute('page_id', '235981893111914'); // Facebook Page ID goes here
+    chatDiv.setAttribute('page_id', '{{ fb_page_id }}'); // Facebook Page ID goes here
     document.body.appendChild(chatDiv);
 
     window.fbAsyncInit = function() {
