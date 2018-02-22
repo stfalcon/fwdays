@@ -14,3 +14,9 @@ monolog:
         grouped_main:
             type:    group
             members: [nested]
+
+stfalcon_event:
+    interkassa:
+        shop_id: "%interkassa_shop_id%"
+        secret: "%interkassa_secret%"
+    discount: 0.2
