@@ -10,20 +10,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
- * Сервис для работы с реферальной программой
+ * Сервис для работы с реферальной программой.
  */
 class ReferralService
 {
-    const REFERRAL_CODE  = 'REFERRALCODE';
+    const REFERRAL_CODE = 'REFERRALCODE';
     const REFERRAL_BONUS = 100;
 
     /**
-     * @var Container $container
+     * @var Container
      */
     protected $container;
 
     /**
-     * @var Request $request
+     * @var Request
      */
     protected $request;
 
@@ -33,11 +33,11 @@ class ReferralService
     public function __construct($container)
     {
         $this->container = $container;
-        $this->request   = $this->container->get('request');
+        $this->request = $this->container->get('request');
     }
 
     /**
-     * Ger referral code
+     * Ger referral code.
      *
      * @param User|null $user User
      *
@@ -52,7 +52,6 @@ class ReferralService
         $referralCode = $user->getReferralCode();
 
         if (true === empty($referralCode)) {
-
             $user->setReferralCode(md5($user->getEmail().time()));
             $em = $this->container->get('doctrine.orm.default_entity_manager');
 
@@ -64,7 +63,7 @@ class ReferralService
     }
 
     /**
-     * Начисляет рефералы
+     * Начисляет рефералы.
      *
      * @param Payment $payment
      *
@@ -84,7 +83,6 @@ class ReferralService
 
             $em->persist($userReferral);
             $em->flush();
-
         }
     }
 
@@ -99,13 +97,11 @@ class ReferralService
 
         //списываем реферальные средства если они были использованы
         if ($payment->getFwdaysAmount() > 0) {
-
             $user = $payment->getUser();
             $userBalance = $payment->getUser()->getBalance();
             $balance = $userBalance - $payment->getFwdaysAmount();
             $user->setBalance($balance);
 
-            $em->persist($user);
             $em->flush();
 
             return true;
@@ -116,7 +112,9 @@ class ReferralService
 
     /**
      * @param $referralCode
+     *
      * @return User|null
+     *
      * @throws \Exception
      */
     public function getUserByReferralCode($referralCode)
@@ -130,7 +128,7 @@ class ReferralService
     }
 
     /**
-     * Save ref code in cookies
+     * Save ref code in cookies.
      *
      * @param Request $request
      *
@@ -143,7 +141,6 @@ class ReferralService
 
             //уже используется реф. код
             if (false == $request->cookies->has(self::REFERRAL_CODE)) {
-
                 $user = $this->getUser();
 
                 //user authorize
@@ -174,7 +171,7 @@ class ReferralService
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return User|null
      *
