@@ -77,7 +77,6 @@
             }
         </script>
     {% endif %}
-    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
     <script>
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}"
@@ -111,6 +110,7 @@
         {% endif %}
     </script>
     {% endfor %}
+    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
 
 {% endblock scripts %}
 </body>
