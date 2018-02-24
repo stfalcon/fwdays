@@ -18,6 +18,7 @@ class UserRepository extends EntityRepository
     {
         return $this->createQueryBuilder('u')
             ->where("u.roles LIKE '%ROLE_SUPER_ADMIN%'")
+            ->andWhere("u.roles LIKE '%ROLE_ADMIN%'")
             ->getQuery()
             ->getResult();
     }
