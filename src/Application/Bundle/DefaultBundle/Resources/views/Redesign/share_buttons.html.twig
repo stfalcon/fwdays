@@ -10,6 +10,7 @@
     var chatDiv = document.createElement('div');
     chatDiv.className = 'fb-customerchat';
     chatDiv.setAttribute('page_id', '{{ fb_page_id }}'); // Facebook Page ID goes here
+    chatDiv.setAttribute('minimized', 'true'); // Facebook Page ID goes here
     document.body.appendChild(chatDiv);
 
     window.fbAsyncInit = function() {
@@ -19,7 +20,7 @@
             xfbml            : true,
             version          : 'v2.12'
         });
-        $('[data-testid="dialog_iframe"]').removeClass('fb_customer_chat_bounce_in').addClass('fb_customer_chat_bounce_out').hide();
+
     };
 
     (function(d, s, id){
