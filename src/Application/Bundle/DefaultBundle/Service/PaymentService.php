@@ -42,6 +42,7 @@ class PaymentService
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $payment = new Payment();
         $payment->setUser($user);
+
         $this->em->persist($payment);
         if ($ticket instanceof Ticket) {
             if (($ticket->getPayment() && $this->removeTicketFromPayment($ticket->getPayment(), $ticket))
@@ -49,6 +50,7 @@ class PaymentService
                 $this->addTicketToPayment($payment, $ticket);
             }
         }
+
         $this->em->flush();
 
         return $payment;

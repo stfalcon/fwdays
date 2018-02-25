@@ -202,9 +202,11 @@ class TicketService
         $isDiv = null;
         $data = null;
         $class = '';
+        $ticketClass = '';
         $href = null;
         $isMob = null;
         $caption = '';
+        $ticketCaption = '';
         $onClick = null;
 
         if ($event->isActiveAndFuture()) {
@@ -228,7 +230,6 @@ class TicketService
             }
         } else {
             $eventState = self::EVENT_DONE;
-            $ticketState = self::EVENT_DONE;
         }
 
         $states =
@@ -317,11 +318,15 @@ class TicketService
         if ($event->isActiveAndFuture()) {
             $data = $event->getSlug();
 
-            if (self::CAN_DOWNLOAD_TICKET === $eventState) {
-                $caption = $isMob ? $this->translator->trans('ticket.mob_status.download')
+            if (self::CAN_DOWNLOAD_TICKET === $ticketState) {
+                $ticketCaption = $isMob ? $this->translator->trans('ticket.mob_status.download')
                     : $this->translator->trans('ticket.status.download');
                 $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
-            } elseif (self::WAIT_FOR_PAYMENT_RECEIVE === $eventState) {
+                $ticketClass = isset($states[$position][$ticketState]) ? $states[$position][$ticketState]
+                    : $states[$position][self::EVENT_DEFAULT_STATE];
+            }
+
+            if (self::WAIT_FOR_PAYMENT_RECEIVE === $eventState) {
                 $caption = $this->translator->trans('ticket.status.event.add');
                 $isDiv = true;
             } elseif (self::PAID_FOR_ANOTHER === $eventState) {
@@ -384,6 +389,8 @@ class TicketService
             [
                 'class' => $class,
                 'caption' => $caption,
+                'ticket_caption' => $ticketCaption,
+                'ticket_class' => $ticketClass,
                 'href' => $href,
                 'isDiv' => $isDiv,
                 'data' => $data,

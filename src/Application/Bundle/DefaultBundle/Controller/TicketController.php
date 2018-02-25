@@ -44,14 +44,7 @@ class TicketController extends Controller
             $local
         );
 
-        return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', [
-            'class' => $result['class'],
-            'caption' => $result['caption'],
-            'href' => $result['href'],
-            'isDiv' => $result['isDiv'],
-            'data' => $result['data'],
-            'onClick' => $result['onClick'],
-        ]);
+        return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', $result);
     }
 
     /**
