@@ -39,9 +39,7 @@ class DefaultController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function cabinetAction()
     {
@@ -71,12 +69,15 @@ class DefaultController extends Controller
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true]);
 
-        return [
-            'user' => $user,
-            'user_events' => $userEvents,
-            'events' => $events,
-            'code' => $referralService->getReferralCode(),
-        ];
+        return $this->render(
+            "ApplicationDefaultBundle:Redesign:cabinet.html.twig",
+            [
+                'user' => $user,
+                'user_events' => $userEvents,
+                'events' => $events,
+                'code' => $referralService->getReferralCode(),
+            ]
+        );
     }
 
     /**

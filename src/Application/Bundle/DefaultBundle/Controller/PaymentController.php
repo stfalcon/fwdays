@@ -69,6 +69,10 @@ class PaymentController extends Controller
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
         }
 
+        if ($ticket && $ticket->getPayment()->isPaid()) {
+            $payment = $paymentService->createPaymentForCurrentUserWithTicket(null);
+        }
+
         if (!$payment) {
             return new JsonResponse(
                 [

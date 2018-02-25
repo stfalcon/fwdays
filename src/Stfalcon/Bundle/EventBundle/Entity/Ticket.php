@@ -151,10 +151,14 @@ class Ticket
 
     /**
      * @param Event $event
+     *
+     * @return $this
      */
     public function setEvent(Event $event)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -183,10 +187,14 @@ class Ticket
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function setUser(User $user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -303,10 +311,14 @@ class Ticket
 
     /**
      * @param float $amountWithoutDiscount
+     *
+     * @return $this
      */
     public function setAmountWithoutDiscount($amountWithoutDiscount)
     {
         $this->amountWithoutDiscount = $amountWithoutDiscount;
+
+        return $this;
     }
 
     /**

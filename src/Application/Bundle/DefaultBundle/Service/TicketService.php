@@ -162,11 +162,11 @@ class TicketService
      */
     public function createTicket($event, $user)
     {
-        $ticket = new Ticket();
-        $ticket->setEvent($event);
-        $ticket->setUser($user);
-        $ticket->setAmountWithoutDiscount($event->getCost());
-        $ticket->setAmount($event->getCost());
+        $ticket = (new Ticket())
+            ->setEvent($event)
+            ->setUser($user)
+            ->setAmountWithoutDiscount($event->getCost())
+            ->setAmount($event->getCost());
         $this->em->persist($ticket);
         $this->em->flush();
 
@@ -181,7 +181,7 @@ class TicketService
      *
      * @return array
      */
-    public function getTicketHtmlData($user, $event, $position, $ticketCost, $local = 'uk')
+    public function getTicketHtmlData($user, $event, $position, $ticketCost)
     {
         $eventState = null;
         $ticket = null;
@@ -198,6 +198,7 @@ class TicketService
         }
 
         $eventState = null;
+        $ticketState = null;
         $isDiv = null;
         $data = null;
         $class = '';
@@ -208,8 +209,9 @@ class TicketService
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
-                $eventState = self::CAN_DOWNLOAD_TICKET;
-            } elseif ($ticket && !$event->getReceivePayments()) {
+                $ticketState = self::CAN_DOWNLOAD_TICKET;
+            }
+            if ($ticket && !$event->getReceivePayments()) {
                 $eventState = self::WAIT_FOR_PAYMENT_RECEIVE;
             } elseif ($payment && $payment->isPaid()) {
                 $eventState = self::PAID_FOR_ANOTHER;
@@ -226,6 +228,7 @@ class TicketService
             }
         } else {
             $eventState = self::EVENT_DONE;
+            $ticketState = self::EVENT_DONE;
         }
 
         $states =

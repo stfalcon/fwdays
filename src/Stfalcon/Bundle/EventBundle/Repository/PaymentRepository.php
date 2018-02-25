@@ -72,9 +72,11 @@ class PaymentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
         $query = $qb->leftJoin('p.tickets', 't')
             ->where('t.event = :event')
-            ->andWhere('p.user = :user')
+            ->andWhere($qb->expr()->eq('p.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.state', ':state'))
             ->setParameter('user', $user)
             ->setParameter('event', $event)
+            ->setParameter('state', Payment::STATUS_PENDING)
             ->setMaxResults(1)
             ->getQuery();
 
