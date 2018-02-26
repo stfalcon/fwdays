@@ -88,6 +88,7 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
@@ -96,12 +97,14 @@ class Ticket
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
 
     /**
      * @var bool
+     *
      * @ORM\Column(name="used", type="boolean")
      */
     private $used = false;

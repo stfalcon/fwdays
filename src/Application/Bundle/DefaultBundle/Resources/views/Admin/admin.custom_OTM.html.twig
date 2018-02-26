@@ -18,7 +18,15 @@
                                 <tr>
                                     {% for field_name, nested_field in nested_group_field.children %}
                                         <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group"{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
-                                            {{ nested_field.vars['data'] }}
+                                            {% if nested_field.vars['name'] == 'id' %}
+                                                <a href="{{ path('admin_stfalcon_event_ticket_edit', {'id':nested_field.vars['data']}) }}">{{ nested_field.vars['data'] }}</a>
+                                            {% elseif nested_field.vars['value'].id is defined %}
+                                                <a href="{{ path('admin_stfalcon_event_'~field_name~'_edit', {'id':nested_field.vars['value'].id}) }}">{{ nested_field.vars['data'] }}</a>
+                                            {% elseif nested_field.vars['name'] == 'createdAt'%}
+                                                {{ nested_field.vars['data']|format_datetime('d-MM-Y, HH:mm', app.request.locale, 'Europe/Kiev') }}
+                                            {% else %}
+                                                {{ nested_field.vars['data'] }}
+                                            {% endif %}
                                         </td>
                                     {% endfor %}
                                 </tr>
