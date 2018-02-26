@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -42,11 +43,23 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @return array|void
+     * @return array
      */
     public function getBatchActions()
     {
-        $actions = array();
+        $container = $this->getConfigurationPool()->getContainer();
+        $token = $container->get('security.token_storage')->getToken();
+        $isSuperAdmin = false;
+        if ($token) {
+            $user = $token->getUser();
+            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+        }
+
+        if (!$isSuperAdmin) {
+            return [];
+        }
+
+        return parent::getBatchActions();
     }
 
     /**
@@ -180,8 +193,15 @@ class EventAdmin extends Admin
                 )
             ->end()
             ->with('Изображения и цвет', ['class' => 'col-md-6'])
-                ->add('backgroundColor', 'text', ['required' => true, 'label' => 'Цвет фона',
-                    'help' => 'цвет в формате #1F2B3C'])
+                ->add(
+                    'backgroundColor',
+                    'text',
+                    [
+                        'required' => true,
+                        'label' => 'Цвет фона',
+                        'help' => 'цвет в формате #1F2B3C',
+                    ]
+                )
                 ->add(
                     'logoFile',
                     'file',

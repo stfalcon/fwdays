@@ -1,6 +1,7 @@
 <?php
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -31,6 +32,17 @@ class PaymentAdmin extends Admin
     public function getBatchActions()
     {
         $actions = [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormTheme()
+    {
+        return array_merge(
+            parent::getFormTheme(),
+            ['@ApplicationDefault/Admin/admin.light_theme.html.twig']
+        );
     }
 
     /**
@@ -120,13 +132,28 @@ class PaymentAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $container = $this->getConfigurationPool()->getContainer();
+        $token = $container->get('security.token_storage')->getToken();
+        $isSuperAdmin = false;
+        if ($token) {
+            $user = $token->getUser();
+            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+        }
+
+        $subject = $this->getSubject();
+
         $formMapper
             ->with('Общие')
-                ->add('amount', 'money', ['currency' => 'UAH', 'label' => 'Сума оплаты'])
+                ->add('amount', 'money', [
+                    'currency' => 'UAH',
+                    'label' => 'Сума оплаты',
+                    'disabled' => $subject->isPaid(),
+                ])
                 ->add('fwdaysAmount', 'money', [
                     'currency' => 'UAH',
                     'required' => false,
                     'label' => 'Сума реферальных',
+                    'disabled' => $subject->isPaid(),
                 ])
                 ->add('status', 'choice', [
                     'label' => 'статус оплаты',
@@ -135,6 +162,7 @@ class PaymentAdmin extends Admin
                         'paid' => 'оплачено',
                         'returned' => 'возвращенно',
                     ],
+                    'disabled' => !$isSuperAdmin,
                 ])
                 ->add('gate', 'choice', [
                     'label' => 'способ оплаты',
@@ -143,9 +171,25 @@ class PaymentAdmin extends Admin
                         'admin' => 'admin',
                         'fwdays-amount' => 'fwdays-amount',
                     ],
+                    'disabled' => !$isSuperAdmin,
                 ])
-                ->add('user', null, ['required' => true, 'label' => 'Пользователь'])
-                ->add('tickets', null, ['by_reference' => false, 'label' => 'Билеты'])
+                ->add('user', 'text', ['required' => true, 'label' => 'Пользователь', 'disabled' => true ])
+                ->add(
+                    'tickets',
+                    'sonata_type_collection',
+                    [
+                        'by_reference' => false,
+                        'disabled' => true,
+                        'type_options' => [
+                            'delete' => false,
+                        ],
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                        'sortable' => 'id',
+                    ]
+                )
             ->end();
     }
 }
