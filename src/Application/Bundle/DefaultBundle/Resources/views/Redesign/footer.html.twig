@@ -1,15 +1,22 @@
 <!--BEGIN footer-->
 <footer class="footer">
     <div class="container">
-        <div class="footer__left">
+        <div class="footer__start">
+            <div class="social social--contrast footer__social">
+                {% include '@ApplicationDefault/Redesign/social.html.twig' with {'position':'footer'} %}
+            </div>
             <div class="footer__copyright">© 2010–{{ "now"|date("Y") }} fwdays.com</div>
+        </div>
+        <div class="footer__center">
+        </div>
+        <div class="footer__end">
+        </div>
+
+        <div class="footer__left">
             {% include '@ApplicationDefault/Redesign/menu.html.twig' with {'position':'footer'} %}
         </div>
         <div class="footer__right">
             {% render controller('ApplicationDefaultBundle:Widgets:languageSwitcher', {'request': app.request, 'position' : 'footer'}) %}
-            <div class="social footer__social">
-                {% include '@ApplicationDefault/Redesign/social.html.twig' %}
-            </div>
             <a href="https://stfalcon.com" target="_blank" class="made-by footer__made-by">{{ 'madeby'|trans }} <i class="made-by__icon icon-stfalcon"></i>
                 stfalcon.com</a>
         </div>

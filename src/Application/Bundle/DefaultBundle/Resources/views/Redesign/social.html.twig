@@ -1,28 +1,36 @@
+{% if (position is not defined) or position not in ['header', 'footer'] %}
+    {% set position = 'header' %}
+{% endif %}
 {% set labels = {
         0: {
             'title': 'facebook',
             'link': 'https://www.facebook.com/fwdays/',
-            'img': asset('assets/img/social/icon_fb.svg')
+            'img_header': asset('assets/img/social/icon_fb.svg'),
+            'img_footer': asset('assets/img/social/icon_fb_color.svg'),
         },
         1: {
             'title': 'telegram',
             'link': 'https://t.me/fwdays',
-            'img': asset('assets/img/social/icon_te.svg')
+            'img_header': asset('assets/img/social/icon_te.svg')
+            'img_footer': asset('assets/img/social/icon_te_color.svg')
         },
         2: {
             'title': 'twitter',
             'link': 'https://twitter.com/fwdays',
-            'img': asset('assets/img/social/icon_twitter.svg')
+            'img_header': asset('assets/img/social/icon_twitter.svg')
+            'img_footer': asset('assets/img/social/icon_twitter_color.svg')
         },
         3: {
             'title': 'youtube',
             'link': 'https://www.youtube.com/user/fwdays/',
-            'img': asset('assets/img/social/icon_youtube.svg')
+            'img_header': asset('assets/img/social/icon_youtube.svg')
+            'img_footer': asset('assets/img/social/icon_youtube_color.svg')
         },
         4: {
             'title': 'instagram',
             'link': 'https://www.instagram.com/fwdays/',
-            'img': asset('assets/img/social/icon_insta.svg')
+            'img_header': asset('assets/img/social/icon_insta.svg')
+            'img_footer': asset('assets/img/social/icon_insta.svg')
         },
     }
 %}
@@ -31,7 +39,7 @@
     {% for i in 0..4 %}
     <li class="social__item">
         <a href="{{ labels[i].link }}" class="social__link" target="_blank">
-            <img class="social__icon" src="{{ labels[i].img }}" alt="{{ labels[i].title }}">
+            <img class="social__icon" src="{{ labels[i].img~'_'~position }}" alt="{{ labels[i].title }}">
         </a>
     </li>
     {% endfor %}
