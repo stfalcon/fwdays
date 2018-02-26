@@ -164,6 +164,7 @@ flash_you_registrated.title: You are registrated for event
 flash_you_unsubscribe.title: You are unsubscribed for event
 flash_profile_updated.title: Your profile updated
 flash_user_created.title: You are registrated on the site
+flash_user_need_data.title: Fill the required fields to complete the registration
 
 contact_info.title: Contact info
 candidate.speaker.title: On consideration

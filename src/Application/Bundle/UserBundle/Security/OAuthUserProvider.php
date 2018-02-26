@@ -71,6 +71,7 @@ class OAuthUserProvider extends BaseClass
                         ['service' => $response->getResourceOwner()->getName()]
                     );
                     $needUserData->setResponse($responseArr);
+                    $this->container->get('session')->getFlashBag()->set('fos_user_success', 'registration.flash.user_need_data');
                     throw $needUserData;
                 }
 
