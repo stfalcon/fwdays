@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = 'c1212249bb00811e3a2f9eb5602eef45';
-    const UK_FILE_HASH = 'dbd648a944202f10a8cd9189dc50986e';
+    const EN_FILE_HASH = '3fde3ebde15c0cf570b092bf38c8d8ba';
+    const UK_FILE_HASH = '4823008b4fd42ee0231245a30a309258';
     /** @var Client */
     protected $client;
     /** @var EntityManager */

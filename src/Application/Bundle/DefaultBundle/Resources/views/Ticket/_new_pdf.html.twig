@@ -170,7 +170,9 @@
     </div>
     <div class="ticket__bottom">
         <div class="qr-code">
+            {% if app.environment != 'test' %}
             <img class="qr-code__img" src="data:image/png;base64,{{ qrCodeBase64 }}" alt="" width="140">
+            {% endif %}
             <div class="qr-code__number">No{{ ticket.id }}</div>
         </div>
     </div>
