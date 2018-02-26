@@ -44,6 +44,7 @@ twig:
         ga_tracking_id: "%tracking_id%"
         google_site_key: "%google_captcha_site_key%"
         facebook_api_id: "%facebook_client_id%"
+        fb_page_id: "235981893111914"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

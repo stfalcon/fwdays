@@ -5,6 +5,10 @@
     {% block metatags %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_4.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_6.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_8.jpg', null, true) }}" />
     {% endblock metatags %}
     {% block meta_description %}
     <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
@@ -42,18 +46,6 @@
     {% endblock %}
 </div>
 
-{#{% block fb_chat %}#}
-    {#<div class="fb-customerchat"#}
-         {#page_id="<PAGE_ID>"#}
-         {#ref="<OPTIONAL_WEBHOOK_PARAM>"#}
-         {#theme_color="#b4b4b4"#}
-         {#logged_in_greeting="GREETING_MESSAGE_FOR_LOGGED_IN_USERS"#}
-         {#logged_out_greeting="GREETING_MESSAGE_FOR_LOGGED_OUT_USERS"#}
-         {#minimized = true.#}
-    {#>#}
-    {#</div>#}
-{#{% endblock %}#}
-
 <!--END layout-box-->
 {% block popups %}
     <!--BEGIN alert-->
@@ -67,7 +59,24 @@
 {% endblock popups %}
 
 {% block scripts %}
-    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
+    {% if app.environment == 'prod' %}
+        {% include "::ga.html.twig" %}
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
+        <!-- End Google Tag Manager -->
+    {% else %}
+        <script>
+            function ga(send, event, eventName, click) {
+                console.log('ga', send, event, eventName, click);
+            }
+        </script>
+    {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}"
@@ -101,25 +110,7 @@
         {% endif %}
     </script>
     {% endfor %}
-
-    {% if app.environment == 'prod' %}
-    {% include "::ga.html.twig" %}
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
-    <!-- End Google Tag Manager -->
-    {% else %}
-    <script>
-        function ga(send, event, eventName, click) {
-            console.log('ga', send, event, eventName, click);
-        }
-    </script>
-    {% endif %}
+    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
 
 {% endblock scripts %}
 </body>

@@ -6,7 +6,7 @@ use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * Class SvgToJpg
+ * Class SvgToJpg.
  */
 class SvgToJpg
 {
@@ -14,13 +14,40 @@ class SvgToJpg
     private $logger;
 
     /**
+     * @var string
+     */
+    private $kernelPath;
+
+    /**
+     * @var string
+     */
+    private $uploadDir;
+
+    private $xResolution = 500;
+    private $yResolution = 500;
+
+    /**
      * SvgToJpg constructor.
      *
      * @param Logger $logger
+     * @param string $kernelPath
+     * @param string $uploadDir
      */
-    public function __construct($logger)
+    public function __construct($logger, $kernelPath, $uploadDir)
     {
         $this->logger = $logger;
+        $this->kernelPath = $kernelPath;
+        $this->uploadDir = $uploadDir;
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     */
+    public function setResolution($x, $y)
+    {
+        $this->xResolution = $x;
+        $this->yResolution = $y;
     }
 
     /**
@@ -35,8 +62,12 @@ class SvgToJpg
         try {
             $svg = file_get_contents($file);
             $im->setBackgroundColor(new \ImagickPixel($backgroundColor));
+            $im->setResolution($this->xResolution, $this->yResolution);
+
             $im->readImageBlob($svg);
-            $im->setImageFormat("jpeg");
+            $im->setImageFormat('jpeg');
+//            $fileName = $this->kernelPath."/../web/".$this->uploadDir.'/test_ticket.jpg';
+//            $im->writeImage($fileName);
         } catch (\Exception $e) {
             $this->logger->addError($e->getMessage(), [$e]);
         }

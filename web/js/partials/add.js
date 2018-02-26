@@ -286,8 +286,11 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         });
 });
 
-$(document).ready(function () {
+$('[data-testid="dialog_iframe"]').on('load', function() {
+    $(this).removeClass('fb_customer_chat_bounce_in').addClass('fb_customer_chat_bounce_out').hide();
+});
 
+$(document).ready(function () {
     $('#share-ref__facebook').on('click', function () {
         popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
     });
@@ -326,7 +329,7 @@ $(document).ready(function () {
     $.validator.addClassRules({
         'valid-name': {
             required: true,
-            pattern: /^[A-ZА-ЯЁЫІЇa-zа-яёіїьъэы\-\s]+$/u,
+            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/,
             minlength: 2,
             maxlength: 32,
         },
@@ -427,6 +430,7 @@ $(document).ready(function () {
                 });
         }
     });
+
     $('#buy-ticket-btn').on('click', function () {
         if ($('#user_phone').valid()) {
             $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {

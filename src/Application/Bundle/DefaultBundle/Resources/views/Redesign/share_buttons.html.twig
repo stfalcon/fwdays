@@ -6,6 +6,13 @@
 {% endif %}
 <div id="fb-root"></div>
 <script>
+    // We create the DIV dynamically to work correctly with Tag Manager
+    var chatDiv = document.createElement('div');
+    chatDiv.className = 'fb-customerchat';
+    chatDiv.setAttribute('page_id', '{{ fb_page_id }}'); // Facebook Page ID goes here
+    chatDiv.setAttribute('minimized', 'true'); // Facebook Page ID goes here
+    document.body.appendChild(chatDiv);
+
     window.fbAsyncInit = function() {
         FB.init({
             appId            : '{{ facebook_api_id }}',
@@ -13,6 +20,7 @@
             xfbml            : true,
             version          : 'v2.12'
         });
+
     };
 
     (function(d, s, id){

@@ -41,6 +41,7 @@ events.past: Past events
 event.page.program: Program
 event.page.venue: Venue
 event.page.venue_how: How to get
+event.page.partners_detail: More about partners
 event_cost.title: Event cost
 
 event.detail.info2: Details
@@ -118,6 +119,7 @@ interkassa.payment.success: Payment successful!
 interkassa.payment.success.emailsend: Confirming payment message and participant's ticket was sent to your email. You can also download the ticket on the page
 interkassa.payment.pending: Payment is pending!
 interkassa.payment.pending.wait: Please, wait until the payment confirmation.
+interkassa.payment.description : 'Participate in %event_name%. The payer is %user_name% (%user_id%). Participants IDs: %ids_array%'
 
 ticket.dear_user: Dear participant <b>%user_name%</b>,
 ticket.wait_for_you: 'We are waiting for you:'

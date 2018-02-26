@@ -73,7 +73,6 @@ class PaymentService
     public function removeTicketFromPayment($payment, $ticket)
     {
         if (!$ticket->isPaid() && $payment->removeTicket($ticket)) {
-            $ticket->setPayment(null);
             $this->em->remove($ticket);
             $this->recalculatePaymentAmount($payment);
         }

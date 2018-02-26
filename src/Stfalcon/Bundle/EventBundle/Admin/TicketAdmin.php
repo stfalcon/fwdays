@@ -136,6 +136,7 @@ class TicketAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id')
             ->add('event', null, ['label' => 'Событие'])
             ->add('user', null, ['label' => 'Пользователь'])
             ->add('user.email', null, ['label' => 'Почта'])
@@ -163,7 +164,17 @@ class TicketAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event', null, ['required' => true, 'label' => 'Событие'])
+            ->add('id', 'text', ['required' => false, 'label' => 'id', 'disabled' => true])
+            ->add(
+                'createdAt',
+                'sonata_type_datetime_picker',
+                [
+                    'required' => false,
+                    'label' => 'Создан',
+                    'disabled' => true,
+                ]
+            )
+            ->add('event', 'text', ['required' => true, 'label' => 'Событие', 'disabled' => true])
             ->add(
                 'amount',
                 'money',
@@ -172,8 +183,8 @@ class TicketAdmin extends Admin
                     'label' => 'Цена',
                 ]
             )
-            ->add('payment', null, ['label' => 'Оплата'])
-            ->add('used', null, ['label' => 'Использован'])
+            ->add('payment', 'text', ['label' => 'Оплата', 'disabled' => true])
+            ->add('used', null, ['label' => 'Использован', 'disabled' => true])
         ;
     }
 }
