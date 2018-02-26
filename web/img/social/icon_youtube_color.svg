@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>social_yt</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Event-1920" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-520.000000, -5606.000000)">
+        <g id="footer" transform="translate(0.000000, 5569.000000)">
+            <g id="Group" transform="translate(400.000000, 37.000000)">
+                <g id="social_yt" transform="translate(120.000000, 0.000000)">
+                    <rect id="Rectangle-3" x="0" y="0" width="26" height="26"></rect>
+                    <path d="M25.4566591,6.81075806 C25.1576591,5.70433871 24.2767614,4.83308065 23.1580227,4.5373871 C21.1304659,4 13,4 13,4 C13,4 4.86953409,4 2.84197727,4.5373871 C1.72338636,4.83308065 0.842340909,5.70433871 0.543340909,6.81075806 C0,8.81601613 0,13 0,13 C0,13 0,17.1838387 0.543340909,19.1893871 C0.842340909,20.2956613 1.72338636,21.1669194 2.84197727,21.4627581 C4.86953409,22 13,22 13,22 C13,22 21.1304659,22 23.1580227,21.4627581 C24.2767614,21.1669194 25.1576591,20.2956613 25.4566591,19.1893871 C26,17.1838387 26,13 26,13 C26,13 26,8.81601613 25.4566591,6.81075806" id="Fill-1" fill="#D9252A"></path>
+                    <polyline id="Fill-4" fill="#FFFFFE" points="10.3409091 16.7987258 17.1363636 13.0001452 10.3409091 9.20127419 10.3409091 16.7987258"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

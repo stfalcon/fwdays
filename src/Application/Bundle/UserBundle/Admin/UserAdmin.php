@@ -1,26 +1,38 @@
 <?php
+
 namespace Application\Bundle\UserBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-
-use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
 {
+    /**
+     * @param $project
+     *
+     * @return mixed|void
+     */
     public function prePersist($project)
     {
         $project->setTickets($project->getTickets());
     }
 
+    /**
+     * @param $project
+     *
+     * @return mixed|void
+     */
     public function preUpdate($project)
     {
         $project->setTickets($project->getTickets());
     }
 
+    /**
+     * @return array
+     */
     public function getFormTheme()
     {
         return array_merge(
@@ -29,6 +41,9 @@ class UserAdmin extends Admin
         );
     }
 
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -43,6 +58,9 @@ class UserAdmin extends Admin
         ;
     }
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -56,18 +74,37 @@ class UserAdmin extends Admin
             ->add('createdAt', null, ['label' => 'Дата создания']);
     }
 
+    /**
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $container = $this->getConfigurationPool()->getContainer();
+        $token = $container->get('security.token_storage')->getToken();
+        $isSuperAdmin = false;
+        if ($token) {
+            $user = $token->getUser();
+            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+        }
+
         $formMapper
             ->tab('Общие')
                 ->with('Общие')
                     ->add('name', null, ['required' => true, 'label' => 'Имя'])
                     ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
-                    ->add('email', null, ['required' => true, 'label' => 'Почта'])
+                    ->add(
+                        'email',
+                        'email',
+                        [
+                            'required' => true,
+                            'label' => 'Почта',
+                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                        ]
+                    )
                     ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
                     ->add('company', null, ['required' => false, 'label' => 'Компания'])
                     ->add('post', null, ['required' => false, 'label' => 'Должность'])
-                    ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
+                    ->add('balance', null, ['required' => false, 'label' => 'Баланс', 'disabled' => !$isSuperAdmin])
                     ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на рассылку'])
 
                 ->end()
@@ -94,7 +131,15 @@ class UserAdmin extends Admin
             ->end()
             ->tab('Management')
                 ->with('Management')
-                    ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
+                    ->add(
+                        'plainPassword',
+                        'text',
+                        [
+                            'required' => null === $this->getSubject()->getId(),
+                            'label' => 'Пароль',
+                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                        ]
+                    )
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
                     ->add(
                         'roles',
@@ -104,6 +149,7 @@ class UserAdmin extends Admin
                             'multiple' => true,
                             'required' => false,
                             'label' => 'Роли',
+                            'disabled' => !$isSuperAdmin,
                         ]
                     )
                 ->end()

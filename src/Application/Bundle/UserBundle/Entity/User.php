@@ -107,6 +107,7 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     protected $tickets;
 

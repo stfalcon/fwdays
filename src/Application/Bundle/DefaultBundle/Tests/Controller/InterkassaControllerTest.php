@@ -62,8 +62,8 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $interkassaService->checkPayment(Argument::any(), Argument::any())
             ->willReturn(true)
             ->shouldBeCalled();
-        $paymentService->setTicketsCostAsSold(Argument::any())->shouldBeCalled();
-        $paymentService->calculateTicketsPromocode(Argument::any())->shouldBeCalled();
+//        $paymentService->setTicketsCostAsSold(Argument::any())->shouldBeCalled();
+//        $paymentService->calculateTicketsPromocode(Argument::any())->shouldBeCalled();
 
         $em->flush()->shouldBeCalled();
 

@@ -14,17 +14,11 @@ use Symfony\Component\Finder\Finder;
 
 class PaymentListenerTest extends WebTestCase
 {
-    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Вітаємо, <br/>%s.';
-    const INTERKASSA_MAIL_MSG_THANKS_UK = 'Дякуємо Вам за оплату участі у конференції %s.';
-    const INTERKASSA_MAIL_MSG_REMEMBER_UK = 'Нагадуємо, що конференція відбудеться';
-    const INTERKASSA_MAIL_MSG_REMEMBER1_UK = 'року,';
-    const INTERKASSA_MAIL_MSG_TICKET_UK = 'Ваш квиток знаходиться у вкладенні.';
+    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.';
+    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо на зустріч!';
 
-    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Hello, <br/>%s';
-    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Thank you for paying for the %s conference.';
-    const INTERKASSA_MAIL_MSG_REMEMBER_EN = 'We remind that the conference will be held';
-    const INTERKASSA_MAIL_MSG_REMEMBER1_EN = 'year,';
-    const INTERKASSA_MAIL_MSG_TICKET_EN = 'Find your ticket attached.';
+    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper';
+    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Looking forward to meeting!';
 
     /** @var Client */
     protected $client;
@@ -68,7 +62,7 @@ class PaymentListenerTest extends WebTestCase
         /** check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
         /** check email with string */
-        $this->findEmailWithText('Вітаємо, <br/>Michael Jordan');
+        $this->findEmailWithText('Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.');
     }
 
     /**
@@ -77,11 +71,8 @@ class PaymentListenerTest extends WebTestCase
     public function testEmailUkTranslate()
     {
         $this->getEmailWithLocal('uk');
-        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_HELLO_UK, 'Michael Jordan'));
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_TICKET_UK);
-        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_THANKS_UK, 'PHP Day'));
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER_UK);
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER1_UK);
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_HELLO_UK);
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_THANKS_UK);
     }
 
     /**
