@@ -5,7 +5,7 @@
     {% if app.user is null or not is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
         {% set class = 'footer__cabinet footer__cabinet--sign-in' %}
     {% else %}
-        {% set class = 'footer__cabinet footer__cabinet--sign-in' %}
+        {% set class = 'footer__cabinet' %}
     {% endif %}
 {% elseif position == 'header__auth' %}
     {% set class = 'header__auth' %}

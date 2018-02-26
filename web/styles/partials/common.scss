@@ -285,6 +285,26 @@ iframe {
   }
 }
 
+.social--contrast {
+  .social__item {
+    margin-right: 14px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .social__link {
+    opacity: 1;
+    transition: none;
+  }
+
+  .social__icon {
+    display: block;
+    width: 26px;
+  }
+}
+
 .form-row {
   display: flex;
   flex-direction: row;

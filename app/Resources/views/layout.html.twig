@@ -79,7 +79,7 @@
     {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
-        var homePath = "{{ path('homepage') }}"
+        var homePath = "{{ path('homepage') }}";
     </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
