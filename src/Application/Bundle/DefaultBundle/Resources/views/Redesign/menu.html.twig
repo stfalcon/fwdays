@@ -1,5 +1,5 @@
 <nav class="{{ position }}-nav">
-    <ul class="{{ position }}-nav__items">
+    <ul class="{{ position }}-nav__{% if position == 'footer' %}col{% else %}items{% endif %}">
         <li class="{{ position }}-nav__item">
             <a href="{{ path('events') }}" class="{{ position }}-nav__link">{{ 'main.menu.events'|trans }}</a>
         </li>
@@ -9,6 +9,5 @@
         <li class="{{ position }}-nav__item">
             <a href="{{ path('about') }}" class="{{ position }}-nav__link">{{ 'main.menu.about'|trans }}</a>
         </li>
-        {% include '@ApplicationDefault/Redesign/menu.login.html.twig' with {'position' : position} %}
     </ul>
 </nav>

@@ -8,14 +8,20 @@
             <div class="footer__copyright">© 2010–{{ "now"|date("Y") }} fwdays.com</div>
         </div>
         <div class="footer__center">
+            {% include '@ApplicationDefault/Redesign/menu.html.twig' with {'position':'footer'} %}
+
+            <ul class="footer-nav__col">
+                <li class="footer-nav__item">
+                    <a href="#" class="footer-nav__link">Code of conduct</a>
+                </li>
+                <li class="footer-nav__item">
+                    <a href="#" class="footer-nav__link">Faq</a>
+                </li>
+            </ul>
+
         </div>
         <div class="footer__end">
-        </div>
-
-        <div class="footer__left">
-            {% include '@ApplicationDefault/Redesign/menu.html.twig' with {'position':'footer'} %}
-        </div>
-        <div class="footer__right">
+            {% include '@ApplicationDefault/Redesign/menu.login.html.twig' with {'position' : position} %}
             {% render controller('ApplicationDefaultBundle:Widgets:languageSwitcher', {'request': app.request, 'position' : 'footer'}) %}
             <a href="https://stfalcon.com" target="_blank" class="made-by footer__made-by">{{ 'madeby'|trans }} <i class="made-by__icon icon-stfalcon"></i>
                 stfalcon.com</a>
