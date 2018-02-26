@@ -84,6 +84,7 @@ class Payment
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
@@ -92,6 +93,7 @@ class Payment
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
@@ -100,6 +102,7 @@ class Payment
      * @var Ticket[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $tickets;
 

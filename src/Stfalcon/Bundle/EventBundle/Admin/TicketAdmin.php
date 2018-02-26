@@ -164,6 +164,16 @@ class TicketAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('id', 'text', ['required' => false, 'label' => 'id', 'disabled' => true])
+            ->add(
+                'createdAt',
+                'sonata_type_datetime_picker',
+                [
+                    'required' => false,
+                    'label' => 'Создан',
+                    'disabled' => true,
+                ]
+            )
             ->add('event', 'text', ['required' => true, 'label' => 'Событие', 'disabled' => true])
             ->add(
                 'amount',

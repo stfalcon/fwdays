@@ -36,6 +36,10 @@ stfalcon_event:
         secret: "%interkassa_secret_test%"
     discount: 0.2
 
+twig:
+    globals:
+        fb_page_id: "349461782222519"
+
 #parameters:
 #     graylog.hostname: localhost
 #     graylog.port: 12201
