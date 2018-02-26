@@ -235,39 +235,41 @@ class TicketService
         $states =
             [
                 'row' => [
-                        self::CAN_DOWNLOAD_TICKET => 'event-row__btn btn btn--tertiary btn--sm',
+                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'event-row__status',
                         self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
                     ],
                 'card' => [
-                        self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--sm event-card__btn',
+                        self::CAN_DOWNLOAD_TICKET => 'event-card__download',
                         self::EVENT_DONE => 'event-card__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--sm event-card__btn',
                     ],
                 'event_header' => [
-                        self::CAN_DOWNLOAD_TICKET => 'btn btn--quaternary btn--lg event-header__btn',
+                        self::CAN_DOWNLOAD_TICKET => 'event-card__download',
                         self::EVENT_DONE => 'event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' => [
-                        self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download',
+                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' => [
-                        self::CAN_DOWNLOAD_TICKET => 'fix-event-header__download fix-event-header__download--mob',
+                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' => [
-                        self::EVENT_DONE => 'event-action-mob__status',
+                        self::EVENT_DONE => 'event-action-mob__download',
                         self::CAN_DOWNLOAD_TICKET => 'btn btn--tertiary btn--lg event-action-mob__btn',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' => [
+                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
                     ],
                 'price_block' => [
+                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy',
                     ],
             ];
@@ -321,9 +323,11 @@ class TicketService
             if (self::CAN_DOWNLOAD_TICKET === $ticketState) {
                 $ticketCaption = $isMob ? $this->translator->trans('ticket.mob_status.download')
                     : $this->translator->trans('ticket.status.download');
-                $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
                 $ticketClass = isset($states[$position][$ticketState]) ? $states[$position][$ticketState]
                     : $states[$position][self::EVENT_DEFAULT_STATE];
+                if (!empty($ticketClass)) {
+                    $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
+                }
             }
 
             if (self::WAIT_FOR_PAYMENT_RECEIVE === $eventState) {

@@ -5,4 +5,4 @@
 >{% if caption %}{{ caption|raw }}{% endif %}{% if isDiv %}</div>{% else %}</a>{% endif %}
 
 {#ticket download#}
-{% if href %}<br><a href="{{ href }}" class="{{ ticket_class }}">{{ ticket_caption|raw }}</a>{% endif %}
+{% if href %}<div class="{{ ticket_class }}"><a href="{{ href }}">{{ ticket_caption|raw }}</a></div>{% endif %}
