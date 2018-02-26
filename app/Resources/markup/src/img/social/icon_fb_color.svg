@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>social_fb</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Event-1920" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-400.000000, -5606.000000)">
+        <g id="footer" transform="translate(0.000000, 5569.000000)">
+            <g id="Group" transform="translate(400.000000, 37.000000)">
+                <g id="social_fb">
+                    <rect id="Rectangle-3" x="0" y="0" width="26" height="26"></rect>
+                    <path d="M23.6754242,25 C24.4069533,25 25,24.4069556 25,23.6754292 L25,2.3245708 C25,1.59286458 24.4069533,1 23.6754242,1 L2.32466569,1 C1.5928668,1 1,1.59286458 1,2.3245708 L1,23.6754292 C1,24.4069556 1.5928668,25 2.32466569,25 L23.6754242,25" id="Fill-15" fill="#395185"></path>
+                    <path d="M18.1399179,25 L18.1399179,15.877114 L21.3830151,15.877114 L21.8685635,12.3216997 L18.1399179,12.3216997 L18.1399179,10.0517247 C18.1399179,9.02234933 18.4426145,8.32088762 20.0060169,8.32088762 L22,8.32000494 L22,5.1400805 C21.6549559,5.09682943 20.4714666,5 19.0944684,5 C16.219599,5 14.2514171,6.65686898 14.2514171,9.69971401 L14.2514171,12.3216997 L11,12.3216997 L11,15.877114 L14.2514171,15.877114 L14.2514171,25 L18.1399179,25" id="Fill-16" fill="#FFFFFE"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
