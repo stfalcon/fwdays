@@ -2,32 +2,42 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Stfalcon\Bundle\EventBundle\Entity\Payment,
-    Stfalcon\Bundle\EventBundle\Entity\Event;
-
-use Symfony\Component\DependencyInjection\Container;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class InterkassaService
+ * Class InterkassaService.
  */
 class InterkassaService
 {
-    /**
-     * @var Container $container
-     */
-    protected $container;
+    /** @var mixed */
+    protected $stfalconConfig;
+
+    /** @var Translator */
+    protected $translator;
+
+    /** @var string */
+    protected $locale;
 
     /**
-     * @param Container $container
+     * @param mixed        $stfalconConfig
+     * @param Translator   $translator
+     * @param RequestStack $requestStack
      */
-    public function __construct($container)
+    public function __construct($stfalconConfig, $translator, $requestStack)
     {
-        $this->container = $container;
+        $this->stfalconConfig = $stfalconConfig;
+        $this->translator = $translator;
+        $currentRequest = $requestStack->getCurrentRequest();
+        $this->locale = null !== $currentRequest ? $currentRequest->getLocale() : 'uk';
     }
 
     /**
-     * CRC-подпись для запроса на шлюз
+     * CRC-подпись для запроса на шлюз.
      *
      * @param Payment $params Параметры на основвании которых строим подпись
      *
@@ -40,9 +50,8 @@ class InterkassaService
         // сортируем по ключам в алфавитном порядке элементы массива
         ksort($params, SORT_STRING);
 
-        $config = $this->container->getParameter('stfalcon_event.config');
         // добавляем в конец массива "секретный ключ"
-        array_push($params, $config['interkassa']['secret']);
+        array_push($params, $this->stfalconConfig['interkassa']['secret']);
 
         // конкатенируем значения через символ ":"
         $signString = implode(':', $params);
@@ -53,7 +62,7 @@ class InterkassaService
     }
 
     /**
-     * Проверка платежа
+     * Проверка платежа.
      *
      * Несмотря на то, что уведомление формируется на стороне SCI, ВСЕГДА проверяйте такую
      * информацию в уведомлении о платеже, как:
@@ -69,11 +78,9 @@ class InterkassaService
      */
     public function checkPayment(Payment $payment, Request $request)
     {
-        $config = $this->container->getParameter('stfalcon_event.config');
-
-        if ($request->get('ik_co_id') == $config['interkassa']['shop_id'] &&
+        if ($this->stfalconConfig['interkassa']['shop_id'] == $request->get('ik_co_id') &&
             $request->get('ik_am') == $payment->getAmount() &&
-            $request->get('ik_inv_st') == 'success' &&
+            'success' == $request->get('ik_inv_st') &&
             $request->get('ik_sign') == $this->getSignHash($request->query->all())
         ) {
             return true;
@@ -82,36 +89,52 @@ class InterkassaService
         return false;
     }
 
-
     /**
-     * Возвращает необходимые данные для формы оплаты
+     * Возвращает необходимые данные для формы оплаты.
      *
      * @param Payment $payment
-     * @param Event $event
+     * @param Event   $event
+     *
      * @return array
      */
     public function getData(Payment $payment, Event $event)
     {
+        if (!$payment || !$event) {
+            return [];
+        }
 
-        $config = $this->container->getParameter('stfalcon_event.config');
+        $usersId = '';
+        /** @var Ticket $ticket */
+        foreach ($payment->getTickets() as $ticket) {
+            $usersId .= ','.$ticket->getUser()->getId();
+        }
+        $usersId = mb_substr($usersId, 1);
 
-        $description = 'Оплата участия в конференции '
-            . $event->getName()
-            . '. Плательщик '
-            . $payment->getUser()->getFullname()
-            . ' (#' . $payment->getUser()->getId()
-            . ')';
+        $description = $this->translator->trans(
+            'interkassa.payment.description',
+            [
+                '%event_name%' => $event->getName(),
+                '%user_name%' => $payment->getUser()->getFullname(),
+                '%user_id%' => $payment->getUser()->getId(),
+                '%ids_array%' => $usersId,
+            ]
+        );
 
-        $params['ik_co_id'] = $config['interkassa']['shop_id'];
+        if (mb_strlen($description) > 255) {
+            $description = mb_substr($description, 0, 255);
+        }
+
+        $params['ik_co_id'] = $this->stfalconConfig['interkassa']['shop_id'];
         $params['ik_am'] = $payment->getAmount();
         $params['ik_pm_no'] = $payment->getId();
         $params['ik_desc'] = $description;
-        $params['ik_loc'] = 'ru';
+        $params['ik_loc'] = $this->locale;
 
         return [
-            'ik_co_id' => $config['interkassa']['shop_id'],
+            'ik_co_id' => $this->stfalconConfig['interkassa']['shop_id'],
             'ik_desc' => $description,
-            'ik_sign' => $this->getSignHash($params)
+            'ik_loc' => $this->locale,
+            'ik_sign' => $this->getSignHash($params),
         ];
     }
 }
