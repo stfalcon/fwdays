@@ -90,8 +90,13 @@
     }
   }
 
-  &__btn {
+  &__action-ticket {
+    display: inline-block;
+    vertical-align: top;
     margin-right: 25px;
+  }
+
+  &__btn {
     width: 318px;
   }
 
@@ -128,6 +133,8 @@
   }
 
   &__tickets {
+    position: relative;
+    top: 24px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
     color: $white-color;
     text-decoration: none;
