@@ -260,7 +260,7 @@ class Mail
     public function stopIfMailed()
     {
         if ($this->start) {
-            $this->start = $this->totalMessages === $this->sentMessages;
+            $this->start = $this->totalMessages > $this->sentMessages;
         }
 
         return $this;

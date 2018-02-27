@@ -237,28 +237,6 @@ class PaymentService
     }
 
     /**
-     * Correct pay amount by user referral money.
-     *
-     * @param Payment $payment
-     */
-    public function payByReferralMoney(Payment $payment)
-    {
-        /* @var  User $user */
-        $user = $payment->getUser();
-        if ($user instanceof User && $user->getBalance() > 0) {
-            $amount = $user->getBalance() - $payment->getAmount();
-            if ($amount < 0) {
-                $payment->setAmount(-$amount);
-                $payment->setFwdaysAmount($user->getBalance());
-            } else {
-                $payment->setFwdaysAmount($payment->getAmount());
-                $payment->setAmount(0);
-            }
-            $this->em->flush();
-        }
-    }
-
-    /**
      * set payment paid if have referral money.
      *
      * @param Payment $payment
@@ -268,7 +246,6 @@ class PaymentService
      */
     public function setPaidByReferralMoney(Payment $payment, Event $event)
     {
-        $result = false;
         $this->checkTicketsPricesInPayment($payment, $event);
         if ($payment->isPending() && 0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $payment->markedAsPaid();
@@ -277,13 +254,32 @@ class PaymentService
             $referralService = $this->container->get('stfalcon_event.referral.service');
             $referralService->utilizeBalance($payment);
 
-            $this->setTicketsCostAsSold($payment);
-            $this->calculateTicketsPromocode($payment);
-
             $this->em->flush();
-            $result = true;
+
+            return true;
         }
 
-        return $result;
+        return false;
+    }
+
+    /**
+     * Correct pay amount by user referral money.
+     *
+     * @param Payment $payment
+     */
+    private function payByReferralMoney(Payment $payment)
+    {
+        /* @var  User $user */
+        $user = $payment->getUser();
+        if ($user instanceof User && $user->getBalance() > 0 && $payment->getAmount() > 0) {
+            $amount = $user->getBalance() - $payment->getAmount();
+            if ($amount < 0) {
+                $payment->setAmount(-$amount);
+                $payment->setFwdaysAmount($user->getBalance());
+            } else {
+                $payment->setFwdaysAmount($payment->getAmount());
+                $payment->setAmount(0);
+            }
+        }
     }
 }

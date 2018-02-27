@@ -39,8 +39,9 @@ class TicketCRUDController extends CRUDController
             $payment = $ticket->getPayment();
             if ($payment && $payment->isPaid()) {
                 $payment->removePaidTicket($ticket);
-
+                $this->get('stfalcon_event.listener.payment')->setRunPaymentPostUpdate(false);
                 $em->flush();
+                $this->get('stfalcon_event.listener.payment')->setRunPaymentPostUpdate(true);
                 $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
             }
         }
