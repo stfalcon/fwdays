@@ -41,12 +41,3 @@ vich_uploader:
               uri_prefix: /tmp/uploads/events
               upload_destination: %kernel.root_dir%/../web/tmp/uploads/events
 
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
-
-swiftmailer:
-    transport: sendmail
-    spool:
-        type: file
-        path: "%spool_path%"
