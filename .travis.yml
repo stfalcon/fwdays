@@ -5,16 +5,18 @@ php:
 
 before_install:
     - sudo apt-get update > /dev/null
+    - sudo apt-get install imagemagick
+    - sudo apt-get install php5-imagick
 
 before_script:
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
     - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - echo "extension = imagick.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - export ADDITIONAL_PATH=`php -i | grep -F --color=never 'Scan this dir for additional .ini files'`
     - echo 'xdebug.max_nesting_level=9999' | sudo tee ${ADDITIONAL_PATH:42}/symfony2.ini
     - export MINK_EXTENSION_PARAMS='base_url=http://localhost:8000/app_test.php'
-    - sudo apt-get install imagemagick
-    - sudo apt-get install php5-imagick
+    - sudo service apache2 restart
     - composer self-update
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development;"
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_testing;"
