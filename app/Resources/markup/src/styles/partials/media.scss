@@ -159,7 +159,6 @@
 
     &__item {
       margin-bottom: 24px;
-      height: 168px;
     }
 
     &__more {
@@ -169,6 +168,7 @@
 
   .event-card {
     padding: 0 12px;
+    height: 188px;
 
     &__box {
       padding: 12px;
@@ -187,16 +187,20 @@
     }
 
     &__status {
-      bottom: 13px;
+      margin-bottom: 13px;
+    }
+
+    &__download {
+      margin: 8px 0 0;
     }
 
     &__btn {
-      width: 197px;
+      width: 194px;
     }
 
     &__photo {
       right: 12px;
-      max-width: 168px;
+      width: 188px;
     }
   }
 
@@ -326,6 +330,20 @@
       text-transform: uppercase;
       color: $dark-color;
       text-decoration: none;
+    }
+
+    &__download {
+      margin-top: 16px;
+
+      a {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        color: $dark-color;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 12px;
+      }
     }
   }
 
@@ -1013,6 +1031,7 @@
     padding: 0;
 
     &__photo {
+      width: 168px;
       right: 0;
     }
   }
