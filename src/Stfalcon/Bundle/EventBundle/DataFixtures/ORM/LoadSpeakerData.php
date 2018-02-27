@@ -123,7 +123,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/speakers/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'speaker');
-        if (fileExists($fullPath)) {
+        if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
             return new UploadedFile($tmpFile, $filename, null, null, null, true);

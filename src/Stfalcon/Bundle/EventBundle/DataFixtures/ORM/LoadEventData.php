@@ -407,7 +407,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/events/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'event');
-        if (fileExists($fullPath)) {
+        if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
             return new UploadedFile($tmpFile, $filename, null, null, null, true);
