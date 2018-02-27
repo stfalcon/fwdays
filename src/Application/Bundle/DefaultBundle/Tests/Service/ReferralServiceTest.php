@@ -72,8 +72,7 @@ class ReferralServiceTest extends WebTestCase
         /** @var User $user */
         $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => 'jack.sparrow@fwdays.com']);
         $user->setBalance($fwdaysAmount);
-
-        $this->assertEquals($user->getUserReferral(), $userReferral);
+        $user->setUserReferral($userReferral);
 
         /** @var Event $event */
         $event = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);

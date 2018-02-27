@@ -70,7 +70,6 @@ class LoadUserData extends AbstractFixture
             ->setSurname('Sparrow')
             ->setEmail('jack.sparrow@fwdays.com')
             ->setPlainPassword('qwerty')
-            ->setUserReferral($userDefault)
             ->addRole('ROLE_USER')
             ->setCountry('Haiti')
             ->setCity('Tortuga')

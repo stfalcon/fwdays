@@ -5,6 +5,8 @@ php:
 
 before_install:
     - sudo apt-get update > /dev/null
+    - sudo apt-get install imagemagick
+    - sudo apt-get install php5-imagick
 
 before_script:
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
