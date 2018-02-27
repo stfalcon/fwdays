@@ -260,8 +260,8 @@ class TicketService
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' => [
-                        self::EVENT_DONE => 'event-action-mob__download',
-                        self::CAN_DOWNLOAD_TICKET => 'btn btn--tertiary btn--lg event-action-mob__btn',
+                        self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
+                        self::EVENT_DONE => 'event-action-mob__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' => [
