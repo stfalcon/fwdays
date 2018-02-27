@@ -321,7 +321,7 @@ class TicketService
             $data = $event->getSlug();
 
             if (self::CAN_DOWNLOAD_TICKET === $ticketState) {
-                $ticketCaption = $isMob ? $this->translator->trans('ticket.mob_status.download')
+                $ticketCaption = $isMob ? $this->translator->trans('ticket.status.download')
                     : $this->translator->trans('ticket.status.download');
                 $ticketClass = isset($states[$position][$ticketState]) ? $states[$position][$ticketState]
                     : $states[$position][self::EVENT_DEFAULT_STATE];
