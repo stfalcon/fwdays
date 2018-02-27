@@ -58,7 +58,10 @@ class RegistrationFormType extends BaseRegistrationFormType
                 'required' => false,
                 'data' => true,
                 'label' => 'fos_user_profile_form_subscribe',
-            ]);
+            ])
+            ->add('facebookID')
+            ->add('googleID')
+        ;
     }
 
     /**

@@ -142,6 +142,7 @@ class User extends BaseUser
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
      */
     protected $balance = 0;
+
     /**
      * @var string
      *
@@ -159,6 +160,7 @@ class User extends BaseUser
      * )
      */
     protected $name;
+
     /**
      * @var string
      *
@@ -176,6 +178,7 @@ class User extends BaseUser
      * )
      */
     protected $surname;
+
     /**
      * @var string
      *
@@ -191,6 +194,7 @@ class User extends BaseUser
 
     /**
      * @Assert\Email(message="error.email_bad_format", strict="true")
+     * @Assert\NotBlank()
      */
     protected $email;
 
