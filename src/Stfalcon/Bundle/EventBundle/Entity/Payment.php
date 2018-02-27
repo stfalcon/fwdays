@@ -45,7 +45,7 @@ class Payment
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
-    private $amount;
+    private $amount = 0;
 
     /**
      * Базова/початкова сума платежа, до застосування промокода чи скидки.
@@ -54,7 +54,7 @@ class Payment
      *
      * @ORM\Column(name="base_amount", type="decimal", precision=10, scale=2)
      */
-    private $baseAmount;
+    private $baseAmount = 0;
 
     /**
      * Використанно валюти з балансу користувача,
@@ -64,14 +64,14 @@ class Payment
      *
      * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $fwdaysAmount;
+    private $fwdaysAmount = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="string")
      */
-    private $status = '';
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var string
@@ -111,7 +111,7 @@ class Payment
      *
      * @ORM\Column(name="refunded_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $refundedAmount;
+    private $refundedAmount = 0;
 
     /**
      * @param mixed $tickets
@@ -134,7 +134,6 @@ class Payment
      */
     public function __construct()
     {
-        $this->setStatus(self::STATUS_PENDING);
         $this->tickets = new ArrayCollection();
     }
 

@@ -65,8 +65,14 @@ class PaymentController extends Controller
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
         }
 
-        if ($ticket && !$payment = $ticket->getPayment()) {
+        if (!$payment) {
+            $payment = $ticket->getPayment();
+        }
+
+        if ($ticket && !$payment) {
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
+        } elseif ($ticket && $payment->isPaid()) {
+            $payment = $paymentService->createPaymentForCurrentUserWithTicket(null);
         }
 
         if (!$payment) {

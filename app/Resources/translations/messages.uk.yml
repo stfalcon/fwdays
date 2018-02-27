@@ -127,8 +127,7 @@ new_ticket.event.programm: 'Програма конференції'
 ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це запрошення і візьміть його з собою - це Ваш квиток на %event_name%.'
 ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
-ticket.status.download: Отримати квиток
-ticket.mob_status.download: Завантажити
+ticket.status.download: Завантажити квиток
 ticket.status.pay: Купити квиток
 ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
