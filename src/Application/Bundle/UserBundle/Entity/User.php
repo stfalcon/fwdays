@@ -134,7 +134,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $userReferral;
 

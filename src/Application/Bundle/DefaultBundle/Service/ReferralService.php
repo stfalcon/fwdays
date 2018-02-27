@@ -33,7 +33,7 @@ class ReferralService
     public function __construct($container)
     {
         $this->container = $container;
-        $this->request = $this->container->get('request');
+        $this->request = $this->container->get('request_stack')->getCurrentRequest();
     }
 
     /**
@@ -74,16 +74,18 @@ class ReferralService
     public function chargingReferral(Payment $payment)
     {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-
         $userReferral = $payment->getUser()->getUserReferral();
 
         if ($userReferral) {
             $balance = $userReferral->getBalance() + 100;
             $userReferral->setBalance($balance);
 
-            $em->persist($userReferral);
             $em->flush();
+
+            return true;
         }
+
+        return false;
     }
 
     /**

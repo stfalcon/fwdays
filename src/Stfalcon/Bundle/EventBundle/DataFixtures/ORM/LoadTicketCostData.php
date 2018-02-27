@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTicketCost extends AbstractFixture implements DependentFixtureInterface
+class LoadTicketCostData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * Return fixture classes fixture is dependent on
@@ -33,7 +33,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
             ->setAltAmount(40)
             ->setCount(2)
             ->setEnabled(true)
-            ->setEvent($manager->merge($eventJsDay));
+            ->setEvent($eventJsDay);
         $manager->persist($ticketCost);
 
         $ticketCost1 = new TicketCost();
@@ -42,7 +42,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
             ->setAltAmount(120)
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($manager->merge($eventJsDay));
+            ->setEvent($eventJsDay);
         $manager->persist($ticketCost1);
 
         $ticketCost2 = new TicketCost();
@@ -51,7 +51,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
             ->setAltAmount(80)
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($manager->merge($eventJsDay));
+            ->setEvent($eventJsDay);
         $manager->persist($ticketCost2);
 
         $ticketCost3 = new TicketCost();
@@ -60,7 +60,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
             ->setAltAmount(120)
             ->setUnlimited(true)
             ->setEnabled(true)
-            ->setEvent($manager->merge($eventPHPDay2017));
+            ->setEvent($eventPHPDay2017);
         $manager->persist($ticketCost3);
 
         $ticketCost4 = new TicketCost();
@@ -69,7 +69,7 @@ class LoadTicketCost extends AbstractFixture implements DependentFixtureInterfac
             ->setAltAmount(80)
             ->setCount(1)
             ->setEnabled(true)
-            ->setEvent($manager->merge($eventPHPDay2017));
+            ->setEvent($eventPHPDay2017);
         $manager->persist($ticketCost4);
 
         $manager->flush();
