@@ -218,6 +218,8 @@ class Payment
     public function setAmount($amount)
     {
         $this->amount = $amount;
+
+        return $this;
     }
 
     /**
@@ -261,6 +263,8 @@ class Payment
     public function setUser(User $user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -285,6 +289,8 @@ class Payment
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -301,6 +307,8 @@ class Payment
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -341,6 +349,8 @@ class Payment
     public function setGate($gate)
     {
         $this->gate = $gate;
+
+        return $this;
     }
 
     /**
@@ -351,12 +361,15 @@ class Payment
     public function __toString()
     {
         $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
+
         return $string;
     }
 
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);
+
+        return $this;
     }
 
     /**
@@ -373,6 +386,8 @@ class Payment
     public function setBaseAmount($baseAmount)
     {
         $this->baseAmount = $baseAmount;
+
+        return $this;
     }
 
     /**
@@ -389,5 +404,7 @@ class Payment
     public function setFwdaysAmount($fwdaysAmount)
     {
         $this->fwdaysAmount = $fwdaysAmount;
+
+        return $this;
     }
 }
