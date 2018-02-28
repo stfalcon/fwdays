@@ -30,6 +30,9 @@ class TicketControllerTest extends WebTestCase
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
+        $connection->exec('DELETE FROM users;');
+        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $connection->exec("DELETE FROM event__tickets;");
         $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
 

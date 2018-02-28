@@ -107,6 +107,8 @@
             setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
         {% elseif message == 'registration.flash.user_created' %}
             setFlashTextAndShow('{{ 'flash_user_created.title'|trans }}');
+        {% elseif message == 'registration.flash.user_need_data' %}
+            setFlashTextAndShow('{{ 'flash_user_need_data.title'|trans }}');
         {% endif %}
     </script>
     {% endfor %}

@@ -34,6 +34,9 @@ class PaymentListener
      */
     private $container;
 
+    /** @var bool */
+    private $runPaymentPostUpdate = true;
+
     /**
      * PaymentListener constructor.
      *
@@ -45,6 +48,14 @@ class PaymentListener
     }
 
     /**
+     * @param bool $runPaymentPostUpdate
+     */
+    public function setRunPaymentPostUpdate($runPaymentPostUpdate)
+    {
+        $this->runPaymentPostUpdate = $runPaymentPostUpdate;
+    }
+
+    /**
      * @param LifecycleEventArgs $args
      *
      * @throws \Exception
@@ -53,7 +64,7 @@ class PaymentListener
     {
         $entity = $args->getEntity();
         if ($entity instanceof Payment) {
-            if (Payment::STATUS_PAID === $entity->getStatus()) {
+            if (Payment::STATUS_PAID === $entity->getStatus() && $this->runPaymentPostUpdate) {
                 $this->mailer = $this->container->get('mailer');
                 $this->mailerHelper = $this->container->get('stfalcon_event.mailer_helper');
                 $this->pdfGeneratorHelper = $this->container->get('app.helper.new_pdf_generator');
