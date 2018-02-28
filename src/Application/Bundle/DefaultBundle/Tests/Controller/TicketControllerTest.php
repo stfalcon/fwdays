@@ -42,7 +42,10 @@ class TicketControllerTest extends WebTestCase
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-            ]
+            ],
+            null,
+            'doctrine',
+            ORMPurger::PURGE_MODE_DELETE
         );
         $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
