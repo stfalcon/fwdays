@@ -5,8 +5,7 @@ php:
 
 before_install:
     - sudo apt-get update > /dev/null
-    - sudo apt-get install pecl imagemagick libmagickwand-dev
-    - sudo pecl install imagick
+    - sudo apt-get install php5-dev imagemagick libmagickwand-dev
     - sudo apt-get install php5-imagick
 
 before_script:
