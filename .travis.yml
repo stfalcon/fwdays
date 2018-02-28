@@ -15,6 +15,7 @@ before_script:
     - echo 'xdebug.max_nesting_level=9999' | sudo tee ${ADDITIONAL_PATH:42}/symfony2.ini
     - export MINK_EXTENSION_PARAMS='base_url=http://localhost:8000/app_test.php'
     - ls -l ~/.phpenv
+    - php -i
     - composer self-update
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development;"
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_testing;"
