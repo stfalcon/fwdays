@@ -373,6 +373,7 @@ class PaymentController extends Controller
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
+            'tickets_count' => $payment->getTickets()->count(),
         ]);
     }
 

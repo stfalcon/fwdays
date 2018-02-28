@@ -72,6 +72,9 @@ function setPaymentHtml(e_slug, mobForce) {
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
+                if (data.tickets_count === 0) {
+                    $('#add-user-trigger').click();
+                }
                 if (!detectmob() && !mobForce) {
                     inst.open();
                 }
