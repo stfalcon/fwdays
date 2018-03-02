@@ -293,12 +293,12 @@ $(document).ready(function () {
             var headerHeight = $('.header').outerHeight(),
                 eventHeaderHeight = $('.event-header').outerHeight(),
                 windowHeight = $(window).outerHeight(),
-                footerOffsetTop = $('.layout-box__bottom').offset().top,
-                footerHeight = $('.layout-box__bottom').outerHeight(),
+                footerOffsetTop = $('.footer').offset().top,
                 scrollHeight = $(this).scrollTop(),
-                mapOffsetTop = $('.layout-box__bottom').offset().top,
-                mapHeight = $('.location__map').outerHeight(true),
-                positionBottomBtnUp = mapOffsetTop - windowHeight - mapHeight + footerHeight;
+                mapOffsetTop = $('.location__map').length ? $('.location__map').offset().top : 0,
+                mapMrTop = parseInt($('.location__map').length ? $('.location__map').css('margin-top') : 0),
+                footerMrTop = parseInt($('.footer').css('margin-top')),
+                sumHeight = scrollHeight + windowHeight;
 
             if (scrollHeight > headerHeight + eventHeaderHeight) {
                 $('.btn-up').addClass('btn-up--visible');
@@ -306,14 +306,14 @@ $(document).ready(function () {
                 $('.btn-up').removeClass('btn-up--visible');
             }
 
-            if ($('.location__map').length && scrollHeight > positionBottomBtnUp) {
-                $('.btn-up').css('bottom', (scrollHeight + footerHeight) - positionBottomBtnUp);
+            if ($('.location__map').length && sumHeight - 87 > mapOffsetTop - mapMrTop) {
+                $('.btn-up').css('bottom', sumHeight - (mapOffsetTop - mapMrTop));
             }
-            else if (scrollHeight > footerOffsetTop - windowHeight + footerHeight) {
-                $('.btn-up').css('bottom', footerHeight);
+            else if (sumHeight - 87 > footerOffsetTop - footerMrTop) {
+                $('.btn-up').css('bottom', sumHeight - (footerOffsetTop - footerMrTop));
             }
             else {
-                $('.btn-up').css('bottom', footerHeight);
+                $('.btn-up').css('bottom', 87);
             }
 
         });
