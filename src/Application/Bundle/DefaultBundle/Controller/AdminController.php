@@ -59,7 +59,6 @@ class AdminController extends Controller
                         ->setName($data['name'])
                         ->setSurname($data['surname']);
 
-
                     // генерация временного пароля
                     $password = substr(str_shuffle(md5(time())), 5, 8);
                     $user->setPlainPassword($password);
@@ -127,27 +126,20 @@ class AdminController extends Controller
 
                     if ($oldPayment) {
                         $oldPayment->removeTicket($ticket);
-                        $em->persist($oldPayment);
                     }
                     echo 'create a new payment<br>';
-                    $payment = new Payment();
-
-                    $payment->setUser($user);
-                    $payment->addTicket($ticket);
-                    $payment->setAmount($ticket->getAmount());
-                    $payment->setBaseAmount($ticket->getAmountWithoutDiscount());
-                    $ticket->setPayment($payment);
+                    $payment = (new Payment())
+                        ->setUser($user)
+                        ->setAmount($ticket->getAmount())
+                        ->setBaseAmount($ticket->getAmountWithoutDiscount())
+                        ->setGate('admin')
+                        ->markedAsPaid()
+                        ->addTicket($ticket);
 
                     $em->persist($payment);
+                    $ticket->setPayment($payment);
+
                     $em->flush();
-
-                    // обновляем шлюз и статус платежа
-                    $payment->setGate('admin');
-                    $payment->markedAsPaid();
-
-                    // сохраняем все изменения
-                    $em->flush();
-
                     echo 'mark as paid<br>';
                 }
             }
@@ -166,9 +158,6 @@ class AdminController extends Controller
      */
     public function widgetShareContactsAction()
     {
-        /*
-         * @var User
-         */
         if (null !== ($user = $this->getUser())) {
             if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
                 return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
@@ -180,7 +169,6 @@ class AdminController extends Controller
 
     /**
      * Show Statistic.
-     *
      *
      * @return Response
      *

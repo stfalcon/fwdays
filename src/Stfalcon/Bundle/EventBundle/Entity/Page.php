@@ -33,8 +33,38 @@ class Page extends AbstractPage implements Translatable
      */
     private $translations;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_in_footer", type="boolean")
+     */
+    protected $showInFooter = false;
+
+    /**
+     * Page constructor.
+     */
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowInFooter()
+    {
+        return $this->showInFooter;
+    }
+
+    /**
+     * @param bool $showInFooter
+     *
+     * @return $this
+     */
+    public function setShowInFooter($showInFooter)
+    {
+        $this->showInFooter = $showInFooter;
+
+        return $this;
     }
 }

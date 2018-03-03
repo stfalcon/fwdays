@@ -32,7 +32,7 @@ class PaymentService
     /**
      * Create payment for current user ticket.
      *
-     * @param Ticket $ticket
+     * @param Ticket|null $ticket
      *
      * @return Payment
      */
@@ -42,8 +42,15 @@ class PaymentService
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
         $payment = new Payment();
         $payment->setUser($user);
+
         $this->em->persist($payment);
-        $this->addTicketToPayment($payment, $ticket);
+        if ($ticket instanceof Ticket) {
+            if (($ticket->getPayment() && $this->removeTicketFromPayment($ticket->getPayment(), $ticket))
+                || !$ticket->getPayment()) {
+                $this->addTicketToPayment($payment, $ticket);
+            }
+        }
+
         $this->em->flush();
 
         return $payment;
@@ -69,13 +76,19 @@ class PaymentService
      *
      * @param Payment $payment
      * @param Ticket  $ticket
+     *
+     * @return bool
      */
     public function removeTicketFromPayment($payment, $ticket)
     {
         if (!$ticket->isPaid() && $payment->removeTicket($ticket)) {
             $this->em->remove($ticket);
             $this->recalculatePaymentAmount($payment);
+
+            return true;
         }
+
+        return false;
     }
 
     /**

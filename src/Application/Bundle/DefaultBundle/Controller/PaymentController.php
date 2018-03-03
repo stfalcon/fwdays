@@ -66,8 +66,14 @@ class PaymentController extends Controller
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
         }
 
-        if ($ticket && !$payment = $ticket->getPayment()) {
+        if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
+            $payment = $ticket->getPayment();
+        }
+
+        if ($ticket && !$payment) {
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
+        } elseif ($ticket && $payment->isPaid()) {
+            $payment = $paymentService->createPaymentForCurrentUserWithTicket(null);
         }
 
         if (!$payment) {
@@ -367,6 +373,7 @@ class PaymentController extends Controller
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
+            'tickets_count' => $payment->getTickets()->count(),
         ]);
     }
 

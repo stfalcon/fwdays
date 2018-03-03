@@ -10,6 +10,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class WidgetsController extends Controller
 {
@@ -17,9 +18,7 @@ class WidgetsController extends Controller
      * @param Request $request
      * @param string  $position
      *
-     * @Template("ApplicationDefaultBundle:Redesign:language_switcher.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function languageSwitcherAction($request, $position = 'header')
     {
@@ -29,7 +28,13 @@ class WidgetsController extends Controller
             $localesArr[$locale] = $this->localizeRoute($request, $locale);
         }
 
-        return ['locales' => $localesArr, 'position' => $position];
+        return $this->render(
+            "ApplicationDefaultBundle:Redesign:language_switcher.html.twig",
+            [
+                'locales' => $localesArr,
+                'position' => $position,
+            ]
+        );
     }
 
     /**

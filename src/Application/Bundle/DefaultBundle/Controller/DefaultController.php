@@ -21,9 +21,8 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage",
      *     options = {"expose"=true})
-     * @Template("ApplicationDefaultBundle:Redesign:index.html.twig")
      *
-     * @return array
+     * @return Response
      */
     public function indexAction()
     {
@@ -31,7 +30,18 @@ class DefaultController extends Controller
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true], ['date' => 'ASC']);
 
-        return ['events' => $events];
+        return $this->render("ApplicationDefaultBundle:Redesign:index.html.twig", ['events' => $events]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function footerPagesAction()
+    {
+        $pages = $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
+            ->findBy(['showInFooter' => true]);
+
+        return $this->render('ApplicationDefaultBundle:Redesign:_footer_pages.html.twig', ['pages' => $pages]);
     }
 
     /**
@@ -39,9 +49,7 @@ class DefaultController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @Template("ApplicationDefaultBundle:Redesign:cabinet.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function cabinetAction()
     {
@@ -71,12 +79,12 @@ class DefaultController extends Controller
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true]);
 
-        return [
+        return $this->render("ApplicationDefaultBundle:Redesign:cabinet.html.twig", [
             'user' => $user,
             'user_events' => $userEvents,
             'events' => $events,
             'code' => $referralService->getReferralCode(),
-        ];
+        ]);
     }
 
     /**
@@ -92,20 +100,15 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Page not found! about');
         }
 
-        return $this->render(
-            '@ApplicationDefault/Redesign/static_contacts.page.html.twig',
-            [
+        return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', [
                 'text' => $staticPage->getText(),
-            ]
-        );
+        ]);
     }
 
     /**
      * @Route("/about", name="about")
      *
-     * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function aboutAction()
     {
@@ -115,7 +118,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Page not found! about');
         }
 
-        return ['text' => $staticPage->getText()];
+        return $this->render("@ApplicationDefault/Redesign/static.page.html.twig", ['text' => $staticPage->getText()]);
     }
 
     /**
@@ -123,9 +126,7 @@ class DefaultController extends Controller
      *
      * @param string $slug
      *
-     * @Template("@ApplicationDefault/Redesign/static.page.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function pageAction($slug)
     {
@@ -135,7 +136,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException(sprintf('Page not found! %s', $slug));
         }
 
-        return ['text' => $staticPage->getText()];
+        return $this->render("@ApplicationDefault/Redesign/static.page.html.twig", ['text' => $staticPage->getText()]);
     }
 
     /**
@@ -162,7 +163,7 @@ class DefaultController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $url = $this->getRequest()->headers->get('referer');
+        $url = $this->get('request_stack')->getCurrentRequest()->headers->get('referer');
 
         return new RedirectResponse($url);
     }
