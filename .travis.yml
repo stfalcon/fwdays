@@ -31,7 +31,7 @@ before_script:
 
 script:
     - bin/phpunit -c app/
-    - bin/run-all-features
+#    - bin/run-all-features
 
 notifications:
 email:
