@@ -389,6 +389,10 @@
 
     &__title {
       margin: 0 0 20px;
+
+      & + p {
+        margin: 0 0 20px;
+      }
     }
   }
 

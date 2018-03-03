@@ -381,6 +381,12 @@
 
   &__title {
     margin: 0 0 22px 90px;
+
+    & + p {
+      font-size: 18px;
+      line-height: 26px;
+      margin: 0 0 12px 90px;
+    }
   }
 }
 
