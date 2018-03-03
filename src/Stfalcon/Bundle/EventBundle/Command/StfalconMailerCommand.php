@@ -22,7 +22,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             ->setName('stfalcon:mailer')
             ->setDescription('Send message from queue')
             ->addOption('amount', null, InputOption::VALUE_OPTIONAL, 'Amount of mails which will send per operation. Default 10.')
-            ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default frameworksdays.com.');
+            ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default fwdays.com.');
     }
 
     /**
@@ -37,7 +37,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
     {
         /** @var \Symfony\Component\Routing\RequestContext $context */
         $context = $this->getContainer()->get('router')->getContext();
-        $context->setHost('frameworksdays.com');
+        $context->setHost('fwdays.com');
         $context->setScheme('http');
 
         $limit = 10;
