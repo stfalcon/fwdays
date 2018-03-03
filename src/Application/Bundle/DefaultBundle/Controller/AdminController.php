@@ -133,8 +133,8 @@ class AdminController extends Controller
                         ->setAmount($ticket->getAmount())
                         ->setBaseAmount($ticket->getAmountWithoutDiscount())
                         ->setGate('admin')
-                        ->markedAsPaid()
-                        ->addTicket($ticket);
+                        ->markedAsPaid();
+                    $payment->addTicket($ticket);
 
                     $em->persist($payment);
                     $ticket->setPayment($payment);
