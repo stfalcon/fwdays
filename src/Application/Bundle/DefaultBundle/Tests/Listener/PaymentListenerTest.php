@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -42,7 +43,10 @@ class PaymentListenerTest extends WebTestCase
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-            ]
+            ],
+            null,
+            'doctrine',
+            ORMPurger::PURGE_MODE_DELETE
         );
         $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
