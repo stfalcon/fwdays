@@ -62,7 +62,7 @@ class Ticket
      * @var TicketCost
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets")
-     * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $ticketCost;
 
