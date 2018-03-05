@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20180303110941 extends AbstractMigration
+class Version20180305110857 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -21,7 +21,7 @@ class Version20180303110941 extends AbstractMigration
         $this->addSql('ALTER TABLE event__tickets DROP FOREIGN KEY FK_66E295591173DC2D');
         $this->addSql('ALTER TABLE event__tickets ADD CONSTRAINT FK_66E295591173DC2D FOREIGN KEY (ticket_cost_id) REFERENCES event__ticketsCost (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE users DROP FOREIGN KEY FK_1483A5E944E55A94');
-        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E944E55A94 FOREIGN KEY (user_ref_id) REFERENCES users (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E944E55A94 FOREIGN KEY (user_ref_id) REFERENCES users (id) ON DELETE SET NULL');
     }
 
     /**
