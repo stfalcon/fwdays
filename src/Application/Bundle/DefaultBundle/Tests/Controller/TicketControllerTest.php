@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = '3fde3ebde15c0cf570b092bf38c8d8ba';
-    const UK_FILE_HASH = '4823008b4fd42ee0231245a30a309258';
+    const EN_FILE_HASH = 'e41fa4f8f91eff3bf42ed94689524f21';
+    const UK_FILE_HASH = '2317035330ba4a26d7220f9901b11a26';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -32,10 +32,9 @@ class TicketControllerTest extends WebTestCase
 
         $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
         $connection->exec('DELETE FROM users;');
-        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $connection->exec("DELETE FROM event__tickets;");
         $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
-
+        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $this->loadFixtures(
             [
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
@@ -120,8 +119,9 @@ class TicketControllerTest extends WebTestCase
         if (!empty($lang)) {
             $this->loginUser('user@fwdays.com', 'qwerty', $lang);
             $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
+            $content = $this->client->getResponse()->getContent();
 
-            return md5($this->client->getResponse()->getContent());
+            return md5($content);
         }
 
         return '';
