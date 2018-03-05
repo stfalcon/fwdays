@@ -16,10 +16,9 @@ before_script:
     - ls -l ~/.phpenv/bin
     - php -i
     - composer self-update
-    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development;"
-    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_testing;"
+    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_testing CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - composer install --prefer-source --no-interaction
-#    - app/console doctrine:database:create --env=test > /dev/null
     - app/console doctrine:mi:mi --no-interaction --env=test
     - app/console doctrine:fixtures:load --no-interaction --env=test
     - app/console cache:warmup --env=test > /dev/null
