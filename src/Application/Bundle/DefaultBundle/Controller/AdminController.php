@@ -80,7 +80,7 @@ class AdminController extends Controller
                         // @todo refact
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
-                        ->setBody($body);
+                        ->setBody($body, 'text/html');
 
                     // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
