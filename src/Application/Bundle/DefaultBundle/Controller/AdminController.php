@@ -67,7 +67,8 @@ class AdminController extends Controller
 
                     $errors = $this->container->get('validator')->validate($user);
                     if ($errors->count() > 0) {
-                        throw new BadCredentialsException('User create Bad credentials!');
+                        echo 'User create Bad credentials!';
+                        exit;
                     }
 
                     $this->get('fos_user.user_manager')->updateUser($user);
