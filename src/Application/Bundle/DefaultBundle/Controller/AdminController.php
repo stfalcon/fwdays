@@ -80,7 +80,7 @@ class AdminController extends Controller
                         // @todo refact
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
-                        ->setBody($body);
+                        ->setBody($body, 'text/html');
 
                     // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
@@ -132,12 +132,12 @@ class AdminController extends Controller
                         ->setUser($user)
                         ->setAmount($ticket->getAmount())
                         ->setBaseAmount($ticket->getAmountWithoutDiscount())
-                        ->setGate('admin')
-                        ->markedAsPaid()
-                        ->addTicket($ticket);
+                        ->setGate('admin');
+                    $payment->addTicket($ticket);
+                    $ticket->setPayment($payment);
+                    $payment->markedAsPaid();
 
                     $em->persist($payment);
-                    $ticket->setPayment($payment);
 
                     $em->flush();
                     echo 'mark as paid<br>';
