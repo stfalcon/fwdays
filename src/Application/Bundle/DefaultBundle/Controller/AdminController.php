@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * Class AdminController.
@@ -63,6 +64,11 @@ class AdminController extends Controller
                     $password = substr(str_shuffle(md5(time())), 5, 8);
                     $user->setPlainPassword($password);
                     $user->setEnabled(true);
+
+                    $errors = $this->container->get('validator')->validate($user);
+                    if ($errors->count() > 0) {
+                        throw new BadCredentialsException('User create Bad credentials!');
+                    }
 
                     $this->get('fos_user.user_manager')->updateUser($user);
 
