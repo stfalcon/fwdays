@@ -133,6 +133,7 @@ class AdminController extends Controller
 
                     if ($oldPayment) {
                         $oldPayment->removeTicket($ticket);
+                        $em->persist($oldPayment);
                     }
                     echo 'create a new payment<br>';
                     $payment = (new Payment())
@@ -142,11 +143,12 @@ class AdminController extends Controller
                         ->setGate('admin');
                     $payment->addTicket($ticket);
                     $ticket->setPayment($payment);
-                    $payment->markedAsPaid();
-
                     $em->persist($payment);
-
                     $em->flush();
+
+                    $payment->markedAsPaid();
+                    $em->flush();
+
                     echo 'mark as paid<br>';
                 }
             }
