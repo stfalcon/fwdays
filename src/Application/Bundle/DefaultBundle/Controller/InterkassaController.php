@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Application\Bundle\DefaultBundle\Service\InterkassaService;
@@ -72,27 +73,45 @@ class InterkassaController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function successAction(Request $request)
     {
+        $this->get('session')->set('interkassa_payment', $request->get('ik_pm_no'));
+
+        return $this->redirectToRoute('show_success');
+    }
+
+    /**
+     * @Route("/success", name="show_success")
+     *
+     * @return Response
+     */
+    public function showSuccessAction()
+    {
+        $paymentId = $this->get('session')->get('interkassa_payment');
+        $this->get('session')->remove('interkassa_payment');
+
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
-        if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $request->get('ik_pm_no')));
+            ->findOneBy(['id' => $paymentId]);
+
+        $eventName = '';
+        $eventType = '';
+        if ($payment) {
+            $tickets = $payment->getTickets();
+            $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+            $eventType = $this->getItemVariant($eventName);
         }
-        $tickets = $payment->getTickets();
-        $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+
 
         return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
             'payment' => $payment,
             'event_name' => $eventName,
-            'event_type' => $this->getItemVariant($eventName),
+            'event_type' => $eventType,
         ]);
     }
-
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *

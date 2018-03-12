@@ -24,13 +24,12 @@
                         'revenue': '{{ payment.amount }}',
                     },
                     'products': [
-                    {% for ticket in payment.tickets %}
+                    {%- for ticket in payment.tickets %}
                         {% if ticket.ticketCost is defined and ticket.ticketCost is not null  %}
                             {% set price_block_name = ticket.ticketCost.Name %}
                         {% else %}
                             {% set price_block_name = 'null' %}
                         {% endif %}
-
                         {% if ticket.promoCode is defined and ticket.promoCode is not null %}
                             {% set promo_code_name = ticket.promoCode.title~'-'~ticket.promoCode.discountAmount %}
                         {% else %}
