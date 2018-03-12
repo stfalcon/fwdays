@@ -16,6 +16,9 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
  */
 class InterkassaController extends Controller
 {
+    /** @var array */
+    protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
+
     /**
      * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как
      * успешный (или не отмечаем)
@@ -67,13 +70,27 @@ class InterkassaController extends Controller
      *
      * @Route("/payment/success", name="payment_success")
      *
-     * @Template()
+     * @param Request $request
      *
-     * @return array
+     * @return Response
      */
-    public function successAction()
+    public function successAction(Request $request)
     {
-        return [];
+        /** @var Payment $payment */
+        $payment = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Payment')
+            ->findOneBy(array('id' => $request->get('ik_pm_no')));
+        if (!$payment) {
+            throw new Exception(sprintf('Платеж №%s не найден!', $request->get('ik_pm_no')));
+        }
+        $tickets = $payment->getTickets();
+        $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+
+        return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
+            'payment' => $payment,
+            'event_name' => $eventName,
+            'event_type' => $this->getItemVariant($eventName),
+        ]);
     }
 
     /**
@@ -124,5 +141,22 @@ class InterkassaController extends Controller
         }
 
         return [];
+    }
+
+    /**
+     * @param string $eventName
+     *
+     * @return string
+     */
+    private function getItemVariant($eventName)
+    {
+        foreach ($this->itemVariants as $itemVariant) {
+            $pattern = '/'.$itemVariant.'/';
+            if (preg_match($pattern, strtolower($eventName))) {
+                return $itemVariant;
+            }
+        }
+
+        return $eventName;
     }
 }
