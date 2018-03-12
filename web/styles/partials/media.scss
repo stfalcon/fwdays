@@ -1761,6 +1761,12 @@
       margin-right: 32px;
     }
   }
+
+  .event-card {
+    &__img {
+      display: none;
+    }
+  }
 }
 
 @media only screen and (max-width: 359px) {
