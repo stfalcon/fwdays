@@ -129,6 +129,7 @@ class TicketService
     {
         $ticket->setPromoCode($promoCode);
         $this->setTicketDiscount($ticket, $promoCode->getDiscountAmount() / 100);
+        $promoCode->incTmpUsedCount();
 
         return $ticket;
     }

@@ -173,6 +173,8 @@ error.name.only_letters: "Ім'я може містити лише літери"
 
 error.user.already.paid: '%email% вже оплатив квиток'
 error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
+error.promocode.not_found: 'Промокод не знайдений!'
+error.promocode.used: 'Промокод використаний!'
 
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
