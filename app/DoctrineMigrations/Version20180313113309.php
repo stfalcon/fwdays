@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20180313104342 extends AbstractMigration
+class Version20180313113309 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,7 @@ class Version20180313104342 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE event__promo_code ADD maxUseCount INT DEFAULT 0 NOT NULL, ADD unlimited TINYINT(1) DEFAULT \'1\' NOT NULL');
+        $this->addSql('ALTER TABLE event__promo_code ADD maxUseCount INT DEFAULT 0 NOT NULL');
     }
 
     /**
@@ -29,6 +29,6 @@ class Version20180313104342 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE event__promo_code DROP maxUseCount, DROP unlimited');
+        $this->addSql('ALTER TABLE event__promo_code DROP maxUseCount');
     }
 }

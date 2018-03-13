@@ -97,13 +97,6 @@ class PromoCode
     protected $maxUseCount = 0;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":1})
-     */
-    protected $unlimited = true;
-
-    /**
      * @var int
      */
     protected $tmpUsedCount = 0;
@@ -302,19 +295,9 @@ class PromoCode
      */
     public function isUnlimited()
     {
-        return $this->unlimited;
-    }
+        $unlimited = $this->maxUseCount === 0;
 
-    /**
-     * @param bool $unlimited
-     *
-     * @return $this
-     */
-    public function setUnlimited($unlimited)
-    {
-        $this->unlimited = $unlimited;
-
-        return $this;
+        return $unlimited;
     }
 
     /**

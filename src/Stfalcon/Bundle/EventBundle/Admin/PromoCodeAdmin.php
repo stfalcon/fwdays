@@ -51,7 +51,6 @@ class PromoCodeAdmin extends Admin
             ->add('code', null, ['label' => 'Код'])
             ->add('event', null, ['label' => 'Событие'])
             ->add('used', null, ['label' => 'Использований'])
-            ->add('unlimited', null, ['label' => 'Безлимитный'])
             ->add('endDate', null, ['label' => 'Дата окончания']);
     }
 
@@ -87,8 +86,7 @@ class PromoCodeAdmin extends Admin
                     'required' => true,
                     'placeholder' => 'Choose event',
                 ])
-                ->add('maxUseCount')
-                ->add('unlimited')
+                ->add('maxUseCount', null, ['label' => 'Максимальное количество использований', 'help' => '(0 - безлимитный)'])
                 ->add(
                     'endDate',
                     'sonata_type_date_picker',
