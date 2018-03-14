@@ -264,7 +264,7 @@ class TicketCost
     public function incSoldCount()
     {
         ++$this->soldCount;
-        if (!$this->unlimited) {
+        if (!$this->unlimited && $this->isEnabled()) {
             $this->setEnabled($this->count > $this->soldCount);
         }
 
