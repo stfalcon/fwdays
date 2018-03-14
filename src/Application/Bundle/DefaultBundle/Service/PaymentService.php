@@ -167,6 +167,9 @@ class PaymentService
         $ticketService = $this->container->get('stfalcon_event.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
+            if (!$promoCode->isCanBeTmpUsed()) {
+                break;
+            }
             if ($ticketService->isMustBeDiscount($ticket)) {
                 $ticketService->setTicketBestDiscount($ticket, $promoCode);
             } else {

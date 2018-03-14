@@ -403,7 +403,7 @@ $(document).ready(function () {
                         setPaymentHtmlbyData(data, e_slug);
                     } else {
                         var validator = $('#payment').validate();
-                        var errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
+                        var errors = { user_promo_code: data.error };
                         validator.showErrors(errors);
                     }
                 });

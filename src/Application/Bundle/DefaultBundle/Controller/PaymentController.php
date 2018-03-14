@@ -124,7 +124,7 @@ class PaymentController extends Controller
     public function addPromoCodeAction($code, Event $event)
     {
         $payment = $this->getPaymentIfAccess();
-
+        $translator = $this->get('translator');
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
         }
@@ -138,7 +138,11 @@ class PaymentController extends Controller
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
         if (!$promoCode) {
-            return new JsonResponse(['result' => false, 'error' => 'Promo-code not found!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => $translator->trans('error.promocode.not_found'), 'html' => '']);
+        }
+
+        if (!$promoCode->isCanBeUsed()) {
+            return new JsonResponse(['result' => false, 'error' => $translator->trans('error.promocode.used'), 'html' => '']);
         }
 
         if ($payment->isPending()) {

@@ -11,6 +11,16 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
  */
 class PromoCodeAdmin extends Admin
 {
+    /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
@@ -40,7 +50,7 @@ class PromoCodeAdmin extends Admin
             ->add('discountAmount', null, ['label' => 'Скидка (%)'])
             ->add('code', null, ['label' => 'Код'])
             ->add('event', null, ['label' => 'Событие'])
-            ->add('usedCount', null, ['label' => 'Количество использований'])
+            ->add('used', null, ['label' => 'Использований'])
             ->add('endDate', null, ['label' => 'Дата окончания']);
     }
 
@@ -76,6 +86,7 @@ class PromoCodeAdmin extends Admin
                     'required' => true,
                     'placeholder' => 'Choose event',
                 ])
+                ->add('maxUseCount', null, ['label' => 'Максимальное количество использований', 'help' => '(0 - безлимитный)'])
                 ->add(
                     'endDate',
                     'sonata_type_date_picker',
