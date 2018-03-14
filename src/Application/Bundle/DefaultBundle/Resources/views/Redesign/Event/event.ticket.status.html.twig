@@ -1,4 +1,5 @@
 {% if isDiv %}<div{% else %}<a{% endif %}
+{% if id %} id="{{ id }}"{% endif %}
 {% if class %} class="{{ class }}"{% endif %}
 {% if data %} data-event="{{ data }}"{% endif %}
 {% if onClick %} onclick="{{ onClick }}"{% endif %}

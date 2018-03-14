@@ -399,6 +399,7 @@ class TicketService
                 'isDiv' => $isDiv,
                 'data' => $data,
                 'onClick' => $onClick,
+                'id' => $position.'-'.$data,
             ];
 
         return $result;

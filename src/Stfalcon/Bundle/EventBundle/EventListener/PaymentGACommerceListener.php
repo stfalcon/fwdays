@@ -73,17 +73,11 @@ class PaymentGACommerceListener
 
                     $itemName = 'Оплата участия в конференции '
                         .$event->getName()
-                        .'. Плательщик '
-                        .$entity->getUser()->getFullname()
-                        .' (#'.$entity->getUser()->getId()
-                        .')'
-                        .', участник '
-                        .$user->getFullname()
-                        .' (#'.$user->getId()
-                        .');'
+                        .'. Плательщик #'.$entity->getUser()->getId()
+                        .', участник #'.$user->getId().';'
                     ;
 
-                        $priceBlockName = null === $ticket->getTicketCost() ? 'admin' : $ticket->getTicketCost()->getName();
+                    $priceBlockName = null === $ticket->getTicketCost() ? 'admin' : $ticket->getTicketCost()->getName();
 
                     //send GA item
                     $this->gacommerce->sendItem(
