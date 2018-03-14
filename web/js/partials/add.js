@@ -294,6 +294,14 @@ $('[data-testid="dialog_iframe"]').on('load', function() {
 });
 
 $(document).ready(function () {
+    $('.add_recapcha').on('click', function () {
+        var s = $("<script></script>");
+        s.attr('src', 'https://www.google.com/recaptcha/api.js?hl='+locale);
+        s.prop('async', true);
+        s.prop('defer', true);
+        $("body").append(s);
+    });
+
     $('#share-ref__facebook').on('click', function () {
         popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
     });

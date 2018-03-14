@@ -9,3 +9,8 @@
     </div>
     <!--END signup-payment-popup-->
 {% endblock content %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
+{% endblock %}
