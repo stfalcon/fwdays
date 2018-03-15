@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+
+    <h1>3 видео</h1>
+    <br>
+    <br>
+    <div class="event-description__title">Началась онлайн-трансляция</div>
+    <div class="video-list">
+        <div class="video-list__items">
+            <div class="video-list__item">
+                <h4 class="video-list__title">Main Stage</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1"
+                            frameborder="0"
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="video-list__item">
+                <h4 class="video-list__title">Track A</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/LJ6O2cBvSzg?ecver=1"
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="video-list__item">
+                <h4 class="video-list__title">Track B</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/TZr0uBDlZJI?ecver=1"
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+        <!--BEGIN title-->
+
+        <div class="event-description__title">Началась онлайн-трансляция</div>
+
+        <!--END title-->
+
+        <!--BEGIN video-list-->
+
+        <div class="video-list">
+            <div class="video-list__items">
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Main Stage</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Track A</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/LJ6O2cBvSzg?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Track B</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/TZr0uBDlZJI?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+            </div>
+        </div>
+
+        <!--END video-list-->
+
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h1>2 видео</h1>
+    <br>
+    <br>
+    <div class="event-description__title">Началась онлайн-трансляция</div>
+    <div class="video-list">
+        <div class="video-list__items">
+            <div class="video-list__item">
+                <h4 class="video-list__title">Main Stage</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1"
+                            frameborder="0"
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="video-list__item">
+                <h4 class="video-list__title">Track A</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/LJ6O2cBvSzg?ecver=1"
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-2" class="input-code" readonly hidden>
+        <!--BEGIN title-->
+
+        <div class="event-description__title">Началась онлайн-трансляция</div>
+
+        <!--END title-->
+
+        <!--BEGIN video-list-->
+
+        <div class="video-list">
+            <div class="video-list__items">
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Main Stage</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Track A</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/LJ6O2cBvSzg?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+
+            </div>
+        </div>
+
+        <!--END video-list-->
+
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-2" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h1>1 видео</h1>
+    <br>
+    <br>
+
+    <div class="event-description__title">Началась онлайн-трансляция</div>
+    <div class="video-list">
+        <div class="video-list__items">
+            <div class="video-list__item">
+                <h4 class="video-list__title">Main Stage</h4>
+                <div class="video-list__frame">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1"
+                            frameborder="0"
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-3" class="input-code" readonly hidden>
+        <!--BEGIN title-->
+
+        <div class="event-description__title">Началась онлайн-трансляция</div>
+
+        <!--END title-->
+
+        <!--BEGIN video-list-->
+
+        <div class="video-list">
+            <div class="video-list__items">
+
+                <!--BEGIN video-item-->
+
+                <div class="video-list__item">
+                    <h4 class="video-list__title">Main Stage</h4>
+                    <div class="video-list__frame">
+
+                        <!--BEGIN iframe-->
+
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1" frameborder="0" allowfullscreen></iframe>
+
+                        <!--END iframe-->
+
+                    </div>
+                </div>
+
+                <!--END video-item-->
+
+            </div>
+        </div>
+
+        <!--END video-list-->
+
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-3" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+</div>
+<script src="js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+
+    doHighlight1();
+
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+
+    doHighlight2();
+
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+
+    doHighlight3();
+</script>
+</html>
