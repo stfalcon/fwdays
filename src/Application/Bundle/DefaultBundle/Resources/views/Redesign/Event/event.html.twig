@@ -54,7 +54,7 @@
     {% endif %}
     <!--END program-->
 
-    {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
+    {% if event.activeAndFuture %}
         {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
     {% endif %}
 

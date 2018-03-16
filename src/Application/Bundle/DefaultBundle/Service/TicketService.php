@@ -215,7 +215,7 @@ class TicketService
                 $ticketState = self::CAN_DOWNLOAD_TICKET;
             }
             if ($ticket && !$event->getReceivePayments()) {
-                $eventState = self::WAIT_FOR_PAYMENT_RECEIVE;
+                $eventState = self::TICKETS_SOLD_OUT;
             } elseif ($payment && $payment->isPaid()) {
                 $eventState = self::PAID_FOR_ANOTHER;
 //            } elseif ($event->getTicketsCost()->count() > 0 && !$this->ticketCostService->isEventHaveTickets($event)) {
