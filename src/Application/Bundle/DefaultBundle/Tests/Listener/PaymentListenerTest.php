@@ -131,7 +131,7 @@ class PaymentListenerTest extends WebTestCase
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" onclick="ga(\'send\', \'button\', \'enter\', \'event\');" type="submit">'.$loginBtnCaption.'
+        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
             </button>', $crawler->html());
         $form = $crawler->selectButton($loginBtnCaption)->form();
         $form['_username'] = $user->getEmail();
