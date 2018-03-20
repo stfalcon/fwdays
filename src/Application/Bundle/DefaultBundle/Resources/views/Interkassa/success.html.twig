@@ -11,8 +11,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {{ parent() }}
-    {% if payment %}
+    {%- if payment -%}
     <script>
         window.dataLayer = window.dataLayer || [];
         dataLayer.push({
@@ -55,5 +54,6 @@
             'gtm-ee-event-non-interaction': 'False',
         });
     </script>
+    {{ parent() }}
     {% endif %}
 {% endblock %}
