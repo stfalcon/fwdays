@@ -90,8 +90,13 @@
     }
   }
 
-  &__btn {
+  &__action-ticket {
+    display: inline-block;
+    vertical-align: top;
     margin-right: 25px;
+  }
+
+  &__btn {
     width: 318px;
   }
 
@@ -107,7 +112,29 @@
     font-size: 16px;
   }
 
+  &__download {
+    width: 318px;
+    text-align: center;
+    margin-top: 16px;
+
+    a {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      color: $white-color;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 12px;
+
+      &:hover {
+        border-color: transparent;
+      }
+    }
+  }
+
   &__tickets {
+    position: relative;
+    top: 24px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
     color: $white-color;
     text-decoration: none;
@@ -354,6 +381,12 @@
 
   &__title {
     margin: 0 0 22px 90px;
+
+    & + p {
+      font-size: 18px;
+      line-height: 26px;
+      margin: 0 0 12px 90px;
+    }
   }
 }
 

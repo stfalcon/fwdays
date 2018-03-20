@@ -72,6 +72,9 @@ function setPaymentHtml(e_slug, mobForce) {
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
+                if (data.tickets_count === 0) {
+                    $('#add-user-trigger').click();
+                }
                 if (!detectmob() && !mobForce) {
                     inst.open();
                 }
@@ -286,8 +289,11 @@ $(document).on('click', '.sub-wants-visit-event', function () {
         });
 });
 
-$(document).ready(function () {
+$('[data-testid="dialog_iframe"]').on('load', function() {
+    $(this).removeClass('fb_customer_chat_bounce_in').addClass('fb_customer_chat_bounce_out').hide();
+});
 
+$(document).ready(function () {
     $('#share-ref__facebook').on('click', function () {
         popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
     });
@@ -397,7 +403,7 @@ $(document).ready(function () {
                         setPaymentHtmlbyData(data, e_slug);
                     } else {
                         var validator = $('#payment').validate();
-                        var errors = { user_promo_code: Messages[locale].PROMO_NOT_VALID };
+                        var errors = { user_promo_code: data.error };
                         validator.showErrors(errors);
                     }
                 });
@@ -427,6 +433,7 @@ $(document).ready(function () {
                 });
         }
     });
+
     $('#buy-ticket-btn').on('click', function () {
         if ($('#user_phone').valid()) {
             $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {

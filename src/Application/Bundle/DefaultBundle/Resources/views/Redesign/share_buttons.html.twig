@@ -13,6 +13,7 @@
             xfbml            : true,
             version          : 'v2.12'
         });
+
     };
 
     (function(d, s, id){
@@ -40,10 +41,11 @@
         return t;
     }(document, "script", "twitter-wjs"));
 </script>
-<script src="https://apis.google.com/js/platform.js" async defer>
-    {
-        lang: '{{ app.request.locale }}'
-    }
+<script >
+    window.___gcfg = {
+        lang: '{{ lang }}',
+        parsetags: 'onload'
+    };
 </script>
-
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <!--END Share buttons scripts-->

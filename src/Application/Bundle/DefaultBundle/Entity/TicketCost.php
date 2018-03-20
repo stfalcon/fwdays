@@ -33,7 +33,7 @@ class TicketCost
     /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
-     *      cascade={"persist", "remove"})
+     *      cascade={"persist"})
      */
     private $tickets;
 
@@ -264,7 +264,7 @@ class TicketCost
     public function incSoldCount()
     {
         ++$this->soldCount;
-        if (!$this->unlimited) {
+        if (!$this->unlimited && $this->isEnabled()) {
             $this->setEnabled($this->count > $this->soldCount);
         }
 

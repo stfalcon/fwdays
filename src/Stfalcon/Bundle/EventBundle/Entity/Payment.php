@@ -45,7 +45,7 @@ class Payment
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
-    private $amount;
+    private $amount = 0;
 
     /**
      * Базова/початкова сума платежа, до застосування промокода чи скидки.
@@ -54,7 +54,7 @@ class Payment
      *
      * @ORM\Column(name="base_amount", type="decimal", precision=10, scale=2)
      */
-    private $baseAmount;
+    private $baseAmount = 0;
 
     /**
      * Використанно валюти з балансу користувача,
@@ -64,14 +64,14 @@ class Payment
      *
      * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $fwdaysAmount;
+    private $fwdaysAmount = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="status", type="string")
      */
-    private $status = '';
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var string
@@ -84,6 +84,7 @@ class Payment
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
@@ -92,6 +93,7 @@ class Payment
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
@@ -100,6 +102,7 @@ class Payment
      * @var Ticket[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $tickets;
 
@@ -108,7 +111,7 @@ class Payment
      *
      * @ORM\Column(name="refunded_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $refundedAmount;
+    private $refundedAmount = 0;
 
     /**
      * @param mixed $tickets
@@ -131,7 +134,6 @@ class Payment
      */
     public function __construct()
     {
-        $this->setStatus(self::STATUS_PENDING);
         $this->tickets = new ArrayCollection();
     }
 
@@ -216,6 +218,8 @@ class Payment
     public function setAmount($amount)
     {
         $this->amount = $amount;
+
+        return $this;
     }
 
     /**
@@ -259,6 +263,8 @@ class Payment
     public function setUser(User $user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -283,6 +289,8 @@ class Payment
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -299,6 +307,8 @@ class Payment
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -339,6 +349,8 @@ class Payment
     public function setGate($gate)
     {
         $this->gate = $gate;
+
+        return $this;
     }
 
     /**
@@ -349,12 +361,15 @@ class Payment
     public function __toString()
     {
         $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
+
         return $string;
     }
 
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);
+
+        return $this;
     }
 
     /**
@@ -371,6 +386,8 @@ class Payment
     public function setBaseAmount($baseAmount)
     {
         $this->baseAmount = $baseAmount;
+
+        return $this;
     }
 
     /**
@@ -387,5 +404,7 @@ class Payment
     public function setFwdaysAmount($fwdaysAmount)
     {
         $this->fwdaysAmount = $fwdaysAmount;
+
+        return $this;
     }
 }

@@ -9,10 +9,11 @@ namespace Application\Bundle\DefaultBundle\Twig;
  */
 class AssetVersionExtension extends \Twig_Extension
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $webRoot;
+
+    /** @var string */
+    private $environment;
 
     const REV_MANIFEST_FILE = 'rev-manifest.json';
 
@@ -20,10 +21,12 @@ class AssetVersionExtension extends \Twig_Extension
      * AssetVersionExtension constructor.
      *
      * @param string $rootDir
+     * @param string $environment
      */
-    public function __construct($rootDir)
+    public function __construct($rootDir, $environment)
     {
         $this->webRoot = realpath($rootDir.'/../web');
+        $this->environment = $environment;
     }
 
     /**
@@ -45,6 +48,10 @@ class AssetVersionExtension extends \Twig_Extension
      */
     public function getAssetVersion($asset)
     {
+        if ('test' === $this->environment) {
+            return $asset;
+        }
+
         $path = pathinfo($this->webRoot.DIRECTORY_SEPARATOR.$asset);
         $manifestFile = $path['dirname'].DIRECTORY_SEPARATOR.self::REV_MANIFEST_FILE;
 

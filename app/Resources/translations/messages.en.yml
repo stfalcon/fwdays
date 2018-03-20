@@ -119,6 +119,7 @@ interkassa.payment.success: Payment successful!
 interkassa.payment.success.emailsend: Confirming payment message and participant's ticket was sent to your email. You can also download the ticket on the page
 interkassa.payment.pending: Payment is pending!
 interkassa.payment.pending.wait: Please, wait until the payment confirmation.
+interkassa.payment.description : 'Participate in %event_name%. The payer is %user_name% (%user_id%). Participants IDs: %ids_array%'
 
 ticket.dear_user: Dear participant <b>%user_name%</b>,
 ticket.wait_for_you: 'We are waiting for you:'
@@ -130,7 +131,6 @@ ticket.print.ticket.text1: 'Please, print this invitation and take it with you. 
 ticket.print.ticket.text2: We are looking forward to meet you!
 ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
 ticket.status.download: Download ticket
-ticket.mob_status.download: Download
 ticket.status.pay: Buy ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
@@ -163,6 +163,7 @@ flash_you_registrated.title: You are registrated for event
 flash_you_unsubscribe.title: You are unsubscribed for event
 flash_profile_updated.title: Your profile updated
 flash_user_created.title: You are registrated on the site
+flash_user_need_data.title: Fill the required fields to complete the registration
 
 contact_info.title: Contact info
 candidate.speaker.title: On consideration
@@ -173,6 +174,8 @@ error.surname.only_letters: Surname must contain only letters
 error.name.only_letters: Name must contain only letters
 error.user.already.paid: the %email% has already paid the ticket
 error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
+error.promocode.not_found: 'Promo code not found!'
+error.promocode.used: 'Promo code used!'
 
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays

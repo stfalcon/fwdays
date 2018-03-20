@@ -1,0 +1,9 @@
+{% if pages|length > 0 %}
+<ul class="footer-nav__col">
+    {% for page in pages %}
+    <li class="footer-nav__item">
+        <a href="{{ path('show_page', {'slug':page.slug}) }}" class="footer-nav__link">{{ page.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}

@@ -109,6 +109,7 @@ interkassa.payment.success: Оплата пройшла успішно!
 interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також Ви можете завантажити квиток на сторінці
 interkassa.payment.pending: Оплата ще не завершена!
 interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
+interkassa.payment.description : 'Участь в %event_name%. Платник %user_name% (%user_id%). ID учасників: %ids_array%'
 
 event.events.title: Всі події
 events.future: Майбутні події
@@ -126,8 +127,7 @@ new_ticket.event.programm: 'Програма конференції'
 ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це запрошення і візьміть його з собою - це Ваш квиток на %event_name%.'
 ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
-ticket.status.download: Отримати квиток
-ticket.mob_status.download: Завантажити
+ticket.status.download: Завантажити квиток
 ticket.status.pay: Купити квиток
 ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
@@ -161,6 +161,7 @@ flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
 flash_profile_updated.title: Ваш профіль оновлено
 flash_user_created.title: Ви зареєструвались на сайті
+flash_user_need_data.title: Для завершення реєстраціі заповніть необхідні поля
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
@@ -172,6 +173,8 @@ error.name.only_letters: "Ім'я може містити лише літери"
 
 error.user.already.paid: '%email% вже оплатив квиток'
 error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
+error.promocode.not_found: 'Промокод не знайдений!'
+error.promocode.used: 'Промокод використаний!'
 
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays

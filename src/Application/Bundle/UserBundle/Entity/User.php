@@ -107,6 +107,7 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     protected $tickets;
 
@@ -133,7 +134,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $userReferral;
 
@@ -141,6 +142,7 @@ class User extends BaseUser
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
      */
     protected $balance = 0;
+
     /**
      * @var string
      *
@@ -158,6 +160,7 @@ class User extends BaseUser
      * )
      */
     protected $name;
+
     /**
      * @var string
      *
@@ -175,6 +178,7 @@ class User extends BaseUser
      * )
      */
     protected $surname;
+
     /**
      * @var string
      *
@@ -190,6 +194,7 @@ class User extends BaseUser
 
     /**
      * @Assert\Email(message="error.email_bad_format", strict="true")
+     * @Assert\NotBlank()
      */
     protected $email;
 
@@ -642,15 +647,31 @@ class User extends BaseUser
         return $this;
     }
 
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
     public function addTicket(Ticket $ticket)
     {
-        $ticket->setUser($this);
-        $this->tickets->add($ticket);
+        if (!$this->tickets->contains($ticket)) {
+            $ticket->setUser($this);
+            $this->tickets->add($ticket);
+        }
+
+        return $this;
     }
 
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
     public function removeTicket(Ticket $ticket)
     {
-        $this->tickets->removeElement($ticket);
+        if ($this->tickets->contains($ticket)) {
+            $this->tickets->removeElement($ticket);
+        }
 
         return $this;
     }

@@ -14,6 +14,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * Class PaymentController.
@@ -65,8 +66,14 @@ class PaymentController extends Controller
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
         }
 
-        if ($ticket && !$payment = $ticket->getPayment()) {
+        if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
+            $payment = $ticket->getPayment();
+        }
+
+        if ($ticket && !$payment) {
             $payment = $paymentService->createPaymentForCurrentUserWithTicket($ticket);
+        } elseif ($ticket && $payment->isPaid()) {
+            $payment = $paymentService->createPaymentForCurrentUserWithTicket(null);
         }
 
         if (!$payment) {
@@ -117,7 +124,7 @@ class PaymentController extends Controller
     public function addPromoCodeAction($code, Event $event)
     {
         $payment = $this->getPaymentIfAccess();
-
+        $translator = $this->get('translator');
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
         }
@@ -131,7 +138,11 @@ class PaymentController extends Controller
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
         if (!$promoCode) {
-            return new JsonResponse(['result' => false, 'error' => 'Promo-code not found!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => $translator->trans('error.promocode.not_found'), 'html' => '']);
+        }
+
+        if (!$promoCode->isCanBeUsed()) {
+            return new JsonResponse(['result' => false, 'error' => $translator->trans('error.promocode.used'), 'html' => '']);
         }
 
         if ($payment->isPending()) {
@@ -213,7 +224,17 @@ class PaymentController extends Controller
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
 
         if (!$user) {
-            $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+            try {
+                $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+            } catch (BadCredentialsException $e) {
+                $this->get('logger')->addError('autoRegistration with bad params');
+
+                return new JsonResponse(['result' => false, 'error' => 'Bad credentials!', 'html' => '']);
+            }
+        }
+
+        if (!$user) {
+            return new JsonResponse(['result' => false, 'error' => 'Cant create user!', 'html' => '']);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -356,6 +377,7 @@ class PaymentController extends Controller
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
+            'tickets_count' => $payment->getTickets()->count(),
         ]);
     }
 

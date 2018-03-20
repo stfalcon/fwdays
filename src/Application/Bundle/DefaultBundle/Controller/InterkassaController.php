@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Application\Bundle\DefaultBundle\Service\InterkassaService;
@@ -16,6 +17,9 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
  */
 class InterkassaController extends Controller
 {
+    /** @var array */
+    protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
+
     /**
      * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как
      * успешный (или не отмечаем)
@@ -39,7 +43,7 @@ class InterkassaController extends Controller
         }
 
         /** @var InterkassaService $interkassa */
-        $interkassa = $this->container->get('stfalcon_event.interkassa.service');
+        $interkassa = $this->get('stfalcon_event.interkassa.service');
         if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
 
@@ -67,15 +71,47 @@ class InterkassaController extends Controller
      *
      * @Route("/payment/success", name="payment_success")
      *
-     * @Template()
+     * @param Request $request
      *
-     * @return array
+     * @return RedirectResponse
      */
-    public function successAction()
+    public function successAction(Request $request)
     {
-        return [];
+        $this->get('session')->set('interkassa_payment', $request->get('ik_pm_no'));
+
+        return $this->redirectToRoute('show_success');
     }
 
+    /**
+     * @Route("/success", name="show_success")
+     *
+     * @return Response
+     */
+    public function showSuccessAction()
+    {
+        $paymentId = $this->get('session')->get('interkassa_payment');
+        $this->get('session')->remove('interkassa_payment');
+
+        /** @var Payment $payment */
+        $payment = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Payment')
+            ->findOneBy(['id' => $paymentId]);
+
+        $eventName = '';
+        $eventType = '';
+        if ($payment) {
+            $tickets = $payment->getTickets();
+            $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+            $eventType = $this->getItemVariant($eventName);
+        }
+
+
+        return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
+            'payment' => $payment,
+            'event_name' => $eventName,
+            'event_type' => $eventType,
+        ]);
+    }
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *
@@ -124,5 +160,22 @@ class InterkassaController extends Controller
         }
 
         return [];
+    }
+
+    /**
+     * @param string $eventName
+     *
+     * @return string
+     */
+    private function getItemVariant($eventName)
+    {
+        foreach ($this->itemVariants as $itemVariant) {
+            $pattern = '/'.$itemVariant.'/';
+            if (preg_match($pattern, strtolower($eventName))) {
+                return $itemVariant;
+            }
+        }
+
+        return $eventName;
     }
 }

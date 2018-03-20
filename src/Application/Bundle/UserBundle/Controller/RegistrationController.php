@@ -3,7 +3,9 @@
 namespace Application\Bundle\UserBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,13 +17,33 @@ use FOS\UserBundle\Model\UserInterface;
 
 class RegistrationController extends BaseController
 {
+    /**
+     * @return mixed|RedirectResponse|Response
+     *
+     * @throws \Twig_Error
+     */
     public function registerAction()
     {
         $form = $this->container->get('fos_user.registration.form');
+        $fromOAuth = false;
+        if ($this->container->get('session')->has('social-response')) {
+            $oAuthData = $this->container->get('session')->get('social-response');
+            $user = new User();
+            $user = $this->setUserFromOAuthResponse($user, $oAuthData);
+            if ($user instanceof User) {
+                $form = $this->container->get('form.factory')->create('application_user_registration', $user);
+                $errors = $this->container->get('validator')->validate($user);
+                foreach ($errors as $error) {
+                    $form->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
+                }
+                $fromOAuth = true;
+            }
+            $this->container->get('session')->remove('social-response');
+        }
         $formHandler = $this->container->get('fos_user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
-        $process = $formHandler->process($confirmationEnabled);
+        $process = $fromOAuth ? false : $formHandler->process($confirmationEnabled);
         if ($process) {
             $user = $form->getData();
 
@@ -97,5 +119,30 @@ class RegistrationController extends BaseController
         }
 
         return $this->container->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+    }
+
+    /**
+     * @param User  $user
+     * @param array $response
+     *
+     * @return User
+     */
+    private function setUserFromOAuthResponse(User $user, array $response)
+    {
+        $user->setName($response['first_name']);
+        $user->setSurname($response['last_name']);
+        $user->setEmail($response['email']);
+
+        $socialID = $response['socialID'];
+        switch ($response['service']) {
+            case 'google':
+                $user->setGoogleID($socialID);
+                break;
+            case 'facebook':
+                $user->setFacebookID($socialID);
+                break;
+        }
+
+        return $user;
     }
 }

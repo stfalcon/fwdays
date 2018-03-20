@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = 'c1212249bb00811e3a2f9eb5602eef45';
-    const UK_FILE_HASH = 'dbd648a944202f10a8cd9189dc50986e';
+    const EN_FILE_HASH = 'e41fa4f8f91eff3bf42ed94689524f21';
+    const UK_FILE_HASH = '2317035330ba4a26d7220f9901b11a26';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -30,16 +30,21 @@ class TicketControllerTest extends WebTestCase
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
+        $connection->exec('DELETE FROM users;');
         $connection->exec("DELETE FROM event__tickets;");
         $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
-
+        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $this->loadFixtures(
             [
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-            ]
+            ],
+            null,
+            'doctrine',
+            ORMPurger::PURGE_MODE_DELETE
         );
         $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
@@ -114,8 +119,9 @@ class TicketControllerTest extends WebTestCase
         if (!empty($lang)) {
             $this->loginUser('user@fwdays.com', 'qwerty', $lang);
             $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
+            $content = $this->client->getResponse()->getContent();
 
-            return md5($this->client->getResponse()->getContent());
+            return md5($content);
         }
 
         return '';
@@ -143,7 +149,7 @@ class TicketControllerTest extends WebTestCase
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" onclick="ga(\'send\', \'button\', \'enter\', \'event\');" type="submit">'.$loginBtnCaption.'
+        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
             </button>', $crawler->html());
         $form = $crawler->selectButton($loginBtnCaption)->form();
         $form['_username'] = $user->getEmail();

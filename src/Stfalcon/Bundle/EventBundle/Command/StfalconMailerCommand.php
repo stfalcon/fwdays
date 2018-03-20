@@ -22,7 +22,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             ->setName('stfalcon:mailer')
             ->setDescription('Send message from queue')
             ->addOption('amount', null, InputOption::VALUE_OPTIONAL, 'Amount of mails which will send per operation. Default 10.')
-            ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default frameworksdays.com.');
+            ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default fwdays.com.');
     }
 
     /**
@@ -37,7 +37,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
     {
         /** @var \Symfony\Component\Routing\RequestContext $context */
         $context = $this->getContainer()->get('router')->getContext();
-        $context->setHost('frameworksdays.com');
+        $context->setHost('fwdays.com');
         $context->setScheme('http');
 
         $limit = 10;
@@ -60,7 +60,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
         $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
 
         $mailsQueue = $queueRepository->getMessages($limit);
-
+        $logger = $this->getContainer()->get('logger');
         /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
             $user = $item->getUser();
@@ -74,7 +74,21 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $user->isEmailExists() &&
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
+                if ($user && $mail) {
+                    $logger->addError('Mailer:gate', [
+                        'mail_id' => $mail->getId(),
+                        'user_id' => $user->getId(),
+                        'is_Enabled' => $user->isEnabled(),
+                        'is_Subscribe' => $user->isSubscribe(),
+                        'is_EmailExists' => $user->isEmailExists(),
+                        'email-filter' => filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL),
+                    ]);
+                } else {
+                    $logger->addError('Mailer:gate - no user or mail');
+                }
+
                 $mail->decTotalMessages();
+                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -83,9 +97,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
             try {
                 $message = $mailerHelper->formatMessage($user, $mail);
             } catch (\Exception $e) {
-                $this->getContainer()->get('logger')->addError($e->getMessage(), array('email' => $user->getEmail()));
+                $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
+                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -108,9 +123,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
             if ($mailer->send($message)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
-
+                $em->persist($mail);
+                $em->persist($item);
                 $em->flush();
             }
         }
+        $em->flush();
     }
 }

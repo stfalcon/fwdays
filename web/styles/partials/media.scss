@@ -93,40 +93,26 @@
 
   .footer {
     margin-top: 0;
-    padding: 24px 0 16px;
 
-    .container {
-      flex-direction: column;
+    &__start {
+      flex-basis: 24%;
     }
 
-    &__left {
-      margin-bottom: 28px;
-      width: 100%;
+    &__center {
+      flex-basis: 34%;
+    }
+
+    &__end {
+      flex-basis: 42%;
       justify-content: space-between;
     }
 
-    &__right {
-      position: relative;
-      width: 100%;
-      justify-content: flex-end;
-    }
-
-    &__copyright {
-      margin-right: 0;
-    }
-
-    &__language {
-      margin: 5px 50px 0 0;
-    }
-
-    &__social {
+    &__cabinet {
       margin-right: 0;
     }
 
     &__made-by {
-      position: absolute;
-      top: 5px;
-      left: 0;
+      margin-left: 0;
     }
   }
 }
@@ -173,7 +159,6 @@
 
     &__item {
       margin-bottom: 24px;
-      height: 168px;
     }
 
     &__more {
@@ -183,6 +168,7 @@
 
   .event-card {
     padding: 0 12px;
+    height: 188px;
 
     &__box {
       padding: 12px;
@@ -201,16 +187,20 @@
     }
 
     &__status {
-      bottom: 13px;
+      margin-bottom: 13px;
+    }
+
+    &__download {
+      margin: 8px 0 0;
     }
 
     &__btn {
-      width: 197px;
+      width: 194px;
     }
 
     &__photo {
       right: 12px;
-      max-width: 168px;
+      width: 188px;
     }
   }
 
@@ -341,6 +331,20 @@
       color: $dark-color;
       text-decoration: none;
     }
+
+    &__download {
+      margin-top: 16px;
+
+      a {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        color: $dark-color;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 12px;
+      }
+    }
   }
 
   .event-description {
@@ -385,6 +389,10 @@
 
     &__title {
       margin: 0 0 20px;
+
+      & + p {
+        margin: 0 0 20px;
+      }
     }
   }
 
@@ -678,6 +686,30 @@
       &:first-child {
         padding-left: 90px;
       }
+    }
+  }
+
+  .footer {
+    &__start {
+      flex-basis: 35%;
+      justify-content: flex-start;
+      max-width: 266px;
+    }
+
+    &__center {
+      flex-basis: 65%;
+      padding-right: 0;
+    }
+
+    &__end {
+      flex-basis: 100%;
+      justify-content: space-between;
+      margin-top: 16px;
+      max-width: 420px;
+    }
+
+    &__social {
+      margin-bottom: 16px;
     }
   }
 }
@@ -1003,6 +1035,7 @@
     padding: 0;
 
     &__photo {
+      width: 168px;
       right: 0;
     }
   }
@@ -1054,46 +1087,33 @@
   }
 
   .footer {
-    padding: 16px 0;
+    padding: 32px 0 24px;
 
-    &__left {
+    &__start {
+      flex-basis: 100%;
+      margin-bottom: 24px;
+    }
+
+    &__center {
+      flex-basis: 100%;
+    }
+
+    &__end {
+      margin-top: 18px;
       flex-direction: column;
-      margin-bottom: 18px;
-    }
-
-    &__right {
-      flex-direction: column;
-    }
-
-    &__copyright {
-      margin-bottom: 20px;
-      font-size: 10px;
-      line-height: 10px;
-    }
-
-    &__language {
-      margin: 0 0 18px;
     }
 
     &__social {
-      margin: 0 0 18px;
+      margin-bottom: 22px;
     }
 
-    &__made-by {
-      position: static;
-    }
-  }
-
-  .footer-nav {
-    width: 100%;
-    max-width: 440px;
-
-    &__items {
-      justify-content: space-between;
+    &__cabinet {
+      margin-bottom: 20px;
     }
 
-    &__item {
-      margin-right: 0;
+    &__language {
+      font-size: 10px;
+      margin-bottom: 10px;
     }
   }
 
@@ -1615,6 +1635,17 @@
       }
     }
   }
+
+  .partner {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 40px;
+
+    &__logo {
+      margin-right: 0;
+      margin-bottom: 30px;
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1629,21 +1660,6 @@
 
   .header-nav__item--sign-in {
     .header-nav__link {
-      padding: 0 6px;
-    }
-  }
-
-  .footer-nav {
-    &__link {
-      font-size: 10px;
-      height: 22px;
-      line-height: 22px;
-      padding: 0;
-    }
-  }
-
-  .footer-nav__item--sign-in {
-    .footer-nav__link {
       padding: 0 6px;
     }
   }
@@ -1737,6 +1753,18 @@
       &:last-child {
         margin-bottom: 0;
       }
+    }
+  }
+
+  .footer-nav {
+    &__col {
+      margin-right: 32px;
+    }
+  }
+
+  .event-card {
+    &__img {
+      display: none;
     }
   }
 }

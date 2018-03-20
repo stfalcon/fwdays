@@ -99,7 +99,7 @@ class GACommerce
             'v'   => $this->version,                                    // Version.
             'tid' => $this->container->getParameter('tracking_id'),     // Tracking ID / Web property / Property ID.
             'cid' => $cid,                                              // Anonymous Client ID.
-            't'   => $priceBlockName,
+            't'   => 'item',
             'ti'  => $trnId,                                            // transaction ID. Required.
             'in'  => $iName,                                            // Item name. Required.
             'ip'  => $iPrice,                                           // Item price.

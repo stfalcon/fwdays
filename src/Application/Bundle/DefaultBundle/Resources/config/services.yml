@@ -47,9 +47,17 @@ services:
 
     twig_asset_version_extension:
         class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
-        arguments: ["%kernel.root_dir%"]
+        arguments: ["%kernel.root_dir%", "%kernel.environment%"]
         tags:
             - { name: twig.extension }
+
+    app.need_user_data.exception:
+        class: Application\Bundle\DefaultBundle\EventListener\ExceptionListener
+        arguments: ["@session"]
+        calls:
+            - [setRouter, ['@router']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
 
     app.helper.new_pdf_generator:
         class: Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper

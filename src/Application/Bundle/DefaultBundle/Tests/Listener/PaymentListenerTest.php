@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -14,17 +15,11 @@ use Symfony\Component\Finder\Finder;
 
 class PaymentListenerTest extends WebTestCase
 {
-    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Вітаємо, <br/>%s.';
-    const INTERKASSA_MAIL_MSG_THANKS_UK = 'Дякуємо Вам за оплату участі у конференції %s.';
-    const INTERKASSA_MAIL_MSG_REMEMBER_UK = 'Нагадуємо, що конференція відбудеться';
-    const INTERKASSA_MAIL_MSG_REMEMBER1_UK = 'року,';
-    const INTERKASSA_MAIL_MSG_TICKET_UK = 'Ваш квиток знаходиться у вкладенні.';
+    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.';
+    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо на зустріч!';
 
-    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Hello, <br/>%s';
-    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Thank you for paying for the %s conference.';
-    const INTERKASSA_MAIL_MSG_REMEMBER_EN = 'We remind that the conference will be held';
-    const INTERKASSA_MAIL_MSG_REMEMBER1_EN = 'year,';
-    const INTERKASSA_MAIL_MSG_TICKET_EN = 'Find your ticket attached.';
+    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper';
+    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Looking forward to meeting!';
 
     /** @var Client */
     protected $client;
@@ -36,6 +31,9 @@ class PaymentListenerTest extends WebTestCase
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
 
+        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
+        $connection->exec('DELETE FROM users;');
+        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $connection->exec('DELETE FROM event__tickets;');
         $connection->exec('ALTER TABLE event__tickets AUTO_INCREMENT = 1;');
 
@@ -45,7 +43,10 @@ class PaymentListenerTest extends WebTestCase
                 'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-            ]
+            ],
+            null,
+            'doctrine',
+            ORMPurger::PURGE_MODE_DELETE
         );
         $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
@@ -68,7 +69,7 @@ class PaymentListenerTest extends WebTestCase
         /** check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
         /** check email with string */
-        $this->findEmailWithText('Вітаємо, <br/>Michael Jordan');
+        $this->findEmailWithText('Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.');
     }
 
     /**
@@ -77,11 +78,8 @@ class PaymentListenerTest extends WebTestCase
     public function testEmailUkTranslate()
     {
         $this->getEmailWithLocal('uk');
-        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_HELLO_UK, 'Michael Jordan'));
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_TICKET_UK);
-        $this->findEmailWithText(sprintf(self::INTERKASSA_MAIL_MSG_THANKS_UK, 'PHP Day'));
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER_UK);
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_REMEMBER1_UK);
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_HELLO_UK);
+        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_THANKS_UK);
     }
 
     /**
@@ -133,7 +131,7 @@ class PaymentListenerTest extends WebTestCase
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" onclick="ga(\'send\', \'button\', \'enter\', \'event\');" type="submit">'.$loginBtnCaption.'
+        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
             </button>', $crawler->html());
         $form = $crawler->selectButton($loginBtnCaption)->form();
         $form['_username'] = $user->getEmail();

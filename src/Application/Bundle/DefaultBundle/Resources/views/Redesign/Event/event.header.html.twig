@@ -31,7 +31,9 @@
                     </div>
                 </div>
                 <div class="event-header__action">
+                    <div class="event-header__action-ticket">
                     {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_header'}) %}
+                    </div>
                     {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
                         <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
                     {% endif %}

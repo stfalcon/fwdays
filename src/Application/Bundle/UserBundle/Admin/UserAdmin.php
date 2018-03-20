@@ -1,26 +1,49 @@
 <?php
+
 namespace Application\Bundle\UserBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-
-use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
 {
+    /**
+     * @param $project
+     *
+     * @return mixed|void
+     */
     public function prePersist($project)
     {
         $project->setTickets($project->getTickets());
     }
 
+    /**
+     * @param $project
+     *
+     * @return mixed|void
+     */
     public function preUpdate($project)
     {
         $project->setTickets($project->getTickets());
     }
 
+    /**
+     * @return array
+     */
+    public function getFormTheme()
+    {
+        return array_merge(
+            parent::getFormTheme(),
+            ['@ApplicationDefault/Admin/admin.light_theme.html.twig']
+        );
+    }
+
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -35,6 +58,9 @@ class UserAdmin extends Admin
         ;
     }
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -48,32 +74,85 @@ class UserAdmin extends Admin
             ->add('createdAt', null, ['label' => 'Дата создания']);
     }
 
+    /**
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $container = $this->getConfigurationPool()->getContainer();
+        $token = $container->get('security.token_storage')->getToken();
+        $isSuperAdmin = false;
+        if ($token) {
+            $user = $token->getUser();
+            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+        }
+
         $formMapper
-            ->with('Общие')
-                ->add('name', null, ['required' => true, 'label' => 'Имя'])
-                ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
-                ->add('email', null, ['required' => true, 'label' => 'Почта'])
-                ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
-                ->add('company', null, ['required' => false, 'label' => 'Компания'])
-                ->add('post', null, ['required' => false, 'label' => 'Должность'])
-                ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
-                ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на розсылку'])
-                ->add('plainPassword', 'text', ['required' => null === $this->getSubject()->getId(), 'label' => 'Пароль'])
+            ->tab('Общие')
+                ->with('Общие')
+                    ->add('name', null, ['required' => true, 'label' => 'Имя'])
+                    ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
+                    ->add(
+                        'email',
+                        'email',
+                        [
+                            'required' => true,
+                            'label' => 'Почта',
+                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                        ]
+                    )
+                    ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
+                    ->add('company', null, ['required' => false, 'label' => 'Компания'])
+                    ->add('post', null, ['required' => false, 'label' => 'Должность'])
+                    ->add('balance', null, ['required' => false, 'label' => 'Баланс', 'disabled' => !$isSuperAdmin])
+                    ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на рассылку'])
+
+                ->end()
             ->end()
-            ->with('Management')
-                ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
-                ->add(
-                    'roles',
-                    'choice',
-                    [
-                        'choices' => $this->getAvailableRoles(),
-                        'multiple' => true,
-                        'required' => false,
-                        'label' => 'Роли',
-                    ]
-                )
+            ->tab('Билеты')
+                ->with('Билеты')
+                    ->add(
+                        'tickets',
+                        'sonata_type_collection',
+                        [
+                            'by_reference' => false,
+                            'disabled' => true,
+                            'type_options' => [
+                                'delete' => false,
+                            ],
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                            'sortable' => 'id',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab('Management')
+                ->with('Management')
+                    ->add(
+                        'plainPassword',
+                        'text',
+                        [
+                            'required' => null === $this->getSubject()->getId(),
+                            'label' => 'Пароль',
+                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                        ]
+                    )
+                    ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
+                    ->add(
+                        'roles',
+                        'choice',
+                        [
+                            'choices' => $this->getAvailableRoles(),
+                            'multiple' => true,
+                            'required' => false,
+                            'label' => 'Роли',
+                            'disabled' => !$isSuperAdmin,
+                        ]
+                    )
+                ->end()
             ->end();
     }
 

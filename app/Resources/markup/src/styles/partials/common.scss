@@ -285,6 +285,26 @@ iframe {
   }
 }
 
+.social--contrast {
+  .social__item {
+    margin-right: 14px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .social__link {
+    opacity: 1;
+    transition: none;
+  }
+
+  .social__icon {
+    display: block;
+    width: 26px;
+  }
+}
+
 .form-row {
   display: flex;
   flex-direction: row;
@@ -591,7 +611,7 @@ iframe {
 .btn-up {
   position: fixed;
   right: 32px;
-  bottom: 79px;
+  bottom: 87px;
   z-index: 2;
   display: inline-block;
   visibility: hidden;
