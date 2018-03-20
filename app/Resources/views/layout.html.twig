@@ -59,7 +59,7 @@
 {% endblock popups %}
 
 {% block scripts %}
-    {% if app.environment == 'prod' %}
+    {%- if app.environment == 'prod' -%}
         <!-- Google Tag Manager -->
         <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
                           height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -69,12 +69,6 @@
                 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
         <!-- End Google Tag Manager -->
-    {% else %}
-        <script>
-            function ga(send, event, eventName, click) {
-                console.log('ga', send, event, eventName, click);
-            }
-        </script>
     {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
@@ -82,34 +76,34 @@
     </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    {% if app.environment == 'prod' %}
-    <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js" crossorigin="anonymous"></script>
-    <script>Raven.config('https://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>
+    {%- if app.environment == 'prod' -%}
+        <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js" crossorigin="anonymous"></script>
+        <script>Raven.config('https://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>
     {% endif %}
     <script src="{{ asset('assets/js/main.js'|app_asset_version) }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
-    {% if 'uk' == app.request.locale %}
+    {%- if 'uk' == app.request.locale -%}
         <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
     {% endif %}
 
     <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
 
-    {% if app.request.cookies.has('event') %}
+    {%- if app.request.cookies.has('event') -%}
         <script>paymentAfterLogin();</script>
     {% endif %}
 
-    {% for message in app.session.flashBag.get('fos_user_success') %}
-    <script>
-        {% if message == 'profile.flash.updated' %}
-            setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
-        {% elseif message == 'registration.flash.user_created' %}
-            setFlashTextAndShow('{{ 'flash_user_created.title'|trans }}');
-        {% elseif message == 'registration.flash.user_need_data' %}
-            setFlashTextAndShow('{{ 'flash_user_need_data.title'|trans }}');
-        {% endif %}
-    </script>
+    {%- for message in app.session.flashBag.get('fos_user_success') -%}
+        <script>
+            {%- if message == 'profile.flash.updated' -%}
+                setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
+            {%- elseif message == 'registration.flash.user_created' -%}
+                setFlashTextAndShow('{{ 'flash_user_created.title'|trans }}');
+            {%- elseif message == 'registration.flash.user_need_data' -%}
+                setFlashTextAndShow('{{ 'flash_user_need_data.title'|trans }}');
+            {% endif %}
+        </script>
     {% endfor %}
     {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
 
