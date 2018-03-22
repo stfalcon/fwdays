@@ -5,7 +5,6 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +28,7 @@ class WidgetsController extends Controller
         }
 
         return $this->render(
-            "ApplicationDefaultBundle:Redesign:language_switcher.html.twig",
+            'ApplicationDefaultBundle:Redesign:language_switcher.html.twig',
             [
                 'locales' => $localesArr,
                 'position' => $position,
@@ -80,7 +79,7 @@ class WidgetsController extends Controller
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
         if (in_array($currentLocal, $locales)) {
-            $path = str_replace('/'.$currentLocal, '', $path);
+            $path = preg_replace('/^\/'.$currentLocal.'\//', '/', $path);
         }
         $params = $request->query->all();
 
