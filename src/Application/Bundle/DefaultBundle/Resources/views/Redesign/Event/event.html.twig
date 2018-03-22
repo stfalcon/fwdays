@@ -54,7 +54,7 @@
     {% endif %}
     <!--END program-->
 
-    {% if event.activeAndFuture %}
+    {% if event.activeAndFuture and event.receivePayments %}
         {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
     {% endif %}
 
