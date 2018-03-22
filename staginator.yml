@@ -1,3 +1,4 @@
+apt_packages: ['libpng12-dev']
 deploy_callbacks:
     after_clone:
         - 'apt-get remove nodejs -y'
