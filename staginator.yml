@@ -1,6 +1,7 @@
 deploy_callbacks:
     after_clone:
         - 'apt-get remove nodejs -y'
+        - 'apt-get install libpng-dev'
         - 'cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz'
         - 'cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz'
         - 'cp -a /node-v6.11.3-linux-x64/* /'
