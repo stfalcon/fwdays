@@ -27,7 +27,7 @@ class TicketCostRepository extends EntityRepository
         $result = $query->getResult();
         $result = is_array($result) ? array_shift($result) : null;
 
-        $currentCost = $result ? $result['amount'] : $event->getCost();
+        $currentCost = $result ? $result['amount'] : null;
 
         return $currentCost;
     }
