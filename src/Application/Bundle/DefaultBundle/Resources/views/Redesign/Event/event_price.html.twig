@@ -10,13 +10,13 @@
                 {% endfor %}
             {% endif %}
             </div>
-            {% if event.useDiscounts %}
-            <div class="price-list__hint">
-                 {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
-            </div>
-            <div class="price-list__hint-small">
-                {{ 'payment.discount.tooltip'|trans}}
-            </div>
+            {%- if event.useDiscounts -%}
+                <div class="price-list__hint">
+                    {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
+                </div>
+                <div class="price-list__hint-small">
+                    {{ 'payment.discount.tooltip'|trans}}
+                </div>
             {% endif %}
         </div>
     </section>
