@@ -7,13 +7,13 @@
         <div class="cost__tickets">
             {%- if ticket.count -%}
                 <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</span>
-            {% else %}
+            {%- else -%}
                 <span class="cost__strike">{{ 'tickets.other.title'|trans }}</span>
             {% endif %}
             <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
         </div>
         <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
-            {% if ticket_altAmount %}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
         </div>
     </div>
 {%- elseif currentPrice < ticket.amount -%}
