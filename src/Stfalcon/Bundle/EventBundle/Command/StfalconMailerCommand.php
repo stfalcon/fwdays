@@ -75,7 +75,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
                 if ($user && $mail) {
-                    $logger->addError('Mailer:gate', [
+                    $logger->addError('Mailer:gate1', [
                         'mail_id' => $mail->getId(),
                         'user_id' => $user->getId(),
                         'is_Enabled' => $user->isEnabled(),
@@ -84,7 +84,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                         'email-filter' => filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL),
                     ]);
                 } else {
-                    $logger->addError('Mailer:gate - no user or mail');
+                    $logger->addError('Mailer:gate2 - no user or mail');
                 }
 
                 $mail->decTotalMessages();
@@ -126,6 +126,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $em->persist($mail);
                 $em->persist($item);
                 $em->flush();
+            } else {
+                $logger->addError('Mailer:gate3', [
+                    'mail_id' => $mail->getId(),
+                    'user_id' => $user->getId(),
+                ]);
             }
         }
         $em->flush();
