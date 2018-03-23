@@ -1,7 +1,7 @@
 {% set ticket_altAmount = '≈$'~ticket.altAmount|number_format(0,',',' ') %}
 {% set ticket_amount = ticket.amount|number_format(0,',',' ') %}
 
-{%- if currentPrice > ticket.amount or ticket.enabled == false -%}
+{%- if currentPrice == null or currentPrice > ticket.amount -%}
     <div class="cost cost--last price-list__item">
         <div class="cost__type">{{ ticket.name }}</div>
         <div class="cost__tickets">

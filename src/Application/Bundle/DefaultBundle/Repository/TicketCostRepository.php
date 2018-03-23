@@ -6,12 +6,16 @@ use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\EntityRepository;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
+/**
+ * Class TicketCostRepository
+ */
 class TicketCostRepository extends EntityRepository
 {
     /**
      * Get event current cost
      *
      * @param Event $event
+     *
      * @return float
      */
     public function getEventCurrentCost(Event $event)
@@ -36,6 +40,7 @@ class TicketCostRepository extends EntityRepository
      * Get Event tickets cost
      *
      * @param Event $event
+     *
      * @return array
      */
     public function getEventTicketsCost(Event $event)
@@ -53,6 +58,7 @@ class TicketCostRepository extends EntityRepository
      * Get Event enabled tickets cost
      *
      * @param Event $event
+     *
      * @return array
      */
     public function getEventEnabledTicketsCost(Event $event)
