@@ -14,3 +14,5 @@
 //= partials/location.js
 //= partials/add.js
 //= partials/localization.js
+//= jquery.validate.min.js
+//= additional-methods.min.js
