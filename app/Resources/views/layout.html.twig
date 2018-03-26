@@ -80,10 +80,8 @@
         <script src="{{ asset('js/raven.min.js')}}" crossorigin="anonymous"></script>
         <script>Raven.config('https://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>
     {% endif -%}
-    <script src="{{ asset('assets/js/main.js'|app_asset_version) }}"></script>
-    {% if 'uk' == app.request.locale -%}
-        <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
-    {% endif -%}
+    {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
+    <script src="{{ asset(main_script|app_asset_version) }}"></script>
 
     <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
 
