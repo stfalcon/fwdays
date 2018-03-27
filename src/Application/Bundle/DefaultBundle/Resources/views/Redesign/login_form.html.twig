@@ -36,7 +36,6 @@
                         {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
                             {% set ga_label = 'event' %}
                         {% endif %}
-                        onclick="ga('send', 'button', 'enter', '{{ ga_label }}');"
                     {% endif %}
                     type="submit">{{ 'menu.login'|trans }}
             </button>
