@@ -32,6 +32,13 @@ function setPaymentHtmlbyData(data, e_slug) {
     $('#cancel-promo-code').click();
     $('#cancel-add-user').click();
     $('#user_phone').val(data.phoneNumber);
+    var buy_btn = $('#buy-ticket-btn');
+    var old_event = buy_btn.data('event');
+    if (old_event) {
+        buy_btn.removeClass('event-'+old_event);
+    }
+
+    buy_btn.addClass('event-'+e_slug).data('event', e_slug);
     if (!data.is_user_create_payment) {
         $('#add-user-trigger').hide();
         $('#promo-code-trigger').hide();
