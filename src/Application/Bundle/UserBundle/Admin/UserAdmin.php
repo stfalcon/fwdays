@@ -48,8 +48,7 @@ class UserAdmin extends Admin
     {
         $datagridMapper
             ->add('id')
-            ->add('name', null, ['label' => 'Имя'])
-            ->add('surname', null, ['label' => 'Фамилия'])
+            ->add('fullname', null, ['label' => 'Имя Фамилия'])
             ->add('phone', null, ['label' => 'Телефон'])
             ->add('email', null, ['label' => 'Почта'])
             ->add('company', null, ['label' => 'Компания'])
