@@ -76,3 +76,6 @@ services:
             - "%kernel.root_dir%"
             - "%upload_dir%"
 
+    app.my_mailer.service:
+        class: Application\Bundle\DefaultBundle\Service\MyMailer
+        arguments: ['@swiftmailer.transport']
