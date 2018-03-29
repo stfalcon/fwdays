@@ -69,7 +69,7 @@ class InterkassaController extends Controller
             'payment_amount' => $payment->getAmount(),
             'request_amount' => $request->get('ik_am'),
             'request_status' => $request->get('ik_inv_st'),
-            'is_hash_valid' => ($request->get('ik_sign') == $this->getSignHash($request->query->all())),
+            'is_hash_valid' => ($request->get('ik_sign') === $interkassa->getSignHash($request->query->all())),
         ]);
 
         return new Response('FAIL', 400);
