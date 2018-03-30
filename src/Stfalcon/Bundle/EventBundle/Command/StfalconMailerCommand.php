@@ -127,7 +127,12 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $logger->addError('Mailer:gate3', [
                     'mail_id' => $mail->getId(),
                     'user_id' => $user->getId(),
-                    'error_message' => $failed['error'],
+                    'error_swift_message' => $failed['error_swift_message'],
+                    'error_swift_code' => $failed['error_swift_code'],
+                    'error_swift_trace' => $failed['error_swift_trace'],
+                    'error_exception_message' => $failed['error_exception_message'],
+                    'error_exception_code' => $failed['error_exception_code'],
+                    'error_exception_trace' => $failed['error_exception_trace'],
                 ]);
             }
         }
