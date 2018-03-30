@@ -40,7 +40,9 @@ class MyMailer extends \Swift_Mailer
             foreach ($message->getTo() as $address => $name) {
                 $failedRecipients[] = $address;
             }
-            $failedRecipients['error'] = $e->getMessage();
+            $failedRecipients['error1'] = $e->getMessage();
+        } catch (\Exception $e) {
+            $failedRecipients['error2'] = $e->getMessage();
         }
 
         return $sent;
