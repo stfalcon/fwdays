@@ -41,6 +41,8 @@ class MyMailer extends \Swift_Mailer
                 $failedRecipients[] = $address;
             }
             $failedRecipients['error'] = $e->getMessage();
+        } catch (\Exception $e) {
+            $failedRecipients['error'] = $e->getMessage();
         }
 
         return $sent;
