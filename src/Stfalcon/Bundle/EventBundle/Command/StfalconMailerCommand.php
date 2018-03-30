@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Command;
 
+use Application\Bundle\DefaultBundle\Service\MyMailer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,8 +53,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        /** @var $mailer \Swift_Mailer */
-        $mailer = $this->getContainer()->get('mailer');
+        /** @var $mailer MyMailer */
+        $mailer = $this->getContainer()->get('app.my_mailer.service');
         /** @var $mailerHelper \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper */
         $mailerHelper = $this->getContainer()->get('stfalcon_event.mailer_helper');
         /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
@@ -88,7 +89,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 }
 
                 $mail->decTotalMessages();
-                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -100,7 +100,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
-                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -119,17 +118,16 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
             $headers->removeAll('List-Unsubscribe');
             $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
-
-            if ($mailer->send($message)) {
+            $failed = [];
+            if ($mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
-                $em->persist($mail);
-                $em->persist($item);
                 $em->flush();
             } else {
                 $logger->addError('Mailer:gate3', [
                     'mail_id' => $mail->getId(),
                     'user_id' => $user->getId(),
+                    'error_message' => $failed['error'],
                 ]);
             }
         }
