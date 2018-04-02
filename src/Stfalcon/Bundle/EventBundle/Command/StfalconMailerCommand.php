@@ -75,19 +75,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $user->isEmailExists() &&
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
-                if ($user && $mail) {
-                    $logger->addError('Mailer:gate1', [
-                        'mail_id' => $mail->getId(),
-                        'user_id' => $user->getId(),
-                        'is_Enabled' => $user->isEnabled(),
-                        'is_Subscribe' => $user->isSubscribe(),
-                        'is_EmailExists' => $user->isEmailExists(),
-                        'email-filter' => filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL),
-                    ]);
-                } else {
-                    $logger->addError('Mailer:gate2 - no user or mail');
-                }
-
                 $mail->decTotalMessages();
                 $em->remove($item);
                 $em->flush();
@@ -124,7 +111,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $item->setIsSent(true);
                 $em->flush();
             } else {
-                $logger->addError('Mailer:gate3', [
+                $logger->addError('Mailer send exception', [
                     'mail_id' => $mail->getId(),
                     'user_id' => $user->getId(),
                     'error_swift_message' => $failed['error_swift_message'],
