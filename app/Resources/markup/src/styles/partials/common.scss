@@ -779,6 +779,8 @@ iframe {
   height: 0 !important;
 }
 
-.text-center {
-  text-align: center;
+.block-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
