@@ -32,6 +32,13 @@ function setPaymentHtmlbyData(data, e_slug) {
     $('#cancel-promo-code').click();
     $('#cancel-add-user').click();
     $('#user_phone').val(data.phoneNumber);
+    var buy_btn = $('#buy-ticket-btn');
+    var old_event = buy_btn.data('event');
+    if (old_event) {
+        buy_btn.removeClass('event-'+old_event);
+    }
+
+    buy_btn.addClass('event-'+e_slug).data('event', e_slug);
     if (!data.is_user_create_payment) {
         $('#add-user-trigger').hide();
         $('#promo-code-trigger').hide();
@@ -57,13 +64,6 @@ function getPlaceByElem(elem) {
     }
 }
 
-function sendGA(elem, ga_event) {
-    if (elem) {
-        var place = getPlaceByElem(elem);
-        ga('send', ga_event, 'pay', place);
-    }
-}
-
 function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
     $.ajax({
@@ -78,7 +78,6 @@ function setPaymentHtml(e_slug, mobForce) {
                 if (!detectmob() && !mobForce) {
                     inst.open();
                 }
-                $('#buy-ticket-btn').attr('onclick', "sendGA($(this), 'button');");
                 return true;
             } else {
                 if (data.error_code === 1) {
@@ -130,10 +129,7 @@ function paymentAfterLogin() {
         Cookies.remove('event', { path: '/', http: false, secure : false });
         Cookies.remove('bye-event', { path: '/', http: false, secure : false });
         setModalHeader(e_slug, 'buy');
-        if (setPaymentHtml(e_slug)) {
-            sendGA($('[data-remodal-id=modal-payment]'), 'view');
-
-        }
+        setPaymentHtml(e_slug);
     }
 }
 var registrationFormId = null;
@@ -383,14 +379,10 @@ $(document).ready(function () {
         var elem = $(this);
         var e_slug = elem.data('event');
         if (detectmob()) {
-            sendGA(elem, 'view');
             window.location.pathname = homePath+"static-payment/"+e_slug;
         } else {
             setModalHeader(e_slug, 'buy');
-            if (setPaymentHtml(e_slug)) {
-                sendGA(elem, 'view');
-                $('#buy-ticket-btn').attr('onclick', "sendGA(this, 'buy');");
-            }
+            setPaymentHtml(e_slug);
         }
     });
 

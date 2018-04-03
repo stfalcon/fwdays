@@ -9,10 +9,6 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service  id="stfalcon_event.gacommerce" class="Application\Bundle\DefaultBundle\Service\GACommerce">
-            <argument type="service" id="service_container"/>
-        </service>
-
         <service id="stfalcon_event.interkassa.service" class="Application\Bundle\DefaultBundle\Service\InterkassaService">
             <argument>%stfalcon_event.config%</argument>
             <argument type="service" id="translator"/>
@@ -21,13 +17,6 @@
 
         <service id="stfalcon_event.referral.service" class="Application\Bundle\DefaultBundle\Service\ReferralService">
             <argument type="service" id="service_container"/>
-        </service>
-
-        <service id="stfalcon_event.listener.paymentGACommerce" class="Stfalcon\Bundle\EventBundle\EventListener\PaymentGACommerceListener">
-            <tag name="doctrine.event_listener" event="postUpdate" method="postUpdate"/>
-            <argument type="service" id="service_container"/>
-            <argument type="service" id="stfalcon_event.gacommerce"/>
-            <argument>%kernel.environment%</argument>
         </service>
 
         <service id="sonata.block.service.statistic" class="Application\Bundle\DefaultBundle\Service\StatisticBlockService">
