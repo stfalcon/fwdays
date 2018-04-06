@@ -104,6 +104,11 @@ class PaymentController extends Controller
 
         $this->get('session')->set('active_payment_id', $payment->getId());
 
+        $request = $this->get('request_stack')->getCurrentRequest();
+        if ($request && $promoCode = $request->query->get('promoCode')) {
+            return $this->addPromoCodeFromQuery($promoCode, $event);
+        }
+
         return $this->getPaymentHtml($event, $payment);
     }
 
@@ -405,5 +410,27 @@ class PaymentController extends Controller
         }
 
         return $payment;
+    }
+
+    /**
+     * @param string $code
+     * @param Event  $event
+     *
+     * @return JsonResponse
+     */
+    private function addPromoCodeFromQuery($code, Event $event)
+    {
+        $payment = $this->getPaymentIfAccess();
+        $promoCode = null;
+        if ($payment && !$payment->isPaid()) {
+            $em = $this->getDoctrine()->getManager();
+            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
+                ->findActivePromoCodeByCodeAndEvent($code, $event);
+            if ($promoCode && !$promoCode->isCanBeUsed()) {
+                $promoCode = null;
+            }
+        }
+
+        return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 }
