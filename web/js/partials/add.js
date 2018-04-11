@@ -66,9 +66,17 @@ function getPlaceByElem(elem) {
 
 function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
+    var promocode = Cookies.get('promocode');
+    var promoevent = Cookies.get('promoevent');
+    var route = '';
+    if (promocode && promoevent === e_slug) {
+        route = Routing.generate('event_pay', {eventSlug: e_slug, promoCode: promocode});
+    } else {
+        route = Routing.generate('event_pay', {eventSlug: e_slug});
+    }
     $.ajax({
         type: 'GET',
-        url: Routing.generate('event_pay', {eventSlug: e_slug}),
+        url: route,
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
@@ -378,8 +386,14 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
+        var promocode = Cookies.get('promocode');
+        var promoevent = Cookies.get('promoevent');
         if (detectmob()) {
-            window.location.pathname = homePath+"static-payment/"+e_slug;
+            var queryParams = '';
+            if (promocode && promoevent === e_slug) {
+                queryParams = '?promocode='+promocode;
+            }
+            window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
         } else {
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug);
