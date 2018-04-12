@@ -25,12 +25,10 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
- *     message="Поле slug повинне бути унікальне."
+ *     message="Поле slug должно быть уникальное."
  * )
  *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
- *
- * @AppAssert\Event\EventTicketCostCount
  */
 class Event implements Translatable
 {
