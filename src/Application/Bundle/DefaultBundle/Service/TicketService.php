@@ -357,7 +357,7 @@ class TicketService
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.mob_status.pay');
                 } elseif ('price_block' === $position) {
-                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
+                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost()->getAmount();
                     $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
                     $caption = $this->translator->trans(
                         'ticket.status.pay_for').' '.

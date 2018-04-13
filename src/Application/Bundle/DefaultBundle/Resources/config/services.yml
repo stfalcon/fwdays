@@ -15,16 +15,6 @@ services:
         class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
         arguments: ["@router", "%locales%"]
 
-    app.event_ticket_cost.validator:
-        class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventTicketCostCountValidator
-        tags:
-            - { name: validator.constraint_validator, alias: event }
-
-    app.ticket_cost.validator:
-        class: Application\Bundle\DefaultBundle\Validator\Constraints\TicketCost\TicketCostCountValidator
-        tags:
-            - { name: validator.constraint_validator, alias: ticketCost }
-
     app.ticket_cost.service:
         class: Application\Bundle\DefaultBundle\Service\TicketCostService
         arguments: ["@doctrine.orm.entity_manager"]

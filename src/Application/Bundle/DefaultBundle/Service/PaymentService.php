@@ -67,7 +67,7 @@ class PaymentService
         if (!$ticket->isPaid() && $payment->addTicket($ticket)) {
             $ticket->setPayment($payment);
             $this->em->persist($ticket);
-            $this->recalculatePaymentAmount($payment);
+            //$this->recalculatePaymentAmount($payment);
         }
     }
 
@@ -197,9 +197,12 @@ class PaymentService
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             $currentTicketCost = $this->container->get('app.ticket_cost.service')->getCurrentEventTicketCost($event);
-            $eventCost = $currentTicketCost ? $currentTicketCost->getAmountByTemporaryCount()
-                : $event->getBiggestTicketCost();
 
+            if (null === $currentTicketCost) {
+                $currentTicketCost = $event->getBiggestTicketCost();
+            }
+
+            $eventCost = $currentTicketCost->getAmountByTemporaryCount();
             $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
 
             if (($ticket->getTicketCost() !== $currentTicketCost) ||
