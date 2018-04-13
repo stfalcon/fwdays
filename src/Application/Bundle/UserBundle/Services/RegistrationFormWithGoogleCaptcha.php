@@ -3,8 +3,9 @@
 namespace Application\Bundle\UserBundle\Services;
 
 use FOS\UserBundle\Form\Handler\RegistrationFormHandler;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class RegistrationFormWithGoogleCaptcha.
@@ -15,29 +16,36 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
 {
-    private $captchaSecretKey;
-    private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    private $container;
+    protected $captchaSecretKey;
+    protected $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
+    protected $request;
+
+    /** @var Logger */
+    protected $logger;
+
+    protected $buzz;
 
     /**
      * RegistrationFormWithGoogleCaptcha constructor.
      *
-     * @param Container $container
+     * @param $regForm
+     * @param RequestStack $requestStack
+     * @param $useManager
+     * @param $mailer
+     * @param $tokenGenerator
+     * @param Logger $logger
+     * @param string $captchaSecretKey
+     * @param $buzz
      */
-    public function __construct($container)
+    public function __construct($regForm, $requestStack, $useManager, $mailer, $tokenGenerator, $logger, $captchaSecretKey, $buzz)
     {
-        $this->container = $container;
-        /*
-         * викликаем рідний конструктор fos_user.registration.form.handler
-         */
-        parent::__construct(
-            $this->container->get('fos_user.registration.form'),
-            $this->container->get('request_stack')->getCurrentRequest(),
-            $this->container->get('fos_user.user_manager'),
-            $this->container->get('fos_user.mailer'),
-            $this->container->get('fos_user.util.token_generator')
-        );
-        $this->captchaSecretKey = $this->container->getParameter('google_captcha_secret_key');
+        $this->request = $requestStack->getCurrentRequest();
+        $this->logger = $logger;
+        $this->captchaSecretKey = $captchaSecretKey;
+        $this->buzz = $buzz;
+
+        parent::__construct($regForm, $this->request, $useManager, $mailer, $tokenGenerator);
     }
 
     /**
@@ -47,8 +55,7 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      */
     public function process($confirmation = false)
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        $captcha = $request->request->get('g-recaptcha-response');
+        $captcha = $this->request->request->get('g-recaptcha-response');
 
         return $this->isGoogleCaptchaTrue($captcha) && parent::process($confirmation);
     }
@@ -59,8 +66,6 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      * @see https://www.google.com/recaptcha/admin#list
      *
      * @param string $captcha
-     *
-     * @throws
      *
      * @return bool
      */
@@ -77,16 +82,21 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
         ];
 
         $response = json_decode(
-            $this->container->get('buzz')->submit(
+            $this->buzz->submit(
                 $this->captchaCheckUrl,
                 $params
             )->getContent(),
             true
         );
         if (!isset($response['success'])) {
-            throw new \Exception('google captcha api response missing');
-        } elseif (isset($response['error-codes'])) {
-            throw new \Exception('google captcha api error: '.$response['error-codes'][0]);
+            $this->logger->addError('google captcha api response missing');
+
+            return false;
+        }
+        if (isset($response['error-codes'])) {
+            $this->logger->addError('google captcha api error: '.$response['error-codes'][0]);
+
+            return false;
         }
 
         return (bool) $response['success'];

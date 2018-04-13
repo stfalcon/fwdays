@@ -46,7 +46,7 @@
                     <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="modal-forgot-password" href="#"{% else %} href="{{ path('fos_user_resetting_check_email') }}"{% endif %} class="form-link">{{ 'user.forgot_password.title'|trans }}</a>
                 </div>
                 <div class="help-links__item">
-                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}" href="#" {% else %} href="{{ path('fos_user_registration_register') }}"{% endif %} class="form-link">{{ 'menu.user.registration'|trans }}</a>
+                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}" href="#" class="form-link add_recapcha"{% else %} href="{{ path('fos_user_registration_register') }}" class="form-link"{% endif %}>{{ 'menu.user.registration'|trans }}</a>
                 </div>
             </div>
         </div>

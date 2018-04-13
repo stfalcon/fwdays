@@ -88,9 +88,7 @@
         <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
     {% endif %}
 
-    <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
-
-    {%- if app.request.cookies.has('event') -%}
+    {% if app.request.cookies.has('event') %}
         <script>paymentAfterLogin();</script>
     {% endif %}
 
