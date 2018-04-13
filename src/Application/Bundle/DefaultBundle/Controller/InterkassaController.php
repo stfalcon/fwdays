@@ -63,6 +63,15 @@ class InterkassaController extends Controller
             return new Response('SUCCESS', 200);
         }
 
+        $this->get('logger')->addCritical('Interkassa interaction Fail!', [
+            'payment_id' => $payment->getId(),
+            'payment_status' => $payment->getStatus(),
+            'payment_amount' => $payment->getAmount(),
+            'request_amount' => $request->get('ik_am'),
+            'request_status' => $request->get('ik_inv_st'),
+            'is_hash_valid' => ($request->get('ik_sign') === $interkassa->getSignHash($request->query->all())),
+        ]);
+
         return new Response('FAIL', 400);
     }
 

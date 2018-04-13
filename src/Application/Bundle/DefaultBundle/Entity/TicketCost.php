@@ -9,8 +9,6 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 /**
  * @ORM\Table(name="event__ticketsCost")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\TicketCostRepository")
- *
- * @AppAssert\TicketCost\TicketCostCount
  */
 class TicketCost
 {

@@ -25,12 +25,10 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
- *     message="Поле slug повинне бути унікальне."
+ *     message="Поле slug должно быть уникальное."
  * )
  *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
- *
- * @AppAssert\Event\EventTicketCostCount
  */
 class Event implements Translatable
 {
@@ -1013,14 +1011,20 @@ class Event implements Translatable
     }
 
     /**
-     * @return float|null
+     * @return TicketCost|null
      */
     public function getBiggestTicketCost()
     {
+        /** @var TicketCost $result */
         $result = null;
-        /** @var TicketCost $cost */
-        foreach ($this->ticketsCost as $cost) {
-            $result = $cost->getAmount() > $result ? $cost->getAmount() : $result;
+        /** @var TicketCost $ticketCost */
+        foreach ($this->ticketsCost as $ticketCost) {
+            if (!$result) {
+                $result = $ticketCost;
+            }
+            if ($ticketCost->getAmount() > $result->getAmount()) {
+                $result = $ticketCost;
+            }
         }
 
         return $result;

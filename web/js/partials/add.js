@@ -32,6 +32,13 @@ function setPaymentHtmlbyData(data, e_slug) {
     $('#cancel-promo-code').click();
     $('#cancel-add-user').click();
     $('#user_phone').val(data.phoneNumber);
+    var buy_btn = $('#buy-ticket-btn');
+    var old_event = buy_btn.data('event');
+    if (old_event) {
+        buy_btn.removeClass('event-'+old_event);
+    }
+
+    buy_btn.addClass('event-'+e_slug).data('event', e_slug);
     if (!data.is_user_create_payment) {
         $('#add-user-trigger').hide();
         $('#promo-code-trigger').hide();
@@ -59,9 +66,17 @@ function getPlaceByElem(elem) {
 
 function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
+    var promocode = Cookies.get('promocode');
+    var promoevent = Cookies.get('promoevent');
+    var route = '';
+    if (promocode && promoevent === e_slug) {
+        route = Routing.generate('event_pay', {eventSlug: e_slug, promoCode: promocode});
+    } else {
+        route = Routing.generate('event_pay', {eventSlug: e_slug});
+    }
     $.ajax({
         type: 'GET',
-        url: Routing.generate('event_pay', {eventSlug: e_slug}),
+        url: route,
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
@@ -379,8 +394,14 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
+        var promocode = Cookies.get('promocode');
+        var promoevent = Cookies.get('promoevent');
         if (detectmob()) {
-            window.location.pathname = homePath+"static-payment/"+e_slug;
+            var queryParams = '';
+            if (promocode && promoevent === e_slug) {
+                queryParams = '?promocode='+promocode;
+            }
+            window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
         } else {
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug);
