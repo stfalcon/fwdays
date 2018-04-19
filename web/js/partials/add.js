@@ -344,7 +344,7 @@ $(document).ready(function () {
     $.validator.addClassRules({
         'valid-name': {
             required: true,
-            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/,
+            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/,
             minlength: 2,
             maxlength: 32,
         },
