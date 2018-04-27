@@ -13,19 +13,15 @@ use Application\Bundle\DefaultBundle\Service\InterkassaService;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
- * Контроллер оплаты и статусов платежей через Интеркассу.
+ * Class WayForPayController
  */
-class InterkassaController extends Controller
+class WayForPayController extends Controller
 {
     /** @var array */
     protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
 
     /**
-     * Здесь мы получаем уведомления о статусе платежа и отмечаем платеж как
-     * успешный (или не отмечаем)
-     * Также рассылаем письма и билеты всем, кто был привязан к платежу.
-     *
-     * @Route("/old-payment/interaction", name="old_payment_interaction")
+     * @Route("/payment/interaction", name="payment_interaction")
      *
      * @param Request $request
      *
@@ -36,15 +32,15 @@ class InterkassaController extends Controller
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
+            ->findOneBy(['id' => $request->get('orderReference')]);
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $request->get('ik_pm_no')));
+            throw new Exception(sprintf('Платеж №%s не найден!', $request->get('orderReference')));
         }
 
         /** @var InterkassaService $interkassa */
-        $interkassa = $this->get('stfalcon_event.interkassa.service');
-        if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
+        $wayForPay = $this->get('app.way_for_pay.service');
+        if ($payment->isPending() && $wayForPay->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
 
             $em = $this->getDoctrine()->getManager();
@@ -52,10 +48,7 @@ class InterkassaController extends Controller
 
             try {
                 $referralService = $this->get('stfalcon_event.referral.service');
-                // начисляем средства за реферала
                 $referralService->chargingReferral($payment);
-
-                // списываем реферельные средства
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
             }
@@ -63,13 +56,12 @@ class InterkassaController extends Controller
             return new Response('SUCCESS', 200);
         }
 
-        $this->get('logger')->addCritical('Interkassa interaction Fail!', [
+        $this->get('logger')->addCritical('WayForPay interaction Fail!', [
             'payment_id' => $payment->getId(),
             'payment_status' => $payment->getStatus(),
             'payment_amount' => $payment->getAmount(),
-            'request_amount' => $request->get('ik_am'),
-            'request_status' => $request->get('ik_inv_st'),
-            'is_hash_valid' => ($request->get('ik_sign') === $interkassa->getSignHash($request->query->all())),
+            'request_amount' => $request->get('amount'),
+            'request_status' => $request->get('reasonCode').' '.$request->get('reason'),
         ]);
 
         return new Response('FAIL', 400);
@@ -78,7 +70,7 @@ class InterkassaController extends Controller
     /**
      * Платеж проведен успешно. Показываем пользователю соответствующее сообщение.
      *
-     * @Route("/old-payment/success", name="old_payment_success")
+     * @Route("/payment/success", name="payment_success")
      *
      * @param Request $request
      *
@@ -86,20 +78,20 @@ class InterkassaController extends Controller
      */
     public function successAction(Request $request)
     {
-        $this->get('session')->set('interkassa_payment', $request->get('ik_pm_no'));
+        $this->get('session')->set('way_for_pay_payment', $request->get('ik_pm_no'));
 
         return $this->redirectToRoute('show_success');
     }
 
     /**
-     * @Route("/old-success", name="old_show_success")
+     * @Route("/success", name="show_success")
      *
      * @return Response
      */
     public function showSuccessAction()
     {
-        $paymentId = $this->get('session')->get('interkassa_payment');
-        $this->get('session')->remove('interkassa_payment');
+        $paymentId = $this->get('session')->get('way_for_pay_payment');
+        $this->get('session')->remove('way_for_pay_payment');
 
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
@@ -124,7 +116,7 @@ class InterkassaController extends Controller
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *
-     * @Route("/old-payment/fail", name="old_payment_fail")
+     * @Route("/payment/fail", name="payment_fail")
      *
      * @Template()
      *
@@ -140,7 +132,7 @@ class InterkassaController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/old-payment/pending", name="old_payment_pending")
+     * @Route("/payment/pending", name="payment_pending")
      *
      * @Template()
      *

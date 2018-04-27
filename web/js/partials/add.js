@@ -26,7 +26,7 @@ function popupwindow(url, title, w, h) {
 }
 
 function setPaymentHtmlbyData(data, e_slug) {
-    $('#payment').attr('action', data.form_action);
+    $('#payment').data('pay-type', data.pay_type).attr('action', data.form_action);
     $('#pay-form').html(data.html).data('event', e_slug);
     $('#payment-sums').html(data.paymentSums);
     $('#cancel-promo-code').click();
@@ -181,6 +181,17 @@ function recapchaValidate(rId) {
         grecaptcha.execute();
     }
 }
+
+$(document).on('submit', '#payment', function (e) {
+    e.preventDefault();
+    var form = $(this);
+    if (form.data('pay-type') === 'wayforpay') {
+        paymentSytemPay();
+    } else {
+        form.submit();
+    }
+});
+
 
 $(document).on('click', '.user-payment__remove', function () {
     var elem = $(this);

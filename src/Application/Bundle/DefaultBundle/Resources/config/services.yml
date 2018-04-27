@@ -74,3 +74,11 @@ services:
         class: Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    app.way_for_pay.service:
+        class: Application\Bundle\DefaultBundle\Service\WayForPayService
+        arguments:
+            - "%stfalcon_event.config%"
+            - "@translator"
+            - "@request_stack"
+            - "@router"

@@ -299,6 +299,8 @@ class PaymentService
                 $payment->setFwdaysAmount($payment->getAmount());
                 $payment->setAmount(0);
             }
+        } else {
+            $payment->setFwdaysAmount(0);
         }
     }
 }

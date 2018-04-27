@@ -1,0 +1,31 @@
+{#{% for key, param in params %}#}
+    {#<input type="hidden" name="{{ key }}" value="{{ param }}">#}
+{#{% endfor %}#}
+
+{% if pay_type == 'wayforpay' -%}
+    <script id="widget-wfp-script" language="javascript" type="text/javascript" src="https://secure.wayforpay.com/server/pay-widget.js" async defer></script>
+    <script type="text/javascript">
+        var wayforpay = new Wayforpay();
+        var paymentSytemPay = function () {
+            wayforpay.run({
+                    {% for key, param in params %}
+                        {{ key }}:"{{ param }}"
+                    {% endfor %}
+                },
+                function (response) {
+                    $.post(Routing.generate('payment_interaction', {response: response }));
+                },
+                function (response) {
+                    $.post(Routing.generate('payment_fail', {response: response }));
+                },
+                function (response) {
+                    $.post(Routing.generate('payment_pending', {response: response }));
+                }
+            );
+        }
+    </script>
+{% endif %}
+
+{% for ticket in payment.tickets %}
+    {% include '@ApplicationDefault/Redesign/Payment/user.payment.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+{% endfor %}
