@@ -52,16 +52,13 @@ class UrlForRedirect
     public function getRedirectUrl($referralUrl, $host = '')
     {
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
-        if (in_array($clearReferrer, $this->homePages)) {
-            return $this->router->generate('cabinet');
-        }
 
         if (in_array($clearReferrer, $this->authorizationUrls)) {
-            return $this->router->generate('cabinet');
+            return $this->router->generate('homepage');
         }
 
         if (!empty($host) && false === strpos($clearReferrer, $host)) {
-            return $this->router->generate('cabinet');
+            return $this->router->generate('homepage');
         }
 
         return $referralUrl;
