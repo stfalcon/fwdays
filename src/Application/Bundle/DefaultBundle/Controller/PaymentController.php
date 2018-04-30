@@ -358,11 +358,10 @@ class PaymentController extends Controller
             $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
         }
 
+        $formAction = null;
+        $payType = 'wayforpay';
         if (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $formAction = $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]);
-            $payType = 'wayforpay';
-        } else {
-            $formAction = null;
             $payType = 'referral';
         }
 

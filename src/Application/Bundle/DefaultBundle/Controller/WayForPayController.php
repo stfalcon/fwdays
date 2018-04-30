@@ -42,6 +42,10 @@ class WayForPayController extends Controller
         $wayForPay = $this->get('app.way_for_pay.service');
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $request)) {
             $payment->markedAsPaid();
+            if ($request->get('recToken')) {
+                $user = $this->getUser();
+                $user->setRecToken($request->get('recToken'));
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -53,7 +57,9 @@ class WayForPayController extends Controller
             } catch (\Exception $e) {
             }
 
-            return new Response('SUCCESS', 200);
+            $this->get('session')->set('way_for_pay_payment', $request->get('orderReference'));
+
+            return $this->redirectToRoute('show_success');
         }
 
         $this->get('logger')->addCritical('WayForPay interaction Fail!', [
@@ -65,22 +71,6 @@ class WayForPayController extends Controller
         ]);
 
         return new Response('FAIL', 400);
-    }
-
-    /**
-     * Платеж проведен успешно. Показываем пользователю соответствующее сообщение.
-     *
-     * @Route("/payment/success", name="payment_success")
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function successAction(Request $request)
-    {
-        $this->get('session')->set('way_for_pay_payment', $request->get('ik_pm_no'));
-
-        return $this->redirectToRoute('show_success');
     }
 
     /**
@@ -113,6 +103,7 @@ class WayForPayController extends Controller
             'event_type' => $eventType,
         ]);
     }
+
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *

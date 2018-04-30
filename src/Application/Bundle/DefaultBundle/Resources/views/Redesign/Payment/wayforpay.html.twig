@@ -1,15 +1,10 @@
-{#{% for key, param in params %}#}
-    {#<input type="hidden" name="{{ key }}" value="{{ param }}">#}
-{#{% endfor %}#}
-
 {% if pay_type == 'wayforpay' -%}
-    <script id="widget-wfp-script" language="javascript" type="text/javascript" src="https://secure.wayforpay.com/server/pay-widget.js" async defer></script>
     <script type="text/javascript">
         var wayforpay = new Wayforpay();
         var paymentSytemPay = function () {
             wayforpay.run({
                     {% for key, param in params %}
-                        {{ key }}:"{{ param }}"
+                        {{ key }} : "{{ param }}",
                     {% endfor %}
                 },
                 function (response) {

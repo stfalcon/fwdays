@@ -2,12 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,19 +29,25 @@ class WayForPayService
 
     /** @var Router */
     protected $router;
+
+    /** @var TokenStorageInterface */
+    protected $securityToken;
+
     /**
-     * @param mixed        $stfalconConfig
-     * @param Translator   $translator
-     * @param RequestStack $requestStack
-     * @param Router       $router
+     * @param mixed                 $stfalconConfig
+     * @param Translator            $translator
+     * @param RequestStack          $requestStack
+     * @param Router                $router
+     * @param TokenStorageInterface $securityToken
      */
-    public function __construct($stfalconConfig, $translator, $requestStack, $router)
+    public function __construct($stfalconConfig, $translator, $requestStack, $router, $securityToken)
     {
         $this->stfalconConfig = $stfalconConfig;
         $this->translator = $translator;
         $currentRequest = $requestStack->getCurrentRequest();
         $this->locale = null !== $currentRequest ? $currentRequest->getLocale() : 'uk';
         $this->router = $router;
+        $this->securityToken = $securityToken;
     }
 
     /**
@@ -131,12 +139,25 @@ class WayForPayService
         ];
 
         $params['merchantSignature'] = $this->getSignHash($params);
+
+        $user = $this->securityToken->getToken()->getUser();
+
+        if ($user instanceof User && null !== $user->getRecToken()) {
+            $params['recToken'] = $user->getRecToken();
+        }
+
+        $params['authorizationType'] = "SimpleSignature";
+        $params['merchantTransactionSecureType'] = "AUTO";
+        $params['merchantTransactionType'] = "SALE";
         $params["clientFirstName"] = $payment->getUser()->getName();
         $params["clientLastName"] = $payment->getUser()->getSurname();
         $params["clientEmail"] = $payment->getUser()->getEmail();
+        $params["clientPhone"] =  "380631234567";
         $params["defaultPaymentSystem"] = "card";
         $params["orderTimeout"] = "49000";
+        $params["apiVersion"] = "1";
         $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+//        $params["serviceUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
     }

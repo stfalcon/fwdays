@@ -82,3 +82,4 @@ services:
             - "@translator"
             - "@request_stack"
             - "@router"
+            - "@security.token_storage"
