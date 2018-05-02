@@ -33,6 +33,9 @@ class WayForPayService
     /** @var TokenStorageInterface */
     protected $securityToken;
 
+    /** @var RequestStack  */
+    protected $request;
+
     /**
      * @param mixed                 $stfalconConfig
      * @param Translator            $translator
@@ -44,8 +47,8 @@ class WayForPayService
     {
         $this->stfalconConfig = $stfalconConfig;
         $this->translator = $translator;
-        $currentRequest = $requestStack->getCurrentRequest();
-        $this->locale = null !== $currentRequest ? $currentRequest->getLocale() : 'uk';
+        $this->request = $requestStack->getCurrentRequest();
+        $this->locale = null !== $this->request ?  $this->request->getLocale() : 'uk';
         $this->router = $router;
         $this->securityToken = $securityToken;
     }
@@ -129,7 +132,7 @@ class WayForPayService
 
         $params = [
             'merchantAccount' => $this->stfalconConfig['wayforpay']['shop_id'],
-            'merchantDomainName' => 'www.fwdays.com',
+            'merchantDomainName' => $this->request->getSchemeAndHttpHost(),
             'orderReference' => $payment->getId(),
             'orderDate' => $payment->getCreatedAt()->getTimestamp(),
             'amount' => $payment->getAmount(),
