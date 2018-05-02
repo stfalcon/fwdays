@@ -23,9 +23,6 @@
     google_captcha_secret_key = your_captcha_secret_key
     google_captcha_site_key = your_captcha_site_key
 
-    interkassa_secret      = your_interkassa_secret_key
-    interkassa_shop_id = your_interkassa_shop_key
-
     tracking_id            = your_ga_tracking_id
 
     mandrill_api_key = your_api_key

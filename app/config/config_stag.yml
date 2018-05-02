@@ -16,9 +16,6 @@ monolog:
             members: [nested]
 
 stfalcon_event:
-    interkassa:
-        shop_id: "%interkassa_shop_id%"
-        secret: "%interkassa_secret%"
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"

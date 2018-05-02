@@ -143,9 +143,6 @@ fos_user:
         user_manager: stfalcon.user_manager
 
 stfalcon_event:
-    interkassa:
-        shop_id: "533958fbbf4efc736a13bea5"
-        secret: "%interkassa_secret%"
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
