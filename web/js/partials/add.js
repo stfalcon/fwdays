@@ -186,8 +186,10 @@ $(document).on('submit', '#payment', function (e) {
     e.preventDefault();
     var form = $(this);
     if (form.data('pay-type') === 'wayforpay') {
-        var inst = $('[data-remodal-id=modal-payment]').remodal();
-        inst.close();
+        if (!detectmob()) {
+            var inst = $('[data-remodal-id=modal-payment]').remodal();
+            inst.close();
+        }
         paymentSytemPay();
     } else {
         form.submit();

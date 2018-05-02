@@ -8,7 +8,14 @@
                     {% endfor %}
                 },
                 function (response) {
-                    $.post(Routing.generate('payment_interaction', {response: response }));
+                    wayforpay.closeit();
+                    $.post(Routing.generate('payment_interaction', {response: response }),
+                        function (data) {
+                           if (data === 'ok') {
+                               window.location.href = homePath+'success';
+                           }
+                        }
+                    );
                 },
                 function (response) {
                     $.post(Routing.generate('payment_fail', {response: response }));

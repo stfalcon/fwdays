@@ -21,7 +21,9 @@ class WayForPayController extends Controller
     protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
 
     /**
-     * @Route("/payment/interaction", name="payment_interaction")
+     * @Route("/payment/interaction", name="payment_interaction",
+     *     methods={"POST"},
+     *     options={"expose"=true})
      *
      * @param Request $request
      *
@@ -29,22 +31,30 @@ class WayForPayController extends Controller
      */
     public function interactionAction(Request $request)
     {
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Payment')
-            ->findOneBy(['id' => $request->get('orderReference')]);
+        $response = $request->get('response');
+        if (null === $response) {
+            $response = $request->request->all();
+        }
+        $payment = null;
+
+        if (is_array($response) && isset($response['orderReference'])) {
+            /** @var Payment $payment */
+            $payment = $this->getDoctrine()
+                ->getRepository('StfalconEventBundle:Payment')
+                ->findOneBy(['id' => $response['orderReference']]);
+        }
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $request->get('orderReference')));
+            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
         }
 
         /** @var InterkassaService $interkassa */
         $wayForPay = $this->get('app.way_for_pay.service');
-        if ($payment->isPending() && $wayForPay->checkPayment($payment, $request)) {
+        if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
             $payment->markedAsPaid();
-            if ($request->get('recToken')) {
+            if (isset($response['recToken'])) {
                 $user = $this->getUser();
-                $user->setRecToken($request->get('recToken'));
+                $user->setRecToken($response['recToken']);
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -57,7 +67,10 @@ class WayForPayController extends Controller
             } catch (\Exception $e) {
             }
 
-            $this->get('session')->set('way_for_pay_payment', $request->get('orderReference'));
+            $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
+            if ($request->isXmlHttpRequest()) {
+                return new Response('ok', 200);
+            }
 
             return $this->redirectToRoute('show_success');
         }
@@ -66,8 +79,8 @@ class WayForPayController extends Controller
             'payment_id' => $payment->getId(),
             'payment_status' => $payment->getStatus(),
             'payment_amount' => $payment->getAmount(),
-            'request_amount' => $request->get('amount'),
-            'request_status' => $request->get('reasonCode').' '.$request->get('reason'),
+            'request_amount' => $this->getArrMean($response['amount']),
+            'request_status' => $this->getArrMean($response['reasonCode']).' '.$this->getArrMean($response['reason']),
         ]);
 
         return new Response('FAIL', 400);
@@ -107,9 +120,12 @@ class WayForPayController extends Controller
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *
-     * @Route("/payment/fail", name="payment_fail")
+     * @Route("/payment/fail", name="payment_fail",
+     *     methods={"POST"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
      *
-     * @Template()
+     * @Template("@ApplicationDefault/Interkassa/fail.html.twig")
      *
      * @return array
      */
@@ -123,9 +139,12 @@ class WayForPayController extends Controller
      *
      * @param Request $request
      *
-     * @Route("/payment/pending", name="payment_pending")
+     * @Route("/payment/pending", name="payment_pending",
+     *     methods={"POST"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
      *
-     * @Template()
+     * @Template("@ApplicationDefault/Interkassa/pending.html.twig")
      *
      * @return array|Response
      */
@@ -169,5 +188,16 @@ class WayForPayController extends Controller
         }
 
         return $eventName;
+    }
+
+    /**
+     * @param $var
+     * @param string $default
+     *
+     * @return string
+     */
+    private function getArrMean(&$var, $default = '')
+    {
+        return isset($var) ? $var : $default;
     }
 }

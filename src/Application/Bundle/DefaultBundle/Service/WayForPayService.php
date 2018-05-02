@@ -57,8 +57,8 @@ class WayForPayService
      */
     public function getSignHash($params)
     {
-        unset($params['merchantSignature']);
         $signString = implode(';', $params);
+        $signString = htmlspecialchars($signString, ENT_QUOTES);
         $sign = hash_hmac("md5", $signString, $this->stfalconConfig['wayforpay']['secret']);
 
         return $sign;
@@ -66,28 +66,29 @@ class WayForPayService
 
     /**
      * @param Payment $payment
-     * @param Request $request
+     * @param array   $response
      *
      * @return bool
      */
-    public function checkPayment(Payment $payment, Request $request)
+    public function checkPayment(Payment $payment, array $response)
     {
-        if ($this->stfalconConfig['wayforpay']['shop_id'] === $request->get('merchantAccount') &&
-            $request->get('amount') === $payment->getAmount() &&
-            'Approved' === $request->get('transactionStatus')
+        if ($this->stfalconConfig['wayforpay']['shop_id'] === $this->getArrMean($response['merchantAccount']) &&
+            (float) $this->getArrMean($response['amount']) === (float) $payment->getAmount() &&
+            'Approved' === $this->getArrMean($response['transactionStatus'])
         ) {
             $params = [
-                'merchantAccount' => $request->get('merchantAccount'),
-                'orderReference' => $request->get('orderReference'),
-                'amount' => $request->get('amount'),
-                'currency'  => $request->get('currency'),
-                'authCode' => $request->get('authCode'),
-                'cardPan' => $request->get('cardPan'),
-                'transactionStatus' => $request->get('transactionStatus'),
-                'reasonCode' => $request->get('reasonCode'),
+                'merchantAccount' => $this->getArrMean($response['merchantAccount']),
+                'orderReference' => $this->getArrMean($response['orderReference']),
+                'amount' => $this->getArrMean($response['amount']),
+                'currency'  => $this->getArrMean($response['currency']),
+                'authCode' => $this->getArrMean($response['authCode']),
+                'cardPan' => $this->getArrMean($response['cardPan']),
+                'transactionStatus' => $this->getArrMean($response['transactionStatus']),
+                'reasonCode' => $this->getArrMean($response['reasonCode']),
             ];
-
-            return $request->get('merchantSignature') === $this->getSignHash($params);
+            if (isset($response['merchantSignature'])) {
+                return $response['merchantSignature'] === $this->getSignHash($params);
+            }
         }
 
         return false;
@@ -152,13 +153,23 @@ class WayForPayService
         $params["clientFirstName"] = $payment->getUser()->getName();
         $params["clientLastName"] = $payment->getUser()->getSurname();
         $params["clientEmail"] = $payment->getUser()->getEmail();
-        $params["clientPhone"] =  "380631234567";
+        $params["clientPhone"] = $payment->getUser()->getPhone();
+        $params["language"] = $this->locale === 'uk' ? 'ua' : $this->locale;
         $params["defaultPaymentSystem"] = "card";
         $params["orderTimeout"] = "49000";
-        $params["apiVersion"] = "1";
         $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
-//        $params["serviceUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
+    }
+
+    /**
+     * @param $var
+     * @param string $default
+     *
+     * @return string
+     */
+    private function getArrMean(&$var, $default = '')
+    {
+        return isset($var) ? $var : $default;
     }
 }
