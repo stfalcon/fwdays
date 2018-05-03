@@ -48,8 +48,16 @@ class EventGroupAdmin extends Admin
         }
 
         $formMapper
-            ->add('name')
-            ->add('events');
+            ->add('name', null, ['label' => 'Название'])
+            ->add(
+                'events',
+                null,
+                [
+                    'disabled' => is_null($group->getId()),
+                    'help' => is_null($group->getId()) ? 'добавление событий возможно только после создания группы' : 'добавьте событие в группу',
+                    'label' => 'События',
+                ]
+            );
     }
 
     /**
