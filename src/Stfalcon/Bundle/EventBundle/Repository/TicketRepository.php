@@ -247,17 +247,17 @@ class TicketRepository extends EntityRepository
     /**
      * @param User $user
      */
-    public function getPaidTicketsCountByUser(User $user)
+    public function getPaidTicketsCount()
     {
         $qb = $this->createQueryBuilder('t');
         $qb->select('COUNT(t)')
+            ->addSelect('u.id')
             ->join('t.payment', 'p')
+            ->join('t.user', 'u')
             ->where($qb->expr()->eq('p.status', ':status'))
-            ->andWhere($qb->expr()->eq('t.user', ':u'))
-            ->setParameters(['status' => 'paid', 'u' => $user])
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->setParameter('status', 'paid')
+            ->groupBy('u.id');
 
-        return $qb->getSingleScalarResult();
+        return  $qb->getQuery()->getResult();
     }
 }

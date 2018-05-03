@@ -209,16 +209,27 @@ class AdminController extends Controller
         //Кол-во людей которые не купили билеты никогда
         //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
 
-        $users = $repo->findAll();
         $usersTicketsCount = [];
-        $doctrine = $this->getDoctrine();
-        foreach ($users as $user) {
-            $paidTicketsCount = $doctrine
-                ->getRepository('StfalconEventBundle:Ticket')
-                ->getPaidTicketsCountByUser($user);
 
-            $usersTicketsCount[$paidTicketsCount]++;
+        $paidTickets = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->getPaidTicketsCount();
+
+        foreach ($paidTickets as $paidTicket) {
+            if (isset($usersTicketsCount[$paidTicket[1]])) {
+                $usersTicketsCount[$paidTicket[1]]++;
+            } else {
+                $usersTicketsCount[$paidTicket[1]] = 1;
+            }
+
         }
+
+        $haveTickets = 0;
+        foreach ($usersTicketsCount as $item) {
+            $haveTickets += $item;
+        }
+        $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
+        ksort($usersTicketsCount);
 
         //сколько людей отказалось предоставлять свои данные партнерам
         $qb = $repo->getCountBaseQueryBuilder();
@@ -253,6 +264,7 @@ class AdminController extends Controller
                 'enabledUsersCount' => $enabledUsersCount,
                 'subscribedUsersCount' => $subscribedUsersCount,
                 'unSubscribedUsersCount' => $unSubscribedUsersCount,
+                'haveTicketsCount' => $haveTickets,
                 'usersTicketsCount' => $usersTicketsCount,
             ],
         ]);

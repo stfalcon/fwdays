@@ -21,7 +21,7 @@
     <h1>Статистика</h1>
 
     <h4>Общая статистика учасников</h4>
-    <table>
+    <table >
         <tbody>
         <tr>
             <td>Всего учасников:</td> <td>{{ data['totalUsersCount'] }}</td>
@@ -35,20 +35,23 @@
         <tr>
             <td>Отписаных от розсылки:</td> <td>{{ data['unSubscribedUsersCount'] }}</td>
         </tr>
+        <tr>
+            <td>Купили хоть один билет:</td> <td>{{ data['haveTicketsCount'] }}</td>
+        </tr>
         </tbody>
     </table>
 
     <h4>Купили билетов по колличеству</h4>
-    <table>
+    <table border="1">
         <thead>
             <tr>
-                <td>количество билетов</td> <td>количество учасников</td>
+                <td>учасников</td> <td>купили билетов</td>
             </tr>
         </thead>
         <tbody>
-        {% for key, count in usersTicketsCount -%}
+        {% for key, count in data['usersTicketsCount'] -%}
             <tr>
-                <td>{{ key }}</td> <td>{{ count }}</td>
+                <td>{{ count }}</td> <td>{{ key }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -72,8 +75,6 @@
         </tbody>
     </table>
 
-
-
     <h4>статистика по реферральной программе</h4>
     <table>
         <tbody>
@@ -88,5 +89,3 @@
 {% block javascripts %}
     {{ parent() }}
 {% endblock javascripts %}
-
-'usersTicketsCount' => $usersTicketsCount,
