@@ -13,27 +13,33 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
 {% endblock stylesheets %}
 
 {% block title %} - {{ 'Статистика' }}{% endblock title %}
 
 {% block content %}
+    <a href="{{ path('admin_event_statistic') }}">Перейти к статистике по событиям</a>
     <h1>Статистика</h1>
 
-    <h4>Общая статистика учасников</h4>
+    <h4>Общая статистика участников</h4>
     <table >
         <tbody>
         <tr>
-            <td>Всего учасников:</td> <td>{{ data['totalUsersCount'] }}</td>
+            <td>Всего участников:</td> <td>{{ data['totalUsersCount'] }}</td>
         </tr>
         <tr>
-            <td>Активированых учасников:</td> <td>{{ data['enabledUsersCount'] }}</td>
+            <td>Активированых участников:</td> <td>{{ data['enabledUsersCount'] }}</td>
         </tr>
         <tr>
-            <td>Подписаных на розсылку:</td> <td>{{ data['subscribedUsersCount'] }}</td>
+            <td>Подписаных на россылку:</td> <td>{{ data['subscribedUsersCount'] }}</td>
         </tr>
         <tr>
-            <td>Отписаных от розсылки:</td> <td>{{ data['unSubscribedUsersCount'] }}</td>
+            <td>Отписаных от россылки:</td> <td>{{ data['unSubscribedUsersCount'] }}</td>
         </tr>
         <tr>
             <td>Купили хоть один билет:</td> <td>{{ data['haveTicketsCount'] }}</td>
@@ -41,11 +47,11 @@
         </tbody>
     </table>
 
-    <h4>Купили билетов по колличеству</h4>
+    <h4>Купили билетов по количеству</h4>
     <table border="1">
         <thead>
             <tr>
-                <td>учасников</td> <td>купили билетов</td>
+                <td>участников</td> <td>купили билетов</td>
             </tr>
         </thead>
         <tbody>

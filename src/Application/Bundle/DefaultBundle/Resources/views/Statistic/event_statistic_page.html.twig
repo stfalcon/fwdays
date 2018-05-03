@@ -1,0 +1,50 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block title %} - {{ 'Статистика событий' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    <h1>Статистика событий</h1>
+
+    <select id="select-event-statistic">
+        {% for event in events -%}
+            <option value="{{ event.slug }}">{{ event.name }}</option>
+        {% endfor %}
+    </select>
+    <p></p>
+    <div id="event-data"></div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).on('change', '#select-event-statistic', function () {
+            var event_slag = $('#select-event-statistic option:selected').val();
+            $.get("{{ path('event_statistic') }}", {'eventSlug' : event_slag},
+                function (response) {
+                    $('#event-data').html(response.html);
+                });
+        });
+    </script>
+{% endblock javascripts %}

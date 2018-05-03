@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Class AdminController.
@@ -179,6 +181,8 @@ class AdminController extends Controller
     /**
      * Show Statistic.
      *
+     * @Route("/admin/statistic", name="admin_statistic_all")
+     *
      * @return Response
      *
      * @Method({"GET", "POST"})
@@ -298,4 +302,60 @@ class AdminController extends Controller
             'value' => $value,
         ]);
     }
+
+    /**
+     * @Route("/admin/event_statistic/", name="admin_event_statistic")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function showEventStatisticAction()
+    {
+        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findAll();
+        return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
+            'admin_pool' => $this->get('sonata.admin.pool'),
+            'events' => $events,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/event_statistic", name="event_statistic",
+     *     methods={"GET"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return JsonResponse
+     */
+    public function getEventStatisticAction(Request $request)
+    {
+        $eventSlug = $request->get('eventSlug');
+        $event = null;
+        if ($eventSlug) {
+            $event = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        } else {
+            return new JsonResponse(['error' => 'cant find event!'], 404);
+        }
+
+        $wannaVisitEvent = $event->getWantsToVisitCount();
+        $ticketBlocks = $event->getTicketsCost();
+        $totalTicketCount = 0;
+        /** @var TicketCost $ticketBlock */
+        foreach ($ticketBlocks as $ticketBlock) {
+            $totalTicketCount += $ticketBlock->getSoldCount();
+        }
+
+        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+            'wannaVisitEvent' => $wannaVisitEvent,
+            'ticketBlocks' => $ticketBlocks,
+            'totalTicketCount' => $totalTicketCount,
+        ]);
+
+        return new JsonResponse(['html' => $html]);
+    }
 }
+

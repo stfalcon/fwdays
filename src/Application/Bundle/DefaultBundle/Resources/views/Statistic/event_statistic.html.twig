@@ -1,0 +1,36 @@
+<table >
+    <tbody>
+        <tr>
+            <td>Зарегестрировались на событие:</td> <td>{{ wannaVisitEvent }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Статистика по блокам цен</h4>
+
+<table border="1">
+    <thead>
+        <tr>
+            <td>Название</td>
+            <td>Цена</td>
+            <td>Всего количество</td>
+            <td>Продано</td>
+            <td>% от всех</td>
+            <td>Активность</td>
+            <td>Безлимитный</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ticketBlock in ticketBlocks -%}
+        <tr>
+            <td>{{ ticketBlock.name }}</td>
+            <td>{{ ticketBlock.amount }}</td>
+            <td>{{ ticketBlock.count }}</td>
+            <td>{{ ticketBlock.soldCount }}</td>
+            <td>{{ (ticketBlock.soldCount * 100 / totalTicketCount)|round(2) }} %</td>
+            <td><div>{{ ticketBlock.enabled }}</div></td>
+            <td>{{ ticketBlock.unlimited }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
