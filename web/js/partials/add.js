@@ -464,8 +464,9 @@ $(document).ready(function () {
     });
 
     $('#buy-ticket-btn').on('click', function () {
-        if ($('#user_phone').valid()) {
-            $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {
+        var use_phone = $('#user_phone').val();
+        if (use_phone !== '' && $('#user_phone').valid()) {
+            $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {
             });
         }
     });
