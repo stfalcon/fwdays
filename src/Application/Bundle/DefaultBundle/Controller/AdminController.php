@@ -189,6 +189,37 @@ class AdminController extends Controller
             ->getManager()
             ->getRepository('ApplicationUserBundle:User');
 
+        $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.enabled = :enabled')
+        ->setParameter('enabled', 1);
+        $enabledUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.subscribe = :subscribed')
+            ->setParameter('subscribed', 1);
+        $subscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.subscribe = :subscribed')
+            ->setParameter('subscribed', 0);
+        $unSubscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        //Кол-во людей которые не купили билеты никогда
+        //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
+
+        $users = $repo->findAll();
+        $usersTicketsCount = [];
+        $doctrine = $this->getDoctrine();
+        foreach ($users as $user) {
+            $paidTicketsCount = $doctrine
+                ->getRepository('StfalconEventBundle:Ticket')
+                ->getPaidTicketsCountByUser($user);
+
+            $usersTicketsCount[$paidTicketsCount]++;
+        }
+
         //сколько людей отказалось предоставлять свои данные партнерам
         $qb = $repo->getCountBaseQueryBuilder();
         $qb->where('u.allowShareContacts = :allowShareContacts');
@@ -212,12 +243,17 @@ class AdminController extends Controller
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
         return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
-            'admin_pool' => $this->container->get('sonata.admin.pool'),
+            'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
                 'countAgreedProvideData' => $countAgreedProvideData,
                 'countNotAnswered' => $countNotAnswered,
                 'countUseReferralProgram' => $countUseReferralProgram,
+                'totalUsersCount' => $totalUsersCount,
+                'enabledUsersCount' => $enabledUsersCount,
+                'subscribedUsersCount' => $subscribedUsersCount,
+                'unSubscribedUsersCount' => $unSubscribedUsersCount,
+                'usersTicketsCount' => $usersTicketsCount,
             ],
         ]);
     }

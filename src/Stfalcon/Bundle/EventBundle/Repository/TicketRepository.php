@@ -243,4 +243,21 @@ class TicketRepository extends EntityRepository
     public function getAllTicketsByPayment(Payment $payment) {
         return $this->findBy(['payment' => $payment]);
     }
+
+    /**
+     * @param User $user
+     */
+    public function getPaidTicketsCountByUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('COUNT(t)')
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->eq('p.status', ':status'))
+            ->andWhere($qb->expr()->eq('t.user', ':u'))
+            ->setParameters(['status' => 'paid', 'u' => $user])
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $qb->getSingleScalarResult();
+    }
 }

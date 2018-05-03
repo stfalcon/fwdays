@@ -19,8 +19,42 @@
 
 {% block content %}
     <h1>Статистика</h1>
-    <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
 
+    <h4>Общая статистика учасников</h4>
+    <table>
+        <tbody>
+        <tr>
+            <td>Всего учасников:</td> <td>{{ data['totalUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Активированых учасников:</td> <td>{{ data['enabledUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Подписаных на розсылку:</td> <td>{{ data['subscribedUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Отписаных от розсылки:</td> <td>{{ data['unSubscribedUsersCount'] }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h4>Купили билетов по колличеству</h4>
+    <table>
+        <thead>
+            <tr>
+                <td>количество билетов</td> <td>количество учасников</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, count in usersTicketsCount -%}
+            <tr>
+                <td>{{ key }}</td> <td>{{ count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
     <table>
         <tbody>
         <tr>
@@ -39,6 +73,7 @@
     </table>
 
 
+
     <h4>статистика по реферральной программе</h4>
     <table>
         <tbody>
@@ -53,3 +88,5 @@
 {% block javascripts %}
     {{ parent() }}
 {% endblock javascripts %}
+
+'usersTicketsCount' => $usersTicketsCount,
