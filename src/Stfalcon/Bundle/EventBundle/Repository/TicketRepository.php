@@ -279,6 +279,7 @@ class TicketRepository extends EntityRepository
             ->where($qb->expr()->eq('p.status', ':status'))
             ->setParameter('status', 'paid')
             ->groupBy('u.id')
+            ->addGroupBy('g.name')
         ;
 
         return $qb->getQuery()->getResult();

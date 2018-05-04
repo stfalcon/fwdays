@@ -232,20 +232,23 @@ class AdminController extends Controller
         $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
         ksort($usersTicketsCount);
 
-        $ticketsByEventGroupe = $this->getDoctrine()
+        $ticketsByEventGroup = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Ticket')
             ->getTicketsCountByEventGroup();
 
         $countsByGroup = [];
 
-        foreach ($ticketsByEventGroupe as $item) {
-            if (isset($countsByGroup[$item['name']][$item['count']])) {
-                ++$countsByGroup[$item['name']][$item['count']];
+        foreach ($ticketsByEventGroup as $key => $item) {
+            if (isset($countsByGroup[$item['name']][$item[1]])) {
+                ++$countsByGroup[$item['name']][$item[1]];
             } else {
-                $countsByGroup[$item['name']][$item['count']] = 1;
+                $countsByGroup[$item['name']][$item[1]] = 1;
             }
         }
-
+        foreach ($countsByGroup as $key => $item) {
+            ksort($item);
+            $countsByGroup[$key] = $item;
+        }
         //сколько людей отказалось предоставлять свои данные партнерам
         $qb = $repo->getCountBaseQueryBuilder();
         $qb->where('u.allowShareContacts = :allowShareContacts');
