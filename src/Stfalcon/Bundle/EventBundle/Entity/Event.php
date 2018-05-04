@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event.
@@ -50,6 +49,11 @@ class Event implements Translatable
      * )
      */
     private $translations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventGroup", inversedBy="events")
+     */
+    private $group;
 
     /**
      * @var \DateTime
@@ -1028,5 +1032,25 @@ class Event implements Translatable
         }
 
         return $result;
+    }
+
+    /**
+     * @return EventGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param EventGroup $group
+     *
+     * @return $this
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }
