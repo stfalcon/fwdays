@@ -360,15 +360,18 @@ class AdminController extends Controller
         $wannaVisitEvent = $event->getWantsToVisitCount();
         $ticketBlocks = $event->getTicketsCost();
         $totalTicketCount = 0;
+        $totalSoldTicketCount = 0;
         /** @var TicketCost $ticketBlock */
         foreach ($ticketBlocks as $ticketBlock) {
-            $totalTicketCount += $ticketBlock->getSoldCount();
+            $totalSoldTicketCount += $ticketBlock->getSoldCount();
+            $totalTicketCount += $ticketBlock->getCount();
         }
 
         $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
+            'totalSoldTicketCount' => $totalSoldTicketCount,
         ]);
 
         return new JsonResponse(['html' => $html]);
