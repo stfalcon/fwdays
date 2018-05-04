@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Class AdminController.
@@ -221,11 +219,10 @@ class AdminController extends Controller
 
         foreach ($paidTickets as $paidTicket) {
             if (isset($usersTicketsCount[$paidTicket[1]])) {
-                $usersTicketsCount[$paidTicket[1]]++;
+                ++$usersTicketsCount[$paidTicket[1]];
             } else {
                 $usersTicketsCount[$paidTicket[1]] = 1;
             }
-
         }
 
         $haveTickets = 0;
@@ -234,6 +231,20 @@ class AdminController extends Controller
         }
         $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
         ksort($usersTicketsCount);
+
+        $ticketsByEventGroupe = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->getTicketsCountByEventGroup();
+
+        $countsByGroup = [];
+
+        foreach ($ticketsByEventGroupe as $item) {
+            if (isset($countsByGroup[$item['name']][$item['count']])) {
+                ++$countsByGroup[$item['name']][$item['count']];
+            } else {
+                $countsByGroup[$item['name']][$item['count']] = 1;
+            }
+        }
 
         //сколько людей отказалось предоставлять свои данные партнерам
         $qb = $repo->getCountBaseQueryBuilder();
@@ -270,6 +281,7 @@ class AdminController extends Controller
                 'unSubscribedUsersCount' => $unSubscribedUsersCount,
                 'haveTicketsCount' => $haveTickets,
                 'usersTicketsCount' => $usersTicketsCount,
+                'countsByGroup' => $countsByGroup,
             ],
         ]);
     }
@@ -313,6 +325,7 @@ class AdminController extends Controller
     public function showEventStatisticAction()
     {
         $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findAll();
+
         return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
@@ -358,4 +371,3 @@ class AdminController extends Controller
         return new JsonResponse(['html' => $html]);
     }
 }
-

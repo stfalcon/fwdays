@@ -55,11 +55,29 @@
             </tr>
         </thead>
         <tbody>
-        {% for key, count in data['usersTicketsCount'] -%}
-            <tr>
-                <td>{{ count }}</td> <td>{{ key }}</td>
-            </tr>
-        {% endfor %}
+            {% for key, count in data['usersTicketsCount'] -%}
+                <tr>
+                    <td>{{ count }}</td> <td>{{ key }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Купили билетов по группе событий</h4>
+    <table border="1">
+        <thead>
+        <tr>
+            <td>группа</td> <td>количество посещений</td> <td>участников</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for group_name, group in data['countsByGroup'] -%}
+                {% for key, count in group -%}
+                    <tr>
+                        <td>{{ group_name }}</td> <td>{{ key }}</td> <td>{{ count }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 
