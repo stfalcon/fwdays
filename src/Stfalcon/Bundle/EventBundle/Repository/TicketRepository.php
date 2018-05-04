@@ -246,6 +246,8 @@ class TicketRepository extends EntityRepository
 
     /**
      * @param User $user
+     *
+     * @return array
      */
     public function getPaidTicketsCount()
     {
@@ -259,5 +261,26 @@ class TicketRepository extends EntityRepository
             ->groupBy('u.id');
 
         return  $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTicketsCountByEventGroup()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('g.name')
+            ->addSelect('u.id')
+            ->addSelect('COUNT(t.id)')
+            ->join('t.event', 'e')
+            ->join('t.payment', 'p')
+            ->join('e.group', 'g')
+            ->join('t.user', 'u')
+            ->where($qb->expr()->eq('p.status', ':status'))
+            ->setParameter('status', 'paid')
+            ->groupBy('u.id')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }
