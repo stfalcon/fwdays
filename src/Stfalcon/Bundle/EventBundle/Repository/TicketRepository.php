@@ -243,4 +243,45 @@ class TicketRepository extends EntityRepository
     public function getAllTicketsByPayment(Payment $payment) {
         return $this->findBy(['payment' => $payment]);
     }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getPaidTicketsCount()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('COUNT(t)')
+            ->addSelect('u.id')
+            ->join('t.payment', 'p')
+            ->join('t.user', 'u')
+            ->where($qb->expr()->eq('p.status', ':status'))
+            ->setParameter('status', 'paid')
+            ->groupBy('u.id');
+
+        return  $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTicketsCountByEventGroup()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('g.name')
+            ->addSelect('u.id')
+            ->addSelect('COUNT(t.id)')
+            ->join('t.event', 'e')
+            ->join('t.payment', 'p')
+            ->join('e.group', 'g')
+            ->join('t.user', 'u')
+            ->where($qb->expr()->eq('p.status', ':status'))
+            ->setParameter('status', 'paid')
+            ->groupBy('u.id')
+            ->addGroupBy('g.name')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

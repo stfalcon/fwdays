@@ -1,0 +1,50 @@
+<table >
+    <tbody>
+        <tr>
+            <td>Зарегестрировались на событие:</td> <td>{{ wannaVisitEvent }}</td>
+        </tr>
+        <tr>
+            <td>Билетов всего:</td> <td>{{ totalTicketCount }}</td>
+        </tr>
+        <tr>
+            {% if totalTicketCount > 0 -%}
+                <td>Билетов продано всего:</td> <td>{{ totalSoldTicketCount }} ({{ (totalSoldTicketCount * 100 / totalTicketCount)|round(2) }}%)</td>
+            {% else %}
+                <td>Билетов продано всего:</td> <td>0</td>
+            {% endif %}
+        </tr>
+    </tbody>
+</table>
+
+<h4>Статистика по блокам цен</h4>
+
+<table border="1">
+    <thead>
+        <tr>
+            <td>Название</td>
+            <td>Цена</td>
+            <td>Всего количество</td>
+            <td>Продано</td>
+            <td>% от всех</td>
+            <td>Активность</td>
+            <td>Безлимитный</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ticketBlock in ticketBlocks -%}
+        <tr>
+            <td>{{ ticketBlock.name }}</td>
+            <td>{{ ticketBlock.amount }}</td>
+            <td>{{ ticketBlock.count }}</td>
+            <td>{{ ticketBlock.soldCount }}</td>
+            {% if totalTicketCount > 0 -%}
+                <td>{{ (ticketBlock.soldCount * 100 / totalTicketCount)|round(2) }} %</td>
+            {% else -%}
+                <td>0 %</td>
+            {% endif %}
+            <td>{{ ticketBlock.enabled }}</td>
+            <td>{{ ticketBlock.unlimited }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

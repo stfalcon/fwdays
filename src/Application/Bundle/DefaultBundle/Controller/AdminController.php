@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -15,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * Class AdminController.
@@ -179,6 +179,8 @@ class AdminController extends Controller
     /**
      * Show Statistic.
      *
+     * @Route("/admin/statistic", name="admin_statistic_all")
+     *
      * @return Response
      *
      * @Method({"GET", "POST"})
@@ -189,6 +191,64 @@ class AdminController extends Controller
             ->getManager()
             ->getRepository('ApplicationUserBundle:User');
 
+        $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.enabled = :enabled')
+        ->setParameter('enabled', 1);
+        $enabledUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.subscribe = :subscribed')
+            ->setParameter('subscribed', 1);
+        $subscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        $qb = $repo->getCountBaseQueryBuilder();
+        $qb->where('u.subscribe = :subscribed')
+            ->setParameter('subscribed', 0);
+        $unSubscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+
+        //Кол-во людей которые не купили билеты никогда
+        //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
+
+        $usersTicketsCount = [];
+
+        $paidTickets = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->getPaidTicketsCount();
+
+        foreach ($paidTickets as $paidTicket) {
+            if (isset($usersTicketsCount[$paidTicket[1]])) {
+                ++$usersTicketsCount[$paidTicket[1]];
+            } else {
+                $usersTicketsCount[$paidTicket[1]] = 1;
+            }
+        }
+
+        $haveTickets = 0;
+        foreach ($usersTicketsCount as $item) {
+            $haveTickets += $item;
+        }
+        $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
+        ksort($usersTicketsCount);
+
+        $ticketsByEventGroup = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Ticket')
+            ->getTicketsCountByEventGroup();
+
+        $countsByGroup = [];
+
+        foreach ($ticketsByEventGroup as $key => $item) {
+            if (isset($countsByGroup[$item['name']][$item[1]])) {
+                ++$countsByGroup[$item['name']][$item[1]];
+            } else {
+                $countsByGroup[$item['name']][$item[1]] = 1;
+            }
+        }
+        foreach ($countsByGroup as $key => $item) {
+            ksort($item);
+            $countsByGroup[$key] = $item;
+        }
         //сколько людей отказалось предоставлять свои данные партнерам
         $qb = $repo->getCountBaseQueryBuilder();
         $qb->where('u.allowShareContacts = :allowShareContacts');
@@ -212,12 +272,19 @@ class AdminController extends Controller
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
         return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
-            'admin_pool' => $this->container->get('sonata.admin.pool'),
+            'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
                 'countAgreedProvideData' => $countAgreedProvideData,
                 'countNotAnswered' => $countNotAnswered,
                 'countUseReferralProgram' => $countUseReferralProgram,
+                'totalUsersCount' => $totalUsersCount,
+                'enabledUsersCount' => $enabledUsersCount,
+                'subscribedUsersCount' => $subscribedUsersCount,
+                'unSubscribedUsersCount' => $unSubscribedUsersCount,
+                'haveTicketsCount' => $haveTickets,
+                'usersTicketsCount' => $usersTicketsCount,
+                'countsByGroup' => $countsByGroup,
             ],
         ]);
     }
@@ -249,5 +316,64 @@ class AdminController extends Controller
             'status' => true,
             'value' => $value,
         ]);
+    }
+
+    /**
+     * @Route("/admin/event_statistic/", name="admin_event_statistic")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function showEventStatisticAction()
+    {
+        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findAll();
+
+        return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
+            'admin_pool' => $this->get('sonata.admin.pool'),
+            'events' => $events,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Route("/event_statistic", name="event_statistic",
+     *     methods={"GET"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return JsonResponse
+     */
+    public function getEventStatisticAction(Request $request)
+    {
+        $eventSlug = $request->get('eventSlug');
+        $event = null;
+        if ($eventSlug) {
+            $event = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        } else {
+            return new JsonResponse(['error' => 'cant find event!'], 404);
+        }
+
+        $wannaVisitEvent = $event->getWantsToVisitCount();
+        $ticketBlocks = $event->getTicketsCost();
+        $totalTicketCount = 0;
+        $totalSoldTicketCount = 0;
+        /** @var TicketCost $ticketBlock */
+        foreach ($ticketBlocks as $ticketBlock) {
+            $totalSoldTicketCount += $ticketBlock->getSoldCount();
+            $totalTicketCount += $ticketBlock->getCount();
+        }
+
+        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+            'wannaVisitEvent' => $wannaVisitEvent,
+            'ticketBlocks' => $ticketBlocks,
+            'totalTicketCount' => $totalTicketCount,
+            'totalSoldTicketCount' => $totalSoldTicketCount,
+        ]);
+
+        return new JsonResponse(['html' => $html]);
     }
 }

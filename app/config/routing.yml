@@ -50,6 +50,12 @@ admin_show_statistic:
     options:
         i18n: false
 
+admin_show_event_statistic:
+    pattern:  /admin/event_statistic
+    defaults: { _controller: ApplicationDefaultBundle:Admin:showEventStatistic }
+    options:
+        i18n: false
+
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
