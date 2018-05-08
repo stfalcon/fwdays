@@ -29,9 +29,7 @@ class AdminController extends Controller
      *
      * @param Event $event
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function addUsersAction(Event $event)
     {
@@ -48,9 +46,9 @@ class AdminController extends Controller
                 $data['name'] = $dt[0];
                 $data['surname'] = $dt[1];
                 $data['email'] = $dt[2];
-                $data['discount'] = isset($dt[3]);
+                $data['discount'] = isset($dt[3]) && 'D' === strtoupper($dt[3]);
 
-                $user = $this->get('fos_user.user_manager')->findUserBy(array('email' => $data['email']));
+                $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $data['email']]);
 
                 // создаем нового пользователя
                 if (!$user) {
@@ -67,8 +65,8 @@ class AdminController extends Controller
 
                     $errors = $this->container->get('validator')->validate($user);
                     if ($errors->count() > 0) {
-                        echo 'User create Bad credentials!';
-                        exit;
+                        $this->addFlash('sonata_flash_info', $user->getFullname()." — User create Bad credentials!");
+                        break;
                     }
 
                     $this->get('fos_user.user_manager')->updateUser($user);
@@ -92,9 +90,9 @@ class AdminController extends Controller
                     // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
 
-                    echo "#{$user->getId()} {$user->getFullname()} — Create a new user<br>";
+                    $this->addFlash('sonata_flash_info', $user->getFullname()." — Create a new user");
                 } else {
-                    echo "<b>#{$user->getId()} {$user->getFullname()} — already registered</b><br>";
+                    $this->addFlash('sonata_flash_info', $user->getFullname()." — already registered");
                 }
 
                 // обновляем информацию о компании
@@ -121,13 +119,24 @@ class AdminController extends Controller
                 }
 
                 if ($ticket->isPaid()) {
-                    echo '<b>he has already paid participation in the conference!</b><br>';
+                    $this->addFlash('sonata_flash_info', $user->getFullname()." already paid participation in the conference!");
                 } else {
                     // цена участия (с учетом скидки)
-                    $amount = $data['discount'] ? $_POST['amount'] * 0.8 : $_POST['amount'];
+                    $priceBlockId = $_POST['block_id'];
+                    $amountWithOutDiscount = $_POST['amount'];
+                    /** @var TicketCost $ticketCost */
+                    foreach ($event->getTicketsCost() as $ticketCost) {
+                        if ($ticketCost->getId() === (int) $priceBlockId) {
+                            $amountWithOutDiscount = $ticketCost->getAmount();
+                            $ticket->setTicketCost($ticketCost);
+                            break;
+                        }
+                    }
+
+                    $amount = $data['discount'] ? $amountWithOutDiscount * 0.8 : $amountWithOutDiscount;
                     $ticket->setAmount($amount);
                     $ticket->setHasDiscount($data['discount']);
-                    $ticket->setAmountWithoutDiscount($_POST['amount']);
+                    $ticket->setAmountWithoutDiscount($amountWithOutDiscount);
 
                     $oldPayment = $ticket->getPayment();
 
@@ -135,7 +144,7 @@ class AdminController extends Controller
                         $oldPayment->removeTicket($ticket);
                         $em->persist($oldPayment);
                     }
-                    echo 'create a new payment<br>';
+                    $this->addFlash('sonata_flash_info', "create a new payment");
                     $payment = (new Payment())
                         ->setUser($user)
                         ->setAmount($ticket->getAmount())
@@ -149,15 +158,24 @@ class AdminController extends Controller
                     $payment->markedAsPaid();
                     $em->flush();
 
-                    echo 'mark as paid<br>';
+                    $this->addFlash('sonata_flash_info', "mark as paid");
                 }
             }
 
-            echo 'complete';
-            exit;
+            $this->addFlash('sonata_flash_info', "complete");
         }
 
-        return [];
+        $priceBlocks = $event->getTicketsCost();
+
+        return $this->render(
+            '@ApplicationDefault/Admin/addUsers.html.twig',
+            [
+                'admin_pool' => $this->get('sonata.admin.pool'),
+                'event' => $event,
+                'price_blocks' => $priceBlocks,
+                'event_slug' => $event->getSlug(),
+            ]
+        );
     }
 
     /**

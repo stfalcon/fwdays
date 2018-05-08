@@ -1,8 +1,89 @@
-<form method="post">
-    <p>{{ 'add_user.company'|trans }}<input name="company"></p>
-    <p>{{ 'add_user.city'|trans }}<input name="city"></p>
-    <p>{{ 'add_user.price'|trans }}<input name="amount"></p>
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
 
-    {{ 'add_user.user_list'|trans }}<textarea name="users"></textarea>
-    <input type="submit" value="Add" />
-</form>
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Создание оплаченного билета на {{ event.name }}</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock stylesheets %}
+
+{% block title %} - {{ 'Добавление участника' }}{% endblock title %}
+
+{% block content %}
+<section class="content-header">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <span class="navbar-brand"> Создание оплаченного билета на {{ event.name }}</span>
+        </div>
+    </nav>
+</section>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 ">
+            <form method="post" action="{{ path('adminusersadd', {'slug' : event_slug}) }}">
+                    <div class="form-group">
+                        <label class="control-label" for="company">Компания</label>
+                        <div>
+                            <input id="company" name="company" class=" form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Город</label>
+                        <div>
+                            <input name="city" class=" form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Цена билета</label>
+                        <div>
+                            <select id="select-event-price-block">
+                                {% set amount = 0 %}
+                                {% set block_id = -1 %}
+                                {% for price_block in price_blocks -%}
+                                    <option data-amount="{{ price_block.amount }}" value="{{ price_block.id }}">{{ price_block.name }} {{ price_block.amount }}</option>
+                                    {% if loop.first %}
+                                        {% set amount = price_block.amount %}
+                                        {% set block_id = price_block.id %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    <input type="hidden" id='amount' name="amount" value="{{ amount }}">
+                    <input type="hidden" id='block_id' name="block_id" value="{{ block_id }}">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Список пользователей</label>
+                        <div>
+                            <textarea name="users" class=" form-control"></textarea>
+                        </div>
+                    </div>
+                <div class="well well-small form-actions">
+                    <button type="submit" class="btn btn-success" name="btn_add"><i class="fa fa-save"></i> Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).on('change', '#select-event-price-block', function () {
+            var selected = $('#select-event-price-block option:selected');
+            var amount = selected.data('amount');
+            var block_id = selected.val();
+            $('#amount').val(amount);
+            $('#block_id').val(block_id);
+        });
+    </script>
+{% endblock javascripts %}
