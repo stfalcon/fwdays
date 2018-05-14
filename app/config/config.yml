@@ -173,8 +173,6 @@ sonata_admin:
                     groups:
                       - "Пользователи"
                       - "События"
-                      - "Новости"
-                      - "Статистика"
                       - "group.translation"
             -
                 position: right
