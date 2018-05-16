@@ -5,10 +5,10 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -65,7 +65,7 @@ class AdminController extends Controller
 
                     $errors = $this->container->get('validator')->validate($user);
                     if ($errors->count() > 0) {
-                        $this->addFlash('sonata_flash_info', $user->getFullname()." — User create Bad credentials!");
+                        $this->addFlash('sonata_flash_info', $user->getFullname().' — User create Bad credentials!');
                         break;
                     }
 
@@ -90,9 +90,9 @@ class AdminController extends Controller
                     // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
 
-                    $this->addFlash('sonata_flash_info', $user->getFullname()." — Create a new user");
+                    $this->addFlash('sonata_flash_info', $user->getFullname().' — Create a new user');
                 } else {
-                    $this->addFlash('sonata_flash_info', $user->getFullname()." — already registered");
+                    $this->addFlash('sonata_flash_info', $user->getFullname().' — already registered');
                 }
 
                 // обновляем информацию о компании
@@ -119,7 +119,7 @@ class AdminController extends Controller
                 }
 
                 if ($ticket->isPaid()) {
-                    $this->addFlash('sonata_flash_info', $user->getFullname()." already paid participation in the conference!");
+                    $this->addFlash('sonata_flash_info', $user->getFullname().' already paid participation in the conference!');
                 } else {
                     // цена участия (с учетом скидки)
                     $priceBlockId = $_POST['block_id'];
@@ -144,7 +144,7 @@ class AdminController extends Controller
                         $oldPayment->removeTicket($ticket);
                         $em->persist($oldPayment);
                     }
-                    $this->addFlash('sonata_flash_info', "create a new payment");
+                    $this->addFlash('sonata_flash_info', 'create a new payment');
                     $payment = (new Payment())
                         ->setUser($user)
                         ->setAmount($ticket->getAmount())
@@ -158,11 +158,11 @@ class AdminController extends Controller
                     $payment->markedAsPaid();
                     $em->flush();
 
-                    $this->addFlash('sonata_flash_info', "mark as paid");
+                    $this->addFlash('sonata_flash_info', 'mark as paid');
                 }
             }
 
-            $this->addFlash('sonata_flash_info', "complete");
+            $this->addFlash('sonata_flash_info', 'complete');
         }
 
         $priceBlocks = $event->getTicketsCost();
@@ -289,6 +289,16 @@ class AdminController extends Controller
         $qb->where($qb->expr()->isNotNull('u.userReferral'));
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
+        $event = $this
+            ->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findOneBy([], ['date' => 'DESC']);
+
+        $eventStatisticSlug = '';
+        if ($event instanceof Event) {
+            $eventStatisticSlug = $event->getSlug();
+        }
+
         return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
@@ -303,6 +313,7 @@ class AdminController extends Controller
                 'haveTicketsCount' => $haveTickets,
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
+                'event_statistic_slug' => $eventStatisticSlug,
             ],
         ]);
     }
@@ -337,44 +348,41 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/event_statistic/", name="admin_event_statistic")
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event $event
+     *
+     * @Route("/admin/event_statistic/{slug}", name="admin_event_statistic")
+     * @Route("/admin/event_statistic", name="admin_event_without_slug_statistic")
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @return Response
      */
-    public function showEventStatisticAction()
+    public function showEventStatisticAction(Event $event)
     {
-        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findAll();
+        $events = $this
+            ->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findBy([], ['date' => 'DESC']);
+
+        $eventStatisticHtml = $this->getEventStatistic($event);
 
         return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
+            'event_statistic_html' => $eventStatisticHtml,
+            'current_event_slug' => $event->getSlug(),
         ]);
     }
 
     /**
-     * @param Request $request
+     * @param Event $event
      *
-     * @Route("/event_statistic", name="event_statistic",
-     *     methods={"GET"},
-     *     options={"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @return JsonResponse
+     * @return string
      */
-    public function getEventStatisticAction(Request $request)
+    private function getEventStatistic(Event $event)
     {
-        $eventSlug = $request->get('eventSlug');
-        $event = null;
-        if ($eventSlug) {
-            $event = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
-        } else {
-            return new JsonResponse(['error' => 'cant find event!'], 404);
-        }
-
         $wannaVisitEvent = $event->getWantsToVisitCount();
         $ticketBlocks = $event->getTicketsCost();
         $totalTicketCount = 0;
@@ -392,6 +400,6 @@ class AdminController extends Controller
             'totalSoldTicketCount' => $totalSoldTicketCount,
         ]);
 
-        return new JsonResponse(['html' => $html]);
+        return $html;
     }
 }

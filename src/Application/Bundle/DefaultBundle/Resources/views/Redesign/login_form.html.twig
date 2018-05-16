@@ -1,8 +1,8 @@
 <form id="login-form-{{ remodal }}" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-    {% set add_class = 'social-login' %}
+    {% set add_class = '' %}
     {% if queryLink != '' %}
-        {% set add_class = 'social-login bye-after-login' %}
+        {% set add_class = ' bye-after-login' %}
     {% endif %}
 
     {% include '@ApplicationDefault/Redesign/login_social_btn.html.twig' with{'add_class':add_class} %}

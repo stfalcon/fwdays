@@ -1,7 +1,7 @@
 <table >
     <tbody>
         <tr>
-            <td>Зарегестрировались на событие:</td> <td>{{ wannaVisitEvent }}</td>
+            <td>Зарегистрировались на событие:</td> <td>{{ wannaVisitEvent }}</td>
         </tr>
         <tr>
             <td>Билетов всего:</td> <td>{{ totalTicketCount }}</td>
@@ -26,7 +26,7 @@
             <td>Всего количество</td>
             <td>Продано</td>
             <td>% от всех</td>
-            <td>Активность</td>
+            <td>Активный</td>
             <td>Безлимитный</td>
         </tr>
     </thead>
@@ -42,8 +42,8 @@
             {% else -%}
                 <td>0 %</td>
             {% endif %}
-            <td>{{ ticketBlock.enabled }}</td>
-            <td>{{ ticketBlock.unlimited }}</td>
+            <td>{% if ticketBlock.enabled %}Да{% else %}Нет{% endif %}</td>
+            <td>{% if ticketBlock.unlimited %}Да{% else %}Нет{% endif %}</td>
         </tr>
     {% endfor %}
     </tbody>
