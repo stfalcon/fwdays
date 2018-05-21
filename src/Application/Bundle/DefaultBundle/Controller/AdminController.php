@@ -127,7 +127,6 @@ class AdminController extends Controller
                     /** @var TicketCost $ticketCost */
                     foreach ($event->getTicketsCost() as $ticketCost) {
                         if ($ticketCost->getId() === (int) $priceBlockId) {
-                            $amountWithOutDiscount = $ticketCost->getAmount();
                             $ticket->setTicketCost($ticketCost);
                             break;
                         }

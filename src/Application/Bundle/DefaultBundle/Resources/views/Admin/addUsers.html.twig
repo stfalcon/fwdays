@@ -30,40 +30,45 @@
     <div class="col-md-12">
         <div class="col-md-12 ">
             <form method="post" action="{{ path('adminusersadd', {'slug' : event_slug}) }}">
-                    <div class="form-group">
-                        <label class="control-label" for="company">Компания</label>
-                        <div>
-                            <input id="company" name="company" class=" form-control">
-                        </div>
+                <div class="form-group">
+                    <label class="control-label" for="company">Компания</label>
+                    <div>
+                        <input id="company" name="company" class=" form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">Город</label>
-                        <div>
-                            <input name="city" class=" form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="city">Город</label>
+                    <div>
+                        <input name="city" id="city" class=" form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">Цена билета</label>
-                        <div>
-                            <select id="select-event-price-block">
-                                {% set amount = 0 %}
-                                {% set block_id = -1 %}
-                                {% for price_block in price_blocks -%}
-                                    <option data-amount="{{ price_block.amount }}" value="{{ price_block.id }}">{{ price_block.name }} {{ price_block.amount }}</option>
-                                    {% if loop.first %}
-                                        {% set amount = price_block.amount %}
-                                        {% set block_id = price_block.id %}
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    <input type="hidden" id='amount' name="amount" value="{{ amount }}">
-                    <input type="hidden" id='block_id' name="block_id" value="{{ block_id }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="select-event-price-block">Категория цены</label>
+                    <div>
+                        <select id="select-event-price-block">
+                            {% set amount = 0 %}
+                            {% set block_id = -1 %}
+                            {% for price_block in price_blocks -%}
+                                <option data-amount="{{ price_block.amount }}" value="{{ price_block.id }}">{{ price_block.name }} {{ price_block.amount }}</option>
+                                {% if loop.first %}
+                                    {% set amount = price_block.amount %}
+                                    {% set block_id = price_block.id %}
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">Список пользователей</label>
+                <input type="hidden" id='block_id' name="block_id" value="{{ block_id }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="amount">Цена</label>
+                    <div>
+                        <input type="text" id='amount' name="amount" value="{{ amount }}" class=" form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                        <label class="control-label" for="users">Список пользователей</label>
                         <div>
-                            <textarea name="users" class=" form-control"></textarea>
+                            <textarea name="users" id="users" class="form-control"></textarea>
                         </div>
                     </div>
                 <div class="well well-small form-actions">

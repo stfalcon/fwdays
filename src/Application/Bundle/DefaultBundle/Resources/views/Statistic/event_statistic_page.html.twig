@@ -26,7 +26,7 @@
     <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
     <h1>Статистика событий</h1>
 
-    <select id="select-event-statistic">
+    <select id="select-event-statistic" style="width: 36%">
         {% for event in events -%}
             {% if current_event_slug is not empty and current_event_slug == event.slug%}
                 <option value="{{ event.slug }}" selected>{{ event.name }}</option>
