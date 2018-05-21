@@ -23,7 +23,9 @@
 {% block title %} - {{ 'Статистика' }}{% endblock title %}
 
 {% block content %}
-    <a href="{{ path('admin_event_statistic') }}">Перейти к статистике по событиям</a>
+    {% if data['event_statistic_slug'] is not empty %}
+        <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
+    {% endif %}
     <h1>Статистика</h1>
 
     <h4>Общая статистика участников</h4>

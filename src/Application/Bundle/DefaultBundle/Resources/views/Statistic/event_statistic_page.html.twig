@@ -28,11 +28,15 @@
 
     <select id="select-event-statistic" style="width: 36%">
         {% for event in events -%}
-            <option value="{{ event.slug }}">{{ event.name }}</option>
+            {% if current_event_slug is not empty and current_event_slug == event.slug%}
+                <option value="{{ event.slug }}" selected>{{ event.name }}</option>
+            {% else %}
+                <option value="{{ event.slug }}">{{ event.name }}</option>
+            {% endif %}
         {% endfor %}
     </select>
     <p></p>
-    <div id="event-data"></div>
+    <div id="event-data">{{ event_statistic_html|raw }}</div>
 
 {% endblock content %}
 
@@ -41,10 +45,8 @@
     <script>
         $(document).on('change', '#select-event-statistic', function () {
             var event_slag = $('#select-event-statistic option:selected').val();
-            $.get("{{ path('event_statistic') }}", {'eventSlug' : event_slag},
-                function (response) {
-                    $('#event-data').html(response.html);
-                });
+            var url = "{{ path('admin_event_without_slug_statistic') }}" +'/'+ event_slag;
+            window.location.href = url;
         });
     </script>
 {% endblock javascripts %}
