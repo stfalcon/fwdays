@@ -145,7 +145,8 @@ class LocaleUrlResponseListener
                 try {
                     if ($ip && $geoIp = $this->geoIpService->lookup($ip)) {
                         $countryCode = strtolower($geoIp->getCountryCode());
-                        $local = $countryCode === 'ua' ? 'uk' : $countryCode;
+                        $local = $countryCode === 'ua' ? 'uk' : 'en';
+                        $local = in_array($local, $this->locales) ? $local : null;
                     }
                 } catch (\Exception $e) {
                     $this->logger->addError($e->getMessage());
