@@ -140,12 +140,11 @@ class LocaleUrlResponseListener
             }
 
 //        get locale from geo data
-            if (!$local) {
+            if (!$local) {//78.152.169.117
                 $ip = filter_var($this->getRealIpAddr($request), FILTER_VALIDATE_IP);
                 try {
                     if ($ip && $geoIp = $this->geoIpService->lookup($ip)) {
-                        $countryCode = strtolower($geoIp->getCountryCode());
-                        $local = $countryCode === 'ua' ? 'uk' : 'en';
+                        $local = strtolower($geoIp->getCountryCode()) === 'ua' ? 'uk' : 'en';
                         $local = in_array($local, $this->locales) ? $local : null;
                     }
                 } catch (\Exception $e) {
