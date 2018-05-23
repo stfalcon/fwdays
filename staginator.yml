@@ -31,4 +31,4 @@ deploy_callbacks:
         - 'cp -a web/app_stag.php web/app.php'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
-        - "php app/console maxmind:geoip:update-data http://geolite.maxmind.com/download/geoip/database/GeoIPCity.dat.gz"
+        - "php app/console maxmind:geoip:update-data http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
