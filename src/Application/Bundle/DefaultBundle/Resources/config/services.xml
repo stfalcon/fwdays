@@ -84,6 +84,8 @@
             <argument>%jms_i18n_routing.locales%</argument>
             <argument>%jms_i18n_routing.cookie.name%</argument>
             <argument type="service" id="router" />
+            <argument type="service" id="maxmind.geoip" />
+            <argument type="service" id="logger" />
         </service>
 
         <service id="application_default.sonata.locales.required" class="Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService">
