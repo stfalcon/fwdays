@@ -230,9 +230,10 @@ class AdminController extends Controller
 
         $usersTicketsCount = [];
 
-        $paidTickets = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Ticket')
-            ->getPaidTicketsCount();
+        $ticketRepository = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Ticket');
+
+        $paidTickets = $ticketRepository->getPaidTicketsCount();
 
         foreach ($paidTickets as $paidTicket) {
             if (isset($usersTicketsCount[$paidTicket[1]])) {
@@ -249,9 +250,7 @@ class AdminController extends Controller
         $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
         ksort($usersTicketsCount);
 
-        $ticketsByEventGroup = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Ticket')
-            ->getTicketsCountByEventGroup();
+        $ticketsByEventGroup = $ticketRepository->getTicketsCountByEventGroup();
 
         $countsByGroup = [];
 
@@ -288,6 +287,42 @@ class AdminController extends Controller
         $qb->where($qb->expr()->isNotNull('u.userReferral'));
         $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
 
+        $events = $ticketRepository->getEventWithTicketsCount();
+
+        foreach ($events as $key => $event) {
+            $events[$key]['slug'] = $event['slug'].' ('.$event['cnt'].')';
+        }
+        $minGreen = 127;
+        $maxGreen = 255;
+        $deltaGreen = $maxGreen - $minGreen;
+
+        foreach ($events as $key => $event) {
+            foreach ($events as $subEvent) {
+                if ($event !== $subEvent) {
+                    $result['cnt'] = $ticketRepository->getUserVisitsEventCount($event['id'], $subEvent['id']);
+                    if ($subEvent['cnt'] > 0) {
+                        $result['percent'] = round($result['cnt'] * 100 / $subEvent['cnt'], 2);
+                    } else {
+                        $result['percent'] = 0;
+                    }
+                    $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
+
+                    $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
+                    $div = $maxGreen / $green;
+                    $otherColor = dechex(round($green / $div));
+                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                } else {
+                    $result = [
+                        'cnt' => 0,
+                        'percent' => 0,
+                        'text' => '',
+                        'color' => '#FFFFFF',
+                    ];
+                }
+                $events[$key]['events'][$subEvent['slug']] = $result;
+            }
+        }
+
         $event = $this
             ->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
@@ -313,6 +348,7 @@ class AdminController extends Controller
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
+                'events' => $events,
             ],
         ]);
     }

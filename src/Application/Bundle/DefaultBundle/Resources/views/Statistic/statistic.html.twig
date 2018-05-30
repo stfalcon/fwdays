@@ -17,6 +17,10 @@
         th, td {
             padding: 3px;
         }
+        .table-scroll {
+            overflow: auto;
+            height: 800px;
+        }
     </style>
 {% endblock stylesheets %}
 
@@ -101,6 +105,29 @@
         </tbody>
     </table>
 
+    <h4>статистика по по пересечению аудитории ивентов</h4>
+    <div class="table-scroll">
+        <table border="1">
+            <thead>
+            <tr>
+                <td>Событие</td>
+                {% for event in data['events'] %}
+                    <td>{{ event['slug'] }}</td>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in data['events'] %}
+            <tr>
+                <td>{{ event['slug'] }}</td>
+                {% for result in event['events'] %}
+                    <td bgcolor="{{ result['color'] }}">{{ result['text']|raw }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <h4>статистика по реферральной программе</h4>
     <table>
         <tbody>
