@@ -298,7 +298,6 @@ class TicketRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
         $qb->select('COUNT(t.user) AS cnt')
             ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't2')
-            ->join('t.event', 'e')
             ->join('t.payment', 'p1')
             ->join('t2.payment', 'p2')
             ->where($qb->expr()->eq('p1.status', ':status'))
