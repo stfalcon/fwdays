@@ -17,10 +17,6 @@
         th, td {
             padding: 3px;
         }
-        .table-scroll {
-            overflow: auto;
-            height: 800px;
-        }
     </style>
 {% endblock stylesheets %}
 
@@ -29,7 +25,9 @@
 {% block content %}
     {% if data['event_statistic_slug'] is not empty %}
         <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
+        <br>
     {% endif %}
+        <a href="{{ path('admin_events_statistic') }}">Перейти к статистике по пересечению аудитории событий</a>
     <h1>Статистика</h1>
 
     <h4>Общая статистика участников</h4>
@@ -105,29 +103,6 @@
         </tbody>
     </table>
 
-    <h4>статистика по пересечению аудитории событий</h4>
-    <div class="table-scroll">
-        <table border="1">
-            <thead>
-            <tr>
-                <td>Событие</td>
-                {% for event in data['events'] %}
-                    <td>{{ event['slug'] }}</td>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for event in data['events'] %}
-            <tr>
-                <td>{{ event['slug'] }}</td>
-                {% for result in event['events'] %}
-                    <td bgcolor="{{ result['color'] }}">{{ result['text']|raw }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
     <h4>статистика по реферральной программе</h4>
     <table>
         <tbody>
