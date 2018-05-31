@@ -325,6 +325,7 @@ class TicketRepository extends EntityRepository
             ->where($qb->expr()->eq('p.status', ':status'))
             ->setParameter('status', 'paid')
             ->groupBy('e.id')
+            ->orderBy('e.id', 'DESC')
         ;
 
         return $qb->getQuery()->getResult();

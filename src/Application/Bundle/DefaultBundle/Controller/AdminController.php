@@ -375,55 +375,42 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/events_statistic", name="admin_events_statistic")
+     * @Route("/admin/events_statistic/{checkedEvents}", name="admin_events_statistic")
+     * @Route("/admin/events_statistic", name="admin_events_statistic_all")
+     *
+     * @param string $checkedEvents
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @return Response
      */
-    public function showEventsStatisticAction()
+    public function showEventsStatisticAction($checkedEvents = '')
     {
         $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
 
         $events = $ticketRepository->getEventWithTicketsCount();
-
+        if (empty($checkedEvents)) {
+            $checkedEventsArr = null;
+        } else {
+            $checkedEventsArr = explode(';', $checkedEvents);
+            array_pop($checkedEventsArr);
+            $checkedEventsArr = array_flip($checkedEventsArr);
+        }
         foreach ($events as $key => $event) {
+            if (empty($checkedEventsArr)) {
+                $events[$key]['checked'] = (int) $event['cnt'] > 90;
+            } else {
+                $events[$key]['checked'] = isset($checkedEventsArr[$event['id']]);
+            }
             $events[$key]['slug'] = $event['slug'].' ('.$event['cnt'].')';
         }
-        $minGreen = 127;
-        $maxGreen = 255;
-        $deltaGreen = $maxGreen - $minGreen;
 
-        foreach ($events as $key => $event) {
-            foreach ($events as $subEvent) {
-                if ($event !== $subEvent) {
-                    $result['cnt'] = $ticketRepository->getUserVisitsEventCount($event['id'], $subEvent['id']);
-                    if ($subEvent['cnt'] > 0) {
-                        $result['percent'] = round($result['cnt'] * 100 / $subEvent['cnt'], 2);
-                    } else {
-                        $result['percent'] = 0;
-                    }
-                    $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
-
-                    $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $div = $maxGreen / $green;
-                    $otherColor = dechex(round($green / $div));
-                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
-                } else {
-                    $result = [
-                        'cnt' => 0,
-                        'percent' => 0,
-                        'text' => '',
-                        'color' => '#FFFFFF',
-                    ];
-                }
-                $events[$key]['events'][$subEvent['slug']] = $result;
-            }
-        }
+        $tableHtml = $this->getEventsTable($events);
 
         return $this->render('@ApplicationDefault/Statistic/events_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
+            'table_html' => $tableHtml,
         ]);
     }
 
@@ -449,6 +436,59 @@ class AdminController extends Controller
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
+        ]);
+
+        return $html;
+    }
+
+    /**
+     * @param array $events
+     *
+     * @return string
+     */
+    private function getEventsTable($events)
+    {
+        $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
+
+        $minGreen = 127;
+        $maxGreen = 255;
+        $deltaGreen = $maxGreen - $minGreen;
+
+        foreach ($events as $key => $event) {
+            if (!$event['checked']) {
+                continue;
+            }
+            foreach ($events as $subEvent) {
+                if (!$subEvent['checked']) {
+                    continue;
+                }
+                if ($event !== $subEvent) {
+                    $result['cnt'] = $ticketRepository->getUserVisitsEventCount($event['id'], $subEvent['id']);
+                    if ($subEvent['cnt'] > 0) {
+                        $result['percent'] = round($result['cnt'] * 100 / $subEvent['cnt'], 2);
+                    } else {
+                        $result['percent'] = 0;
+                    }
+                    $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
+
+                    $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
+                    $div = $maxGreen / $green;
+                    $otherColor = dechex(round($green / $div));
+                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                } else {
+                    $result = [
+                        'cnt' => 0,
+                        'percent' => 0,
+                        'text' => '',
+                        'color' => '#FFFFFF',
+                    ];
+                }
+                $events[$key]['events'][$subEvent['slug']] = $result;
+            }
+        }
+
+        $html = $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
+            'events' => $events,
         ]);
 
         return $html;
