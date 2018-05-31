@@ -19,7 +19,7 @@
         }
         .table-scroll {
             overflow: auto;
-            height: 900px;
+            max-height: 900px;
         }
     </style>
 {% endblock stylesheets %}
@@ -30,27 +30,33 @@
     <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
     <h1>Статистика событий</h1>
     <h4>статистика по пересечению аудитории событий</h4>
-    <div class="table-scroll">
-        <table border="1">
-            <thead>
-            <tr>
-                <td>Событие</td>
-                {% for event in events %}
-                    <td>{{ event['slug'] }}</td>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for event in events %}
-                <tr>
-                    <td>{{ event['slug'] }}</td>
-                    {% for result in event['events'] %}
-                        <td bgcolor="{{ result['color'] }}">{{ result['text']|raw }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div id="events" style="column-count: 4">
+    {% for event in events %}
+        <input type="checkbox" name="{{ event['slug'] }}" value="{{ event['id'] }}"
+        {% if event['checked'] %} checked="checked" {% endif %}> {{ event['slug'] }}
+        <br>
+    {% endfor %}
     </div>
+    <br>
+    <button id="show_statistic" class="btn btn-success">Показать статистику</button>
+    <br>
+    <br>
+    {{ table_html|raw }}
 {% endblock content %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).on('click', '#show_statistic', function () {
+                var events_id = '';
+                $('#events').find('input:checkbox').each(function() {
+                    var input = $(this);
+                    if (input.prop('checked') === true) {
+                        events_id += input.val() + ';';
+                    }
+                });
+
+                window.location.href = "{{ path('admin_events_statistic_all') }}"+"/"+events_id;
+        });
+    </script>
+{% endblock %}
