@@ -1,0 +1,56 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        th, td {
+            padding: 3px;
+        }
+        .table-scroll {
+            overflow: auto;
+            height: 900px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block title %} - {{ 'Статистика событий' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    <h1>Статистика событий</h1>
+    <h4>статистика по пересечению аудитории событий</h4>
+    <div class="table-scroll">
+        <table border="1">
+            <thead>
+            <tr>
+                <td>Событие</td>
+                {% for event in events %}
+                    <td>{{ event['slug'] }}</td>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event['slug'] }}</td>
+                    {% for result in event['events'] %}
+                        <td bgcolor="{{ result['color'] }}">{{ result['text']|raw }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
