@@ -2,6 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\ORM\UnitOfWork;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -16,6 +18,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
  */
 class MailAdmin extends Admin
 {
+    private $savedEvents;
     /**
      * Default values to the datagrid.
      *
@@ -74,6 +77,10 @@ class MailAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $isEdit = (bool) $this->getSubject()->getId();
+        $this->savedEvents = [];
+        foreach ($this->getSubject()->getEvents() as $event) {
+            $this->savedEvents[] = $event->getId();
+        }
 
         $formMapper
             ->with('Общие')
@@ -108,6 +115,74 @@ class MailAdmin extends Admin
      */
     public function postPersist($mail)
     {
+        $users = $this->getUsersForEmail($mail);
+
+        $this->addUsersToEmail($mail, $users);
+    }
+
+    /**
+     * @param Mail $object
+     *
+     * @return mixed|void
+     */
+    public function preUpdate($object)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        /** @var UnitOfWork $uow */
+        $uow = $em->getUnitOfWork();
+        $originalObject = $uow->getOriginalEntityData($object);
+
+        $eventsChange = count($this->savedEvents) !== $object->getEvents()->count();
+        if (!$eventsChange) {
+            foreach ($this->savedEvents as $savedEvent) {
+                $founded = false;
+                foreach ($object->getEvents() as $event) {
+                    $founded = $savedEvent === $event->getId();
+                    if ($founded) {
+                        break;
+                    }
+                }
+                $eventsChange = !$founded;
+                if ($eventsChange) {
+                    break;
+                }
+            }
+        }
+
+        if ($eventsChange ||
+            $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
+            $originalObject['paymentStatus'] !== $object->getPaymentStatus()
+        ) {
+            $objectStatus = $object->getStart();
+            if (true === $objectStatus) {
+                $object->setStart(false);
+                $em->flush();
+            }
+            /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
+            $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
+            $deleteCount = $queueRepository->deleteAllNotSentMessages($object);
+            $object->setTotalMessages($object->getTotalMessages() - $deleteCount);
+            $usersInMail = $em->getRepository('ApplicationUserBundle:User')->getUsersFromMail($object);
+            $newUsers = $this->getUsersForEmail($object);
+            $addUsers = array_diff($newUsers, $usersInMail);
+
+            $this->addUsersToEmail($object, $addUsers);
+
+            if (true === $objectStatus) {
+                $object->setStart(true);
+                $em->flush();
+            }
+        }
+    }
+
+    /**
+     * @param Mail $mail
+     *
+     * @return array
+     */
+    private function getUsersForEmail($mail)
+    {
         $container = $this->getConfigurationPool()->getContainer();
 
         /** @var \Doctrine\ORM\EntityManager $em */
@@ -122,12 +197,28 @@ class MailAdmin extends Admin
             $users = $em->getRepository('ApplicationUserBundle:User')->getAllSubscribed();
         }
 
+        return $users;
+    }
+
+    /**
+     * @param Mail  $mail
+     * @param array $users
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function addUsersToEmail($mail, $users)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $container->get('doctrine')->getManager();
+
         if (isset($users)) {
-            $countSubscribers = 0;
+            $countSubscribers = $mail->getTotalMessages();
+            /** @var User $user */
             foreach ($users as $user) {
                 if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
-                $user->isEnabled() &&
-                $user->isEmailExists()
+                    $user->isEnabled() &&
+                    $user->isEmailExists()
                 ) {
                     $mailQueue = new MailQueue();
                     $mailQueue->setUser($user);
@@ -137,10 +228,9 @@ class MailAdmin extends Admin
                 }
             }
             $mail->setTotalMessages($countSubscribers);
+            $em->persist($mail);
+            $em->flush();
         }
-
-        $em->persist($mail);
-        $em->flush();
     }
 
     /**

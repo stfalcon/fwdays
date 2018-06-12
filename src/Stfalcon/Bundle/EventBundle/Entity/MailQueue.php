@@ -3,14 +3,18 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\MailQueue
  *
- * @ORM\Table(name="event__mails_queues")
+ * @ORM\Table(name="event__mails_queues",
+ *    uniqueConstraints={
+ *        @UniqueConstraint(name="user_unique",
+ *            columns={"user", "mail"})
+ *    })
  * @ORM\Entity()
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository")
  */
