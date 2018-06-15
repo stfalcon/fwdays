@@ -68,6 +68,7 @@ class AppKernel extends Kernel
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
 
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
         );
 
         if (in_array($this->getEnvironment(), ['prod'], true)) {
