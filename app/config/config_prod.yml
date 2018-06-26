@@ -9,6 +9,9 @@ imports:
 #            type: memcache
 #            host: localhost
 #            port: 11211
+sentry:
+    skip_capture:
+        - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
 
 monolog:
     handlers:
