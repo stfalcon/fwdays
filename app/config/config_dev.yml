@@ -32,8 +32,8 @@ swiftmailer:
 
 stfalcon_event:
     interkassa:
-        shop_id: "%interkassa_shop_id_test%"
-        secret: "%interkassa_secret_test%"
+        shop_id: "%interkassa_shop_id%"
+        secret: "%interkassa_secret%"
     discount: 0.2
 
 twig:
