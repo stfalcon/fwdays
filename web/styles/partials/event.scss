@@ -1062,3 +1062,43 @@ a.fix-event-header__title {   //for review-page, venue-page
   }
 }
 // END short event
+
+// BEGIN content-block
+.content-block {
+  margin: 64px 0;
+}
+
+.content-block h2 {
+  margin-bottom: 12px;
+}
+
+.content-block p {
+  margin-bottom: 10px;
+  line-height: 24px;
+}
+
+.content-block .btn {
+  height: 50px;
+  font-size: 14px;
+  line-height: 52px;
+  min-width: 268px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .content-block {
+    margin: 32px 0;
+  }
+
+  .content-block__btn-wrapper {
+    text-align: center;
+  }
+
+  .content-block__btn-wrapper .btn {
+    display: block;
+    margin: auto;
+    max-width: 343px;
+    width: 100%;
+  }
+}
+
+// END content-block
