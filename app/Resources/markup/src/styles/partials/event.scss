@@ -1085,8 +1085,19 @@ a.fix-event-header__title {   //for review-page, venue-page
 }
 
 @media only screen and (max-width: 1023px) {
+  .content-block {
+    margin: 32px 0;
+  }
+
   .content-block__btn-wrapper {
     text-align: center;
+  }
+
+  .content-block__btn-wrapper .btn {
+    display: block;
+    margin: auto;
+    max-width: 343px;
+    width: 100%;
   }
 }
 
