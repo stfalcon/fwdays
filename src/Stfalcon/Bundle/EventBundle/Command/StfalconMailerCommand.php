@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Command;
 
+use Application\Bundle\DefaultBundle\Service\MyMailer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,8 +53,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        /** @var $mailer \Swift_Mailer */
-        $mailer = $this->getContainer()->get('mailer');
+        /** @var $mailer MyMailer */
+        $mailer = $this->getContainer()->get('app.my_mailer.service');
         /** @var $mailerHelper \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper */
         $mailerHelper = $this->getContainer()->get('stfalcon_event.mailer_helper');
         /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
@@ -74,21 +75,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $user->isEmailExists() &&
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
-                if ($user && $mail) {
-                    $logger->addError('Mailer:gate1', [
-                        'mail_id' => $mail->getId(),
-                        'user_id' => $user->getId(),
-                        'is_Enabled' => $user->isEnabled(),
-                        'is_Subscribe' => $user->isSubscribe(),
-                        'is_EmailExists' => $user->isEmailExists(),
-                        'email-filter' => filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL),
-                    ]);
-                } else {
-                    $logger->addError('Mailer:gate2 - no user or mail');
-                }
-
                 $mail->decTotalMessages();
-                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -100,7 +87,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
-                $em->persist($mail);
                 $em->remove($item);
                 $em->flush();
                 continue;
@@ -119,17 +105,21 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
             $headers->removeAll('List-Unsubscribe');
             $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
-
-            if ($mailer->send($message)) {
+            $failed = [];
+            if ($mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
-                $em->persist($mail);
-                $em->persist($item);
                 $em->flush();
             } else {
-                $logger->addError('Mailer:gate3', [
+                $logger->addError('Mailer send exception', [
                     'mail_id' => $mail->getId(),
                     'user_id' => $user->getId(),
+                    'error_swift_message' => $failed['error_swift_message'],
+                    'error_swift_code' => $failed['error_swift_code'],
+                    'error_swift_trace' => $failed['error_swift_trace'],
+                    'error_exception_message' => $failed['error_exception_message'],
+                    'error_exception_code' => $failed['error_exception_code'],
+                    'error_exception_trace' => $failed['error_exception_trace'],
                 ]);
             }
         }

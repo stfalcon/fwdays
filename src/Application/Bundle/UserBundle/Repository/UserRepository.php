@@ -5,12 +5,12 @@ namespace Application\Bundle\UserBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
  */
 class UserRepository extends EntityRepository
 {
     /**
-     * Get users admin
+     * Get users admin.
      *
      * @return array()
      */
@@ -28,7 +28,7 @@ class UserRepository extends EntityRepository
     public function getAllSubscribed()
     {
         return $this->createQueryBuilder('u')
-            ->where("u.subscribe = 1")
+            ->where('u.subscribe = 1')
             ->getQuery()
             ->getResult();
     }
@@ -36,14 +36,15 @@ class UserRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getCountBaseQueryBuilder() {
+    public function getCountBaseQueryBuilder()
+    {
         return $this->createQueryBuilder('u')
                     ->select('COUNT(u)')
         ;
     }
 
     /**
-     * Users registered for events
+     * Users registered for events.
      *
      * @param $events
      *

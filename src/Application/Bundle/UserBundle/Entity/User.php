@@ -150,7 +150,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/u",
+     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/u",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -168,7 +168,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/u",
+     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/u",
      *     match=true,
      *     message="error.surname.only_letters"
      * )

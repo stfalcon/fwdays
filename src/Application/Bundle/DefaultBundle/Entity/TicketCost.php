@@ -4,13 +4,10 @@ namespace Application\Bundle\DefaultBundle\Entity;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 
 /**
  * @ORM\Table(name="event__ticketsCost")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\TicketCostRepository")
- *
- * @AppAssert\TicketCost\TicketCostCount
  */
 class TicketCost
 {
