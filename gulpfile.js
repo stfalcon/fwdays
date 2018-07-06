@@ -27,13 +27,15 @@ var gulp = require('gulp'),
 
 var path = {
     build: {
-        js: 'web/assets/js/',
+        js: 'web/assets/js/en',
+        jsuk: 'web/assets/js/uk',
         styles: 'web/assets/styles/',
         img: 'web/assets/img/',
         fonts: 'web/assets/fonts/'
     },
     src: {
-        js: 'web/js/main.js',
+        js: 'web/js/en/main.js',
+        jsuk: 'web/js/uk/main.js',
         styles: 'web/styles/main.scss',
         img: 'web/img/**/*.*',
         fonts: 'web/fonts/**/*.*'
@@ -47,7 +49,7 @@ var path = {
 };
 
 gulp.task('clean', function (cb) {
-    var paths = path.build.js + ',' + path.build.styles + ',' + path.build.img + ',' + path.build.fonts;
+    var paths = path.build.jsuk + ',' + path.build.js + ',' + path.build.styles + ',' + path.build.img + ',' + path.build.fonts;
     rimraf('{' + paths + '}', cb);
 });
 
@@ -63,6 +65,19 @@ gulp.task('js:build', function () {
             merge: true
         }))
         .pipe(gulp.dest(path.build.js))
+        .pipe(reload({stream: true}));
+
+    gulp.src(path.src.jsuk)
+        .pipe(rigger())
+        .pipe(gulpIf(dev, (sourceMaps.init())))
+        .pipe(gulpIf(prod, uglify()))
+        .pipe(rev())
+        .pipe(gulpIf(dev, (sourceMaps.write())))
+        .pipe(gulp.dest(path.build.jsuk))
+        .pipe(rev.manifest({
+            merge: true
+        }))
+        .pipe(gulp.dest(path.build.jsuk))
         .pipe(reload({stream: true}));
 });
 

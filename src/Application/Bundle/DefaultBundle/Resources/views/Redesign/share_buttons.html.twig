@@ -1,21 +1,10 @@
-<!--BEGIN Share buttons scripts-->
 {% if app.request.locale == 'uk' %}
     {% set lang = 'uk_UA' %}
 {% else %}
     {% set lang = 'en_US' %}
 {% endif %}
-<div id="fb-root"></div>
+<!--BEGIN Share buttons scripts-->
 <script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId            : '{{ facebook_api_id }}',
-            autoLogAppEvents : true,
-            xfbml            : true,
-            version          : 'v2.12'
-        });
-
-    };
-
     (function(d, s, id){
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}

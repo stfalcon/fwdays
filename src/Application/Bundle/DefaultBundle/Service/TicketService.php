@@ -9,6 +9,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Сервис для работы с билетами.
@@ -28,10 +30,13 @@ class TicketService
     /** @var EntityManager */
     protected $em;
 
+    /** @var array */
     protected $paymentsConfig;
 
+    /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var RouterInterface  */
     protected $router;
 
     /** @var TicketCostService */
@@ -40,11 +45,11 @@ class TicketService
     /**
      * TicketService constructor.
      *
-     * @param EntityManager $em
-     * @param array         $paymentsConfig
-     * @param $translator
-     * @param $router
-     * @param TicketCostService $ticketCostService
+     * @param EntityManager       $em
+     * @param array               $paymentsConfig
+     * @param TranslatorInterface $translator
+     * @param RouterInterface     $router
+     * @param TicketCostService   $ticketCostService
      */
     public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService)
     {
@@ -208,7 +213,6 @@ class TicketService
         $isMob = null;
         $caption = '';
         $ticketCaption = '';
-        $onClick = null;
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
@@ -274,31 +278,6 @@ class TicketService
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy',
                     ],
             ];
-
-        if (self::CAN_BUY_TICKET === $eventState) {
-            $addUserSign = $user instanceof User ? '_user' : '';
-            $mainGaPart = "ga('send', 'button', 'buy',";
-            switch ($position) {
-                case 'row':
-                case 'card':
-                    $onClick = $mainGaPart." 'main".$addUserSign."')";
-                    break;
-                case 'event_header':
-                case 'event_fix_header':
-                    $onClick = $mainGaPart." 'event".$addUserSign."')";
-                    break;
-                case 'event_fix_header_mob':
-                case 'event_action_mob':
-                    $onClick = $mainGaPart." 'event_mob".$addUserSign."')";
-                    break;
-                case 'price_block_mob':
-                    $onClick = $mainGaPart." 'event_pay_mob".$addUserSign."')";
-                    break;
-                case 'price_block':
-                    $onClick = $mainGaPart." 'event_pay".$addUserSign."')";
-                    break;
-            }
-        }
 
         if (in_array(
             $eventState,
@@ -399,7 +378,6 @@ class TicketService
                 'href' => $href,
                 'isDiv' => $isDiv,
                 'data' => $data,
-                'onClick' => $onClick,
                 'id' => $position.'-'.$data,
             ];
 
