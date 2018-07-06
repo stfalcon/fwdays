@@ -56,6 +56,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setPayment($manager->merge($this->getReference('payment')));
         $manager->persist($ticket);
         $this->addReference('ticket-1', $ticket);
+        $userDefault->addWantsToVisitEvents($eventZfDay);
 
         // Ticket 2
         $ticket = new Ticket();
@@ -66,6 +67,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setPayment($manager->merge($this->getReference('pending')));
         $manager->persist($ticket);
         $this->addReference('ticket-2', $ticket);
+        $userDefault->addWantsToVisitEvents($eventPHPDay);
 
         // Ticket 3
         $ticket = new Ticket();
@@ -75,7 +77,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setAmount($eventNotActive->getCost());
         $manager->persist($ticket);
         $this->addReference('ticket-3', $ticket);
-
+        $userAdmin->addWantsToVisitEvents($eventNotActive);
         // Ticket 4: not used without payment
         $ticket = new Ticket();
         $ticket->setEvent($manager->merge($eventPHPDay));
@@ -85,6 +87,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
         $ticket->setUsed(false);
         $manager->persist($ticket);
+        $userAdmin->addWantsToVisitEvents($eventPHPDay);
 
         // Ticket 5: not used with paid payment
         $ticket = new Ticket();
@@ -96,6 +99,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setUsed(false);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
+        $userDefault2->addWantsToVisitEvents($eventPHPDay);
 
         // Ticket 6: used with pending payment
         $ticket = new Ticket();
@@ -107,6 +111,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setUsed(false);
         $ticket->setPayment($manager->merge($this->getReference('pending2')));
         $manager->persist($ticket);
+        $userDefault2->addWantsToVisitEvents($eventPHPDay);
 
         // Ticket 7: used with paid payment
         $ticket = new Ticket();
@@ -118,6 +123,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setUsed(true);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
+        $userDefault3->addWantsToVisitEvents($eventPHPDay);
 
         // Ticket 8: not used without payment
         $ticket = new Ticket();
@@ -128,16 +134,18 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
         $ticket->setUsed(false);
         $manager->persist($ticket);
-
-        for ($i = 1; $i <= 100; $i++) {
+        $userDefault3->addWantsToVisitEvents($eventZfDay);
+        for ($i = 1; $i <= 100; ++$i) {
             $ticket = new Ticket();
             $ticket->setEvent($manager->merge($eventZfDay));
             $ticket->setAmountWithoutDiscount($eventZfDay->getCost());
             $ticket->setAmount($eventZfDay->getCost());
-            $ticket->setUser($manager->merge($this->getReference('user-default-' . $i)));
+            $user = $manager->merge($this->getReference('user-default-'.$i));
+            $ticket->setUser($user);
             $ticket->setPayment($manager->merge($this->getReference('payment')));
             $manager->persist($ticket);
-            $this->addReference('ticket-' . ($i + 3), $ticket);
+            $this->addReference('ticket-'.($i + 3), $ticket);
+            $user->addWantsToVisitEvents($eventZfDay);
         }
 
         $manager->flush();
