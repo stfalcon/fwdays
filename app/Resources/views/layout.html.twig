@@ -3,6 +3,9 @@
 <head>
     <title>{% block title %}Fwdays. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
     {% block metatags %}
+    {% if app.environment != 'prod' -%}
+        <meta name="robots" content="none"/>
+    {% endif -%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
     <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
