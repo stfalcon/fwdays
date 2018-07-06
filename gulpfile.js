@@ -49,7 +49,7 @@ var path = {
 };
 
 gulp.task('clean', function (cb) {
-    var paths = path.build.jsuk +','+ path.build.js + ',' + path.build.styles + ',' + path.build.img + ',' + path.build.fonts;
+    var paths = path.build.jsuk + ',' + path.build.js + ',' + path.build.styles + ',' + path.build.img + ',' + path.build.fonts;
     rimraf('{' + paths + '}', cb);
 });
 
