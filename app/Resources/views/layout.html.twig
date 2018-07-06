@@ -3,6 +3,9 @@
 <head>
     <title>{% block title %}Fwdays. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
     {% block metatags %}
+    {% if app.environment != 'prod' -%}
+        <meta name="robots" content="none"/>
+    {% endif -%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
     <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
@@ -22,12 +25,6 @@
 {% endblock %}
 {%- if app.environment == 'prod' -%}
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PHVHRX');
-    </script>
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager -->
@@ -70,6 +67,16 @@
 {% endblock popups %}
 
 {% block scripts %}
+    {%- if app.environment == 'prod' -%}
+    <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');
+        </script>
+    <!-- End Google Tag Manager -->
+    {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}";
