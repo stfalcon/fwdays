@@ -114,7 +114,7 @@ class AdminController extends Controller
                     $ticket = new Ticket();
                     $ticket->setEvent($event);
                     $ticket->setUser($user);
-
+                    $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
                 }
 
