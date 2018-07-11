@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "12999f868b7342474049db46e8f9fa80",
+    "content-hash": "96e7c8ca3cf698a8c9bb5015d33fb252",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2733,6 +2733,62 @@
             "time": "2015-09-22T13:58:03+00:00"
         },
         {
+            "name": "maxmind/geoip",
+            "version": "v1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IDCI-Consulting/Maxmind-GeoIp.git",
+                "reference": "7807f6d08973de0a2206056b33b719de94ad9e82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IDCI-Consulting/Maxmind-GeoIp/zipball/7807f6d08973de0a2206056b33b719de94ad9e82",
+                "reference": "7807f6d08973de0a2206056b33b719de94ad9e82",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3 || ^7.0",
+                "symfony/console": "~2.3 || ~3.0 || ^4.0",
+                "symfony/dependency-injection": "~2.3 || ~3.0 || ^4.0",
+                "symfony/framework-bundle": "~2.3 || ~3.0 || ^4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Maxmind\\": "src/Maxmind/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sébastien Roch",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ariel Ferrandini",
+                    "email": "arielferrandini@gmail.com",
+                    "homepage": "http://ferrandini.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Gabriel BONDAZ",
+                    "email": "gabriel.bondaz@idci-consulting.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "MaxMind GeoIP Symfony2 Bundle",
+            "keywords": [
+                "maxmind geoip"
+            ],
+            "time": "2018-02-07T23:32:42+00:00"
+        },
+        {
             "name": "mlehner/gelf-php",
             "version": "v1.1.0",
             "source": {
@@ -4223,6 +4279,7 @@
                 "compression",
                 "minification"
             ],
+            "abandoned": "symfony/webpack-encore-pack",
             "time": "2015-12-28T13:12:39+00:00"
         },
         {
@@ -5801,6 +5858,7 @@
                 "version",
                 "zf2"
             ],
+            "abandoned": "ocramius/package-versions",
             "time": "2013-03-13T22:06:59+00:00"
         }
     ],
