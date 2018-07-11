@@ -40,7 +40,7 @@ class OAuthUserProvider extends BaseClass
     {
         $socialID = $response->getUsername();
         /** @var User $user */
-        $user = $this->userManager->findUserBy([$this->getProperty($response) => $socialID]);
+        $user = $socialID ? $this->userManager->findUserBy([$this->getProperty($response) => $socialID]) : null;
         $email = $response->getEmail();
         if (!$user) {
             $user = $this->userManager->findUserByEmail($email);

@@ -64,6 +64,8 @@ class PaymentController extends Controller
 
         if (!$ticket && !$payment) {
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $user->addWantsToVisitEvents($event);
+            $this->getDoctrine()->getManager()->flush();
         }
 
         if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
@@ -249,8 +251,9 @@ class PaymentController extends Controller
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket) {
-            $ticketService = $this->get('stfalcon_event.ticket.service');
-            $ticket = $ticketService->createTicket($event, $user);
+            $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $user->addWantsToVisitEvents($event);
+            $em->flush();
         }
 
         if (!$ticket->isPaid()) {

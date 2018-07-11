@@ -9,6 +9,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Сервис для работы с билетами.
@@ -28,10 +30,13 @@ class TicketService
     /** @var EntityManager */
     protected $em;
 
+    /** @var array */
     protected $paymentsConfig;
 
+    /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var RouterInterface  */
     protected $router;
 
     /** @var TicketCostService */
@@ -40,11 +45,11 @@ class TicketService
     /**
      * TicketService constructor.
      *
-     * @param EntityManager $em
-     * @param array         $paymentsConfig
-     * @param $translator
-     * @param $router
-     * @param TicketCostService $ticketCostService
+     * @param EntityManager       $em
+     * @param array               $paymentsConfig
+     * @param TranslatorInterface $translator
+     * @param RouterInterface     $router
+     * @param TicketCostService   $ticketCostService
      */
     public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService)
     {

@@ -50,6 +50,12 @@ admin_show_statistic:
     options:
         i18n: false
 
+admin_show_event_statistic:
+    pattern:  /admin/event_statistic
+    defaults: { _controller: ApplicationDefaultBundle:Admin:showEventStatistic }
+    options:
+        i18n: false
+
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
@@ -91,6 +97,12 @@ hwi_oauth_redirect:
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
+    options:
+        i18n: false
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /connect
     options:
         i18n: false
 

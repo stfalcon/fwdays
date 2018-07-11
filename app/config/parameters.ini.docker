@@ -3,7 +3,7 @@
 ; Comments start with ';', as in php.ini
 [parameters]
     database_driver   = pdo_mysql
-    database_host     = db
+    database_host     = mysql
     database_port     = null
     database_name     = fwdays_com_development
     database_user     = root

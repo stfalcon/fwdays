@@ -340,7 +340,7 @@ $(document).ready(function () {
     });
 
     $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
+        return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
     };
 
     $('#payment').validate({
