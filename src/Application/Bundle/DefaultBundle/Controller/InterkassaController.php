@@ -33,6 +33,11 @@ class InterkassaController extends Controller
      */
     public function interactionAction(Request $request)
     {
+        $this->get('logger')->addError(
+            'Interkassa interaction TEST info',
+            $this->getRequestDataToArr($request, null)
+        );
+
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Payment')
@@ -63,14 +68,10 @@ class InterkassaController extends Controller
             return new Response('SUCCESS', 200);
         }
 
-        $this->get('logger')->addCritical('Interkassa interaction Fail!', [
-            'payment_id' => $payment->getId(),
-            'payment_status' => $payment->getStatus(),
-            'payment_amount' => $payment->getAmount(),
-            'request_amount' => $request->get('ik_am'),
-            'request_status' => $request->get('ik_inv_st'),
-            'is_hash_valid' => ($request->get('ik_sign') === $interkassa->getSignHash($request->query->all())),
-        ]);
+        $this->get('logger')->addCritical(
+            'Interkassa interaction Fail!',
+            $this->getRequestDataToArr($request, $payment)
+        );
 
         return new Response('FAIL', 400);
     }
@@ -186,5 +187,35 @@ class InterkassaController extends Controller
         }
 
         return $eventName;
+    }
+
+    /**
+     * @param Request      $request
+     * @param Payment|null $payment
+     *
+     * @return array
+     */
+    private function getRequestDataToArr(Request $request, $payment)
+    {
+        $interkassa = $this->get('stfalcon_event.interkassa.service');
+
+        $paymentId = '-';
+        $paymentStatus = '-';
+        $paymentAmount = '-';
+
+        if ($payment instanceof Payment) {
+            $paymentId = $payment->getId();
+            $paymentStatus = $payment->getStatus();
+            $paymentAmount = $payment->getAmount();
+        }
+
+        return [
+            'payment_id' => $paymentId,
+            'payment_status' => $paymentStatus,
+            'payment_amount' => $paymentAmount,
+            'request_amount' => $request->get('ik_am'),
+            'request_status' => $request->get('ik_inv_st'),
+            'is_hash_valid' => ($request->get('ik_sign') === $interkassa->getSignHash($request->query->all())),
+        ];
     }
 }
