@@ -33,8 +33,8 @@ class InterkassaController extends Controller
      */
     public function interactionAction(Request $request)
     {
-        $this->get('logger')->addError(
-            'Interkassa interaction TEST info',
+        $this->get('logger')->addInfo(
+            'Interkassa interaction info',
             $this->getRequestDataToArr($request, null)
         );
 
