@@ -12,6 +12,9 @@ imports:
 sentry:
     skip_capture:
         - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+    dsn: "https://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
+    options:
+        environment: prod
 
 monolog:
     handlers:
@@ -23,14 +26,12 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
-        sentry:
-            type:  raven
-            dsn: "http://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
-            level: error
-            client_id: 'sentry.client'
+#        sentry:
+#            type:  raven
+#            level: error
         grouped_main:
             type:    group
-            members: [nested, sentry]
+            members: [nested]
 #parameters:
 #     graylog.hostname: 10.0.0.1
 #     graylog.port: 12201 #стандартный порт
