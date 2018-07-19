@@ -8,10 +8,21 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+/**
+ * Class UserAdmin
+ */
 class UserAdmin extends Admin
 {
     /**
-     * @param $project
+     * {@inheritdoc}
+     */
+    public function configure()
+    {
+        $this->setTemplate('list', 'StfalconEventBundle:Admin:list_with_js.html.twig');
+    }
+
+    /**
+     * @param User $project
      *
      * @return mixed|void
      */
@@ -21,7 +32,7 @@ class UserAdmin extends Admin
     }
 
     /**
-     * @param $project
+     * @param User $project
      *
      * @return mixed|void
      */
