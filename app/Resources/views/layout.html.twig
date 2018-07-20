@@ -67,7 +67,7 @@
 {% endblock popups %}
 
 {% block facebook %}
-    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' with {'xfbml' : false} %}
+    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' %}
 {% endblock %}
 
 {% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}
