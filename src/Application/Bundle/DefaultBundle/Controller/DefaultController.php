@@ -55,25 +55,7 @@ class DefaultController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
-        $ticketRepository = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Ticket');
-        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
         $wannaVisit = $user->getWantsToVisitEvents();
-
-        $userEvents = new ArrayCollection();
-        /** @var Ticket $ticket */
-        foreach ($tickets as $ticket) {
-            $userEvents->add($ticket->getEvent());
-        }
-
-        foreach ($wannaVisit as $event) {
-            if (!$userEvents->contains($event)) {
-                $userEvents->add($event);
-            }
-        }
-
-        $referralService = $this->get('stfalcon_event.referral.service');
 
         $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
@@ -81,9 +63,9 @@ class DefaultController extends Controller
 
         return $this->render("ApplicationDefaultBundle:Redesign:cabinet.html.twig", [
             'user' => $user,
-            'user_events' => $userEvents,
+            'user_events' => $wannaVisit,
             'events' => $events,
-            'code' => $referralService->getReferralCode(),
+            'code' => $this->get('stfalcon_event.referral.service')->getReferralCode(),
         ]);
     }
 

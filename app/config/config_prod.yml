@@ -13,8 +13,6 @@ sentry:
     skip_capture:
         - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
     dsn: "https://ee926678a4cb4ea39b11c07a043d874a:53f5e4cf3c2f4fa69021f99bdebefa7c@sentry.stfalcon.com/48"
-    options:
-        environment: prod
 
 monolog:
     handlers:

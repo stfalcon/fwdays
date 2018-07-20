@@ -125,6 +125,7 @@ class User extends BaseUser
      *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      *   }
      * )
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $wantsToVisitEvents;
     /**
