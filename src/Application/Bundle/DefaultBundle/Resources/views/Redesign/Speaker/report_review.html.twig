@@ -82,6 +82,11 @@
     <!--END report-review-->
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
 {% endblock content %}
+
+{% block facebook %}
+    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' with {'xfbml' : true} %}
+{% endblock %}
+
 {% block scripts %}
     {{ parent() }}
     {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
