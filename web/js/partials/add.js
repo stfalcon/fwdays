@@ -153,7 +153,7 @@ function submitRegistrationForm(token) {
     }
 }
 
-function recapchaValidate(rId) {
+function submitValidForm(rId, withCaptcha) {
     registrationFormId = rId;
     var form = $('#'+registrationFormId);
     form.validate({
@@ -178,7 +178,11 @@ function recapchaValidate(rId) {
     });
 
     if (form.valid()) {
-        grecaptcha.execute();
+        if (withCaptcha) {
+            grecaptcha.execute();
+        } else {
+            form.submit();
+        }
     }
 }
 

@@ -58,6 +58,7 @@
             <argument type="service" id="logger" />
             <argument>%google_captcha_secret_key%</argument>
             <argument type="service" id="buzz" />
+            <argument>%kernel.environment%</argument>
         </service>
 
     </services>
