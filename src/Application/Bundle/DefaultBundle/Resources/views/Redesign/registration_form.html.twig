@@ -76,8 +76,9 @@
                             {% set ga_label = 'event' %}
                         {% endif %}
                     {% endif %}
-                    onclick="recapchaValidate('form_registration_{{ form_id }}');
-                             return false;"
+
+                    {% set withCaptcha = 'stag' == app.environment ? false : true %}
+                    onclick="submitValidForm('form_registration_{{ form_id }}', {{ withCaptcha }}); return false;"
                     >{{ 'user.create.title'|trans }}
             </button>
         </div>
