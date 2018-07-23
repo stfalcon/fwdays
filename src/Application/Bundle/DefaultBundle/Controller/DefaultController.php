@@ -52,16 +52,24 @@ class DefaultController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        $wannaVisit = $user->getWantsToVisitEvents();
 
-        $events = $this->getDoctrine()
+        $userActiveEvents = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
+
+        $userPastEvents = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
+
+        $allActiveEvents = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true]);
 
         return $this->render('ApplicationDefaultBundle:Redesign:cabinet.html.twig', [
             'user' => $user,
-            'user_events' => $wannaVisit,
-            'events' => $events,
+            'user_active_events' => $userActiveEvents,
+            'user_past_events' => $userPastEvents,
+            'events' => $allActiveEvents,
             'code' => $this->get('stfalcon_event.referral.service')->getReferralCode(),
         ]);
     }
