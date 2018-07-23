@@ -33,11 +33,6 @@ class InterkassaController extends Controller
      */
     public function interactionAction(Request $request)
     {
-        $this->get('logger')->addInfo(
-            'Interkassa interaction info',
-            $this->getRequestDataToArr($request, null)
-        );
-
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Payment')
