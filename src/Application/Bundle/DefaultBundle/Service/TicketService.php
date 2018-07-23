@@ -36,7 +36,7 @@ class TicketService
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var RouterInterface  */
+    /** @var RouterInterface */
     protected $router;
 
     /** @var TicketCostService */
@@ -125,8 +125,8 @@ class TicketService
     /**
      * Set Ticket promo-code.
      *
-     * @param PromoCode $promoCode
      * @param Ticket    $ticket
+     * @param PromoCode $promoCode
      *
      * @return Ticket
      */

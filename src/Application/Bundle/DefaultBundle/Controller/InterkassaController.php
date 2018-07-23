@@ -110,13 +110,13 @@ class InterkassaController extends Controller
             $eventType = $this->getItemVariant($eventName);
         }
 
-
         return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
             'payment' => $payment,
             'event_name' => $eventName,
             'event_type' => $eventType,
         ]);
     }
+
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *

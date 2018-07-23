@@ -11,9 +11,8 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class UserManager extends \FOS\UserBundle\Doctrine\UserManager
 {
-
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     public $container;
 
@@ -21,11 +20,11 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
      * Constructor.
      *
      * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface $usernameCanonicalizer
-     * @param CanonicalizerInterface $emailCanonicalizer
-     * @param ObjectManager $om
-     * @param string $class
-     * @param Container $container
+     * @param CanonicalizerInterface  $usernameCanonicalizer
+     * @param CanonicalizerInterface  $emailCanonicalizer
+     * @param ObjectManager           $om
+     * @param string                  $class
+     * @param Container               $container
      */
     public function __construct(
         EncoderFactoryInterface $encoderFactory,
@@ -41,15 +40,16 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
     }
 
     /**
-     * Automatic user registration
+     * Automatic user registration.
      *
      * @param $participant
+     *
      * @return \FOS\UserBundle\Model\UserInterface
      */
     public function autoRegistration($participant)
     {
         /**
-         * @var \Application\Bundle\UserBundle\Entity\User $user
+         * @var \Application\Bundle\UserBundle\Entity\User
          */
         $user = $this->createUser();
         $user->setEmail($participant['email']);
@@ -74,7 +74,7 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
             'ApplicationUserBundle:Registration:automatically.html.twig',
             [
                 'user' => $user,
-                'plainPassword' => $plainPassword
+                'plainPassword' => $plainPassword,
             ]
         );
 
@@ -88,4 +88,4 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
 
         return $user;
     }
-} 
+}

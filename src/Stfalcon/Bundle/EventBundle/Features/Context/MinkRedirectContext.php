@@ -3,9 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Features\Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
-
-use Behat\Mink\Exception\UnsupportedDriverActionException,
-    Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Mink\Driver\BrowserKitDriver;
 
 /**
  * Context class for managing redirects within an application.
@@ -18,7 +17,6 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Prevent following redirects.
      *
-     * @return  void
      *
      * @When /^I do not follow redirects$/
      */
@@ -30,7 +28,6 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
      *
-     * @return void
      *
      * @AfterScenario
      */
@@ -44,9 +41,8 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Follow redirect instructions.
      *
-     * @param   string  $page
+     * @param string $page
      *
-     * @return  void
      *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */
@@ -69,9 +65,9 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Returns current active mink session.
      *
-     * @return  \Symfony\Component\BrowserKit\Client
+     * @return \Symfony\Component\BrowserKit\Client
      *
-     * @throws  \Behat\Mink\Exception\UnsupportedDriverActionException
+     * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
      */
     protected function getClient()
     {

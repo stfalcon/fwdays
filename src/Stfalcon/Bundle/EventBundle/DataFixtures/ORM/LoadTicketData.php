@@ -2,19 +2,18 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
- * LoadTicketData Class
+ * LoadTicketData Class.
  */
 class LoadTicketData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -33,15 +32,15 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         /**
-         * @var \Application\Bundle\UserBundle\Entity\User $userDefault
+         * @var \Application\Bundle\UserBundle\Entity\User
          * @var \Application\Bundle\UserBundle\Entity\User $userDefault2
          * @var \Application\Bundle\UserBundle\Entity\User $userDefault3
          * @var \Application\Bundle\UserBundle\Entity\User $userAdmin
          */
-        $userDefault  = $manager->merge($this->getReference('user-default'));
+        $userDefault = $manager->merge($this->getReference('user-default'));
         $userDefault2 = $manager->merge($this->getReference('user-default2'));
         $userDefault3 = $manager->merge($this->getReference('user-default3'));
-        $userAdmin    = $manager->merge($this->getReference('user-admin'));
+        $userAdmin = $manager->merge($this->getReference('user-admin'));
 
         $eventZfDay = $this->getReference('event-jsday2018');
         $eventPHPDay = $this->getReference('event-phpday2017');

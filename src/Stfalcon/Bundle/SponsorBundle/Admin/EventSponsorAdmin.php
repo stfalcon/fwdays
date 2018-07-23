@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class EventSponsorAdmin extends Admin
 {

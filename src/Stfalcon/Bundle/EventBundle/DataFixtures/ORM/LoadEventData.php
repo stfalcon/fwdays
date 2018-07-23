@@ -2,16 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * LoadEventData Class
+ * LoadEventData Class.
  */
 class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -30,7 +29,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-
         $event = (new Event())
             ->setName('Конференция JavaScript fwdays \'18')
             ->setSlug('javaScript-framework-day-2018')
@@ -397,7 +395,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Generate UploadedFile object from local file. For VichUploader
+     * Generate UploadedFile object from local file. For VichUploader.
      *
      * @param string $filename
      *

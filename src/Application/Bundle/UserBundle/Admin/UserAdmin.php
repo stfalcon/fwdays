@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * Class UserAdmin
+ * Class UserAdmin.
  */
 class UserAdmin extends Admin
 {

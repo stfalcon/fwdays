@@ -1,4 +1,5 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;

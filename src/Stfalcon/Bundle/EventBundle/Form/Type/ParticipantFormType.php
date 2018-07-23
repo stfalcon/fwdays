@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class ParticipantFormType
+ * Class ParticipantFormType.
  */
 class ParticipantFormType extends AbstractType
 {
@@ -20,17 +20,17 @@ class ParticipantFormType extends AbstractType
     {
         $builder
             ->add('name', 'text', array(
-                'label'              => 'Имя участника',
-                'required'           => true
+                'label' => 'Имя участника',
+                'required' => true,
             ))
             ->add('email', 'email', array(
-                'label'              => 'E-mail участника',
-                'required'           => true
+                'label' => 'E-mail участника',
+                'required' => true,
             ));
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */

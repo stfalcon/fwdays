@@ -7,8 +7,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 
 /**
- * PromoCodeRepository
- *
+ * PromoCodeRepository.
  */
 class PromoCodeRepository extends EntityRepository
 {

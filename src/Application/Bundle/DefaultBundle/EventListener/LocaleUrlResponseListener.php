@@ -38,8 +38,8 @@ class LocaleUrlResponseListener
      * @param array $locales
      * @param $cookieName
      * @param $routerService
-     * @param GeoipManager  $geoIpService
-     * @param Logger $logger
+     * @param GeoipManager $geoIpService
+     * @param Logger       $logger
      */
     public function __construct($defaultLocale, array $locales, $cookieName, $routerService, $geoIpService, $logger)
     {

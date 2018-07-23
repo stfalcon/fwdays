@@ -15,6 +15,7 @@ class UrlForRedirect
 
     /**
      * GetUrlForRedirect constructor.
+     *
      * @param I18nRouter $router
      * @param array      $locales
      */
@@ -42,7 +43,7 @@ class UrlForRedirect
     }
 
     /**
-     * get redirect url for referral url
+     * get redirect url for referral url.
      *
      * @param string $referralUrl
      * @param string $host

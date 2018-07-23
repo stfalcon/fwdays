@@ -2,17 +2,16 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\EntityRepository;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * Class TicketCostRepository
+ * Class TicketCostRepository.
  */
 class TicketCostRepository extends EntityRepository
 {
     /**
-     * Get event current cost
+     * Get event current cost.
      *
      * @param Event $event
      *
@@ -37,7 +36,7 @@ class TicketCostRepository extends EntityRepository
     }
 
     /**
-     * Get Event tickets cost
+     * Get Event tickets cost.
      *
      * @param Event $event
      *
@@ -55,7 +54,7 @@ class TicketCostRepository extends EntityRepository
     }
 
     /**
-     * Get Event enabled tickets cost
+     * Get Event enabled tickets cost.
      *
      * @param Event $event
      *

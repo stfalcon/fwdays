@@ -8,7 +8,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntity;
 abstract class AbstractTranslation extends AbstractPersonalTranslation implements TranslatableEntity
 {
     /**
-     * Convenient constructor
+     * Convenient constructor.
      *
      * @param string $locale  locale
      * @param string $field   field

@@ -2,22 +2,19 @@
 
 namespace Application\Bundle\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Application\Bundle\UserBundle\Entity\User;
 
 /**
- * LoadUserData class
+ * LoadUserData class.
  */
 class LoadUserData extends AbstractFixture
 {
     /**
-     * Create and load user fixtures to database
+     * Create and load user fixtures to database.
      *
      * @param ObjectManager $manager Entity manager object
-     *
-     * @return void
      */
     public function load(ObjectManager $manager)
     {
@@ -116,12 +113,12 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userDefault4);
         $this->addReference('user-default4', $userDefault4);
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 100; ++$i) {
             $userDefault = (new User())
-                ->setUsername('Пользователь ' . $i)
-                ->setName('User ' . $i)
-                ->setSurname('Default ' . $i)
-                ->setEmail('user' . $i . '@fwdays.com')
+                ->setUsername('Пользователь '.$i)
+                ->setName('User '.$i)
+                ->setSurname('Default '.$i)
+                ->setEmail('user'.$i.'@fwdays.com')
                 ->setPlainPassword('qwerty')
                 ->addRole('ROLE_USER')
                 ->setCountry('Ukraine')
@@ -132,7 +129,7 @@ class LoadUserData extends AbstractFixture
                 ->setExpired(false)
                 ->setLocked(false);
             $manager->persist($userDefault);
-            $this->addReference('user-default-' . $i, $userDefault);
+            $this->addReference('user-default-'.$i, $userDefault);
         }
 
         $manager->flush();

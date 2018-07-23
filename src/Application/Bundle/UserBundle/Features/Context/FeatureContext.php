@@ -3,33 +3,27 @@
 namespace Application\Bundle\UserBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-
-use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\SymfonyMailerContext;
-
-use Doctrine\Common\DataFixtures\Loader,
-    Doctrine\Common\DataFixtures\Executor\ORMExecutor,
-    Doctrine\Common\DataFixtures\Purger\ORMPurger;
-
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\CommonContexts\SymfonyMailerContext;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
-
-use \PHPUnit_Framework_Assert as Assert;
+use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for ApplicationUserBundle
+ * Feature context for ApplicationUserBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @var \Symfony\Component\HttpKernel\KernelInterface
      */
     protected $kernel;
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
-     *
-     * @return null
      */
     public function setKernel(KernelInterface $kernel)
     {
@@ -37,7 +31,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -46,7 +40,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Загружаем необходимые фикстуры перед выполнением сценария
+     * Загружаем необходимые фикстуры перед выполнением сценария.
      *
      * @BeforeScenario
      */
@@ -57,7 +51,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
-        $purger   = new ORMPurger();
+        $purger = new ORMPurger();
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures());
@@ -70,7 +64,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $activeEvents = $this->kernel->getContainer()->get('doctrine')->getManager()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(array('active' => true ));
+            ->findBy(array('active' => true));
 
         $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
         $tickets = $this->kernel->getContainer()->get('doctrine')->getManager()
@@ -80,7 +74,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Заполнить форму регистрации
+     * Заполнить форму регистрации.
      *
      * @param string $name     User name
      * @param string $email    Email
@@ -96,7 +90,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Заполнить дополнительные поля на форме регистрации
+     * Заполнить дополнительные поля на форме регистрации.
      *
      * @param string $country Страна
      * @param string $city    Город
@@ -114,7 +108,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Проверка, что отображается меню для авторизированого пользователя
+     * Проверка, что отображается меню для авторизированого пользователя.
      *
      * @param string $username
      *
@@ -127,7 +121,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Отключаем редирект страниц
+     * Отключаем редирект страниц.
      *
      * Это нужно для того, чтоб бы словить в профайлере количество отправленных имейлов.
      *

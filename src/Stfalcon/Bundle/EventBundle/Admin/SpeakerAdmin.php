@@ -71,13 +71,12 @@ class SpeakerAdmin extends Admin
             ->with('Участвует в событиях', ['class' => 'col-md-4'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
@@ -86,13 +85,12 @@ class SpeakerAdmin extends Admin
             ->with('Кандидат на события', ['class' => 'col-md-4'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
@@ -101,13 +99,12 @@ class SpeakerAdmin extends Admin
             ->with('Программный комитет', ['class' => 'col-md-4'])
                 ->add('committeeEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',

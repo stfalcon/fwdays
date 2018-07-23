@@ -6,13 +6,12 @@ use FOS\UserBundle\Form\Type\RegistrationFormType as BaseRegistrationFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * RegistrationFormType Class
+ * RegistrationFormType Class.
  */
 class RegistrationFormType extends BaseRegistrationFormType
 {
     /**
      * @param FormBuilderInterface $builder
-     *
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
