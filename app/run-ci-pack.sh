@@ -67,7 +67,7 @@ else
 fi
 echo -e " - YAML config files validity: ${RESULT}"
 
-if php bin/phpcs src/ > /dev/null; then
+if php bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony > /dev/null; then
     RESULT=${OK}
 else
     RESULT=${FAIL}
