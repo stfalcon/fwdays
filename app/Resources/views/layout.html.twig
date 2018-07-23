@@ -66,6 +66,12 @@
     <!--END alert-->
 {% endblock popups %}
 
+{% block facebook %}
+    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' %}
+{% endblock %}
+
+{% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}
+
 {% block scripts %}
     {%- if app.environment == 'prod' -%}
     <!-- Google Tag Manager -->
@@ -109,14 +115,13 @@
     {% endfor %}
     <div id="fb-root"></div>
     <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId            : '{{ facebook_api_id }}',
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v2.12'
-            });
-        };
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/{{ lang }}/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
 {% endblock scripts %}
 </body>

@@ -138,19 +138,6 @@ class LocaleUrlResponseListener
                 && in_array($request->cookies->get($this->cookieName), $this->locales)) {
                 $local = $request->cookies->get($this->cookieName);
             }
-
-//        get locale from geo data
-            if (!$local) {//78.152.169.117
-                $ip = filter_var($this->getRealIpAddr($request), FILTER_VALIDATE_IP);
-                try {
-                    if ($ip && $geoIp = $this->geoIpService->lookup($ip)) {
-                        $local = strtolower($geoIp->getCountryCode()) === 'ua' ? 'uk' : 'en';
-                        $local = in_array($local, $this->locales) ? $local : null;
-                    }
-                } catch (\Exception $e) {
-                    $this->logger->addError($e->getMessage());
-                }
-            }
         }
 //        get locale from preferred
         if (!$local) {

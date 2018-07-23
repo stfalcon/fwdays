@@ -6,10 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Application\Bundle\DefaultBundle\Service\InterkassaService;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
@@ -48,7 +46,6 @@ class WayForPayController extends Controller
             throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
         }
 
-        /** @var InterkassaService $interkassa */
         $wayForPay = $this->get('app.way_for_pay.service');
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
             $payment->markedAsPaid();
@@ -75,13 +72,10 @@ class WayForPayController extends Controller
             return $this->redirectToRoute('show_success');
         }
 
-        $this->get('logger')->addCritical('WayForPay interaction Fail!', [
-            'payment_id' => $payment->getId(),
-            'payment_status' => $payment->getStatus(),
-            'payment_amount' => $payment->getAmount(),
-            'request_amount' => $this->getArrMean($response['amount']),
-            'request_status' => $this->getArrMean($response['reasonCode']).' '.$this->getArrMean($response['reason']),
-        ]);
+        $this->get('logger')->addCritical(
+            'Interkassa interaction Fail!',
+            $this->getRequestDataToArr($response, $payment)
+        );
 
         return new Response('FAIL', 400);
     }
@@ -188,6 +182,33 @@ class WayForPayController extends Controller
         }
 
         return $eventName;
+    }
+
+    /**
+     * @param array        $response
+     * @param Payment|null $payment
+     *
+     * @return array
+     */
+    private function getRequestDataToArr($response, $payment)
+    {
+        $paymentId = '-';
+        $paymentStatus = '-';
+        $paymentAmount = '-';
+
+        if ($payment instanceof Payment) {
+            $paymentId = $payment->getId();
+            $paymentStatus = $payment->getStatus();
+            $paymentAmount = $payment->getAmount();
+        }
+
+        return [
+            'payment_id' => $paymentId,
+            'payment_status' => $paymentStatus,
+            'payment_amount' => $paymentAmount,
+            'request_amount' => $this->getArrMean($response['amount']),
+            'request_status' => $this->getArrMean($response['reasonCode']).' '.$this->getArrMean($response['reason']),
+        ];
     }
 
     /**

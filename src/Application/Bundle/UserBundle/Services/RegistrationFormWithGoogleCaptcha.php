@@ -26,6 +26,9 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
 
     protected $buzz;
 
+    /** @var string */
+    protected $environment;
+
     /**
      * RegistrationFormWithGoogleCaptcha constructor.
      *
@@ -37,13 +40,15 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      * @param Logger $logger
      * @param string $captchaSecretKey
      * @param $buzz
+     * @param string $environment
      */
-    public function __construct($regForm, $requestStack, $useManager, $mailer, $tokenGenerator, $logger, $captchaSecretKey, $buzz)
+    public function __construct($regForm, $requestStack, $useManager, $mailer, $tokenGenerator, $logger, $captchaSecretKey, $buzz, $environment)
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->logger = $logger;
         $this->captchaSecretKey = $captchaSecretKey;
         $this->buzz = $buzz;
+        $this->environment = $environment;
 
         parent::__construct($regForm, $this->request, $useManager, $mailer, $tokenGenerator);
     }
@@ -71,6 +76,10 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
      */
     private function isGoogleCaptchaTrue($captcha)
     {
+        if ('stag' === $this->environment) {
+            return true;
+        }
+
         if (empty($captcha)) {
             return false;
         }

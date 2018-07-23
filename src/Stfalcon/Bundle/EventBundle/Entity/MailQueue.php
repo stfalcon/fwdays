@@ -3,9 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Application\Bundle\UserBundle\Entity\User;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\MailQueue
@@ -36,7 +34,7 @@ class MailQueue
     /**
      * @var Mail
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", inversedBy="mailQueues", cascade={"persist"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $mail;

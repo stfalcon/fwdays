@@ -1,18 +1,6 @@
-{% if app.request.locale == 'uk' %}
-    {% set lang = 'uk_UA' %}
-{% else %}
-    {% set lang = 'en_US' %}
-{% endif %}
+
 <!--BEGIN Share buttons scripts-->
 <script>
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/{{ lang }}/all.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
     window.twttr = (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],
             t = window.twttr || {};
