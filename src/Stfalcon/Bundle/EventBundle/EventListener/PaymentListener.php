@@ -2,29 +2,25 @@
 
 namespace Stfalcon\Bundle\EventBundle\EventListener;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Stfalcon\Bundle\EventBundle\Entity\Payment,
-    Stfalcon\Bundle\EventBundle\Entity\Ticket,
-    Stfalcon\Bundle\EventBundle\Entity\Event,
-    Stfalcon\Bundle\EventBundle\Entity\Mail,
-    Application\Bundle\UserBundle\Entity\User;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Application\Bundle\UserBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\PaymentService;
 use Symfony\Component\DependencyInjection\Container;
-use Zend\Stdlib\DateTime;
 
 /**
- * Class PaymentListener
- * @package Stfalcon\Bundle\EventBundle\EventListener
+ * Class PaymentListener.
  */
 class PaymentListener
 {
-
     /** @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper */
     private $mailerHelper;
 
-    /** @var \Stfalcon\Bundle\EventBundle\Helper\PdfGeneratorHelper $pdfGeneratorHelper */
+    /** @var \Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper $pdfGeneratorHelper */
     private $pdfGeneratorHelper;
 
     /** @var \Swift_Mailer $mailer */

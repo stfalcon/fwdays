@@ -177,6 +177,24 @@ class MailAdmin extends Admin
     }
 
     /**
+     * @param MenuItemInterface $menu       Menu
+     * @param string            $action     Action
+     * @param AdminInterface    $childAdmin Child admin
+     */
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
+            return;
+        }
+
+        $admin = $this->isChild() ? $this->getParent() : $this;
+        $id = $admin->getRequest()->get('id');
+
+        $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+        $menu->addChild('Line items', array('uri' => $admin->generateUrl('stfalcon_event.admin.mail_queue.list', array('id' => $id))));
+    }
+
+    /**
      * @param Mail $mail
      *
      * @return array
@@ -188,8 +206,8 @@ class MailAdmin extends Admin
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
         if ($mail->getEvents()->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users =  $em->getRepository('ApplicationUserBundle:User')->getRegisteredUsers($mail->getEvents());
-            /* @var $users \Application\Bundle\UserBundle\Entity\User[] */
+            $users = $em->getRepository('ApplicationUserBundle:User')->getRegisteredUsers($mail->getEvents());
+        /* @var $users \Application\Bundle\UserBundle\Entity\User[] */
         } elseif ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
                 ->findUsersSubscribedByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
@@ -231,23 +249,5 @@ class MailAdmin extends Admin
             $em->persist($mail);
             $em->flush();
         }
-    }
-
-    /**
-     * @param MenuItemInterface $menu       Menu
-     * @param string            $action     Action
-     * @param AdminInterface    $childAdmin Child admin
-     */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {
-        if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
-            return;
-        }
-
-        $admin = $this->isChild() ? $this->getParent() : $this;
-        $id = $admin->getRequest()->get('id');
-
-        $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('stfalcon_event.admin.mail_queue.list', array('id' => $id))));
     }
 }

@@ -3,11 +3,10 @@
 namespace Application\Bundle\UserBundle\Features\Context;
 
 use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Context\BehatContext,
-    Behat\Behat\Context\Step;
+use Behat\Behat\Context\BehatContext;
 
 /**
- * Feature context for ApplicationUserBundle
+ * Feature context for ApplicationUserBundle.
  */
 class UserContext extends BehatContext
 {
@@ -17,7 +16,7 @@ class UserContext extends BehatContext
     private $minkContext;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \Behat\MinkExtension\Context\MinkContext $minkContext
      */
@@ -27,7 +26,7 @@ class UserContext extends BehatContext
     }
 
     /**
-     * Вход в учетную запись по логину и паролю
+     * Вход в учетную запись по логину и паролю.
      *
      * В этом методе заполняются поля: логин и пароль, после чего нажимается кнопка "Вход"
      *

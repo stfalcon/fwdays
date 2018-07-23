@@ -2,19 +2,18 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
 
 /**
- * LoadEventSponsorData class
+ * LoadEventSponsorData class.
  */
 class LoadEventSponsorData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -26,6 +25,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
             'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
         );
     }
+
     public function setEventSponsor(ObjectManager $manager, $sponsorCtg, $event, $sponsor)
     {
         $eventSponsor = (new EventSponsor())
@@ -42,16 +42,16 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
         $partnerSponsor = $manager->merge($this->getReference('partner-sponsor'));
         $infoPartnerSponsor = $manager->merge($this->getReference('info-partner-sponsor'));
 
-        $sponsorODesk   = $manager->merge($this->getReference('sponsor-odesk'));
+        $sponsorODesk = $manager->merge($this->getReference('sponsor-odesk'));
         $sponsorMagento = $manager->merge($this->getReference('sponsor-magento'));
         $sponsorEpochta = $manager->merge($this->getReference('sponsor-epochta'));
 
         $partners = [];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             $partners[] = $manager->merge($this->getReference('partner-'.$i));
         }
         $infoPartners = [];
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 6; ++$i) {
             $infoPartners[] = $manager->merge($this->getReference('info-partner-'.$i));
         }
 
@@ -71,7 +71,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
      */
     public function load(ObjectManager $manager)
     {
-        $eventZFDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventZFDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay = $manager->merge($this->getReference('event-phpday2017'));
         $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
         $eventHighLoad = $manager->merge($this->getReference('event-highload-day'));

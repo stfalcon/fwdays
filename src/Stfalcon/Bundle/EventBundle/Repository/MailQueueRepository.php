@@ -7,7 +7,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 /**
- * Class MailQueueRepository
+ * Class MailQueueRepository.
  */
 class MailQueueRepository extends EntityRepository
 {

@@ -3,23 +3,21 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Twig_Environment;
 
 /**
- * Class StfalconMailerHelper
+ * Class StfalconMailerHelper.
  */
 class StfalconMailerHelper
 {
-
     /**
-     * @var Twig_Environment $twig
+     * @var Twig_Environment
      */
     protected $twig;
 
     /**
-     * @var \Doctrine\ORM\EntityManager $em
+     * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
 
@@ -29,11 +27,12 @@ class StfalconMailerHelper
     protected $router;
 
     protected $mailer;
+
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param Twig_Environment $twig
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param Twig_Environment                               $twig
+     * @param \Doctrine\ORM\EntityManager                    $em
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
      * @param $mailer
      */
@@ -46,7 +45,7 @@ class StfalconMailerHelper
     }
 
     /**
-     * Format message
+     * Format message.
      *
      * @param User $user          User
      * @param Mail $mail          Mail
@@ -71,9 +70,9 @@ class StfalconMailerHelper
             $template = '@ApplicationDefault/Email/new_email.html.twig';
             $params =
                 [
-                    'text'            => $text,
-                    'mail'            => $mail,
-                    'user'            => $user,
+                    'text' => $text,
+                    'mail' => $mail,
+                    'user' => $user,
                 ];
         }
 
@@ -89,11 +88,11 @@ class StfalconMailerHelper
     }
 
     /**
-     * Create message
+     * Create message.
      *
-     * @param  string $subject
-     * @param  string $to
-     * @param  string $body
+     * @param string $subject
+     * @param string $to
+     * @param string $body
      *
      * @return \Swift_Message
      */
@@ -107,10 +106,11 @@ class StfalconMailerHelper
     }
 
     /**
-     * Render template
+     * Render template.
      *
      * @param string $view
-     * @param array $params
+     * @param array  $params
+     *
      * @return string
      */
     public function renderTwigTemplate($view, $params)

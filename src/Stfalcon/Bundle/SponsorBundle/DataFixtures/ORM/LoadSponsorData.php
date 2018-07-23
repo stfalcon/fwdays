@@ -2,16 +2,15 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 
 /**
- * Load Sponsor fixtures to database
+ * Load Sponsor fixtures to database.
  */
 class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -65,12 +64,12 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         $manager->persist($epochta);
         $this->addReference('sponsor-epochta', $epochta);
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             $partner = (new Sponsor())
                 ->setName('partner-'.$i)
                 ->setSlug('partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.($i+1).'.jpg'))
+                ->setFile($this->_generateUploadedFile('partner-'.($i + 1).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder(20)
                 ->setOnMain(true);
@@ -78,14 +77,14 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             $this->addReference('partner-'.$i, $partner);
         }
 
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 6; ++$i) {
             $partner = (new Sponsor())
                 ->setName('info partner-'.$i)
                 ->setSlug('info-partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.($i+5).'.jpg'))
+                ->setFile($this->_generateUploadedFile('partner-'.($i + 5).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
-                ->setSortOrder($i+10)
+                ->setSortOrder($i + 10)
                 ->setOnMain(true);
             $manager->persist($partner);
             $this->addReference('info-partner-'.$i, $partner);
@@ -95,7 +94,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Generate UploadedFile object from local file. For VichUploader
+     * Generate UploadedFile object from local file. For VichUploader.
      *
      * @param string $filename
      *

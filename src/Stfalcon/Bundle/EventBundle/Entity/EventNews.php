@@ -7,12 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractNews;
 use Stfalcon\Bundle\EventBundle\Traits\Translate;
-use Symfony\Component\Validator\Constraints as Assert;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- *
  * @ORM\Table(name="event__news")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\EventNewsRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventNewsTranslation")

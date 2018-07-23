@@ -66,9 +66,9 @@ class PaymentListenerTest extends WebTestCase
     public function testPostUpdate()
     {
         $this->getEmailWithLocal('uk');
-        /** check email with ticket pdf file */
+        /* check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
-        /** check email with string */
+        /* check email with string */
         $this->findEmailWithText('Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.');
     }
 
@@ -127,7 +127,7 @@ class PaymentListenerTest extends WebTestCase
             $loginBtnCaption = 'Увійти';
             $accountLinkCaption = ' Кабінет';
         }
-        /** start Login */
+        /* start Login */
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -146,7 +146,7 @@ class PaymentListenerTest extends WebTestCase
     }
 
     /**
-     * Finc file in spool folder
+     * Finc file in spool folder.
      *
      * @param string $text
      *
@@ -174,7 +174,7 @@ class PaymentListenerTest extends WebTestCase
     }
 
     /**
-     * clear spool folder
+     * clear spool folder.
      */
     private function clearSpoolFolder()
     {

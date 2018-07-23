@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 class GetSonataLocalsRequiredService
 {
-
     private $defaultLocale;
     private $locales;
 
@@ -14,7 +13,7 @@ class GetSonataLocalsRequiredService
         $this->defaultLocale = $defaultLocale;
     }
 
-    public function getLocalsRequredArray ($setAllAs = null)
+    public function getLocalsRequredArray($setAllAs = null)
     {
         $result = [];
         foreach ($this->locales as $locale) {

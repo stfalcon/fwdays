@@ -4,7 +4,6 @@ namespace Stfalcon\Bundle\EventBundle\Entity\AbstractClass;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 
 /**
  * @ORM\MappedSuperclass
@@ -12,23 +11,25 @@ use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
 abstract class AbstractNews extends AbstractPage
 {
     /**
-     * @var text $preview
+     * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(name="preview", type="text")
      */
     protected $preview;
 
     /**
-     * @var datetime $created_at
+     * @var \Datetime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
-    protected $created_at;
+    protected $createdAt;
 
     /**
-     * Set preview
+     * Set preview.
      *
-     * @param text $preview
+     * @param string $preview
      */
     public function setPreview($preview)
     {
@@ -36,33 +37,32 @@ abstract class AbstractNews extends AbstractPage
     }
 
     /**
-     * Get preview
+     * Get preview.
      *
-     * @return text
+     * @return string
      */
     public function getPreview()
     {
         return $this->preview;
     }
 
-
     /**
-     * Set created_at
+     * Set created_at.
      *
-     * @param datetime $createdAt
+     * @param \Datetime $createdAt
      */
     public function setCreatedAt($createdAt)
     {
-        $this->created_at = $createdAt;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 }

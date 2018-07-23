@@ -1,10 +1,10 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
 class ReviewAdmin extends AbstractPageAdmin
@@ -16,7 +16,7 @@ class ReviewAdmin extends AbstractPageAdmin
             ->add('event', null, ['label' => 'Событие'])
             ->add('speakers', null, ['label' => 'Докладчики']);
     }
-    
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper = parent::configureFormFields($formMapper);

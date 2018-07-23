@@ -10,7 +10,7 @@ use FOS\UserBundle\Model\UserInterface;
 class ProfileController extends Controller
 {
     /**
-     * Show the user
+     * Show the user.
      */
     public function showAction()
     {
@@ -23,7 +23,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Edit the user
+     * Edit the user.
      */
     public function editAction()
     {

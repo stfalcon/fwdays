@@ -4,7 +4,6 @@ namespace Application\Bundle\UserBundle\Services;
 
 use FOS\UserBundle\Form\Handler\RegistrationFormHandler;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
