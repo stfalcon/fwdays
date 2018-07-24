@@ -6,12 +6,16 @@ use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
  */
 class EventAdmin extends Admin
 {
+    protected $saveCity;
+    protected $savePlace;
     /**
      * @var array
      */
@@ -23,23 +27,29 @@ class EventAdmin extends Admin
         ];
 
     /**
-     * @param $object
+     * @param Event $object
      *
      * @return mixed|void
      */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
+        if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
+            $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+                ->setEventMapPosition($object);
+        }
     }
 
     /**
-     * @param $object
+     * @param Event $object
      *
      * @return mixed|void
      */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
+        $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+            ->setEventMapPosition($object);
     }
 
     /**
@@ -91,7 +101,12 @@ class EventAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var Event $subject */
         $subject = $this->getSubject();
+        if (!is_null($subject->getId())) {
+            $this->saveCity = $subject->getCity();
+            $this->savePlace = $subject->getPlace();
+        }
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);

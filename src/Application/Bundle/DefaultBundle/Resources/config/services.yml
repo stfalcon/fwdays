@@ -74,3 +74,7 @@ services:
         class: Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    app.service.google_map_service:
+        class: Application\Bundle\DefaultBundle\Service\GoogleMapService
+        arguments: ['%google_api_key%', '@buzz']
