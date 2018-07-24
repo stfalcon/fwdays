@@ -194,7 +194,7 @@ class EventController extends Controller
         if ($this->get('app.service.google_map_service')->setEventMapPosition($event)) {
             $this->getDoctrine()->getManager()->flush($event);
 
-            return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getlng()]);
+            return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getLng()]);
         }
 
         return new JsonResponse(['result' => false]);
