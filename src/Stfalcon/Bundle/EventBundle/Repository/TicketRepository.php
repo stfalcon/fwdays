@@ -33,10 +33,7 @@ class TicketRepository extends EntityRepository
         return $qb->join('t.event', 'e')
                   ->where($qb->expr()->eq('e.active', ':active'))
                   ->andWhere($qb->expr()->eq('t.user', ':user'))
-                  ->setParameters([
-                      'user' => $user,
-                      'active' => true,
-                  ])
+                  ->setParameters(['user' => $user, 'active' => true])
                   ->orderBy('e.date', 'ASC')
                   ->getQuery()
                   ->getResult();
@@ -59,11 +56,11 @@ class TicketRepository extends EntityRepository
             ->join('t.payment', 'p')
             ->andWhere('e.active = 1');
 
-        if (null != $event) {
+        if (null !== $event) {
             $query->andWhere('t.event = :event')
                 ->setParameter(':event', $event);
         }
-        if (null != $status) {
+        if (null !== $status) {
             $query->andWhere('p.status = :status')
                 ->setParameter(':status', $status);
         }
@@ -100,11 +97,11 @@ class TicketRepository extends EntityRepository
             //->setParameter(':eventStatus', true)
             ->groupBy('u');
 
-        if (null != $events) {
+        if (null !== $events) {
             $qb->andWhere($qb->expr()->in('t.event', ':events'))
                 ->setParameter(':events', $events->toArray());
         }
-        if (null != $status) {
+        if (null !== $status) {
             $statusOr = $qb->expr()->orX('p.status = :status');
             if ('pending' == $status) {
                 $statusOr->add('p.status IS NULL');
@@ -247,8 +244,6 @@ class TicketRepository extends EntityRepository
     }
 
     /**
-     * @param User $user
-     *
      * @return array
      */
     public function getPaidTicketsCount()

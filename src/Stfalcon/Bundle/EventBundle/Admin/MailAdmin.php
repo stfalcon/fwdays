@@ -38,6 +38,70 @@ class MailAdmin extends Admin
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function postPersist($mail)
+    {
+        $users = $this->getUsersForEmail($mail);
+
+        $this->addUsersToEmail($mail, $users);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preUpdate($object)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        /** @var UnitOfWork $uow */
+        $uow = $em->getUnitOfWork();
+        $originalObject = $uow->getOriginalEntityData($object);
+
+        $eventsChange = count($this->savedEvents) !== $object->getEvents()->count();
+        if (!$eventsChange) {
+            foreach ($this->savedEvents as $savedEvent) {
+                $founded = false;
+                foreach ($object->getEvents() as $event) {
+                    $founded = $savedEvent === $event->getId();
+                    if ($founded) {
+                        break;
+                    }
+                }
+                $eventsChange = !$founded;
+                if ($eventsChange) {
+                    break;
+                }
+            }
+        }
+
+        if ($eventsChange ||
+            $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
+            $originalObject['paymentStatus'] !== $object->getPaymentStatus()
+        ) {
+            $objectStatus = $object->getStart();
+            if (true === $objectStatus) {
+                $object->setStart(false);
+                $em->flush();
+            }
+            /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
+            $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
+            $deleteCount = $queueRepository->deleteAllNotSentMessages($object);
+            $object->setTotalMessages($object->getTotalMessages() - $deleteCount);
+            $usersInMail = $em->getRepository('ApplicationUserBundle:User')->getUsersFromMail($object);
+            $newUsers = $this->getUsersForEmail($object);
+            $addUsers = array_diff($newUsers, $usersInMail);
+
+            $this->addUsersToEmail($object, $addUsers);
+
+            if (true === $objectStatus) {
+                $object->setStart(true);
+                $em->flush();
+            }
+        }
+    }
+
+    /**
      * @param RouteCollection $collection
      */
     protected function configureRoutes(RouteCollection $collection)
@@ -106,74 +170,6 @@ class MailAdmin extends Admin
                     'label' => 'Статус оплаты',
                 ))
             ->end();
-    }
-
-    /**
-     * @param Mail $mail
-     *
-     * @return mixed|void
-     */
-    public function postPersist($mail)
-    {
-        $users = $this->getUsersForEmail($mail);
-
-        $this->addUsersToEmail($mail, $users);
-    }
-
-    /**
-     * @param Mail $object
-     *
-     * @return mixed|void
-     */
-    public function preUpdate($object)
-    {
-        $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        /** @var UnitOfWork $uow */
-        $uow = $em->getUnitOfWork();
-        $originalObject = $uow->getOriginalEntityData($object);
-
-        $eventsChange = count($this->savedEvents) !== $object->getEvents()->count();
-        if (!$eventsChange) {
-            foreach ($this->savedEvents as $savedEvent) {
-                $founded = false;
-                foreach ($object->getEvents() as $event) {
-                    $founded = $savedEvent === $event->getId();
-                    if ($founded) {
-                        break;
-                    }
-                }
-                $eventsChange = !$founded;
-                if ($eventsChange) {
-                    break;
-                }
-            }
-        }
-
-        if ($eventsChange ||
-            $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
-            $originalObject['paymentStatus'] !== $object->getPaymentStatus()
-        ) {
-            $objectStatus = $object->getStart();
-            if (true === $objectStatus) {
-                $object->setStart(false);
-                $em->flush();
-            }
-            /** @var $queueRepository \Stfalcon\Bundle\EventBundle\Repository\MailQueueRepository */
-            $queueRepository = $em->getRepository('StfalconEventBundle:MailQueue');
-            $deleteCount = $queueRepository->deleteAllNotSentMessages($object);
-            $object->setTotalMessages($object->getTotalMessages() - $deleteCount);
-            $usersInMail = $em->getRepository('ApplicationUserBundle:User')->getUsersFromMail($object);
-            $newUsers = $this->getUsersForEmail($object);
-            $addUsers = array_diff($newUsers, $usersInMail);
-
-            $this->addUsersToEmail($object, $addUsers);
-
-            if (true === $objectStatus) {
-                $object->setStart(true);
-                $em->flush();
-            }
-        }
     }
 
     /**

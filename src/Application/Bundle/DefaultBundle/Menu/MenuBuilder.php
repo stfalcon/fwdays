@@ -4,7 +4,9 @@ namespace Application\Bundle\DefaultBundle\Menu;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
+use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Translation\Translator;
 
 /**
@@ -28,9 +30,9 @@ class MenuBuilder
     /**
      * @param \Knp\Menu\FactoryInterface $factory
      * @param Translator                 $translator
-     * @param $locales
-     * @param $tokenService
-     * @param $mobileDetector
+     * @param array                      $locales
+     * @param TokenStorageInterface      $tokenService
+     * @param MobileDetector             $mobileDetector
      */
     public function __construct(FactoryInterface $factory, $translator, $locales, $tokenService, $mobileDetector)
     {
@@ -70,14 +72,16 @@ class MenuBuilder
                     ->setAttributes(
                         [
                             'class' => 'header-nav__item header-nav__item--mob header-nav__item--sign-in',
-                        ]);
+                        ]
+                    );
             } else {
                 $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])
                     ->setAttributes(
                         [
                             'class' => 'header-nav__item header-nav__item--mob header-nav__item--sign-in',
                             'data-remodal-target' => 'modal-signin',
-                        ]);
+                        ]
+                    );
             }
         }
 

@@ -83,8 +83,8 @@ class TicketService
     /**
      * Set Ticket Amount with recalculate discount.
      *
-     * @param Ticket $ticket
-     * @param $amount
+     * @param Ticket     $ticket
+     * @param float      $amount
      * @param bool       $isMustBeDiscount
      * @param TicketCost $currentTicketCost
      */
@@ -103,7 +103,7 @@ class TicketService
      *
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
-     * @param $discount
+     * @param float     $discount
      *
      * @return Ticket
      */
@@ -142,8 +142,8 @@ class TicketService
     /**
      * Set ticket discount.
      *
-     * @param $discount
      * @param Ticket $ticket
+     * @param float  $discount
      *
      * @return Ticket
      */
@@ -338,14 +338,13 @@ class TicketService
                 } elseif ('price_block' === $position) {
                     $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost()->getAmount();
                     $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
-                    $caption = $this->translator->trans(
-                        'ticket.status.pay_for').' '.
-                        $this->translator->trans(
-                            'payment.price',
-                            [
-                                '%summ%' => number_format($amount, 0, ',', ' '),
-                            ]
-                        );
+                    $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
+                            ->trans(
+                                'payment.price',
+                                [
+                                    '%summ%' => number_format($amount, 0, ',', ' '),
+                                ]
+                            );
                     if ($ticketCost && $ticketCost->getAltAmount()) {
                         $caption .= '<span class="cost__dollars">'.$altAmount.'</span>';
                     }

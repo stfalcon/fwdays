@@ -65,6 +65,9 @@ class SponsorRepository extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array
+     */
     public function getCheckedSponsorsOfActiveEvents()
     {
         return $this->getEntityManager()

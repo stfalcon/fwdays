@@ -3,12 +3,15 @@
 namespace Stfalcon\Bundle\EventBundle\Traits;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntity;
+use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntityInterface;
 
-trait Translate
+/**
+ * Trait Translate.
+ */
+trait TranslateTrait
 {
     /**
-     * @param TranslatableEntity $translation
+     * @param TranslatableEntityInterface $translation
      */
     public function addTranslation($translation)
     {
@@ -19,7 +22,7 @@ trait Translate
     }
 
     /**
-     * @param TranslatableEntity $translation
+     * @param TranslatableEntityInterface $translation
      */
     public function addTranslations($translation)
     {

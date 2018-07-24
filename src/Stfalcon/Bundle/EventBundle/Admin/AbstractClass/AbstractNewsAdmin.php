@@ -7,18 +7,26 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+/**
+ * Class AbstractNewsAdmin.
+ */
 abstract class AbstractNewsAdmin extends Admin
 {
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
     }
-
 
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper

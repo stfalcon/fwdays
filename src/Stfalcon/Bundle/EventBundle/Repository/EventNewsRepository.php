@@ -13,22 +13,6 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
  */
 class EventNewsRepository extends EntityRepository
 {
-    private function _getBaseQueryBuilder($count = null)
-    {
-        $qb = $this->getEntityManager()
-                ->createQueryBuilder()
-                ->add('select', 'n')
-                ->add('from', 'StfalconEventBundle:EventNews n')
-                ->add('orderBy', 'n.created_at DESC');
-
-        $count = (int) $count;
-        if ($count) {
-            $qb->setMaxResults($count);
-        }
-
-        return $qb;
-    }
-
     /**
      * Get array of last news.
      *
@@ -38,19 +22,20 @@ class EventNewsRepository extends EntityRepository
      */
     public function getLastNews($count = null)
     {
-        return $this->_getBaseQueryBuilder($count)->getQuery()->getResult();
+        return $this->getBaseQueryBuilder($count)->getQuery()->getResult();
     }
 
     /**
      * Get array of last news for event.
      *
-     * @param int $count
+     * @param Event $event
+     * @param int   $count
      *
      * @return array
      */
     public function getLastNewsForEvent(Event $event, $count = null)
     {
-        $qb = $this->_getBaseQueryBuilder($count)
+        $qb = $this->getBaseQueryBuilder($count)
                 ->where('n.event = :event')
                 ->setParameter('event', $event);
 
@@ -59,5 +44,26 @@ class EventNewsRepository extends EntityRepository
         $query = $qb->getQuery();
 
         return $query->getResult();
+    }
+
+    /**
+     * @param null $count
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getBaseQueryBuilder($count = null)
+    {
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->add('select', 'n')
+            ->add('from', 'StfalconEventBundle:EventNews n')
+            ->add('orderBy', 'n.created_at DESC');
+
+        $count = (int) $count;
+        if ($count) {
+            $qb->setMaxResults($count);
+        }
+
+        return $qb;
     }
 }

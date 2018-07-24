@@ -6,7 +6,7 @@ use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -31,7 +31,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Event implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @var int
      *
@@ -510,6 +510,8 @@ class Event implements Translatable
      * Set event name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
@@ -532,6 +534,8 @@ class Event implements Translatable
      * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
@@ -554,6 +558,8 @@ class Event implements Translatable
      * Set city in which the conference takes place.
      *
      * @param string|null $city
+     *
+     * @return $this
      */
     public function setCity($city)
     {
@@ -576,6 +582,8 @@ class Event implements Translatable
      * Set place.
      *
      * @param string|null $place
+     *
+     * @return $this
      */
     public function setPlace($place)
     {
@@ -608,6 +616,8 @@ class Event implements Translatable
      * Set date.
      *
      * @param \DateTime|null $date
+     *
+     * @return $this
      */
     public function setDate($date)
     {
@@ -620,6 +630,8 @@ class Event implements Translatable
      * Set description.
      *
      * @param string $description
+     *
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -642,6 +654,8 @@ class Event implements Translatable
      * Set text about event (for main page of event).
      *
      * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
@@ -664,6 +678,8 @@ class Event implements Translatable
      * Set status of activity.
      *
      * @param bool $active
+     *
+     * @return $this
      */
     public function setActive($active)
     {
@@ -682,6 +698,11 @@ class Event implements Translatable
         return $this->active;
     }
 
+    /**
+     * @return bool
+     *
+     * @throws \Exception
+     */
     public function isActiveAndFuture()
     {
         $eventEndDate = $this->dateEnd ?: $this->date;
@@ -691,7 +712,9 @@ class Event implements Translatable
     }
 
     /**
-     * @param $receivePayments
+     * @param bool $receivePayments
+     *
+     * @return $this
      */
     public function setReceivePayments($receivePayments)
     {
@@ -718,6 +741,8 @@ class Event implements Translatable
 
     /**
      * @param bool $useDiscounts
+     *
+     * @return $this
      */
     public function setUseDiscounts($useDiscounts)
     {
@@ -826,6 +851,8 @@ class Event implements Translatable
      * Set logoFile.
      *
      * @param UploadedFile|null $logoFile
+     *
+     * @return $this
      */
     public function setLogoFile($logoFile)
     {
@@ -901,6 +928,8 @@ class Event implements Translatable
      * Set cost.
      *
      * @param float $cost
+     *
+     * @return $this
      */
     public function setCost($cost)
     {

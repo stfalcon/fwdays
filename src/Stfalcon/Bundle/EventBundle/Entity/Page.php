@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Page extends AbstractPage implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\PageTranslation",

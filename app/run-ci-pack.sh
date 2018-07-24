@@ -67,7 +67,7 @@ else
 fi
 echo -e " - YAML config files validity: ${RESULT}"
 
-if php bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony > /dev/null; then
+if php bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony > /dev/null; then
     RESULT=${OK}
 else
     RESULT=${FAIL}
@@ -75,7 +75,7 @@ else
 fi
 echo -e " - Correct code style for .php files: ${RESULT}"
 
-if php bin/php-cs-fixer fix -q --dry-run --rules=@Symfony src/ > /dev/null; then
+if php bin/php-cs-fixer fix -q --dry-run --rules=@Symfony ./src > /dev/null; then
     RESULT=${OK}
 else
     RESULT=${FAIL}

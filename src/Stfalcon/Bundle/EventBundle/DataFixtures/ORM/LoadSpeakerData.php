@@ -41,6 +41,9 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
@@ -75,7 +78,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setCompany('Stfalcon')
             ->setAbout($this->abouts[0])
             ->setSlug('andrew-vorobey')
-            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
+            ->setFile($this->generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventJsDay, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad])
             ->setSortOrder(1);
@@ -88,7 +91,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setCompany('ZZZ')
             ->setAbout($this->abouts[1])
             ->setSlug('valeriy-pitersky')
-            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
+            ->setFile($this->generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventPHPDay2018, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017])
             ->setSortOrder(11);
@@ -102,7 +105,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
                 ->setCompany('random')
                 ->setAbout($this->abouts[2])
                 ->setSlug('speaker'.$i)
-                ->setFile($this->_generateUploadedFile('speaker-'.($i + 4).'.jpg'))
+                ->setFile($this->generateUploadedFile('speaker-'.($i + 4).'.jpg'))
                 ->setEvents([$eventPHPDay2017, $eventHighLoad])
                 ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018])
                 ->setSortOrder(5);
@@ -119,7 +122,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      *
      * @return UploadedFile
      */
-    private function _generateUploadedFile($filename)
+    private function generateUploadedFile($filename)
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/speakers/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'speaker');
@@ -132,6 +135,9 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         return null;
     }
 
+    /**
+     * @return string
+     */
     private function getKernelDir()
     {
         return $this->container->get('kernel')->getRootDir();

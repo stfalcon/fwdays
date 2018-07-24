@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractNews;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class News extends AbstractNews implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
 
     /**
      * @ORM\OneToMany(

@@ -11,6 +11,9 @@ use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Application\Bundle\UserBundle\Entity\User;
 
+/**
+ * Class PaymentService.
+ */
 class PaymentService
 {
     /**

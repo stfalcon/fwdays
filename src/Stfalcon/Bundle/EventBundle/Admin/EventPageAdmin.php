@@ -7,6 +7,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
+/**
+ * Class EventPageAdmin.
+ */
 class EventPageAdmin extends AbstractPageAdmin
 {
     /**
@@ -72,6 +75,9 @@ class EventPageAdmin extends AbstractPageAdmin
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper

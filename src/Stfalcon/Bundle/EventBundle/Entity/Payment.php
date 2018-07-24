@@ -214,6 +214,8 @@ class Payment
      * Set amount.
      *
      * @param float $amount
+     *
+     * @return $this
      */
     public function setAmount($amount)
     {
@@ -259,6 +261,8 @@ class Payment
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function setUser(User $user)
     {
@@ -284,7 +288,9 @@ class Payment
     }
 
     /**
-     * @param $createdAt
+     * @param \DateTime $createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -302,7 +308,9 @@ class Payment
     }
 
     /**
-     * @param $updatedAt
+     * @param \DateTime $updatedAt
+     *
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -344,7 +352,9 @@ class Payment
     }
 
     /**
-     * @param $gate
+     * @param string $gate
+     *
+     * @return $this
      */
     public function setGate($gate)
     {
@@ -365,6 +375,9 @@ class Payment
         return $string;
     }
 
+    /**
+     * @return $this
+     */
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);
@@ -382,6 +395,8 @@ class Payment
 
     /**
      * @param float $baseAmount
+     *
+     * @return $this
      */
     public function setBaseAmount($baseAmount)
     {
@@ -400,6 +415,8 @@ class Payment
 
     /**
      * @param float $fwdaysAmount
+     *
+     * @return $this
      */
     public function setFwdaysAmount($fwdaysAmount)
     {

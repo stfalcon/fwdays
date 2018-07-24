@@ -20,10 +20,14 @@ class TicketFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('participants', 'collection', array(
+            ->add(
+                'participants',
+                'collection',
+                [
                     'type' => new ParticipantFormType(),
                     'allow_add' => true,
-                ));
+                ]
+            );
     }
 
     /**

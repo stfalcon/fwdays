@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -23,9 +24,7 @@ class EventAdmin extends Admin
         ];
 
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function preUpdate($object)
     {
@@ -33,9 +32,7 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function prePersist($object)
     {
@@ -226,7 +223,7 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @param $object
+     * @param GedmoTranslatable $object
      */
     private function removeNullTranslate($object)
     {

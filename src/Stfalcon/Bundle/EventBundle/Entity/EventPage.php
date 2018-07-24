@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class EventPage extends AbstractPage implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
 
     /**
      * @ORM\OneToMany(
@@ -81,6 +81,9 @@ class EventPage extends AbstractPage implements Translatable
         return $this;
     }
 
+    /**
+     * EventPage constructor.
+     */
     public function __construct()
     {
         $this->translations = new ArrayCollection();

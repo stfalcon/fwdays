@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -21,23 +22,20 @@ class PromoCodeAdmin extends Admin
             '_sort_by' => 'id',
         ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
-    }
-
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 
     /**
@@ -99,5 +97,17 @@ class PromoCodeAdmin extends Admin
                     )
                 )
             ->end();
+    }
+
+    /**
+     * @param GedmoTranslatable $object
+     */
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }

@@ -115,7 +115,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof Selenium2Driver) {
             $currentUrl = $this->getSession()->getCurrentUrl();
-            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
+            if (false !== strpos($currentUrl, $this->getMinkParameter('base_url'))) {
                 $this->getSession()->wait(
                     10000,
                     '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'

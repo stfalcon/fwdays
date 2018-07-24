@@ -97,10 +97,11 @@ class NewPdfGeneratorHelper
         $mPDF->fontdata['fwdays'] = array(
             'R' => 'FwDaysFont-Medium.ttf',
         );
+        // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';
         $mPDF->available_unifonts[] = 'fwdays';
         $mPDF->default_available_fonts[] = 'fwdays';
-
+        // phpcs:enable
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
         $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');

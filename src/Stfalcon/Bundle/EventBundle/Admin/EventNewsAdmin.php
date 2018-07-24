@@ -7,8 +7,14 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractNewsAdmin;
 
+/**
+ * Class EventNewsAdmin.
+ */
 class EventNewsAdmin extends AbstractNewsAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper = parent::configureListFields($listMapper);
@@ -17,6 +23,9 @@ class EventNewsAdmin extends AbstractNewsAdmin
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper = parent::configureFormFields($formMapper);
@@ -29,6 +38,9 @@ class EventNewsAdmin extends AbstractNewsAdmin
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
