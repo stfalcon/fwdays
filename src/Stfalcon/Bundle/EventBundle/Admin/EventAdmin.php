@@ -2,20 +2,23 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
  */
 class EventAdmin extends Admin
 {
+    /** @var string */
     protected $saveCity;
+
+    /** @var string */
     protected $savePlace;
+
     /**
      * @var array
      */
@@ -27,9 +30,7 @@ class EventAdmin extends Admin
         ];
 
     /**
-     * @param Event $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function preUpdate($object)
     {
@@ -41,9 +42,7 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @param Event $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function prePersist($object)
     {
@@ -241,7 +240,7 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @param $object
+     * @param GedmoTranslatable $object
      */
     private function removeNullTranslate($object)
     {

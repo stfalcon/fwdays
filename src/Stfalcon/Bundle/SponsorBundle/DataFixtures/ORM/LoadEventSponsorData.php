@@ -5,7 +5,10 @@ namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\SponsorBundle\Entity\Category;
 use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
+use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 
 /**
  * LoadEventSponsorData class.
@@ -26,6 +29,12 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
         );
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @param Category      $sponsorCtg
+     * @param Event         $event
+     * @param Sponsor       $sponsor
+     */
     public function setEventSponsor(ObjectManager $manager, $sponsorCtg, $event, $sponsor)
     {
         $eventSponsor = (new EventSponsor())
@@ -35,6 +44,10 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
         $manager->persist($eventSponsor);
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @param Event         $event
+     */
     public function setComplectSponsor(ObjectManager $manager, $event)
     {
         $goldenSponsor = $manager->merge($this->getReference('golden-sponsor'));

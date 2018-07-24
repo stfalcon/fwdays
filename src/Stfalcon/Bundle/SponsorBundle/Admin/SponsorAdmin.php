@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,9 +13,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 class SponsorAdmin extends Admin
 {
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function preUpdate($object)
     {
@@ -22,9 +21,7 @@ class SponsorAdmin extends Admin
     }
 
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function prePersist($object)
     {
@@ -118,7 +115,7 @@ class SponsorAdmin extends Admin
     }
 
     /**
-     * @param $object
+     * @param GedmoTranslatable $object
      */
     private function removeNullTranslate($object)
     {

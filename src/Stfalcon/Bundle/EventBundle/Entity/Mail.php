@@ -425,11 +425,7 @@ class Mail
     public function getStatistic()
     {
         return
-            $this->totalMessages.'/'.
-            $this->sentMessages.'/'.
-            $this->openMessagesCount.'/'.
-            $this->unsubscribeMessagesCount.
-            (($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
+            $this->totalMessages.'/'.$this->sentMessages.'/'.$this->openMessagesCount.'/'.$this->unsubscribeMessagesCount.(($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
 
     /**

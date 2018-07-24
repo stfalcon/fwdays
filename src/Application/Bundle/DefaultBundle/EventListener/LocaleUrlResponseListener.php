@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Router;
 
 /**
  * Class LocaleUrlRequestListener.
@@ -34,10 +35,10 @@ class LocaleUrlResponseListener
     /**
      * LocaleUrlResponseListener constructor.
      *
-     * @param $defaultLocale
-     * @param array $locales
-     * @param $cookieName
-     * @param $routerService
+     * @param string       $defaultLocale
+     * @param array        $locales
+     * @param string       $cookieName
+     * @param Router       $routerService
      * @param GeoipManager $geoIpService
      * @param Logger       $logger
      */
@@ -85,7 +86,7 @@ class LocaleUrlResponseListener
             } catch (ResourceNotFoundException $e) {
                 $matched = false;
             }
-            if (false != $matched) {
+            if (false !== $matched) {
                 $params = $request->query->all();
                 $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : ''), 301));
             }

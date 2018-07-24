@@ -4,6 +4,9 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 
+/**
+ * Class UrlForRedirect.
+ */
 class UrlForRedirect
 {
     /** @var I18nRouter $router */

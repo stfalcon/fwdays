@@ -5,8 +5,16 @@ namespace Application\Bundle\UserBundle\Form\Handler;
 use FOS\UserBundle\Form\Handler\ProfileFormHandler as BaseProfileFormHandler;
 use FOS\UserBundle\Model\UserInterface;
 
+/**
+ * Class ProfileFormHandler.
+ */
 class ProfileFormHandler extends BaseProfileFormHandler
 {
+    /**
+     * @param UserInterface $user
+     *
+     * @return bool
+     */
     public function process(UserInterface $user)
     {
         $this->form->setData($user);

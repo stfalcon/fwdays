@@ -5,8 +5,9 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,18 +16,20 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Stfalcon\Bundle\EventBundle\Entity\Speaker.
  *
  * @Vich\Uploadable
+ *
  * @ORM\Table(name="event__speakers")
+ * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
+ *
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
  *     message="Поле slug повинне бути унікальне."
  * )
- * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation")
  */
 class Speaker implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
 
     /**
      * @ORM\OneToMany(
@@ -56,6 +59,7 @@ class Speaker implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     private $name = '';
@@ -75,9 +79,10 @@ class Speaker implements Translatable
     private $company;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="about", type="text")
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     private $about;
@@ -143,6 +148,7 @@ class Speaker implements Translatable
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
+     *
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
@@ -214,6 +220,8 @@ class Speaker implements Translatable
      * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
@@ -236,6 +244,8 @@ class Speaker implements Translatable
      * Set name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
@@ -258,6 +268,8 @@ class Speaker implements Translatable
      * Set email.
      *
      * @param string $eMail
+     *
+     * @return $this
      */
     public function setEmail($eMail)
     {
@@ -280,6 +292,8 @@ class Speaker implements Translatable
      * Set company.
      *
      * @param string $company
+     *
+     * @return $this
      */
     public function setCompany($company)
     {
@@ -301,7 +315,9 @@ class Speaker implements Translatable
     /**
      * Set about.
      *
-     * @param text $about
+     * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
@@ -313,7 +329,7 @@ class Speaker implements Translatable
     /**
      * Get about.
      *
-     * @return text
+     * @return string
      */
     public function getAbout()
     {
@@ -339,7 +355,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param $file
+     * @param File $file
      *
      * @return $this
      */
@@ -361,7 +377,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param $events
+     * @param ArrayCollection $events
      *
      * @return $this
      */
@@ -421,7 +437,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param $reviews
+     * @param ArrayCollection $reviews
      *
      * @return $this
      */

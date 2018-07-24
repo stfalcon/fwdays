@@ -11,21 +11,16 @@ use Twig_Environment;
  */
 class StfalconMailerHelper
 {
-    /**
-     * @var Twig_Environment
-     */
+    /** @var Twig_Environment */
     protected $twig;
 
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
+    /** @var \Doctrine\ORM\EntityManager */
     protected $em;
 
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
-     */
+    /** @var \Symfony\Bundle\FrameworkBundle\Routing\Router */
     protected $router;
 
+    /** @var \Swift_Mailer */
     protected $mailer;
 
     /**
@@ -34,7 +29,7 @@ class StfalconMailerHelper
      * @param Twig_Environment                               $twig
      * @param \Doctrine\ORM\EntityManager                    $em
      * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
-     * @param $mailer
+     * @param \Swift_Mailer                                  $mailer
      */
     public function __construct(Twig_Environment $twig, $em, $router, $mailer)
     {

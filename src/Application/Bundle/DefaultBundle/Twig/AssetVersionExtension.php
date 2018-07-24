@@ -68,6 +68,9 @@ class AssetVersionExtension extends \Twig_Extension
         return pathinfo($asset)['dirname'].DIRECTORY_SEPARATOR.$manifestPaths[$path['basename']];
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'app_asset_version';

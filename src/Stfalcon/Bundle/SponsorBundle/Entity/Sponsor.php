@@ -5,8 +5,9 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -29,7 +30,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Sponsor implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @var int
      *
@@ -160,6 +161,8 @@ class Sponsor implements Translatable
      * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
@@ -182,6 +185,8 @@ class Sponsor implements Translatable
      * Set name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
@@ -214,6 +219,8 @@ class Sponsor implements Translatable
      * Set logo filename.
      *
      * @param string $logo
+     *
+     * @return $this
      */
     public function setLogo($logo)
     {
@@ -226,6 +233,8 @@ class Sponsor implements Translatable
      * Set sortOrder.
      *
      * @param int $sortOrder
+     *
+     * @return $this
      */
     public function setSortOrder($sortOrder)
     {
@@ -248,6 +257,8 @@ class Sponsor implements Translatable
      * Set site.
      *
      * @param string $site
+     *
+     * @return $this
      */
     public function setSite($site)
     {
@@ -275,7 +286,9 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param $file
+     * @param File $file
+     *
+     * @return $this
      */
     public function setFile($file)
     {
@@ -288,6 +301,8 @@ class Sponsor implements Translatable
      * Set about.
      *
      * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
@@ -308,6 +323,8 @@ class Sponsor implements Translatable
 
     /**
      * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
      */
     public function addSponsorEvents(EventSponsor $sponsorEvent)
     {
@@ -317,7 +334,9 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param $sponsorEvents
+     * @param ArrayCollection $sponsorEvents
+     *
+     * @return $this
      */
     public function setSponsorEvents($sponsorEvents)
     {
@@ -351,6 +370,8 @@ class Sponsor implements Translatable
      * Set createdAt.
      *
      * @param \Datetime $createdAt createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -373,6 +394,8 @@ class Sponsor implements Translatable
      * Set updatedAt.
      *
      * @param \Datetime $updatedAt updatedAt
+     *
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -393,6 +416,8 @@ class Sponsor implements Translatable
 
     /**
      * @param bool $onMain
+     *
+     * @return $this
      */
     public function setOnMain($onMain)
     {

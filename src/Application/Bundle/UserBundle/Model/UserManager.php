@@ -9,6 +9,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
+/**
+ * Class UserManager.
+ */
 class UserManager extends \FOS\UserBundle\Doctrine\UserManager
 {
     /**
@@ -26,14 +29,8 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
      * @param string                  $class
      * @param Container               $container
      */
-    public function __construct(
-        EncoderFactoryInterface $encoderFactory,
-        CanonicalizerInterface $usernameCanonicalizer,
-        CanonicalizerInterface $emailCanonicalizer,
-        ObjectManager $om,
-        $class,
-        Container $container
-    ) {
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, Container $container)
+    {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
         $this->container = $container;
@@ -42,7 +39,7 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
     /**
      * Automatic user registration.
      *
-     * @param $participant
+     * @param array $participant
      *
      * @return \FOS\UserBundle\Model\UserInterface
      */

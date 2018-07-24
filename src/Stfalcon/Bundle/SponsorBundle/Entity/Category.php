@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 
 /**
  * Stfalcon\Bundle\SponsorBundle\Entity\Category.
@@ -19,7 +19,7 @@ use Stfalcon\Bundle\EventBundle\Traits\Translate;
  */
 class Category implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @var int
      *

@@ -2,8 +2,13 @@
 
 namespace Application\Bundle\UserBundle\Services;
 
+use Application\Bundle\UserBundle\Model\UserManager;
+use Buzz\Browser;
 use FOS\UserBundle\Form\Handler\RegistrationFormHandler;
+use FOS\UserBundle\Mailer\Mailer;
+use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Monolog\Logger;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -31,15 +36,15 @@ class RegistrationFormWithGoogleCaptcha extends RegistrationFormHandler
     /**
      * RegistrationFormWithGoogleCaptcha constructor.
      *
-     * @param $regForm
-     * @param RequestStack $requestStack
-     * @param $useManager
-     * @param $mailer
-     * @param $tokenGenerator
-     * @param Logger $logger
-     * @param string $captchaSecretKey
-     * @param $buzz
-     * @param string $environment
+     * @param Form                    $regForm
+     * @param RequestStack            $requestStack
+     * @param UserManager             $useManager
+     * @param Mailer                  $mailer
+     * @param TokenGeneratorInterface $tokenGenerator
+     * @param Logger                  $logger
+     * @param string                  $captchaSecretKey
+     * @param Browser                 $buzz
+     * @param string                  $environment
      */
     public function __construct($regForm, $requestStack, $useManager, $mailer, $tokenGenerator, $logger, $captchaSecretKey, $buzz, $environment)
     {

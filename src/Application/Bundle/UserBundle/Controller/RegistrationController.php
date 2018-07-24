@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Model\UserInterface;
 
+/**
+ * Class RegistrationController.
+ */
 class RegistrationController extends BaseController
 {
     /**
@@ -82,6 +85,10 @@ class RegistrationController extends BaseController
 
     /**
      * Receive the confirmation token from user email provider, login the user.
+     *
+     * @param string $token
+     *
+     * @return RedirectResponse
      */
     public function confirmAction($token)
     {
@@ -105,6 +112,8 @@ class RegistrationController extends BaseController
 
     /**
      * Tell the user his account is now confirmed.
+     *
+     * @return RedirectResponse
      */
     public function confirmedAction()
     {

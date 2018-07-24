@@ -6,6 +6,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 
+/**
+ * Class PageAdmin.
+ */
 class PageAdmin extends AbstractPageAdmin
 {
     /**

@@ -6,6 +6,9 @@ use FOS\UserBundle\Form\Type\ProfileFormType as BaseProfileFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class ProfileFormType.
+ */
 class ProfileFormType extends BaseProfileFormType
 {
     /**
@@ -76,6 +79,9 @@ class ProfileFormType extends BaseProfileFormType
             ));
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
