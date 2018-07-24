@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
+    /**
+     * @param User   $user
+     * @param bool   $active
+     * @param string $sort
+     *
+     * @return array
+     */
+    public function getSortedUserWannaVisitEventsByActive(User $user, $active = true, $sort = 'ASC')
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->join('Application\Bundle\UserBundle\Entity\User', 'u', 'WITH', $qb->expr()->eq('u.id', ':user_id'))
+            ->join('u.wantsToVisitEvents', 'wve', 'WITH', $qb->expr()->eq('e.id', 'wve.id'))
+            ->where($qb->expr()->eq('e.active', ':active'))
+            ->setParameters(['user_id' => $user, 'active' => $active])
+            ->orderBy('e.date', $sort);
+
+        return $qb->getQuery()->getResult();
+    }
 }
