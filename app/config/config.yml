@@ -173,8 +173,6 @@ sonata_admin:
                     groups:
                       - "Пользователи"
                       - "События"
-                      - "Новости"
-                      - "Статистика"
                       - "group.translation"
             -
                 position: right
@@ -227,3 +225,6 @@ hwi_oauth:
             scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             paths:
                 email: email
+
+maxmind_geoip:
+    data_file_path: "%kernel.root_dir%/../geodata/GeoLiteCity.dat"

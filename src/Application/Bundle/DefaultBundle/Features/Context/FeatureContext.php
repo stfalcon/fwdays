@@ -3,23 +3,20 @@
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-
-use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext;
-
-use Doctrine\Common\DataFixtures\Loader,
-    Doctrine\Common\DataFixtures\Executor\ORMExecutor,
-    Doctrine\Common\DataFixtures\Purger\ORMPurger;
-
-use \PHPUnit_Framework_Assert as Assert;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\MinkExtension\Context\MinkContext;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for ApplicationDefaultBundle
+ * Feature context for ApplicationDefaultBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @var \Symfony\Component\HttpKernel\KernelInterface
      */
     protected $kernel;
 
@@ -30,8 +27,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
-     *
-     * @return null
      */
     public function setKernel(KernelInterface $kernel)
     {
@@ -50,13 +45,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
         $this->em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $this->em->getConnection()->executeUpdate('SET foreign_key_checks = 0;');
         $purger = new ORMPurger();
         $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($this->em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
-        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        $this->em->getConnection()->executeUpdate('SET foreign_key_checks = 1;');
     }
 
     /**
@@ -81,8 +76,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $url = $this->kernel->getContainer()->get('router')->generate(
             'unsubscribe',
             [
-                'hash'   => $user->getSalt(),
-                'userId' => $user->getId()
+                'hash' => $user->getSalt(),
+                'userId' => $user->getId(),
             ]
         );
 
@@ -100,8 +95,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $url = $this->kernel->getContainer()->get('router')->generate(
             'subscribe',
             [
-                'hash'   => $user->getSalt(),
-                'userId' => $user->getId()
+                'hash' => $user->getSalt(),
+                'userId' => $user->getId(),
             ]
         );
 

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 /**
- * StatisticBlockService
+ * StatisticBlockService.
  */
 class StatisticBlockService extends BaseBlockService
 {
@@ -35,8 +35,8 @@ class StatisticBlockService extends BaseBlockService
         return $this->renderResponse(
             '@ApplicationDefault/Statistic/block_admin_list.html.twig',
             [
-                'block'         => $blockContext->getBlock(),
-                'block_context' => $blockContext
+                'block' => $blockContext->getBlock(),
+                'block_context' => $blockContext,
             ],
             $response
         );

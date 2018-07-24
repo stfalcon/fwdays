@@ -75,6 +75,7 @@ class EventAdmin extends Admin
             ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
+            ->add('group', null, ['label' => 'Группа'])
             ->add(
                 'images',
                 'string',
@@ -139,6 +140,7 @@ class EventAdmin extends Admin
             ->end()
             ->with('Настройки')
                 ->add('slug')
+                ->add('group', null, ['label' => 'Группа'])
                 ->add(
                     'ticketsCost',
                     'sonata_type_collection',

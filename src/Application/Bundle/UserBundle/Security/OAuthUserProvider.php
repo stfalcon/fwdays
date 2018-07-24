@@ -4,7 +4,6 @@ namespace Application\Bundle\UserBundle\Security;
 
 use Application\Bundle\DefaultBundle\Exception\NeedUserDataException;
 use Application\Bundle\UserBundle\Entity\User;
-use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
 use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
@@ -40,7 +39,7 @@ class OAuthUserProvider extends BaseClass
     {
         $socialID = $response->getUsername();
         /** @var User $user */
-        $user = $this->userManager->findUserBy([$this->getProperty($response) => $socialID]);
+        $user = $socialID ? $this->userManager->findUserBy([$this->getProperty($response) => $socialID]) : null;
         $email = $response->getEmail();
         if (!$user) {
             $user = $this->userManager->findUserByEmail($email);

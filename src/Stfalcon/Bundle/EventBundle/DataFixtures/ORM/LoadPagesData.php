@@ -2,14 +2,13 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
 
 /**
- * LoadPagesData Class
+ * LoadPagesData Class.
  */
 class LoadPagesData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -462,10 +461,8 @@ HTML5 canvas.</a></div>
     private $newVenue = 'Бизнес-центр «Инком» г. Киев, ул. Смоленская, 31-33, 2-й этаж — вход с&nbsp;улицы по внешней
                     лестнице (М&nbsp;Шулявская)';
 
-
-
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -552,8 +549,6 @@ HTML5 canvas.</a></div>
             ->setShowInMenu(true)
             ->setSortOrder(1);
         $manager->persist($page);
-
-
 
         $manager->flush();
     }

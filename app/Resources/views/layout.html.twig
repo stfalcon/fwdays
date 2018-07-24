@@ -3,6 +3,9 @@
 <head>
     <title>{% block title %}Fwdays. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
     {% block metatags %}
+    {% if app.environment != 'prod' -%}
+        <meta name="robots" content="none"/>
+    {% endif -%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
     <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_2.jpg', null, true) }}" />
@@ -20,7 +23,12 @@
 {% block body_class %}
 <body>
 {% endblock %}
-
+{%- if app.environment == 'prod' -%}
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+{% endif %}
 <!--BEGIN layout-box-->
 <div class="layout-box">
     <!--BEGIN layout-box__top-->
@@ -58,17 +66,22 @@
     <!--END alert-->
 {% endblock popups %}
 
+{% block facebook %}
+    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' %}
+{% endblock %}
+
+{% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}
+
 {% block scripts %}
     {%- if app.environment == 'prod' -%}
-        <!-- Google Tag Manager -->
-        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
-                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- Google Tag Manager -->
         <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-PHVHRX');</script>
-        <!-- End Google Tag Manager -->
+            })(window,document,'script','dataLayer','GTM-PHVHRX');
+        </script>
+    <!-- End Google Tag Manager -->
     {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
@@ -76,25 +89,18 @@
     </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    {%- if app.environment == 'prod' -%}
-        <script src="https://cdn.ravenjs.com/3.22.1/raven.min.js" crossorigin="anonymous"></script>
+    {% if app.environment == 'prod' -%}
+        <script src="{{ asset('js/raven.min.js')}}" crossorigin="anonymous"></script>
         <script>Raven.config('https://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>
-    {% endif %}
-    <script src="{{ asset('assets/js/main.js'|app_asset_version) }}"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    {% endif -%}
+    {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
+    <script src="{{ asset(main_script|app_asset_version) }}"></script>
 
-    {%- if 'uk' == app.request.locale -%}
-        <script src="{{ asset('js/validator_localization_uk.js') }}"></script>
-    {% endif %}
-
-    <script src='https://www.google.com/recaptcha/api.js?hl={{ app.request.locale }}' async defer></script>
-
-    {%- if app.request.cookies.has('event') -%}
+    {% if app.request.cookies.has('event') %}
         <script>paymentAfterLogin();</script>
-    {% endif %}
+    {%- endif %}
 
-    {%- for message in app.session.flashBag.get('fos_user_success') -%}
+    {% for message in app.session.flashBag.get('fos_user_success') %}
         <script>
             {%- if message == 'profile.flash.updated' -%}
                 setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
@@ -105,8 +111,16 @@
             {% endif %}
         </script>
     {% endfor %}
-    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
-
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/{{ lang }}/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
 {% endblock scripts %}
 </body>
 </html>

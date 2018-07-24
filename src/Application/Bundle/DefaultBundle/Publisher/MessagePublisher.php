@@ -1,15 +1,16 @@
 <?php
+
 namespace Application\Bundle\DefaultBundle\Publisher;
 
 use Gelf\Message;
 use Gelf\MessagePublisher as BasePublisher;
 
 /**
- * Class MessagePublisher send messages to Graylog server
+ * Class MessagePublisher send messages to Graylog server.
  */
 class MessagePublisher extends BasePublisher
 {
-    /** @var  string */
+    /** @var string */
     private $fromName;
 
     /**
@@ -35,4 +36,4 @@ class MessagePublisher extends BasePublisher
 
         return parent::publish($message);
     }
-} 
+}

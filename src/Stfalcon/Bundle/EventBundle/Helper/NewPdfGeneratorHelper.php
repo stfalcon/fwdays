@@ -48,10 +48,10 @@ class NewPdfGeneratorHelper
     /**
      * Constructor.
      *
-     * @param Twig_Environment $templating Twig
-     * @param Router           $router     Router
-     * @param QrCode           $qrCode     QrCode generator
-     * @param Kernel           $kernel     Kernel
+     * @param Twig_Environment $templating      Twig
+     * @param Router           $router          Router
+     * @param QrCode           $qrCode          QrCode generator
+     * @param Kernel           $kernel          Kernel
      * @param MpdfService      $mPdfPort
      * @param SvgToJpg         $svgToJpgService
      */

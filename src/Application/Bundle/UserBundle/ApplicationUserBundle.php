@@ -9,5 +9,5 @@ class ApplicationUserBundle extends Bundle
     public function getParent()
     {
         return 'FOSUserBundle';
-    }    
+    }
 }

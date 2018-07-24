@@ -66,9 +66,17 @@ function getPlaceByElem(elem) {
 
 function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
+    var promocode = Cookies.get('promocode');
+    var promoevent = Cookies.get('promoevent');
+    var route = '';
+    if (promocode && promoevent === e_slug) {
+        route = Routing.generate('event_pay', {eventSlug: e_slug, promoCode: promocode});
+    } else {
+        route = Routing.generate('event_pay', {eventSlug: e_slug});
+    }
     $.ajax({
         type: 'GET',
-        url: Routing.generate('event_pay', {eventSlug: e_slug}),
+        url: route,
         success: function (data) {
             if (data.result) {
                 setPaymentHtmlbyData(data, e_slug);
@@ -145,7 +153,7 @@ function submitRegistrationForm(token) {
     }
 }
 
-function recapchaValidate(rId) {
+function submitValidForm(rId, withCaptcha) {
     registrationFormId = rId;
     var form = $('#'+registrationFormId);
     form.validate({
@@ -170,7 +178,11 @@ function recapchaValidate(rId) {
     });
 
     if (form.valid()) {
-        grecaptcha.execute();
+        if (withCaptcha) {
+            grecaptcha.execute();
+        } else {
+            form.submit();
+        }
     }
 }
 
@@ -290,6 +302,14 @@ $('[data-testid="dialog_iframe"]').on('load', function() {
 });
 
 $(document).ready(function () {
+    $('.add_recapcha').on('click', function () {
+        var s = $("<script></script>");
+        s.attr('src', 'https://www.google.com/recaptcha/api.js?hl='+locale);
+        s.prop('async', true);
+        s.prop('defer', true);
+        $("body").append(s);
+    });
+
     $('#share-ref__facebook').on('click', function () {
         popupwindow('http://www.facebook.com/sharer/sharer.php?u='+$('#ref-input').val(), 'facebook', 500, 350);
     });
@@ -309,7 +329,7 @@ $(document).ready(function () {
     });
 
     $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /^\w([\-\.]{0,1}\w)+\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
+        return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
     };
 
     $('#payment').validate({
@@ -328,7 +348,7 @@ $(document).ready(function () {
     $.validator.addClassRules({
         'valid-name': {
             required: true,
-            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/,
+            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/,
             minlength: 2,
             maxlength: 32,
         },
@@ -378,8 +398,14 @@ $(document).ready(function () {
     $('.get-payment').on('click', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
+        var promocode = Cookies.get('promocode');
+        var promoevent = Cookies.get('promoevent');
         if (detectmob()) {
-            window.location.pathname = homePath+"static-payment/"+e_slug;
+            var queryParams = '';
+            if (promocode && promoevent === e_slug) {
+                queryParams = '?promocode='+promocode;
+            }
+            window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
         } else {
             setModalHeader(e_slug, 'buy');
             setPaymentHtml(e_slug);

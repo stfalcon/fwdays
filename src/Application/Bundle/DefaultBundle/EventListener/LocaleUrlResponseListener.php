@@ -3,6 +3,8 @@
 namespace Application\Bundle\DefaultBundle\EventListener;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
+use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -15,20 +17,19 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class LocaleUrlResponseListener
 {
-    /**
-     * @var
-     */
     private $defaultLocale;
-    /**
-     * @var array
-     */
+
     private $locales;
-    /**
-     * @var
-     */
+
     private $cookieName;
+
     /** @var I18nRouter */
     private $routerService;
+
+    private $geoIpService;
+
+    /** @var Logger */
+    private $logger;
 
     /**
      * LocaleUrlResponseListener constructor.
@@ -37,13 +38,17 @@ class LocaleUrlResponseListener
      * @param array $locales
      * @param $cookieName
      * @param $routerService
+     * @param GeoipManager $geoIpService
+     * @param Logger       $logger
      */
-    public function __construct($defaultLocale, array $locales, $cookieName, $routerService)
+    public function __construct($defaultLocale, array $locales, $cookieName, $routerService, $geoIpService, $logger)
     {
         $this->defaultLocale = $defaultLocale;
         $this->locales = $locales;
         $this->cookieName = $cookieName;
         $this->routerService = $routerService;
+        $this->geoIpService = $geoIpService;
+        $this->logger = $logger;
     }
 
     /**
@@ -125,8 +130,21 @@ class LocaleUrlResponseListener
      */
     private function getCurrentLocale($request)
     {
-        return $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), $this->locales)
-            ? $request->cookies->get($this->cookieName) : $request->getPreferredLanguage($this->locales);
+        $local = null;
+
+//        get local from cookie
+        if ($request instanceof Request) {
+            if ($request->cookies->has($this->cookieName)
+                && in_array($request->cookies->get($this->cookieName), $this->locales)) {
+                $local = $request->cookies->get($this->cookieName);
+            }
+        }
+//        get locale from preferred
+        if (!$local) {
+            $local = $request->getPreferredLanguage($this->locales);
+        }
+
+        return $local;
     }
 
     /**
@@ -141,5 +159,32 @@ class LocaleUrlResponseListener
         $string = explode($delim, $string, 3);
 
         return isset($string[$keyNumber]) ? $string[$keyNumber] : '';
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    private function getRealIpAddr($request)
+    {
+        $server = $request->server;
+        if (!$server) {
+            return null;
+        }
+        $ip = null;
+        if ($server->has('HTTP_CLIENT_IP')) {
+            $ip = filter_var($server->get('HTTP_CLIENT_IP'), FILTER_VALIDATE_IP);
+        }
+
+        if (!$ip && $server->has('HTTP_X_FORWARDED_FOR')) {
+            $ip = filter_var($server->get('HTTP_X_FORWARDED_FOR'), FILTER_VALIDATE_IP);
+        }
+
+        if (!$ip) {
+            $ip = $server->get('REMOTE_ADDR');
+        }
+
+        return $ip;
     }
 }

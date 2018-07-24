@@ -7,7 +7,6 @@ use FOS\UserBundle\Model\UserInterface;
 
 class ProfileFormHandler extends BaseProfileFormHandler
 {
-
     public function process(UserInterface $user)
     {
         $this->form->setData($user);
@@ -29,5 +28,4 @@ class ProfileFormHandler extends BaseProfileFormHandler
 
         return false;
     }
-
 }

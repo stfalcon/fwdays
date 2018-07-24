@@ -15,16 +15,6 @@ services:
         class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
         arguments: ["@router", "%locales%"]
 
-    app.event_ticket_cost.validator:
-        class: Application\Bundle\DefaultBundle\Validator\Constraints\Event\EventTicketCostCountValidator
-        tags:
-            - { name: validator.constraint_validator, alias: event }
-
-    app.ticket_cost.validator:
-        class: Application\Bundle\DefaultBundle\Validator\Constraints\TicketCost\TicketCostCountValidator
-        tags:
-            - { name: validator.constraint_validator, alias: ticketCost }
-
     app.ticket_cost.service:
         class: Application\Bundle\DefaultBundle\Service\TicketCostService
         arguments: ["@doctrine.orm.entity_manager"]
@@ -79,3 +69,8 @@ services:
     app.my_mailer.service:
         class: Application\Bundle\DefaultBundle\Service\MyMailer
         arguments: ['@swiftmailer.transport']
+
+    app.promocode_request.listener:
+        class: Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

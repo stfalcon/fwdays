@@ -3,14 +3,15 @@
 namespace Application\Bundle\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
  */
 class UserRepository extends EntityRepository
 {
     /**
-     * Get users admin
+     * Get users admin.
      *
      * @return array()
      */
@@ -28,7 +29,7 @@ class UserRepository extends EntityRepository
     public function getAllSubscribed()
     {
         return $this->createQueryBuilder('u')
-            ->where("u.subscribe = 1")
+            ->where('u.subscribe = 1')
             ->getQuery()
             ->getResult();
     }
@@ -36,14 +37,15 @@ class UserRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getCountBaseQueryBuilder() {
+    public function getCountBaseQueryBuilder()
+    {
         return $this->createQueryBuilder('u')
                     ->select('COUNT(u)')
         ;
     }
 
     /**
-     * Users registered for events
+     * Users registered for events.
      *
      * @param $events
      *
@@ -60,5 +62,22 @@ class UserRepository extends EntityRepository
             ->groupBy('u');
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param Mail $mail
+     *
+     * @return array|null
+     */
+    public function getUsersFromMail($mail)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->join('Stfalcon\Bundle\EventBundle\Entity\MailQueue', 'mq')
+            ->where($qb->expr()->eq('mq.mail', ':mail'))
+            ->andWhere($qb->expr()->eq('mq.user', 'u'))
+            ->setParameter('mail', $mail)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }

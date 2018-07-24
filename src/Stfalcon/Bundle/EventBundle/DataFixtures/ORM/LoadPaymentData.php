@@ -3,19 +3,18 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
- * LoadPaymentData Class
+ * LoadPaymentData Class.
  */
 class LoadPaymentData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */

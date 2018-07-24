@@ -3,12 +3,10 @@
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Application\Bundle\UserBundle\Entity\User;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\MailQueue
+ * Stfalcon\Bundle\EventBundle\Entity\MailQueue.
  *
  * @ORM\Table(name="event__mails_queues")
  * @ORM\Entity()
@@ -17,7 +15,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class MailQueue
 {
     /**
-     * @var int $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,26 +34,26 @@ class MailQueue
     /**
      * @var Mail
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", inversedBy="mailQueues", cascade={"persist"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $mail;
 
     /**
-     * @var bool $isSent
+     * @var bool
      *
      * @ORM\Column(name="is_sent", type="boolean")
      */
     private $isSent = false;
 
     /**
-     * @var bool $isOpen
+     * @var bool
      *
      * @ORM\Column(name="is_open", type="boolean")
      */
     private $isOpen = false;
     /**
-     * @var bool $isUnsubscribe
+     * @var bool
      *
      * @ORM\Column(name="is_unsubscribe", type="boolean")
      */
@@ -63,6 +61,7 @@ class MailQueue
 
     /**
      * @param bool $isOpen
+     *
      * @return MailQueue
      */
     public function setIsOpen($isOpen = true)
@@ -79,8 +78,10 @@ class MailQueue
     {
         return $this->isOpen;
     }
+
     /**
      * @param bool $isUnsubscribe
+     *
      * @return MailQueue
      */
     public function setIsUnsubscribe($isUnsubscribe = true)
@@ -104,7 +105,7 @@ class MailQueue
     public function __toString()
     {
         return $this->getUser() && $this->getMail()
-            ? $this->getMail() . ' => ' . $this->getUser()
+            ? $this->getMail().' => '.$this->getUser()
             : '';
     }
 

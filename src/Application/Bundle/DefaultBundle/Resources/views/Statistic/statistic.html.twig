@@ -13,14 +13,79 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        th, td {
+            padding: 3px;
+        }
+    </style>
 {% endblock stylesheets %}
 
 {% block title %} - {{ 'Статистика' }}{% endblock title %}
 
 {% block content %}
+    {% if data['event_statistic_slug'] is not empty %}
+        <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
+        <br>
+    {% endif %}
+        <a href="{{ path('admin_events_statistic_all') }}">Перейти к статистике по пересечению аудитории событий</a>
     <h1>Статистика</h1>
-    <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
 
+    <h4>Общая статистика участников</h4>
+    <table >
+        <tbody>
+        <tr>
+            <td>Всего участников:</td> <td>{{ data['totalUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Активированых участников:</td> <td>{{ data['enabledUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Подписаных на россылку:</td> <td>{{ data['subscribedUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Отписаных от россылки:</td> <td>{{ data['unSubscribedUsersCount'] }}</td>
+        </tr>
+        <tr>
+            <td>Купили хоть один билет:</td> <td>{{ data['haveTicketsCount'] }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h4>Купили билетов по количеству</h4>
+    <table border="1">
+        <thead>
+            <tr>
+                <td>участников</td> <td>купили билетов</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, count in data['usersTicketsCount'] -%}
+                <tr>
+                    <td>{{ count }}</td> <td>{{ key }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Купили билетов по группе событий</h4>
+    <table border="1">
+        <thead>
+        <tr>
+            <td>группа</td> <td>количество посещений</td> <td>участников</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for group_name, group in data['countsByGroup'] -%}
+                {% for key, count in group -%}
+                    <tr>
+                        <td>{{ group_name }}</td> <td>{{ key }}</td> <td>{{ count }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
     <table>
         <tbody>
         <tr>
@@ -37,7 +102,6 @@
         </tr>
         </tbody>
     </table>
-
 
     <h4>статистика по реферральной программе</h4>
     <table>

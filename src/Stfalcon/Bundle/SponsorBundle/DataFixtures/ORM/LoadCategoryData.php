@@ -2,13 +2,12 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\SponsorBundle\Entity\Category;
 
 /**
- * LoadCategoryData class
+ * LoadCategoryData class.
  */
 class LoadCategoryData extends AbstractFixture
 {

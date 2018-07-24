@@ -3,18 +3,15 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Page;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class DefaultController
+ * Class DefaultController.
  */
 class DefaultController extends Controller
 {
@@ -30,7 +27,7 @@ class DefaultController extends Controller
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true], ['date' => 'ASC']);
 
-        return $this->render("ApplicationDefaultBundle:Redesign:index.html.twig", ['events' => $events]);
+        return $this->render('ApplicationDefaultBundle:Redesign:index.html.twig', ['events' => $events]);
     }
 
     /**
@@ -55,35 +52,25 @@ class DefaultController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        /** @var $ticketRepository \Stfalcon\Bundle\EventBundle\Repository\TicketRepository */
-        $ticketRepository = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Ticket');
-        $tickets = $ticketRepository->findTicketsOfActiveEventsForUser($user);
-        $wannaVisit = $user->getWantsToVisitEvents();
 
-        $userEvents = new ArrayCollection();
-        /** @var Ticket $ticket */
-        foreach ($tickets as $ticket) {
-            $userEvents->add($ticket->getEvent());
-        }
+        $userActiveEvents = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
 
-        foreach ($wannaVisit as $event) {
-            if (!$userEvents->contains($event)) {
-                $userEvents->add($event);
-            }
-        }
+        $userPastEvents = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
 
-        $referralService = $this->get('stfalcon_event.referral.service');
-
-        $events = $this->getDoctrine()
+        $allActiveEvents = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
             ->findBy(['active' => true]);
 
-        return $this->render("ApplicationDefaultBundle:Redesign:cabinet.html.twig", [
+        return $this->render('ApplicationDefaultBundle:Redesign:cabinet.html.twig', [
             'user' => $user,
-            'user_events' => $userEvents,
-            'events' => $events,
-            'code' => $referralService->getReferralCode(),
+            'user_active_events' => $userActiveEvents,
+            'user_past_events' => $userPastEvents,
+            'events' => $allActiveEvents,
+            'code' => $this->get('stfalcon_event.referral.service')->getReferralCode(),
         ]);
     }
 
@@ -118,7 +105,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Page not found! about');
         }
 
-        return $this->render("@ApplicationDefault/Redesign/static.page.html.twig", ['text' => $staticPage->getText()]);
+        return $this->render('@ApplicationDefault/Redesign/static.page.html.twig', ['text' => $staticPage->getText()]);
     }
 
     /**
@@ -136,7 +123,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException(sprintf('Page not found! %s', $slug));
         }
 
-        return $this->render("@ApplicationDefault/Redesign/static.page.html.twig", ['text' => $staticPage->getText()]);
+        return $this->render('@ApplicationDefault/Redesign/static.page.html.twig', ['text' => $staticPage->getText()]);
     }
 
     /**

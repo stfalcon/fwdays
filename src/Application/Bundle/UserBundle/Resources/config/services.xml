@@ -50,7 +50,15 @@
         </service>
 
         <service id="fos_user.registration.form.handler" class="Application\Bundle\UserBundle\Services\RegistrationFormWithGoogleCaptcha">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="fos_user.registration.form" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="fos_user.mailer" />
+            <argument type="service" id="fos_user.util.token_generator" />
+            <argument type="service" id="logger" />
+            <argument>%google_captcha_secret_key%</argument>
+            <argument type="service" id="buzz" />
+            <argument>%kernel.environment%</argument>
         </service>
 
     </services>

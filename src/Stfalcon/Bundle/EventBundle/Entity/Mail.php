@@ -253,7 +253,7 @@ class Mail
     }
 
     /**
-     * Stop Mail if all mailed
+     * Stop Mail if all mailed.
      *
      * @return $this
      */
@@ -431,6 +431,7 @@ class Mail
             $this->unsubscribeMessagesCount.
             (($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
+
     /**
      * Add event.
      *

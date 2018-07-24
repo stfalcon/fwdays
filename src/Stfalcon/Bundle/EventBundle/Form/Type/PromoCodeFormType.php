@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class PromoCodeFormType
+ * Class PromoCodeFormType.
  */
 class PromoCodeFormType extends AbstractType
 {
@@ -20,13 +20,13 @@ class PromoCodeFormType extends AbstractType
     {
         $builder
             ->add('code', 'text', array(
-                'label'              => 'У меня есть промокод',
-                'required'           => true
+                'label' => 'У меня есть промокод',
+                'required' => true,
             ));
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */

@@ -4,13 +4,12 @@ namespace Stfalcon\Bundle\EventBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class TicketCRUDController
+ * Class TicketCRUDController.
  */
 class TicketCRUDController extends CRUDController
 {
@@ -31,7 +30,7 @@ class TicketCRUDController extends CRUDController
         }
         $em = $this->getDoctrine()->getManager();
         /**
-         * @var Ticket $ticket
+         * @var Ticket
          */
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->find($id);
 

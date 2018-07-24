@@ -17,6 +17,7 @@ trait Translate
             $translation->setObject($this);
         }
     }
+
     /**
      * @param TranslatableEntity $translation
      */
@@ -27,6 +28,7 @@ trait Translate
             $translation->setObject($this);
         }
     }
+
     /**
      * @param TranslatableEntity $translation
      */

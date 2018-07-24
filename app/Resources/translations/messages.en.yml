@@ -1,4 +1,5 @@
 menu.events.my: My events
+menu.past_events.my: My past events
 menu.user.info: User info
 menu.referral.title: Invite friends
 menu.check.ticket.bynumber: Ticket is checking by number
@@ -159,10 +160,10 @@ pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: Add participants
 
 pay.event.cupon: 'Promo code:'
-flash_you_registrated.title: You are registrated for event
+flash_you_registrated.title: You are registreted for event
 flash_you_unsubscribe.title: You are unsubscribed for event
 flash_profile_updated.title: Your profile updated
-flash_user_created.title: You are registrated on the site
+flash_user_created.title: You are registreted on the site
 flash_user_need_data.title: Fill the required fields to complete the registration
 
 contact_info.title: Contact info

@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 /**
- * EmailSubscribe controller
+ * EmailSubscribe controller.
  */
 class EmailSubscribeController extends Controller
 {
@@ -20,9 +20,9 @@ class EmailSubscribeController extends Controller
      *
      * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
      *
-     * @param string  $hash
-     * @param integer $userId
-     * @param integer $mailId
+     * @param string $hash
+     * @param int    $userId
+     * @param int    $mailId
      *
      * @Template()
      *
@@ -63,8 +63,8 @@ class EmailSubscribeController extends Controller
      *
      * @Route("/subscribe/{hash}/{userId}", name="subscribe")
      *
-     * @param integer $userId
-     * @param string  $hash
+     * @param int    $userId
+     * @param string $hash
      *
      * @Template()
      *
@@ -92,9 +92,9 @@ class EmailSubscribeController extends Controller
      *
      * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
      *
-     * @param integer $userId
-     * @param string  $hash
-     * @param integer $mailId
+     * @param int    $userId
+     * @param string $hash
+     * @param int    $mailId
      *
      * @return RedirectResponse
      */
@@ -121,6 +121,6 @@ class EmailSubscribeController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl("homepage"));
+        return $this->redirect($this->generateUrl('homepage'));
     }
 }

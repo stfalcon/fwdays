@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event.
@@ -25,12 +24,10 @@ use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
- *     message="Поле slug повинне бути унікальне."
+ *     message="Поле slug должно быть уникальное."
  * )
  *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
- *
- * @AppAssert\Event\EventTicketCostCount
  */
 class Event implements Translatable
 {
@@ -52,6 +49,11 @@ class Event implements Translatable
      * )
      */
     private $translations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventGroup", inversedBy="events")
+     */
+    private $group;
 
     /**
      * @var \DateTime
@@ -1013,16 +1015,42 @@ class Event implements Translatable
     }
 
     /**
-     * @return float|null
+     * @return TicketCost|null
      */
     public function getBiggestTicketCost()
     {
+        /** @var TicketCost $result */
         $result = null;
-        /** @var TicketCost $cost */
-        foreach ($this->ticketsCost as $cost) {
-            $result = $cost->getAmount() > $result ? $cost->getAmount() : $result;
+        /** @var TicketCost $ticketCost */
+        foreach ($this->ticketsCost as $ticketCost) {
+            if (!$result) {
+                $result = $ticketCost;
+            }
+            if ($ticketCost->getAmount() > $result->getAmount()) {
+                $result = $ticketCost;
+            }
         }
 
         return $result;
+    }
+
+    /**
+     * @return EventGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param EventGroup $group
+     *
+     * @return $this
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }

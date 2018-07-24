@@ -3,25 +3,21 @@
 namespace Stfalcon\Bundle\SponsorBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-
-use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\DoctrineFixturesContext;
-
-use Doctrine\Common\DataFixtures\Loader,
-    Doctrine\Common\DataFixtures\Executor\ORMExecutor,
-    Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Application\Bundle\DefaultBundle\Features\Context\LoadFixturesContext;
-
-use \PHPUnit_Framework_Assert as Assert;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\CommonContexts\DoctrineFixturesContext;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for StfalconSponsorBundle
+ * Feature context for StfalconSponsorBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -29,14 +25,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @var \Symfony\Component\HttpKernel\KernelInterface
      */
     protected $kernel;
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
-     *
-     * @return null
      */
     public function setKernel(KernelInterface $kernel)
     {
@@ -63,7 +57,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Check that some element contains image from some source
+     * Check that some element contains image from some source.
      *
      * @param string $src     Source of image
      * @param string $element Selector engine name
@@ -76,7 +70,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * Check that some element not contains image from some source
+     * Check that some element not contains image from some source.
      *
      * @param string $src     Source of image
      * @param string $element Selector engine name

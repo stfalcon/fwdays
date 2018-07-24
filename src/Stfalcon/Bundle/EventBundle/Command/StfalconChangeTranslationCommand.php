@@ -2,13 +2,9 @@
 
 namespace Stfalcon\Bundle\EventBundle\Command;
 
-use Stfalcon\Bundle\EventBundle\Entity\Speaker;
-use Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
 /**
  * Class StfalconMailerCommand.
