@@ -144,7 +144,7 @@
             var event_header_date_element = $('.event-header__date');
             var event_date = event_header_date_element.attr('datetime');
 
-            if (event_date !== now_date) {
+            if (event_date === now_date) {
                 scrollToNearReport();
             }
         });
