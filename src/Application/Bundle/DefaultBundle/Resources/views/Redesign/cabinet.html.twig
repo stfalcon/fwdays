@@ -23,22 +23,42 @@
         </div>
     </div>
     <!--END cabinet-head-->
-    {% if user_events|length > 0 %}
     <!--BEGIN events-->
-    <section class="events">
+    {%- if user_active_events|length > 0 -%}
+        <section class="events">
+            <div class="container">
+                <div class="events__box">
+                    {% for event in user_active_events %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {%- endif -%}
+
+    {%- if user_past_events|length > 0 -%}
         <div class="container">
-            <div class="events__box">
-                {% for event in user_events %}
-                    {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                        {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
-                    {% endif %}
-                {% endfor %}
+            <div class="cabinet-head__wrap">
+                <div class="cabinet-head__left">
+                    <div class="cabinet-head__label">{{ 'menu.past_events.my'|trans }}</div>
+                </div>
             </div>
         </div>
-    </section>
+        <section class="events">
+            <div class="container">
+                <div class="events__box">
+                    {% for event in user_past_events %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {%- endif -%}
     <!--END events-->
-    {% endif %}
-
     <!--BEGIN share-->
     <section class="share">
         <div class="container">
