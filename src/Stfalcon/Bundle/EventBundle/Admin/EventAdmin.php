@@ -13,8 +13,12 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
  */
 class EventAdmin extends Admin
 {
+    /** @var string */
     protected $saveCity;
+
+    /** @var string */
     protected $savePlace;
+
     /**
      * @var array
      */
