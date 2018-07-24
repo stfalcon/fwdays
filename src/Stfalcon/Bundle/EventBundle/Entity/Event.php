@@ -296,6 +296,20 @@ class Event implements Translatable
     protected $adminOnly = false;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
+     */
+    private $lat = null;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
+     */
+    private $lng = null;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -1079,6 +1093,46 @@ class Event implements Translatable
     public function setGroup($group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param float $lat
+     *
+     * @return $this
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @param float $lng
+     *
+     * @return $this
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
 
         return $this;
     }
