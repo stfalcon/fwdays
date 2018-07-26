@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\UnitOfWork;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -10,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Knp\Menu\ItemInterface as MenuItemInterface;
+use Stfalcon\Bundle\EventBundle\Entity\EventAudience;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
@@ -19,6 +21,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 class MailAdmin extends Admin
 {
     private $savedEvents;
+    private $savedAudiences;
     /**
      * Default values to the datagrid.
      *
@@ -52,6 +55,7 @@ class MailAdmin extends Admin
      */
     public function preUpdate($object)
     {
+        /** @var Mail $object */
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getManager();
         /** @var UnitOfWork $uow */
@@ -59,6 +63,8 @@ class MailAdmin extends Admin
         $originalObject = $uow->getOriginalEntityData($object);
 
         $eventsChange = count($this->savedEvents) !== $object->getEvents()->count();
+        $audiencesChange = count($this->savedAudiences) !== $object->getAudiences()->count();
+
         if (!$eventsChange) {
             foreach ($this->savedEvents as $savedEvent) {
                 $founded = false;
@@ -75,7 +81,25 @@ class MailAdmin extends Admin
             }
         }
 
+        if (!$audiencesChange) {
+            foreach ($this->savedAudiences as $savedAudience) {
+                $founded = false;
+                /** @var EventAudience $audience */
+                foreach ($object->getAudiences() as $audience) {
+                    $founded = $savedAudience === $audience->getId();
+                    if ($founded) {
+                        break;
+                    }
+                }
+                $audiencesChange = !$founded;
+                if ($audiencesChange) {
+                    break;
+                }
+            }
+        }
+
         if ($eventsChange ||
+            $audiencesChange ||
             $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
             $originalObject['paymentStatus'] !== $object->getPaymentStatus()
         ) {
@@ -119,6 +143,7 @@ class MailAdmin extends Admin
             ->addIdentifier('id', null, ['label' => 'id'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
+            ->add('audiences', null, ['label' => 'Аудитории'])
             ->add('events', null, ['label' => 'События'])
             ->add('_action', 'actions', [
                 'label' => 'Действие',
@@ -140,16 +165,23 @@ class MailAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $isEdit = (bool) $this->getSubject()->getId();
+        /** @var Mail $object */
+        $object = $this->getSubject();
+        $isEdit = (bool) $object->getId();
         $this->savedEvents = [];
-        foreach ($this->getSubject()->getEvents() as $event) {
+        foreach ($object->getEvents() as $event) {
             $this->savedEvents[] = $event->getId();
+        }
+        $this->savedAudiences = [];
+        foreach ($object->getAudiences() as $audience) {
+            $this->savedAudiences[] = $audience->getId();
         }
 
         $formMapper
             ->with('Общие')
                 ->add('title', null, ['label' => 'Название'])
                 ->add('text', null, ['label' => 'Текст'])
+                ->add('audiences', null, ['label' => 'Аудитории'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
                     'multiple' => true,
@@ -199,14 +231,23 @@ class MailAdmin extends Admin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
+        $eventCollection = $mail->getEvents();
+        /** @var EventAudience $audience */
+        foreach ($mail->getAudiences() as $audience) {
+            $eventCollection = array_merge($eventCollection->toArray(), $audience->getEvents()->toArray());
+        }
+        $events = [];
+        foreach ($eventCollection as $event) {
+            $events[$event->getId()] = $event;
+        }
+        $events = new ArrayCollection($events);
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $container->get('doctrine')->getManager();
-        if ($mail->getEvents()->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users = $em->getRepository('ApplicationUserBundle:User')->getRegisteredUsers($mail->getEvents());
-        /* @var $users \Application\Bundle\UserBundle\Entity\User[] */
-        } elseif ($mail->getEvents()->count() > 0 || $mail->getPaymentStatus()) {
+        if ($events->count() > 0 && $mail->isWantsVisitEvent()) {
+            $users = $em->getRepository('ApplicationUserBundle:User')->getRegisteredUsers($events);
+        } elseif ($events->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('StfalconEventBundle:Ticket')
-                ->findUsersSubscribedByEventsAndStatus($mail->getEvents(), $mail->getPaymentStatus());
+                ->findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus());
         } else {
             $users = $em->getRepository('ApplicationUserBundle:User')->getAllSubscribed();
         }

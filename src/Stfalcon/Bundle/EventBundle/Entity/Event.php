@@ -56,6 +56,13 @@ class Event implements Translatable
     private $group;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience", mappedBy="events")
+     */
+    private $audiences;
+
+    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
@@ -319,6 +326,7 @@ class Event implements Translatable
         $this->committeeSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+        $this->audiences = new ArrayCollection();
     }
 
     /**
@@ -1133,6 +1141,26 @@ class Event implements Translatable
     public function setLng($lng)
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAudiences()
+    {
+        return $this->audiences;
+    }
+
+    /**
+     * @param EventAudience[] $audiences
+     *
+     * @return $this
+     */
+    public function setAudiences($audiences)
+    {
+        $this->audiences = $audiences;
 
         return $this;
     }
