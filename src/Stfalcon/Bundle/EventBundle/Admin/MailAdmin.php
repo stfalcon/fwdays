@@ -231,10 +231,11 @@ class MailAdmin extends Admin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
-        $eventCollection = $mail->getEvents();
+        $eventCollection = $mail->getEvents()->toArray();
+
         /** @var EventAudience $audience */
         foreach ($mail->getAudiences() as $audience) {
-            $eventCollection = array_merge($eventCollection->toArray(), $audience->getEvents()->toArray());
+            $eventCollection = array_merge($eventCollection, $audience->getEvents()->toArray());
         }
         $events = [];
         foreach ($eventCollection as $event) {
