@@ -202,7 +202,7 @@ class User extends BaseUser
     /**
      * @var bool
      *
-     * @ORM\Column(name="email_exists", nullable=true, options = {"default" : 1})
+     * @ORM\Column(name="email_exists", type="boolean", nullable=true, options = {"default" : 1})
      */
     protected $emailExists = true;
 
