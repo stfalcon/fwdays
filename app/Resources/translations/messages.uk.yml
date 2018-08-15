@@ -130,6 +130,7 @@ ticket.print.ticket.text2: 'З нетерпінням чекаємо на зус
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
 ticket.status.download: Завантажити квиток
 ticket.status.pay: Купити квиток
+ticket.status.get: Отримати квиток
 ticket.mob_status.pay: Купити
 ticket.status.pay_for: Купити за
 ticket.summ_from: Квитки від %summ% грн

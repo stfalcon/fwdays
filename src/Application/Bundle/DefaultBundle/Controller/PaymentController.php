@@ -369,12 +369,18 @@ class PaymentController extends Controller
         ]);
 
         $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
-        /**
-         * @var User
-         */
+        $formAction = '';
+        $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
+        /** @var User */
         $user = $this->getUser();
-        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
-            $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://sci.interkassa.com/';
+        if ($payment->getTickets()->count() > 0) {
+            if (0 === $payment->getAmount()) {
+                $formAction = $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]);
+                $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
+            } else {
+                $formAction = 'https://sci.interkassa.com/';
+            }
+        }
 
         return new JsonResponse([
             'result' => true,
@@ -386,6 +392,7 @@ class PaymentController extends Controller
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
             'tickets_count' => $payment->getTickets()->count(),
+            'byeBtnCaption' => $byeBtnCaption,
         ]);
     }
 
