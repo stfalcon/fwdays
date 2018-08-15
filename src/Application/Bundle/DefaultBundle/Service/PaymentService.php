@@ -269,7 +269,7 @@ class PaymentService
     public function setPaidByReferralMoney(Payment $payment, Event $event)
     {
         $this->checkTicketsPricesInPayment($payment, $event);
-        if ($payment->isPending() && 0 === $payment->getAmount()) {
+        if ($payment->isPending() && 0 === (int) $payment->getAmount()) {
             $payment->markedAsPaid();
             $payment->setGate('fwdays-amount');
 

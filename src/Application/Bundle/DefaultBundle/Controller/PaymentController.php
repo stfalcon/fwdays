@@ -326,7 +326,7 @@ class PaymentController extends Controller
         $result = false;
         $payment = $this->getPaymentIfAccess();
 
-        if ($payment && $payment->isPending()) {
+        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
             $paymentService = $this->get('stfalcon_event.payment.service');
             $result = $paymentService->setPaidByReferralMoney($payment, $event);
         }
