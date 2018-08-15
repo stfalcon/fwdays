@@ -33,6 +33,11 @@ function setPaymentHtmlbyData(data, e_slug) {
     $('#cancel-add-user').click();
     $('#user_phone').val(data.phoneNumber);
     var buy_btn = $('#buy-ticket-btn');
+    if (data.form_action === '') {
+        buy_btn.prop("disabled", true);
+    } else {
+        buy_btn.prop('disabled', false);
+    }
     buy_btn.html(data.byeBtnCaption);
     var old_event = buy_btn.data('event');
     if (old_event) {
