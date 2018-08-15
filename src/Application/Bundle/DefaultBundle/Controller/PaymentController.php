@@ -374,7 +374,7 @@ class PaymentController extends Controller
         /** @var User */
         $user = $this->getUser();
         if ($payment->getTickets()->count() > 0) {
-            if (0 === $payment->getAmount()) {
+            if (0 === (int) $payment->getAmount()) {
                 $formAction = $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]);
                 $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
             } else {
