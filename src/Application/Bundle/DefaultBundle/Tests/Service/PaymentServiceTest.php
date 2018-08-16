@@ -83,7 +83,7 @@ class PaymentServiceTest extends WebTestCase
         $referralBalance = $user->getBalance();
         $paymentService = $this->getContainer()->get('stfalcon_event.payment.service');
 
-        $paymentService->setPaidByReferralMoney($payment, $event);
+        $paymentService->setPaidByBonusMoney($payment, $event);
 
         $this->assertEquals($payment->getAmount(), 0);
         $this->assertEquals($payment->getBaseAmount(), $ticket->getAmountWithoutDiscount());

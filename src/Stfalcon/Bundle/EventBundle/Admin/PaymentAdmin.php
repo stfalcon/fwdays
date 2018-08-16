@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Class PaymentAdmin.
@@ -165,9 +166,10 @@ class PaymentAdmin extends Admin
                 ->add('gate', 'choice', [
                     'label' => 'способ оплаты',
                     'choices' => [
-                        'interkassa' => 'interkassa',
-                        'admin' => 'admin',
-                        'fwdays-amount' => 'fwdays-amount',
+                        'interkassa' => Payment::INTERKASSA_GATE,
+                        'admin' => Payment::ADMIN_GATE,
+                        'bonus' => Payment::BONUS_GATE,
+                        'promocode' => Payment::PROMOCODE_GATE,
                     ],
                     'disabled' => !$isSuperAdmin,
                 ])

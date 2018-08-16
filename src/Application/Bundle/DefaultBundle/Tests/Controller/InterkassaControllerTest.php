@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Tests\Controller;
 
 use Application\Bundle\DefaultBundle\Controller\InterkassaController;
 use Prophecy\Argument;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
 class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
@@ -46,7 +47,7 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $payment->isPending()
             ->willReturn(true)
             ->shouldBeCalled();
-        $payment->markedAsPaid()->shouldBeCalled();
+        $payment->setPaidWithGate(Payment::INTERKASSA_GATE)->shouldBeCalled();
 
         $container->has('doctrine')->willReturn(true);
         $container->get('doctrine')->willReturn($doctrine);

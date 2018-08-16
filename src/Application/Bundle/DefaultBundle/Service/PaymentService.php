@@ -266,15 +266,36 @@ class PaymentService
      *
      * @return bool
      */
-    public function setPaidByReferralMoney(Payment $payment, Event $event)
+    public function setPaidByBonusMoney(Payment $payment, Event $event)
     {
         $this->checkTicketsPricesInPayment($payment, $event);
-        if ($payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $payment->markedAsPaid();
-            $payment->setGate('fwdays-amount');
+        if ($payment->isPending() && 0 === (int) $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
+            $payment->setPaidWithGate(Payment::BONUS_GATE);
 
             $referralService = $this->container->get('stfalcon_event.referral.service');
             $referralService->utilizeBalance($payment);
+
+            $this->em->flush();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * set payment paid if have referral money.
+     *
+     * @param Payment $payment
+     * @param Event   $event
+     *
+     * @return bool
+     */
+    public function setPaidByPromocode(Payment $payment, Event $event)
+    {
+        $this->checkTicketsPricesInPayment($payment, $event);
+        if ($payment->isPending() && 0 === (int) $payment->getAmount() && 0 === (int) $payment->getFwdaysAmount()) {
+            $payment->setPaidWithGate(Payment::PROMOCODE_GATE);
 
             $this->em->flush();
 
