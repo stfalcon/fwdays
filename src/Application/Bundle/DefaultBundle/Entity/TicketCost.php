@@ -269,6 +269,16 @@ class TicketCost
     }
 
     /**
+     * @return $this
+     */
+    public function decSoldCount()
+    {
+        --$this->soldCount;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isEnabled()

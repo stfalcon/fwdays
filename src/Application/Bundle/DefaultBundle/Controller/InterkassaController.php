@@ -45,7 +45,7 @@ class InterkassaController extends Controller
         /** @var InterkassaService $interkassa */
         $interkassa = $this->get('stfalcon_event.interkassa.service');
         if ($payment->isPending() && $interkassa->checkPayment($payment, $request)) {
-            $payment->markedAsPaid();
+            $payment->setPaidWithGate(Payment::INTERKASSA_GATE);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
