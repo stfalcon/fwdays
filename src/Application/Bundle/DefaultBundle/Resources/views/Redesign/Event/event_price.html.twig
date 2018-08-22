@@ -1,26 +1,64 @@
+{#{%- if ticketCosts is defined and ticketCosts|length > 0 -%}#}
+    {#<!--BEGIN price-list-->#}
+    {#<section id="price-event" class="price-list">#}
+        {#<div class="container container--sm">#}
+            {#<h2 class="h2 price-list__title">{{ 'event.price.title'|trans }}</h2>#}
+            {#<div class="price-list__items">#}
+            {#{% if ticketCosts is defined and ticketCosts|length > 0 %}#}
+                {#{% for ticket in ticketCosts %}#}
+                    {#{% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}#}
+                {#{% endfor %}#}
+            {#{% endif %}#}
+            {#</div>#}
+            {#{%- if event.useDiscounts -%}#}
+                {#<div class="price-list__hint">#}
+                    {#{{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;#}
+                {#</div>#}
+                {#<div class="price-list__hint-small">#}
+                    {#{{ 'payment.discount.tooltip'|trans}}#}
+                {#</div>#}
+            {#{% endif %}#}
+        {#</div>#}
+    {#</section>#}
+    {#<!--END price-list-->#}
+{#{%- endif -%}#}
+
 {%- if ticketCosts is defined and ticketCosts|length > 0 -%}
     <!--BEGIN price-list-->
     <section id="price-event" class="price-list">
         <div class="container container--sm">
             <h2 class="h2 price-list__title">{{ 'event.price.title'|trans }}</h2>
             <div class="price-list__items">
-            {% if ticketCosts is defined and ticketCosts|length > 0 %}
-                {% for ticket in ticketCosts %}
-                    {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}
-                {% endfor %}
-            {% endif %}
+                {% if ticketCosts is defined and ticketCosts|length > 0 %}
+                    {% for ticket in ticketCosts %}
+                        {% include '@ApplicationDefault/Redesign/price_block.html.twig' with {'ticket':ticket, 'currentPrice' : currentPrice, 'event':event}  %}
+                    {% endfor %}
+                {% endif %}
             </div>
             {%- if event.useDiscounts -%}
-                <div class="price-list__hint">
-                    {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
-                </div>
-                <div class="price-list__hint-small">
-                    {{ 'payment.discount.tooltip'|trans}}
+                <div class="price-list__discount-list">
+                    <div class="price-list__discount-item">
+                        <div class="price-list__hint">
+                            -20% для учасників попередніх конференцій
+                        </div>
+                        <div class="price-list__hint-small">
+                            Нараховується автоматично аккаунту з якого була здійснена покупка
+                        </div>
+                    </div>
+                    <div class="price-list__discount-item">
+                        <div class="price-list__hint">
+                            -50% для студентів денної форми навчання
+                        </div>
+                        <div class="price-list__hint-small">
+                            Надішліть фото або скан студентського квитка на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і ми відправимо вам промо-код
+                        </div>
+                    </div>
                 </div>
             {% endif %}
         </div>
     </section>
     <!--END price-list-->
 {%- endif -%}
+
 
 
