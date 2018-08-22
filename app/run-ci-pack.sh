@@ -27,7 +27,7 @@ ERROR=0
 
 echo -e "Results of CI tasks:"
 
-if composer validate --no-check-all --strict > /dev/null; then
+if composer validate --no-check-all > /dev/null; then
     RESULT=${OK}
 else
     RESULT=${FAIL}
