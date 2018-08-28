@@ -106,8 +106,8 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 <br />
 <br />
 <br />')
-            ->setDate(new \DateTime('2018-04-19 11:10', new \DateTimeZone('Europe/Kiev')))
-            ->setDateEnd(new \DateTime('2018-04-19 20:15', new \DateTimeZone('Europe/Kiev')))
+            ->setDate(new \DateTime('2028-04-19 11:10', new \DateTimeZone('Europe/Kiev')))
+            ->setDateEnd(new \DateTime('2028-04-19 20:15', new \DateTimeZone('Europe/Kiev')))
             ->setReceivePayments(true)
             ->setCost(100);
         $manager->persist($event);
