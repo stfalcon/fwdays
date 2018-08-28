@@ -6,20 +6,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 
 /**
- * Stfalcon\Bundle\SponsorBundle\Entity\Category
+ * Stfalcon\Bundle\SponsorBundle\Entity\Category.
  *
  * @ORM\Table(name="sponsors_category")
+ *
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\CategoryRepository")
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\CategoryTranslation")
  */
 class Category implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -37,7 +39,7 @@ class Category implements Translatable
     private $translations;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      *
@@ -46,28 +48,31 @@ class Category implements Translatable
     private $name;
 
     /**
-     * is category in wide container
+     * is category in wide container.
      *
-     * @var bool $isWideContainer
+     * @var bool
      *
      * @ORM\Column(name="is_wide_container", type="boolean", options={"default":"0"})
      */
     private $isWideContainer = false;
 
     /**
-     * @var int $sortOrder
+     * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     protected $sortOrder = 1;
 
+    /**
+     * Category constructor.
+     */
     public function __construct()
     {
         $this->translations = new ArrayCollection();
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -77,9 +82,9 @@ class Category implements Translatable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -87,9 +92,10 @@ class Category implements Translatable
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -100,7 +106,7 @@ class Category implements Translatable
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -110,7 +116,7 @@ class Category implements Translatable
     }
 
     /**
-     * Set sortOrder
+     * Set sortOrder.
      *
      * @param int $sortOrder
      *
@@ -124,7 +130,7 @@ class Category implements Translatable
     }
 
     /**
-     * Get sortOrder
+     * Get sortOrder.
      *
      * @return int
      */

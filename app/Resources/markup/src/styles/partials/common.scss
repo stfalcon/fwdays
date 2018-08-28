@@ -779,6 +779,12 @@ iframe {
   height: 0 !important;
 }
 
+.block-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .highlight-label {
   display: inline-block;
   color: white;

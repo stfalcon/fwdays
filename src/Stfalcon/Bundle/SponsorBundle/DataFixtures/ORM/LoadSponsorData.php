@@ -2,16 +2,15 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 
 /**
- * Load Sponsor fixtures to database
+ * Load Sponsor fixtures to database.
  */
 class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -20,6 +19,9 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
@@ -35,7 +37,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             ->setName('Magento')
             ->setSlug('magento')
             ->setSite('http://ua.magento.com/')
-            ->setFile($this->_generateUploadedFile('partner-10.jpg'))
+            ->setFile($this->generateUploadedFile('partner-10.jpg'))
             ->setAbout('The Magento eCommerce platform serves more than 125,000 merchants worldwide and is supported by a global ecosystem of solution partners and third-party developers.')
             ->setSortOrder(10)
             ->setOnMain(true);
@@ -47,7 +49,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             ->setName('oDesk')
             ->setSlug('odesk')
             ->setSite('http://odesk.com/')
-            ->setFile($this->_generateUploadedFile('partner-11.jpg'))
+            ->setFile($this->generateUploadedFile('partner-11.jpg'))
             ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
             ->setSortOrder(20)
             ->setOnMain(true);
@@ -59,18 +61,18 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             ->setName('ePochta')
             ->setSlug('epochta')
             ->setSite('http://www.epochta.ru/')
-            ->setFile($this->_generateUploadedFile('partner-12.jpg'))
+            ->setFile($this->generateUploadedFile('partner-12.jpg'))
             ->setOnMain(false)
             ->setSortOrder(15);
         $manager->persist($epochta);
         $this->addReference('sponsor-epochta', $epochta);
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             $partner = (new Sponsor())
                 ->setName('partner-'.$i)
                 ->setSlug('partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.($i+1).'.jpg'))
+                ->setFile($this->generateUploadedFile('partner-'.($i + 1).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder(20)
                 ->setOnMain(true);
@@ -78,14 +80,14 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             $this->addReference('partner-'.$i, $partner);
         }
 
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 6; ++$i) {
             $partner = (new Sponsor())
                 ->setName('info partner-'.$i)
                 ->setSlug('info-partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->_generateUploadedFile('partner-'.($i+5).'.jpg'))
+                ->setFile($this->generateUploadedFile('partner-'.($i + 5).'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
-                ->setSortOrder($i+10)
+                ->setSortOrder($i + 10)
                 ->setOnMain(true);
             $manager->persist($partner);
             $this->addReference('info-partner-'.$i, $partner);
@@ -95,13 +97,13 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Generate UploadedFile object from local file. For VichUploader
+     * Generate UploadedFile object from local file. For VichUploader.
      *
      * @param string $filename
      *
      * @return UploadedFile
      */
-    private function _generateUploadedFile($filename)
+    private function generateUploadedFile($filename)
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/partners/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'sponsor');
@@ -114,6 +116,9 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         return null;
     }
 
+    /**
+     * @return string
+     */
     private function getKernelDir()
     {
         return $this->container->get('kernel')->getRootDir();

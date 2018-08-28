@@ -583,6 +583,12 @@ iframe {
   &__btn-link {
     margin-bottom: 15px;
   }
+
+  &__label {
+    margin-bottom: 15px;
+    line-height: 14px;
+    font-size: 12px;
+  }
 }
 
 .form-add {
@@ -777,6 +783,12 @@ iframe {
   opacity: 0 !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+.block-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .highlight-label {

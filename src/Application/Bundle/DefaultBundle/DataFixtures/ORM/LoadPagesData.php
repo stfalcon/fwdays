@@ -7,12 +7,12 @@ use Stfalcon\Bundle\EventBundle\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Fixtures for the pages
+ * Fixtures for the pages.
  */
 class LoadPagesData extends AbstractFixture
 {
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */

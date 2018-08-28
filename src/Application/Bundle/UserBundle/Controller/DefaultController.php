@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
- * Class DefaultController
+ * Class DefaultController.
  */
 class DefaultController extends Controller
 {

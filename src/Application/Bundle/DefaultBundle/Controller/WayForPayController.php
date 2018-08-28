@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
- * Class WayForPayController
+ * Class WayForPayController.
  */
 class WayForPayController extends Controller
 {
@@ -48,7 +48,7 @@ class WayForPayController extends Controller
 
         $wayForPay = $this->get('app.way_for_pay.service');
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
-            $payment->markedAsPaid();
+            $payment->setPaidWithGate(Payment::INTERKASSA_GATE);
             if (isset($response['recToken'])) {
                 $user = $this->getUser();
                 $user->setRecToken($response['recToken']);
@@ -102,7 +102,6 @@ class WayForPayController extends Controller
             $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
             $eventType = $this->getItemVariant($eventName);
         }
-
 
         return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
             'payment' => $payment,

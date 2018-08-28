@@ -491,6 +491,8 @@ class User extends BaseUser
      * Set user fullname.
      *
      * @param string $fullname
+     *
+     * @return $this
      */
     public function setFullname($fullname)
     {
@@ -513,6 +515,8 @@ class User extends BaseUser
      * Set user company.
      *
      * @param string $company
+     *
+     * @return $this
      */
     public function setCompany($company)
     {
@@ -535,6 +539,8 @@ class User extends BaseUser
      * Set user post.
      *
      * @param string $post
+     *
+     * @return $this
      */
     public function setPost($post)
     {
@@ -557,6 +563,8 @@ class User extends BaseUser
      * Set subscribe.
      *
      * @param bool $subscribe
+     *
+     * @return $this
      */
     public function setSubscribe($subscribe)
     {
@@ -579,6 +587,8 @@ class User extends BaseUser
      * Set createdAt.
      *
      * @param \DateTime $createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -591,6 +601,8 @@ class User extends BaseUser
      * Set city.
      *
      * @param string $city
+     *
+     * @return $this
      */
     public function setCity($city)
     {
@@ -613,6 +625,8 @@ class User extends BaseUser
      * Set country.
      *
      * @param string $country
+     *
+     * @return $this
      */
     public function setCountry($country)
     {
@@ -694,6 +708,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $balance
+     *
+     * @return $this
      */
     public function setBalance($balance)
     {
@@ -712,6 +728,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $referralCode
+     *
+     * @return $this
      */
     public function setReferralCode($referralCode)
     {
@@ -730,6 +748,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $userReferral
+     *
+     * @return $this
      */
     public function setUserReferral($userReferral)
     {
@@ -748,6 +768,8 @@ class User extends BaseUser
 
     /**
      * @param bool $allowShareContacts
+     *
+     * @return $this
      */
     public function setAllowShareContacts($allowShareContacts)
     {

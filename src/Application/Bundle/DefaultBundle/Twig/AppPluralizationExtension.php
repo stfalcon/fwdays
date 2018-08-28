@@ -2,8 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Twig;
 
+/**
+ * Class AppPluralizationExtension.
+ */
 class AppPluralizationExtension extends \Twig_Extension
 {
+    /**
+     * @return array|\Twig_SimpleFilter[]
+     */
     public function getFilters()
     {
         return array(
@@ -11,9 +17,14 @@ class AppPluralizationExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * @param int $number
+     *
+     * @return int
+     */
     public function pluralization($number)
     {
-        return (($number % 10 == 1) && ($number % 100 != 11))
+        return ((1 === $number % 10) && (11 !== $number % 100))
             ? 0
             : ((($number % 10 >= 2)
                 && ($number % 10 <= 4)

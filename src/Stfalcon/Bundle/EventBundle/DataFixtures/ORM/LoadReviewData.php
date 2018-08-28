@@ -2,14 +2,13 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\Review;
 
 /**
- * LoadReviewData Class
+ * LoadReviewData Class.
  */
 class LoadReviewData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -85,12 +84,11 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
 <br />
 
 <p>Интерактивные слои API карт 2GIS. Андрей Геоня <a href="http://frameworksdays.com/uploads/video/jsfwday-2013/8-jsfwdays-2013-lightning-talk-0.mp4">download video</a></p>
-<iframe width="686" height="386" src="http://www.youtube.com/embed/FpgpleHtRqg" frameborder="0" allowfullscreen></iframe>'
+<iframe width="686" height="386" src="http://www.youtube.com/embed/FpgpleHtRqg" frameborder="0" allowfullscreen></iframe>',
     ];
 
-
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -108,7 +106,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         // Get references for event fixtures
-        $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
         $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
         $eventHighLoad = $manager->merge($this->getReference('event-highload-day'));
@@ -116,10 +114,10 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
 
         // Get references for speaker fixtures
         $rabievskiy = $manager->merge($this->getReference('speaker-rabievskiy'));
-        $shkodyak   = $manager->merge($this->getReference('speaker-shkodyak'));
+        $shkodyak = $manager->merge($this->getReference('speaker-shkodyak'));
         $speakers = [];
-        for ($i = 0; $i < 4; $i++ ) {
-            $speakers[] = $manager->merge($this->getReference('speaker-' . $i));
+        for ($i = 0; $i < 4; ++$i) {
+            $speakers[] = $manager->merge($this->getReference('speaker-'.$i));
         }
 
         $review = (new Review())
@@ -154,7 +152,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             ->setSpeaker([$shkodyak, $speakers[2]]);
         $manager->persist($review);
 
-        for ($i = 0; $i < 4; $i++ ) {
+        for ($i = 0; $i < 4; ++$i) {
             $review1 = (new Review())
                 ->setTitle('Review '.$i)
                 ->setSlug('review-'.$i)
@@ -165,13 +163,13 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             $this->addReference('review-'.$i, $review1);
 
             $review2 = (new Review())
-                ->setTitle('Review '.($i+4))
-                ->setSlug('review-'.($i+4))
+                ->setTitle('Review '.($i + 4))
+                ->setSlug('review-'.($i + 4))
                 ->setText($this->reviews[2])
                 ->setEvent($eventHighLoad)
                 ->setSpeaker([$speakers[$i]]);
             $manager->persist($review2);
-            $this->addReference('review-'.($i+4), $review2);
+            $this->addReference('review-'.($i + 4), $review2);
         }
 
         $manager->flush();

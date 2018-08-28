@@ -4,13 +4,19 @@ namespace Application\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 
+/**
+ * Class ProfileController.
+ */
 class ProfileController extends Controller
 {
     /**
-     * Show the user
+     * Show the user.
+     *
+     * @return RedirectResponse
      */
     public function showAction()
     {
@@ -23,7 +29,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Edit the user
+     * Edit the user.
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction()
     {

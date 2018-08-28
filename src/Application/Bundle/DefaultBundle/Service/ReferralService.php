@@ -113,7 +113,7 @@ class ReferralService
     }
 
     /**
-     * @param $referralCode
+     * @param string $referralCode
      *
      * @return User|null
      *

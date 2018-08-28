@@ -148,13 +148,13 @@ class AdminController extends Controller
                         ->setUser($user)
                         ->setAmount($ticket->getAmount())
                         ->setBaseAmount($ticket->getAmountWithoutDiscount())
-                        ->setGate('admin');
+                    ;
                     $payment->addTicket($ticket);
                     $ticket->setPayment($payment);
                     $em->persist($payment);
                     $em->flush();
 
-                    $payment->markedAsPaid();
+                    $payment->setPaidWithGate(Payment::ADMIN_GATE);
                     $em->flush();
 
                     $this->addFlash('sonata_flash_info', 'mark as paid');

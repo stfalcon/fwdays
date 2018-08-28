@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Exception;
 
 use Application\Bundle\UserBundle\Entity\User;
-use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 
 /**
  * Class NeedUserDataException.

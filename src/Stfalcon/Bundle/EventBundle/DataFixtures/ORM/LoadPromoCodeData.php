@@ -2,27 +2,26 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
 
 /**
- * LoadPromoCodeData Class
+ * LoadPromoCodeData Class.
  */
 class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
     public function getDependencies()
     {
         return array(
-            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData'
+            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
         );
     }
 

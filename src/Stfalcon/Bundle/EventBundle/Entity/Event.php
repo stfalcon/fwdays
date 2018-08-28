@@ -6,7 +6,7 @@ use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -31,7 +31,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Event implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @var int
      *
@@ -54,6 +54,13 @@ class Event implements Translatable
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventGroup", inversedBy="events")
      */
     private $group;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience", mappedBy="events")
+     */
+    private $audiences;
 
     /**
      * @var \DateTime
@@ -296,6 +303,20 @@ class Event implements Translatable
     protected $adminOnly = false;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
+     */
+    private $lat = null;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
+     */
+    private $lng = null;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -305,6 +326,7 @@ class Event implements Translatable
         $this->committeeSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+        $this->audiences = new ArrayCollection();
     }
 
     /**
@@ -510,6 +532,8 @@ class Event implements Translatable
      * Set event name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
@@ -532,6 +556,8 @@ class Event implements Translatable
      * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
@@ -554,6 +580,8 @@ class Event implements Translatable
      * Set city in which the conference takes place.
      *
      * @param string|null $city
+     *
+     * @return $this
      */
     public function setCity($city)
     {
@@ -576,6 +604,8 @@ class Event implements Translatable
      * Set place.
      *
      * @param string|null $place
+     *
+     * @return $this
      */
     public function setPlace($place)
     {
@@ -608,6 +638,8 @@ class Event implements Translatable
      * Set date.
      *
      * @param \DateTime|null $date
+     *
+     * @return $this
      */
     public function setDate($date)
     {
@@ -620,6 +652,8 @@ class Event implements Translatable
      * Set description.
      *
      * @param string $description
+     *
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -642,6 +676,8 @@ class Event implements Translatable
      * Set text about event (for main page of event).
      *
      * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
@@ -664,6 +700,8 @@ class Event implements Translatable
      * Set status of activity.
      *
      * @param bool $active
+     *
+     * @return $this
      */
     public function setActive($active)
     {
@@ -682,6 +720,11 @@ class Event implements Translatable
         return $this->active;
     }
 
+    /**
+     * @return bool
+     *
+     * @throws \Exception
+     */
     public function isActiveAndFuture()
     {
         $eventEndDate = $this->dateEnd ?: $this->date;
@@ -691,7 +734,9 @@ class Event implements Translatable
     }
 
     /**
-     * @param $receivePayments
+     * @param bool $receivePayments
+     *
+     * @return $this
      */
     public function setReceivePayments($receivePayments)
     {
@@ -718,6 +763,8 @@ class Event implements Translatable
 
     /**
      * @param bool $useDiscounts
+     *
+     * @return $this
      */
     public function setUseDiscounts($useDiscounts)
     {
@@ -826,6 +873,8 @@ class Event implements Translatable
      * Set logoFile.
      *
      * @param UploadedFile|null $logoFile
+     *
+     * @return $this
      */
     public function setLogoFile($logoFile)
     {
@@ -901,6 +950,8 @@ class Event implements Translatable
      * Set cost.
      *
      * @param float $cost
+     *
+     * @return $this
      */
     public function setCost($cost)
     {
@@ -1050,6 +1101,66 @@ class Event implements Translatable
     public function setGroup($group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param float $lat
+     *
+     * @return $this
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @param float $lng
+     *
+     * @return $this
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAudiences()
+    {
+        return $this->audiences;
+    }
+
+    /**
+     * @param EventAudience[] $audiences
+     *
+     * @return $this
+     */
+    public function setAudiences($audiences)
+    {
+        $this->audiences = $audiences;
 
         return $this;
     }

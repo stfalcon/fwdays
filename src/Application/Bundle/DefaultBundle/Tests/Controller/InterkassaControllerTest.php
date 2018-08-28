@@ -3,8 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Tests\Controller;
 
 use Application\Bundle\DefaultBundle\Controller\InterkassaController;
-use Symfony\Component\HttpFoundation\Request;
 use Prophecy\Argument;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
 class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
@@ -12,11 +12,11 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \Prophecy\Prophet
      */
-    protected  $prophet;
+    protected $prophet;
 
     protected function setup()
     {
-        $this->prophet = new \Prophecy\Prophet;
+        $this->prophet = new \Prophecy\Prophet();
     }
 
     protected function tearDown()
@@ -47,7 +47,7 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $payment->isPending()
             ->willReturn(true)
             ->shouldBeCalled();
-        $payment->markedAsPaid()->shouldBeCalled();
+        $payment->setPaidWithGate(Payment::INTERKASSA_GATE)->shouldBeCalled();
 
         $container->has('doctrine')->willReturn(true);
         $container->get('doctrine')->willReturn($doctrine);
@@ -65,7 +65,6 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
 
         $em->flush()->shouldBeCalled();
 
-
         $interkassaController = new InterkassaController();
         $interkassaController->setContainer($container->reveal());
         $result = $interkassaController->interactionAction($request->reveal());
@@ -76,7 +75,6 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\Exception
      * @expectedExceptionMessage Платеж №1 не найден!
-     *
      */
     public function testIteractionActionIfPaymentNotFound()
     {
@@ -95,7 +93,6 @@ class InterkassaControllerTest extends \PHPUnit_Framework_TestCase
         $doctrine->getRepository('StfalconEventBundle:Payment')
             ->shouldBeCalled()
             ->willReturn($paymentRepository);
-
 
         $container->has('doctrine')->willReturn(true);
         $container->get('doctrine')->willReturn($doctrine);

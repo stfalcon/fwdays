@@ -2,16 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\Persistence\ObjectManager;
-
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * LoadEventData Class
+ * LoadEventData Class.
  */
 class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 {
@@ -20,6 +19,9 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
@@ -30,14 +32,13 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-
         $event = (new Event())
             ->setName('Конференция JavaScript fwdays \'18')
             ->setSlug('javaScript-framework-day-2018')
             ->setBackgroundColor('#1B91CD')
             ->setDescription('JavaScript Frameworks Day 2018 - V международная конференция, посвященная популярным JavaScript фреймворкам.')
-            ->setLogoFile($this->_generateUploadedFile('JS_big.svg'))
-            ->setSmallLogoFile($this->_generateUploadedFile('JS_small.svg'))
+            ->setLogoFile($this->generateUploadedFile('JS_big.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('JS_small.svg'))
             ->setLogo('JS_big.svg')
             ->setSmallLogo('JS_small.svg')
             ->setCity('Киев')
@@ -118,8 +119,8 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSlug('php-frameworks-day-2018')
             ->setBackgroundColor('#7586D2')
             ->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)')
-            ->setLogoFile($this->_generateUploadedFile('PHP_big.svg'))
-            ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
+            ->setLogoFile($this->generateUploadedFile('PHP_big.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('PHP_small.svg'))
             ->setLogo('PHP_big.svg')
             ->setSmallLogo('PHP_small.svg')
             ->setCity('Киев')
@@ -203,8 +204,8 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setName('Not Active Frameworks Day')
             ->setSlug('not-active-frameworks-day')
             ->setDescription('Это событие тестовое, но должно быть неактивным')
-            ->setLogoFile($this->_generateUploadedFile('phpel_big.svg'))
-            ->setSmallLogoFile($this->_generateUploadedFile('phpel_small.svg'))
+            ->setLogoFile($this->generateUploadedFile('phpel_big.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('phpel_small.svg'))
             ->setLogo('phpel_big.svg')
             ->setSmallLogo('phpel_small.svg')
             ->setCity('Где-то там')
@@ -223,9 +224,9 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSlug('Highload-frameworks-day-2017')
             ->setBackgroundColor('#00776F')
             ->setDescription('Конференция Highload fwdays \'17')
-            ->setLogoFile($this->_generateUploadedFile('highload_big.svg'))
+            ->setLogoFile($this->generateUploadedFile('highload_big.svg'))
             ->setLogo('highload_big.svg')
-            ->setSmallLogoFile($this->_generateUploadedFile('highload_small.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('highload_small.svg'))
             ->setSmallLogo('highload_small.svg')
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
@@ -317,8 +318,8 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSlug('php-day-2017')
             ->setBackgroundColor('#7586D2')
             ->setDescription('test description')
-            ->setLogoFile($this->_generateUploadedFile('PHP_big.svg'))
-            ->setSmallLogoFile($this->_generateUploadedFile('PHP_small.svg'))
+            ->setLogoFile($this->generateUploadedFile('PHP_big.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('PHP_small.svg'))
             ->setLogo('PHP_big.svg')
             ->setSmallLogo('PHP_small.svg')
             ->setCity('Киев')
@@ -397,13 +398,13 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Generate UploadedFile object from local file. For VichUploader
+     * Generate UploadedFile object from local file. For VichUploader.
      *
      * @param string $filename
      *
      * @return UploadedFile
      */
-    private function _generateUploadedFile($filename)
+    private function generateUploadedFile($filename)
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/events/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'event');
@@ -416,6 +417,9 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         return null;
     }
 
+    /**
+     * @return string
+     */
     private function getKernelDir()
     {
         return $this->container->get('kernel')->getRootDir();

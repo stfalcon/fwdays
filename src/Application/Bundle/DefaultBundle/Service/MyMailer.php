@@ -5,12 +5,13 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Swift_Transport;
 
 /**
- * Class MyMailer
+ * Class MyMailer.
  */
 class MyMailer extends \Swift_Mailer
 {
     /**
      * MyMailer constructor.
+     *
      * @param Swift_Transport $transport
      */
     public function __construct(Swift_Transport $transport)
@@ -18,12 +19,12 @@ class MyMailer extends \Swift_Mailer
         parent::__construct($transport);
     }
 
-   /**
-    * @param \Swift_Mime_Message $message
-    * @param array               $failedRecipients An array of failures by-reference
-    *
-    * @return int The number of successful recipients. Can be 0 which indicates failure
-    */
+    /**
+     * @param \Swift_Mime_Message $message
+     * @param array               $failedRecipients An array of failures by-reference
+     *
+     * @return int The number of successful recipients. Can be 0 which indicates failure
+     */
     public function send(\Swift_Mime_Message $message, &$failedRecipients = null)
     {
         $failedRecipients = (array) $failedRecipients;

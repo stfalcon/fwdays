@@ -19,6 +19,13 @@ class Payment
     const STATUS_PAID = 'paid';
     const STATUS_RETURNED = 'returned'; //доданий для статусу, коли платіж повернений користувачу
 
+    const ADMIN_GATE = 'admin';
+    const INTERKASSA_GATE = 'interkassa';
+    const BONUS_GATE = 'bonus';
+    const PROMOCODE_GATE = 'promocode';
+
+    private $gates = [self::ADMIN_GATE, self::INTERKASSA_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
+
     /**
      * @var int
      *
@@ -214,6 +221,8 @@ class Payment
      * Set amount.
      *
      * @param float $amount
+     *
+     * @return $this
      */
     public function setAmount($amount)
     {
@@ -259,6 +268,8 @@ class Payment
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function setUser(User $user)
     {
@@ -284,7 +295,9 @@ class Payment
     }
 
     /**
-     * @param $createdAt
+     * @param \DateTime $createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -302,7 +315,9 @@ class Payment
     }
 
     /**
-     * @param $updatedAt
+     * @param \DateTime $updatedAt
+     *
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -344,7 +359,9 @@ class Payment
     }
 
     /**
-     * @param $gate
+     * @param string $gate
+     *
+     * @return $this
      */
     public function setGate($gate)
     {
@@ -365,9 +382,29 @@ class Payment
         return $string;
     }
 
+    /**
+     * @return $this
+     */
     public function markedAsPaid()
     {
         $this->setStatus(self::STATUS_PAID);
+
+        return $this;
+    }
+
+    /**
+     * @param string $gate
+     *
+     * @return $this
+     */
+    public function setPaidWithGate($gate)
+    {
+        $this->setStatus(self::STATUS_PAID);
+        if (in_array($gate, $this->gates, true)) {
+            $this->setGate($gate);
+        } else {
+            $this->setGate(self::INTERKASSA_GATE);
+        }
 
         return $this;
     }
@@ -382,6 +419,8 @@ class Payment
 
     /**
      * @param float $baseAmount
+     *
+     * @return $this
      */
     public function setBaseAmount($baseAmount)
     {
@@ -400,6 +439,8 @@ class Payment
 
     /**
      * @param float $fwdaysAmount
+     *
+     * @return $this
      */
     public function setFwdaysAmount($fwdaysAmount)
     {

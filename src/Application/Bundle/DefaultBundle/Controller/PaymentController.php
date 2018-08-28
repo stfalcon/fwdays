@@ -309,9 +309,9 @@ class PaymentController extends Controller
     }
 
     /**
-     * Pay for payment by referral amount.
+     * Pay for payment by bonus money.
      *
-     * @Route("/event/{eventSlug}/pay-by-referral", name="event_pay_by_referral")
+     * @Route("/event/{eventSlug}/pay-by-bonus", name="event_pay_by_bonus")
      *
      * @Security("has_role('ROLE_USER')")
      *
@@ -321,14 +321,41 @@ class PaymentController extends Controller
      *
      * @return Response
      */
-    public function setPaidByReferralMoneyAction(Event $event)
+    public function setPaidByBonusMoneyAction(Event $event)
     {
         $result = false;
         $payment = $this->getPaymentIfAccess();
 
-        if ($payment && $payment->isPending()) {
+        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
             $paymentService = $this->get('stfalcon_event.payment.service');
-            $result = $paymentService->setPaidByReferralMoney($payment, $event);
+            $result = $paymentService->setPaidByBonusMoney($payment, $event);
+        }
+
+        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+
+        return $this->redirect($redirectUrl);
+    }
+    /**
+     * Pay for payment by promocode (100% discount)
+     *
+     * @Route("/event/{eventSlug}/pay-by-promocode", name="event_pay_by_promocode")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
+     * @param Event $event
+     *
+     * @return Response
+     */
+    public function setPaidByPromocodeAction(Event $event)
+    {
+        $result = false;
+        $payment = $this->getPaymentIfAccess();
+
+        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
+            $paymentService = $this->get('stfalcon_event.payment.service');
+            $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
         $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
@@ -377,14 +404,22 @@ class PaymentController extends Controller
         ]);
 
         $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
-        /**
-         * @var User
-         */
+        $formAction = '';
+        $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
+        /** @var User */
         $user = $this->getUser();
-
-//        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
+        if ($payment->getTickets()->count() > 0) {
+            if (0 === (int) $payment->getAmount()) {
+                 $formAction = $payment->getFwdaysAmount() > 0 ?
+                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
+                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
+            } else {
+                $formAction = 'https://sci.interkassa.com/';
+            }
+        }
+        //        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
 //            $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://secure.wayforpay.com/pay';
-
 
         return new JsonResponse([
             'result' => true,
@@ -397,6 +432,7 @@ class PaymentController extends Controller
             'form_action' => $formAction,
             'pay_type' => $payType,
             'tickets_count' => $payment->getTickets()->count(),
+            'byeBtnCaption' => $byeBtnCaption,
         ]);
     }
 

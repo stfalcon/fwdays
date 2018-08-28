@@ -45,6 +45,14 @@ class Mail
     protected $events;
 
     /**
+     * @var EventAudience[]
+     *
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience")
+     * @ORM\JoinColumn(name="audience_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $audiences;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="start", type="boolean")
@@ -109,6 +117,7 @@ class Mail
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->audiences = new ArrayCollection();
         $this->mailQueues = new ArrayCollection();
     }
 
@@ -253,7 +262,7 @@ class Mail
     }
 
     /**
-     * Stop Mail if all mailed
+     * Stop Mail if all mailed.
      *
      * @return $this
      */
@@ -425,12 +434,9 @@ class Mail
     public function getStatistic()
     {
         return
-            $this->totalMessages.'/'.
-            $this->sentMessages.'/'.
-            $this->openMessagesCount.'/'.
-            $this->unsubscribeMessagesCount.
-            (($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
+            $this->totalMessages.'/'.$this->sentMessages.'/'.$this->openMessagesCount.'/'.$this->unsubscribeMessagesCount.(($this->sentMessages === $this->totalMessages) ? ' - complete' : '');
     }
+
     /**
      * Add event.
      *
@@ -487,5 +493,25 @@ class Mail
     public function getMailQueues()
     {
         return $this->mailQueues;
+    }
+
+    /**
+     * @return EventAudience[]|ArrayCollection
+     */
+    public function getAudiences()
+    {
+        return $this->audiences;
+    }
+
+    /**
+     * @param EventAudience[]|ArrayCollection $audiences
+     *
+     * @return $this
+     */
+    public function setAudiences($audiences)
+    {
+        $this->audiences = $audiences;
+
+        return $this;
     }
 }

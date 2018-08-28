@@ -7,8 +7,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+/**
+ * Class TicketCostAdmin.
+ */
 class TicketCostAdmin extends Admin
 {
+    /**
+     * @param DatagridMapper $datagrid
+     */
     protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
         $datagrid
@@ -22,6 +28,9 @@ class TicketCostAdmin extends Admin
         ;
     }
 
+    /**
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -35,6 +44,9 @@ class TicketCostAdmin extends Admin
             ->add('unlimited');
     }
 
+    /**
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

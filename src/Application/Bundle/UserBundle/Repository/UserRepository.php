@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
 
@@ -47,7 +48,7 @@ class UserRepository extends EntityRepository
     /**
      * Users registered for events.
      *
-     * @param $events
+     * @param ArrayCollection $events
      *
      * @return array
      */

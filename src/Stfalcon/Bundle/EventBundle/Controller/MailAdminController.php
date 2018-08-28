@@ -3,20 +3,20 @@
 namespace Stfalcon\Bundle\EventBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\Console\Input\ArrayInput,
-    Symfony\Component\Console\Output\ConsoleOutput,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpFoundation\Response,
-    Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
- * Class MailAdminController
+ * Class MailAdminController.
  */
 class MailAdminController extends CRUDController
 {
     /**
-     * Send messages for all users in mail queue (using console command)
+     * Send messages for all users in mail queue (using console command).
      *
      * @return Response
      *
@@ -25,19 +25,21 @@ class MailAdminController extends CRUDController
     public function userSendAction()
     {
         if (!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
-            throw new NotFoundHttpException("Page not found");
+            throw new NotFoundHttpException('Page not found');
         }
         $command = $this->get('user_mail_command_service');
-        $output  = new ConsoleOutput();
+        $output = new ConsoleOutput();
         $arguments = array(
             '--amount' => '5',
         );
         $input = new ArrayInput($arguments);
         $command->run($input, $output);
+
         return new Response('complete');
     }
+
     /**
-     * Send messages only for admins
+     * Send messages only for admins.
      *
      * @param Request $request
      *
@@ -51,12 +53,13 @@ class MailAdminController extends CRUDController
         $session = $this->get('session');
         if (!$mail) {
             $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
+
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
         if ($mail->getId()) {
             /**
-             * @var \Doctrine\ORM\EntityManager $em
-             * @var \Swift_Mailer $mailer
+             * @var \Doctrine\ORM\EntityManager
+             * @var \Swift_Mailer                                            $mailer
              * @var \Stfalcon\Bundle\EventBundle\Helper\StfalconMailerHelper $mailerHelper
              */
             $em = $this->get('doctrine')->getEntityManager('default');
@@ -72,10 +75,12 @@ class MailAdminController extends CRUDController
             }
             if ($error) {
                 $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+
                 return new RedirectResponse($this->admin->generateUrl('list'));
             }
         }
         $this->get('session')->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 }

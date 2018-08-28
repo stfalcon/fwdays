@@ -3,12 +3,15 @@
 namespace Stfalcon\Bundle\EventBundle\Entity\AbstractClass;
 
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
-use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntity;
+use Stfalcon\Bundle\EventBundle\Entity\Translation\TranslatableEntityInterface;
 
-abstract class AbstractTranslation extends AbstractPersonalTranslation implements TranslatableEntity
+/**
+ * Class AbstractTranslation.
+ */
+abstract class AbstractTranslation extends AbstractPersonalTranslation implements TranslatableEntityInterface
 {
     /**
-     * Convenient constructor
+     * Convenient constructor.
      *
      * @param string $locale  locale
      * @param string $field   field
