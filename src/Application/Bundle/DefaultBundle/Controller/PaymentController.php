@@ -335,8 +335,9 @@ class PaymentController extends Controller
 
         return $this->redirect($redirectUrl);
     }
+
     /**
-     * Pay for payment by promocode (100% discount)
+     * Pay for payment by promocode (100% discount).
      *
      * @Route("/event/{eventSlug}/pay-by-promocode", name="event_pay_by_promocode")
      *
@@ -413,9 +414,6 @@ class PaymentController extends Controller
             'discountAmount' => $discountAmount,
             'pay_type' => $payType,
         ]);
-
-//      $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
-//      $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://secure.wayforpay.com/pay';
 
         return new JsonResponse([
             'result' => true,

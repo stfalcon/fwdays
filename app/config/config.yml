@@ -99,17 +99,6 @@ swiftmailer:
 knp_menu:
     twig: true
 
-#avalanche_imagine:
-#    cache_prefix: /tmp/media/cache
-#    filters:
-#        speaker_thumb:
-#            type:    thumbnail
-#            options: { size: [64, 64], mode: outbound }
-#        speaker_size:
-#            source_root: "%kernel.root_dir%/../web/uploads/speakers"
-#            type:    crop
-#            options: { start: [0, 0], size: [232, 232]}
-
 liip_imagine:
     loaders:
         default:
