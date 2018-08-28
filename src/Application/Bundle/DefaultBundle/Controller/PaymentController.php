@@ -331,7 +331,7 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
@@ -358,7 +358,7 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
