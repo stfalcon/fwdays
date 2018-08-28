@@ -48,7 +48,7 @@ class WayForPayController extends Controller
 
         $wayForPay = $this->get('app.way_for_pay.service');
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
-            $payment->setPaidWithGate(Payment::INTERKASSA_GATE);
+            $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
             if (isset($response['recToken'])) {
                 $user = $this->getUser();
                 $user->setRecToken($response['recToken']);
@@ -211,7 +211,7 @@ class WayForPayController extends Controller
     }
 
     /**
-     * @param $var
+     * @param mixed  $var
      * @param string $default
      *
      * @return string

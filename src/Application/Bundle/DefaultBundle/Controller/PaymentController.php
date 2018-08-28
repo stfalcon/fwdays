@@ -389,10 +389,21 @@ class PaymentController extends Controller
         }
 
         $formAction = null;
-        $payType = 'wayforpay';
-        if (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
-            $formAction = $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]);
-            $payType = 'referral';
+        $payType = null;
+
+        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
+        $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
+        /** @var User */
+        $user = $this->getUser();
+        if ($payment->getTickets()->count() > 0) {
+            if (0 === (int) $payment->getAmount()) {
+                $formAction = $payment->getFwdaysAmount() > 0 ?
+                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
+                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
+            } else {
+                $payType = 'wayforpay';
+            }
         }
 
         $html = $this->renderView('@ApplicationDefault/Redesign/Payment/wayforpay.html.twig', [
@@ -403,23 +414,8 @@ class PaymentController extends Controller
             'pay_type' => $payType,
         ]);
 
-        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
-        $formAction = '';
-        $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
-        /** @var User */
-        $user = $this->getUser();
-        if ($payment->getTickets()->count() > 0) {
-            if (0 === (int) $payment->getAmount()) {
-                 $formAction = $payment->getFwdaysAmount() > 0 ?
-                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
-                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
-                $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
-            } else {
-                $formAction = 'https://sci.interkassa.com/';
-            }
-        }
-        //        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
-//            $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://secure.wayforpay.com/pay';
+//      $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
+//      $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://secure.wayforpay.com/pay';
 
         return new JsonResponse([
             'result' => true,

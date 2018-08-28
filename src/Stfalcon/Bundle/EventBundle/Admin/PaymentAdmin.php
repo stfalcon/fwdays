@@ -86,8 +86,11 @@ class PaymentAdmin extends Admin
                 'choice',
                 [
                     'choices' => [
-                        'interkassa' => 'interkassa',
-                        'admin' => 'admin',
+                        'interkassa' => Payment::INTERKASSA_GATE,
+                        'wayforpay' => Payment::WAYFORPAY_GATE,
+                        'admin' => Payment::ADMIN_GATE,
+                        'bonus' => Payment::BONUS_GATE,
+                        'promocode' => Payment::PROMOCODE_GATE,
                     ],
                     'required' => false,
                 ]
@@ -167,6 +170,7 @@ class PaymentAdmin extends Admin
                     'label' => 'способ оплаты',
                     'choices' => [
                         'interkassa' => Payment::INTERKASSA_GATE,
+                        'wayforpay' => Payment::WAYFORPAY_GATE,
                         'admin' => Payment::ADMIN_GATE,
                         'bonus' => Payment::BONUS_GATE,
                         'promocode' => Payment::PROMOCODE_GATE,

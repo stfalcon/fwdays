@@ -21,10 +21,11 @@ class Payment
 
     const ADMIN_GATE = 'admin';
     const INTERKASSA_GATE = 'interkassa';
+    const WAYFORPAY_GATE = 'wayforpay';
     const BONUS_GATE = 'bonus';
     const PROMOCODE_GATE = 'promocode';
 
-    private $gates = [self::ADMIN_GATE, self::INTERKASSA_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
+    private $gates = [self::ADMIN_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
     /**
      * @var int
@@ -85,7 +86,7 @@ class Payment
      *
      * @ORM\Column()
      */
-    private $gate = 'interkassa';
+    private $gate = Payment::WAYFORPAY_GATE;
 
     /**
      * @var \DateTime
@@ -403,7 +404,7 @@ class Payment
         if (in_array($gate, $this->gates, true)) {
             $this->setGate($gate);
         } else {
-            $this->setGate(self::INTERKASSA_GATE);
+            $this->setGate(self::WAYFORPAY_GATE);
         }
 
         return $this;
