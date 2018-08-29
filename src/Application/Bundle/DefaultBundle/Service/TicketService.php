@@ -69,15 +69,17 @@ class TicketService
      */
     public function isMustBeDiscount($ticket)
     {
-        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
-            ->findPaidPaymentsForUser($ticket->getUser());
+        $event = $ticket->getEvent();
+        $user = $ticket->getUser();
 
-        if (0 === count($paidPayments)) {
-            $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
-                ->findPaidPaymentsForUserInPayment($ticket->getUser());
+        if (!$event instanceof Event || !$user instanceof User || !$event->getUseDiscounts()) {
+            return false;
         }
 
-        return count($paidPayments) > 0 && $ticket->getEvent()->getUseDiscounts();
+        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
+            ->findPaidPaymentsForUser($user);
+
+        return \count($paidPayments) > 0;
     }
 
     /**
