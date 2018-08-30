@@ -25,10 +25,10 @@
                     <div class="price-list__discount-item">
                         {%- if event.useDiscounts -%}
                             <div class="price-list__hint">
-                                {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
+                                {{ 'payment.discount.student'|trans|raw }}&nbsp;
                             </div>
                             <div class="price-list__hint-small">
-                                {{ 'payment.discount.tooltip'|trans}}
+                                {{ 'payment.discount.student_tooltip'|trans|raw}}
                             </div>
                         {% endif %}
                     </div>
