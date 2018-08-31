@@ -35,11 +35,11 @@ class WayForPayController extends Controller
         }
         $payment = null;
 
-        if (is_array($response) && isset($response['orderReference'])) {
+        if (is_array($response) && isset($response['orderNo'])) {
             /** @var Payment $payment */
             $payment = $this->getDoctrine()
                 ->getRepository('StfalconEventBundle:Payment')
-                ->findOneBy(['id' => $response['orderReference']]);
+                ->findOneBy(['id' => $response['orderNo']]);
         }
 
         if (!$payment) {
