@@ -133,7 +133,7 @@ class WayForPayService
         $params = [
             'merchantAccount' => $this->stfalconConfig['wayforpay']['shop_id'],
             'merchantDomainName' => $this->request->getSchemeAndHttpHost(),
-            'orderReference' => $payment->getId(),
+            'orderReference' => (new \DateTime())->getTimestamp(),
             'orderDate' => $payment->getCreatedAt()->getTimestamp(),
             'amount' => $payment->getAmount(),
             'currency' => 'UAH',
@@ -153,6 +153,7 @@ class WayForPayService
         $params['authorizationType'] = "SimpleSignature";
         $params['merchantTransactionSecureType'] = "AUTO";
         $params['merchantTransactionType'] = "SALE";
+        $params['orderNo'] = $payment->getId();
         $params["clientFirstName"] = $payment->getUser()->getName();
         $params["clientLastName"] = $payment->getUser()->getSurname();
         $params["clientEmail"] = $payment->getUser()->getEmail();
