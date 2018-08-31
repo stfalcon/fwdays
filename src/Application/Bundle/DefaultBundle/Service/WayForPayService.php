@@ -133,7 +133,7 @@ class WayForPayService
         $params = [
             'merchantAccount' => $this->stfalconConfig['wayforpay']['shop_id'],
             'merchantDomainName' => $this->request->getSchemeAndHttpHost(),
-            'orderReference' => (new \DateTime())->getTimestamp(),
+            'orderReference' => $payment->getId().'-'.(new \DateTime())->getTimestamp(),
             'orderDate' => $payment->getCreatedAt()->getTimestamp(),
             'amount' => $payment->getAmount(),
             'currency' => 'UAH',
