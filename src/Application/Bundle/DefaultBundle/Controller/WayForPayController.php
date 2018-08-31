@@ -43,7 +43,7 @@ class WayForPayController extends Controller
         }
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
+            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderNo'])));
         }
 
         $wayForPay = $this->get('app.way_for_pay.service');
@@ -143,21 +143,22 @@ class WayForPayController extends Controller
      */
     public function pendingAction(Request $request)
     {
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
-
-        if (!$payment) {
-            $user = $this->getUser();
-            $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(10); //TODO: js-2015
-            $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
-            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
-            if (!$payment) {
-                return $this->forward('ApplicationDefaultBundle:Interkassa:fail');
-            }
+        $response = $request->get('response');
+        if (null === $response) {
+            $response = $request->request->all();
         }
+        $payment = null;
+
+        if (is_array($response) && isset($response['orderNo'])) {
+            /** @var Payment $payment */
+            $payment = $this->getDoctrine()
+                ->getRepository('StfalconEventBundle:Payment')
+                ->findOneBy(['id' => $response['orderNo']]);
+        }
+
+//        if (!$payment) {
+//            return $this->forward('ApplicationDefaultBundle:Interkassa:fail');
+//        }
 
         if ($payment->isPaid()) {
             return $this->forward('ApplicationDefaultBundle:Interkassa:success');
