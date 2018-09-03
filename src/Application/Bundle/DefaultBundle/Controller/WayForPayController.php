@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -114,8 +115,10 @@ class WayForPayController extends Controller
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
             $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
             if (isset($response['recToken'])) {
-                $user = $this->getUser();
-                $user->setRecToken($response['recToken']);
+                $user = $payment->getUser();
+                if ($user instanceof User) {
+                    $user->setRecToken($response['recToken']);
+                }
             }
 
             $em = $this->getDoctrine()->getManager();

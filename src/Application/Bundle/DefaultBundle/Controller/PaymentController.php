@@ -61,15 +61,17 @@ class PaymentController extends Controller
         /** @var Payment $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
-
+        $em = $this->getDoctrine()->getManager();
         if (!$ticket && !$payment) {
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
         }
 
         if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
             $payment = $ticket->getPayment();
+            $payment->setUser($ticket->getUser());
+            $em->flush();
         }
 
         if ($ticket && !$payment) {
