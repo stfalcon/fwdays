@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class WayForPayService.
@@ -33,7 +32,7 @@ class WayForPayService
     /** @var TokenStorageInterface */
     protected $securityToken;
 
-    /** @var RequestStack  */
+    /** @var RequestStack */
     protected $request;
 
     /**
@@ -48,7 +47,7 @@ class WayForPayService
         $this->stfalconConfig = $stfalconConfig;
         $this->translator = $translator;
         $this->request = $requestStack->getCurrentRequest();
-        $this->locale = null !== $this->request ?  $this->request->getLocale() : 'uk';
+        $this->locale = null !== $this->request ? $this->request->getLocale() : 'uk';
         $this->router = $router;
         $this->securityToken = $securityToken;
     }
@@ -62,9 +61,31 @@ class WayForPayService
     {
         $signString = implode(';', $params);
         $signString = htmlspecialchars($signString, ENT_QUOTES);
-        $sign = hash_hmac("md5", $signString, $this->stfalconConfig['wayforpay']['secret']);
+        $sign = hash_hmac('md5', $signString, $this->stfalconConfig['wayforpay']['secret']);
 
         return $sign;
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return array|null
+     */
+    public function getResponseOnServiceUrl(array $response)
+    {
+        $result = null;
+
+        if (isset($response['orderReference'])) {
+            $result = [
+                'orderReference' => $response['orderReference'],
+                'status' => 'accept',
+                'time' => (new \DateTime())->getTimestamp(),
+            ];
+
+            $result['signature'] = $this->getSignHash($result);
+        }
+
+        return $result;
     }
 
     /**
@@ -83,7 +104,7 @@ class WayForPayService
                 'merchantAccount' => $this->getArrMean($response['merchantAccount']),
                 'orderReference' => $this->getArrMean($response['orderReference']),
                 'amount' => $this->getArrMean($response['amount']),
-                'currency'  => $this->getArrMean($response['currency']),
+                'currency' => $this->getArrMean($response['currency']),
                 'authCode' => $this->getArrMean($response['authCode']),
                 'cardPan' => $this->getArrMean($response['cardPan']),
                 'transactionStatus' => $this->getArrMean($response['transactionStatus']),
@@ -150,18 +171,18 @@ class WayForPayService
             $params['recToken'] = $user->getRecToken();
         }
 
-        $params['authorizationType'] = "SimpleSignature";
-        $params['merchantTransactionSecureType'] = "AUTO";
-        $params['merchantTransactionType'] = "SALE";
+        $params['authorizationType'] = 'SimpleSignature';
+        $params['merchantTransactionSecureType'] = 'AUTO';
+        $params['merchantTransactionType'] = 'SALE';
         $params['orderNo'] = $payment->getId();
-        $params["clientFirstName"] = $payment->getUser()->getName();
-        $params["clientLastName"] = $payment->getUser()->getSurname();
-        $params["clientEmail"] = $payment->getUser()->getEmail();
-        $params["clientPhone"] = $payment->getUser()->getPhone();
-        $params["language"] = $this->locale === 'uk' ? 'ua' : $this->locale;
-        $params["defaultPaymentSystem"] = "card";
-        $params["orderTimeout"] = "49000";
-        $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['clientFirstName'] = $payment->getUser()->getName();
+        $params['clientLastName'] = $payment->getUser()->getSurname();
+        $params['clientEmail'] = $payment->getUser()->getEmail();
+        $params['clientPhone'] = $payment->getUser()->getPhone();
+        $params['language'] = 'uk' === $this->locale ? 'ua' : $this->locale;
+        $params['defaultPaymentSystem'] = 'card';
+        $params['orderTimeout'] = '49000';
+        $params['returnUrl'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;

@@ -9,18 +9,14 @@
                 },
                 function (response) {
                     wayforpay.closeit();
-                    $.post(Routing.generate('payment_interaction', {response: response }),
-                        function (data) {
-                           if (data === 'ok') {
-                               window.location.href = homePath+'success';
-                           }
-                        }
-                    );
+                    $.post(Routing.generate('show_success', {response: response }));
                 },
                 function (response) {
+                    wayforpay.closeit();
                     $.post(Routing.generate('payment_fail', {response: response }));
                 },
                 function (response) {
+                    wayforpay.closeit();
                     $.post(Routing.generate('payment_pending', {response: response }));
                 }
             );

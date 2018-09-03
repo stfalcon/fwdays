@@ -65,7 +65,7 @@ class WayForPayController extends Controller
             } catch (\Exception $e) {
             }
 
-            $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
+            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
             if ($request->isXmlHttpRequest()) {
                 return new Response('ok', 200);
             }
@@ -92,9 +92,10 @@ class WayForPayController extends Controller
      */
     public function serviceInteractionAction(Request $request)
     {
-        $response = $request->get('response');
+        $json = $request->getContent();
+        $response = \json_decode($json, true);
         if (null === $response) {
-            $response = $request->request->all();
+            return new JsonResponse(['error' => 'bad content'], 400);
         }
         $payment = null;
 
@@ -106,7 +107,7 @@ class WayForPayController extends Controller
         }
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
+            return new JsonResponse(['error' => 'payment not found'], 400);
         }
 
         $wayForPay = $this->get('app.way_for_pay.service');
@@ -127,20 +128,19 @@ class WayForPayController extends Controller
             } catch (\Exception $e) {
             }
 
-            $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
-            if ($request->isXmlHttpRequest()) {
-                return new Response('ok', 200);
-            }
+            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
 
-            return $this->redirectToRoute('show_success');
+            $result = $wayForPay->getResponseOnServiceUrl($response);
+
+            return new JsonResponse(\json_encode($result));
         }
 
         $this->get('logger')->addCritical(
-            'Interkassa interaction Fail!',
+            'WayForPay interaction Fail!',
             $this->getRequestDataToArr($response, $payment)
         );
 
-        return new Response('FAIL-payment_service_interaction', 400);
+        return new JsonResponse(['error' => 'payment is paid or invalid data'], 400);
     }
 
     /**
