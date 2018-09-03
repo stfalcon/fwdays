@@ -81,6 +81,68 @@ class WayForPayController extends Controller
     }
 
     /**
+     * @Route("/payment/service-interaction", name="payment_service_interaction",
+     *     methods={"POST"},
+     *     options={"expose"=true})
+     *
+     * @param Request $request
+     *
+     * @return array|Response
+     */
+    public function serviceInteractionAction(Request $request)
+    {
+        $response = $request->get('response');
+        if (null === $response) {
+            $response = $request->request->all();
+        }
+        $payment = null;
+
+        if (is_array($response) && isset($response['orderNo'])) {
+            /** @var Payment $payment */
+            $payment = $this->getDoctrine()
+                ->getRepository('StfalconEventBundle:Payment')
+                ->findOneBy(['id' => $response['orderNo']]);
+        }
+
+        if (!$payment) {
+            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
+        }
+
+        $wayForPay = $this->get('app.way_for_pay.service');
+        if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
+            $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
+            if (isset($response['recToken'])) {
+                $user = $this->getUser();
+                $user->setRecToken($response['recToken']);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            try {
+                $referralService = $this->get('stfalcon_event.referral.service');
+                $referralService->chargingReferral($payment);
+                $referralService->utilizeBalance($payment);
+            } catch (\Exception $e) {
+            }
+
+            $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
+            if ($request->isXmlHttpRequest()) {
+                return new Response('ok', 200);
+            }
+
+            return $this->redirectToRoute('show_success');
+        }
+
+        $this->get('logger')->addCritical(
+            'Interkassa interaction Fail!',
+            $this->getRequestDataToArr($response, $payment)
+        );
+
+        return new Response('FAIL', 400);
+    }
+
+    /**
      * @Route("/success", name="show_success")
      *
      * @return Response

@@ -162,12 +162,13 @@ class WayForPayService
         $params["defaultPaymentSystem"] = "card";
         $params["orderTimeout"] = "49000";
         $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
     }
 
     /**
-     * @param $var
+     * @param mixed  $var
      * @param string $default
      *
      * @return string
