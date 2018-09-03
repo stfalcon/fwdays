@@ -147,7 +147,7 @@ class WayForPayController extends Controller
     }
 
     /**
-     * @Route("/success", name="show_success")
+     * @Route("/payment/success", name="show_success")
      *
      * @return Response
      */
@@ -181,8 +181,7 @@ class WayForPayController extends Controller
      *
      * @Route("/payment/fail", name="payment_fail",
      *     methods={"POST"},
-     *     options={"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
+     *     options={"expose"=true})
      *
      * @Template("@ApplicationDefault/Interkassa/fail.html.twig")
      *
@@ -196,39 +195,16 @@ class WayForPayController extends Controller
     /**
      * Оплата не завершена. Ожидаем ответ шлюза.
      *
-     * @param Request $request
-     *
      * @Route("/payment/pending", name="payment_pending",
      *     methods={"POST"},
-     *     options={"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
+     *     options={"expose"=true})
      *
      * @Template("@ApplicationDefault/Interkassa/pending.html.twig")
      *
      * @return array|Response
      */
-    public function pendingAction(Request $request)
+    public function pendingAction()
     {
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Payment')
-            ->findOneBy(array('id' => $request->get('ik_pm_no')));
-
-        if (!$payment) {
-            $user = $this->getUser();
-            $em = $this->getDoctrine()->getManager();
-            $event = $em->getRepository('StfalconEventBundle:Event')->find(10); //TODO: js-2015
-            $paymentRepository = $em->getRepository('StfalconEventBundle:Payment');
-            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
-            if (!$payment) {
-                return $this->forward('ApplicationDefaultBundle:Interkassa:fail');
-            }
-        }
-
-        if ($payment->isPaid()) {
-            return $this->forward('ApplicationDefaultBundle:Interkassa:success');
-        }
-
         return [];
     }
 

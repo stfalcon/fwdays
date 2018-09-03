@@ -9,15 +9,15 @@
                 },
                 function (response) {
                     wayforpay.closeit();
-                    $.post(Routing.generate('show_success', {response: response }));
+                    window.location.href = homePath+'payment/success';
                 },
                 function (response) {
                     wayforpay.closeit();
-                    $.post(Routing.generate('payment_fail', {response: response }));
+                    window.location.href = homePath+'payment/fail';
                 },
                 function (response) {
                     wayforpay.closeit();
-                    $.post(Routing.generate('payment_pending', {response: response }));
+                    window.location.href = homePath+'payment/pending';
                 }
             );
         }
