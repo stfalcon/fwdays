@@ -129,7 +129,7 @@ class WayForPayController extends Controller
 
             $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
             if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['ok' => true], 200);
+                return new JsonResponse(['ok payment_service_interaction' => true], 200);
             }
 
             return new Responce('<p>payment_service_interaction</p>');
@@ -141,7 +141,7 @@ class WayForPayController extends Controller
             $this->getRequestDataToArr($response, $payment)
         );
 
-        return new Response('FAIL', 400);
+        return new Response('FAIL-payment_service_interaction', 400);
     }
 
     /**
