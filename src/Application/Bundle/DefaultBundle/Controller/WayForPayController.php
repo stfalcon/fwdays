@@ -129,11 +129,10 @@ class WayForPayController extends Controller
 
             $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
             if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['ok payment_service_interaction' => true], 200);
+                return new Response('ok', 200);
             }
 
-            return new Responce('<p>payment_service_interaction</p>');
-//          return $this->redirectToRoute('show_success');
+            return $this->redirectToRoute('show_success');
         }
 
         $this->get('logger')->addCritical(

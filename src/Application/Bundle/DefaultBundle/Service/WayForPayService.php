@@ -161,7 +161,7 @@ class WayForPayService
         $params["language"] = $this->locale === 'uk' ? 'ua' : $this->locale;
         $params["defaultPaymentSystem"] = "card";
         $params["orderTimeout"] = "49000";
-//        $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params["returnUrl"] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
