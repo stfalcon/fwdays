@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
@@ -128,10 +129,11 @@ class WayForPayController extends Controller
 
             $this->get('session')->set('way_for_pay_payment', $response['orderReference']);
             if ($request->isXmlHttpRequest()) {
-                return new Response('ok', 200);
+                return new JsonResponse(['ok' => true], 200);
             }
 
-            return $this->redirectToRoute('show_success');
+            return new Responce('<p>payment_service_interaction</p>');
+//          return $this->redirectToRoute('show_success');
         }
 
         $this->get('logger')->addCritical(
