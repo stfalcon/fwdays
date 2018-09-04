@@ -633,6 +633,10 @@
     margin-bottom: 50px;
     padding: 0 20px 0 36px;
 
+    a {
+      color: $blue-light-color;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
