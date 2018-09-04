@@ -152,10 +152,10 @@ referral.invaite.link.text: Ваше реферальне посилання н�
 payment.price: '%summ% грн '
 payment.price.multi: '%summ% грн '
 payment.discount.cupon: (знижка %summ%% за купоном)
-payment.discount.member: Для учасників попередніх конференцій знижка %summ%%
+payment.discount.member: '&minus;%summ%% для учасників попередніх конференцій'
 payment.discount.tooltip: 'Нараховується автоматично аккаунту з якого була здійснена покупка'
 payment.discount.student: '&minus;50% для студентів денної форми навчання'
-payment.discount.student_tooltip: Надішліть фото або скан студентського квитка на <a class="" href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і ми відправимо вам промо-код
+payment.discount.student_tooltip: Надішліть фото або скан студентського квитка на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і ми відправимо вам промо-код
 
 pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
