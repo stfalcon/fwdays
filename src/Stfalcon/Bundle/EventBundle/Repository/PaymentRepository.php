@@ -39,29 +39,6 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * Find paid payments user in payments.
-     *
-     * @param User $user
-     *
-     * @return array
-     */
-    public function findPaidPaymentsForUserInPayment(User $user)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
-            ->leftJoin('t.event', 'e')
-            ->andWhere('e.useDiscounts = :useDiscounts')
-            ->andWhere('p.user = :user')
-            ->andWhere('p.status = :status')
-            ->setParameter('user', $user)
-            ->setParameter('useDiscounts', true)
-            ->setParameter('status', Payment::STATUS_PAID)
-            ->getQuery();
-
-        return $query->getResult();
-    }
-
-    /**
      * @param User  $user
      * @param Event $event
      *
