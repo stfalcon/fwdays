@@ -11,7 +11,7 @@ deploy_callbacks:
 
     before_composer:
         - 'sed -i "s/google_captcha_secret_key = .*/google_captcha_secret_key = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
-        - "sed -i \"s/sentry_dsn_stag =.*/sentry_dsn_stag = `echo -n $APP_SENTRY_DSN`/\" app/config/parameters.ini"
+        - "sed -i \"s|sentry_dsn_stag =.*|sentry_dsn_stag = `echo -n $APP_SENTRY_DSN`|\" app/config/parameters.ini"
         - 'sed -i "s/google_captcha_site_key = .*/google_captcha_site_key = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
         - 'sed -i "s/database_host     =.*/database_host     = fwdays-mysql/" app/config/parameters.ini'
         - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'

@@ -187,9 +187,7 @@ class WayForPayController extends Controller
     /**
      * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
      *
-     * @Route("/payment/fail", name="payment_fail",
-     *     methods={"POST"},
-     *     options={"expose"=true})
+     * @Route("/payment/fail", name="payment_fail")
      *
      * @Template("@ApplicationDefault/Interkassa/fail.html.twig")
      *
@@ -203,9 +201,7 @@ class WayForPayController extends Controller
     /**
      * Оплата не завершена. Ожидаем ответ шлюза.
      *
-     * @Route("/payment/pending", name="payment_pending",
-     *     methods={"POST"},
-     *     options={"expose"=true})
+     * @Route("/payment/pending", name="payment_pending")
      *
      * @Template("@ApplicationDefault/Interkassa/pending.html.twig")
      *
