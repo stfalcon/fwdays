@@ -606,12 +606,12 @@
   }
 
   &__items {
-    margin-bottom: 16px;
+    margin-bottom: 36px;
   }
 
   &__hint {
     color: $green-light-color;
-    text-align: center;
+    text-align: left;
     font-weight: 700;
     font-size: 18px;
     line-height: 18px;
@@ -621,8 +621,25 @@
     font-size: 12px;
     color: #727272;
     line-height: 14px;
-    text-align: center;
+    text-align: left;
     margin-top: 6px;
+  }
+
+  &__link {
+    color: $blue-light-color;
+  }
+
+  &__discount-item {
+    margin-bottom: 50px;
+    padding: 0 20px 0 36px;
+
+    a {
+      color: $blue-light-color;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
