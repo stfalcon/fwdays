@@ -55,10 +55,12 @@
   &__items {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
   }
 
   &__item {
-    padding-right: 16px;
+    flex-basis: 33.333%;
+    margin-bottom: 32px;
   }
 }
 
