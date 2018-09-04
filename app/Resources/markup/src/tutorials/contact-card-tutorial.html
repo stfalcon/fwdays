@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <div class="container container--sm">
+        <div class="organizers">
+            <div class="organizers__label">Організатори:</div>
+            <ul class="organizers__items">
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com </a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання інфопартнерства, мітапів, майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://frameworksdays.com/uploads/images/5a82b54782e06.jpeg" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Ксенія Грабевник</div>
+                    <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                    <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання інфопартнерства, мітапів, майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://frameworksdays.com/uploads/images/5a82b54782e06.jpeg" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Ксенія Грабевник</div>
+                    <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                    <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+        <div class="organizers">
+            <div class="organizers__label">Організатори:</div>
+            <ul class="organizers__items">
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com </a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання інфопартнерства, мітапів, майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://frameworksdays.com/uploads/images/5a82b54782e06.jpeg" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Ксенія Грабевник</div>
+                    <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                    <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com </a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання інфопартнерства, мітапів, майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://frameworksdays.com/uploads/images/5a82b54782e06.jpeg" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Ксенія Грабевник</div>
+                    <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                    <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо майстер-класів та участі</div>
+                    <img class="organizer-card__photo" src="https://fwdays.com/uploads/images/5afc2bd54b306.png" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com </a>
+                </li>
+            </ul>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+</div>
+<script src="../js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+
+    function doHighlight4() {
+        CodeMirror.runMode(document.getElementById("code-4").value, "application/xml",
+            document.getElementById("output-4"));
+    }
+
+    doHighlight1();
+    doHighlight2();
+    doHighlight3();
+    doHighlight4();
+</script>
+</html>

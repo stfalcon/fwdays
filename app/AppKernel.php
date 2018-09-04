@@ -71,7 +71,7 @@ class AppKernel extends Kernel
             new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
         );
 
-        if (in_array($this->getEnvironment(), ['prod'], true)) {
+        if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {
             $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 

@@ -45,7 +45,7 @@ class WayForPayController extends Controller
         }
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
+            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderNo'])));
         }
 
         $wayForPay = $this->get('app.way_for_pay.service');
@@ -96,6 +96,10 @@ class WayForPayController extends Controller
         $json = $request->getContent();
         $response = \json_decode($json, true);
         if (null === $response) {
+            $this->get('logger')->addCritical(
+                'WayForPay interaction Fail! bad content'
+            );
+
             return new JsonResponse(['error' => 'bad content'], 400);
         }
         $payment = null;
@@ -108,6 +112,10 @@ class WayForPayController extends Controller
         }
 
         if (!$payment) {
+            $this->get('logger')->addCritical(
+                'WayForPay interaction Fail! payment not found'
+            );
+
             return new JsonResponse(['error' => 'payment not found'], 400);
         }
 
