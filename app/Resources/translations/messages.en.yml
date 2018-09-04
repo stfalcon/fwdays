@@ -156,6 +156,8 @@ payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
 payment.discount.member: Discount for participants of previous conversations is %summ%%
 payment.discount.tooltip: 'It will be added automatically to account where you made a purchase previously'
+payment.discount.student: '&minus;50% for students of full-time education'
+payment.discount.student_tooltip: Send us a photo or a scanned copy of your Student's ID to <a class="" href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> and we will send a promo code to you
 
 pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: Add participants
