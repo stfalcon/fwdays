@@ -45,7 +45,7 @@ class WayForPayController extends Controller
         }
 
         if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderReference'])));
+            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderNo'])));
         }
 
         $wayForPay = $this->get('app.way_for_pay.service');
