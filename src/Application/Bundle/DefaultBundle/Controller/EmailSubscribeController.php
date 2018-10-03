@@ -9,6 +9,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * EmailSubscribe controller.
@@ -24,9 +25,7 @@ class EmailSubscribeController extends Controller
      * @param int    $userId
      * @param int    $mailId
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function unsubscribeAction($hash, $userId, $mailId = null)
     {
@@ -46,7 +45,7 @@ class EmailSubscribeController extends Controller
             }
             /** @var MailQueue $mailQueue */
             $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
-                ->findOneBy(['user' => $userId, 'mail' => $mailId]);
+                ->findByUserAndMail($userId, $mailId);
             if ($mailQueue && $subscriber->isSubscribe()) {
                 $mailQueue->setIsUnsubscribe();
             }
@@ -55,7 +54,7 @@ class EmailSubscribeController extends Controller
         $subscriber->setSubscribe(false);
         $em->flush();
 
-        return ['hash' => $hash, 'userId' => $userId];
+        return $this->render('@ApplicationDefault/EmailSubscribe/unsubscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
     }
 
     /**

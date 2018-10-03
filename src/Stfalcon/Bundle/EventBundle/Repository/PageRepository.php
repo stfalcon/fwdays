@@ -12,4 +12,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepository extends EntityRepository
 {
+    /**
+     * @return array
+     */
+    public function getPagesForFooter()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where($qb->expr()->eq('p.showInFooter', true));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return mixed
+     */
+    public function findOneBySlug($slug)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where($qb->expr()->eq('p.slug', ':slug'))
+            ->setParameter('slug', $slug)
+            ->setMaxResults(1)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }
