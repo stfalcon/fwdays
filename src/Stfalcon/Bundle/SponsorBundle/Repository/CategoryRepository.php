@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+    /**
+     * @param int $id
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findById($id)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where($qb->expr()->eq('c.id', ':id'))
+            ->setParameter('id', $id)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

@@ -53,7 +53,7 @@ class SponsorRepository extends EntityRepository
         $qb = $this->createQueryBuilder('s');
 
         return
-            $qb->select('s', 'c.id')
+            $qb->select('s', 'c.id AS categoryId')
             ->where('e.id = :eventId')
             ->join('s.sponsorEvents', 'se')
             ->join('se.event', 'e')
