@@ -8,8 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
+use Stfalcon\Bundle\SponsorBundle\Entity\Category;
+use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,24 +26,18 @@ class EventController extends Controller
      *
      * @Route("/events", name="events")
      *
-     * @Template("@ApplicationDefault/Redesign/Event/events.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function eventsAction()
     {
-        $activeEvents = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true], ['date' => 'ASC']);
+        $eventRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Event');
+        $activeEvents = $eventRepository->findAllByActiveSorted(true, 'ASC');
+        $pastEvents = $eventRepository->findAllByActiveSorted(false, 'DESC');
 
-        $pastEvents = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => false], ['date' => 'DESC']);
-
-        return [
+        return $this->render('@ApplicationDefault/Redesign/Event/events.html.twig', [
             'activeEvents' => $activeEvents,
             'pastEvents' => $pastEvents,
-        ];
+        ]);
     }
 
     /**
@@ -53,16 +48,17 @@ class EventController extends Controller
      *
      * @param string $eventSlug
      *
-     * @Template("@ApplicationDefault/Redesign/Event/event.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function showAction($eventSlug)
     {
         $referralService = $this->get('stfalcon_event.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->getEventPagesArr($eventSlug);
+        return $this->render(
+            '@ApplicationDefault/Redesign/Event/event.html.twig',
+            $this->getEventPagesArr($eventSlug)
+        );
     }
 
     /**
@@ -70,9 +66,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("@ApplicationDefault/Redesign/Event/event_price.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function getEventCostsAction(Event $event)
     {
@@ -82,11 +76,14 @@ class EventController extends Controller
         $eventCurrentCost = $ticketCostRepository->getEventCurrentCost($event);
         $ticketCosts = $ticketCostRepository->getEventTicketsCost($event);
 
-        return [
-            'ticketCosts' => $ticketCosts,
-            'currentPrice' => $eventCurrentCost,
-            'event' => $event,
-        ];
+        return $this->render(
+            '@ApplicationDefault/Redesign/Event/event_price.html.twig',
+            [
+               'ticketCosts' => $ticketCosts,
+                'currentPrice' => $eventCurrentCost,
+                'event' => $event,
+            ]
+        );
     }
 
     /**
@@ -97,13 +94,14 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $reviewSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign/Speaker:report_review.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function showEventReviewAction($eventSlug, $reviewSlug)
     {
-        return $this->getEventPagesArr($eventSlug, $reviewSlug);
+        return $this->render(
+            'ApplicationDefaultBundle:Redesign/Speaker:report_review.html.twig',
+            $this->getEventPagesArr($eventSlug, $reviewSlug)
+        );
     }
 
     /**
@@ -111,9 +109,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign/Partner:partners.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function eventPartnersAction(Event $event)
     {
@@ -126,9 +122,11 @@ class EventController extends Controller
 
         $sortedPartners = [];
         foreach ($partners as $key => $partner) {
-            $partnerCategory = $partnerCategoryRepository->find($partner['id']);
-            if ($partnerCategory) {
-                $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getSortOrder()][$partnerCategory->getName()][] = $partner[0];
+            if (isset($partner['categoryId'])) {
+                $partnerCategory = $partnerCategoryRepository->findById((int) $partner['categoryId']);
+                if ($partnerCategory instanceof Category && isset($partner[0]) && $partner[0] instanceof Sponsor) {
+                    $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getSortOrder()][$partnerCategory->getName()][] = $partner[0];
+                }
             }
         }
 
@@ -140,7 +138,10 @@ class EventController extends Controller
             krsort($sortedPartners[1]);
         }
 
-        return ['partners' => $sortedPartners];
+        return $this->render(
+            'ApplicationDefaultBundle:Redesign/Partner:partners.html.twig',
+            ['partners' => $sortedPartners]
+        );
     }
 
     /**
@@ -158,7 +159,7 @@ class EventController extends Controller
     public function getModalHeaderAction($slug, $headerType)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBySlug($slug);
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
@@ -186,7 +187,7 @@ class EventController extends Controller
     public function getEventMapPosition($slug)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBySlug($slug);
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
@@ -223,7 +224,7 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBySlug($slug);
 
         if (!$event) {
             if ($request->isXmlHttpRequest()) {
@@ -275,7 +276,7 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBySlug($slug);
 
         if (!$event) {
             return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
@@ -302,9 +303,7 @@ class EventController extends Controller
      *
      * @param string $eventSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:venue_review.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function showEventVenuePageAction($eventSlug)
     {
@@ -316,7 +315,10 @@ class EventController extends Controller
         $newText = $resultArray['venuePage']->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $resultArray['venuePage']->getText();
 
-        return array_merge($resultArray, ['text' => $text]);
+        return $this->render(
+            'ApplicationDefaultBundle:Redesign:venue_review.html.twig',
+            array_merge($resultArray, ['text' => $text])
+        );
     }
 
     /**
@@ -325,14 +327,12 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $pageSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function showEventPageInStaticAction($eventSlug, $pageSlug)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+            ->getRepository('StfalconEventBundle:Event')->findOneBySlug($eventSlug);
         if (!$event) {
             throw $this->createNotFoundException(sprintf('Unable to find event by slug: ', $eventSlug));
         }
@@ -353,7 +353,7 @@ class EventController extends Controller
         $newText = $myPage->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
 
-        return ['text' => $text];
+        return $this->render('ApplicationDefaultBundle:Redesign:static.page.html.twig', ['text' => $text]);
     }
 
     /**

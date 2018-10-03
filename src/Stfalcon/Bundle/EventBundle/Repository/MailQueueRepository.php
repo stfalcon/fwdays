@@ -59,4 +59,21 @@ class MailQueueRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param int $userId
+     * @param int $mailId
+     *
+     * @return mixed
+     */
+    public function findByUserAndMail($userId, $mailId)
+    {
+        $qb = $this->createQueryBuilder('mq');
+        $qb->where($qb->expr()->eq('mq.user', ':user'))
+            ->andWhere($qb->expr()->eq('mq.mail', ':mail'))
+            ->setParameters(['user' => $userId, 'mail' => $mailId])
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

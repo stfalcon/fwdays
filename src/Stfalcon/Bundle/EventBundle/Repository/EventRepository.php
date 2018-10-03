@@ -14,6 +14,40 @@ use Doctrine\ORM\EntityRepository;
 class EventRepository extends EntityRepository
 {
     /**
+     * @param bool   $active
+     * @param string $sort
+     *
+     * @return array|null
+     */
+    public function findAllByActiveSorted($active = true, $sort = 'ASC')
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where($qb->expr()->eq('e.active', ':active'))
+            ->setParameter('active', $active)
+            ->orderBy('e.date', $sort)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneBySlug($slug)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where($qb->expr()->eq('e.slug', ':slug'))
+            ->setParameter('slug', $slug)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @param User   $user
      * @param bool   $active
      * @param string $sort

@@ -25,7 +25,7 @@ class DefaultController extends Controller
     {
         $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true], ['date' => 'ASC']);
+            ->findAllByActiveSorted(true, 'ASC');
 
         return $this->render('ApplicationDefaultBundle:Redesign:index.html.twig', ['events' => $events]);
     }
@@ -35,8 +35,8 @@ class DefaultController extends Controller
      */
     public function footerPagesAction()
     {
-        $pages = $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
-            ->findBy(['showInFooter' => true]);
+        $pages = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
+            ->getPagesForFooter();
 
         return $this->render('ApplicationDefaultBundle:Redesign:_footer_pages.html.twig', ['pages' => $pages]);
     }
@@ -82,7 +82,7 @@ class DefaultController extends Controller
     public function contactsAction()
     {
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
-            ->findOneBy(['slug' => 'contacts']);
+            ->findOneBySlug('contacts');
         if (!$staticPage) {
             throw $this->createNotFoundException('Page not found! about');
         }
@@ -100,7 +100,7 @@ class DefaultController extends Controller
     public function aboutAction()
     {
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
-            ->findOneBy(['slug' => 'about']);
+            ->findOneBySlug('about');
         if (!$staticPage) {
             throw $this->createNotFoundException('Page not found! about');
         }
@@ -118,7 +118,7 @@ class DefaultController extends Controller
     public function pageAction($slug)
     {
         $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
-            ->findOneBy(['slug' => $slug]);
+            ->findOneBySlug($slug);
         if (!$staticPage) {
             throw $this->createNotFoundException(sprintf('Page not found! %s', $slug));
         }
