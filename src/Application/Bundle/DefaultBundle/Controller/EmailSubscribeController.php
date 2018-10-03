@@ -65,9 +65,7 @@ class EmailSubscribeController extends Controller
      * @param int    $userId
      * @param string $hash
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function subscribeAction($userId, $hash)
     {
@@ -83,7 +81,10 @@ class EmailSubscribeController extends Controller
         $subscriber->setSubscribe(true);
         $em->flush();
 
-        return ['hash' => $hash, 'userId' => $userId];
+        return $this->render(
+            '@ApplicationDefault/EmailSubscribe/subscribe.html.twig',
+            ['hash' => $hash, 'userId' => $userId]
+        );
     }
 
     /**
@@ -107,7 +108,8 @@ class EmailSubscribeController extends Controller
 
             if ($user) {
                 /** @var MailQueue $mailQueue */
-                $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
+                $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
+                    ->findByUserAndMail($userId, $mailId);
                 if ($mailQueue && !$mailQueue->getIsOpen()) {
                     /** @var Mail $mail */
                     $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
