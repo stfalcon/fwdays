@@ -96,10 +96,10 @@ class WayForPayService
     }
 
     /**
-     * @param Payment $payment
-     * @param array   $response
+     * @param Payment|null $payment
+     * @param array        $response
      */
-    public function saveResponseLog(Payment $payment, array $response)
+    public function saveResponseLog($payment, array $response)
     {
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
