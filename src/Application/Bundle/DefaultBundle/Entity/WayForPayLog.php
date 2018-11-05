@@ -34,8 +34,6 @@ class WayForPayLog
      * @var Payment
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment")
-     *
-     * @Assert\NotNull()
      */
     private $payment;
 

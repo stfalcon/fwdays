@@ -102,6 +102,9 @@ class WayForPayController extends Controller
 
             return new JsonResponse(['error' => 'bad content'], 400);
         }
+        $wayForPay = $this->get('app.way_for_pay.service');
+        $wayForPay->saveResponseLog(null, $response);
+
         $payment = null;
 
         if (is_array($response) && isset($response['orderNo'])) {
@@ -118,8 +121,6 @@ class WayForPayController extends Controller
 
             return new JsonResponse(['error' => 'payment not found'], 400);
         }
-
-        $wayForPay = $this->get('app.way_for_pay.service');
 
         $wayForPay->saveResponseLog($payment, $response);
 

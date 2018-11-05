@@ -63,10 +63,16 @@ class WayForPayLogAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->add('id')
+        $listMapper->addIdentifier('id')
             ->add('date', null, ['label' => 'Дата'])
             ->add('payment', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                ],
+                'label'   => 'Actions',
+            ])
         ;
     }
 }
