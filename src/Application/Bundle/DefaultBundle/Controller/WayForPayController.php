@@ -122,8 +122,7 @@ class WayForPayController extends Controller
         $wayForPay = $this->get('app.way_for_pay.service');
         $em = $this->getDoctrine()->getManager();
 
-        $log = $wayForPay->getResponseLog($payment, $response);
-        $em->flush();
+        $wayForPay->saveResponseLog($payment, $response);
 
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
             $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);

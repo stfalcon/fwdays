@@ -93,3 +93,4 @@ services:
       - "@request_stack"
       - "@router"
       - "@security.token_storage"
+      - "@doctrine.orm.entity_manager"

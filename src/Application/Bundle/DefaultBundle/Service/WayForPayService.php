@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\WayForPayLog;
 use Application\Bundle\UserBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
@@ -36,14 +37,18 @@ class WayForPayService
     /** @var RequestStack */
     protected $request;
 
+    /** @var EntityManager */
+    protected $em;
+
     /**
      * @param mixed                 $stfalconConfig
      * @param Translator            $translator
      * @param RequestStack          $requestStack
      * @param Router                $router
      * @param TokenStorageInterface $securityToken
+     * @param EntityManager         $em
      */
-    public function __construct($stfalconConfig, $translator, $requestStack, $router, $securityToken)
+    public function __construct($stfalconConfig, $translator, $requestStack, $router, $securityToken, $em)
     {
         $this->stfalconConfig = $stfalconConfig;
         $this->translator = $translator;
@@ -51,6 +56,7 @@ class WayForPayService
         $this->locale = null !== $this->request ? $this->request->getLocale() : 'uk';
         $this->router = $router;
         $this->securityToken = $securityToken;
+        $this->em = $em;
     }
 
     /**
@@ -93,9 +99,9 @@ class WayForPayService
      * @param Payment $payment
      * @param array   $response
      *
-     * @return WayForPayLog
+     * @return void
      */
-    public function getResponseLog(Payment $payment, array $response)
+    public function saveResponseLog(Payment $payment, array $response)
     {
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
@@ -103,7 +109,7 @@ class WayForPayService
             ->setResponseData(\serialize($response))
         ;
 
-        return $logEntry;
+        $this->em->flush($logEntry);
     }
 
     /**
