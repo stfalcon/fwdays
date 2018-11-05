@@ -120,7 +120,6 @@ class WayForPayController extends Controller
         }
 
         $wayForPay = $this->get('app.way_for_pay.service');
-        $em = $this->getDoctrine()->getManager();
 
         $wayForPay->saveResponseLog($payment, $response);
 
@@ -133,6 +132,7 @@ class WayForPayController extends Controller
                 }
             }
 
+            $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             try {

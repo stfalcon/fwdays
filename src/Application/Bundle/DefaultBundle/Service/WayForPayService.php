@@ -98,8 +98,6 @@ class WayForPayService
     /**
      * @param Payment $payment
      * @param array   $response
-     *
-     * @return void
      */
     public function saveResponseLog(Payment $payment, array $response)
     {
@@ -108,6 +106,7 @@ class WayForPayService
             ->setStatus($this->getArrMean($response['transactionStatus'], 'empty'))
             ->setResponseData(\serialize($response))
         ;
+        $this->em->persist($logEntry);
 
         $this->em->flush($logEntry);
     }
