@@ -98,13 +98,15 @@ class WayForPayService
     /**
      * @param Payment|null $payment
      * @param array        $response
+     * @param string       $fwdaysResponse
      */
-    public function saveResponseLog($payment, array $response)
+    public function saveResponseLog($payment, array $response, $fwdaysResponse = null)
     {
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
             ->setStatus($this->getArrMean($response['transactionStatus'], 'empty'))
             ->setResponseData(\serialize($response))
+            ->setFwdaysResponse($fwdaysResponse)
         ;
         $this->em->persist($logEntry);
 

@@ -55,6 +55,13 @@ class WayForPayLog
     private $responseData;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     */
+    private $fwdaysResponse;
+
+    /**
      * WayForPayLog constructor.
      */
     public function __construct()
@@ -148,5 +155,33 @@ class WayForPayLog
         $this->responseData = $responseData;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFwdaysResponse()
+    {
+        return $this->fwdaysResponse;
+    }
+
+    /**
+     * @param string $fwdaysResponse
+     *
+     * @return $this
+     */
+    public function setFwdaysResponse($fwdaysResponse)
+    {
+        $this->fwdaysResponse = $fwdaysResponse;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseAsArray()
+    {
+        return unserialize($this->responseData);
     }
 }

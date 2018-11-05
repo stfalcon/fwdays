@@ -103,10 +103,8 @@ class WayForPayController extends Controller
             return new JsonResponse(['error' => 'bad content'], 400);
         }
         $wayForPay = $this->get('app.way_for_pay.service');
-        $wayForPay->saveResponseLog(null, $response);
 
         $payment = null;
-
         if (is_array($response) && isset($response['orderNo'])) {
             /** @var Payment $payment */
             $payment = $this->getDoctrine()
@@ -118,11 +116,10 @@ class WayForPayController extends Controller
             $this->get('logger')->addCritical(
                 'WayForPay interaction Fail! payment not found'
             );
+            $wayForPay->saveResponseLog(null, $response, 'payment not found');
 
             return new JsonResponse(['error' => 'payment not found'], 400);
         }
-
-        $wayForPay->saveResponseLog($payment, $response);
 
         if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
             $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
@@ -147,6 +144,8 @@ class WayForPayController extends Controller
 
             $result = $wayForPay->getResponseOnServiceUrl($response);
 
+            $wayForPay->saveResponseLog($payment, $response, 'set paid');
+
             return new JsonResponse(\json_encode($result));
         }
 
@@ -154,6 +153,8 @@ class WayForPayController extends Controller
             'WayForPay interaction Fail!',
             $this->getRequestDataToArr($response, $payment)
         );
+
+        $wayForPay->saveResponseLog($payment, $response, 'payment is paid or invalid data');
 
         return new JsonResponse(['error' => 'payment is paid or invalid data'], 400);
     }

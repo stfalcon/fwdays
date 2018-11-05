@@ -42,7 +42,7 @@ class WayForPayLogAdmin extends Admin
             ->add('date', null, ['label' => 'Дата'])
             ->add('payment', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
-            ->add('responseData', null, ['label' => 'Дані відповіді сервера'])
+            ->add('responseAsArray', 'array', ['label' => 'Дані відповіді сервера'])
         ;
     }
 
@@ -67,6 +67,7 @@ class WayForPayLogAdmin extends Admin
             ->add('date', null, ['label' => 'Дата'])
             ->add('payment', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
+            ->add('fwdaysResponse', null, ['label' => 'Відповіть fwdays'])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
