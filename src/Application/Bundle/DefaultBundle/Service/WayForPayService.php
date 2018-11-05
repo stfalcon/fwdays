@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Application\Bundle\DefaultBundle\Entity\WayForPayLog;
 use Application\Bundle\UserBundle\Entity\User;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
@@ -86,6 +87,23 @@ class WayForPayService
         }
 
         return $result;
+    }
+
+    /**
+     * @param Payment $payment
+     * @param array   $response
+     *
+     * @return WayForPayLog
+     */
+    public function getResponseLog(Payment $payment, array $response)
+    {
+        $logEntry = (new WayForPayLog())
+            ->setPayment($payment)
+            ->setStatus($this->getArrMean($response['transactionStatus'], 'empty'))
+            ->setResponseData(\serialize($response))
+        ;
+
+        return $logEntry;
     }
 
     /**
@@ -182,6 +200,7 @@ class WayForPayService
         $params['language'] = 'uk' === $this->locale ? 'ua' : $this->locale;
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
+//        $params['returnUrl'] = $this->router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
