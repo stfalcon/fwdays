@@ -139,7 +139,8 @@ class WayForPayController extends Controller
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
                 $this->get('logger')->addCritical(
-                    $e->getMessage()
+                    $e->getMessage(),
+                    $this->getRequestDataToArr($response, $payment)
                 );
             }
 
