@@ -86,7 +86,7 @@ class WayForPayService
             $result = [
                 'orderReference' => $response['orderReference'],
                 'status' => 'accept',
-                'time' => (new \DateTime())->getTimestamp(),
+                'time' => (int) (new \DateTime())->getTimestamp(),
             ];
 
             $result['signature'] = $this->getSignHash($result);
