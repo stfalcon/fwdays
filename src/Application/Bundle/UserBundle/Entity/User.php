@@ -231,6 +231,13 @@ class User extends BaseUser
     protected $plainPassword;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $recToken;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -767,6 +774,26 @@ class User extends BaseUser
     public function setAllowShareContacts($allowShareContacts)
     {
         $this->allowShareContacts = $allowShareContacts;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecToken()
+    {
+        return $this->recToken;
+    }
+
+    /**
+     * @param string $recToken
+     *
+     * @return $this
+     */
+    public function setRecToken($recToken)
+    {
+        $this->recToken = $recToken;
 
         return $this;
     }

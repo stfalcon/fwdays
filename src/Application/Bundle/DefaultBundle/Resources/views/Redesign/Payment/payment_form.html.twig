@@ -66,11 +66,25 @@
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">
                 <label class="form-label" for="user_phone">{{ 'user.phone.title_payment'|trans }}</label>
-                <input class="input valid-phone mask-phone-input--js" placeholder="+380" id="user_phone" name="user_phone" type="tel" value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
+                <input class="input valid-phone mask-phone-input--js" placeholder="+380" id="user_phone"
+                       name="user_phone" type="tel"
+                       value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">
             <button id="buy-ticket-btn" class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
+        </div>
+    </div>
+
+    <div class="form-row form-row--checkbox">
+        <div class="form-col">
+            <div class="checkbox checkbox--offer-contract">
+                <input id="agree-check-payment" type="checkbox" name="_remember_me" class="checkbox__input" required
+                    data-msg="{{ 'check_box.agree_with_conditions_error' |trans }}">
+                <label for="agree-check-payment" class="checkbox__label">{{ 'check_box.agree_with_conditions_1' |trans }}
+                    <a href="{{ path('show_page', {'slug' : 'public-offer'}) }}" target="_blank" class="btn-link">{{ 'check_box.agree_with_conditions_2' |trans }}</a>
+                </label>
+            </div>
         </div>
     </div>
 </form>

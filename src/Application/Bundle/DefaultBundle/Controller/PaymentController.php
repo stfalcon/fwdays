@@ -61,15 +61,17 @@ class PaymentController extends Controller
         /** @var Payment $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
-
+        $em = $this->getDoctrine()->getManager();
         if (!$ticket && !$payment) {
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
         }
 
         if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
             $payment = $ticket->getPayment();
+            $payment->setUser($ticket->getUser());
+            $em->flush();
         }
 
         if ($ticket && !$payment) {
@@ -331,12 +333,13 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
+
     /**
-     * Pay for payment by promocode (100% discount)
+     * Pay for payment by promocode (100% discount).
      *
      * @Route("/event/{eventSlug}/pay-by-promocode", name="event_pay_by_promocode")
      *
@@ -358,7 +361,7 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
@@ -374,7 +377,7 @@ class PaymentController extends Controller
      */
     private function getPaymentHtml(Event $event, Payment $payment, PromoCode $promoCode = null)
     {
-        $ikData = $this->get('stfalcon_event.interkassa.service')->getData($payment, $event);
+        $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
@@ -388,28 +391,31 @@ class PaymentController extends Controller
             $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
         }
 
-        $html = $this->renderView('@ApplicationDefault/Redesign/Payment/pay.html.twig', [
-            'data' => $ikData,
-            'event' => $event,
-            'payment' => $payment,
-            'discountAmount' => $discountAmount,
-        ]);
+        $formAction = null;
+        $payType = null;
 
         $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
-        $formAction = '';
         $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
         /** @var User */
         $user = $this->getUser();
         if ($payment->getTickets()->count() > 0) {
             if (0 === (int) $payment->getAmount()) {
-                 $formAction = $payment->getFwdaysAmount() > 0 ?
+                $formAction = $payment->getFwdaysAmount() > 0 ?
                     $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
                     $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
             } else {
-                $formAction = 'https://sci.interkassa.com/';
+                $payType = 'wayforpay';
             }
         }
+
+        $html = $this->renderView('@ApplicationDefault/Redesign/Payment/wayforpay.html.twig', [
+            'params' => $paySystemData,
+            'event' => $event,
+            'payment' => $payment,
+            'discountAmount' => $discountAmount,
+            'pay_type' => $payType,
+        ]);
 
         return new JsonResponse([
             'result' => true,
@@ -420,6 +426,7 @@ class PaymentController extends Controller
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
+            'pay_type' => $payType,
             'tickets_count' => $payment->getTickets()->count(),
             'byeBtnCaption' => $byeBtnCaption,
         ]);

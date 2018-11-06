@@ -6,6 +6,12 @@ services:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
 
+    app.wayforpay_log.admin:
+        class: Application\Bundle\DefaultBundle\Admin\WayForPayLogAdmin
+        tags:
+        - { name: sonata.admin, manager_type: orm, group: Логи, label: Логи wayforpay}
+        arguments: [~, 'Application\Bundle\DefaultBundle\Entity\WayForPayLog', ~]
+
     app.pluralization.twig.extension:
         class: Application\Bundle\DefaultBundle\Twig\AppPluralizationExtension
         tags:
@@ -78,3 +84,13 @@ services:
     app.service.google_map_service:
         class: Application\Bundle\DefaultBundle\Service\GoogleMapService
         arguments: ['%google_api_key%', '@buzz']
+
+    app.way_for_pay.service:
+      class: Application\Bundle\DefaultBundle\Service\WayForPayService
+      arguments:
+      - "%stfalcon_event.config%"
+      - "@translator"
+      - "@request_stack"
+      - "@router"
+      - "@security.token_storage"
+      - "@doctrine.orm.entity_manager"

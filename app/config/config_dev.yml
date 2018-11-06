@@ -31,9 +31,9 @@ swiftmailer:
     host:      localhost
 
 stfalcon_event:
-    interkassa:
-        shop_id: "%interkassa_shop_id%"
-        secret: "%interkassa_secret%"
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
     discount: 0.2
 
 twig:

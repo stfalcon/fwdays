@@ -1,6 +1,11 @@
 imports:
     - { resource: config.yml }
 
+sentry:
+    skip_capture:
+    - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+    dsn: "%sentry_dsn_stag%"
+
 monolog:
     handlers:
         main:
@@ -9,16 +14,19 @@ monolog:
             handler:      grouped_main
         nested:
             type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        #        sentry:
+        #            type:  raven
+        #            level: error
         grouped_main:
             type:    group
             members: [nested]
 
 stfalcon_event:
-    interkassa:
-        shop_id: "%interkassa_shop_id%"
-        secret: "%interkassa_secret%"
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
     discount: 0.2
 
 twig:

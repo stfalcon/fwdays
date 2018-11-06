@@ -122,6 +122,10 @@ interkassa.payment.pending: Payment is pending!
 interkassa.payment.pending.wait: Please, wait until the payment confirmation.
 interkassa.payment.description : 'Participate in %event_name%. The payer is %user_name% (%user_id%). Participants IDs: %ids_array%'
 
+check_box.agree_with_conditions_1: 'I agree with conditions and accept '
+check_box.agree_with_conditions_2: 'public offer contract'
+check_box.agree_with_conditions_error: "You must accept public offer contract"
+
 ticket.dear_user: Dear participant <b>%user_name%</b>,
 ticket.wait_for_you: 'We are waiting for you:'
 ticket.city: %city_name%,

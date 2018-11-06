@@ -26,7 +26,16 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('interkassa')
                     ->children()
                         ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
-                        ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end();
+                        ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('wayforpay')
+                    ->children()
+                        ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+        ;
 
         return $treeBuilder;
     }

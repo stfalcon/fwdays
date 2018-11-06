@@ -111,7 +111,9 @@ interkassa.payment.success.emailsend: На ваш e-mail надіслано по
 interkassa.payment.pending: Оплата ще не завершена!
 interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
 interkassa.payment.description : 'Участь в %event_name%. Платник %user_name% (%user_id%). ID учасників: %ids_array%'
-
+check_box.agree_with_conditions_1: 'Я згідний з умовами та приймаю '
+check_box.agree_with_conditions_2: 'договір публічної оферти'
+check_box.agree_with_conditions_error: "Згода з умовами договору публічної оферти є обов'язковою"
 event.events.title: Всі події
 events.future: Майбутні події
 event.page.program: Програма

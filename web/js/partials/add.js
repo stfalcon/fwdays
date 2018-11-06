@@ -26,7 +26,7 @@ function popupwindow(url, title, w, h) {
 }
 
 function setPaymentHtmlbyData(data, e_slug) {
-    $('#payment').attr('action', data.form_action);
+    $('#payment').data('pay-type', data.pay_type).attr('action', data.form_action);
     $('#pay-form').html(data.html).data('event', e_slug);
     $('#payment-sums').html(data.paymentSums);
     $('#cancel-promo-code').click();
@@ -191,6 +191,19 @@ function submitValidForm(rId, withCaptcha) {
         }
     }
 }
+
+$(document).on('submit', '#payment', function (e) {
+    var form = $(this);
+    if (form.data('pay-type') === 'wayforpay') {
+        e.preventDefault();
+        if (!detectmob()) {
+            var inst = $('[data-remodal-id=modal-payment]').remodal();
+            inst.close();
+        }
+        paymentSytemPay();
+    }
+});
+
 
 $(document).on('click', '.user-payment__remove', function () {
     var elem = $(this);
@@ -459,8 +472,9 @@ $(document).ready(function () {
     });
 
     $('#buy-ticket-btn').on('click', function () {
-        if ($('#user_phone').valid()) {
-            $.post(Routing.generate('update_user_phone', {phoneNumber: $('#user_phone').val()}), function (data) {
+        var use_phone = $('#user_phone').val();
+        if (use_phone !== '' && $('#user_phone').valid()) {
+            $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {
             });
         }
     });
