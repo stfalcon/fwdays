@@ -138,6 +138,9 @@ class WayForPayController extends Controller
                 $referralService->chargingReferral($payment);
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
+                $this->get('logger')->addCritical(
+                    $e->getMessage()
+                );
             }
 
             $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
