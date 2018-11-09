@@ -312,7 +312,7 @@
 
   .event-action-mob {
     display: block;
-    margin-bottom: 32px;
+    margin-bottom: 80px;
     text-align: center;
 
     &__btn {
@@ -354,13 +354,33 @@
     display: block;
 
     &__item {
+      margin-bottom: 40px;
       max-width: initial;
       flex-basis: initial;
+
+      &--with-icon {
+        .info-list__name {
+          padding-left: 0;
+        }
+      }
+
+      ul {
+        padding-left: 24px;
+      }
     }
 
     &__description {
       width: 100%;
       max-width: initial;
+    }
+
+    &__icon {
+      display: none;
+    }
+
+    &__name {
+      display: block;
+      margin-bottom: 6px;
     }
   }
 
@@ -1183,31 +1203,6 @@
 
   .event-title {
     font-size: 28px;
-  }
-
-  .info-list {
-    &__item {
-      margin-bottom: 40px;
-
-      &--with-icon {
-        .info-list__name {
-          padding-left: 0;
-        }
-      }
-
-      ul {
-        padding-left: 24px;
-      }
-    }
-
-    &__icon {
-      display: none;
-    }
-
-    &__name {
-      display: block;
-      margin-bottom: 6px;
-    }
   }
 
   .event-video {
