@@ -318,7 +318,6 @@
     &__btn {
       display: block;
       margin: auto;
-      max-width: 343px;
       width: 100%;
     }
 
@@ -1188,12 +1187,24 @@
 
   .info-list {
     &__item {
-      display: block;
       margin-bottom: 40px;
+
+      &--mob-none {
+        display: none;
+      }
+
+      ul {
+        padding-left: 24px;
+      }
     }
 
-    &__left {
-      margin: 0 0 10px 0;
+    &__icon {
+      display: none;
+    }
+
+    &__name {
+      display: block;
+      margin-bottom: 6px;
     }
   }
 
@@ -1216,6 +1227,11 @@
       font-size: 60px;
       line-height: 60px;
       margin-bottom: 0;
+    }
+
+    &__value {
+      font-size: 14px;
+      line-height: 16px;
     }
   }
 

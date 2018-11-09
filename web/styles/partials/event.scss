@@ -203,12 +203,15 @@
     margin-bottom: 60px;
   }
 
-  &__left {
+  &__icon {
+    display: block;
     margin-right: 18px;
     flex-shrink: 0;
   }
 
   &__name {
+    display: flex;
+    align-items: center;
     font-size: 24px;
     line-height: 24px;
     font-weight: 700;
@@ -220,7 +223,7 @@
 
     ul {
       list-style: initial;
-      padding-left: 18px;
+      padding-left: 94px;
     }
 
     li {
@@ -282,7 +285,6 @@
     max-width: 33.333%;
     padding-right: 10px;
     margin-bottom: 90px;
-
 
     &:first-child,
     &:nth-child(4n) {
@@ -708,7 +710,7 @@
     font-size: 12px;
 
     span {
-      background-color: #f7f5e9;
+      background-color: #F7F5E9;
       margin-right: 3px;
       padding: 2px 4px;
     }
