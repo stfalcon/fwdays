@@ -288,15 +288,14 @@
 
   &__item {
     display: flex;
-    justify-content: center;
     flex-basis: 33.333%;
     max-width: 33.333%;
-    padding-right: 10px;
     margin-bottom: 90px;
+    padding-left: 80px;
 
     &:first-child,
     &:nth-child(4n) {
-      justify-content: flex-start;
+      padding-left: 0;
     }
   }
 

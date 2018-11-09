@@ -368,7 +368,7 @@
     &__item {
       flex-basis: 50%;
       max-width: 50%;
-      justify-content: flex-start;
+      padding-left: 0;
     }
   }
 
@@ -1191,12 +1191,8 @@
 
       &--with-icon {
         .info-list__name {
-          padding-left: 0px;
+          padding-left: 0;
         }
-      }
-
-      &--mob-none {
-        display: none;
       }
 
       ul {
