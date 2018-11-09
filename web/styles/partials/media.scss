@@ -351,6 +351,28 @@
     margin-bottom: 40px;
   }
 
+  .info-list {
+    display: block;
+
+    &__item {
+      max-width: initial;
+      flex-basis: initial;
+    }
+
+    &__description {
+      width: 100%;
+      max-width: initial;
+    }
+  }
+
+  .conf-numbers {
+    &__item {
+      flex-basis: 50%;
+      max-width: 50%;
+      justify-content: flex-start;
+    }
+  }
+
   .speakers {
     &__title {
       margin: 0 0 20px;
@@ -1153,6 +1175,47 @@
 
     &__photo {
       max-width: 180px;
+    }
+  }
+
+  .event-themes {
+    margin-bottom: 100px;
+  }
+
+  .event-title {
+    font-size: 28px;
+  }
+
+  .info-list {
+    &__item {
+      display: block;
+      margin-bottom: 40px;
+    }
+
+    &__left {
+      margin: 0 0 10px 0;
+    }
+  }
+
+  .event-video {
+    margin-bottom: 80px;
+
+    &__frame {
+      margin-bottom: 24px;
+    }
+  }
+
+  .conf-numbers {
+    padding: 90px 0 25px;
+
+    &__item {
+      margin-bottom: 65px;
+    }
+
+    &__label {
+      font-size: 60px;
+      line-height: 60px;
+      margin-bottom: 0;
     }
   }
 
