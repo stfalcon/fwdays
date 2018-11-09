@@ -201,15 +201,23 @@
     flex-basis: 50%;
     max-width: 50%;
     margin-bottom: 60px;
+
+    &--with-icon {
+      .info-list__name {
+        padding-left: 68px;
+      }
+    }
   }
 
   &__icon {
-    display: block;
-    margin-right: 18px;
-    flex-shrink: 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &__name {
+    position: relative;
     display: flex;
     align-items: center;
     font-size: 24px;

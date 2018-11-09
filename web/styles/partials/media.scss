@@ -1189,6 +1189,12 @@
     &__item {
       margin-bottom: 40px;
 
+      &--with-icon {
+        .info-list__name {
+          padding-left: 0px;
+        }
+      }
+
       &--mob-none {
         display: none;
       }
