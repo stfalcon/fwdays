@@ -384,6 +384,14 @@
     }
   }
 
+  .event-video {
+    margin-bottom: 80px;
+
+    &__frame {
+      margin-bottom: 24px;
+    }
+  }
+
   .conf-numbers {
     &__item {
       flex-basis: 50%;
@@ -1203,14 +1211,6 @@
 
   .event-title {
     font-size: 28px;
-  }
-
-  .event-video {
-    margin-bottom: 80px;
-
-    &__frame {
-      margin-bottom: 24px;
-    }
   }
 
   .conf-numbers {
