@@ -380,6 +380,8 @@
 
     &__name {
       display: block;
+      width: 100%;
+      max-width: initial;
       margin-bottom: 6px;
     }
   }
