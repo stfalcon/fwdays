@@ -232,6 +232,13 @@ class Event implements Translatable
     protected $backgroundColor = '#4e4e84';
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false}, nullable=true)
+     */
+    protected $useCustomBackground = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
@@ -1161,6 +1168,26 @@ class Event implements Translatable
     public function setAudiences($audiences)
     {
         $this->audiences = $audiences;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseCustomBackground()
+    {
+        return $this->useCustomBackground;
+    }
+
+    /**
+     * @param bool $useCustomBackground
+     *
+     * @return $this
+     */
+    public function setUseCustomBackground($useCustomBackground)
+    {
+        $this->useCustomBackground = $useCustomBackground;
 
         return $this;
     }
