@@ -162,6 +162,15 @@
   }
 }
 
+.event-header--business {
+  background: #00175C url(/img/business_bg.jpg) no-repeat top center !important;
+  background-size: 1920px;
+
+  .event-header__photo {
+    display: none;
+  }
+}
+
 .event-action-mob {
   display: none;
 }
@@ -178,6 +187,142 @@
     p {
       margin-bottom: 26px;
     }
+  }
+}
+
+.event-title {
+  font-size: 40px;
+  line-height: 40px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.event-themes {
+  margin-bottom: 80px;
+}
+
+.info-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__item {
+    display: flex;
+    flex-basis: 50%;
+    max-width: 50%;
+    margin-bottom: 60px;
+
+    &--with-icon {
+      .info-list__name {
+        padding-left: 68px;
+      }
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__name {
+    max-width: 410px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__description {
+    max-width: 410px;
+
+    ul {
+      list-style: initial;
+      padding-left: 94px;
+    }
+
+    li {
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__text {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.event-video {
+  margin-bottom: 20px;
+
+  &__frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 55%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 46px;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
+.conf-numbers {
+  padding: 120px 0 30px;
+  margin-bottom: 50px;
+
+  &__title {
+    color: $white-color;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    display: flex;
+    flex-basis: 33.333%;
+    max-width: 33.333%;
+    margin-bottom: 90px;
+    padding-left: 80px;
+
+    &:first-child,
+    &:nth-child(4n) {
+      padding-left: 0;
+    }
+  }
+
+  &__label {
+    font-size: 120px;
+    line-height: 115px;
+    font-weight: 700;
+    color: #FF516B;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  &__value {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 18px;
+    color: $white-color;
   }
 }
 
@@ -582,7 +727,7 @@
     font-size: 12px;
 
     span {
-      background-color: #f7f5e9;
+      background-color: #F7F5E9;
       margin-right: 3px;
       padding: 2px 4px;
     }

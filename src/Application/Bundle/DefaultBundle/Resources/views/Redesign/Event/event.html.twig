@@ -27,36 +27,41 @@
     'position':'event',
     'eventCurrentAmount':eventCurrentAmount
     } %}
+
     <!--BEGIN event-description-->
-    <section class="event-description">
-        <div class="container container--sm">
-            <div class="event-description__text static-styles">
-            {{ event.about|raw }}
+    {%- if event.useCustomBackground != true -%}
+        <section class="event-description">
+            <div class="container container--sm">
+                <div class="event-description__text static-styles">
+                    {{ event.about|raw }}
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {%- else -%}
+        {{ event.about|raw }}
+    {%- endif -%}
     <!--END event-description-->
     <!--BEGIN speakers-->
     {% include 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig' with {'event':event} %}
     <!--END speakers-->
     <!--BEGIN program-->
-    {% if programPage %}
-    <section id="program-event" class="schedule">
-        <div class="container schedule__container">
-            <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
-            {% if programPage.textNew is not empty %}
-                {{ programPage.textNew|raw }}
-            {% else %}
-                {{ programPage.text|raw }}
-            {% endif %}
-        </div>
-    </section>
-    {% endif %}
+    {%- if programPage -%}
+        <section id="program-event" class="schedule">
+            <div class="container schedule__container">
+                <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
+                {%- if programPage.textNew is not empty -%}
+                    {{ programPage.textNew|raw }}
+                {%- else -%}
+                    {{ programPage.text|raw }}
+                {%- endif -%}
+            </div>
+        </section>
+    {%- endif -%}
     <!--END program-->
 
-    {% if event.activeAndFuture and event.receivePayments %}
+    {%- if event.activeAndFuture and event.receivePayments -%}
         {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
-    {% endif %}
+    {%- endif -%}
 
     {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
 
@@ -69,9 +74,9 @@
             <div class="location__description">
                 {{ event.city }}, {{ event.place }}
             </div>
-            {% if venuePage %}
+            {%- if venuePage -%}
                 <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
-            {% endif %}
+            {%- endif -%}
         </div>
         <div class="container">
             <div id="map" data-event="{{ event.slug }}" data-lng="{{ event.lng }}" data-lat="{{ event.lat }}" class="location__map"></div>

@@ -178,6 +178,7 @@ class EventAdmin extends Admin
                 ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                 ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
                 ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
+                ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
             ->end()
             ->with('Даты', ['class' => 'col-md-6'])
                 ->add('dateFormat', null, [
