@@ -6,8 +6,7 @@
     {% set scrollClass = ' go-to-block' %}
 {% endif %}
 <!--BEGIN event-header-->
-{#<section class="event-header" style="background-color: {{ event.backgroundColor }};">#}
-<section class="event-header" style="background: #00175C url(/img/business_bg.jpg) no-repeat top center; background-size: 1920px;">
+<section class="event-header event-header--business" style="background-color: {{ event.backgroundColor }};">
     <div class="container">
         <div class="event-header__box">
             <h1 class="event-header__title">{{ event.name }}</h1>
@@ -41,11 +40,11 @@
                 </div>
             </div>
         </div>
-        {#<div class="event-header__photo">#}
-            {#{% if event.logoFile is not empty %}#}
-                {#<img class="event-header__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="{{ event.name }}">#}
-            {#{% endif %}#}
-        {#</div>#}
+        <div class="event-header__photo">
+            {% if event.logoFile is not empty %}
+                <img class="event-header__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="{{ event.name }}">
+            {% endif %}
+        </div>
     </div>
 </section>
 <!--END event-header-->

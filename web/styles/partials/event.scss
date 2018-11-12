@@ -162,6 +162,15 @@
   }
 }
 
+.event-header--business {
+  background: #00175C url(/img/business_bg.jpg) no-repeat top center;
+  background-size: 1920px;
+
+  .event-header__photo {
+    display: none;
+  }
+}
+
 .event-action-mob {
   display: none;
 }
