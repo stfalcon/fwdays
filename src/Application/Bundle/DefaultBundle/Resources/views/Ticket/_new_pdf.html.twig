@@ -90,6 +90,14 @@
             line-height: 18px;
         }
 
+        .content-td-link {
+            font-size: 12px;
+            line-height: 18px;
+            color: #777;
+            text-decoration: none;
+            border-bottom: 1px solid #eee;
+        }
+
         .qr-code {
             text-align: center;
         }
@@ -167,6 +175,15 @@
                     <br>
                     <div class="content-td">
                         {{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        <a href="{{ url('show_page', {'slug':'public-offer'}, true) }}" target="_blank" class="content-td-link">{{ url('show_page', {'slug':'public-offer'}, true) }}</a>
                     </div>
                 </td>
             </tr>

@@ -215,6 +215,7 @@ ticket.email.event_date.title: 'Дата'
 ticket.email.event_reg.title: 'Реєстрація'
 ticket.email.event_member.title: 'Учасник'
 ticket.email.ticket_price.title: 'Ціна квитка'
+ticket.email.conditions.title: 'Умови'
 ticket.email.event.title: 'Подія'
 
 welcome.email.title: Ласкаво просимо!
