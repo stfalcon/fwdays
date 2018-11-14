@@ -41,6 +41,32 @@
         {{ event.about|raw }}
     {%- endif -%}
     <!--END event-description-->
+
+    <!--BEGIN cooperation-->
+
+    <div class="cooperation">
+        <div class="container">
+            <div class="cooperation__box">
+                <div class="cooperation__photo">
+                    <img src="/img/pict_callforpapers.jpg" alt="" class="cooperation__img">
+                </div>
+                <div class="cooperation__info">
+                    <div class="event-title cooperation__title">Want to be a speaker?</div>
+                    <p class="cooperation__text">We are currently looking for speakers. If you have practical background
+                        in
+                        the topics, listed
+                        above or want to share your experience in other spheres devoted to the topics of the conference.<br>
+                        Please, fill out the form till November 20.</p>
+                    <a href="https://docs.google.com/form   s/d/e/1FAIpQLSeYDbFHZiW3G1UHoiWiek3o3xoO7ye-fEoVxRGi85s7MpyjkA/viewform"
+                       class="btn btn--secondary btn--md cooperation__btn" target="_blank" style="color: #fff;">Call for
+                        papers</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--END cooperation-->
+
     <!--BEGIN speakers-->
     {% include 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig' with {'event':event} %}
     <!--END speakers-->

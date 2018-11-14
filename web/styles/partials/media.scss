@@ -409,6 +409,18 @@
     }
   }
 
+  .cooperation {
+    &__info {
+      margin: 0 -24px;
+      padding: 64px 24px 64px 325px;
+    }
+
+    &__photo {
+      top: -41px;
+      transform: none;
+    }
+  }
+
   .speakers {
     &__title {
       margin: 0 0 20px;
@@ -1242,6 +1254,36 @@
     &__value {
       font-size: 14px;
       line-height: 16px;
+    }
+  }
+
+  .cooperation {
+    &__box {
+      display: block;
+      background: #F5F3EA;
+      margin: 0 -16px;
+      padding: 0 16px;
+    }
+
+    &__info {
+      margin: -41px -16px 0;
+      padding: 0 16px 46px;
+    }
+
+    &__photo {
+      position: static;
+      width: initial;
+      height: initial;
+      transform: translateY(-41px);
+      margin: 0 auto 26px;
+    }
+
+    &__title {
+      line-height: 28px;
+    }
+
+    &__btn {
+      width: 100%;
     }
   }
 
