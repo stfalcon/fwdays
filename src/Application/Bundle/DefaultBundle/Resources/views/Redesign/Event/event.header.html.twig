@@ -6,7 +6,7 @@
     {% set scrollClass = ' go-to-block' %}
 {% endif %}
 <!--BEGIN event-header-->
-<section class="event-header event-header--business {% if event.useCustomBackground == true -%}event-header--business{%- endif -%}" style="background-color: {{ event.backgroundColor }};">
+<section class="event-header {% if event.useCustomBackground == true -%}event-header--business{%- endif -%}" style="background-color: {{ event.backgroundColor }};">
     <div class="container">
         <div class="event-header__box">
             <h1 class="event-header__title">{{ event.name }}</h1>
