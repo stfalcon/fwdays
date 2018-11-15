@@ -63,7 +63,7 @@ class DefaultController extends Controller
 
         $allActiveEvents = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findBy(['active' => true]);
+            ->findBy(['active' => true, 'adminOnly' => false]);
 
         return $this->render('ApplicationDefaultBundle:Redesign:cabinet.html.twig', [
             'user' => $user,
