@@ -172,6 +172,8 @@ class WayForPayService
             ]
         );
 
+        $description = str_replace('\'', '-', $description);
+
         if (mb_strlen($description) > 255) {
             $description = mb_substr($description, 0, 255);
         }
