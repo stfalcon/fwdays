@@ -163,7 +163,10 @@
 }
 
 .event-header--business {
-  background: #00175C url(/img/business_bg.jpg) no-repeat top center !important;
+  background-image: url(/img/business_bg.jpg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-color: #00175C !important;
   background-size: 1920px;
 
   .event-header__photo {
@@ -1267,6 +1270,49 @@ a.fix-event-header__title {   //for review-page, venue-page
     margin: auto;
     max-width: 343px;
     width: 100%;
+  }
+}
+
+.cooperation {
+  margin-bottom: 90px;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__text {
+    line-height: 26px;
+    margin-bottom: 20px;
+  }
+
+  &__box {
+    position: relative;
+    display: flex;
+  }
+
+  &__info {
+    margin-left: 90px;
+    padding: 88px 120px 88px 236px;
+    background: #F5F3EA;
+  }
+
+  &__photo {
+    width: 280px;
+    height: 280px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    flex-shrink: 0;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+  }
+
+  &__btn {
+    width: 264px;
   }
 }
 
