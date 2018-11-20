@@ -111,9 +111,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign/Partner:partners.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function eventPartnersAction(Event $event)
     {
@@ -140,7 +138,7 @@ class EventController extends Controller
             krsort($sortedPartners[1]);
         }
 
-        return ['partners' => $sortedPartners];
+        return $this->render('ApplicationDefaultBundle:Redesign/Partner:partners.html.twig', ['partners' => $sortedPartners]);
     }
 
     /**
