@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <section class="event-video">
+        <div class="container container--sm">
+            <h2 class="event-title">Conference format</h2>
+            <div class="event-video__frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/lSQE5d1rbLI" allowfullscreen=""></iframe>
+            </div>
+            <ul class="info-list">
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">3 Tracks</div>
+                        <p class="info-list__text">Up-to-date talks from the best experts in Ukrainian, English and
+                            Russian</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Workshops track</div>
+                        <p class="info-list__text">Workshops are aimed at discussing practical everyday questions</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Speakers’ corner</div>
+                        <p class="info-list__text">You can talk to the speakers and ask them questions without time
+                            limitation</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Partner zone</div>
+                        <p class="info-list__text">Find new business partners, ideas and share contacts</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <br>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+    <section class="event-video">
+        <div class="container container--sm">
+            <h2 class="event-title">Conference format</h2>
+            <div class="event-video__frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/lSQE5d1rbLI" allowfullscreen=""></iframe>
+            </div>
+            <ul class="info-list">
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">3 Tracks</div>
+                        <p class="info-list__text">Up-to-date talks from the best experts in Ukrainian, English and
+                            Russian</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Workshops track</div>
+                        <p class="info-list__text">Workshops are aimed at discussing practical everyday questions</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Speakers’ corner</div>
+                        <p class="info-list__text">You can talk to the speakers and ask them questions without time
+                            limitation</p>
+                    </div>
+                </li>
+                <li class="info-list__item">
+                    <div class="info-list__description">
+                        <div class="info-list__name">Partner zone</div>
+                        <p class="info-list__text">Find new business partners, ideas and share contacts</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+</div>
+<script src="../js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+
+    function doHighlight4() {
+        CodeMirror.runMode(document.getElementById("code-4").value, "application/xml",
+            document.getElementById("output-4"));
+    }
+
+    doHighlight1();
+    doHighlight2();
+    doHighlight3();
+    doHighlight4();
+</script>
+</html>
