@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <section class="conf-numbers"
+             style="background: #00175C url(https://fwdays.com/img/numbers_bg.jpg) no-repeat top center; background-size: 1920px;">
+        <div class="container container--sm">
+            <h2 class="event-title conf-numbers__title">Conference in figures</h2>
+            <ul class="conf-numbers__list">
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">600</div>
+                        <div class="conf-numbers__value">participants</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">9</div>
+                        <div class="conf-numbers__value">hours of networking</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">20</div>
+                        <div class="conf-numbers__value">speakers</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">29</div>
+                        <div class="conf-numbers__value">conferences from Fwdays</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">3</div>
+                        <div class="conf-numbers__value">tracks</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">1</div>
+                        <div class="conf-numbers__value">workshops track</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <br>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+    <section class="conf-numbers"
+             style="background: #00175C url(https://fwdays.com/img/numbers_bg.jpg) no-repeat top center; background-size: 1920px;">
+        <div class="container container--sm">
+            <h2 class="event-title conf-numbers__title">Conference in figures</h2>
+            <ul class="conf-numbers__list">
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">600</div>
+                        <div class="conf-numbers__value">participants</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">9</div>
+                        <div class="conf-numbers__value">hours of networking</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">20</div>
+                        <div class="conf-numbers__value">speakers</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">29</div>
+                        <div class="conf-numbers__value">conferences from Fwdays</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">3</div>
+                        <div class="conf-numbers__value">tracks</div>
+                    </div>
+                </li>
+                <li class="conf-numbers__item">
+                    <div class="conf-numbers__info">
+                        <div class="conf-numbers__label">1</div>
+                        <div class="conf-numbers__value">workshops track</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+</div>
+<script src="../js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+
+    function doHighlight4() {
+        CodeMirror.runMode(document.getElementById("code-4").value, "application/xml",
+            document.getElementById("output-4"));
+    }
+
+    doHighlight1();
+    doHighlight2();
+    doHighlight3();
+    doHighlight4();
+</script>
+</html>
