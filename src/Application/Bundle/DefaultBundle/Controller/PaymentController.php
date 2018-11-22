@@ -377,7 +377,6 @@ class PaymentController extends Controller
      */
     private function getPaymentHtml(Event $event, Payment $payment, PromoCode $promoCode = null)
     {
-        $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
@@ -390,6 +389,8 @@ class PaymentController extends Controller
         if ($promoCode) {
             $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
         }
+
+        $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
 
         $formAction = null;
         $payType = null;
