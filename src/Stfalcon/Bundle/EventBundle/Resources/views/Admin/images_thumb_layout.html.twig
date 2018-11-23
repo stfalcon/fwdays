@@ -3,7 +3,13 @@
 {% block field%}
     <div class="pull-left" style="padding-right: 10px">
         <span>Логотип</span><br />
-        <img src="{{vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto" style="background-color: {{ object.backgroundColor }};"/>
+        <div {% if object.useCustomBackground == true and object.backgroundFile is not empty -%}
+                style="width: 100px; height: 100px; background-size: contain; background-position: center; background-image: url({{ vich_uploader_asset(object, 'backgroundFile') }});"
+                {%- else -%} style="background-color: {{ object.backgroundColor }};"{%- endif -%}>
+            {% if object.logoFile is not empty and (object.showLogoWithBackground or object.useCustomBackground == false) %}
+                <img src="{{vich_uploader_asset(object, 'logoFile') }}" title="logo image" width="100px" height="auto"/>
+            {% endif %}
+        </div>
     </div>
     {% if object.smallLogoFile is not empty %}
     <div class="pull-left" style="padding-right: 10px">
