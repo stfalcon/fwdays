@@ -1,0 +1,24 @@
+sonata_admin:
+  title: framework days
+  templates:
+    layout: "::admin.html.twig"
+    user_block: '::user_block.html.twig'
+  dashboard:
+    blocks:
+      # display two dashboard blocks
+      -
+        position: left
+        type: sonata.admin.block.admin_list
+        settings:
+          groups:
+            - "Пользователи"
+            - "События"
+            - "group.translation"
+      -
+        position: right
+        type: sonata.admin.block.admin_list
+        settings:
+          groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки", "Логи"]
+      -
+        position: left
+        type: sonata.block.service.statistic
