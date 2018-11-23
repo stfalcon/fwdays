@@ -162,16 +162,9 @@
   }
 }
 
-.event-header--business {
-  background-image: url(/img/business_bg.jpg);
+.event-header--background {
   background-repeat: no-repeat;
-  background-position: top center;
-  background-color: #00175C !important;
-  background-size: 1920px;
-
-  .event-header__photo {
-    display: none;
-  }
+  background-size: cover;
 }
 
 .event-action-mob {

@@ -178,6 +178,13 @@ class Event implements Translatable
     protected $smallLogo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $background;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -239,6 +246,13 @@ class Event implements Translatable
     protected $useCustomBackground = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false}, nullable=true)
+     */
+    protected $showLogoWithBackground = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
@@ -292,6 +306,14 @@ class Event implements Translatable
      * @Vich\UploadableField(mapping="event_image", fileNameProperty="smallLogo")
      */
     protected $smallLogoFile;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     *
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="background")
+     */
+    protected $backgroundFile;
 
     /**
      * @var string
@@ -1188,6 +1210,67 @@ class Event implements Translatable
     public function setUseCustomBackground($useCustomBackground)
     {
         $this->useCustomBackground = $useCustomBackground;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackground()
+    {
+        return $this->background;
+    }
+
+    /**
+     * @param string $background
+     *
+     * @return $this
+     */
+    public function setBackground($background)
+    {
+        $this->background = $background;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowLogoWithBackground()
+    {
+        return $this->showLogoWithBackground;
+    }
+
+    /**
+     * @param bool $showLogoWithBackground
+     *
+     * @return $this
+     */
+    public function setShowLogoWithBackground($showLogoWithBackground)
+    {
+        $this->showLogoWithBackground = $showLogoWithBackground;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBackgroundFile()
+    {
+        return $this->backgroundFile;
+    }
+
+    /**
+     * @param mixed $backgroundFile
+     *
+     * @return $this
+     */
+    public function setBackgroundFile($backgroundFile)
+    {
+        $this->backgroundFile = $backgroundFile;
+        $this->setUpdatedAt(new \DateTime());
 
         return $this;
     }
