@@ -40,7 +40,7 @@
         <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
             {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
         </div>
-        {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block', 'ticketCost':ticket }) %}
-        {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob', 'ticketCost':ticket}) %}
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block', 'ticket_cost':ticket}) }}
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block_mob', 'ticket_cost':ticket}) }}
     </div>
 {% endif %}

@@ -4,6 +4,18 @@ sonata_block:
         sonata.admin.block.admin_list:
             contexts:   [admin]
         sonata.block.service.text:
-#        sonata.block.service.action:
+        sonata.block.service.action:
         sonata.block.service.rss:
         sonata.block.service.statistic: ~
+        sonata.block.event.text:
+        sonata.block.event.program:
+        sonata.block.event.partners:
+        sonata.block.event.prices:
+        sonata.block.event.description:
+        sonata.block.event.venue:
+        sonata.block.event.speakers:
+        sonata.block.event.candidate_speakers:
+        sonata.block.event.committee_speakers:
+        sonata.block.event.ticket_status:
+        sonata.block.footer:
+        sonata.block.language_switcher:

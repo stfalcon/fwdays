@@ -1,4 +1,4 @@
-{%- if ticketCosts is defined and ticketCosts|length > 0 -%}
+{%- if event.activeAndFuture and event.receivePayments and ticketCosts is defined and ticketCosts|length > 0 -%}
     <!--BEGIN price-list-->
     <section id="price-event" class="price-list">
         <div class="container container--sm">

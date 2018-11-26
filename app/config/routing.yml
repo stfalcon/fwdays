@@ -1,29 +1,12 @@
-#StfalconEventBundle:
-#    resource: "@StfalconEventBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation
     prefix:   /
 
-#StfalconSponsorBundle:
-#    resource: "@StfalconSponsorBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
 ApplicationUserBundle:
     resource: "@ApplicationUserBundle/Controller/"
     type:     annotation
     prefix:   /
-
-#app_backend:
-#    resource: "@StfalconEventBundle/Controller/Admin"
-#    type:     annotation
-#    prefix:   /admin
-#    options:
-#        i18n: false
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

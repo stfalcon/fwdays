@@ -1,27 +1,17 @@
-{% if event.speakers.count > 0 or event.candidateSpeakers.count > 0 %}
-<section id="speakers-event" class="speakers">
-    <div class="container">
-    {% if event.speakers.count > 0 %}
-        <div class="speakers__box">
-            <h2 class="h2 speakers__title">{{ 'speaker.title'|trans }}</h2>
-            <ul class="speakers__items">
-                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers', {'event':event}) %}
-            </ul>
+{%- if speakers.count > 0 -%}
+    <section id="{{ section_id }}" class="speakers">
+        <div class="container">
+            <div class="speakers__box">
+                <h2 class="h2 speakers__title">{{ templateTitle }}</h2>
+                <ul class="speakers__items">
+                    {% include 'ApplicationDefaultBundle:Redesign/Speaker:speaker.html.twig' with {
+                        'event' : event,
+                        'speakers' : speakers,
+                        'with_review' : with_review
+                        }
+                    %}
+                </ul>
+            </div>
         </div>
-    {% endif %}
-    {% if event.candidateSpeakers.count > 0 %}
-        <div class="speakers__box">
-            <h2 class="h2 speakers__title">{{ 'candidate.speaker.title'|trans }}</h2>
-            <ul class="speakers__items">
-                {% render controller('ApplicationDefaultBundle:Speaker:eventSpeakers',
-                    {
-                        'event':event,
-                        'speakerType':constant('Application\\Bundle\\DefaultBundle\\Controller\\SpeakerController::SPEAKER_TYPE_CANDIDATE')
-                    })
-                %}
-            </ul>
-        </div>
-    {% endif %}
-    </div>
-</section>
-{% endif %}
+    </section>
+{%- endif -%}

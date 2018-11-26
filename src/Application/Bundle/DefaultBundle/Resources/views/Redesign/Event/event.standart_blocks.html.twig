@@ -1,0 +1,22 @@
+<!--BEGIN event-description-->
+{{ sonata_block_render({ 'type': 'sonata.block.event.description' }, {'event': event}) }}
+<!--END event-description-->
+
+<!--BEGIN speakers-->
+{{ sonata_block_render({ 'type': 'sonata.block.event.speakers' }, {'event': event}) }}
+    {{ sonata_block_render({ 'type': 'sonata.block.event.candidate_speakers' }, {'event': event}) }}
+<!--END speakers-->
+
+<!--BEGIN program-->
+{{ sonata_block_render({ 'type': 'sonata.block.event.program' }, {'event': event}) }}
+<!--END program-->
+
+{{ sonata_block_render({ 'type': 'sonata.block.event.prices' }, {'event': event}) }}
+
+    {{ sonata_block_render({ 'type': 'sonata.block.event.partners' }, {'event': event}) }}
+
+    {{ sonata_block_render({ 'type': 'sonata.block.event.committee_speakers' }, {'event': event}) }}
+
+<!--BEGIN location-->
+{{ sonata_block_render({ 'type': 'sonata.block.event.venue' }, {'event': event}) }}
+<!--END location-->

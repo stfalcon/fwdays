@@ -62,31 +62,7 @@ class EventController extends Controller
         $referralService = $this->get('stfalcon_event.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->getEventPagesArr($eventSlug);
-    }
-
-    /**
-     * Get event costs.
-     *
-     * @param Event $event
-     *
-     * @Template("@ApplicationDefault/Redesign/Event/event_price.html.twig")
-     *
-     * @return array
-     */
-    public function getEventCostsAction(Event $event)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $ticketCostRepository = $em->getRepository('ApplicationDefaultBundle:TicketCost');
-
-        $eventCurrentCost = $ticketCostRepository->getEventCurrentCost($event);
-        $ticketCosts = $ticketCostRepository->getEventTicketsCost($event);
-
-        return [
-            'ticketCosts' => $ticketCosts,
-            'currentPrice' => $eventCurrentCost,
-            'event' => $event,
-        ];
+        return $this->get('app.event.service')->getEventPagesArr($eventSlug);
     }
 
     /**
@@ -103,42 +79,7 @@ class EventController extends Controller
      */
     public function showEventReviewAction($eventSlug, $reviewSlug)
     {
-        return $this->getEventPagesArr($eventSlug, $reviewSlug);
-    }
-
-    /**
-     * List of sponsors of event.
-     *
-     * @param Event $event
-     *
-     * @return Response
-     */
-    public function eventPartnersAction(Event $event)
-    {
-        /** @var $partnerRepository \Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository */
-        $partnerRepository = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconSponsorBundle:Sponsor');
-        $partnerCategoryRepository = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconSponsorBundle:Category');
-        $partners = $partnerRepository->getSponsorsOfEventWithCategory($event);
-
-        $sortedPartners = [];
-        foreach ($partners as $key => $partner) {
-            $partnerCategory = $partnerCategoryRepository->find($partner['id']);
-            if ($partnerCategory) {
-                $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getSortOrder()][$partnerCategory->getName()][] = $partner[0];
-            }
-        }
-
-        if (isset($sortedPartners[0])) {
-            krsort($sortedPartners[0]);
-        }
-
-        if (isset($sortedPartners[1])) {
-            krsort($sortedPartners[1]);
-        }
-
-        return $this->render('ApplicationDefaultBundle:Redesign/Partner:partners.html.twig', ['partners' => $sortedPartners]);
+        return $this->get('app.event.service')->getEventPagesArr($eventSlug, $reviewSlug);
     }
 
     /**
@@ -306,7 +247,7 @@ class EventController extends Controller
      */
     public function showEventVenuePageAction($eventSlug)
     {
-        $resultArray = $this->getEventPagesArr($eventSlug);
+        $resultArray = $this->get('app.event.service')->getEventPagesArr($eventSlug);
         if (null === $resultArray['venuePage']) {
             throw $this->createNotFoundException(sprintf('Unable to find page by slug: venue'));
         }
@@ -335,7 +276,7 @@ class EventController extends Controller
             throw $this->createNotFoundException(sprintf('Unable to find event by slug: ', $eventSlug));
         }
         /** @var ArrayCollection $pages */
-        $pages = $this->getEventPages($event);
+        $pages = $this->get('app.event.service')->getEventMenuPages($event);
         $myPage = null;
         /** @var EventPage $page */
         foreach ($pages as $page) {
@@ -352,77 +293,5 @@ class EventController extends Controller
         $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
 
         return ['text' => $text];
-    }
-
-    /**
-     * Get event pages that may show.
-     *
-     * @param Event $event
-     *
-     * @return array
-     */
-    private function getEventPages(Event $event)
-    {
-        $pages = [];
-        /** @var EventPage $page */
-        foreach ($event->getPages() as $page) {
-            if ($page->isShowInMenu()) {
-                $pages[] = $page;
-            }
-        }
-
-        return $pages;
-    }
-
-    /**
-     * Return array of event with pages.
-     *
-     * @param string      $eventSlug
-     * @param string|null $reviewSlug
-     *
-     * @return array
-     */
-    private function getEventPagesArr($eventSlug, $reviewSlug = null)
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
-        if (!$event || ($event->isAdminOnly() && !$this->isGranted('ROLE_ADMIN'))) {
-            throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
-        }
-        $review = null;
-        if ($reviewSlug) {
-            $review = $this->getDoctrine()->getRepository('StfalconEventBundle:Review')->findOneBy(['slug' => $reviewSlug]);
-
-            if (!$review) {
-                throw $this->createNotFoundException('Unable to find Review entity.');
-            }
-        }
-
-        /** @var ArrayCollection $pages */
-        $pages = $this->getEventPages($event);
-
-        /** @var EventPage $page */
-        $programPage = null;
-        $venuePage = null;
-        foreach ($pages as $key => $page) {
-            if ('program' === $page->getSlug()) {
-                $programPage = $page;
-                unset($pages[$key]);
-            } elseif ('venue' === $page->getSlug()) {
-                $venuePage = $page;
-                unset($pages[$key]);
-            }
-        }
-
-        $eventCurrentAmount = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:TicketCost')->getEventCurrentCost($event);
-
-        return [
-            'event' => $event,
-            'programPage' => $programPage,
-            'venuePage' => $venuePage,
-            'pages' => $pages,
-            'review' => $review,
-            'eventCurrentAmount' => $eventCurrentAmount,
-        ];
     }
 }

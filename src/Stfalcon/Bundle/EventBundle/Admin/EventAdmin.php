@@ -7,6 +7,7 @@ use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
@@ -152,6 +153,24 @@ class EventAdmin extends Admin
                     ],
                     'label' => 'Перевод',
                 ])
+            ->end()
+            ->with('Блоки')
+                ->add(
+                    'blocks',
+                    'sonata_type_collection',
+                    [
+                        'label' => 'Блоки отображения события',
+                        'by_reference' => false,
+                        'type_options' => ['delete' => true],
+                        'btn_add' => is_null($subject->getId()) ? false : 'Добавить блок',
+                        'help' => is_null($subject->getId()) ? 'добавление блоков возможно только после создания события'
+                            : 'добавьте блоки отображения',
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ]
+                )
             ->end()
             ->with('Настройки')
                 ->add('slug')
