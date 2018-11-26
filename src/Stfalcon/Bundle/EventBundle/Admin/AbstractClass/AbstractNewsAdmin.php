@@ -2,44 +2,30 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+/**
+ * Class AbstractNewsAdmin.
+ */
 abstract class AbstractNewsAdmin extends Admin
 {
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
-    }
-
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        };
-    }
-
-    /**
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
-     *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
-     */
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->addIdentifier('slug')
-            ->add('title')
-            ->add('created_at');
-
-        return $listMapper;
     }
 
     /**
@@ -59,25 +45,25 @@ abstract class AbstractNewsAdmin extends Admin
                     'fields' => [
                         'title' => [
                             'label' => 'title',
-                            'locale_options' => $localOptions
+                            'locale_options' => $localOptions,
                         ],
                         'text' => [
                             'label' => 'текст',
-                            'locale_options' => $localOptions
+                            'locale_options' => $localOptions,
                         ],
                         'preview' => [
                             'label' => 'preview',
-                            'locale_options' => $localOptions
+                            'locale_options' => $localOptions,
                         ],
                         'metaKeywords' => [
                             'label' => 'metaKeywords',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
                         'metaDescription' => [
                             'label' => 'metaDescription',
-                            'locale_options' => $localOptionsAllFalse
+                            'locale_options' => $localOptionsAllFalse,
                         ],
-                    ]
+                    ],
                 ])
             ->end()
             ->with('General')
@@ -87,5 +73,32 @@ abstract class AbstractNewsAdmin extends Admin
         ;
 
         return $formMapper;
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     *
+     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('slug')
+            ->add('title')
+            ->add('created_at');
+
+        return $listMapper;
+    }
+
+    /**
+     * @param GedmoTranslatable $object
+     */
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }

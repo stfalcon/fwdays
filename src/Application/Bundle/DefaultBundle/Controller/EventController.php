@@ -111,9 +111,7 @@ class EventController extends Controller
      *
      * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign/Partner:partners.html.twig")
-     *
-     * @return array
+     * @return Response
      */
     public function eventPartnersAction(Event $event)
     {
@@ -140,7 +138,7 @@ class EventController extends Controller
             krsort($sortedPartners[1]);
         }
 
-        return ['partners' => $sortedPartners];
+        return $this->render('ApplicationDefaultBundle:Redesign/Partner:partners.html.twig', ['partners' => $sortedPartners]);
     }
 
     /**
@@ -190,27 +188,14 @@ class EventController extends Controller
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
-        $lat = 0;
-        $lng = 0;
 
-        $address = $event->getCity().','.$event->getPlace();
-        $googleApiKey = $this->getParameter('google_api_key');
-        $json = $this->container->get('buzz')->get(
-            'https://maps.google.com/maps/api/geocode/json?key='.$googleApiKey.'&address='.urlencode($address)
-        );
-        $response = json_decode(
-            $json->getContent(),
-            true
-        );
+        if ($this->get('app.service.google_map_service')->setEventMapPosition($event)) {
+            $this->getDoctrine()->getManager()->flush($event);
 
-        if (isset($response['status']) && 'OK' === $response['status']) {
-            $lat = isset($response['results'][0]['geometry']['location']['lat']) ? $response['results'][0]['geometry']['location']['lat'] : 0;
-            $lng = isset($response['results'][0]['geometry']['location']['lng']) ? $response['results'][0]['geometry']['location']['lng'] : 0;
-        } else {
-            return new JsonResponse(['result' => false, 'lat' => $lat, 'lng' => $lng]);
+            return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getLng()]);
         }
 
-        return new JsonResponse(['result' => true, 'lat' => $lat, 'lng' => $lng]);
+        return new JsonResponse(['result' => false]);
     }
 
     /**

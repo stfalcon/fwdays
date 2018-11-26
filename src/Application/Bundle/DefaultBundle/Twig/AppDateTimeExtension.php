@@ -5,41 +5,42 @@ namespace Application\Bundle\DefaultBundle\Twig;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
 
 /**
- * Class AppDateTimeExtension for replace months name to nominative or season
+ * Class AppDateTimeExtension for replace months name to nominative or season.
  */
 class AppDateTimeExtension extends \Twig_Extension
 {
     private $months =
-        ['uk' =>
-            [
-                'січня' => ['січень', 'зима'],
-                'лютого' => ['лютий', 'зима'],
-                'березня' => ['березень', 'весна'],
-                'квітня' => ['квітень', 'весна'],
-                'травня' => ['травень', 'весна'],
-                'червня' => ['червень', 'літо'],
-                'липня' => ['липень', 'літо'],
-                'серпня' => ['серпень', 'літо'],
-                'вересня' => ['вересень', 'осінь'],
-                'жовтня' => ['жовтень', 'осінь'],
-                'листопада' => ['листопад', 'осінь'],
-                'грудня' => ['грудень', 'зима'],
-            ],
-         'en' =>
-            [
-             'January' => ['January', 'Winter'],
-             'February' => ['February', 'Winter'],
-             'March' => ['March', 'Spring'],
-             'April' => ['April', 'Spring'],
-             'May' => ['May', 'Spring'],
-             'June' => ['June', 'Summer'],
-             'July' => ['July', 'Summer'],
-             'August' => ['August', 'Summer'],
-             'September' => ['September', 'Autumn'],
-             'October' => ['October', 'Autumn'],
-             'November' => ['November', 'Autumn'],
-             'December' => ['December', 'Winter'],
-            ],
+        [
+            'uk' =>
+                [
+                    'січня' => ['січень', 'зима'],
+                    'лютого' => ['лютий', 'зима'],
+                    'березня' => ['березень', 'весна'],
+                    'квітня' => ['квітень', 'весна'],
+                    'травня' => ['травень', 'весна'],
+                    'червня' => ['червень', 'літо'],
+                    'липня' => ['липень', 'літо'],
+                    'серпня' => ['серпень', 'літо'],
+                    'вересня' => ['вересень', 'осінь'],
+                    'жовтня' => ['жовтень', 'осінь'],
+                    'листопада' => ['листопад', 'осінь'],
+                    'грудня' => ['грудень', 'зима'],
+                ],
+             'en' =>
+                [
+                    'January' => ['January', 'Winter'],
+                    'February' => ['February', 'Winter'],
+                    'March' => ['March', 'Spring'],
+                    'April' => ['April', 'Spring'],
+                    'May' => ['May', 'Spring'],
+                    'June' => ['June', 'Summer'],
+                    'July' => ['July', 'Summer'],
+                    'August' => ['August', 'Summer'],
+                    'September' => ['September', 'Autumn'],
+                    'October' => ['October', 'Autumn'],
+                    'November' => ['November', 'Autumn'],
+                    'December' => ['December', 'Winter'],
+                ],
         ];
 
     const YEAR_SEASON_FORMAT = 'S';
@@ -203,7 +204,7 @@ class AppDateTimeExtension extends \Twig_Extension
 
     /**
      * if $pattern have not day, than do Nominative month name in locale,
-     * or, if it must be season, than replace month name with season name
+     * or, if it must be season, than replace month name with season name.
      *
      * @param string $formattedDate
      * @param string $pattern
@@ -232,7 +233,7 @@ class AppDateTimeExtension extends \Twig_Extension
     }
 
     /**
-     * Check for YEAR_SEASON_FORMAT in $pattern and replace it for full month name
+     * Check for YEAR_SEASON_FORMAT in $pattern and replace it for full month name.
      *
      * @param string|null $pattern
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Application\Bundle\UserBundle\Entity\User;
@@ -7,17 +8,15 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Knp\Bundle\MenuBundle\MenuItem;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
- * Class PaymentAdmin
+ * Class PaymentAdmin.
  */
 class PaymentAdmin extends Admin
 {
     /**
-     * Default Datagrid values
+     * Default Datagrid values.
      *
      * @var array
      */
@@ -87,8 +86,11 @@ class PaymentAdmin extends Admin
                 'choice',
                 [
                     'choices' => [
-                        'interkassa' => 'interkassa',
-                        'admin' => 'admin',
+                        'interkassa' => Payment::INTERKASSA_GATE,
+                        'wayforpay' => Payment::WAYFORPAY_GATE,
+                        'admin' => Payment::ADMIN_GATE,
+                        'bonus' => Payment::BONUS_GATE,
+                        'promocode' => Payment::PROMOCODE_GATE,
                     ],
                     'required' => false,
                 ]
@@ -109,7 +111,7 @@ class PaymentAdmin extends Admin
                             return;
                         }
 
-                        /** @var $queryBuilder QueryBuilder */
+                        /* @var $queryBuilder QueryBuilder */
                         $queryBuilder->join(sprintf('%s.tickets', $alias), 't');
                         $queryBuilder->join('t.event', 'e');
                         $queryBuilder->andWhere($queryBuilder->expr()->in('e.id', $eventsId));
@@ -157,8 +159,8 @@ class PaymentAdmin extends Admin
                 ])
                 ->add('status', 'choice', [
                     'label' => 'статус оплаты',
-                    'choices'   => [
-                        'pending'   => 'ожидание',
+                    'choices' => [
+                        'pending' => 'ожидание',
                         'paid' => 'оплачено',
                         'returned' => 'возвращенно',
                     ],
@@ -167,13 +169,15 @@ class PaymentAdmin extends Admin
                 ->add('gate', 'choice', [
                     'label' => 'способ оплаты',
                     'choices' => [
-                        'interkassa' => 'interkassa',
-                        'admin' => 'admin',
-                        'fwdays-amount' => 'fwdays-amount',
+                        'interkassa' => Payment::INTERKASSA_GATE,
+                        'wayforpay' => Payment::WAYFORPAY_GATE,
+                        'admin' => Payment::ADMIN_GATE,
+                        'bonus' => Payment::BONUS_GATE,
+                        'promocode' => Payment::PROMOCODE_GATE,
                     ],
                     'disabled' => !$isSuperAdmin,
                 ])
-                ->add('user', 'text', ['required' => true, 'label' => 'Пользователь', 'disabled' => true ])
+                ->add('user', 'text', ['required' => true, 'label' => 'Пользователь', 'disabled' => true])
                 ->add(
                     'tickets',
                     'sonata_type_collection',

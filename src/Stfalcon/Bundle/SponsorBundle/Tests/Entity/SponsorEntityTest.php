@@ -5,17 +5,16 @@ namespace Stfalcon\Bundle\SponosorBundle\Tests\Entity;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 
 /**
- * Test cases for sponosr entity
+ * Test cases for sponosr entity.
  */
 class SponsorEntityTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * Test setter and getter methods for slug
+     * Test setter and getter methods for slug.
      */
     public function testSetAndGetSponsorSlug()
     {
-        $slug = "coca-cola-fanta-sprite";
+        $slug = 'coca-cola-fanta-sprite';
 
         $sponsor = new Sponsor();
         $sponsor->setSlug($slug);
@@ -24,11 +23,11 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for name
+     * Test setter and getter methods for name.
      */
     public function testSetAndGetSponsorName()
     {
-        $slug = "Google Inc.";
+        $slug = 'Google Inc.';
 
         $sponsor = new Sponsor();
         $sponsor->setName($slug);
@@ -37,11 +36,11 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for logo
+     * Test setter and getter methods for logo.
      */
     public function testSetAndGetSponsorLogo()
     {
-        $slug = "logo.jpg";
+        $slug = 'logo.jpg';
 
         $sponsor = new Sponsor();
         $sponsor->setLogo($slug);
@@ -50,11 +49,11 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for site
+     * Test setter and getter methods for site.
      */
     public function testSetAndGetSponsorSite()
     {
-        $slug = "htp://site.com";
+        $slug = 'htp://site.com';
 
         $sponsor = new Sponsor();
         $sponsor->setSite($slug);
@@ -63,11 +62,11 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for file
+     * Test setter and getter methods for file.
      */
     public function testSetAndGetSponsorFile()
     {
-        $slug = "file";
+        $slug = 'file';
 
         $sponsor = new Sponsor();
         $sponsor->setFile($slug);
@@ -76,11 +75,11 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for about
+     * Test setter and getter methods for about.
      */
     public function testSetAndGetSponsorAbout()
     {
-        $slug = "This is very short about me story.";
+        $slug = 'This is very short about me story.';
 
         $sponsor = new Sponsor();
         $sponsor->setAbout($slug);
@@ -89,7 +88,7 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test empty fields
+     * Test empty fields.
      */
     public function testEmptyPerson()
     {

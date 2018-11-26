@@ -106,6 +106,13 @@
             <argument>%stfalcon_event.admin.event.controller%</argument>
         </service>
 
+        <service id="stfalcon_event.admin.event_group" class="Stfalcon\Bundle\EventBundle\Admin\EventGroupAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="События" label="Групы"/>
+            <argument />
+            <argument>Stfalcon\Bundle\EventBundle\Entity\EventGroup</argument>
+            <argument />
+        </service>
+
         <service id="stfalcon_event.admin.reviews" class="%stfalcon_event.admin.reviews.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Доклады"/>
             <argument />

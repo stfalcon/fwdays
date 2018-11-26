@@ -136,6 +136,8 @@ class Ticket
 
     /**
      * @param TicketCost $ticketCost
+     *
+     * @return $this
      */
     public function setTicketCost($ticketCost)
     {
@@ -217,7 +219,7 @@ class Ticket
     }
 
     /**
-     * @param $createdAt
+     * @param \DateTime $createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -233,7 +235,7 @@ class Ticket
     }
 
     /**
-     * @param $updatedAt
+     * @param \DateTime $updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -334,6 +336,8 @@ class Ticket
 
     /**
      * @param \Stfalcon\Bundle\EventBundle\Entity\PromoCode $promoCode
+     *
+     * @return $this
      */
     public function setPromoCode($promoCode)
     {

@@ -11,6 +11,7 @@ deploy_callbacks:
 
     before_composer:
         - 'sed -i "s/google_captcha_secret_key = .*/google_captcha_secret_key = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
+        - "sed -i \"s|sentry_dsn_stag =.*|sentry_dsn_stag = `echo -n $APP_SENTRY_DSN`|\" app/config/parameters.ini"
         - 'sed -i "s/google_captcha_site_key = .*/google_captcha_site_key = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
         - 'sed -i "s/database_host     =.*/database_host     = fwdays-mysql/" app/config/parameters.ini'
         - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
@@ -21,6 +22,7 @@ deploy_callbacks:
         - 'sed -i "s/google_client_secret =.*/google_client_secret = `echo -n $APP_GOOGLE_CLIENT_SECRET`/" app/config/parameters.ini'
 
     after_deploy:
+        - 'cp -a web/app_stag.php web/app.php'
         - './console do:da:dr --force'
         - './console do:da:cr'
 #        - "mysql -u root -p`mysql_password` -h fwdays-mysql `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'` < /stag/shared/db.sql"
@@ -28,6 +30,9 @@ deploy_callbacks:
         - './console --no-interaction do:fi:lo'
 #        - 'rm -rf /stag/www/web/uploads/'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
-        - 'cp -a web/app_stag.php web/app.php'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
+        - "php app/console maxmind:geoip:update-data http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz"
+ci:
+    commands:
+        - 'app/run-ci-pack.sh -e=prod'

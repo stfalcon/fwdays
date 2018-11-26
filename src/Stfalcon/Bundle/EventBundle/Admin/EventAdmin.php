@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -12,6 +13,12 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
  */
 class EventAdmin extends Admin
 {
+    /** @var string */
+    protected $saveCity;
+
+    /** @var string */
+    protected $savePlace;
+
     /**
      * @var array
      */
@@ -23,23 +30,25 @@ class EventAdmin extends Admin
         ];
 
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
+        if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
+            $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+                ->setEventMapPosition($object);
+        }
     }
 
     /**
-     * @param $object
-     *
-     * @return mixed|void
+     * {@inheritdoc}
      */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
+        $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+            ->setEventMapPosition($object);
     }
 
     /**
@@ -75,6 +84,8 @@ class EventAdmin extends Admin
             ->add('wantsToVisitCount', null, ['label' => 'Желающих посетить событие'])
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
+            ->add('group', null, ['label' => 'Группа'])
+            ->add('audiences', null, ['label' => 'Аудитории'])
             ->add(
                 'images',
                 'string',
@@ -90,7 +101,12 @@ class EventAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var Event $subject */
         $subject = $this->getSubject();
+        if (!is_null($subject->getId())) {
+            $this->saveCity = $subject->getCity();
+            $this->savePlace = $subject->getPlace();
+        }
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
@@ -139,6 +155,8 @@ class EventAdmin extends Admin
             ->end()
             ->with('Настройки')
                 ->add('slug')
+                ->add('group', null, ['label' => 'Группа'])
+                ->add('audiences', null, ['label' => 'Аудитории'])
                 ->add(
                     'ticketsCost',
                     'sonata_type_collection',
@@ -160,6 +178,7 @@ class EventAdmin extends Admin
                 ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                 ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
                 ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
+                ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
             ->end()
             ->with('Даты', ['class' => 'col-md-6'])
                 ->add('dateFormat', null, [
@@ -224,7 +243,7 @@ class EventAdmin extends Admin
     }
 
     /**
-     * @param $object
+     * @param GedmoTranslatable $object
      */
     private function removeNullTranslate($object)
     {

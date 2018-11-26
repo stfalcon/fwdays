@@ -82,3 +82,8 @@
     <!--END report-review-->
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
 {% endblock content %}
+
+{% block scripts %}
+    {{ parent() }}
+    {% include "@ApplicationDefault/Redesign/share_buttons.html.twig" %}
+{% endblock %}

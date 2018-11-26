@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class TicketFormType
+ * Class TicketFormType.
  */
 class TicketFormType extends AbstractType
 {
@@ -20,14 +20,19 @@ class TicketFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('participants', 'collection', array(
+            ->add(
+                'participants',
+                'collection',
+                [
                     'type' => new ParticipantFormType(),
-                    'allow_add'    => true,
-                ));
+                    'allow_add' => true,
+                ]
+            );
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -36,13 +41,13 @@ class TicketFormType extends AbstractType
             [
                 'csrf_protection' => true,
                 'csrf_field_name' => '_token',
-                'intention'       => 'event_ticket_intention',
+                'intention' => 'event_ticket_intention',
             ]
         );
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */

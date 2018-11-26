@@ -7,10 +7,13 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Class LoadTicketCostData.
+ */
 class LoadTicketCostData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -21,11 +24,14 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
         );
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $ticketCost = new TicketCost();
 
-        $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
 
         $ticketCost->setName('early')

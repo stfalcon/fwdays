@@ -2,16 +2,16 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 /**
- * LoadSpeakerData Class
+ * LoadSpeakerData Class.
  */
 class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
@@ -33,7 +33,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
 <li>Front/back developer</li>
 <li>Tech. lead</li>
 <li><a href="https://twitter.com/nimnull">Twitter</a></li>
-</ul>'
+</ul>',
     ];
 
     /**
@@ -41,13 +41,16 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @param ContainerInterface|null $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -63,7 +66,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-        $eventJsDay  = $manager->merge($this->getReference('event-jsday2018'));
+        $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
         $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
         $eventHighLoad = $manager->merge($this->getReference('event-highload-day'));
@@ -75,7 +78,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setCompany('Stfalcon')
             ->setAbout($this->abouts[0])
             ->setSlug('andrew-vorobey')
-            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
+            ->setFile($this->generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventJsDay, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad])
             ->setSortOrder(1);
@@ -88,21 +91,21 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setCompany('ZZZ')
             ->setAbout($this->abouts[1])
             ->setSlug('valeriy-pitersky')
-            ->setFile($this->_generateUploadedFile('speaker-1.jpg'))
+            ->setFile($this->generateUploadedFile('speaker-1.jpg'))
             ->setEvents([$eventPHPDay2018, $eventNotActive])
             ->setCandidateEvents([$eventPHPDay2017])
             ->setSortOrder(11);
         $manager->persist($speaker);
         $this->addReference('speaker-rabievskiy', $speaker);
 
-        for ($i = 0; $i < 4; $i++ ) {
+        for ($i = 0; $i < 4; ++$i) {
             $speaker = (new Speaker())
                 ->setName('speaker'.$i)
                 ->setEmail('test@test.com')
                 ->setCompany('random')
                 ->setAbout($this->abouts[2])
                 ->setSlug('speaker'.$i)
-                ->setFile($this->_generateUploadedFile('speaker-'.($i+4).'.jpg'))
+                ->setFile($this->generateUploadedFile('speaker-'.($i + 4).'.jpg'))
                 ->setEvents([$eventPHPDay2017, $eventHighLoad])
                 ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018])
                 ->setSortOrder(5);
@@ -113,13 +116,13 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
     }
 
     /**
-     * Generate UploadedFile object from local file. For VichUploader
+     * Generate UploadedFile object from local file. For VichUploader.
      *
      * @param string $filename
      *
      * @return UploadedFile
      */
-    private function _generateUploadedFile($filename)
+    private function generateUploadedFile($filename)
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/speakers/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'speaker');
@@ -132,6 +135,9 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         return null;
     }
 
+    /**
+     * @return string
+     */
     private function getKernelDir()
     {
         return $this->container->get('kernel')->getRootDir();

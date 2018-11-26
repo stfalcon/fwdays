@@ -9,6 +9,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Сервис для работы с билетами.
@@ -28,10 +30,13 @@ class TicketService
     /** @var EntityManager */
     protected $em;
 
+    /** @var array */
     protected $paymentsConfig;
 
+    /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var RouterInterface */
     protected $router;
 
     /** @var TicketCostService */
@@ -40,11 +45,11 @@ class TicketService
     /**
      * TicketService constructor.
      *
-     * @param EntityManager $em
-     * @param array         $paymentsConfig
-     * @param $translator
-     * @param $router
-     * @param TicketCostService $ticketCostService
+     * @param EntityManager       $em
+     * @param array               $paymentsConfig
+     * @param TranslatorInterface $translator
+     * @param RouterInterface     $router
+     * @param TicketCostService   $ticketCostService
      */
     public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService)
     {
@@ -64,22 +69,24 @@ class TicketService
      */
     public function isMustBeDiscount($ticket)
     {
-        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
-            ->findPaidPaymentsForUser($ticket->getUser());
+        $event = $ticket->getEvent();
+        $user = $ticket->getUser();
 
-        if (0 === count($paidPayments)) {
-            $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
-                ->findPaidPaymentsForUserInPayment($ticket->getUser());
+        if (!$event instanceof Event || !$user instanceof User || !$event->getUseDiscounts()) {
+            return false;
         }
 
-        return count($paidPayments) > 0 && $ticket->getEvent()->getUseDiscounts();
+        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
+            ->findPaidPaymentsForUser($user);
+
+        return \count($paidPayments) > 0;
     }
 
     /**
      * Set Ticket Amount with recalculate discount.
      *
-     * @param Ticket $ticket
-     * @param $amount
+     * @param Ticket     $ticket
+     * @param float      $amount
      * @param bool       $isMustBeDiscount
      * @param TicketCost $currentTicketCost
      */
@@ -98,7 +105,7 @@ class TicketService
      *
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
-     * @param $discount
+     * @param float     $discount
      *
      * @return Ticket
      */
@@ -120,8 +127,8 @@ class TicketService
     /**
      * Set Ticket promo-code.
      *
-     * @param PromoCode $promoCode
      * @param Ticket    $ticket
+     * @param PromoCode $promoCode
      *
      * @return Ticket
      */
@@ -137,8 +144,8 @@ class TicketService
     /**
      * Set ticket discount.
      *
-     * @param $discount
      * @param Ticket $ticket
+     * @param float  $discount
      *
      * @return Ticket
      */
@@ -208,7 +215,6 @@ class TicketService
         $isMob = null;
         $caption = '';
         $ticketCaption = '';
-        $onClick = null;
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
@@ -275,31 +281,6 @@ class TicketService
                     ],
             ];
 
-        if (self::CAN_BUY_TICKET === $eventState) {
-            $addUserSign = $user instanceof User ? '_user' : '';
-            $mainGaPart = "ga('send', 'button', 'buy',";
-            switch ($position) {
-                case 'row':
-                case 'card':
-                    $onClick = $mainGaPart." 'main".$addUserSign."')";
-                    break;
-                case 'event_header':
-                case 'event_fix_header':
-                    $onClick = $mainGaPart." 'event".$addUserSign."')";
-                    break;
-                case 'event_fix_header_mob':
-                case 'event_action_mob':
-                    $onClick = $mainGaPart." 'event_mob".$addUserSign."')";
-                    break;
-                case 'price_block_mob':
-                    $onClick = $mainGaPart." 'event_pay_mob".$addUserSign."')";
-                    break;
-                case 'price_block':
-                    $onClick = $mainGaPart." 'event_pay".$addUserSign."')";
-                    break;
-            }
-        }
-
         if (in_array(
             $eventState,
             [
@@ -357,16 +338,15 @@ class TicketService
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.mob_status.pay');
                 } elseif ('price_block' === $position) {
-                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost();
+                    $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost()->getAmount();
                     $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
-                    $caption = $this->translator->trans(
-                        'ticket.status.pay_for').' '.
-                        $this->translator->trans(
-                            'payment.price',
-                            [
-                                '%summ%' => number_format($amount, 0, ',', ' '),
-                            ]
-                        );
+                    $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
+                            ->trans(
+                                'payment.price',
+                                [
+                                    '%summ%' => number_format($amount, 0, ',', ' '),
+                                ]
+                            );
                     if ($ticketCost && $ticketCost->getAltAmount()) {
                         $caption .= '<span class="cost__dollars">'.$altAmount.'</span>';
                     }
@@ -399,7 +379,6 @@ class TicketService
                 'href' => $href,
                 'isDiv' => $isDiv,
                 'data' => $data,
-                'onClick' => $onClick,
                 'id' => $position.'-'.$data,
             ];
 

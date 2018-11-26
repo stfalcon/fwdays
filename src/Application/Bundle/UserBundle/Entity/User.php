@@ -125,6 +125,7 @@ class User extends BaseUser
      *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      *   }
      * )
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $wantsToVisitEvents;
     /**
@@ -150,7 +151,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/u",
+     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/u",
      *     match=true,
      *     message="error.name.only_letters"
      * )
@@ -168,7 +169,7 @@ class User extends BaseUser
      *
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s]+$/u",
+     *     pattern="/^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/u",
      *     match=true,
      *     message="error.surname.only_letters"
      * )
@@ -201,7 +202,7 @@ class User extends BaseUser
     /**
      * @var bool
      *
-     * @ORM\Column(name="email_exists", nullable=true, options = {"default" : 1})
+     * @ORM\Column(name="email_exists", type="boolean", nullable=true, options = {"default" : 1})
      */
     protected $emailExists = true;
 
@@ -228,6 +229,13 @@ class User extends BaseUser
      * )
      */
     protected $plainPassword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $recToken;
 
     /**
      * User constructor.
@@ -483,6 +491,8 @@ class User extends BaseUser
      * Set user fullname.
      *
      * @param string $fullname
+     *
+     * @return $this
      */
     public function setFullname($fullname)
     {
@@ -505,6 +515,8 @@ class User extends BaseUser
      * Set user company.
      *
      * @param string $company
+     *
+     * @return $this
      */
     public function setCompany($company)
     {
@@ -527,6 +539,8 @@ class User extends BaseUser
      * Set user post.
      *
      * @param string $post
+     *
+     * @return $this
      */
     public function setPost($post)
     {
@@ -549,6 +563,8 @@ class User extends BaseUser
      * Set subscribe.
      *
      * @param bool $subscribe
+     *
+     * @return $this
      */
     public function setSubscribe($subscribe)
     {
@@ -571,6 +587,8 @@ class User extends BaseUser
      * Set createdAt.
      *
      * @param \DateTime $createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -583,6 +601,8 @@ class User extends BaseUser
      * Set city.
      *
      * @param string $city
+     *
+     * @return $this
      */
     public function setCity($city)
     {
@@ -605,6 +625,8 @@ class User extends BaseUser
      * Set country.
      *
      * @param string $country
+     *
+     * @return $this
      */
     public function setCountry($country)
     {
@@ -686,6 +708,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $balance
+     *
+     * @return $this
      */
     public function setBalance($balance)
     {
@@ -704,6 +728,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $referralCode
+     *
+     * @return $this
      */
     public function setReferralCode($referralCode)
     {
@@ -722,6 +748,8 @@ class User extends BaseUser
 
     /**
      * @param mixed $userReferral
+     *
+     * @return $this
      */
     public function setUserReferral($userReferral)
     {
@@ -740,10 +768,32 @@ class User extends BaseUser
 
     /**
      * @param bool $allowShareContacts
+     *
+     * @return $this
      */
     public function setAllowShareContacts($allowShareContacts)
     {
         $this->allowShareContacts = $allowShareContacts;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecToken()
+    {
+        return $this->recToken;
+    }
+
+    /**
+     * @param string $recToken
+     *
+     * @return $this
+     */
+    public function setRecToken($recToken)
+    {
+        $this->recToken = $recToken;
 
         return $this;
     }

@@ -1,0 +1,28 @@
+    <div class="table-scroll">
+        <table border="1">
+            <thead>
+            <tr>
+                <td>Событие</td>
+                {%- for event in events -%}
+                    {%- if event['checked'] -%}
+                        <td>{{ event['slug'] }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                {%- if event['checked'] -%}
+                    <tr>
+                        <td>{{ event['slug'] }}</td>
+                        {% for result in event['events'] %}
+                            <td bgcolor="{{ result['color'] }}">{{ result['text']|raw }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+

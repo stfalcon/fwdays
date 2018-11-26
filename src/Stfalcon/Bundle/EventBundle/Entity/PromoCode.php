@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -24,7 +24,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class PromoCode
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation",
@@ -47,7 +47,9 @@ class PromoCode
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @Assert\NotBlank()
      */
     protected $title = '';
@@ -63,6 +65,7 @@ class PromoCode
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
      */
     protected $code;
@@ -295,7 +298,7 @@ class PromoCode
      */
     public function isUnlimited()
     {
-        $unlimited = $this->maxUseCount === 0;
+        $unlimited = 0 === $this->maxUseCount;
 
         return $unlimited;
     }

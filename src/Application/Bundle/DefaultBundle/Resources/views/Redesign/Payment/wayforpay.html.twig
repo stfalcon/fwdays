@@ -1,0 +1,29 @@
+{% if pay_type == 'wayforpay' -%}
+    <script type="text/javascript">
+        var wayforpay = new Wayforpay();
+        var paymentSytemPay = function () {
+            wayforpay.run({
+                    {% for key, param in params -%}
+                        {{ key }} : "{{ param|raw }}",
+                    {% endfor -%}
+            },
+                function (response) {
+                    wayforpay.closeit();
+                    window.location.href = homePath+'payment/success';
+                },
+                function (response) {
+                    wayforpay.closeit();
+                    window.location.href = homePath+'payment/fail';
+                },
+                function (response) {
+                    wayforpay.closeit();
+                    window.location.href = homePath+'payment/pending';
+                }
+            );
+        }
+    </script>
+{% endif %}
+
+{% for ticket in payment.tickets %}
+    {% include '@ApplicationDefault/Redesign/Payment/user.payment.html.twig' with {'event': event, 'payment': payment, 'ticket': ticket} %}
+{% endfor %}

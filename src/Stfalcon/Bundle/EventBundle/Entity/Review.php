@@ -8,7 +8,7 @@ use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Review extends AbstractPage implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation",
@@ -71,6 +71,9 @@ class Review extends AbstractPage implements Translatable
      */
     private $likedUsers;
 
+    /**
+     * Review constructor.
+     */
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
@@ -78,11 +81,19 @@ class Review extends AbstractPage implements Translatable
         $this->translations = new ArrayCollection();
     }
 
+    /**
+     * @return ArrayCollection
+     */
     public function getEvent()
     {
         return $this->event;
     }
 
+    /**
+     * @param Event $event
+     *
+     * @return $this
+     */
     public function setEvent($event)
     {
         $this->event = $event;
@@ -90,11 +101,19 @@ class Review extends AbstractPage implements Translatable
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
     public function getSpeakers()
     {
         return $this->speakers;
     }
 
+    /**
+     * @param ArrayCollection $speakers
+     *
+     * @return $this
+     */
     public function setSpeaker($speakers)
     {
         $this->speakers = $speakers;
@@ -104,6 +123,8 @@ class Review extends AbstractPage implements Translatable
 
     /**
      * @param ArrayCollection $likedUsers
+     *
+     * @return $this
      */
     public function setLikedUsers($likedUsers)
     {
@@ -122,6 +143,8 @@ class Review extends AbstractPage implements Translatable
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function addLikedUser($user)
     {
@@ -134,6 +157,8 @@ class Review extends AbstractPage implements Translatable
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function removeLikedUser($user)
     {

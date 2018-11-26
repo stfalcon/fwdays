@@ -61,13 +61,17 @@ class PaymentController extends Controller
         /** @var Payment $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
-
+        $em = $this->getDoctrine()->getManager();
         if (!$ticket && !$payment) {
             $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $user->addWantsToVisitEvents($event);
+            $em->flush();
         }
 
         if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
             $payment = $ticket->getPayment();
+            $payment->setUser($ticket->getUser());
+            $em->flush();
         }
 
         if ($ticket && !$payment) {
@@ -103,6 +107,11 @@ class PaymentController extends Controller
         }
 
         $this->get('session')->set('active_payment_id', $payment->getId());
+
+        $request = $this->get('request_stack')->getCurrentRequest();
+        if ($request && $promoCode = $request->query->get('promoCode')) {
+            return $this->addPromoCodeFromQuery($promoCode, $event);
+        }
 
         return $this->getPaymentHtml($event, $payment);
     }
@@ -244,8 +253,9 @@ class PaymentController extends Controller
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket) {
-            $ticketService = $this->get('stfalcon_event.ticket.service');
-            $ticket = $ticketService->createTicket($event, $user);
+            $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $user->addWantsToVisitEvents($event);
+            $em->flush();
         }
 
         if (!$ticket->isPaid()) {
@@ -301,9 +311,9 @@ class PaymentController extends Controller
     }
 
     /**
-     * Pay for payment by referral amount.
+     * Pay for payment by bonus money.
      *
-     * @Route("/event/{eventSlug}/pay-by-referral", name="event_pay_by_referral")
+     * @Route("/event/{eventSlug}/pay-by-bonus", name="event_pay_by_bonus")
      *
      * @Security("has_role('ROLE_USER')")
      *
@@ -313,17 +323,45 @@ class PaymentController extends Controller
      *
      * @return Response
      */
-    public function setPaidByReferralMoneyAction(Event $event)
+    public function setPaidByBonusMoneyAction(Event $event)
     {
         $result = false;
         $payment = $this->getPaymentIfAccess();
 
-        if ($payment && $payment->isPending()) {
+        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
             $paymentService = $this->get('stfalcon_event.payment.service');
-            $result = $paymentService->setPaidByReferralMoney($payment, $event);
+            $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
+
+        return $this->redirect($redirectUrl);
+    }
+
+    /**
+     * Pay for payment by promocode (100% discount).
+     *
+     * @Route("/event/{eventSlug}/pay-by-promocode", name="event_pay_by_promocode")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
+     * @param Event $event
+     *
+     * @return Response
+     */
+    public function setPaidByPromocodeAction(Event $event)
+    {
+        $result = false;
+        $payment = $this->getPaymentIfAccess();
+
+        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
+            $paymentService = $this->get('stfalcon_event.payment.service');
+            $result = $paymentService->setPaidByPromocode($payment, $event);
+        }
+
+        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
@@ -339,7 +377,6 @@ class PaymentController extends Controller
      */
     private function getPaymentHtml(Event $event, Payment $payment, PromoCode $promoCode = null)
     {
-        $ikData = $this->get('stfalcon_event.interkassa.service')->getData($payment, $event);
         $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
@@ -353,20 +390,33 @@ class PaymentController extends Controller
             $notUsedPromoCode = $paymentService->addPromoCodeForTicketsInPayment($payment, $promoCode);
         }
 
-        $html = $this->renderView('@ApplicationDefault/Redesign/Payment/pay.html.twig', [
-            'data' => $ikData,
+        $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
+
+        $formAction = null;
+        $payType = null;
+
+        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
+        $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
+        /** @var User */
+        $user = $this->getUser();
+        if ($payment->getTickets()->count() > 0) {
+            if (0 === (int) $payment->getAmount()) {
+                $formAction = $payment->getFwdaysAmount() > 0 ?
+                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
+                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
+            } else {
+                $payType = 'wayforpay';
+            }
+        }
+
+        $html = $this->renderView('@ApplicationDefault/Redesign/Payment/wayforpay.html.twig', [
+            'params' => $paySystemData,
             'event' => $event,
             'payment' => $payment,
             'discountAmount' => $discountAmount,
+            'pay_type' => $payType,
         ]);
-
-        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
-        /**
-         * @var User
-         */
-        $user = $this->getUser();
-        $formAction = (0 === $payment->getAmount() && $payment->getFwdaysAmount() > 0) ?
-            $this->generateUrl('event_pay_by_referral', ['eventSlug' => $event->getSlug()]) : 'https://sci.interkassa.com/';
 
         return new JsonResponse([
             'result' => true,
@@ -377,7 +427,9 @@ class PaymentController extends Controller
             'phoneNumber' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
+            'pay_type' => $payType,
             'tickets_count' => $payment->getTickets()->count(),
+            'byeBtnCaption' => $byeBtnCaption,
         ]);
     }
 
@@ -405,5 +457,27 @@ class PaymentController extends Controller
         }
 
         return $payment;
+    }
+
+    /**
+     * @param string $code
+     * @param Event  $event
+     *
+     * @return JsonResponse
+     */
+    private function addPromoCodeFromQuery($code, Event $event)
+    {
+        $payment = $this->getPaymentIfAccess();
+        $promoCode = null;
+        if ($payment && !$payment->isPaid()) {
+            $em = $this->getDoctrine()->getManager();
+            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
+                ->findActivePromoCodeByCodeAndEvent($code, $event);
+            if ($promoCode && !$promoCode->isCanBeUsed()) {
+                $promoCode = null;
+            }
+        }
+
+        return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 }

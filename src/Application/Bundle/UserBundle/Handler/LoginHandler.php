@@ -2,8 +2,9 @@
 
 namespace Application\Bundle\UserBundle\Handler;
 
+use Application\Bundle\DefaultBundle\Service\UrlForRedirect;
 use Application\Bundle\UserBundle\Entity\User;
-use FOS\UserBundle\Model\UserManagerInterface;
+use Application\Bundle\UserBundle\Model\UserManager;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -18,24 +19,26 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class LoginHandler implements AuthenticationSuccessHandlerInterface
 {
     /**
-     * @var UserManagerInterface User manager
+     * @var UserManager User manager
      */
     protected $userManager;
 
     /** @var I18nRouter $router */
     protected $router;
 
+    /** @var ReferralService */
     protected $referralService;
 
+    /** @var UrlForRedirect */
     protected $urlForRedirectService;
 
     /**
      * LoginHandler constructor.
      *
-     * @param I18nRouter $router
-     * @param $referralService
-     * @param $userManager
-     * @param $urlForRedirectService
+     * @param I18nRouter      $router
+     * @param ReferralService $referralService
+     * @param UserManager     $userManager
+     * @param UrlForRedirect  $urlForRedirectService
      */
     public function __construct(I18nRouter $router, $referralService, $userManager, $urlForRedirectService)
     {

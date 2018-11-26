@@ -9,12 +9,6 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="stfalcon_event.interkassa.service" class="Application\Bundle\DefaultBundle\Service\InterkassaService">
-            <argument>%stfalcon_event.config%</argument>
-            <argument type="service" id="translator"/>
-            <argument type="service" id="request_stack"/>
-        </service>
-
         <service id="stfalcon_event.referral.service" class="Application\Bundle\DefaultBundle\Service\ReferralService">
             <argument type="service" id="service_container"/>
         </service>
@@ -84,6 +78,8 @@
             <argument>%jms_i18n_routing.locales%</argument>
             <argument>%jms_i18n_routing.cookie.name%</argument>
             <argument type="service" id="router" />
+            <argument type="service" id="maxmind.geoip" />
+            <argument type="service" id="logger" />
         </service>
 
         <service id="application_default.sonata.locales.required" class="Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService">

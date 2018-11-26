@@ -99,17 +99,6 @@ swiftmailer:
 knp_menu:
     twig: true
 
-#avalanche_imagine:
-#    cache_prefix: /tmp/media/cache
-#    filters:
-#        speaker_thumb:
-#            type:    thumbnail
-#            options: { size: [64, 64], mode: outbound }
-#        speaker_size:
-#            source_root: "%kernel.root_dir%/../web/uploads/speakers"
-#            type:    crop
-#            options: { start: [0, 0], size: [232, 232]}
-
 liip_imagine:
     loaders:
         default:
@@ -143,9 +132,9 @@ fos_user:
         user_manager: stfalcon.user_manager
 
 stfalcon_event:
-    interkassa:
-        shop_id: "533958fbbf4efc736a13bea5"
-        secret: "%interkassa_secret%"
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
     discount: 0.2
 
 sonata_block:
@@ -173,14 +162,12 @@ sonata_admin:
                     groups:
                       - "Пользователи"
                       - "События"
-                      - "Новости"
-                      - "Статистика"
                       - "group.translation"
             -
                 position: right
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки"]
+                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки", "Логи"]
             -
                 position: left
                 type: sonata.block.service.statistic
@@ -227,3 +214,6 @@ hwi_oauth:
             scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             paths:
                 email: email
+
+maxmind_geoip:
+    data_file_path: "%kernel.root_dir%/../geodata/GeoLiteCity.dat"

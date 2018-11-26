@@ -3,11 +3,7 @@
 namespace Application\Bundle\UserBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,6 +11,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Model\UserInterface;
 
+/**
+ * Class RegistrationController.
+ */
 class RegistrationController extends BaseController
 {
     /**
@@ -85,7 +84,11 @@ class RegistrationController extends BaseController
     }
 
     /**
-     * Receive the confirmation token from user email provider, login the user
+     * Receive the confirmation token from user email provider, login the user.
+     *
+     * @param string $token
+     *
+     * @return RedirectResponse
      */
     public function confirmAction($token)
     {
@@ -108,7 +111,9 @@ class RegistrationController extends BaseController
     }
 
     /**
-     * Tell the user his account is now confirmed
+     * Tell the user his account is now confirmed.
+     *
+     * @return RedirectResponse
      */
     public function confirmedAction()
     {

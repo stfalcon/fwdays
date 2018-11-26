@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class UploadController
+ * Class UploadController.
  */
 class UploadController extends Controller
 {
@@ -54,7 +54,7 @@ class UploadController extends Controller
 
         // Move uploaded file
         $newFileName = uniqid().'.'.$file->guessExtension();
-        $path = $this->container->getParameter('kernel.root_dir')."/../web/".$uploadDir;
+        $path = $this->container->getParameter('kernel.root_dir').'/../web/'.$uploadDir;
         try {
             $file->move($path, $newFileName);
         } catch (FileException $e) {

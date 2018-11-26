@@ -5,11 +5,8 @@ namespace Application\Bundle\DefaultBundle\Tests;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class TicketControllerTest.
@@ -32,8 +29,8 @@ class TicketControllerTest extends WebTestCase
 
         $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
         $connection->exec('DELETE FROM users;');
-        $connection->exec("DELETE FROM event__tickets;");
-        $connection->exec("ALTER TABLE event__tickets AUTO_INCREMENT = 1;");
+        $connection->exec('DELETE FROM event__tickets;');
+        $connection->exec('ALTER TABLE event__tickets AUTO_INCREMENT = 1;');
         $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $this->loadFixtures(
             [
@@ -58,7 +55,7 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * test en html ticket hash
+     * test en html ticket hash.
      */
     public function testEnTicketHash()
     {
@@ -66,7 +63,7 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * test uk html ticket hash
+     * test uk html ticket hash.
      */
     public function testUkTicketHash()
     {
@@ -74,7 +71,7 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * Test uk local in cookie
+     * Test uk local in cookie.
      */
     public function testUkCookieLocale()
     {
@@ -82,14 +79,15 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * Test en local in cookie
+     * Test en local in cookie.
      */
     public function testEnCookieLocale()
     {
         $this->assertEquals($this->getLangCookie('en'), 'en');
     }
+
     /**
-     * get current local from cookie
+     * get current local from cookie.
      *
      * @param string $lang
      *
@@ -108,9 +106,9 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * get file hash by lang
+     * get file hash by lang.
      *
-     * @param  string $lang
+     * @param string $lang
      *
      * @return string
      */
@@ -126,6 +124,7 @@ class TicketControllerTest extends WebTestCase
 
         return '';
     }
+
     /**
      * @param string $userName
      * @param string $userPass
@@ -145,7 +144,7 @@ class TicketControllerTest extends WebTestCase
             $loginBtnCaption = 'Увійти';
             $accountLinkCaption = ' Кабінет';
         }
-        /** start Login */
+        /* start Login */
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());

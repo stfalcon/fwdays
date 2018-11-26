@@ -1,4 +1,5 @@
 menu.events.my: My events
+menu.past_events.my: My past events
 menu.user.info: User info
 menu.referral.title: Invite friends
 menu.check.ticket.bynumber: Ticket is checking by number
@@ -121,6 +122,10 @@ interkassa.payment.pending: Payment is pending!
 interkassa.payment.pending.wait: Please, wait until the payment confirmation.
 interkassa.payment.description : 'Participate in %event_name%. The payer is %user_name% (%user_id%). Participants IDs: %ids_array%'
 
+check_box.agree_with_conditions_1: 'I agree with conditions and accept '
+check_box.agree_with_conditions_2: 'public offer contract'
+check_box.agree_with_conditions_error: "You must accept public offer contract"
+
 ticket.dear_user: Dear participant <b>%user_name%</b>,
 ticket.wait_for_you: 'We are waiting for you:'
 ticket.city: %city_name%,
@@ -132,6 +137,7 @@ ticket.print.ticket.text2: We are looking forward to meet you!
 ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
 ticket.status.download: Download ticket
 ticket.status.pay: Buy ticket
+ticket.status.get: Get ticket
 ticket.mob_status.pay: Buy
 ticket.status.pay_for: Buy for
 
@@ -152,17 +158,20 @@ referral.balance.redesign: 'Your balance: %user_balance% UAH'
 payment.price: '%summ% UAH '
 payment.price.multi: '%summ% $ '
 payment.discount.cupon: (coupon discount %summ%%)
-payment.discount.member: Discount for participants of previous conversations is %summ%%
+payment.discount.member: '&minus;%summ%% for participants of previous conferences'
 payment.discount.tooltip: 'It will be added automatically to account where you made a purchase previously'
+payment.discount.student: '&minus;50% for students of full-time education'
+payment.discount.student_tooltip: Send us a photo or a scanned copy of your Student's ID to <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> and we will send a promo code to you
 
 pay.event.pay_for_other: Pay for other participants
 pay.event.one_more_participants: Add participants
-
+pay.tickets_by_email.description: Tickets will be sent on users emails
 pay.event.cupon: 'Promo code:'
-flash_you_registrated.title: You are registrated for event
+
+flash_you_registrated.title: You are registered for event
 flash_you_unsubscribe.title: You are unsubscribed for event
 flash_profile_updated.title: Your profile updated
-flash_user_created.title: You are registrated on the site
+flash_user_created.title: You are registered on the site
 flash_user_need_data.title: Fill the required fields to complete the registration
 
 contact_info.title: Contact info
@@ -212,6 +221,7 @@ ticket.email.event_date.title: 'Date'
 ticket.email.event_reg.title: 'Registration'
 ticket.email.event_member.title: 'Participant'
 ticket.email.ticket_price.title: 'Ticket price'
+ticket.email.conditions.title: 'Сonditions'
 ticket.email.event.title: 'Event'
 
 welcome.email.title: Welcome!

@@ -451,6 +451,15 @@ iframe {
     line-height: 18px;
     cursor: pointer;
   }
+
+  &--offer-contract {
+    flex-wrap: wrap;
+
+    .text-error {
+      order: 3;
+      flex-basis: 100%;
+    }
+  }
 }
 
 .link {
@@ -582,6 +591,11 @@ iframe {
 
   &__btn-link {
     margin-bottom: 15px;
+  }
+
+  &__label {
+    line-height: 14px;
+    font-size: 12px;
   }
 }
 
@@ -777,4 +791,17 @@ iframe {
   opacity: 0 !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+.block-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.highlight-label {
+  display: inline-block;
+  color: white;
+  padding: 8px 8px 6px;
+  margin: 8px 8px 8px 0;
 }

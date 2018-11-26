@@ -2,31 +2,35 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
+/**
+ * Class SpeakerAdmin.
+ */
 class SpeakerAdmin extends Admin
 {
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
     }
 
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -35,6 +39,9 @@ class SpeakerAdmin extends Admin
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
@@ -71,13 +78,12 @@ class SpeakerAdmin extends Admin
             ->with('Участвует в событиях', ['class' => 'col-md-4'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
@@ -86,13 +92,12 @@ class SpeakerAdmin extends Admin
             ->with('Кандидат на события', ['class' => 'col-md-4'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
@@ -101,18 +106,29 @@ class SpeakerAdmin extends Admin
             ->with('Программный комитет', ['class' => 'col-md-4'])
                 ->add('committeeEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' =>
-                        function (\Doctrine\ORM\EntityRepository $repository) {
-                            $qb = $repository->createQueryBuilder('e');
-                            $repository = $qb->orderBy('e.id', 'DESC');
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                        $qb = $repository->createQueryBuilder('e');
+                        $repository = $qb->orderBy('e.id', 'DESC');
 
-                            return  $repository;
-                        },
+                        return  $repository;
+                    },
                     'multiple' => true,
                     'expanded' => true,
                     'label' => 'События',
                 ])
             ->end()
         ;
+    }
+
+    /**
+     * @param GedmoTranslatable $object
+     */
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }
