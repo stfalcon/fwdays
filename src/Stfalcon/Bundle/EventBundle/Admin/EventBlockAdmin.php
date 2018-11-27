@@ -47,7 +47,7 @@ class EventBlockAdmin extends Admin
                 'translatable_class' => $this->getClass(),
                 'fields' => [
                     'text' => [
-                        'label' => 'Название',
+                        'label' => 'html',
                         'locale_options' => $localAllFalse,
                     ],
                 ],
