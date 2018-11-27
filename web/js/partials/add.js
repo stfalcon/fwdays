@@ -200,7 +200,7 @@ $(document).on('submit', '#payment', function (e) {
             var inst = $('[data-remodal-id=modal-payment]').remodal();
             inst.close();
         }
-        paymentSytemPay();
+        paymentSystemPay();
     }
 });
 

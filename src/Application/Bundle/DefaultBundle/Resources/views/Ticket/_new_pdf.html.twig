@@ -28,10 +28,10 @@
         }
 
         .ticket__top {
-            height: 320px;
+            height: 356px;
             background: #F5F3EA;
             border-radius: 5px 5px 0 0;
-            padding: 15px 20px;
+            padding: 5px 20px 10px;
         }
 
         .ticket__bottom {
@@ -41,7 +41,6 @@
 
         .ticket__head {
             position: relative;
-            padding-bottom: 16px;
         }
 
         .icon-circle-left {
@@ -192,7 +191,7 @@
     <div class="ticket__bottom">
         <div class="qr-code">
             {% if app.environment != 'test' %}
-            <img class="qr-code__img" src="data:image/png;base64,{{ qrCodeBase64 }}" alt="" width="140">
+            <img class="qr-code__img" src="data:image/png;base64,{{ qrCodeBase64 }}" alt="" width="120">
             {% endif %}
             <div class="qr-code__number">No{{ ticket.id }}</div>
         </div>
