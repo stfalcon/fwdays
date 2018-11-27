@@ -205,7 +205,7 @@ class TicketService
 
         $token = $this->tokenStorage->getToken();
 
-        $user = $token instanceof TokenInterface ? $token->getUser() : null;
+        $user = $token instanceof TokenInterface && $token->getUser() instanceof User ? $token->getUser() : null;
         if ($user instanceof User) {
             $payment = $this->em
                 ->getRepository('StfalconEventBundle:Payment')
