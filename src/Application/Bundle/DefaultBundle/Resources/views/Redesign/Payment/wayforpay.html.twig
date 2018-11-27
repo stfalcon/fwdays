@@ -1,7 +1,7 @@
 {% if pay_type == 'wayforpay' -%}
     <script type="text/javascript">
         var wayforpay = new Wayforpay();
-        var paymentSytemPay = function () {
+        var paymentSystemPay = function () {
             wayforpay.run({
                     {% for key, param in params -%}
                         {{ key }} : "{{ param|raw }}",
