@@ -31,17 +31,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return Response
-     */
-    public function footerPagesAction()
-    {
-        $pages = $staticPage = $this->getDoctrine()->getRepository('StfalconEventBundle:Page')
-            ->findBy(['showInFooter' => true]);
-
-        return $this->render('ApplicationDefaultBundle:Redesign:_footer_pages.html.twig', ['pages' => $pages]);
-    }
-
-    /**
      * @Route(path="/cabinet", name="cabinet")
      *
      * @Security("has_role('ROLE_USER')")

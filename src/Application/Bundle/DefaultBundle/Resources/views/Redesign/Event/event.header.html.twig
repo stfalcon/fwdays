@@ -6,7 +6,9 @@
     {% set scrollClass = ' go-to-block' %}
 {% endif %}
 <!--BEGIN event-header-->
-<section class="event-header {% if event.useCustomBackground == true -%}event-header--business{%- endif -%}" style="background-color: {{ event.backgroundColor }};">
+<section class="event-header
+    {% if event.useCustomBackground == true and event.backgroundFile is not empty -%} event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
+    {%- else -%}" style="background-color: {{ event.backgroundColor }};{%- endif -%}">
     <div class="container">
         <div class="event-header__box">
             <h1 class="event-header__title">{{ event.name }}</h1>
@@ -32,7 +34,7 @@
                 </div>
                 <div class="event-header__action">
                     <div class="event-header__action-ticket">
-                    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_header'}) %}
+                        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'event_header'}) }}
                     </div>
                     {% if event.activeAndFuture and event.receivePayments and event.isHaveFreeTickets %}
                         <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
@@ -41,7 +43,7 @@
             </div>
         </div>
         <div class="event-header__photo">
-            {% if event.logoFile is not empty %}
+            {% if event.logoFile is not empty and (event.showLogoWithBackground or event.useCustomBackground == false) %}
                 <img class="event-header__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="{{ event.name }}">
             {% endif %}
         </div>
@@ -61,7 +63,7 @@
 <!--BEGIN event-buy-mob-->
 <section class="event-action-mob">
     <div class="container">
-        {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'event_action_mob'}) %}
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'event_action_mob'}) }}
     </div>
 </section>
 <!--END event-buy-mob-->

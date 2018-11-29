@@ -20,73 +20,26 @@
 
 {% block content %}
     {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
-    'event':event,
-    'programPage':programPage,
-    'venuePage':venuePage,
-    'pages':pages,
-    'position':'event',
-    'eventCurrentAmount':eventCurrentAmount
+        'event':event,
+        'programPage':programPage,
+        'venuePage':venuePage,
+        'pages':pages,
+        'position':'event',
+        'eventCurrentAmount':eventCurrentAmount
     } %}
 
-    <!--BEGIN event-description-->
-    {%- if event.useCustomBackground != true -%}
-        <section class="event-description">
-            <div class="container container--sm">
-                <div class="event-description__text static-styles">
-                    {{ event.about|raw }}
-                </div>
-            </div>
-        </section>
+    {%- if event.blocks|length == 0 -%}
+        {% include '@ApplicationDefault/Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
     {%- else -%}
-        {{ event.about|raw }}
+        {%- for block in event.blocks if block.visible -%}
+            {% set block_type = 'sonata.block.event.' ~ block.type %}
+            {{ sonata_block_render({ 'type': block_type }, {'event': event, 'event_block': block}) }}
+        {%- endfor -%}
     {%- endif -%}
-    <!--END event-description-->
-
-    <!--BEGIN speakers-->
-    {% include 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig' with {'event':event} %}
-    <!--END speakers-->
-    <!--BEGIN program-->
-    {%- if programPage -%}
-        <section id="program-event" class="schedule">
-            <div class="container schedule__container">
-                <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
-                {%- if programPage.textNew is not empty -%}
-                    {{ programPage.textNew|raw }}
-                {%- else -%}
-                    {{ programPage.text|raw }}
-                {%- endif -%}
-            </div>
-        </section>
-    {%- endif -%}
-    <!--END program-->
-
-    {%- if event.activeAndFuture and event.receivePayments -%}
-        {% render controller('ApplicationDefaultBundle:Event:getEventCosts', {'event':event}) %}
-    {%- endif -%}
-
-    {% render controller('ApplicationDefaultBundle:Event:eventPartners', {'event':event}) %}
-
-    {% include '@ApplicationDefault/Redesign/Event/event.speakers_committee.html.twig' with {'event':event} %}
-
-    <!--BEGIN location-->
-    <section id="location-event" class="location">
-        <div class="container container--sm">
-            <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
-            <div class="location__description">
-                {{ event.city }}, {{ event.place }}
-            </div>
-            {%- if venuePage -%}
-                <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
-            {%- endif -%}
-        </div>
-        <div class="container">
-            <div id="map" data-event="{{ event.slug }}" data-lng="{{ event.lng }}" data-lat="{{ event.lat }}" class="location__map"></div>
-        </div>
-    </section>
-    <!--END location-->
 
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
 {% endblock content %}
+
 {% block popups %}
 {{ parent() }}
 <!--BEGIN speaker-popup-->
@@ -99,6 +52,7 @@
 </div>
 <!--END speaker-popup-->
 {% endblock popups %}
+
 {% block scripts %}
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places"></script>

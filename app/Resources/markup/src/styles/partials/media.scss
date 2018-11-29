@@ -310,7 +310,7 @@
     }
   }
 
-  .event-header--business {
+  .event-header--background {
     .event-header__title,
     .event-header__info {
       width: 100% !important;
@@ -1224,10 +1224,6 @@
     &__photo {
       max-width: 180px;
     }
-  }
-
-  .event-header--business {
-    background-size: 768px;
   }
 
   .event-themes {

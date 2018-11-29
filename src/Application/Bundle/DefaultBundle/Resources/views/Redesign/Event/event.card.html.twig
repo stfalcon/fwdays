@@ -6,7 +6,7 @@
             </h2>
             <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-card__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
             <div class="event-card__action">
-            {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'card'}) %}
+            {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'card'}) }}
             </div>
         </div>
         <div class="event-card__photo">
