@@ -1,0 +1,61 @@
+services:
+
+    sonata.block.event.text:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\TextEventBlockService
+        arguments: ['sonata.block.event.text', '@templating']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.partners:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\PartnersEventBlockService
+        arguments: ['sonata.block.event.partners', '@templating', '@app.partners_repository.service', '@app.partners_category_repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.prices:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\PricesEventBlockService
+        arguments: ['sonata.block.event.prices', '@templating', '@app.ticket_cost_repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.description:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\DescriptionEventBlockService
+        arguments: ['sonata.block.event.description', '@templating']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.venue:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\VenueEventBlockService
+        arguments: ['sonata.block.event.venue', '@templating', '@app.event.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.program:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\ProgramEventBlockService
+        arguments: ['sonata.block.event.program', '@templating', '@app.event.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.speakers:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\SpeakersEventBlockService
+        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.candidate_speakers:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\CandidateSpeakersEventBlockService
+        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.committee_speakers:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\CommitteeSpeakersEventBlockService
+        arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.ticket_status:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\TicketStatusEventBlockService
+        arguments: ['sonata.block.event.ticket_status', '@templating', '@stfalcon_event.ticket.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.footer:
+        class: Application\Bundle\DefaultBundle\Service\FooterBlockService
+        arguments: ['sonata.block.footer', '@templating', '@app.page.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.language_switcher:
+        class: Application\Bundle\DefaultBundle\Service\LanguageSwitcherBlockService
+        arguments: ['sonata.block.language_switcher', '@templating', '@request_stack', '%locales%']
+        tags: [name: 'sonata.block']

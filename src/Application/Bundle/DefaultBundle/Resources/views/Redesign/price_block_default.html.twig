@@ -3,6 +3,6 @@
     <div class="cost__tickets"></div>
     <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':event.cost|number_format(0,',',' ')}) }}
     </div>
-    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block' }) %}
-    {% render controller('ApplicationDefaultBundle:Ticket:status', {'event':event, 'position':'price_block_mob'}) %}
+    {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block'}) }}
+    {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block_mob'}) }}
 </div>

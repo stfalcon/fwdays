@@ -29,18 +29,10 @@ class TicketController extends Controller
      */
     public function statusAction(Event $event, $position = 'card', TicketCost $ticketCost = null)
     {
-        /* @var  User $user */
-        $user = $this->getUser();
-        $request = $this->get('request_stack')->getCurrentRequest();
-
-        $local = $request instanceof Request ? $request->getLocale() : 'uk';
-
         $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData(
-            $user,
             $event,
             $position,
-            $ticketCost,
-            $local
+            $ticketCost
         );
 
         return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', $result);

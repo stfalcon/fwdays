@@ -120,6 +120,7 @@ class EventAdmin extends Admin
             ];
 
         $formMapper
+            ->tab('Переводы')
                 ->with('Переводы')
                     ->add('translations', 'a2lix_translations_gedmo', [
                         'translatable_class' => $this->getClass(),
@@ -154,6 +155,8 @@ class EventAdmin extends Admin
                         'label' => 'Перевод',
                     ])
                 ->end()
+            ->end()
+            ->tab('Настройки')
                 ->with('Настройки')
                     ->add('slug')
                     ->add('group', null, ['label' => 'Группа'])
@@ -186,6 +189,28 @@ class EventAdmin extends Admin
                     ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
                     ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Использовать логотип c фоновым изображением'])
                 ->end()
+            ->end()
+            ->tab('Блоки')
+                ->with('Блоки')
+                    ->add(
+                        'blocks',
+                        'sonata_type_collection',
+                        [
+                            'label' => 'Блоки отображения события',
+                            'by_reference' => false,
+                            'type_options' => ['delete' => true],
+                            'btn_add' => is_null($subject->getId()) ? false : 'Добавить блок',
+                            'help' => is_null($subject->getId()) ? 'добавление блоков возможно только после создания события'
+                                : 'добавьте блоки отображения',
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab('Даты')
                 ->with('Даты', ['class' => 'col-md-6'])
                     ->add('dateFormat', null, [
                         'required' => true,
@@ -217,7 +242,10 @@ class EventAdmin extends Admin
                         )
                     )
                 ->end()
+            ->end()
+            ->tab('Изображения и цвет')
                 ->with('Изображения и цвет', ['class' => 'col-md-6'])
+                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
                     ->add(
                         'backgroundColor',
                         'text',

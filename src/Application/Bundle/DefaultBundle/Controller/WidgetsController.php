@@ -17,29 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class WidgetsController extends Controller
 {
     /**
-     * @param Request $request
-     * @param string  $position
-     *
-     * @return Response
-     */
-    public function languageSwitcherAction($request, $position = 'header')
-    {
-        $locales = $this->getParameter('locales');
-        $localesArr = [];
-        foreach ($locales as $locale) {
-            $localesArr[$locale] = $this->localizeRoute($request, $locale);
-        }
-
-        return $this->render(
-            'ApplicationDefaultBundle:Redesign:language_switcher.html.twig',
-            [
-                'locales' => $localesArr,
-                'position' => $position,
-            ]
-        );
-    }
-
-    /**
      * Like review.
      *
      * @Route(path="/like/{reviewSlug}", name="like_review",
@@ -66,42 +43,5 @@ class WidgetsController extends Controller
         $em->flush();
 
         return new JsonResponse(['result' => true, 'likesCount' => $review->getLikedUsers()->count()]);
-    }
-
-    /**
-     * Localize current route.
-     *
-     * @param Request $request
-     * @param string  $locale
-     *
-     * @return string
-     */
-    private function localizeRoute($request, $locale)
-    {
-        $locales = $this->getParameter('locales');
-        $path = $request->getPathInfo();
-        $currentLocal = $this->getInnerSubstring($path, '/');
-        if (in_array($currentLocal, $locales)) {
-            $path = preg_replace('/^\/'.$currentLocal.'\//', '/', $path);
-        }
-        $params = $request->query->all();
-
-        return $request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : '');
-    }
-
-    /**
-     * Get inner sub string in position number.
-     *
-     * @param string $string
-     * @param string $delim
-     * @param int    $keyNumber
-     *
-     * @return string
-     */
-    private function getInnerSubstring($string, $delim, $keyNumber = 1)
-    {
-        $string = explode($delim, $string, 3);
-
-        return isset($string[$keyNumber]) ? $string[$keyNumber] : '';
     }
 }

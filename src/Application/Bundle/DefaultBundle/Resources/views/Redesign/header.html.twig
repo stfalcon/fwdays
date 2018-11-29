@@ -8,7 +8,7 @@
             {{ knp_menu_render('main_redesign', {'template': 'ApplicationDefaultBundle:Menu:knp_menu.html.twig'}) }}
         </div>
         <div class="header__right">
-            {% render controller('ApplicationDefaultBundle:Widgets:languageSwitcher', {'request': app.request, 'position' : 'header'}) %}
+            {{ sonata_block_render({ 'type': 'sonata.block.language_switcher' }, {'position' : 'header'}) }}
             <div class="social header__social">
                 {% include '@ApplicationDefault/Redesign/social.html.twig' %}
             </div>

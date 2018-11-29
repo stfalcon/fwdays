@@ -9,7 +9,10 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -42,22 +45,27 @@ class TicketService
     /** @var TicketCostService */
     protected $ticketCostService;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * TicketService constructor.
      *
-     * @param EntityManager       $em
-     * @param array               $paymentsConfig
-     * @param TranslatorInterface $translator
-     * @param RouterInterface     $router
-     * @param TicketCostService   $ticketCostService
+     * @param EntityManager         $em
+     * @param array                 $paymentsConfig
+     * @param TranslatorInterface   $translator
+     * @param RouterInterface       $router
+     * @param TicketCostService     $ticketCostService
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService)
+    public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
         $this->paymentsConfig = $paymentsConfig;
         $this->translator = $translator;
         $this->router = $router;
         $this->ticketCostService = $ticketCostService;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -182,20 +190,22 @@ class TicketService
     }
 
     /**
-     * @param User       $user
      * @param Event      $event
      * @param string     $position
      * @param TicketCost $ticketCost
      *
      * @return array
      */
-    public function getTicketHtmlData($user, $event, $position, $ticketCost)
+    public function getTicketHtmlData($event, $position, $ticketCost)
     {
         $eventState = null;
         $ticket = null;
         /** @var Payment $payment */
         $payment = null;
 
+        $token = $this->tokenStorage->getToken();
+
+        $user = $token instanceof TokenInterface && $token->getUser() instanceof User ? $token->getUser() : null;
         if ($user instanceof User) {
             $payment = $this->em
                 ->getRepository('StfalconEventBundle:Payment')

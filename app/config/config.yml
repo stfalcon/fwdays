@@ -4,6 +4,8 @@ imports:
     - { resource: security.yml }
     - { resource: multi_lang.yml }
     - { resource: mobile_detect.yml }
+    - { resource: sonata/admin.yml }
+    - { resource: sonata/block.yml }
 
 parameters:
     graylog.fromname: "https://fwdays.com"
@@ -136,41 +138,6 @@ stfalcon_event:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
     discount: 0.2
-
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        sonata.admin.block.admin_list:
-            contexts:   [admin]
-        sonata.block.service.text:
-        sonata.block.service.action:
-        sonata.block.service.rss:
-        sonata.block.service.statistic: ~
-
-sonata_admin:
-    title: framework days
-    templates:
-        layout: "::admin.html.twig"
-        user_block: '::user_block.html.twig'
-    dashboard:
-        blocks:
-            # display two dashboard blocks
-            -
-                position: left
-                type: sonata.admin.block.admin_list
-                settings:
-                    groups:
-                      - "Пользователи"
-                      - "События"
-                      - "group.translation"
-            -
-                position: right
-                type: sonata.admin.block.admin_list
-                settings:
-                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки", "Логи"]
-            -
-                position: left
-                type: sonata.block.service.statistic
 
 vich_uploader:
      db_driver: orm
