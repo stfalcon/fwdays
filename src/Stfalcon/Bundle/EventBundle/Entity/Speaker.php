@@ -5,22 +5,31 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Speaker
+ * Stfalcon\Bundle\EventBundle\Entity\Speaker.
  *
  * @Vich\Uploadable
+ *
  * @ORM\Table(name="event__speakers")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\SpeakerRepository")
+ *
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation")
  */
 class Speaker implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
 
     /**
      * @ORM\OneToMany(
@@ -31,7 +40,7 @@ class Speaker implements Translatable
      */
     private $translations;
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -40,44 +49,46 @@ class Speaker implements Translatable
     private $id;
 
     /**
-     * @var string $slug
+     * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
      */
     private $slug;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     private $name = '';
 
     /**
-     * @var string $email
+     * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
     /**
-     * @var string $company
+     * @var string
      *
      * @ORM\Column(name="company", type="string", length=255)
      */
     private $company;
 
     /**
-     * @var text $about
+     * @var string
      *
      * @ORM\Column(name="about", type="text")
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     private $about;
 
     /**
-     * @var string $photo
+     * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
@@ -86,6 +97,7 @@ class Speaker implements Translatable
     /**
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
+     *
      * @Vich\UploadableField(mapping="speaker_photo", fileNameProperty="photo")
      */
     private $file;
@@ -106,6 +118,26 @@ class Speaker implements Translatable
     private $events;
 
     /**
+     * Євенти в яких спикер знаходиться на розгляді.
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
+     * @ORM\JoinTable(name="event_speakers_candidate")
+     */
+    private $candidateEvents;
+
+    /**
+     * Євенти в яких спикер знаходиться на розгляді.
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="committeeSpeakers")
+     * @ORM\JoinTable(name="event_speakers_committee")
+     */
+    private $committeeEvents;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
@@ -113,27 +145,57 @@ class Speaker implements Translatable
     private $reviews;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="update")
+     *
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
 
     /**
-     * Constructor
+     * @var int
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=false, options={"default":"1"})
+     */
+    protected $sortOrder = 1;
+
+    /**
+     * Constructor.
      */
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->candidateEvents = new ArrayCollection();
+        $this->committeeEvents = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int $sortOrder
      *
-     * @return integer
+     * @return $this
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
      */
     public function getId()
     {
@@ -141,7 +203,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set photo
+     * Set photo.
      *
      * @param string $photo photo
      *
@@ -155,17 +217,21 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -175,17 +241,21 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -195,17 +265,21 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $eMail
+     *
+     * @return $this
      */
     public function setEmail($eMail)
     {
         $this->email = $eMail;
+
+        return $this;
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -215,17 +289,21 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set company
+     * Set company.
      *
      * @param string $company
+     *
+     * @return $this
      */
     public function setCompany($company)
     {
         $this->company = $company;
+
+        return $this;
     }
 
     /**
-     * Get company
+     * Get company.
      *
      * @return string
      */
@@ -235,19 +313,23 @@ class Speaker implements Translatable
     }
 
     /**
-     * Set about
+     * Set about.
      *
-     * @param text $about
+     * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
         $this->about = $about;
+
+        return $this;
     }
 
     /**
-     * Get about
+     * Get about.
      *
-     * @return text
+     * @return string
      */
     public function getAbout()
     {
@@ -255,42 +337,127 @@ class Speaker implements Translatable
     }
 
     /**
-     * Get photo
+     * Get photo.
      *
      * @return string
      */
-    public function getPhoto() {
+    public function getPhoto()
+    {
         return $this->photo;
     }
 
-    public function getFile() {
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function setFile($file) {
+    /**
+     * @param File $file
+     *
+     * @return $this
+     */
+    public function setFile($file)
+    {
         $this->file = $file;
 
-       $this->setUpdatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+
+        return $this;
     }
 
-    public function getEvents() {
+    /**
+     * @return ArrayCollection
+     */
+    public function getEvents()
+    {
         return $this->events;
     }
 
-    public function setEvents($events) {
+    /**
+     * @param ArrayCollection $events
+     *
+     * @return $this
+     */
+    public function setEvents($events)
+    {
         $this->events = $events;
+
+        return $this;
     }
 
-    public function getReviews() {
+    /**
+     * @return ArrayCollection
+     */
+    public function getCommitteeEvents()
+    {
+        return $this->committeeEvents;
+    }
+
+    /**
+     * @param ArrayCollection $committeeEvents
+     *
+     * @return $this
+     */
+    public function setCommitteeEvents($committeeEvents)
+    {
+        $this->committeeEvents = $committeeEvents;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCandidateEvents()
+    {
+        return $this->candidateEvents;
+    }
+
+    /**
+     * @param ArrayCollection $candidateEvents
+     *
+     * @return $this
+     */
+    public function setCandidateEvents($candidateEvents)
+    {
+        $this->candidateEvents = $candidateEvents;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getReviews()
+    {
         return $this->reviews;
     }
 
-    public function setReviews($reviews) {
+    /**
+     * @param ArrayCollection $reviews
+     *
+     * @return $this
+     */
+    public function setReviews($reviews)
+    {
         $this->reviews = $reviews;
+
+        return $this;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt) {
+    /**
+     * @param \DateTime $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**

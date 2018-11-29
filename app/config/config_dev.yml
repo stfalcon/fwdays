@@ -30,6 +30,16 @@ swiftmailer:
     transport: mail
     host:      localhost
 
-parameters:
-     graylog.hostname: localhost
-     graylog.port: 12201
+stfalcon_event:
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
+    discount: 0.2
+
+twig:
+    globals:
+        fb_page_id: "349461782222519"
+
+#parameters:
+#     graylog.hostname: localhost
+#     graylog.port: 12201

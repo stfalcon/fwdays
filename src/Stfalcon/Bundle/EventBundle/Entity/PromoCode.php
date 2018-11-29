@@ -4,21 +4,27 @@ namespace Stfalcon\Bundle\EventBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
-use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\PromoCode
+ * Stfalcon\Bundle\EventBundle\Entity\PromoCode.
  *
  * @ORM\Table(name="event__promo_code")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\PromoCodeRepository")
+ *
+ * @UniqueEntity(
+ *     "code",
+ *     errorPath="code",
+ *     message="Поле code повинне бути унікальне."
+ * )
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation")
  */
 class PromoCode
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\PromoCodeTranslation",
@@ -29,7 +35,7 @@ class PromoCode
     private $translations;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -41,7 +47,9 @@ class PromoCode
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @Assert\NotBlank()
      */
     protected $title = '';
@@ -57,10 +65,10 @@ class PromoCode
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank()
      */
     protected $code;
-
 
     /**
      * @var Event
@@ -77,12 +85,64 @@ class PromoCode
      */
     protected $endDate;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $usedCount = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $maxUseCount = 0;
+
+    /**
+     * @var int
+     */
+    protected $tmpUsedCount = 0;
+
+    /**
+     * PromoCode constructor.
+     */
     public function __construct()
     {
         $this->code = substr(strtoupper(md5(uniqid())), 0, 10);
         $this->discountAmount = 10;
         $this->endDate = new \DateTime('+10 days');
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsedCount()
+    {
+        return $this->usedCount;
+    }
+
+    /**
+     * @param int $usedCount
+     *
+     * @return $this
+     */
+    public function setUsedCount($usedCount)
+    {
+        $this->usedCount = $usedCount;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function incUsedCount()
+    {
+        ++$this->usedCount;
+
+        return $this;
     }
 
     /**
@@ -210,6 +270,74 @@ class PromoCode
      */
     public function __toString()
     {
-        return $this->title . ' - ' . $this->discountAmount . '%' . ' (' . $this->code . ')';
+        return $this->title.' - '.$this->discountAmount.'%'.' ('.$this->code.')';
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxUseCount()
+    {
+        return $this->maxUseCount;
+    }
+
+    /**
+     * @param int $maxUseCount
+     *
+     * @return $this
+     */
+    public function setMaxUseCount($maxUseCount)
+    {
+        $this->maxUseCount = $maxUseCount;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnlimited()
+    {
+        $unlimited = 0 === $this->maxUseCount;
+
+        return $unlimited;
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getUsed()
+    {
+        if ($this->isUnlimited()) {
+            return $this->getUsedCount();
+        }
+
+        return $this->getUsedCount().' из '.$this->getMaxUseCount();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanBeUsed()
+    {
+        return $this->isUnlimited() || $this->getUsedCount() < $this->getMaxUseCount();
+    }
+
+    /**
+     * @return $this
+     */
+    public function incTmpUsedCount()
+    {
+        ++$this->tmpUsedCount;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanBeTmpUsed()
+    {
+        return $this->isUnlimited() || ($this->getUsedCount() + $this->tmpUsedCount) < $this->getMaxUseCount();
     }
 }

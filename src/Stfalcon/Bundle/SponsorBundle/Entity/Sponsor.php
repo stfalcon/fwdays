@@ -5,26 +5,34 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-use Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor;
-
 /**
- * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
+ * Stfalcon\Bundle\SponsorBundle\Entity\Sponsor.
  *
  * @Vich\Uploadable
+ *
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
+ *
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
 class Sponsor implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -41,44 +49,46 @@ class Sponsor implements Translatable
     private $translations;
 
     /**
-     * @var string $slug
+     * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
      */
     protected $slug;
 
     /**
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $name;
 
     /**
-     * @var string $site
+     * @var string
      *
      * @ORM\Column(name="site", type="string", nullable=true, length=255)
+     *
      * @Assert\Url
      */
     protected $site;
 
     /**
-     * @var string $logo
+     * @var string
      *
      * @ORM\Column(name="logo", type="string", nullable=true, length=255)
      */
     protected $logo;
 
     /**
-     * @var int $sortOrder
+     * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     protected $sortOrder = 1;
 
     /**
-     * @var resource $file
+     * @var resource
      *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
@@ -88,9 +98,10 @@ class Sponsor implements Translatable
     protected $file;
 
     /**
-     * @var string $about
+     * @var string
      *
      * @ORM\Column(name="about", type="text", nullable=true)
+     *
      * @Gedmo\Translatable(fallback=true)
      */
     protected $about;
@@ -103,31 +114,32 @@ class Sponsor implements Translatable
     protected $sponsorEvents;
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
 
-
     /**
-     * @var boolean onMain
+     * @var bool onMain
      *
      * @ORM\Column(name="on_main", type="boolean")
      */
     protected $onMain = false;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -136,9 +148,9 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -146,17 +158,21 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -166,17 +182,21 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -185,9 +205,8 @@ class Sponsor implements Translatable
         return $this->name;
     }
 
-
     /**
-     * Get logo filename
+     * Get logo filename.
      *
      * @return string
      */
@@ -197,27 +216,35 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set logo filename
+     * Set logo filename.
      *
      * @param string $logo
+     *
+     * @return $this
      */
     public function setLogo($logo)
     {
         $this->logo = $logo;
+
+        return $this;
     }
 
     /**
-     * Set sortOrder
+     * Set sortOrder.
      *
      * @param int $sortOrder
+     *
+     * @return $this
      */
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**
-     * Get sortOrder
+     * Get sortOrder.
      *
      * @return int
      */
@@ -227,17 +254,21 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set site
+     * Set site.
      *
      * @param string $site
+     *
+     * @return $this
      */
     public function setSite($site)
     {
         $this->site = $site;
+
+        return $this;
     }
 
     /**
-     * Get site
+     * Get site.
      *
      * @return string
      */
@@ -255,25 +286,33 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param $file
+     * @param File $file
+     *
+     * @return $this
      */
     public function setFile($file)
     {
         $this->file = $file;
+
+        return $this;
     }
 
     /**
-     * Set about
+     * Set about.
      *
      * @param string $about
+     *
+     * @return $this
      */
     public function setAbout($about)
     {
         $this->about = $about;
+
+        return $this;
     }
 
     /**
-     * Get about
+     * Get about.
      *
      * @return string
      */
@@ -282,24 +321,31 @@ class Sponsor implements Translatable
         return $this->about;
     }
 
-
     /**
      * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
      */
     public function addSponsorEvents(EventSponsor $sponsorEvent)
     {
         $this->sponsorEvents[] = $sponsorEvent;
+
+        return $this;
     }
 
     /**
-     * @param $sponsorEvents
+     * @param ArrayCollection $sponsorEvents
+     *
+     * @return $this
      */
     public function setSponsorEvents($sponsorEvents)
     {
-        foreach($sponsorEvents as $sponsorEvent){
+        foreach ($sponsorEvents as $sponsorEvent) {
             $sponsorEvent->setSponsor($this);
         }
         $this->sponsorEvents = $sponsorEvents;
+
+        return $this;
     }
 
     /**
@@ -311,7 +357,7 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Get createdAt
+     * Get createdAt.
      *
      * @return \Datetime createdAt
      */
@@ -321,17 +367,21 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set createdAt
+     * Set createdAt.
      *
      * @param \Datetime $createdAt createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
-     * Get updatedAt
+     * Get updatedAt.
      *
      * @return \Datetime updatedAt
      */
@@ -341,17 +391,21 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set updatedAt
+     * Set updatedAt.
      *
      * @param \Datetime $updatedAt updatedAt
+     *
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
-     * Get sponsor name if object treated like a string
+     * Get sponsor name if object treated like a string.
      *
      * @return string
      */
@@ -361,15 +415,19 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param boolean $onMain
+     * @param bool $onMain
+     *
+     * @return $this
      */
     public function setOnMain($onMain)
     {
         $this->onMain = $onMain;
+
+        return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getOnMain()
     {

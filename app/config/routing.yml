@@ -1,29 +1,12 @@
-StfalconEventBundle:
-    resource: "@StfalconEventBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 ApplicationDefaultBundle:
     resource: "@ApplicationDefaultBundle/Controller/"
     type:     annotation
     prefix:   /
 
-StfalconSponsorBundle:
-    resource: "@StfalconSponsorBundle/Controller/"
+ApplicationUserBundle:
+    resource: "@ApplicationUserBundle/Controller/"
     type:     annotation
     prefix:   /
-
-#ApplicationUserBundle:
-#    resource: "@ApplicationDefaultBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
-app_backend:
-    resource: "@StfalconEventBundle/Controller/Admin"
-    type:     annotation
-    prefix:   /admin
-    options:
-        i18n: false
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -40,13 +23,19 @@ _sonata_admin:
 
 sonata_admin_ticket_check:
     pattern:  /admin/ticket/check
-    defaults: { _controller: StfalconEventBundle:TicketAdmin:check }
+    defaults: { _controller: ApplicationDefaultBundle:TicketAdmin:check }
     options:
         i18n: false
 
 admin_show_statistic:
     pattern:  /admin/statistic
-    defaults: { _controller: StfalconEventBundle:StatisticAdmin:showStatistic }
+    defaults: { _controller: ApplicationDefaultBundle:Admin:showStatistic }
+    options:
+        i18n: false
+
+admin_show_event_statistic:
+    pattern:  /admin/event_statistic
+    defaults: { _controller: ApplicationDefaultBundle:Admin:showEventStatistic }
     options:
         i18n: false
 
@@ -55,16 +44,13 @@ admin_show_statistic:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
 
-_imagine:
-    resource: .
-    type: imagine
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
     options:
         i18n: false
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
-    options:
-        i18n: false
 
 fos_user_profile:
     resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
@@ -81,3 +67,38 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+    options:
+        i18n: false
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+    options:
+        i18n: false
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /connect
+    options:
+        i18n: false
+
+facebook_login:
+    path: /login/check-facebook
+    options:
+        i18n: false
+
+google_login:
+    path: /login/check-google
+    options:
+        i18n: false
+
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /translations

@@ -1,0 +1,8 @@
+<div class="cost cost--active price-list__item">
+    <div class="cost__type">{{ 'ticket.title'|trans }}</div>
+    <div class="cost__tickets"></div>
+    <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':event.cost|number_format(0,',',' ')}) }}
+    </div>
+    {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block'}) }}
+    {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block_mob'}) }}
+</div>

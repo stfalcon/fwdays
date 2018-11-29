@@ -3,20 +3,18 @@
 namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
-use Stfalcon\Bundle\SponsorBundle\Entity\Category;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
- * Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor
+ * Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor.
  *
  * @ORM\Table(name="event__events_sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
- *
  */
 class EventSponsor
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -49,23 +47,25 @@ class EventSponsor
     protected $category;
 
     /**
-     * Get title
+     * Get title.
+     *
+     * @return string
      */
     public function __toString()
     {
         $title = (string) $this->getEvent()->getName() ?: '-';
 
         if ($this->getCategory() instanceof Category) {
-            $title .=  ' / ' . $this->getCategory()->getName();
+            $title .= ' / '.$this->getCategory()->getName();
         }
 
         return $title;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -74,10 +74,14 @@ class EventSponsor
 
     /**
      * @param \Stfalcon\Bundle\SponsorBundle\Entity\Category $category
+     *
+     * @return $this
      */
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -90,10 +94,14 @@ class EventSponsor
 
     /**
      * @param \Stfalcon\Bundle\EventBundle\Entity\Event $event
+     *
+     * @return $this
      */
     public function setEvent($event)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -106,10 +114,14 @@ class EventSponsor
 
     /**
      * @param \Stfalcon\Bundle\SponsorBundle\Entity\Sponsor $sponsor
+     *
+     * @return $this
      */
     public function setSponsor($sponsor)
     {
         $this->sponsor = $sponsor;
+
+        return $this;
     }
 
     /**

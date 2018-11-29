@@ -2,20 +2,19 @@
 
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\DependentFixtureInterface,
-    Doctrine\Common\Persistence\ObjectManager;
-
-use Stfalcon\Bundle\EventBundle\Entity\Mail,
-    Stfalcon\Bundle\EventBundle\Entity\MailQueue;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 /**
- * Class LoadMailQueueData
+ * Class LoadMailQueueData.
  */
 class LoadMailQueueData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * Return fixture classes fixture is dependent on
+     * Return fixture classes fixture is dependent on.
      *
      * @return array
      */
@@ -39,7 +38,7 @@ class LoadMailQueueData extends AbstractFixture implements DependentFixtureInter
         $mail->setTitle('test');
         $mail->setText('test');
         $mail->setPaymentStatus($manager->merge($this->getReference('payment')));
-        $mail->addEvent($manager->merge($this->getReference('event-zfday')));
+        $mail->addEvent($manager->merge($this->getReference('event-jsday2018')));
         $manager->persist($mail);
 
         $mq = new MailQueue();

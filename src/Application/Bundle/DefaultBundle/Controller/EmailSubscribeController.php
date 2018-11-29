@@ -3,85 +3,124 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Response,
-    JMS\SecurityExtraBundle\Annotation\Secure;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 /**
- * EmailSubscribe controller
+ * EmailSubscribe controller.
  */
 class EmailSubscribeController extends Controller
 {
     /**
      * Unsubscribe action.
      *
-     * @param integer $userId
+     * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
+     *
      * @param string $hash
+     * @param int    $userId
+     * @param int    $mailId
      *
-     * @return RedirectResponse
+     * @Template()
      *
-     * @Route("/unsubscribe/{hash}/{userId}", name="unsubscribe")
+     * @return array
      */
-    public function actionUnsubscribe($userId, $hash)
+    public function unsubscribeAction($hash, $userId, $mailId = null)
     {
-        /**
-         * @var User $subscriber
-         */
-        $subscriber = $this->getDoctrine()
-            ->getRepository('ApplicationUserBundle:User')
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $subscriber */
+        $subscriber = $em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['id' => $userId, 'salt' => $hash]);
 
         if (!$subscriber) {
             throw $this->createNotFoundException('Unable to find Subscriber.');
         }
 
-        $em = $this->getDoctrine()->getManager();
+        if ($mailId) {
+            $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+            if ($mail) {
+                $mail->addUnsubscribeMessagesCount();
+            }
+            /** @var MailQueue $mailQueue */
+            $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')
+                ->findOneBy(['user' => $userId, 'mail' => $mailId]);
+            if ($mailQueue && $subscriber->isSubscribe()) {
+                $mailQueue->setIsUnsubscribe();
+            }
+        }
 
         $subscriber->setSubscribe(false);
-        $em->persist($subscriber);
         $em->flush();
 
-        return $this->render('ApplicationDefaultBundle:EmailSubscribe:unsubscribe.html.twig', [
-            'hash' => $hash,
-            'userId' => $userId
-        ]);
+        return ['hash' => $hash, 'userId' => $userId];
     }
 
     /**
      * Subscribe action.
      *
-     * @param integer $userId
+     * @Route("/subscribe/{hash}/{userId}", name="subscribe")
+     *
+     * @param int    $userId
      * @param string $hash
      *
-     * @return RedirectResponse
+     * @Template()
      *
-     * @Route("/subscribe/{hash}/{userId}", name="subscribe")
+     * @return array
      */
-    public function actionSubscribe($userId, $hash)
+    public function subscribeAction($userId, $hash)
     {
-        /**
-         * @var User $subscriber
-         */
-        $subscriber = $this->getDoctrine()
-            ->getRepository('ApplicationUserBundle:User')
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $subscriber */
+        $subscriber = $em->getRepository('ApplicationUserBundle:User')
             ->findOneBy(['id' => $userId, 'salt' => $hash]);
 
         if (!$subscriber) {
             throw $this->createNotFoundException('Unable to find Subscriber.');
         }
 
-        $em = $this->getDoctrine()->getManager();
-
         $subscriber->setSubscribe(true);
-        $em->persist($subscriber);
         $em->flush();
 
-        return $this->render('ApplicationDefaultBundle:EmailSubscribe:subscribe.html.twig', [
-            'hash' => $hash,
-            'userId' => $userId
-        ]);
+        return ['hash' => $hash, 'userId' => $userId];
+    }
+
+    /**
+     * Open mail action.
+     *
+     * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
+     *
+     * @param int    $userId
+     * @param string $hash
+     * @param int    $mailId
+     *
+     * @return RedirectResponse
+     */
+    public function actionTrackOpenMail($userId, $hash, $mailId = null)
+    {
+        if ($mailId) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var User $user */
+            $user = $em->getRepository('ApplicationUserBundle:User')
+                ->findOneBy(['id' => $userId, 'salt' => $hash]);
+
+            if ($user) {
+                /** @var MailQueue $mailQueue */
+                $mailQueue = $em->getRepository('StfalconEventBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
+                if ($mailQueue && !$mailQueue->getIsOpen()) {
+                    /** @var Mail $mail */
+                    $mail = $em->getRepository('StfalconEventBundle:Mail')->find($mailId);
+                    if ($mail) {
+                        $mail->addOpenMessagesCount();
+                    }
+                    $mailQueue->setIsOpen();
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl('homepage'));
     }
 }

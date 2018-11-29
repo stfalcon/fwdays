@@ -1,0 +1,80 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        th, td {
+            padding: 3px;
+        }
+        .table-scroll {
+            overflow: auto;
+            max-height: 900px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block title %} - {{ 'Статистика событий' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    <h1>Статистика событий</h1>
+    <h4>статистика по пересечению аудитории событий</h4>
+    <button id="check_all_events" class="btn btn-success">Отметить все события</button>
+    <button id="uncheck_all_events" class="btn btn-success">Снять все отмеченые события</button>
+    <br>
+    <br>
+    <div id="events" style="column-count: 4">
+    {% for event in events %}
+        <input class="event-check" type="checkbox" name="{{ event['slug'] }}" value="{{ event['id'] }}"
+        {% if event['checked'] %} checked="checked" {% endif %} /> {{ event['slug'] }}
+        <br>
+    {% endfor %}
+    </div>
+    <br>
+    <button id="show_statistic" class="btn btn-success">Показать статистику</button>
+    <br>
+    <br>
+    {{ table_html|raw }}
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        $(document).on('click', '#check_all_events', function () {
+            $('#events').find('input:checkbox').each(function() {
+                $(this).prop('checked', true).parent().addClass('checked');
+            });
+        });
+
+
+        $(document).on('click', '#uncheck_all_events', function () {
+            $('#events').find('input:checkbox').each(function() {
+                $(this).prop('checked', false).parent().removeClass('checked');
+            });
+        });
+
+        $(document).on('click', '#show_statistic', function () {
+            var events_id = '';
+            $('#events').find('input:checkbox').each(function() {
+                var input = $(this);
+                if (input.prop('checked') === true) {
+                    events_id += input.val() + ';';
+                }
+            });
+
+            window.location.href = "{{ path('admin_events_statistic_all') }}"+"/"+events_id;
+        });
+    </script>
+{% endblock %}

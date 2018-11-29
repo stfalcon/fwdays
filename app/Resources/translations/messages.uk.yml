@@ -1,26 +1,235 @@
-Logout: __Logout
-menu.events.my: __menu.events.my
-menu.user.info: __menu.user.info
-menu.referral.title: __menu.referral.title
-menu.check.ticket.bynumber: __menu.check.ticket.bynumber
-menu.logout: __menu.logout
-menu.user.registration: __menu.user.registration
-menu.login: __menu.login
-email: __email
-madeby: __madeby
-tweets.text: __tweets.text
-page.error.notfound: Страница не найдена
-page.error.notfound.error: Ошибка 404
-page.error.notfound.message: Возможно, такой страницы больше не существует или она была удалена. <br />Также возможно, Вы допустили небольшую опечатку при вводе адреса.
-page.error.notfound.you_can: 'Вы можете:'
-page.error.notfound.you_can1: Вернуться на главную
-page.error.notfound.you_can2: Перейти в любой раздел сайта через верхнее меню
-sponsor.and.partners: Спонсоры и партнеры
-sponsor.partners.title: Партнеры
-sponsor.partners.call_us: <a href="/page/contacts">Свяжитесь</a> с нами чтобы стать спонсором или партнером конференции.
-event.get_more_info: Узнать больше
-sponsor.partners.can_be_your_logo: Здесь может<br> быть ваш логотип
-news.all: все новости
-news.title: __news.title
-event.get_more_info: __event.get_more_info
-events.past: __events.past
+menu.events.my: Мої події
+menu.past_events.my: Мої минулі події
+menu.user.info: Особиста інформація
+menu.referral.title: Запити друзів
+menu.check.ticket.bynumber: Перевірка квитка за номером
+menu.logout: Вихід
+menu.user.registration: Реєстрація через e-mail
+menu.login: Увійти
+menu.profile.my: Профіль
+main.menu.go_head: ← На головну
+main.menu.about: Про нас
+main.menu.events: Події
+main.menu.contacts: Контакти
+main.menu.partners: Партнери
+main.menu.about_event: Про подію
+main.menu.speakers: Доповідачі
+main.menu.participants: Учасники
+main.menu.cabinet: Кабінет
+email: email
+madeby: 'Зроблено в '
+
+autoreg.mail.text1: Ви були автоматично зареєстровані на сайті Frameworks Days.
+autoreg.mail.text2: 'Ваш тимчасовий пароль: "%password%"'
+autoreg.mail.text3: Його можна змінити на сторінці "%url%"
+
+tweets.text: Твіти користувача @fwdays
+page.error.notfound: Сторінка не знайдена
+page.error.notfound.error: Помилка 404
+page.error.notfound.message: Можливо, такої сторінки більше не існує або вона була видалена. <br />Будь ласка, перевірте коректність посилання.
+page.error.notfound.you_can: 'Ви можете:'
+page.error.notfound.you_can1: Повернутись на головну
+page.error.notfound.you_can2: Перейти в будь-який розділ сайту через меню
+sponsor.and.partners: Спонсори та партнери
+sponsor.partners.title: Партнери
+sponsor.partners.call_us: <a href="/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
+event.get_more_info: Дізнатися більше
+sponsor.partners.can_be_your_logo: Тут може<br> бути Ваш логотип
+news.all: Всі новини
+
+events.past: Минулі події
+user.fullname.title: Ваше ім'я та прізвище
+user.name.title: Ім'я
+user.surname.title: Прізвище
+user.email.title: Електронна пошта
+user.phone.title: Телефон
+user.phone.title_payment: Телефон (не обов'язково)
+user.country.title: Країна
+user.city.title: Місто
+user.company.title: Компанія
+user.company_post.title: Посада
+user.subscribe.title: Я згоден отримувати важливі новини на e-mail
+user.refresh.title: Оновити
+user.password.title: Пароль
+user.forgot_password.title: Забули пароль?
+user.reset_password.caption: Скинути пароль
+user.reset_password.title: Скидання пароля
+user.change_password.title: Зміна паролю
+user.show_password.title: Показати пароль
+user.remember_me.title: Запам'ятати мене
+user.by_user.title: Як користувач соцмереж
+user.by_email.title: Або поштою
+user.create.title: Створити аккаунт
+user.already_have_account.title: У мене вже є обліковий запис
+speaker.about: Про доповідача
+speaker.no_review.text: Тема доповіді уточнюється
+pay.i_have_promo.title: У мене є промокод
+pay.enter_promo.title: Введіть промокод для отримання знижки
+pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
+pay.bonus.bold.title: 'Ваші бонуси fwdays: <b>%sum% грн</b>'
+pay.sum_for_pay.bold.title: 'До сплати: <b>%sum% грн</b>'
+event.price.title: Вартість участі
+tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
+tickets.other.title: Всі інші квитки
+sold_out.title: Продано
+sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
+sponsor.partners.title: Партнери
+sponsor.partners.call_us: <a href="/page/contacts">Зв'яжіться</a> з нами, щоб стати спонсором або партнером конференції.
+sponsor.and.partners: Спонсори та партнери
+
+image.home.title: Технічні конференції в Україні. Поширюємо ідеї, ділимося досвідом.
+image.home.description: Організовано більше 30 подій з 2010 року
+video.description.text: '<p>Ми обираємо корисні теми доповідей від іноземних та українських експертів.</p> <p>На вас чекають  два потоки лекцій, спілкування зі спікерами та учасниками, перерви на смачні кава-паузи і обід.</p>'
+our.youtube.channel: Наш YouTube канал
+more.gallery.link: Більше фото на Flickr
+in.lang.link: In English
+ticket.status.event.add: Подія додана
+ticket.status.event_done: Подія відбулась
+ticket.status.event_done_mob: Відбулась
+referral.program.conditions.title: Умови програми
+referral.program.conditions.text: Отримуйте по %referal_bonus% грн за кожну купівлю білета за вашим посиланням. Використовуйте ці бонуси під час купівлі білетів на наші наступні івенти.
+referral.share.title: Поділитись
+referral.link.copied: Скопійовано
+popup.header.title: Оплата участі в конференції %event_name%
+popup.header_reg.title: Реєстрація на конференцію %event_name%
+cancel.title: Відміна
+add.title: Додати
+ticket.title: квиток
+review.wonna.listen: Хочу послухати
+
+speaker.title: Доповідачі
+
+interkassa.payment.fail: Не вдалося провести оплату!
+interkassa.payment.fail.back: Будь ласка, поверніться на сторінку оплати квитка і спробуйте ще раз.
+interkassa.mail.msg.hello: Вітаємо, <br/>%user_fullname%.
+interkassa.mail.msg.thanks: Дякуємо Вам за оплату участі у конференції %event_name%.
+interkassa.mail.msg.remember: Нагадуємо, що конференція відбудеться
+interkassa.mail.msg.remember1: року,
+interkassa.mail.msg.ticket: Ваш квиток знаходиться у вкладенні.
+interkassa.payment.success: Оплата пройшла успішно!
+interkassa.payment.success.emailsend: На ваш e-mail надіслано повідомлення з підтвердженням оплати та квитком учасника. Також Ви можете завантажити квиток на сторінці
+interkassa.payment.pending: Оплата ще не завершена!
+interkassa.payment.pending.wait: Будь ласка, зачекайте ще трохи, поки ми отримаємо підтвердження оплати.
+interkassa.payment.description : 'Участь в %event_name%. Платник %user_name% (%user_id%). ID учасників: %ids_array%'
+check_box.agree_with_conditions_1: 'Я згідний з умовами та приймаю '
+check_box.agree_with_conditions_2: 'договір публічної оферти'
+check_box.agree_with_conditions_error: "Згода з умовами договору публічної оферти є обов'язковою"
+event.events.title: Всі події
+events.future: Майбутні події
+event.page.program: Програма
+event.page.venue: Місце проведення
+event.page.venue_how: Як дістатися
+event.page.partners_detail: Докладніше про партнерів
+event_cost.title: Вартість участі
+ticket.dear_user: Шановний учасник <b>%user_name%</b>,
+ticket.wait_for_you: 'чекаємо на Вас:'
+ticket.city: м. %city_name%,
+ticket.registration.begin: Реєстрація починається о(об)
+ticket.event.programm: 'Програма конференції:'
+new_ticket.event.programm: 'Програма конференції'
+ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це запрошення і візьміть його з собою - це Ваш квиток на %event_name%.'
+ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
+ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
+ticket.status.download: Завантажити квиток
+ticket.status.pay: Купити квиток
+ticket.status.get: Отримати квиток
+ticket.mob_status.pay: Купити
+ticket.status.pay_for: Купити за
+ticket.summ_from: Квитки від %summ% грн
+ticket.status.payment_returned: Оплата повернута
+ticket.status.payment_returned_mob: Оплата повернута
+ticket.status.paid: Участь сплачено
+ticket.status.paid_mob: сплачено
+
+ticket.status.sold: Квитки продано
+ticket.status.sold_mob: продано
+
+ticket.status.take_apart: Зареєструватись
+ticket.status.not_take_apart: Відписатись
+referral.invaite.title2: Запрошуйте друзів та накопичуйте бонуси
+
+referral.balance.redesign: 'Ваш баланс: %user_balance% ₴'
+referral.invaite.link.text: Ваше реферальне посилання на конференцію
+
+payment.price: '%summ% грн '
+payment.price.multi: '%summ% грн '
+payment.discount.cupon: (знижка %summ%% за купоном)
+payment.discount.member: '&minus;%summ%% для учасників попередніх конференцій'
+payment.discount.tooltip: 'Нараховується автоматично аккаунту з якого була здійснена покупка'
+payment.discount.student: '&minus;50% для студентів денної форми навчання'
+payment.discount.student_tooltip: Надішліть фото або скан студентського квитка на <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і ми відправимо вам промо-код
+
+pay.event.pay_for_other: Оплатити інших учасників
+pay.event.one_more_participants: Ще учасники
+pay.tickets_by_email.description: Квитки будуть відправлені на вказані електронні адреси учасників
+pay.event.cupon: 'Купон на знижку:'
+
+flash_you_registrated.title: Ви зареєструвались на подію
+flash_you_unsubscribe.title: Ви скасували підписку на подію
+flash_profile_updated.title: Ваш профіль оновлено
+flash_user_created.title: Ви зареєструвались на сайті
+flash_user_need_data.title: Для завершення реєстраціі заповніть необхідні поля
+
+contact_info.title: Контактна інформація
+candidate.speaker.title: На розгляді
+committee.speaker.title: Програмний комітет
+error.phone_bad_format: Невірний формат номеру
+error.email_bad_format: Невірний формат пошти
+error.surname.only_letters: 'Прізвище може містити лише літери'
+error.name.only_letters: "Ім'я може містити лише літери"
+
+error.user.already.paid: '%email% вже оплатив квиток'
+error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
+error.promocode.not_found: 'Промокод не знайдений!'
+error.promocode.used: 'Промокод використаний!'
+
+contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
+contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
+contacts.partners.title: Питання інфопартнерства, мітапів, майстер-класів
+contacts.organization.title: 'Організатори:'
+contacts.address.title: 'Адреса'
+contacts.facebook.title: 'Facebook'
+contacts.address.address: 'Київ, вул. Виборзька, 42а'
+contacts.google.address: 'Київ, вул. Виборзька, 42а'
+contacts.person.tatyana: Тетяна Буханова
+contacts.person.irina: Ірина Божик
+contacts.person.lara: Лара Лук’янюк
+contacts.person.ksenia: Ксенія Грабевник
+
+fos_user.password.mismatch: Невідповідність нового пароля
+Bad credentials.: 'Невірна електронна адреса або пароль'
+User account is disabled.: 'Обліковий запис не активовано'
+
+mail.unsubscribe.no_more_news: Ми більше не будемо надсилати Вам новини Framework Days
+mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете
+mail.unsubscribe.you_can_suscribe2: Підписатися знову
+mail.subcribe: Ви підписані на новини Framework Days
+mail.with_ticket.text0: Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.
+mail.with_ticket.text1: З нетерпінням чекаємо на зустріч!
+mail.news.title: 'Новини в %site%'
+
+ticket.email.waitfornews: 'Слідкуйте за новинами:'
+ticket.email.unsubscribe: Відписатись від розсилки
+ticket.email.team: 'З повагою, <br/>команда Fwdays <br/>'
+ticket.email.event_date.title: 'Дата'
+ticket.email.event_reg.title: 'Реєстрація'
+ticket.email.event_member.title: 'Учасник'
+ticket.email.ticket_price.title: 'Ціна квитка'
+ticket.email.conditions.title: 'Умови'
+ticket.email.event.title: 'Подія'
+
+welcome.email.title: Ласкаво просимо!
+registration.email.subject: Ви успішно зареєстровані на сайті fwdays.com
+dear_user.email.text: |
+                      Вітаємо, %user_name%. <br/>
+                      <br/>
+                      Дякуємо за реєстрацію на сайті fwdays.com <br/>
+                      Будемо раді вас бачити на наших технічних конференціях. Якщо у вас є якісь запитання - можете просто відповісти на цей лист. <br/>
+resetting:
+    check_email: Листа на адресу %email% вже відправлено. Воно містить посилання, при переході за яким Ваш пароль буде скинуто.
+    password_already_requested: Запит на зміну пароля для даного користувача вже був здійснений за останні 24 години.
+    email:
+        message: |
+              Вітаємо %username%! <br/>
+               <br/>
+              Для скидання пароля, будь ласка, перейдіть за посиланням <a href="%confirmationUrl%">%confirmationUrl%</a>

@@ -8,19 +8,26 @@ use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractPage;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
-use Symfony\Component\Validator\Constraints as Assert;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Review
+ * Stfalcon\Bundle\EventBundle\Entity\Review.
  *
  * @ORM\Table(name="event__reviews")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\ReviewRepository")
+ *
+ * @UniqueEntity(
+ *     "slug",
+ *     errorPath="slug",
+ *     message="Поле slug повинне бути унікальне."
+ * )
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation")
  */
 class Review extends AbstractPage implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation",
@@ -37,7 +44,7 @@ class Review extends AbstractPage implements Translatable
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
@@ -59,11 +66,14 @@ class Review extends AbstractPage implements Translatable
      * @ORM\ManyToMany(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinTable(name="reviews_users_likes",
      *      joinColumns={@ORM\JoinColumn(name="review_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $likedUsers;
 
+    /**
+     * Review constructor.
+     */
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
@@ -71,28 +81,56 @@ class Review extends AbstractPage implements Translatable
         $this->translations = new ArrayCollection();
     }
 
-    public function getEvent() {
+    /**
+     * @return ArrayCollection
+     */
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setEvent($event) {
+    /**
+     * @param Event $event
+     *
+     * @return $this
+     */
+    public function setEvent($event)
+    {
         $this->event = $event;
+
+        return $this;
     }
-    
-    public function getSpeakers() {
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSpeakers()
+    {
         return $this->speakers;
     }
 
-    public function setSpeaker($speakers) {
+    /**
+     * @param ArrayCollection $speakers
+     *
+     * @return $this
+     */
+    public function setSpeaker($speakers)
+    {
         $this->speakers = $speakers;
+
+        return $this;
     }
 
     /**
      * @param ArrayCollection $likedUsers
+     *
+     * @return $this
      */
     public function setLikedUsers($likedUsers)
     {
         $this->likedUsers = $likedUsers;
+
+        return $this;
     }
 
     /**
@@ -105,20 +143,28 @@ class Review extends AbstractPage implements Translatable
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function addLikedUser($user)
     {
         if (!$this->likedUsers->contains($user)) {
             $this->likedUsers->add($user);
         }
+
+        return $this;
     }
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function removeLikedUser($user)
     {
         $this->likedUsers->removeElement($user);
+
+        return $this;
     }
 
     /**

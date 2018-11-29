@@ -2,52 +2,90 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class CategoryAdmin extends Admin
 {
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     * {@inheritdoc}
+     */
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('name')
-            ->add('sortOrder')
+            ->addIdentifier('name', null, ['label' => 'Название'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки'])
+            ->add('isWideContainer', null, ['label' => 'Главная категория'])
             ->add('_action', 'actions', [
+                'label' => 'Действие',
                 'actions' => [
-                    'edit'   => [],
+                    'edit' => [],
                     'delete' => [],
                 ],
             ]);
     }
 
     /**
-     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $formMapper
-            ->with('General')
-                ->add('translations', 'a2lix_translations_gedmo', [
-                    'translatable_class' => $this->getClass(),
-                    'fields' => [
-                        'name'=> [
-                            'label' => 'name',
-                            'locale_options' => $localOptions
+            ->with('Переводы')
+                ->add(
+                    'translations',
+                    'a2lix_translations_gedmo',
+                    [
+                        'translatable_class' => $this->getClass(),
+                        'label' => 'Переводы',
+                        'fields' => [
+                            'name' => [
+                                'label' => 'Название',
+                                'locale_options' => $localOptions,
+                            ],
                         ],
                     ]
-                ])
-                ->add('sortOrder')
+                )
+            ->end()
+            ->with('Общие')
+                ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
+                ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
     }
 
+    /**
+     * @param GedmoTranslatable $object
+     */
+    private function removeNullTranslate($object)
+    {
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
+    }
 }

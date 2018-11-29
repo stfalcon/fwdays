@@ -1,0 +1,46 @@
+{% set ticket_altAmount = '≈$'~ticket.altAmount|number_format(0,',',' ') %}
+{% set ticket_amount = ticket.amount|number_format(0,',',' ') %}
+
+{%- if currentPrice == null or currentPrice > ticket.amount -%}
+    <div class="cost cost--last price-list__item">
+        <div class="cost__type">{{ ticket.name }}</div>
+        <div class="cost__tickets">
+            {%- if ticket.count -%}
+                <span class="cost__strike">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</span>
+            {%- else -%}
+                <span class="cost__strike">{{ 'tickets.other.title'|trans }}</span>
+            {% endif %}
+            <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
+        </div>
+        <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
+            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+        </div>
+    </div>
+{%- elseif currentPrice < ticket.amount -%}
+    <div class="cost price-list__item">
+        <div class="cost__type">{{ ticket.name }}</div>
+        {%- if ticket.count -%}
+            <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</div>
+        {%- else -%}
+            <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
+        {% endif %}
+        <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
+            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+        </div>
+    </div>
+{%- else -%}
+    <div class="cost cost--active price-list__item">
+        <div class="cost__type">{{ ticket.name }}</div>
+        {%- if ticket.count -%}
+            <div class="cost__tickets">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}</div>
+        {%- else -%}
+            <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
+        {% endif %}
+
+        <div class="cost__price cost__price--mob">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
+            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+        </div>
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block', 'ticket_cost':ticket}) }}
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block_mob', 'ticket_cost':ticket}) }}
+    </div>
+{% endif %}

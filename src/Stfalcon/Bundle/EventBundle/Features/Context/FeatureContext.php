@@ -7,35 +7,30 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
-
-use Behat\Symfony2Extension\Context\KernelAwareInterface,
-    Behat\MinkExtension\Context\MinkContext,
-    Behat\CommonContexts\DoctrineFixturesContext,
-    Behat\CommonContexts\SymfonyMailerContext;
-
-use Doctrine\Common\DataFixtures\Loader,
-    Doctrine\Common\DataFixtures\Executor\ORMExecutor,
-    Doctrine\Common\DataFixtures\Purger\ORMPurger;
-
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\CommonContexts\DoctrineFixturesContext;
+use Behat\CommonContexts\SymfonyMailerContext;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
-
 use PSS\Behat\Symfony2MockerExtension\Context\ServiceMockerAwareInterface;
 use PSS\Behat\Symfony2MockerExtension\ServiceMocker;
-
-use \PHPUnit_Framework_Assert as Assert;
+use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for StfalconEventBundle
+ * Feature context for StfalconEventBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface, ServiceMockerAwareInterface
 {
     /**
-     * @var ServiceMocker $mocker
+     * @var ServiceMocker
      */
     private $mocker = null;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -47,6 +42,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
 
     /**
      * @param ServiceMocker $mocker
+     *
      * @return null|void
      */
     public function setServiceMocker(ServiceMocker $mocker)
@@ -55,14 +51,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     }
 
     /**
-     * @var \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @var \Symfony\Component\HttpKernel\KernelInterface
      */
     protected $kernel;
 
     /**
      * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
-     *
-     * @return null
      */
     public function setKernel(KernelInterface $kernel)
     {
@@ -88,19 +82,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
                 'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData'
+                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
             ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $em->getConnection()->executeUpdate('SET foreign_key_checks = 0;');
         $purger = new ORMPurger();
         $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($em, $purger);
         $executor->purge();
         $executor->execute($loader->getFixtures(), true);
-        $em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        $em->getConnection()->executeUpdate('SET foreign_key_checks = 1;');
         /** Maximize browser window */
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof Selenium2Driver) {
@@ -121,7 +115,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof Selenium2Driver) {
             $currentUrl = $this->getSession()->getCurrentUrl();
-            if (strpos($currentUrl, $this->getMinkParameter('base_url')) !== false) {
+            if (false !== strpos($currentUrl, $this->getMinkParameter('base_url'))) {
                 $this->getSession()->wait(
                     10000,
                     '(typeof window.jQuery == "function" && 0 === jQuery.active && 0 === jQuery(\':animated\').length)'
@@ -145,11 +139,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
      */
     public function thisIsPdfFile()
     {
-        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . uniqid() . '.html';
+        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
         file_put_contents($filename, $this->getSession()->getPage()->getContent());
 
         $pdfFileConstraint = new File();
-        $pdfFileConstraint->mimeTypes = array("application/pdf", "application/x-pdf");
+        $pdfFileConstraint->mimeTypes = array('application/pdf', 'application/x-pdf');
 
         /** @var \Symfony\Component\Validator\Validator $validator */
         $validator = $this->kernel->getContainer()->get('validator');
@@ -158,7 +152,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
             $pdfFileConstraint
         );
 
-        Assert::assertCount(0, $errorList, "Это не PDF-файл");
+        Assert::assertCount(0, $errorList, 'Это не PDF-файл');
     }
 
     /**
@@ -170,8 +164,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
-        $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
         $ticket->setPayment($payment);
@@ -189,8 +183,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user    = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
-        $ticket  = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
+        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
         $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
         $ticket->setPayment($payment);
@@ -231,11 +225,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
      */
     public function goToTicketRegistrationPageWithWrongHash($mail, $eventSlug)
     {
-        $this->visit($this->getTicketRegistrationUrl($mail, $eventSlug) . 'fffuu');
+        $this->visit($this->getTicketRegistrationUrl($mail, $eventSlug).'fffuu');
     }
 
     /**
-     * Generate URL for check ticket
+     * Generate URL for check ticket.
      *
      * @param string $mail      E-mail Ticket owner
      * @param string $eventSlug Event slug
@@ -247,7 +241,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
-        $user  = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
         $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $eventSlug));
 
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
@@ -255,14 +249,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_registration',
             array(
                 'ticket' => $ticket->getId(),
-                'hash'   => $ticket->getHash()
+                'hash' => $ticket->getHash(),
             ),
             true
         );
     }
 
     /**
-     * Проверка что имейл не был отправлен тем, кому не положено (т.е. не админам)
+     * Проверка что имейл не был отправлен тем, кому не положено (т.е. не админам).
      *
      * @param string $subject Subject
      * @param string $to      Receiver
@@ -358,7 +352,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     }
 
     /**
-     * Проверяем дату по формату
+     * Проверяем дату по формату.
      *
      * @Then /^я должен видеть в елементе "([^"]*)" дату "([^"]*)" в формате "([^"]*)"$/
      */
@@ -369,36 +363,32 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $this->assertFieldContains($elem, $date->format($format));
     }
 
-
     /**
      * @Given /^Interkassa API is available$/
-     *
-     * @return null
      */
     public function interkassaApiIsAvailable()
     {
-        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Stfalcon\Bundle\EventBundle\Service\InterkassaService')
+        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Application\Bundle\DefaultBundle\Service\InterkassaService')
             ->shouldReceive('checkPayment')
             ->andReturn(true);
     }
 
-
     /**
-     * @param integer $paymentId
+     * @param int $paymentId
      *
      * @Given /^я перехожу на страницу обработки платежа "([^"]*)"$/
      */
     public function goToInterkassaInteraction($paymentId)
     {
         $params = [
-            'ik_pm_no' => $paymentId
+            'ik_pm_no' => $paymentId,
         ];
 
-        $this->visit('/payment/interaction?' . http_build_query($params));
+        $this->visit('/payment/interaction?'.http_build_query($params));
     }
 
     /**
-     * @param integer $paymentId
+     * @param int $paymentId
      *
      * @Given /^платеж "([^"]*)" должен быть помечен как оплачен/
      */

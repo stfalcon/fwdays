@@ -7,12 +7,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
+/**
+ * Class UserManager.
+ */
 class UserManager extends \FOS\UserBundle\Doctrine\UserManager
 {
-
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     public $container;
 
@@ -20,57 +23,60 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
      * Constructor.
      *
      * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface $usernameCanonicalizer
-     * @param CanonicalizerInterface $emailCanonicalizer
-     * @param ObjectManager $om
-     * @param string $class
-     * @param Container $container
+     * @param CanonicalizerInterface  $usernameCanonicalizer
+     * @param CanonicalizerInterface  $emailCanonicalizer
+     * @param ObjectManager           $om
+     * @param string                  $class
+     * @param Container               $container
      */
-    public function __construct(
-        EncoderFactoryInterface $encoderFactory,
-        CanonicalizerInterface $usernameCanonicalizer,
-        CanonicalizerInterface $emailCanonicalizer,
-        ObjectManager $om,
-        $class,
-        Container $container
-    ) {
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, Container $container)
+    {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
         $this->container = $container;
     }
 
     /**
-     * Automatic user registration
+     * Automatic user registration.
      *
-     * @param $participant
+     * @param array $participant
+     *
      * @return \FOS\UserBundle\Model\UserInterface
      */
     public function autoRegistration($participant)
     {
         /**
-         * @var \Application\Bundle\UserBundle\Entity\User $user
+         * @var \Application\Bundle\UserBundle\Entity\User
          */
         $user = $this->createUser();
         $user->setEmail($participant['email']);
-        $user->setFullname($participant['name']);
+        $user->setName($participant['name']);
+        $user->setSurName($participant['surname']);
+        $user->setFullname($participant['surname'].' '.$participant['name']);
 
         //Generate a temporary password
-        $plainPassword = substr(md5(uniqid(mt_rand(), true) . time()), 0, 8);
+        $plainPassword = substr(md5(uniqid(mt_rand(), true).time()), 0, 8);
 
         $user->setPlainPassword($plainPassword);
         $user->setEnabled(true);
+
+        $errors = $this->container->get('validator')->validate($user);
+        if ($errors->count() > 0) {
+            throw new BadCredentialsException('Bad credentials!');
+        }
+
         $this->updateUser($user);
 
         $body = $this->container->get('stfalcon_event.mailer_helper')->renderTwigTemplate(
             'ApplicationUserBundle:Registration:automatically.html.twig',
             [
                 'user' => $user,
-                'plainPassword' => $plainPassword
+                'plainPassword' => $plainPassword,
             ]
         );
 
         $message = $this->container->get('stfalcon_event.mailer_helper')->createMessage(
-            "Регистрация на сайте Frameworks Days",
+            $this->container->get('translator')->trans('registration.email.subject'),
             $user->getEmail(),
             $body
         );
@@ -79,4 +85,4 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
 
         return $user;
     }
-} 
+}

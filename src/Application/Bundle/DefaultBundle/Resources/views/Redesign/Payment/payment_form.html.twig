@@ -1,0 +1,90 @@
+<form id="payment" name="payment" method="post" accept-charset="UTF-8">
+    <p id="pay-form"><!-- render html --></p>
+
+    <div id="payment-add-user" class="form-add">
+        <div class="form-add__hint"> {{ 'pay.event.pay_for_other'|trans }}
+            <a id="cancel-add-user" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
+        </div>
+        <div class="form-row">
+            <div class="form-col form-col--6 form-col--xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="payment_user_name">{{ 'user.name.title'|trans }}</label>
+                    <input class="input valid-name" type="text" id="payment_user_name" name="user-name" value="">
+                </div>
+            </div>
+            <div class="form-col form-col--6 form-col--xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="payment_user_surname">{{ 'user.surname.title'|trans }}</label>
+                    <input class="input valid-name" type="text" id="payment_user_surname" name="user-surname" value="">
+                </div>
+            </div>
+        </div>
+        <div class="form-row ">
+            <div class="form-col form-col--6 form-col--xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="payment_user_email">{{ 'user.email.title'|trans }}</label>
+                    <input class="input valid-email" type="email" id="payment_user_email" name="user-email" value="">
+                </div>
+            </div>
+            <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
+                <button type="button" class="btn btn--secondary btn--md form-col__btn add-user-btn">{{ 'add.title'|trans }}</button>
+            </div>
+        </div>
+        <div class="payment-info__label">{{ 'pay.tickets_by_email.description'|trans }}</div>
+    </div>
+    <div id="add-promo-code" class="form-add">
+        <div class="form-add__hint"> {{ 'pay.enter_promo.title'|trans }}
+            <a id="cancel-promo-code" href="#" class="btn-link">{{ 'cancel.title'|trans }}</a>
+        </div>
+        <div class="form-row">
+            <div class="form-col form-col--6 form-col--xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="user_promo_code">{{ 'pay.event.cupon'|trans }}</label>
+                    <input name="user_promo_code" class="input" id="user_promo_code" type="text" value="">
+                </div>
+            </div>
+            <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
+                <button type="button" class="btn btn--secondary btn--md form-col__btn add-promo-code-btn">{{ 'add.title'|trans }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-info">
+        <div class="payment-info__left">
+            <div class="payment-info__btn-link">
+                <a id="add-user-trigger" href="#" class="btn-link">{{ 'pay.event.one_more_participants'|trans }}</a>
+            </div>
+            <div class="payment-info__btn-link">
+                <a id="promo-code-trigger" href="#" class="btn-link">{{ 'pay.i_have_promo.title'|trans }}</a>
+            </div>
+        </div>
+        <div id="payment-sums" class="payment-info__right">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="user_phone">{{ 'user.phone.title_payment'|trans }}</label>
+                <input class="input valid-phone mask-phone-input--js" placeholder="+380" id="user_phone"
+                       name="user_phone" type="tel"
+                       value="{% if app.user is not null and is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.phone }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">
+            <button id="buy-ticket-btn" class="btn btn--primary btn--lg form-col__btn" type="submit">{{ 'ticket.status.pay'|trans }}</button>
+        </div>
+    </div>
+
+    <div class="form-row form-row--checkbox">
+        <div class="form-col">
+            <div class="checkbox checkbox--offer-contract">
+                <input id="agree-check-payment" type="checkbox" name="_remember_me" class="checkbox__input" required
+                    data-msg="{{ 'check_box.agree_with_conditions_error' |trans }}">
+                <label for="agree-check-payment" class="checkbox__label">{{ 'check_box.agree_with_conditions_1' |trans }}
+                    <a href="{{ path('show_page', {'slug' : 'public-offer'}) }}" target="_blank" class="btn-link">{{ 'check_box.agree_with_conditions_2' |trans }}</a>
+                </label>
+            </div>
+        </div>
+    </div>
+</form>

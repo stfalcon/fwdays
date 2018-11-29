@@ -1,0 +1,21 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block list %}
+   {{ block('children') }}
+{% endblock %}
+
+{% block item %}
+   {{ block('linkElement') }}
+{% endblock %}
+
+{% block linkElement %}
+    {% set remodal = item.attribute('data-remodal-target') is not empty ? item.attribute('data-remodal-target') : '' %}
+    {% set class="header__auth" %}
+    {% if app.user is null or not is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+        {% set class= class~" header__auth--sign-in" %}
+    {% endif %}
+    {% if matcher.isCurrent(item) %}
+      {% set class= class ~ " header__auth--active" %}
+    {% endif %}
+    <a href="{{ item.uri }}" class="{{ class }}" {% if remodal is not empty%} data-remodal-target ="{{ remodal }}"{% endif %}> {{ block('label') }}</a>
+{% endblock %}

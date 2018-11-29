@@ -1,15 +1,18 @@
 imports:
     - { resource: parameters.ini }
+    - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
+    - { resource: mobile_detect.yml }
+    - { resource: sonata/admin.yml }
+    - { resource: sonata/block.yml }
 
 parameters:
-    graylog.fromname: "https://frameworksdays.com"
+    graylog.fromname: "https://fwdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
-    captcha_secret_key: %google_captcha_secret_key%
-    captcha_site_key: %google_captcha_site_key%
-    captcha_check_url: https://www.google.com/recaptcha/api/siteverify
+    google_apikey: "%google_api_key%"
+    upload_dir: "uploads/images"
 
 framework:
     #esi:             ~
@@ -28,18 +31,28 @@ framework:
         handler_id: session.handler.native_file
         save_path: "%kernel.root_dir%/sessions/"
 
+
 # Twig Configuration
 twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - 'SonataCoreBundle:Form:colorpicker.html.twig'
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
     globals:
-        captcha_site_key: %captcha_site_key%
+        google_apikey: "%google_api_key%"
+        ga_tracking_id: "%tracking_id%"
+        google_site_key: "%google_captcha_site_key%"
+        facebook_api_id: "%facebook_client_id%"
+        fb_page_id: "235981893111914"
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+    debug:          "%kernel.debug%"
     use_controller: false
     filters:
         yui_css:
@@ -52,15 +65,15 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
         charset:  UTF8
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
+        auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         mappings:
             StofDoctrineExtensionsBundle: false
@@ -78,22 +91,27 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    port:      %mailer_port%
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    port:      "%mailer_port%"
 
 # KnpMenuBundle
 knp_menu:
     twig: true
 
-avalanche_imagine:
-    cache_prefix: /tmp/media/cache
-    filters:
-        speaker_thumb:
-            type:    thumbnail
-            options: { size: [64, 64], mode: outbound }
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                locator: filesystem_insecure
+    filter_sets:
+        cache: ~
+        speaker_size:
+            filters:
+                relative_resize: { widen: 232 }
+                crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
@@ -103,7 +121,7 @@ fos_user:
         form:
             type: application_user_registration
         confirmation:
-            enabled:    true
+            enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
@@ -116,60 +134,10 @@ fos_user:
         user_manager: stfalcon.user_manager
 
 stfalcon_event:
-    interkassa:
-        shop_id: "533958fbbf4efc736a13bea5"
-        secret: %interkassa_secret%
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
     discount: 0.2
-
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        sonata.admin.block.admin_list:
-            contexts:   [admin]
-        sonata.block.service.text:
-        sonata.block.service.action:
-        sonata.block.service.rss:
-        sonata.block.service.statistic: ~
-
-sonata_admin:
-    title: framework days
-    templates:
-        layout: "::admin.html.twig"
-        user_block: '::user_block.html.twig'
-    dashboard:
-        blocks:
-            # display two dashboard blocks
-            -
-                position: left
-                type: sonata.admin.block.admin_list
-                settings:
-                    groups:
-                      - "Пользователи"
-                      - "События"
-                      - "Новости"
-                      - "Статистика"
-                      - "group.translation"
-            -
-                position: right
-                type: sonata.admin.block.admin_list
-                settings:
-                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки"]
-            -
-                position: left
-                type: sonata.block.service.statistic
-
-
-services:
-     gelf.publisher:
-         class: Application\Bundle\DefaultBundle\Publisher\MessagePublisher
-         arguments: [%graylog.fromname%, %graylog.hostname%, %graylog.port%]
-     monolog.gelf_handler:
-         class: Monolog\Handler\GelfHandler
-         arguments: [@gelf.publisher]
-     monolog.processor.added_host:
-             class: Monolog\Processor\WebProcessor
-             tags:
-                 - { name: monolog.processor, method: __invoke }
 
 vich_uploader:
      db_driver: orm
@@ -191,3 +159,28 @@ ornicar_gravatar: ~
 accord_mandrill_swift_mailer:
     api_key: %mandrill_api_key%
 
+hwi_oauth:
+    firewall_names: [main]
+    connect:
+        account_connector: app.provider.oauth
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           "%facebook_client_id%"
+            client_secret:       "%facebook_client_secret%"
+            scope:               "email, public_profile"
+            infos_url:           "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name"
+            paths:
+                email: email
+            options:
+                display: page
+        google:
+            type:                google
+            client_id:           "%google_client_id%"
+            client_secret:       "%google_client_secret%"
+            scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email
+
+maxmind_geoip:
+    data_file_path: "%kernel.root_dir%/../geodata/GeoLiteCity.dat"

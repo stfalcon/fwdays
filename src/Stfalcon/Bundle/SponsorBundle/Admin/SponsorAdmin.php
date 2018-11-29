@@ -2,17 +2,40 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
+use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class SponsorAdmin extends Admin
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function preUpdate($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist($object)
+    {
+        $this->removeNullTranslate($object);
+    }
+
+    /**
+     * @return array|void
+     */
+    public function getBatchActions()
+    {
+        $actions = [];
+    }
+
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
      */
@@ -20,14 +43,15 @@ class SponsorAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('slug')
-            ->add('name')
-            ->add('site')
-            ->add('about')
-            ->add('onMain')
-            ->add('sortOrder')
+            ->add('name', null, ['label' => 'Название'])
+            ->add('site', null, ['label' => 'Сайт'])
+            ->add('about', null, ['label' => 'Описание'])
+            ->add('onMain', null, ['label' => 'Использовать на главной'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('_action', 'actions', [
+                'label' => 'Действие',
                 'actions' => [
-                    'edit'   => [],
+                    'edit' => [],
                     'delete' => [],
                 ],
             ]);
@@ -42,52 +66,63 @@ class SponsorAdmin extends Admin
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
-            ->with('General')
+            ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
+                        'label' => 'Переводы',
                         'translatable_class' => $this->getClass(),
                         'fields' => [
-                            'name'=> [
-                                'label' => 'name',
-                                'locale_options' => $localOptions
+                            'name' => [
+                                'label' => 'Название',
+                                'locale_options' => $localOptions,
                             ],
-                            'about'=> [
-                                'label' => 'about',
-                                'locale_options' => $localOptionsAllFalse
+                            'about' => [
+                                'label' => 'Описание',
+                                'locale_options' => $localOptionsAllFalse,
                             ],
-                        ]
+                        ],
                 ])
-                ->add('slug')
-                ->add('site')
-                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
-                ->add('file', 'file', array(
-                      'required' => false,
-                      'data_class' => 'Symfony\Component\HttpFoundation\File\File',
-                      'property_path' => 'file')
-                      )
-                ->add('sortOrder', null, array(
-                    'attr' => array(
-                        'min' => 1
-                    )
-                ))
-                ->add('onMain', null, array('required' => false))
             ->end()
-            ->with('Events')
-                ->add('sponsorEvents', 'sonata_type_collection',
-                    array(
-                        'label' => 'Events',
-                        'by_reference' => false
-                    ), array(
+            ->with('Общие')
+                ->add('slug')
+                ->add('onMain', null, ['required' => false, 'label' => 'Использовать на главной'])
+                ->add('site', null, ['label' => 'Сайт'])
+                ->add(
+                    'file',
+                    'file',
+                    [
+                        'label' => 'Логотип',
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'file',
+                    ]
+                )
+                ->add('sortOrder', null, ['attr' => ['min' => 1], 'label' => 'Номер сортировки'])
+            ->end()
+            ->with('События')
+                ->add(
+                    'sponsorEvents',
+                    'sonata_type_collection',
+                    [
+                        'label' => 'Спонсируємые события',
+                        'by_reference' => false,
+                    ],
+                    [
                         'edit' => 'inline',
                         'inline' => 'table',
-                ))
+                    ]
+                )
             ->end();
     }
 
     /**
-     * @return array|void
+     * @param GedmoTranslatable $object
      */
-    public function getBatchActions()
+    private function removeNullTranslate($object)
     {
-        $actions = array();
+        foreach ($object->getTranslations() as $key => $translation) {
+            if (!$translation->getContent()) {
+                $object->getTranslations()->removeElement($translation);
+            }
+        }
     }
 }

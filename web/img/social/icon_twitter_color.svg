@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>social_tw</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Event-1920" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-480.000000, -5606.000000)">
+        <g id="footer" transform="translate(0.000000, 5569.000000)">
+            <g id="Group" transform="translate(400.000000, 37.000000)">
+                <g id="social_tw" transform="translate(80.000000, 0.000000)">
+                    <g id="Dark_Blue">
+                        <rect id="Rectangle-3" x="0" y="0" width="26" height="26"></rect>
+                        <circle id="Oval" fill="#1DA1F2" fill-rule="nonzero" cx="13" cy="13" r="12"></circle>
+                    </g>
+                    <g id="Logo__x2014__FIXED" transform="translate(6.340000, 7.840000)" fill="#FFFFFF" fill-rule="nonzero">
+                        <path d="M4.464,11.49 C9.786,11.49 12.696,7.08 12.696,3.258 C12.696,3.132 12.696,3.006 12.69,2.886 C13.254,2.478 13.746,1.968 14.136,1.386 C13.62,1.614 13.062,1.77 12.474,1.842 C13.074,1.482 13.53,0.918 13.746,0.24 C13.188,0.57 12.57,0.81 11.91,0.942 C11.382,0.378 10.632,0.03 9.798,0.03 C8.202,0.03 6.906,1.326 6.906,2.922 C6.906,3.15 6.93,3.372 6.984,3.582 C4.578,3.462 2.448,2.31 1.02,0.558 C0.774,0.984 0.63,1.482 0.63,2.01 C0.63,3.012 1.14,3.9 1.92,4.416 C1.446,4.404 1.002,4.272 0.612,4.056 C0.612,4.068 0.612,4.08 0.612,4.092 C0.612,5.496 1.608,6.66 2.934,6.93 C2.694,6.996 2.436,7.032 2.172,7.032 C1.986,7.032 1.806,7.014 1.626,6.978 C1.992,8.13 3.06,8.964 4.326,8.988 C3.336,9.762 2.088,10.224 0.732,10.224 C0.498,10.224 0.27,10.212 0.042,10.182 C1.308,11.01 2.832,11.49 4.464,11.49" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

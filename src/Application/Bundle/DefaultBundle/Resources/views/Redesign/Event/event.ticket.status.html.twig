@@ -1,0 +1,17 @@
+{% if result['isDiv'] %}<div{% else %}<a{% endif %}
+        {% if result['id'] %} id="{{ result['id'] }}"{% endif %}
+        {% if result['class'] %} class="{{ result['class'] }}"{% endif %}
+        {% if result['data'] %} data-event="{{ result['data'] }}"{% endif %}
+>{% if result['caption'] %}{{ result['caption']|raw }}{% endif %}{% if result['isDiv'] %}</div>{% else %}</a>{% endif %}
+
+{#ticket download#}
+{% if result['href'] %}<div class="{{ result['ticket_class'] }}"><a href="{{ result['href'] }}">{{ result['ticket_caption']|raw }}</a></div>{% endif %}
+
+{#{% if result.isDiv %}<div{% else %}<a{% endif %}#}
+        {#{% if result.id %} id="{{ result.id }}"{% endif %}#}
+        {#{% if result.class %} class="{{ result.class }}"{% endif %}#}
+        {#{% if result.data %} data-event="{{ result.data }}"{% endif %}#}
+{#>{% if result.caption %}{{ result.caption|raw }}{% endif %}{% if result.isDiv %}</div>{% else %}</a>{% endif %}#}
+
+{#ticket download#}
+{#{% if result.href %}<div class="{{ result.ticket_class }}"><a href="{{ result.href }}">{{ result.ticket_caption|raw }}</a></div>{% endif %}#}

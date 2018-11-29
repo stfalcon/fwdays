@@ -3,10 +3,11 @@
 namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Mail;
 use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 
 /**
- * Class MailQueueRepository
+ * Class MailQueueRepository.
  */
 class MailQueueRepository extends EntityRepository
 {
@@ -24,5 +25,38 @@ class MailQueueRepository extends EntityRepository
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * @param bool $sent
+     *
+     * @return array
+     */
+    public function getAllMessages($sent)
+    {
+        $qb = $this->createQueryBuilder('mq');
+        $qb->join('mq.mail', 'm')
+            ->where($qb->expr()->eq('mq.isSent', ':sent'))
+            ->setParameter('sent', $sent)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Mail $mail
+     *
+     * @return int
+     */
+    public function deleteAllNotSentMessages($mail)
+    {
+        $qb = $this->createQueryBuilder('mq');
+        $qb->delete()
+            ->where($qb->expr()->eq('mq.isSent', 0))
+            ->andWhere($qb->expr()->eq('mq.mail', ':mail'))
+            ->setParameter('mail', $mail)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 }

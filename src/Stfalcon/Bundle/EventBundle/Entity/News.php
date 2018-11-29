@@ -6,21 +6,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Entity\AbstractClass\AbstractNews;
-use Stfalcon\Bundle\EventBundle\Traits\Translate;
-use Symfony\Component\Validator\Constraints as Assert;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Event
+ * Stfalcon\Bundle\EventBundle\Entity\Event.
  *
  * @ORM\Table(name="news")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\NewsRepository")
+ *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\NewsTranslation")
  */
 class News extends AbstractNews implements Translatable
 {
-    use Translate;
+    use TranslateTrait;
 
     /**
      * @ORM\OneToMany(
@@ -31,6 +30,9 @@ class News extends AbstractNews implements Translatable
      */
     private $translations;
 
+    /**
+     * News constructor.
+     */
     public function __construct()
     {
         $this->translations = new ArrayCollection();

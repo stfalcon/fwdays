@@ -9,7 +9,7 @@
         <parameter key="application_users.admin.user.entity">Application\Bundle\UserBundle\Entity\User</parameter>
         <parameter key="application_users.admin.user.controller">SonataAdminBundle:CRUD</parameter>
         <parameter key="stfalcon.user_manager.class">Application\Bundle\UserBundle\Model\UserManager</parameter>
-        <parameter key="stfalcon.user_login.listener.class">Application\Bundle\UserBundle\EventListener\UserLoginListener</parameter>
+        <!--<parameter key="stfalcon.user_login.listener.class">Application\Bundle\UserBundle\EventListener\UserLoginListener</parameter>-->
 
     </parameters>
 
@@ -49,14 +49,16 @@
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="stfalcon.user_login.listener" class="%stfalcon.user_login.listener.class%">
-            <tag name="kernel.event_listener" event="security.interactive_login" method="onSecurityInteractiveLogin" />
-            <argument type="service" id="stfalcon.user_manager" />
-            <argument type="service" id="service_container" />
-        </service>
-
         <service id="fos_user.registration.form.handler" class="Application\Bundle\UserBundle\Services\RegistrationFormWithGoogleCaptcha">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="fos_user.registration.form" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="fos_user.mailer" />
+            <argument type="service" id="fos_user.util.token_generator" />
+            <argument type="service" id="logger" />
+            <argument>%google_captcha_secret_key%</argument>
+            <argument type="service" id="buzz" />
+            <argument>%kernel.environment%</argument>
         </service>
 
     </services>

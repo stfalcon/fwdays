@@ -2,13 +2,13 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Application\Bundle\UserBundle\Entity\User;
 
 /**
- * Stfalcon\Bundle\EventBundle\Entity\Ticket
+ * Stfalcon\Bundle\EventBundle\Entity\Ticket.
  *
  * @ORM\Table(name="event__tickets")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\EventBundle\Repository\TicketRepository")
@@ -16,7 +16,7 @@ use Application\Bundle\UserBundle\Entity\User;
 class Ticket
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -25,19 +25,18 @@ class Ticket
     private $id;
 
     /**
-     * Сумма для оплаты
+     * Сумма для оплаты.
      *
-     * @var float $amount
+     * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      */
-    //@todo переименовать в price
     private $amount;
 
     /**
-     * Сумма без учета скидки
+     * Сумма без учета скидки.
      *
-     * @var float $amountWithoutDiscount
+     * @var float
      *
      * @ORM\Column(name="amount_without_discount", type="decimal", precision=10, scale=2)
      */
@@ -60,7 +59,15 @@ class Ticket
     private $event;
 
     /**
-     * На кого выписан билет. Т.е. участник не обязательно плательщик
+     * @var TicketCost
+     *
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets")
+     * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $ticketCost;
+
+    /**
+     * На кого выписан билет. Т.е. участник не обязательно плательщик.
      *
      * @var User
      *
@@ -78,23 +85,26 @@ class Ticket
     private $payment;
 
     /**
-     * @var \DateTime $createdAt
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
     private $updatedAt;
 
     /**
-     * @var boolean $used
+     * @var bool
+     *
      * @ORM\Column(name="used", type="boolean")
      */
     private $used = false;
@@ -107,13 +117,33 @@ class Ticket
     private $hasDiscount = false;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return TicketCost
+     */
+    public function getTicketCost()
+    {
+        return $this->ticketCost;
+    }
+
+    /**
+     * @param TicketCost $ticketCost
+     *
+     * @return $this
+     */
+    public function setTicketCost($ticketCost)
+    {
+        $this->ticketCost = $ticketCost;
+
+        return $this;
     }
 
     /**
@@ -127,11 +157,13 @@ class Ticket
     /**
      * @param Event $event
      *
-     * @return void
+     * @return $this
      */
     public function setEvent(Event $event)
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -149,11 +181,9 @@ class Ticket
     {
         return $this->payment;
     }
-    
+
     /**
      * @param Payment|null $payment
-     *
-     * @return void
      */
     public function setPayment($payment)
     {
@@ -162,10 +192,14 @@ class Ticket
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
     public function setUser(User $user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -176,28 +210,40 @@ class Ticket
         return $this->user;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTime $createdAt
+     */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTime $updatedAt
+     */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
 
     /**
-     * Checking if ticket is "paid"
+     * Checking if ticket is "paid".
      *
      * @return bool
      */
@@ -207,7 +253,7 @@ class Ticket
     }
 
     /**
-     * Mark ticket as "used"
+     * Mark ticket as "used".
      *
      * @param bool $used
      */
@@ -217,7 +263,7 @@ class Ticket
     }
 
     /**
-     * Checking if ticket is "used"
+     * Checking if ticket is "used".
      *
      * @return bool
      */
@@ -227,30 +273,37 @@ class Ticket
     }
 
     /**
-     * Generate unique md5 hash for ticket
+     * Generate unique md5 hash for ticket.
+     *
      * @return string
      */
     public function getHash()
     {
-        return md5($this->getId() . $this->getCreatedAt()->format('Y-m-d H:i:s'));
+        return md5($this->getId().$this->getCreatedAt()->format('Y-m-d H:i:s'));
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return (string) $this->getId() . ' (' . $this->getUser()->getFullname() . ')';
+        return (string) $this->getId().' ('.$this->getUser()->getFullname().')';
     }
 
     /**
      * @param float $amount
+     *
+     * @return Ticket
      */
     public function setAmount($amount)
     {
-        // мы можем устанавливать/обновлять стоимость только для билетов 
+        // мы можем устанавливать/обновлять стоимость только для билетов
         // с неоплаченными платежами
 //        if ($this->hasPayment() && $this->getPayment()->isPending()) {
-            $this->amount = $amount;
+        $this->amount = $amount;
 //            $this->getPayment()->recalculateAmount();
 //        }
+        return $this;
     }
 
     /**
@@ -263,10 +316,14 @@ class Ticket
 
     /**
      * @param float $amountWithoutDiscount
+     *
+     * @return $this
      */
     public function setAmountWithoutDiscount($amountWithoutDiscount)
     {
         $this->amountWithoutDiscount = $amountWithoutDiscount;
+
+        return $this;
     }
 
     /**
@@ -279,13 +336,14 @@ class Ticket
 
     /**
      * @param \Stfalcon\Bundle\EventBundle\Entity\PromoCode $promoCode
+     *
+     * @return $this
      */
     public function setPromoCode($promoCode)
     {
-        $this->setHasDiscount(true);
-        $amountWithDiscount = $this->amountWithoutDiscount - ($this->amountWithoutDiscount * ($promoCode->getDiscountAmount() / 100));
-        $this->setAmount($amountWithDiscount);
         $this->promoCode = $promoCode;
+
+        return $this;
     }
 
     /**
@@ -305,7 +363,7 @@ class Ticket
     }
 
     /**
-     * @param boolean $hasDiscount
+     * @param bool $hasDiscount
      */
     public function setHasDiscount($hasDiscount)
     {
@@ -313,36 +371,18 @@ class Ticket
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getHasDiscount()
     {
         return $this->hasDiscount;
     }
-    
+
     /**
      * @return string
      */
     public function generatePdfFilename()
     {
-        return 'ticket-' . $this->getEvent()->getSlug() . '.pdf';
-    }
-
-    /**
-     * Set amount with discount.
-     * If has promo code use discount with promo code
-     *
-     * @param $discount
-     */
-    public function setAmountWithDiscount($discount) {
-        $price = $this->getAmountWithoutDiscount();
-
-        if ($promoCode = $this->getPromoCode()) {
-            $cost = $price - ($price * ($promoCode->getDiscountAmount() / 100));
-        } else {
-            $cost = $price - ($price * $discount);
-        }
-
-        $this->setAmount($cost);
+        return 'ticket-'.$this->getEvent()->getSlug().'.pdf';
     }
 }

@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 
 /**
- * SponsorAdmin Class
+ * SponsorAdmin Class.
  */
 class EventSponsorAdmin extends Admin
 {
@@ -16,7 +16,7 @@ class EventSponsorAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('event')
-            ->add('category');
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('category', null, ['label' => 'Категория']);
     }
 }

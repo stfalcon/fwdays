@@ -1,0 +1,12 @@
+{%- if program_page -%}
+    <section id="program-event" class="schedule">
+        <div class="container schedule__container">
+            <h2 class="h2 schedule__title">{{ 'event.page.program'|trans }}</h2>
+            {%- if program_page.textNew is not empty -%}
+                {{ program_page.textNew|raw }}
+            {%- else -%}
+                {{ program_page.text|raw }}
+            {%- endif -%}
+        </div>
+    </section>
+{%- endif -%}

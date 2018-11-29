@@ -1,0 +1,7 @@
+{% if payment.fwdaysAmount > 0 %}
+    <div class="payment-info__total">{{ 'pay.sum.bold.title'|trans({'%sum%':(payment.amount+payment.fwdaysAmount)|number_format(0,',',' ')})|raw }}</div>
+    <div class="payment-info__total">{{ 'pay.bonus.bold.title'|trans({'%sum%':payment.fwdaysAmount|number_format(0,',',' ')})|raw }}</div>
+    <div class="payment-info__total">{{ 'pay.sum_for_pay.bold.title'|trans({'%sum%':payment.amount|number_format(0,',',' ')})|raw }}</div>
+{% else %}
+    <div class="payment-info__total">{{ 'pay.sum.bold.title'|trans({'%sum%':payment.amount|number_format(0,',',' ')})|raw }}</div>
+{% endif %}

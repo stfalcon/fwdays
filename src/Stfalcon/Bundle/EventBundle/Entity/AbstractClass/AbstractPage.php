@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 abstract class AbstractPage
 {
     /**
-     * @var integer $id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -20,44 +20,52 @@ abstract class AbstractPage
     protected $id;
 
     /**
-     * @var string $slug
+     * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
      */
     protected $slug;
 
     /**
-     * @var string $title
+     * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     protected $title;
 
     /**
-     * @var text $text
+     * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(name="text", type="text")
      */
     protected $text;
 
     /**
-     * @var string $metaKeywords
+     * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
      */
     protected $metaKeywords;
 
     /**
-     * @var string $metaDescription
+     * @var string
+     *
      * @Gedmo\Translatable(fallback=true)
+     *
      * @ORM\Column(name="meta_description", type="string", length=255, nullable=true)
      */
     protected $metaDescription;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -65,19 +73,23 @@ abstract class AbstractPage
     }
 
     /**
-     * Set text
+     * Set text.
      *
-     * @param text $text
+     * @param string $text
+     *
+     * @return $this
      */
     public function setText($text)
     {
         $this->text = $text;
+
+        return $this;
     }
 
     /**
-     * Get text
+     * Get text.
      *
-     * @return text
+     * @return string
      */
     public function getText()
     {
@@ -85,17 +97,21 @@ abstract class AbstractPage
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
+     *
+     * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -105,17 +121,21 @@ abstract class AbstractPage
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
+     *
+     * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -126,10 +146,14 @@ abstract class AbstractPage
 
     /**
      * @param string $metaKeywords
+     *
+     * @return $this
      */
     public function setMetaKeywords($metaKeywords)
     {
         $this->metaKeywords = $metaKeywords;
+
+        return $this;
     }
 
     /**
@@ -142,10 +166,14 @@ abstract class AbstractPage
 
     /**
      * @param string $metaDescription
+     *
+     * @return $this
      */
     public function setMetaDescription($metaDescription)
     {
         $this->metaDescription = $metaDescription;
+
+        return $this;
     }
 
     /**
@@ -161,6 +189,6 @@ abstract class AbstractPage
      */
     public function __toString()
     {
-        return $this->getTitle() ? : '-';
+        return $this->getTitle() ?: '-';
     }
 }
