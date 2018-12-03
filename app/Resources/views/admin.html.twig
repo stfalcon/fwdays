@@ -34,6 +34,10 @@
 
             $sideBar.find('aside.left-side').addClass('collapse-left');
             $sideBar.find('aside.right-side').addClass('strech');
+
+            $('div[id$=_blocks]').on('sonata.add_element', function(event) {
+                $("textarea").markItUpRemove().markItUp(mySettings);
+            });
         });
         InlineUpload.options.action = '{{ path('text_area_upload_image') }}';
     </script>
