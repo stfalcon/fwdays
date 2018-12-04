@@ -30,6 +30,12 @@ monolog:
         grouped_main:
             type:    group
             members: [nested]
+
+
+twig:
+    globals:
+        sentry_dsn_js_public: "%sentry_dsn_js_public%"
+
 #parameters:
 #     graylog.hostname: 10.0.0.1
 #     graylog.port: 12201 #стандартный порт
