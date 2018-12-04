@@ -3,7 +3,7 @@ imports:
 
 sentry:
     skip_capture:
-    - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+        - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
     dsn: "%sentry_dsn_stag%"
 
 monolog:
