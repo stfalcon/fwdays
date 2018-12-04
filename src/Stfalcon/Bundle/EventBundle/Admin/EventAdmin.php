@@ -111,7 +111,6 @@ class EventAdmin extends Admin
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
-        $localAllTrue = $localsRequiredService->getLocalsRequredArray(true);
         $datetimePickerOptions =
             [
                 'dp_use_seconds' => false,
