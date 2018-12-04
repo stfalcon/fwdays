@@ -141,11 +141,11 @@ class EventAdmin extends Admin
                             ],
                             'description' => [
                                 'label' => 'Краткое описание',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                             ],
                             'about' => [
                                 'label' => 'Описание',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                             ],
                             'metaDescription' => [
                                 'label' => 'metaDescription',
