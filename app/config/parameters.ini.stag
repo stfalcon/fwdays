@@ -39,3 +39,4 @@
 
     sentry_dsn_stag = your_sentry_dsn_stag
     sentry_dsn_prod = your_sentry_dsn_prod
+    sentry_dsn_js_public = your_sentry_dsn_js_public

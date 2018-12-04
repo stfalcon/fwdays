@@ -39,6 +39,7 @@ stfalcon_event:
 twig:
     globals:
         fb_page_id: "349461782222519"
+        sentry_dsn_js_public: "%sentry_dsn_js_public%"
 
 #parameters:
 #     graylog.hostname: localhost
