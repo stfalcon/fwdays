@@ -272,7 +272,7 @@ class EventController extends Controller
         $event = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
-            throw $this->createNotFoundException(sprintf('Unable to find event by slug: ', $eventSlug));
+            throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
         }
         /** @var ArrayCollection $pages */
         $pages = $this->get('app.event.service')->getEventMenuPages($event);
