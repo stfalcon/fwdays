@@ -94,13 +94,13 @@ After it run:
         $ docker-compose up
 
 It's installs vendors and setup database.
-After it you can open http://127.0.0.1:8888 with running web app
+After it you can open http://127.0.0.1:8000 with running web app
 
 3) Some notes about configuration and usage:
 --------------------------------
 
-Web app url: http://127.0.0.1:8888
+Web app url: http://127.0.0.1:8000
 
-Phpmyadmin: http://127.0.0.1:8888/phpmyadmin/ (user: root, password: qwerty)
+Phpmyadmin: http://127.0.0.1:6789/ (user: root, password: qwerty)
 container access: $ docker exec -ti fwdays_fwdays_1 /bin/bash 
 

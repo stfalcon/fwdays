@@ -7,6 +7,7 @@ use Application\Bundle\UserBundle\Entity\User;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
@@ -119,98 +120,73 @@ class EventAdmin extends Admin
             ];
 
         $formMapper
-            ->with('Переводы')
-                ->add('translations', 'a2lix_translations_gedmo', [
-                    'translatable_class' => $this->getClass(),
-                    'fields' => [
-                        'name' => [
-                            'label' => 'Название',
-                            'locale_options' => $localOptions,
+            ->tab('Переводы')
+                ->with('Переводы')
+                    ->add('translations', 'a2lix_translations_gedmo', [
+                        'translatable_class' => $this->getClass(),
+                        'fields' => [
+                            'name' => [
+                                'label' => 'Название',
+                                'locale_options' => $localOptions,
+                            ],
+                            'city' => [
+                                'label' => 'Город',
+                                'locale_options' => $localOptions,
+                                'sonata_help' => 'указывать город в котором проводиться событие (используется для поиска координат на карте)',
+                            ],
+                            'place' => [
+                                'label' => 'Место проведения',
+                                'locale_options' => $localOptions,
+                                'sonata_help' => 'указывать либо точный адрес, либо название здания, где проводиться событие (используется для поиска координат на карте)',
+                            ],
+                            'description' => [
+                                'label' => 'Краткое описание',
+                                'locale_options' => $localAllFalse,
+                            ],
+                            'about' => [
+                                'label' => 'Описание',
+                                'locale_options' => $localAllFalse,
+                            ],
+                            'metaDescription' => [
+                                'label' => 'metaDescription',
+                                'locale_options' => $localAllFalse,
+                            ],
                         ],
-                        'city' => [
-                            'label' => 'Город',
-                            'locale_options' => $localOptions,
-                            'sonata_help' => 'указывать город в котором проводиться событие (используется для поиска координат на карте)',
-                        ],
-                        'place' => [
-                            'label' => 'Место проведения',
-                            'locale_options' => $localOptions,
-                            'sonata_help' => 'указывать либо точный адрес, либо название здания, где проводиться событие (используется для поиска координат на карте)',
-                        ],
-                        'description' => [
-                            'label' => 'Краткое описание',
-                            'locale_options' => $localOptions,
-                        ],
-                        'about' => [
-                            'label' => 'Описание',
-                            'locale_options' => $localOptions,
-                        ],
-                        'metaDescription' => [
-                            'label' => 'metaDescription',
-                            'locale_options' => $localAllFalse,
-                        ],
-                    ],
-                    'label' => 'Перевод',
-                ])
+                        'label' => 'Перевод',
+                    ])
+                ->end()
             ->end()
-            ->with('Настройки')
-                ->add('slug')
-                ->add('group', null, ['label' => 'Группа'])
-                ->add('audiences', null, ['label' => 'Аудитории'])
-                ->add(
-                    'ticketsCost',
-                    'sonata_type_collection',
-                    [
-                        'label' => 'Цены события',
-                        'by_reference' => false,
-                        'type_options' => ['delete' => true],
-                        'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
-                        'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
-                            : 'добавьте блоки с ценами на билеты',
-                    ],
-                    [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                    ]
-                )
-                ->add('active', null, ['required' => false, 'label' => 'Активно'])
-                ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
-                ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
-                ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
-                ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
-                ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
-            ->end()
-            ->with('Даты', ['class' => 'col-md-6'])
-                ->add('dateFormat', null, [
-                    'required' => true,
-                    'label' => 'Формат даты',
-                    'help' => 'd - день (11), MMMM - полное название месяца (січень), MMM - сокращеное название месяца (січ.), 
-                    MM - числовой вид месяца (01), Y - год (2018), HH:mm - время (13:45), S - время года (зима), 
-                     одновремено можно использовать только либо S либо MMMM',
-                ])
-                ->add(
-                    'date',
-                    'sonata_type_datetime_picker',
-                    array_merge(
+            ->tab('Настройки')
+                ->with('Настройки')
+                    ->add('slug')
+                    ->add('group', null, ['label' => 'Группа'])
+                    ->add('audiences', null, ['label' => 'Аудитории'])
+                    ->add(
+                        'ticketsCost',
+                        'sonata_type_collection',
                         [
-                            'required' => true,
-                            'label' => 'Дата начала',
+                            'label' => 'Цены события',
+                            'by_reference' => false,
+                            'type_options' => ['delete' => true],
+                            'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
+                            'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
+                                : 'добавьте блоки с ценами на билеты',
                         ],
-                        $datetimePickerOptions
-                    )
-                )
-                ->add(
-                    'dateEnd',
-                    'sonata_type_datetime_picker',
-                    array_merge(
                         [
-                            'required' => false,
-                            'label' => 'Дата окончания',
-                        ],
-                        $datetimePickerOptions
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
                     )
-                )
-            ->end()
+                ->end()
+                ->with('Переключатели', ['class' => 'col-md-6'])
+                    ->add('active', null, ['required' => false, 'label' => 'Активно'])
+                    ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                    ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
+                    ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
+                    ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
+                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
+                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Использовать логотип c фоновым изображением'])
+                ->end()
             ->with('Изображения и цвет', ['class' => 'col-md-6'])
                 ->add(
                     'backgroundColor',
@@ -222,12 +198,21 @@ class EventAdmin extends Admin
                     ]
                 )
                 ->add(
+                    'backgroundFile',
+                    'file',
+                    [
+                        'label' => 'Фоновое изображение',
+                        'required' => false,
+                        'help' => 'Заменяет цвет фона на странице ивента. '.$subject->getBackground(),
+                    ]
+                )
+                ->add(
                     'logoFile',
                     'file',
                     [
                         'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
-                        'help' => 'Осноное изображения.',
+                        'help' => 'Осноное изображения. '.$subject->getLogo(),
                     ]
                 )
                 ->add(
@@ -236,10 +221,65 @@ class EventAdmin extends Admin
                     [
                         'label' => 'Мини логотип',
                         'required' => false,
-                        'help' => 'Если не указан, тогда используєтся основной.',
+                        'help' => 'Если не указан, тогда используєтся основной. '.$subject->getSmallLogo(),
                     ]
                 )
-            ->end();
+                ->end()
+            ->end()
+            ->tab('Блоки')
+                ->with('Блоки')
+                    ->add(
+                        'blocks',
+                        'sonata_type_collection',
+                        [
+                            'label' => 'Блоки отображения события',
+                            'by_reference' => false,
+                            'type_options' => ['delete' => true],
+                            'btn_add' => is_null($subject->getId()) ? false : 'Добавить блок',
+                            'help' => is_null($subject->getId()) ? 'добавление блоков возможно только после создания события'
+                                : 'добавьте блоки отображения',
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab('Даты')
+                ->with('Даты')
+                    ->add('dateFormat', null, [
+                        'required' => true,
+                        'label' => 'Формат даты',
+                        'help' => 'd - день (11), MMMM - полное название месяца (січень), MMM - сокращеное название месяца (січ.), 
+                        MM - числовой вид месяца (01), Y - год (2018), HH:mm - время (13:45), S - время года (зима), 
+                         одновремено можно использовать только либо S либо MMMM',
+                    ])
+                    ->add(
+                        'date',
+                        'sonata_type_datetime_picker',
+                        array_merge(
+                            [
+                                'required' => true,
+                                'label' => 'Дата начала',
+                            ],
+                            $datetimePickerOptions
+                        )
+                    )
+                    ->add(
+                        'dateEnd',
+                        'sonata_type_datetime_picker',
+                        array_merge(
+                            [
+                                'required' => false,
+                                'label' => 'Дата окончания',
+                            ],
+                            $datetimePickerOptions
+                        )
+                    )
+                ->end()
+            ->end()
+        ;
     }
 
     /**

@@ -1,0 +1,33 @@
+services:
+
+    app.partners_repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments:
+            - "Stfalcon\\Bundle\\SponsorBundle\\Entity\\Sponsor"
+
+    app.partners_category_repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments:
+            - "Stfalcon\\Bundle\\SponsorBundle\\Entity\\Category"
+
+    app.ticket_cost_repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["ApplicationDefaultBundle:TicketCost"]
+
+    app.event_review.repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["StfalconEventBundle:Review"]
+
+    app.event.repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["StfalconEventBundle:Event"]
+
+    app.page.repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["StfalconEventBundle:Page"]

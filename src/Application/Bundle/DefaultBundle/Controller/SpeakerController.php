@@ -59,50 +59,50 @@ class SpeakerController extends Controller
 
         return new JsonResponse(['result' => true, 'html' => $html]);
     }
-
-    /**
-     * Lists all speakers for event.
-     *
-     * @param Event  $event
-     * @param string $speakerType
-     *
-     * @Template("ApplicationDefaultBundle:Redesign/Speaker:speaker.html.twig")
-     *
-     * @return array
-     */
-    public function eventSpeakersAction(Event $event, $speakerType = self::SPEAKER_TYPE_SPEAKER)
-    {
-        switch ($speakerType) {
-            case self::SPEAKER_TYPE_SPEAKER:
-                $speakers = $event->getSpeakers();
-                break;
-            case self::SPEAKER_TYPE_CANDIDATE:
-                $speakers = $event->getCandidateSpeakers();
-                break;
-            case self::SPEAKER_TYPE_COMMITTEE:
-                $speakers = $event->getcommitteeSpeakers();
-        }
-
-        $withReview = false;
-
-        if (in_array($speakerType, [self::SPEAKER_TYPE_SPEAKER, self::SPEAKER_TYPE_CANDIDATE])) {
-            /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
-            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
-
-            /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
-            foreach ($speakers as &$speaker) {
-                $speaker->setReviews(
-                    $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
-                );
-            }
-
-            $withReview = true;
-        }
-
-        return [
-            'event' => $event,
-            'speakers' => $speakers,
-            'with_review' => $withReview,
-        ];
-    }
+//
+//    /**
+//     * Lists all speakers for event.
+//     *
+//     * @param Event  $event
+//     * @param string $speakerType
+//     *
+//     * @Template("ApplicationDefaultBundle:Redesign/Speaker:speaker.html.twig")
+//     *
+//     * @return array
+//     */
+//    public function eventSpeakersAction(Event $event, $speakerType = self::SPEAKER_TYPE_SPEAKER)
+//    {
+//        switch ($speakerType) {
+//            case self::SPEAKER_TYPE_SPEAKER:
+//                $speakers = $event->getSpeakers();
+//                break;
+//            case self::SPEAKER_TYPE_CANDIDATE:
+//                $speakers = $event->getCandidateSpeakers();
+//                break;
+//            case self::SPEAKER_TYPE_COMMITTEE:
+//                $speakers = $event->getcommitteeSpeakers();
+//        }
+//
+//        $withReview = false;
+//
+//        if (in_array($speakerType, [self::SPEAKER_TYPE_SPEAKER, self::SPEAKER_TYPE_CANDIDATE])) {
+//            /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
+//            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
+//
+//            /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
+//            foreach ($speakers as &$speaker) {
+//                $speaker->setReviews(
+//                    $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
+//                );
+//            }
+//
+//            $withReview = true;
+//        }
+//
+//        return [
+//            'event' => $event,
+//            'speakers' => $speakers,
+//            'with_review' => $withReview,
+//        ];
+//    }
 }

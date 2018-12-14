@@ -34,7 +34,32 @@
 
             $sideBar.find('aside.left-side').addClass('collapse-left');
             $sideBar.find('aside.right-side').addClass('strech');
+
+            $('div[id$=_blocks]').on('sonata.add_element', function(event) {
+                $("textarea").markItUpRemove().markItUp(mySettings);
+            });
         });
         InlineUpload.options.action = '{{ path('text_area_upload_image') }}';
+
+        $(document).on('click', 'a[data-target=".a2lix_translationsFields-en"]', function () {
+            var $links = $('ul.a2lix_translationsLocales li').find('a[data-target=".a2lix_translationsFields-en"]');
+            $links.each(function() {
+                var $link = $(this);
+                var $li = $link.parent();
+                if (!$li.hasClass('active')) {
+                    $link.click();
+                }
+            });
+        });
+        $(document).on('click', 'a[data-target=".a2lix_translationsFields-uk"]', function () {
+            var $links = $('ul.a2lix_translationsLocales li').find('a[data-target=".a2lix_translationsFields-uk"]');
+            $links.each(function() {
+                var $link = $(this);
+                var $li = $link.parent();
+                if (!$li.hasClass('active')) {
+                    $link.click();
+                }
+            });
+        });
     </script>
 {% endblock %}

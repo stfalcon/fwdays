@@ -3,7 +3,7 @@ imports:
 
 sentry:
     skip_capture:
-    - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+        - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
     dsn: "%sentry_dsn_stag%"
 
 monolog:
@@ -32,3 +32,4 @@ stfalcon_event:
 twig:
     globals:
         fb_page_id: "349461782222519"
+        sentry_dsn_js_public: "http://77c8377f656a416394b62de4876f38dc@sentry.stfalcon.com/60"

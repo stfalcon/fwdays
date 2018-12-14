@@ -72,6 +72,16 @@ class Event implements Translatable
     private $updatedAt;
 
     /**
+     * @var ArrayCollection|EventBlock[]
+     *
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventBlock",
+     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
+     */
+    private $blocks;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -178,6 +188,13 @@ class Event implements Translatable
     protected $smallLogo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $background;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -239,6 +256,13 @@ class Event implements Translatable
     protected $useCustomBackground = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false}, nullable=true)
+     */
+    protected $showLogoWithBackground = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
@@ -294,6 +318,14 @@ class Event implements Translatable
     protected $smallLogoFile;
 
     /**
+     * @Assert\File(maxSize="6000000")
+     * @Assert\Image
+     *
+     * @Vich\UploadableField(mapping="event_image", fileNameProperty="background")
+     */
+    protected $backgroundFile;
+
+    /**
      * @var string
      *
      * @Gedmo\Translatable(fallback=true)
@@ -333,6 +365,7 @@ class Event implements Translatable
         $this->committeeSpeakers = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
+        $this->blocks = new ArrayCollection();
         $this->audiences = new ArrayCollection();
     }
 
@@ -1188,6 +1221,116 @@ class Event implements Translatable
     public function setUseCustomBackground($useCustomBackground)
     {
         $this->useCustomBackground = $useCustomBackground;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackground()
+    {
+        return $this->background;
+    }
+
+    /**
+     * @param string $background
+     *
+     * @return $this
+     */
+    public function setBackground($background)
+    {
+        $this->background = $background;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowLogoWithBackground()
+    {
+        return $this->showLogoWithBackground;
+    }
+
+    /**
+     * @param bool $showLogoWithBackground
+     *
+     * @return $this
+     */
+    public function setShowLogoWithBackground($showLogoWithBackground)
+    {
+        $this->showLogoWithBackground = $showLogoWithBackground;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBackgroundFile()
+    {
+        return $this->backgroundFile;
+    }
+
+    /**
+     * @param mixed $backgroundFile
+     *
+     * @return $this
+     */
+    public function setBackgroundFile($backgroundFile)
+    {
+        $this->backgroundFile = $backgroundFile;
+        $this->setUpdatedAt(new \DateTime());
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|EventBlock[]
+     */
+    public function getBlocks()
+    {
+        return $this->blocks;
+    }
+
+    /**
+     * @param ArrayCollection|EventBlock[] $blocks
+     *
+     * @return $this
+     */
+    public function setBlocks($blocks)
+    {
+        $this->blocks = $blocks;
+
+        return $this;
+    }
+
+    /**
+     * @param EventBlock $block
+     *
+     * @return $this
+     */
+    public function addBlock($block)
+    {
+        if (!$this->blocks->contains($block)) {
+            $this->blocks->add($block);
+            $block->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param EventBlock $block
+     *
+     * @return $this
+     */
+    public function removeBlock($block)
+    {
+        if ($this->blocks->contains($block)) {
+            $this->blocks->removeElement($block);
+        }
 
         return $this;
     }

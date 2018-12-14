@@ -418,6 +418,10 @@ class PaymentController extends Controller
             'pay_type' => $payType,
         ]);
 
+        if ('wayforpay' === $payType) {
+            $this->get('session')->set('way_for_pay_payment', $payment->getId());
+        }
+
         return new JsonResponse([
             'result' => true,
             'error' => '',
