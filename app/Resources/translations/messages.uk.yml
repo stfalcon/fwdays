@@ -70,6 +70,7 @@ pay.bonus.bold.title: 'Ваші бонуси fwdays: <b>%sum% грн</b>'
 pay.sum_for_pay.bold.title: 'До сплати: <b>%sum% грн</b>'
 event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
+tickets.hint: тільки через сайт
 tickets.other.title: Всі інші квитки
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
