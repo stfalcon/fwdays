@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="../../build/styles/main.css">
     <style>
         .output-code {
             font-family: 'Inconsolata', monospace;
@@ -145,6 +145,61 @@
     </textarea>
     <h2 class="h2">Код:</h2>
     <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Аудиторія</h2>
+    <section class="auditory">
+        <div class="container container--sm">
+            <div class="auditory__box">
+                <div class="auditory__info">
+                    <div class="event-title auditory__title">Аудиторія</div>
+                    <p class="auditory__text">Спілкування та ділові знайомства – це основний принцип успішного бізнесу.
+                        Тож на конференції вас чекає нетворкінг за смачною кавою,
+                        обговорення ідей та пропозицій, а також налагодження ділових зв’язків.</p>
+                    <ul class="check-list auditory__check-list">
+                        <li class="check-list__item">HR-спеціалісти</li>
+                        <li class="check-list__item">Підприємці</li>
+                        <li class="check-list__item">Маркетологи</li>
+                        <li class="check-list__item">ТОП-менеджери</li>
+                        <li class="check-list__item">Власники стартапів</li>
+                        <li class="check-list__item">Бренд-менеджери</li>
+                    </ul>
+                </div>
+                <div class="auditory__photo">
+                    <img src="https://fwdays.com/img/pic_audience.jpg" alt="" class="auditory__img">
+                </div>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-5" class="input-code" readonly hidden>
+    <section class="auditory">
+        <div class="container container--sm">
+            <div class="auditory__box">
+                <div class="auditory__info">
+                    <div class="event-title auditory__title">Аудиторія</div>
+                    <p class="auditory__text">Спілкування та ділові знайомства – це основний принцип успішного бізнесу.
+                        Тож на конференції вас чекає нетворкінг за смачною кавою,
+                        обговорення ідей та пропозицій, а також налагодження ділових зв’язків.</p>
+                    <ul class="check-list auditory__check-list">
+                        <li class="check-list__item">HR-спеціалісти</li>
+                        <li class="check-list__item">Підприємці</li>
+                        <li class="check-list__item">Маркетологи</li>
+                        <li class="check-list__item">ТОП-менеджери</li>
+                        <li class="check-list__item">Власники стартапів</li>
+                        <li class="check-list__item">Бренд-менеджери</li>
+                    </ul>
+                </div>
+                <div class="auditory__photo">
+                    <img src="https://fwdays.com/img/pic_audience.jpg" alt="" class="auditory__img">
+                </div>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-5" class="output-code cm-s-default"></pre>
     <br>
     <br>
     <br>
@@ -392,9 +447,15 @@
             document.getElementById("output-4"));
     }
 
+    function doHighlight5() {
+        CodeMirror.runMode(document.getElementById("code-5").value, "application/xml",
+            document.getElementById("output-5"));
+    }
+
     doHighlight1();
     doHighlight2();
     doHighlight3();
     doHighlight4();
+    doHighlight5();
 </script>
 </html>
