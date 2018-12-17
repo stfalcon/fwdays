@@ -194,7 +194,7 @@
 }
 
 .event-themes {
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 .info-list {
@@ -736,8 +736,8 @@
     flex-wrap: wrap;
   }
 
-  &__speaker {
-    margin-right: 8px;
+  &__speaker-company {
+    color: #727272;
   }
 
   &__duration {
@@ -1267,7 +1267,7 @@ a.fix-event-header__title {   //for review-page, venue-page
 }
 
 .cooperation {
-  margin-bottom: 90px;
+  margin-bottom: 100px;
 
   &__title {
     margin-bottom: 12px;
