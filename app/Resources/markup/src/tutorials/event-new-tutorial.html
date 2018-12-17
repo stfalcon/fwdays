@@ -423,6 +423,35 @@
     </textarea>
     <h2 class="h2">Код:</h2>
     <pre id="output-4" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Блок з текстом:</h2>
+    <section class="event-description">
+        <div class="container container--sm">
+            <div class="event-description__text static-styles">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-6" class="input-code" readonly hidden>
+    <section class="event-description">
+        <div class="container container--sm">
+            <div class="event-description__text static-styles">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-6" class="output-code cm-s-default"></pre>
 </div>
 <script src="../js/main.js"></script>
 </body>
@@ -452,10 +481,16 @@
             document.getElementById("output-5"));
     }
 
+    function doHighlight6() {
+        CodeMirror.runMode(document.getElementById("code-6").value, "application/xml",
+            document.getElementById("output-6"));
+    }
+
     doHighlight1();
     doHighlight2();
     doHighlight3();
     doHighlight4();
     doHighlight5();
+    doHighlight6();
 </script>
 </html>
