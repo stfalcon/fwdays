@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Stfalcon\Bundle\EventBundle\Entity\Payment;
 
 /**
  * Class TicketAdmin.
@@ -157,6 +158,22 @@ class TicketAdmin extends Admin
                         ],
                     ],
                     'field_type' => 'choice',
+                ]
+            )
+            ->add(
+                'payment.gate',
+                'doctrine_orm_choice',
+                ['label' => 'Способ оплаты'],
+                'choice',
+                [
+                    'choices' => [
+                        'interkassa' => Payment::INTERKASSA_GATE,
+                        'wayforpay' => Payment::WAYFORPAY_GATE,
+                        'admin' => Payment::ADMIN_GATE,
+                        'bonus' => Payment::BONUS_GATE,
+                        'promocode' => Payment::PROMOCODE_GATE,
+                    ],
+                    'required' => false,
                 ]
             );
     }
