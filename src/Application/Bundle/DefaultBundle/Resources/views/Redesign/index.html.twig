@@ -66,3 +66,7 @@
 </section>
 <!--END gallery-->
 {% endblock content %}
+{% block scripts %}
+    {{ render(controller('Application\\Bundle\\DefaultBundle\\Controller\\DefaultController::renderMicrolayoutAction')) }}
+    {{ parent() }}
+{% endblock scripts %}
