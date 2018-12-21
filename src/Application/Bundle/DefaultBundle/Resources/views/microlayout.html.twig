@@ -14,6 +14,11 @@
                         "addressLocality": "{{ event.city }}",
                         "addressRegion": "UA"
                     }
+                },
+                "offers": {
+                    "@type":"Offer",
+                    "url":"{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ path('event_show', {'eventSlug': event.slug}) }}",
+                    "availability":"https://schema.org/InStock"
                 }
             }
     </script>
