@@ -1,6 +1,5 @@
-{% if events is not empty %}
+{% for event in events %}
     <script type="application/ld+json">
-        {% for event in events %}
             {
                 "@context":"https://schema.org",
                 "@type":"Event",
@@ -17,6 +16,5 @@
                     }
                 }
             }
-        {% endfor %}
     </script>
-{% endif %}
+{% endfor %}
