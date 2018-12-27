@@ -194,7 +194,7 @@
 }
 
 .event-themes {
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 .info-list {
@@ -736,8 +736,8 @@
     flex-wrap: wrap;
   }
 
-  &__speaker {
-    margin-right: 8px;
+  &__speaker-company {
+    color: #727272;
   }
 
   &__duration {
@@ -1267,7 +1267,7 @@ a.fix-event-header__title {   //for review-page, venue-page
 }
 
 .cooperation {
-  margin-bottom: 90px;
+  margin-bottom: 100px;
 
   &__title {
     margin-bottom: 12px;
@@ -1306,6 +1306,68 @@ a.fix-event-header__title {   //for review-page, venue-page
 
   &__btn {
     width: 264px;
+  }
+}
+
+.audience {
+  margin-bottom: 100px;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__text {
+    color: #121314;
+    opacity: 0.8;
+    line-height: 26px;
+    margin-bottom: 24px;
+  }
+
+  &__check-list {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+  }
+
+  &__box {
+    position: relative;
+    display: flex;
+  }
+
+  &__info {
+    margin-right: 80px;
+    padding: 68px 328px 80px 80px;
+    background: #F5F3EA;
+  }
+
+  &__photo {
+    width: 340px;
+    height: 340px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    flex-shrink: 0;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.check-list {
+  &__item {
+    background: url("../img/icons/ic_check.svg") left 2px no-repeat;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    padding-left: 20px;
+    margin-bottom: 13px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

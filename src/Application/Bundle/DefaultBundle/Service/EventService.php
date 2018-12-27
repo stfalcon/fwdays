@@ -106,6 +106,9 @@ class EventService
     {
         /** @var Event $event */
         $event = $this->eventRepository->findOneBy(['slug' => $eventSlug]);
+        if (!$event instanceof Event) {
+            throw new NotFoundHttpException(sprintf('Unable to find event by slug: %s', $eventSlug));
+        }
 
         return $this->getEventPages($event, $reviewSlug);
     }

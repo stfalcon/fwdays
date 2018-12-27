@@ -143,4 +143,16 @@ class DefaultController extends Controller
 
         return new RedirectResponse($url);
     }
+
+    /**
+     * @return Response
+     */
+    public function renderMicrolayoutAction()
+    {
+        $events = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event')
+            ->findClosesActiveEvents(3);
+
+        return $this->render('ApplicationDefaultBundle::microlayout.html.twig', ['events' => $events]);
+    }
 }

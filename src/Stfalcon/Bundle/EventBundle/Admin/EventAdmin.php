@@ -141,11 +141,11 @@ class EventAdmin extends Admin
                             ],
                             'description' => [
                                 'label' => 'Краткое описание',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                             ],
                             'about' => [
                                 'label' => 'Описание',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                             ],
                             'metaDescription' => [
                                 'label' => 'metaDescription',
@@ -178,16 +178,52 @@ class EventAdmin extends Admin
                         ]
                     )
                 ->end()
-                ->with('Переключатели основные', ['class' => 'col-md-6'])
+                ->with('Переключатели', ['class' => 'col-md-6'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
-                ->end()
-                ->with('Переключатели отображения', ['class' => 'col-md-6'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
                     ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
                     ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
                     ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Использовать логотип c фоновым изображением'])
+                ->end()
+            ->with('Изображения и цвет', ['class' => 'col-md-6'])
+                ->add(
+                    'backgroundColor',
+                    'text',
+                    [
+                        'required' => true,
+                        'label' => 'Цвет фона',
+                        'help' => 'цвет в формате #1F2B3C',
+                    ]
+                )
+                ->add(
+                    'backgroundFile',
+                    'file',
+                    [
+                        'label' => 'Фоновое изображение',
+                        'required' => false,
+                        'help' => 'Заменяет цвет фона на странице ивента. '.$subject->getBackground(),
+                    ]
+                )
+                ->add(
+                    'logoFile',
+                    'file',
+                    [
+                        'label' => 'Логотип',
+                        'required' => is_null($subject->getLogo()),
+                        'help' => 'Осноное изображения. '.$subject->getLogo(),
+                    ]
+                )
+                ->add(
+                    'smallLogoFile',
+                    'file',
+                    [
+                        'label' => 'Мини логотип',
+                        'required' => false,
+                        'help' => 'Если не указан, тогда используєтся основной. '.$subject->getSmallLogo(),
+                    ]
+                )
                 ->end()
             ->end()
             ->tab('Блоки')
@@ -211,7 +247,7 @@ class EventAdmin extends Admin
                 ->end()
             ->end()
             ->tab('Даты')
-                ->with('Даты', ['class' => 'col-md-6'])
+                ->with('Даты')
                     ->add('dateFormat', null, [
                         'required' => true,
                         'label' => 'Формат даты',
@@ -243,47 +279,7 @@ class EventAdmin extends Admin
                     )
                 ->end()
             ->end()
-            ->tab('Изображения и цвет')
-                ->with('Изображения и цвет', ['class' => 'col-md-6'])
-                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
-                    ->add(
-                        'backgroundColor',
-                        'text',
-                        [
-                            'required' => true,
-                            'label' => 'Цвет фона',
-                            'help' => 'цвет в формате #1F2B3C',
-                        ]
-                    )
-                    ->add(
-                        'backgroundFile',
-                        'file',
-                        [
-                            'label' => 'Фоновое изображение',
-                            'required' => false,
-                            'help' => 'Заменяет цвет фона на странице ивента. '.$subject->getBackground(),
-                        ]
-                    )
-                    ->add(
-                        'logoFile',
-                        'file',
-                        [
-                            'label' => 'Логотип',
-                            'required' => is_null($subject->getLogo()),
-                            'help' => 'Осноное изображения. '.$subject->getLogo(),
-                        ]
-                    )
-                    ->add(
-                        'smallLogoFile',
-                        'file',
-                        [
-                            'label' => 'Мини логотип',
-                            'required' => false,
-                            'help' => 'Если не указан, тогда используєтся основной. '.$subject->getSmallLogo(),
-                        ]
-                    )
-                ->end()
-            ->end();
+        ;
     }
 
     /**

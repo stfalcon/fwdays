@@ -91,9 +91,9 @@
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script id="widget-wfp-script" language="javascript" type="text/javascript"
             src="https://secure.wayforpay.com/server/pay-widget.js" async defer></script>
-    {% if app.environment == 'prod' -%}
+    {% if app.environment in ['prod', 'stag'] -%}
         <script src="{{ asset('js/raven.min.js')}}" crossorigin="anonymous"></script>
-        <script>Raven.config('https://ee926678a4cb4ea39b11c07a043d874a@sentry.stfalcon.com/48').install()</script>
+        <script>Raven.config("{{ sentry_dsn_js_public }}").install()</script>
     {% endif -%}
     {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
     <script src="{{ asset(main_script|app_asset_version) }}"></script>

@@ -425,6 +425,26 @@
     }
   }
 
+  .audience {
+    &__box {
+      display: flex;
+      align-items: center;
+      background: #F5F3EA;
+      margin: 0 -24px;
+      padding: 58px 16px;
+    }
+
+    &__info {
+      margin: 0 15px 0 0;
+      padding: 0;
+    }
+
+    &__photo {
+      position: static;
+      transform: none;
+    }
+  }
+
   .speakers {
     &__title {
       margin: 0 0 20px;
@@ -1286,6 +1306,34 @@
 
     &__btn {
       width: 100%;
+    }
+  }
+
+  .audience {
+    margin-bottom: 80px;
+
+    &__box {
+      display: block;
+      margin: 0 -16px;
+      padding: 50px 16px 63px;
+    }
+
+    &__info {
+      margin: 0 0 34px;
+    }
+
+    &__check-list {
+      columns: 1;
+      -webkit-columns: 1;
+      -moz-columns: 1;
+    }
+
+    &__photo {
+      width: 100%;
+      height: 100%;
+      max-width: 340px;
+      max-height: 340px;
+      margin: auto;
     }
   }
 

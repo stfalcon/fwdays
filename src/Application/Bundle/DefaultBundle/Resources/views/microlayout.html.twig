@@ -1,0 +1,25 @@
+{% for event in events %}
+    <script type="application/ld+json">
+            {
+                "@context":"https://schema.org",
+                "@type":"Event",
+                "name":"{{ event.name }}",
+                "url":"{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ path('event_show', {'eventSlug': event.slug}) }}",
+                "startDate":"{{ event.date|date('Y-m-d') }}",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.place }}",
+                    "address": {
+                    "@type": "PostalAddress",
+                        "addressLocality": "{{ event.city }}",
+                        "addressRegion": "UA"
+                    }
+                },
+                "offers": {
+                    "@type":"Offer",
+                    "url":"{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ path('event_show', {'eventSlug': event.slug}) }}",
+                    "availability":"https://schema.org/InStock"
+                }
+            }
+    </script>
+{% endfor %}
