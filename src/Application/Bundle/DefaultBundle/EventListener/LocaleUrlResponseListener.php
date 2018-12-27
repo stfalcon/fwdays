@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Router;
  */
 class LocaleUrlResponseListener
 {
+    const UKRAINE_COUNTRY_CODE = 'UA';
+
     private $defaultLocale;
 
     private $locales;
@@ -80,7 +82,7 @@ class LocaleUrlResponseListener
             unset($params[$this->cookieName]);
             $request->setLocale($this->defaultLocale);
             $event->setResponse(new RedirectResponse($request->getBaseUrl().$path.($params ? '?'.http_build_query($params) : ''), 301));
-        } elseif (!in_array($currentLocal, $this->locales)) {
+        } elseif (!in_array($currentLocal, $this->locales, true)) {
             try {
                 $matched = $this->routerService->match('/'.$locale.$path);
             } catch (ResourceNotFoundException $e) {
@@ -112,7 +114,7 @@ class LocaleUrlResponseListener
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
 
-        if (in_array($currentLocal, $this->locales)) {
+        if (in_array($currentLocal, $this->locales, true)) {
             $request->setLocale($currentLocal);
         }
 
@@ -133,14 +135,23 @@ class LocaleUrlResponseListener
     {
         $local = null;
 
-//        get local from cookie
+        // get local from cookie
         if ($request instanceof Request) {
             if ($request->cookies->has($this->cookieName)
-                && in_array($request->cookies->get($this->cookieName), $this->locales)) {
+                && in_array($request->cookies->get($this->cookieName), $this->locales, true)) {
                 $local = $request->cookies->get($this->cookieName);
             }
         }
-//        get locale from preferred
+
+        if (!$local) {
+            if (false !== $this->geoIpService->lookup($this->getRealIpAddr($request))) {
+                if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
+                    $local = $this->defaultLocale;
+                }
+            }
+        }
+
+        // get locale from preferred languages
         if (!$local) {
             $local = $request->getPreferredLanguage($this->locales);
         }
@@ -165,7 +176,7 @@ class LocaleUrlResponseListener
     /**
      * @param Request $request
      *
-     * @return mixed
+     * @return null|string
      */
     private function getRealIpAddr($request)
     {
