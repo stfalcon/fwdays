@@ -1536,6 +1536,12 @@
     &__cols {
       flex-direction: column;
     }
+
+    &__left {
+      margin-right: 0;
+    }
+
+
   }
 
   .location {
@@ -1959,10 +1965,6 @@
         width: 33%;
         box-sizing: border-box;
       }
-    }
-
-    &__left {
-      margin-right: 0;
     }
   }
 }
