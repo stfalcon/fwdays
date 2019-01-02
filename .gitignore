@@ -16,3 +16,7 @@
 /node_modules
 .idea
 /web/assets
+
+# Geo Data
+!/geodata/.gitkeep
+/geodata/GeoLiteCity.dat

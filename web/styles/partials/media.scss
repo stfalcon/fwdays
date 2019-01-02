@@ -1536,6 +1536,12 @@
     &__cols {
       flex-direction: column;
     }
+
+    &__left {
+      margin-right: 0;
+    }
+
+
   }
 
   .location {
@@ -1950,6 +1956,15 @@
   .event-card {
     &__img {
       display: none;
+    }
+  }
+
+  .partners {
+    &__cols {
+      .partners__item {
+        width: 33%;
+        box-sizing: border-box;
+      }
     }
   }
 }

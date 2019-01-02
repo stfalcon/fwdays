@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * EventRepository.
@@ -29,6 +30,27 @@ class EventRepository extends EntityRepository
             ->where($qb->expr()->eq('e.active', ':active'))
             ->setParameters(['user_id' => $user, 'active' => $active])
             ->orderBy('e.date', $sort);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $count
+     *
+     * @return Event[]
+     */
+    public function findClosesActiveEvents($count)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->where($qb->expr()->eq('e.active', ':active'))
+            ->andWhere($qb->expr()->gte('e.date', ':date'))
+            ->setParameters([
+                'active' => true,
+                'date' => new \DateTime(),
+            ])
+            ->orderBy('e.date', 'ASC')
+            ->setMaxResults($count);
 
         return $qb->getQuery()->getResult();
     }
