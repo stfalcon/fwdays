@@ -193,6 +193,7 @@ class EventBlock implements Translatable
             self::PARTNERS => 'партнеры',
             self::PRICES => 'цены',
             self::DESCRIPTION => 'описание',
+            self::VENUE => 'карта',
             self::SPEAKERS => 'докладчики',
             self::CANDIDATE_SPEAKERS => 'кандидаты',
             self::COMMITTEE_SPEAKERS => 'програмный комитет',
