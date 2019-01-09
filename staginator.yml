@@ -33,6 +33,7 @@ deploy_callbacks:
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
         - "php app/console maxmind:geoip:update-data http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"
+        - "cp -a geodata/GeoLite2-City.tar geodata/GeoLiteCity.dat"
 ci:
     commands:
         - 'app/run-ci-pack.sh -e=prod'
