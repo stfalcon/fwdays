@@ -363,7 +363,9 @@ class TicketService
                 } else {
                     $caption = $this->translator->trans('ticket.status.pay');
                 }
-                $class .= ' get-payment';
+                if (!in_array($position, ['event_header', 'event_fix_header', 'event_fix_header_mob'])) {
+                    $class .= ' get-payment';
+                }
             } elseif (self::PAID_IS_RETURNED === $eventState) {
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.status.payment_returned_mob');
