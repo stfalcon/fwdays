@@ -41,6 +41,9 @@ class ReviewAdmin extends AbstractPageAdmin
                     'expanded' => true,
                     'label' => 'Докладчики',
                 ])
+                ->add('keywords', null, [
+                    'label' => 'Ключевые слова',
+                ])
             ->end()
         ;
     }
