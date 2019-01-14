@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Stfalcon\Bundle\EventBundle\Validator\Constraints as AppAssert;
 
 /**
  * Stfalcon\Bundle\EventBundle\Entity\Event.
@@ -26,6 +27,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     errorPath="slug",
  *     message="Поле slug должно быть уникальное."
  * )
+ *
+ * @AppAssert\Event\EventBlockPositionUnique()
  *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation")
  */
@@ -76,6 +79,7 @@ class Event implements Translatable
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventBlock",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position" = "ASC"})
      *
      * @Assert\Valid()
      */
