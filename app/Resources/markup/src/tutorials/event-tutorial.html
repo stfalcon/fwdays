@@ -553,6 +553,209 @@
         <!--END PROGRAM-->
     </textarea>
     <pre id="output-4" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <h2 class="h2">Програма на 5 потоків</h2>
+    <div class="program">
+        <div class="program-header">
+            <div class="program-header__td program-header__td--active" style="background-color: #FF700A;">
+                <span class="program-header__text">Main Stage</span>
+            </div>
+            <div class="program-header__td" style="background-color: #FECD4A; color: #121314;">
+                <span class="program-header__text">Track A</span>
+            </div>
+            <div class="program-header__td" style="background-color: #00C1AA;">
+                <span class="program-header__text">Track B</span>
+            </div>
+            <div class="program-header__td" style="background-color: #9e9e9e;">
+                <span class="program-header__text">Track С</span>
+            </div>
+            <div class="program-header__td" style="background-color: #09A0BD;">
+                <span class="program-header__text">Q&A session</span>
+            </div>
+        </div>
+        <div class="program-body">
+            <div class="program-body__tr program-body__tr--pause">
+                <div class="program-body__td program-body__td--time">09:00</div>
+                <div class="program-body__td">
+                    <div class="event-outside">
+                        <div class="event-outside__title">Registration & morning tea/coffee</div>
+                        <div class="event-outside__duration">1 час 30 мин</div>
+                    </div>
+                </div>
+            </div>
+            <div class="program-body__tr program-body__tr--event">
+                <div class="program-body__td program-body__td--time">10:40</div>
+                <div class="program-body__td">
+                    <div class="report-details">
+                        <a href="#" class="report-details__title">О драконах ни слова</a>
+                        <div class="report-details__level"><span>[level: middle]</span></div>
+                        <div class="report-details__bottom">
+                            <div class="report-details__speaker">Илья Климов</div>
+                            <div class="report-details__speaker-company">company</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-body__td">
+                    <div class="report-details">
+                        <a href="#" class="report-details__title">Web Apps Performance & JavaScript
+                            Compilers</a>
+                        <div class="report-details__level"><span>[level: middle]</span></div>
+                        <div class="report-details__bottom">
+                            <div class="report-details__speaker">Роман Лютиков</div>
+                            <div class="report-details__speaker-company">company</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-body__td">
+                    <div class="report-details">
+                        <a href="#" class="report-details__title">Разработка realtime SPA с&nbsp;использованием
+                            VueJS
+                            и&nbsp;RethinkDB</a>
+                        <div class="report-details__level"><span>[level: middle]</span></div>
+                        <div class="report-details__bottom">
+                            <div class="report-details__speaker">Сергей Морковкин</div>
+                            <div class="report-details__speaker-company">company</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-body__td">
+                    <div class="report-details">
+                        <a href="#" class="report-details__title">Разработка realtime SPA с&nbsp;использованием
+                            VueJS
+                            и&nbsp;RethinkDB</a>
+                        <div class="report-details__level"><span>[level: middle]</span></div>
+                        <div class="report-details__bottom">
+                            <div class="report-details__speaker">Сергей Морковкин</div>
+                            <div class="report-details__speaker-company">company</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-body__td">
+                    Илья Климов, Сергей Морковкин, Андрей Шумада
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="h2">Код:</h2>
+    <textarea id="code-5" class="input-code" readonly hidden>
+        <!--BEGIN PROGRAM-->
+        <div class="program">
+
+            <!--BEGIN PROGRAM HEADER-->
+            <div class="program-header">
+
+                <div class="program-header__td program-header__td--active" style="background-color: #FF700A;">
+                    <span class="program-header__text">Main Stage</span>
+                </div>
+
+                <div class="program-header__td" style="background-color: #FECD4A; color: #121314;">
+                    <span class="program-header__text">Track A</span>
+                </div>
+
+                <div class="program-header__td" style="background-color: #00C1AA;">
+                    <span class="program-header__text">Track B</span>
+                </div>
+
+                <div class="program-header__td" style="background-color: #9e9e9e;">
+                    <span class="program-header__text">Track С</span>
+                </div>
+
+                <div class="program-header__td" style="background-color: #09A0BD;">
+                    <span class="program-header__text">Q&A session</span>
+                </div>
+
+            </div>
+            <!--END PROGRAM HEADER-->
+
+            <!--BEGIN PROGRAM BODY-->
+            <div class="program-body">
+
+
+                <!--BEGIN PROGRAM ROW-PAUSE-->
+                <div class="program-body__tr program-body__tr--pause">
+
+                    <div class="program-body__td program-body__td--time">09:00</div>
+
+                    <div class="program-body__td">
+                        <div class="event-outside">
+                            <div class="event-outside__title">Registration & morning tea/coffee</div>
+                            <div class="event-outside__duration">1 час 30 мин</div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--END PROGRAM ROW-PAUSE-->
+
+                <!--BEGIN PROGRAM ROW-EVENT-->
+                <div class="program-body__tr program-body__tr--event">
+
+                    <div class="program-body__td program-body__td--time">10:40</div>
+
+                    <div class="program-body__td">
+                        <div class="report-details">
+                            <a href="#" class="report-details__title">О драконах ни слова</a>
+                            <div class="report-details__level"><span>[level: middle]</span></div>
+                            <div class="report-details__bottom">
+                                <div class="report-details__speaker">Илья Климов</div>
+                                <div class="report-details__speaker-company">company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="program-body__td">
+                        <div class="report-details">
+                            <a href="#" class="report-details__title">Web Apps Performance & JavaScript
+                                Compilers</a>
+                            <div class="report-details__level"><span>[level: middle]</span></div>
+                            <div class="report-details__bottom">
+                                <div class="report-details__speaker">Роман Лютиков</div>
+                                <div class="report-details__speaker-company">company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="program-body__td">
+                        <div class="report-details">
+                            <a href="#" class="report-details__title">Разработка realtime SPA с&nbsp;использованием
+                                VueJS
+                                и&nbsp;RethinkDB</a>
+                            <div class="report-details__level"><span>[level: middle]</span></div>
+                            <div class="report-details__bottom">
+                                <div class="report-details__speaker">Сергей Морковкин</div>
+                                <div class="report-details__speaker-company">company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="program-body__td">
+                        <div class="report-details">
+                            <a href="#" class="report-details__title">Разработка realtime SPA с&nbsp;использованием
+                                VueJS
+                                и&nbsp;RethinkDB</a>
+                            <div class="report-details__level"><span>[level: middle]</span></div>
+                            <div class="report-details__bottom">
+                                <div class="report-details__speaker">Сергей Морковкин</div>
+                                <div class="report-details__speaker-company">company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="program-body__td">
+                        Илья Климов, Сергей Морковкин, Андрей Шумада
+                    </div>
+
+                </div>
+                <!--END PROGRAM ROW-EVENT-->
+
+
+            </div>
+            <!--END PROGRAM BODY-->
+
+        </div>
+        <!--END PROGRAM-->
+    </textarea>
+    <pre id="output-5" class="output-code cm-s-default"></pre>
 </div>
 <script src="../js/main.js"></script>
 </body>
@@ -577,9 +780,15 @@
             document.getElementById("output-4"));
     }
 
+    function doHighlight5() {
+        CodeMirror.runMode(document.getElementById("code-5").value, "application/xml",
+            document.getElementById("output-5"));
+    }
+
     doHighlight1();
     doHighlight2();
     doHighlight3();
     doHighlight4();
+    doHighlight5();
 </script>
 </html>
