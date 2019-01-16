@@ -33,7 +33,7 @@
             <div class="event-alert event-alert--mrt-50">
                 <div class="container container--sm">
                     {% if futureEvent.receivePayments %}
-                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}}</h2>
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h2>
                     {% else %}
                         <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
                     {% endif %}
