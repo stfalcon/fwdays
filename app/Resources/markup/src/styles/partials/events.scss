@@ -5,6 +5,10 @@
     margin-bottom: 68px;
   }
 
+  &__item {
+    border-bottom: 1px solid #DFDBCC;
+  }
+
   &__label {
     margin-bottom: 16px;
   }
@@ -13,7 +17,6 @@
 .event-row {
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #DFDBCC;
   justify-content: space-between;
   align-items: center;
   min-height: 93px;
@@ -112,4 +115,22 @@
 
 .event-row--inactive {
   opacity: 0.5;
+}
+
+.event-alert {
+  padding: 20px 0 20px;
+  background-color: #f5f3ea;
+  margin-bottom: 50px;
+
+  &--mrt-50 {
+    margin-top: -50px;
+  }
+
+  &__title {
+    font-size: 32px;
+    color: #050607;
+    text-align: center;
+    margin-top: 30px;
+    line-height: 40px;
+  }
 }

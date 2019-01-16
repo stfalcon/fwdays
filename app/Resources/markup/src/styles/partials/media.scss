@@ -166,6 +166,10 @@
     }
   }
 
+  .event-alert--mrt-50 {
+    margin-top: 0;
+  }
+
   .event-card {
     padding: 0 12px;
     height: 188px;
@@ -407,6 +411,10 @@
       max-width: 50%;
       padding-left: 0;
     }
+  }
+
+  .event-themes {
+    margin-bottom: 140px;
   }
 
   .cooperation {
@@ -1121,6 +1129,13 @@
     }
   }
 
+  .event-alert {
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
   .event-card {
     padding: 0;
 
@@ -1247,7 +1262,7 @@
   }
 
   .event-themes {
-    margin-bottom: 100px;
+    margin-bottom: 120px;
   }
 
   .event-title {
@@ -1274,6 +1289,8 @@
   }
 
   .cooperation {
+    margin-bottom: 80px;
+
     &__box {
       display: block;
       background: #F5F3EA;
