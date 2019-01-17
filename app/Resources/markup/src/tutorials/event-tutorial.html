@@ -774,6 +774,93 @@
         <!--END PROGRAM-->
     </textarea>
     <pre id="output-5" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <h2 class="h2">Програма на 1 потік + ссилка на поп-ап спікера</h2>
+    <div class="program">
+        <div class="program-body">
+            <div class="program-body__tr program-body__tr--pause">
+                <div class="program-body__td program-body__td--time">09:00</div>
+                <div class="program-body__td">
+                    <div class="event-outside">
+                        <div class="event-outside__title">Registration & morning tea/coffee</div>
+                        <div class="event-outside__duration">1 час 30 мин</div>
+                    </div>
+                </div>
+            </div>
+            <div class="program-body__tr program-body__tr--event">
+                <div class="program-body__td program-body__td--time">10:40</div>
+                <div class="program-body__td">
+                    <div class="report-details">
+                        <a href="#speakers-event" class="report-details__title open-speaker-popup" data-speaker="andrew-vorobey"> Тема доклада пока не определена </a>
+                        <div class="report-details__bottom">
+                            <div class="report-details__speaker">Илья Климов</div>
+                            <div class="report-details__speaker-company">company</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea id="code-6" class="input-code" readonly hidden>
+        <!--BEGIN PROGRAM-->
+        <div class="program">
+
+            <!--BEGIN PROGRAM BODY-->
+            <div class="program-body">
+
+
+                <!--BEGIN PROGRAM ROW-PAUSE-->
+                <div class="program-body__tr program-body__tr--pause">
+
+                    <div class="program-body__td program-body__td--time">09:00</div>
+
+                    <div class="program-body__td">
+                        <div class="event-outside">
+                            <div class="event-outside__title">Registration & morning tea/coffee</div>
+                            <div class="event-outside__duration">1 час 30 мин</div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--END PROGRAM ROW-PAUSE-->
+
+                <!--BEGIN PROGRAM ROW-EVENT-->
+                <div class="program-body__tr program-body__tr--event">
+
+                    <div class="program-body__td program-body__td--time">10:40</div>
+
+                    <div class="program-body__td">
+                        <div class="report-details">
+
+                            <!--BEGIN LINK TO SPEAKER POPUP-->
+
+                                <a href="#speakers-event" class="report-details__title open-speaker-popup" data-speaker="andrew-vorobey"> Тема доклада пока
+                                    не определена </a>
+
+                            <!--END LINK TO SPEAKER POPUP-->
+
+                            <div class="report-details__bottom">
+                                <div class="report-details__speaker">Илья Климов</div>
+                                <div class="report-details__speaker-company">company</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--END PROGRAM ROW-EVENT-->
+
+
+            </div>
+            <!--END PROGRAM BODY-->
+
+        </div>
+        <!--END PROGRAM-->
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-6" class="output-code cm-s-default"></pre>
 </div>
 <script src="../js/main.js"></script>
 </body>
@@ -803,10 +890,16 @@
             document.getElementById("output-5"));
     }
 
+    function doHighlight6() {
+        CodeMirror.runMode(document.getElementById("code-6").value, "application/xml",
+            document.getElementById("output-6"));
+    }
+
     doHighlight1();
     doHighlight2();
     doHighlight3();
     doHighlight4();
     doHighlight5();
+    doHighlight6();
 </script>
 </html>
