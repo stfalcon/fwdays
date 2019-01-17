@@ -409,6 +409,10 @@
     }
   }
 
+  .event-themes {
+    margin-bottom: 140px;
+  }
+
   .cooperation {
     &__info {
       margin: 0 -24px;
@@ -1012,6 +1016,12 @@
     margin: -32px -32px 0;
     padding-bottom: 5px;
 
+    &__photo-wrapper {
+      width: 100%;
+      max-width: 414px;
+      margin: 0 auto;
+    }
+
     &__photo {
       width: 100%;
       max-width: 414px;
@@ -1247,7 +1257,7 @@
   }
 
   .event-themes {
-    margin-bottom: 100px;
+    margin-bottom: 120px;
   }
 
   .event-title {
@@ -1274,6 +1284,8 @@
   }
 
   .cooperation {
+    margin-bottom: 80px;
+
     &__box {
       display: block;
       background: #F5F3EA;

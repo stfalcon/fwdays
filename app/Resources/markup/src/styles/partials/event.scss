@@ -430,6 +430,10 @@
         visibility: visible;
         opacity: 1;
       }
+
+      .speaker-card__hint {
+        display: block;
+      }
     }
   }
 
@@ -505,6 +509,15 @@
   &__hint-report {
     font-size: 13px;
     line-height: 15px;
+  }
+
+  &__hint {
+    display: none;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px;
+    text-align: center;
+    color: $white-color;
   }
 }
 
@@ -736,6 +749,10 @@
     flex-wrap: wrap;
   }
 
+  &__speaker {
+    margin-right: 5px;
+  }
+
   &__speaker-company {
     color: #727272;
   }
@@ -813,6 +830,10 @@
     line-height: 24px;
     align-items: center;
     flex: 1;
+
+    &_with-hint {
+      display: block;
+    }
   }
 
   &__strike {
@@ -873,6 +894,14 @@
 
   &__buy--mob {
     display: none;
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: #FF1515;
+    line-height: 14px;
+    text-align: left;
+    margin-top: 6px;
   }
 }
 
