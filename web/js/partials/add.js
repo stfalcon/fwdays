@@ -396,6 +396,14 @@ $(document).ready(function () {
         }
     });
 
+    $('.open-speaker-popup').on('click', function () {
+        var speakerElement = $('.speaker-card__top[data-speaker='+$(this).data('speaker')+']'),
+             e_slug = speakerElement.data('event'),
+             s_slug = speakerElement.data('speaker'),
+             with_review = speakerElement.data('review');
+        setSpeakerHtml(e_slug, s_slug, with_review);
+    });
+
     $('.speaker-card__top').on('click', function () {
         var e_slug = $(this).data('event');
         var s_slug = $(this).data('speaker');
