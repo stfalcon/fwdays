@@ -430,6 +430,10 @@
         visibility: visible;
         opacity: 1;
       }
+
+      .speaker-card__hint {
+        display: block;
+      }
     }
   }
 
@@ -505,6 +509,15 @@
   &__hint-report {
     font-size: 13px;
     line-height: 15px;
+  }
+
+  &__hint {
+    display: none;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px;
+    text-align: center;
+    color: $white-color;
   }
 }
 

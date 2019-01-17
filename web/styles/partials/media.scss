@@ -1016,6 +1016,12 @@
     margin: -32px -32px 0;
     padding-bottom: 5px;
 
+    &__photo-wrapper {
+      width: 100%;
+      max-width: 414px;
+      margin: 0 auto;
+    }
+
     &__photo {
       width: 100%;
       max-width: 414px;

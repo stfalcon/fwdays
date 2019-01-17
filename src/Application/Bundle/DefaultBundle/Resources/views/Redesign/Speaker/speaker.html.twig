@@ -3,6 +3,7 @@
     <div class="speaker-card__box">
         <a data-event="{{ event.slug }}" data-speaker="{{ speaker.slug }}" data-review="{{ with_review ? 1 : 0 }}" class="speaker-card__top">
             <div class="speaker-card__photo">
+                <div class="speaker-card__hint" style="background-color: #0c9db9">Business development</div>
             {% if speaker.file is not empty %}
                 <img class="speaker-card__img" src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}" alt="">
             {% else %}

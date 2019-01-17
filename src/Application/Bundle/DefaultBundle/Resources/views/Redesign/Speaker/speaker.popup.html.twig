@@ -1,9 +1,13 @@
 <div class="speaker-popup">
-    {% if speaker.file is not empty %}
-        <img class="speaker-popup__photo" src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}" alt="">
-    {% else %}
-        <img class="speaker-popup__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}" alt="">
-    {% endif %}
+    <div class="speaker-popup__photo-wrapper">
+        <div class="speaker-popup__hint" style="background-color: #0c9db9">Business development</div>
+        {% if speaker.file is not empty %}
+            <img class="speaker-popup__photo"
+                 src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}" alt="">
+        {% else %}
+            <img class="speaker-popup__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}" alt="">
+        {% endif %}
+    </div>
     <div class="speaker-popup__description">
         <div class="speaker-popup__name">{{ speaker.name }}</div>
         <div class="speaker-popup__position">{{ speaker.company }}</div>
