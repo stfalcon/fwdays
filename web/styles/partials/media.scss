@@ -364,25 +364,11 @@
       margin-bottom: 40px;
       max-width: initial;
       flex-basis: initial;
-
-      &--with-icon {
-        .info-list__name {
-          padding-left: 0;
-        }
-      }
-
-      ul {
-        padding-left: 24px;
-      }
     }
 
     &__description {
       width: 100%;
       max-width: initial;
-    }
-
-    &__icon {
-      display: none;
     }
 
     &__name {
@@ -1254,10 +1240,6 @@
     margin-bottom: 120px;
   }
 
-  .event-title {
-    font-size: 28px;
-  }
-
   .conf-numbers {
     padding: 90px 0 25px;
 
@@ -1540,8 +1522,6 @@
     &__left {
       margin-right: 0;
     }
-
-
   }
 
   .location {
