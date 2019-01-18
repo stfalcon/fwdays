@@ -364,29 +364,11 @@
       margin-bottom: 40px;
       max-width: initial;
       flex-basis: initial;
-
-      &--with-icon {
-        .info-list__name {
-          padding-left: 0;
-        }
-
-        .info-list__text {
-          padding-left: 0;
-        }
-      }
-
-      ul {
-        padding-left: 24px;
-      }
     }
 
     &__description {
       width: 100%;
       max-width: initial;
-    }
-
-    &__icon {
-      display: none;
     }
 
     &__name {
