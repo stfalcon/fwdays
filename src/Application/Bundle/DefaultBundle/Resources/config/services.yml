@@ -112,3 +112,9 @@ services:
             - '@app.ticket_cost_repository.service'
             - '@app.event_review.repository.service'
             - '@security.authorization_checker'
+
+    app.event_listener.check_payment_paid_on_request_listener:
+        class: Application\Bundle\DefaultBundle\EventListener\CheckPaymentPaidOnRequestListener
+        arguments: ['@session', '@app.payment.repository.service', '@router']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

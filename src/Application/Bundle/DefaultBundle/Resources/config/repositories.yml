@@ -31,3 +31,8 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ["StfalconEventBundle:Page"]
+
+    app.payment.repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["StfalconEventBundle:Payment"]

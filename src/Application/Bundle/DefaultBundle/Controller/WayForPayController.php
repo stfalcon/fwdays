@@ -17,6 +17,8 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
  */
 class WayForPayController extends Controller
 {
+    const WAY_FOR_PAY_PAYMENT_ID = 'way_for_pay_payment';
+
     /** @var array */
     protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
 
@@ -66,12 +68,12 @@ class WayForPayController extends Controller
             } catch (\Exception $e) {
             }
 
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
+            $this->get('session')->set(self::WAY_FOR_PAY_PAYMENT_ID, $response['orderNo']);
             if ($request->isXmlHttpRequest()) {
                 return new Response('ok', 200);
             }
 
-            return $this->redirectToRoute('show_success');
+            return $this->redirectToRoute('show_success', ['returnUrl' => $request->headers->get('referer')]);
         }
 
         $this->get('logger')->addCritical(
@@ -144,7 +146,7 @@ class WayForPayController extends Controller
                 );
             }
 
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
+            $this->get('session')->set(self::WAY_FOR_PAY_PAYMENT_ID, $response['orderNo']);
 
             $result = $wayForPay->getResponseOnServiceUrl($response);
 
@@ -170,8 +172,8 @@ class WayForPayController extends Controller
      */
     public function showSuccessAction()
     {
-        $paymentId = $this->get('session')->get('way_for_pay_payment');
-        $this->get('session')->remove('way_for_pay_payment');
+        $paymentId = $this->get('session')->get(self::WAY_FOR_PAY_PAYMENT_ID);
+        $this->get('session')->remove(self::WAY_FOR_PAY_PAYMENT_ID);
 
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
@@ -185,11 +187,18 @@ class WayForPayController extends Controller
             $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
             $eventType = $this->getItemVariant($eventName);
         }
+        $request = $this->get('request_stack')->getCurrentRequest();
+        $returnUrl = $request->get('returnUrl');
+        if (!$returnUrl) {
+            $returnUrl = $request->headers->get('referer');
+        }
+        $returnUrl = $this->get('app.url_for_redirect')->getRedirectUrl($returnUrl, $request->getHost());
 
         return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
             'payment' => $payment,
             'event_name' => $eventName,
             'event_type' => $eventType,
+            'returnUrl' => $returnUrl,
         ]);
     }
 

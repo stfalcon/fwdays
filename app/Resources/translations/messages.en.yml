@@ -27,6 +27,7 @@ page.error.notfound.message: Page does not exist. <br />Please use the Menu to f
 page.error.notfound.you_can: 'You can:'
 page.error.notfound.you_can1: Return to the main page
 page.error.notfound.you_can2: Go to another section via menu
+back_link: Back
 sponsor.and.partners: Sponsors and partners
 sponsor.partners.title: Partners
 sponsor.partners.call_us: <a href="/contacts">Contact</a> us for becoming sponsor/partner of conference.

@@ -46,16 +46,16 @@ class UrlForRedirect
     }
 
     /**
-     * get redirect url for referral url.
+     * get redirect url for referrer url.
      *
-     * @param string $referralUrl
+     * @param string $referrerUrl
      * @param string $host
      *
      * @return string
      */
-    public function getRedirectUrl($referralUrl, $host = '')
+    public function getRedirectUrl($referrerUrl, $host = '')
     {
-        $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
+        $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referrerUrl), '\/');
 
         if (in_array($clearReferrer, $this->authorizationUrls)) {
             return $this->router->generate('homepage');
@@ -65,6 +65,6 @@ class UrlForRedirect
             return $this->router->generate('homepage');
         }
 
-        return $referralUrl;
+        return $referrerUrl;
     }
 }
