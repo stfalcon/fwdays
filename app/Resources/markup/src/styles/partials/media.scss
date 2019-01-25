@@ -369,10 +369,6 @@
         .info-list__name {
           padding-left: 0;
         }
-
-        .info-list__text {
-          padding-left: 0;
-        }
       }
 
       ul {
@@ -411,10 +407,6 @@
       max-width: 50%;
       padding-left: 0;
     }
-  }
-
-  .event-themes {
-    margin-bottom: 140px;
   }
 
   .cooperation {
@@ -1255,7 +1247,11 @@
   }
 
   .event-themes {
-    margin-bottom: 120px;
+    margin-bottom: 100px;
+  }
+
+  .event-title {
+    font-size: 28px;
   }
 
   .conf-numbers {
@@ -1278,8 +1274,6 @@
   }
 
   .cooperation {
-    margin-bottom: 80px;
-
     &__box {
       display: block;
       background: #F5F3EA;
@@ -1540,6 +1534,8 @@
     &__left {
       margin-right: 0;
     }
+
+
   }
 
   .location {
