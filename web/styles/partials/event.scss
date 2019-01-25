@@ -186,6 +186,13 @@
   }
 }
 
+.event-title {
+  font-size: 40px;
+  line-height: 40px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
 .event-themes {
   margin-bottom: 40px;
 }
@@ -204,15 +211,10 @@
       .info-list__name {
         padding-left: 68px;
       }
-
-      .info-list__text {
-        padding-left: 68px;
-      }
     }
   }
 
   &__icon {
-    font-size: 50px;
     position: absolute;
     left: 0;
     top: 50%;
@@ -224,10 +226,10 @@
     position: relative;
     display: flex;
     align-items: center;
-    font-size: 18px;
-    line-height: 20px;
+    font-size: 24px;
+    line-height: 24px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   &__description {
@@ -239,11 +241,7 @@
     }
 
     li {
-      margin-bottom: 6px;
-
-      .info-list__text {
-        padding-left: 0;
-      }
+      margin-bottom: 8px;
 
       &:last-child {
         margin-bottom: 0;
@@ -252,8 +250,8 @@
   }
 
   &__text {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 24px;
   }
 }
 
