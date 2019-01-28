@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Repository;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\EventGroup;
 
 /**
  * EventRepository.
@@ -32,6 +33,29 @@ class EventRepository extends EntityRepository
             ->orderBy('e.date', $sort);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param EventGroup $eventGroup
+     *
+     * @return null|Event
+     */
+    public function findFutureEventFromSameGroup(EventGroup $eventGroup)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->where($qb->expr()->eq('e.active', ':active'))
+            ->andWhere($qb->expr()->gte('e.date', ':date'))
+            ->andWhere($qb->expr()->eq('e.group', ':group'))
+            ->setParameters([
+                'active' => true,
+                'group' => $eventGroup,
+                'date' => new \DateTime(),
+            ])
+            ->orderBy('e.date', 'ASC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

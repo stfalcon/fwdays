@@ -6,6 +6,7 @@ use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Entity\EventGroup;
 use Stfalcon\Bundle\EventBundle\Entity\EventPage;
 use Stfalcon\Bundle\EventBundle\Repository\EventRepository;
 use Stfalcon\Bundle\EventBundle\Repository\ReviewRepository;
@@ -83,6 +84,7 @@ class EventService
         }
 
         $eventCurrentAmount = $this->ticketCostRepository->getEventCurrentCost($event);
+        $futureEvent = $event->getGroup() instanceof EventGroup ? $this->eventRepository->findFutureEventFromSameGroup($event->getGroup()) : null;
 
         return [
             'event' => $event,
@@ -91,6 +93,7 @@ class EventService
             'pages' => $pages,
             'review' => $review,
             'eventCurrentAmount' => $eventCurrentAmount,
+            'futureEvent' => $futureEvent,
         ];
     }
 

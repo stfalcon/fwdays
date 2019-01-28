@@ -9,7 +9,7 @@
                 <div class="event-list__items">
                     {% for event in activeEvents %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -19,7 +19,7 @@
                 <div class="event-list__items">
                     {% for event in pastEvents %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event} %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
                         {% endif %}
                     {% endfor %}
                 </div>

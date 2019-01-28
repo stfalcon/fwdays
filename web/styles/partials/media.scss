@@ -166,6 +166,10 @@
     }
   }
 
+  .event-alert--mrt-50 {
+    margin-top: 0;
+  }
+
   .event-card {
     padding: 0 12px;
     height: 188px;
@@ -1108,6 +1112,13 @@
       top: 0;
       margin-top: 4px;
       margin-bottom: 24px;
+    }
+  }
+
+  .event-alert {
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
     }
   }
 
