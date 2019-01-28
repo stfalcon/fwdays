@@ -117,6 +117,8 @@ check_box.agree_with_conditions_2: 'договір публічної оферт
 check_box.agree_with_conditions_error: "Згода з умовами договору публічної оферти є обов'язковою"
 event.events.title: Всі події
 events.future: Майбутні події
+event.future_event_registration: Реєстрація на наступну конференцію %name% вже відкрита!
+event.future_event_bye_tickets: Квитки на наступну конференцію %name% вже у продажі!
 event.page.program: Програма
 event.page.venue: Місце проведення
 event.page.venue_how: Як дістатися

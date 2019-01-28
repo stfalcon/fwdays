@@ -50,6 +50,8 @@ event.about: Learn more
 event.events.title: All events
 event.detail.info1: Details
 events.future: Upcoming events
+event.future_event_registration: Registration for the next conference %name% is open!
+event.future_event_bye_tickets: Buy tickets for the next conference %name%!
 
 user.fullname.title: Your name and surname
 user.name.title: Name

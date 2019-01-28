@@ -1,8 +1,4 @@
-{% if event.active %}
-<div class="event-row event-list__item">
-{% else %}
-<div class="event-row event-row--inactive event-list__item">
-{% endif %}
+<div class="event-row {% if listItem %} event-list__item{% endif %}{% if not event.active %} event-row--inactive{% endif %}">
     <div class="event-row__left">
         <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } )}}" class="event-row__logo-link">
             {% if event.smallLogoFile is not empty %}
