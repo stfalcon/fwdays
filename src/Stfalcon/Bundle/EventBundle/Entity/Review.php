@@ -72,6 +72,13 @@ class Review extends AbstractPage implements Translatable
     private $likedUsers;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="keywords", type="string", nullable=true)
+     */
+    protected $keywords;
+
+    /**
      * Review constructor.
      */
     public function __construct()
@@ -175,5 +182,25 @@ class Review extends AbstractPage implements Translatable
     public function isLikedByUser($user)
     {
         return $this->likedUsers->contains($user);
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param string $keywords
+     *
+     * @return $this
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+
+        return $this;
     }
 }

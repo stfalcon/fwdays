@@ -12,9 +12,11 @@
             {% endif %}
             <span class="cost__sales">{{ 'sold_out.title'|trans }}</span>
         </div>
-        <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
-            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
-        </div>
+        {%- if event.slug != 'business-fwdays-2019' -%}
+            <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
+                {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+            </div>
+        {%- endif -%}
     </div>
 {%- elseif currentPrice < ticket.amount -%}
     <div class="cost price-list__item">

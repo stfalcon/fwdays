@@ -28,6 +28,21 @@
         'eventCurrentAmount':eventCurrentAmount
     } %}
 
+    {% if futureEvent is not null %}
+        {% if (futureEvent.adminOnly and is_granted('ROLE_ADMIN')) or (futureEvent.adminOnly != true) %}
+            <div class="event-alert event-alert--mrt-50">
+                <div class="container container--sm">
+                    {% if futureEvent.receivePayments %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% else %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% endif %}
+                    {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
     {% set event_blocks_rendered = 0 %}
     {%- for block in event.blocks if block.visible -%}
         {% set event_blocks_rendered = event_blocks_rendered + 1 %}

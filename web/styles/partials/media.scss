@@ -166,6 +166,10 @@
     }
   }
 
+  .event-alert--mrt-50 {
+    margin-top: 0;
+  }
+
   .event-card {
     padding: 0 12px;
     height: 188px;
@@ -364,25 +368,11 @@
       margin-bottom: 40px;
       max-width: initial;
       flex-basis: initial;
-
-      &--with-icon {
-        .info-list__name {
-          padding-left: 0;
-        }
-      }
-
-      ul {
-        padding-left: 24px;
-      }
     }
 
     &__description {
       width: 100%;
       max-width: initial;
-    }
-
-    &__icon {
-      display: none;
     }
 
     &__name {
@@ -1125,6 +1115,13 @@
     }
   }
 
+  .event-alert {
+    &__title {
+      font-size: 24px;
+      line-height: 30px;
+    }
+  }
+
   .event-card {
     padding: 0;
 
@@ -1252,10 +1249,6 @@
 
   .event-themes {
     margin-bottom: 120px;
-  }
-
-  .event-title {
-    font-size: 28px;
   }
 
   .conf-numbers {
@@ -1540,8 +1533,6 @@
     &__left {
       margin-right: 0;
     }
-
-
   }
 
   .location {
