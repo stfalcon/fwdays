@@ -87,6 +87,16 @@ class EventBlock implements Translatable
     private $visible = true;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="position", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(value="0")
+     */
+    private $position;
+
+    /**
      * EventBlock constructor.
      */
     public function __construct()
@@ -180,6 +190,22 @@ class EventBlock implements Translatable
         $this->event = $event;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param int $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
     }
 
     /**

@@ -43,6 +43,7 @@ class EventBlockAdmin extends Admin
             )
             ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
             ->add('visible', null, ['label' => 'включен'])
+            ->add('position', null, ['label' => 'позиция'])
             ->add('translations', 'a2lix_translations_gedmo', [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
