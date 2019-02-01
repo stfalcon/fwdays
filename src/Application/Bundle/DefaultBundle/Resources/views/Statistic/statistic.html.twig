@@ -112,8 +112,15 @@
         </tr>
         </tbody>
     </table>
+
+    <div id="div_chart"></div>
 {% endblock content %}
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        {{ gc_draw(chart, 'div_chart') }}
+    </script>
 {% endblock javascripts %}

@@ -325,4 +325,46 @@ class TicketRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @return array
+     */
+    public function getBoughtTicketsCountForTheLastGroupedByDateForChart()
+    {
+        $now = new \DateTime();
+        $monthAgo = clone $now;
+        $monthAgo->modify('-1 month')->setTime(0, 0);
+        $periodDates = new \DatePeriod($monthAgo, new \DateInterval('P1D'), $now);
+
+        $qb = $this->createQueryBuilder('t');
+        $results = $qb->select('MONTH(p.createdAt) as paymentMonth, DAY(p.createdAt) as paymentDay, COUNT(t.id) as ticketsCount')
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->gte('p.createdAt', ':monthAgo'))
+            ->andWhere($qb->expr()->lte('p.createdAt', ':now'))
+            ->setParameters([
+                'monthAgo' => $monthAgo,
+                'now' => $now,
+            ])
+            ->groupBy('paymentMonth')
+            ->addGroupBy('paymentDay')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $formattedResult = [];
+        foreach ($periodDates as $periodDate) {
+            $date = $periodDate->format('d.m');
+            $formattedResult[$date] = [$date, 0];
+        }
+
+        foreach ($results as $result) {
+            $day = $result['paymentDay'] < 10 ? '0'.$result['paymentDay'] : $result['paymentDay'];
+            $month = $result['paymentMonth'] < 10 ? '0'.$result['paymentMonth'] : $result['paymentMonth'];
+            $date = $day.'.'.$month;
+
+            $formattedResult[$date][1] += (int) $result['ticketsCount'];
+        }
+
+        return array_values($formattedResult);
+    }
 }
