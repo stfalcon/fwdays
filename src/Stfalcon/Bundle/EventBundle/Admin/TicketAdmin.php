@@ -36,6 +36,8 @@ class TicketAdmin extends Admin
             'id',
             'event',
             'user.fullname',
+            'user.email',
+            'user.phone',
             'amount',
             'amountWithoutDiscount',
             'payment',
