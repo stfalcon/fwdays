@@ -83,6 +83,7 @@ class LoadUserData extends AbstractFixture
             ->setName('Peter')
             ->setSurname('Parker')
             ->setEmail('peter.parker@fwdays.com')
+            ->setPhone('+380931234567')
             ->setPlainPassword('qwerty')
             ->addRole('ROLE_USER')
             ->setCountry('USA')
@@ -100,6 +101,7 @@ class LoadUserData extends AbstractFixture
             ->setName('Rasmus')
             ->setSurname('Lerdorf')
             ->setEmail('rasmus.lerdorf@fwdays.com')
+            ->setPhone('+380937654321')
             ->setPlainPassword('qwerty')
             ->addRole('ROLE_USER')
             ->setCountry('Greenland')
@@ -113,12 +115,14 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userDefault4);
         $this->addReference('user-default4', $userDefault4);
 
+        $basePhone = 380960000000;
         for ($i = 1; $i <= 100; ++$i) {
             $userDefault = (new User())
                 ->setUsername('Пользователь '.$i)
                 ->setName('User '.$i)
                 ->setSurname('Default '.$i)
                 ->setEmail('user'.$i.'@fwdays.com')
+                ->setPhone(\sprintf('+%d', $basePhone + $i))
                 ->setPlainPassword('qwerty')
                 ->addRole('ROLE_USER')
                 ->setCountry('Ukraine')
