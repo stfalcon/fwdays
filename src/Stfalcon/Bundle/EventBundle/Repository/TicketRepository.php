@@ -367,4 +367,27 @@ class TicketRepository extends EntityRepository
 
         return array_values($formattedResult);
     }
+
+    /**
+     * @param Event $event
+     *
+     * @return int
+     */
+    public function getEventTicketsWithoutTicketCostCount(Event $event)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->select('COUNT(t.id)')
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->eq('p.status', ':status'))
+            ->andWhere($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->isNull('t.ticketCost'))
+            ->setParameters([
+                'status' => 'paid',
+                'event' => $event,
+            ])
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

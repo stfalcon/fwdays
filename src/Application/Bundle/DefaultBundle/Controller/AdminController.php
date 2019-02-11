@@ -433,11 +433,16 @@ class AdminController extends Controller
             $totalTicketCount += $ticketBlock->getCount();
         }
 
+        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
+        $totalSoldTicketCount += $ticketsWithoutCostsCount;
+        $totalTicketCount += $ticketsWithoutCostsCount;
+
         $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
+            'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
         ]);
 
         return $html;

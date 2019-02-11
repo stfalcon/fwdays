@@ -36,6 +36,8 @@ class TicketAdmin extends Admin
             'id',
             'event',
             'user.fullname',
+            'user.email',
+            'user.phone',
             'amount',
             'amountWithoutDiscount',
             'payment',
@@ -70,6 +72,8 @@ class TicketAdmin extends Admin
                     'label' => 'Пользователь',
                 ]
             )
+            ->add('user.email', 'string', ['label' => 'E-Mail'])
+            ->add('user.phone', 'string', ['label' => 'Тел.'])
             ->add(
                 'amount',
                 'money',
@@ -90,7 +94,7 @@ class TicketAdmin extends Admin
             ->add('payment', null, ['label' => 'Оплата'])
             ->add('createdAt', null, ['label' => 'Дата создания'])
             ->add('updatedAt', null, ['label' => 'Дата изменения'])
-            ->add('used', null, ['label' => 'Использован'])
+            ->add('used', null, ['label' => 'Испол.'])
             ->add('_action', null, [
                 'label' => 'Действие',
                 'actions' => [
@@ -111,6 +115,8 @@ class TicketAdmin extends Admin
         $filter->add('id')
             ->add('event', null, ['label' => 'Событие'])
             ->add('user.fullname', null, ['label' => 'Имя пользователя'])
+            ->add('user.email', 'string', ['label' => 'E-Mail'])
+            ->add('user.phone', 'string', ['label' => 'Тел.'])
             ->add(
                 'amount',
                 'money',
@@ -143,7 +149,8 @@ class TicketAdmin extends Admin
             ->add('id')
             ->add('event', null, ['label' => 'Событие'])
             ->add('user', null, ['label' => 'Пользователь'])
-            ->add('user.email', null, ['label' => 'Почта'])
+            ->add('user.email', null, ['label' => 'E-Mail'])
+            ->add('user.phone', null, ['label' => 'Тел.'])
             ->add('used', null, ['label' => 'Использован'])
             ->add(
                 'payment.status',
