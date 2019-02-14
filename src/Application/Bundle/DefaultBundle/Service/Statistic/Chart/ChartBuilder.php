@@ -32,8 +32,8 @@ class ChartBuilder
         $chart->getData()->setArrayToDataTable($ticketsBoughtDuringLastMonthGroupedByDate);
 
         $chart->getOptions()->setTitle('Продажа билетов за прошедший месяц');
-        $chart->getOptions()->setHeight(1000);
-        $chart->getOptions()->setWidth(1600);
+        $chart->getOptions()->setHeight(600);
+        $chart->getOptions()->setWidth(800);
         $chart->getOptions()->getTitleTextStyle()->setBold(true);
         $chart->getOptions()->getTitleTextStyle()->setColor('#009900');
         $chart->getOptions()->getTitleTextStyle()->setItalic(true);
