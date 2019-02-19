@@ -26,10 +26,6 @@ monolog:
 assetic:
     use_controller: true
 
-swiftmailer:
-    transport: mail
-    host:      localhost
-
 stfalcon_event:
     wayforpay:
         shop_id: "%merchantAccount%"
