@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -115,6 +114,7 @@ class AdminController extends Controller
                     $ticket = new Ticket();
                     $ticket->setEvent($event);
                     $ticket->setUser($user);
+                    $ticket->setHideConditions($_POST['hide_conditions']);
                     $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
                 }
