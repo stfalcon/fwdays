@@ -114,6 +114,7 @@ class AdminController extends Controller
                     $ticket = new Ticket();
                     $ticket->setEvent($event);
                     $ticket->setUser($user);
+                    $ticket->setHideConditions($_POST['hide_conditions']);
                     $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
                 }
