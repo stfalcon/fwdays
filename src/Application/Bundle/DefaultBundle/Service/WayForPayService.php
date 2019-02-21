@@ -76,11 +76,11 @@ class WayForPayService
     /**
      * @param array $response
      *
-     * @return array|null
+     * @return array
      */
     public function getResponseOnServiceUrl(array $response)
     {
-        $result = null;
+        $result = [];
 
         if (isset($response['orderReference'])) {
             $result = [
