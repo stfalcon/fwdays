@@ -146,21 +146,16 @@ class WayForPayController extends Controller
 
             $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
 
+            $wayForPay->saveResponseLog($payment, $response, 'set paid');
             $result = $wayForPay->getResponseOnServiceUrl($response);
 
-            $wayForPay->saveResponseLog($payment, $response, 'set paid');
-
-            return new JsonResponse(\json_encode($result));
+            return new JsonResponse($result);
         }
 
-        $this->get('logger')->addCritical(
-            'WayForPay interaction Fail!',
-            $this->getRequestDataToArr($response, $payment)
-        );
+        $wayForPay->saveResponseLog($payment, $response, $this->getArrMean($response['transactionStatus']));
+        $result = $wayForPay->getResponseOnServiceUrl($response);
 
-        $wayForPay->saveResponseLog($payment, $response, 'payment is paid or invalid data');
-
-        return new JsonResponse(['error' => 'payment is paid or invalid data'], 400);
+        return new JsonResponse($result);
     }
 
     /**
