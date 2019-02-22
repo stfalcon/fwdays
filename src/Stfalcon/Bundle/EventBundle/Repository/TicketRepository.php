@@ -327,9 +327,11 @@ class TicketRepository extends EntityRepository
     }
 
     /**
+     * @param Event|null $event
+     *
      * @return array
      */
-    public function getBoughtTicketsCountForTheLastGroupedByDateForChart()
+    public function getBoughtTicketsCountForTheLastGroupedByDateForChart(Event $event = null)
     {
         $now = new \DateTime();
         $monthAgo = clone $now;
@@ -337,14 +339,22 @@ class TicketRepository extends EntityRepository
         $periodDates = new \DatePeriod($monthAgo, new \DateInterval('P1D'), $now);
 
         $qb = $this->createQueryBuilder('t');
-        $results = $qb->select('MONTH(p.createdAt) as paymentMonth, DAY(p.createdAt) as paymentDay, COUNT(t.id) as ticketsCount')
-            ->join('t.payment', 'p')
-            ->where($qb->expr()->gte('p.createdAt', ':monthAgo'))
-            ->andWhere($qb->expr()->lte('p.createdAt', ':now'))
-            ->setParameters([
-                'monthAgo' => $monthAgo,
-                'now' => $now,
-            ])
+        $qb->select('MONTH(p.createdAt) as paymentMonth, DAY(p.createdAt) as paymentDay, COUNT(t.id) as ticketsCount')
+           ->join('t.payment', 'p')
+           ->where($qb->expr()->gte('p.createdAt', ':monthAgo'))
+           ->andWhere($qb->expr()->lte('p.createdAt', ':now'))
+           ->setParameters([
+               'monthAgo' => $monthAgo,
+               'now' => $now,
+           ])
+        ;
+
+        if ($event instanceof Event) {
+            $qb->andWhere($qb->expr()->eq('t.event', ':event'))
+               ->setParameter('event', $event);
+        }
+
+        $results = $qb
             ->groupBy('paymentMonth')
             ->addGroupBy('paymentDay')
             ->getQuery()

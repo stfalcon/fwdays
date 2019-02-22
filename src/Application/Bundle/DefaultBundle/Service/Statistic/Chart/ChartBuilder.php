@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service\Statistic\Chart;
 
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
+use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Repository\TicketRepository;
 
 /**
@@ -22,11 +23,13 @@ class ChartBuilder
     }
 
     /**
+     * @param Event|null $event
+     *
      * @return LineChart
      */
-    public function buildLineChartForSoldTicketsDuringLastMonth()
+    public function buildLineChartForSoldTicketsDuringLastMonth(Event $event = null)
     {
-        $ticketsBoughtDuringLastMonthGroupedByDate = $this->ticketRepository->getBoughtTicketsCountForTheLastGroupedByDateForChart();
+        $ticketsBoughtDuringLastMonthGroupedByDate = $this->ticketRepository->getBoughtTicketsCountForTheLastGroupedByDateForChart($event);
         array_unshift($ticketsBoughtDuringLastMonthGroupedByDate, ['Дата', 'Количество билетов']);
         $chart = new LineChart();
         $chart->getData()->setArrayToDataTable($ticketsBoughtDuringLastMonthGroupedByDate);
