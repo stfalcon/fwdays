@@ -224,15 +224,19 @@ class PaymentService
      */
     public function setTicketsCostAsSold($payment)
     {
+        $ticketCostsRecalculate = [];
         if ($payment->isPaid()) {
             /** @var Ticket $ticket */
             foreach ($payment->getTickets() as $ticket) {
                 $ticketCost = $ticket->getTicketCost();
                 if ($ticketCost) {
-                    $ticketCost->incSoldCount();
+                    $ticketCostsRecalculate[$ticketCost->getId()] = $ticketCost;
                 }
             }
 
+            foreach ($ticketCostsRecalculate as $ticketCost) {
+                $ticketCost->recalculateSoldCount();
+            }
             $this->em->flush();
         }
     }
