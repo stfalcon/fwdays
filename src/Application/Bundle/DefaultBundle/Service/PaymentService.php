@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
@@ -233,7 +234,7 @@ class PaymentService
                     $ticketCostsRecalculate[$ticketCost->getId()] = $ticketCost;
                 }
             }
-
+            /** @var TicketCost $ticketCost */
             foreach ($ticketCostsRecalculate as $ticketCost) {
                 $ticketCost->recalculateSoldCount();
             }
