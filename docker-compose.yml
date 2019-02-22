@@ -11,20 +11,23 @@ services:
             - "php"
 
     php:
-        build:
-            context: ./docker-configs/php-image
+        image: black15/fwdays:201902221 
+        # build:
+        #     context: ./docker-configs/php-image
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
             - "./docker-configs/php-fpm.ini:/etc/php5/fpm/php.ini"
             - "./docker-configs/php-cli.ini:/etc/php5/cli/php.ini"
             - ".:/app:cached"
+            - "bash-history-user:/var/www/history/"
+            - "bash-history-root:/root/history/"
         depends_on:
             - "mysql"
             - "mailcatcher"
 
     mysql:
-        image: jekakm/mysql-core:201802281
+        image: jekakm/mysql-core:201902201
         volumes:
             - "mysqldata:/var/lib/mysql"
         environment:
@@ -50,4 +53,6 @@ services:
             - "mysql"
 
 volumes:
+    bash-history-user:
+    bash-history-root:
     mysqldata:
