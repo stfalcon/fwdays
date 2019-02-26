@@ -44,7 +44,7 @@ class TicketCRUDController extends CRUDController
                     /** @var TicketCost $ticketCost */
                     $ticketCost = $ticket->getTicketCost();
                     if ($ticketCost) {
-                        $ticketCost->decSoldCount();
+                        $ticketCost->recalculateSoldCount();
                     }
                 }
                 $this->get('stfalcon_event.listener.payment')->setRunPaymentPostUpdate(false);

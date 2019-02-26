@@ -2,6 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -164,6 +165,10 @@ class Payment
     {
         if ($ticket->isPaid()) {
             return $this->removePaidTicket($ticket);
+        }
+
+        if ($ticket->getTicketCost() instanceof TicketCost) {
+            $ticket->getTicketCost()->recalculateSoldCount();
         }
 
         return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
