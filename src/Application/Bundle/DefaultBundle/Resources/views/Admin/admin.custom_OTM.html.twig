@@ -11,15 +11,18 @@
                                         {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label, {}, nested_field.vars.translation_domain) }}
                                     </th>
                                 {% endfor %}
+                                <th>Скачать</th>
                             </tr>
                         </thead>
                         <tbody class="sonata-ba-tbody">
                             {% for nested_group_field_name, nested_group_field in form.children %}
                                 <tr>
+                                    {% set object_id = 0 %}
                                     {% for field_name, nested_field in nested_group_field.children %}
                                         <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group"{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
                                             {% if nested_field.vars['name'] == 'id' %}
                                                 <a href="{{ path('admin_stfalcon_event_ticket_edit', {'id':nested_field.vars['data']}) }}">{{ nested_field.vars['data'] }}</a>
+                                                {% set object_id = nested_field.vars['data'] %}
                                             {% elseif nested_field.vars['value'].id is defined %}
                                                 <a href="{{ path('admin_stfalcon_event_'~field_name~'_edit', {'id':nested_field.vars['value'].id}) }}">{{ nested_field.vars['data'] }}</a>
                                             {% elseif nested_field.vars['name'] == 'createdAt'%}
@@ -29,6 +32,11 @@
                                             {% endif %}
                                         </td>
                                     {% endfor %}
+                                    <td>
+                                        <div>
+                                            <a class="btn btn-primary" href="{{ path('admin_stfalcon_event_ticket_download', {'id':object_id}) }}">Скачать</a>
+                                        </div>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
