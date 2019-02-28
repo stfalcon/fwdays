@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
@@ -224,15 +225,19 @@ class PaymentService
      */
     public function setTicketsCostAsSold($payment)
     {
+        $ticketCostsRecalculate = [];
         if ($payment->isPaid()) {
             /** @var Ticket $ticket */
             foreach ($payment->getTickets() as $ticket) {
                 $ticketCost = $ticket->getTicketCost();
                 if ($ticketCost) {
-                    $ticketCost->incSoldCount();
+                    $ticketCostsRecalculate[$ticketCost->getId()] = $ticketCost;
                 }
             }
-
+            /** @var TicketCost $ticketCost */
+            foreach ($ticketCostsRecalculate as $ticketCost) {
+                $ticketCost->recalculateSoldCount();
+            }
             $this->em->flush();
         }
     }

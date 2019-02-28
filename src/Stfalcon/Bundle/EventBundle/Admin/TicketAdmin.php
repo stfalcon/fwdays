@@ -54,6 +54,7 @@ class TicketAdmin extends Admin
     {
         $collection->remove('create');
         $collection->add('remove_paid_ticket_from_payment', $this->getRouterIdParameter().'/remove_paid_ticket_from_payment');
+        $collection->add('download', $this->getRouterIdParameter().'/download');
     }
 
     /**

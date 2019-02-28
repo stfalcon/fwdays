@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -15,6 +16,37 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class TicketCRUDController extends CRUDController
 {
+    /**
+     * @param int $id
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function downloadAction($id)
+    {
+        /** @var Ticket $ticket */
+        $ticket = $this->admin->getSubject();
+
+        if (!$ticket instanceof Ticket) {
+            throw new NotFoundHttpException(sprintf('unable to find the ticket with id : %s', $id));
+        }
+
+        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper */
+        $pdfGen = $this->get('app.helper.new_pdf_generator');
+
+        $html = $pdfGen->generateHTML($ticket);
+
+        return new Response(
+            $pdfGen->generatePdfFile($ticket, $html),
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
+            ]
+        );
+    }
+
     /**
      * @param int $id
      *
@@ -44,7 +76,7 @@ class TicketCRUDController extends CRUDController
                     /** @var TicketCost $ticketCost */
                     $ticketCost = $ticket->getTicketCost();
                     if ($ticketCost) {
-                        $ticketCost->decSoldCount();
+                        $ticketCost->recalculateSoldCount();
                     }
                 }
                 $this->get('stfalcon_event.listener.payment')->setRunPaymentPostUpdate(false);

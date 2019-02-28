@@ -430,8 +430,9 @@ class AdminController extends Controller
         $totalSoldTicketCount = 0;
         /** @var TicketCost $ticketBlock */
         foreach ($ticketBlocks as $ticketBlock) {
-            $totalSoldTicketCount += $ticketBlock->getSoldCount();
+            $blockSold = $ticketBlock->recalculateSoldCount();
             $totalTicketCount += $ticketBlock->getCount();
+            $totalSoldTicketCount += $blockSold;
         }
 
         $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
