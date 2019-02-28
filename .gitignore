@@ -12,7 +12,9 @@
 
 # Application
 /web/tmp/*
-/web/uploads/*
+/web/uploads/
+/web/cache/
+/web/media/
 /node_modules
 .idea
 /web/assets
