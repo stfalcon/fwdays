@@ -339,13 +339,15 @@ class TicketRepository extends EntityRepository
         $periodDates = new \DatePeriod($monthAgo, new \DateInterval('P1D'), $now);
 
         $qb = $this->createQueryBuilder('t');
-        $qb->select('MONTH(p.createdAt) as paymentMonth, DAY(p.createdAt) as paymentDay, COUNT(t.id) as ticketsCount')
+        $qb->select('MONTH(p.updatedAt) as paymentMonth, DAY(p.updatedAt) as paymentDay, COUNT(t.id) as ticketsCount')
            ->join('t.payment', 'p')
-           ->where($qb->expr()->gte('p.createdAt', ':monthAgo'))
-           ->andWhere($qb->expr()->lte('p.createdAt', ':now'))
+           ->where($qb->expr()->gte('p.updatedAt', ':monthAgo'))
+           ->andWhere($qb->expr()->lte('p.updatedAt', ':now'))
+           ->andWhere($qb->expr()->eq('p.status', ':status'))
            ->setParameters([
                'monthAgo' => $monthAgo,
                'now' => $now,
+               'status' => Payment::STATUS_PAID,
            ])
         ;
 
