@@ -14,6 +14,7 @@ sonata_block:
         sonata.block.event.description:
         sonata.block.event.venue:
         sonata.block.event.speakers:
+        sonata.block.event.reviews:
         sonata.block.event.candidate_speakers:
         sonata.block.event.committee_speakers:
         sonata.block.event.ticket_status:

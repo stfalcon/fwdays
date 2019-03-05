@@ -203,8 +203,6 @@ contacts.person.irina: Iryna Bozhyk
 contacts.person.lara: Lara Lukianiuk
 contacts.person.ksenia: Kenya Grabevnyk
 
-fos_user.password.mismatch: Password does not match
-
 fos_user.password.mismatch: Uncorrect new password
 Bad credentials.: 'Uncorrect email address or password'
 User account is disabled.: 'Account does not activated'
@@ -226,6 +224,9 @@ ticket.email.event_member.title: 'Participant'
 ticket.email.ticket_price.title: 'Ticket price'
 ticket.email.conditions.title: 'Сonditions'
 ticket.email.event.title: 'Event'
+
+talks.title: Talks
+talks.text: 'Workshops track to be added by %date%, the final program to be released by %date%'
 
 welcome.email.title: Welcome!
 registration.email.subject: Registration completed on fwdays.com
