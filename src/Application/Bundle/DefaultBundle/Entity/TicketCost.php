@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
@@ -29,6 +30,8 @@ class TicketCost
     private $event;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
      *      cascade={"persist"})
@@ -90,6 +93,11 @@ class TicketCost
      */
     private $temporaryCount = 0;
 
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
+
     /**
      * @return int
      */
@@ -132,6 +140,20 @@ class TicketCost
     public function setTickets($tickets)
     {
         $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * @param $ticket
+     *
+     * @return $this
+     */
+    public function addTicket($ticket)
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+        }
 
         return $this;
     }
