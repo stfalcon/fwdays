@@ -226,7 +226,7 @@ ticket.email.conditions.title: 'Сonditions'
 ticket.email.event.title: 'Event'
 
 talks.title: Talks
-talks.text: 'Workshops track to be added by %date%, the final program to be released by %date%'
+talks.text: 'Talks may be reordered. The final program to be released by %date%'
 
 welcome.email.title: Welcome!
 registration.email.subject: Registration completed on fwdays.com
