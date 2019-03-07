@@ -31,6 +31,7 @@ class EventBlock implements Translatable
     const DESCRIPTION = 'description';
     const VENUE = 'venue';
     const SPEAKERS = 'speakers';
+    const REVIEWS = 'reviews';
     const CANDIDATE_SPEAKERS = 'candidate_speakers';
     const COMMITTEE_SPEAKERS = 'committee_speakers';
 
@@ -221,6 +222,7 @@ class EventBlock implements Translatable
             self::DESCRIPTION => 'описание',
             self::VENUE => 'карта',
             self::SPEAKERS => 'докладчики',
+            self::REVIEWS => 'доклады',
             self::CANDIDATE_SPEAKERS => 'кандидаты',
             self::COMMITTEE_SPEAKERS => 'програмный комитет',
         ];

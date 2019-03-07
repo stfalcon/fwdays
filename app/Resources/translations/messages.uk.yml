@@ -221,6 +221,9 @@ ticket.email.ticket_price.title: 'Ціна квитка'
 ticket.email.conditions.title: 'Умови'
 ticket.email.event.title: 'Подія'
 
+talks.title: Доповіді
+talks.text: 'Доповіді можуть бути зміщені. Фінальна програма конференції буде сформована до %date%'
+
 welcome.email.title: Ласкаво просимо!
 registration.email.subject: Ви успішно зареєстровані на сайті fwdays.com
 dear_user.email.text: |
