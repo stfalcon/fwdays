@@ -4,7 +4,7 @@ imports:
 sentry:
     skip_capture:
         - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
-        - 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedException'
+        - 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException'
         - 'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException'
     dsn: "%sentry_dsn_stag%"
 
