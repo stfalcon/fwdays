@@ -132,18 +132,3 @@ class UserRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 }
-
-//SELECT u.fullname, u.email FROM `users` AS u
-//
-//LEFT JOIN event__tickets as et ON et.user_id = u.id
-//LEFT JOIN event__tickets as et1 ON (et1.user_id = u.id AND et1.event_id = 68)
-//LEFT JOIN event__events AS e ON et.event_id = e.id
-//JOIN payments as p on et.payment_id = p.id
-//LEFT JOIN payments as p1 on et1.payment_id = p1.id
-//
-//WHERE e.group_id = 2
-//AND p.status = 'paid'
-//AND (et1.id is null OR p1.status <> 'paid')
-//
-//GROUP BY u.email
-//ORDER BY `u`.`fullname` ASC
