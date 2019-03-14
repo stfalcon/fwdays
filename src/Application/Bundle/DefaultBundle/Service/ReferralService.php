@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Symfony\Component\DependencyInjection\Container;
 use Application\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,8 @@ class ReferralService
 {
     const REFERRAL_CODE = 'REFERRALCODE';
     const REFERRAL_BONUS = 100;
+    const SPECIAL_REFERRAL_BONUS = 500;
+    const SPECIAL_BONUS_EVENT = 'js-fwdays-2019';
 
     /**
      * @var Container
@@ -76,8 +79,13 @@ class ReferralService
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $userReferral = $payment->getUser()->getUserReferral();
 
+        $tickets = $payment->getTickets();
+        /** @var Ticket $firstTicket */
+        $firstTicket = $tickets->count() > 0 ? $tickets[0] :  null;
+        $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
+
         if ($userReferral) {
-            $balance = $userReferral->getBalance() + 100;
+            $balance = $userReferral->getBalance() + $bonus;
             $userReferral->setBalance($balance);
 
             $em->flush();
