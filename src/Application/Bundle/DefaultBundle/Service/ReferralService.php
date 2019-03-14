@@ -18,6 +18,7 @@ class ReferralService
     const REFERRAL_CODE = 'REFERRALCODE';
     const REFERRAL_BONUS = 100;
     const SPECIAL_REFERRAL_BONUS = 500;
+    const SPECIAL_BONUS_EVENT = 'js-fwdays-2019';
 
     /**
      * @var Container
@@ -81,7 +82,7 @@ class ReferralService
         $tickets = $payment->getTickets();
         /** @var Ticket $firstTicket */
         $firstTicket = $tickets->count() > 0 ? $tickets[0] :  null;
-        $bonus = $firstTicket && 'js-fwdays-2019' === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
+        $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
 
         if ($userReferral) {
             $balance = $userReferral->getBalance() + $bonus;
