@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Entity\EventBlock;
@@ -10,7 +10,7 @@ use Stfalcon\Bundle\EventBundle\Entity\EventBlock;
 /**
  * Class EventBlockAdmin.
  */
-class EventBlockAdmin extends Admin
+final class EventBlockAdmin extends AbstractAdmin
 {
     /**
      * @param ListMapper $listMapper

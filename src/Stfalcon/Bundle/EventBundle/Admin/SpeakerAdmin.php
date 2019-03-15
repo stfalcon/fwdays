@@ -3,14 +3,14 @@
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * Class SpeakerAdmin.
  */
-class SpeakerAdmin extends Admin
+final class SpeakerAdmin extends AbstractAdmin
 {
     /**
      * {@inheritdoc}

@@ -2,9 +2,8 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Application\Bundle\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
@@ -12,7 +11,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 /**
  * Class EventAdmin.
  */
-class EventAdmin extends Admin
+final class EventAdmin extends AbstractAdmin
 {
     /** @var string */
     protected $saveCity;
@@ -141,7 +140,7 @@ class EventAdmin extends Admin
                             ],
                             'description' => [
                                 'label' => 'Краткое описание',
-                                'locale_options' => $localAllFalse,
+                                'locale_options' => $localOptions,
                             ],
                             'about' => [
                                 'label' => 'Описание',

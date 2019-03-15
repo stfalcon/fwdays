@@ -3,14 +3,14 @@
 namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
 use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * Class AbstractNewsAdmin.
  */
-abstract class AbstractNewsAdmin extends Admin
+abstract class AbstractNewsAdmin extends AbstractAdmin
 {
     /**
      * {@inheritdoc}
@@ -36,7 +36,6 @@ abstract class AbstractNewsAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
             ->with('Переводы')
@@ -45,15 +44,12 @@ abstract class AbstractNewsAdmin extends Admin
                     'fields' => [
                         'title' => [
                             'label' => 'title',
-                            'locale_options' => $localOptions,
                         ],
                         'text' => [
                             'label' => 'текст',
-                            'locale_options' => $localOptions,
                         ],
                         'preview' => [
                             'label' => 'preview',
-                            'locale_options' => $localOptions,
                         ],
                         'metaKeywords' => [
                             'label' => 'metaKeywords',

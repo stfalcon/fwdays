@@ -5,7 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\UnitOfWork;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -18,7 +18,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Mail;
 /**
  * Class MailAdmin.
  */
-class MailAdmin extends Admin
+final class MailAdmin extends AbstractAdmin
 {
     private $savedEvents;
     private $savedAudiences;
