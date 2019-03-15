@@ -36,6 +36,7 @@ abstract class AbstractNewsAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
         $formMapper
             ->with('Переводы')
@@ -44,12 +45,15 @@ abstract class AbstractNewsAdmin extends AbstractAdmin
                     'fields' => [
                         'title' => [
                             'label' => 'title',
+                            'locale_options' => $localOptions,
                         ],
                         'text' => [
                             'label' => 'текст',
+                            'locale_options' => $localOptions,
                         ],
                         'preview' => [
                             'label' => 'preview',
+                            'locale_options' => $localOptions,
                         ],
                         'metaKeywords' => [
                             'label' => 'metaKeywords',
