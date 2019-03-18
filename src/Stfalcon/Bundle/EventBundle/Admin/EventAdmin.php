@@ -212,7 +212,7 @@ class EventAdmin extends Admin
                     [
                         'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
-                        'help' => 'Осноное изображения. '.$subject->getLogo(),
+                        'help' => 'Основное изображение. '.$subject->getLogo(),
                     ]
                 )
                 ->add(

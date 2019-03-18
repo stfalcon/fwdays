@@ -4,8 +4,6 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Translatable\Translatable;
-use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,12 +23,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *     errorPath="slug",
  *     message="Поле slug повинне бути унікальне."
  * )
- *
- * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
-class Sponsor implements Translatable
+class Sponsor
 {
-    use TranslateTrait;
     /**
      * @var int
      *
@@ -39,28 +34,11 @@ class Sponsor implements Translatable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    /**
-     * @ORM\OneToMany(
-     *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
-     *   mappedBy="object",
-     *   cascade={"persist", "remove"}
-     * )
-     */
-    private $translations;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    protected $slug;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     *
-     * @Gedmo\Translatable(fallback=true)
      */
     protected $name;
 
@@ -98,15 +76,6 @@ class Sponsor implements Translatable
     protected $file;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="about", type="text", nullable=true)
-     *
-     * @Gedmo\Translatable(fallback=true)
-     */
-    protected $about;
-
-    /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor",
      *     mappedBy="sponsor", cascade={"persist", "remove"}, orphanRemoval=true
      * )
@@ -132,19 +101,11 @@ class Sponsor implements Translatable
     protected $updatedAt;
 
     /**
-     * @var bool onMain
-     *
-     * @ORM\Column(name="on_main", type="boolean")
-     */
-    protected $onMain = false;
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->sponsorEvents = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -155,30 +116,6 @@ class Sponsor implements Translatable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set slug.
-     *
-     * @param string $slug
-     *
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
@@ -298,30 +235,6 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set about.
-     *
-     * @param string $about
-     *
-     * @return $this
-     */
-    public function setAbout($about)
-    {
-        $this->about = $about;
-
-        return $this;
-    }
-
-    /**
-     * Get about.
-     *
-     * @return string
-     */
-    public function getAbout()
-    {
-        return $this->about;
-    }
-
-    /**
      * @param EventSponsor $sponsorEvent
      *
      * @return $this
@@ -412,25 +325,5 @@ class Sponsor implements Translatable
     public function __toString()
     {
         return (string) $this->getName() ?: '-';
-    }
-
-    /**
-     * @param bool $onMain
-     *
-     * @return $this
-     */
-    public function setOnMain($onMain)
-    {
-        $this->onMain = $onMain;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getOnMain()
-    {
-        return $this->onMain;
     }
 }
