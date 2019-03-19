@@ -51,14 +51,14 @@ class PaymentController extends Controller
         /* @var  User $user */
         $user = $this->getUser();
 
-        /* @var $ticket Ticket */
+        /* @var Ticket|null $ticket  */
         $ticket = $this->getDoctrine()->getManager()
             ->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
         $paymentService = $this->get('stfalcon_event.payment.service');
 
-        /** @var Payment $payment */
+        /** @var Payment|null $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
         $em = $this->getDoctrine()->getManager();
@@ -143,6 +143,7 @@ class PaymentController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
+        /** @var PromoCode|null $promoCode */
         $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
@@ -229,7 +230,7 @@ class PaymentController extends Controller
         if ($payment->isPaid()) {
             return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
         }
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
 
         if (!$user) {
@@ -248,7 +249,7 @@ class PaymentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        /** @var Ticket $ticket */
+        /** @var Ticket|null $ticket */
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
@@ -369,9 +370,9 @@ class PaymentController extends Controller
     /**
      * Get payment html for popup.
      *
-     * @param Event     $event
-     * @param Payment   $payment
-     * @param Promocode $promoCode
+     * @param Event          $event
+     * @param Payment        $payment
+     * @param Promocode|null $promoCode
      *
      * @return JsonResponse
      */
@@ -442,7 +443,7 @@ class PaymentController extends Controller
      *
      * @param Ticket $removeTicket
      *
-     * @return Payment $payment
+     * @return Payment|null $payment
      */
     private function getPaymentIfAccess($removeTicket = null)
     {

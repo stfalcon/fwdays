@@ -17,11 +17,10 @@ use Application\Bundle\UserBundle\Entity\User;
  */
 class PaymentService
 {
-    /**
-     * @var Container
-     */
+    /** @var Container */
     protected $container;
-    /** @var $em EntityManager */
+
+    /** @var EntityManager */
     protected $em;
 
     /**

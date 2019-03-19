@@ -80,7 +80,7 @@ class TicketService
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
 
-        if (!$event instanceof Event || !$user instanceof User || !$event->getUseDiscounts()) {
+        if (!$event->getUseDiscounts()) {
             return false;
         }
 
