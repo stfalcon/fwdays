@@ -48,24 +48,4 @@ class TicketCostService
 
         return $currentTicketCost;
     }
-
-    /**
-     * @param Event $event
-     *
-     * @return int
-     */
-    public function getEventFreeTicketCount($event)
-    {
-        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')
-            ->getEventEnabledTicketsCost($event);
-        $count = 0;
-        /** @var TicketCost $cost */
-        foreach ($eventCosts as $cost) {
-            if (!$cost->isUnlimited()) {
-                $count += $cost->getCount() - $cost->getSoldCount();
-            }
-        }
-
-        return $count;
-    }
 }
