@@ -1,0 +1,80 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block title %} - {{ 'Статистика билетов' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    <h1>Статистика билетов</h1>
+    <form method="post">
+        <div class="form-group">
+            <label>Не купили билет на событие</label>
+            <select class="form-control" id="select-check-event" name="check_event">
+                {% for event in events -%}
+                    <option value="{{ event.id }}">{{ event.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Тип поиска</label>
+            <div class="radio">
+                <label class="radio_label" data-choice="event">
+                    <input type="radio" class="choice_type" name="check_type" value="event" checked>
+                    Событие
+                </label>
+            </div>
+            <div class="radio">
+                <label class="radio_label" data-choice="group">
+                    <input type="radio" class="choice_type" name="check_type" value="group">
+                    Група событий
+                </label>
+            </div>
+        </div>
+
+        <div id="group" class="form-group">
+            <label for="has-ticket-event">Ранее покупали на </label>
+            <select class="form-control" id="has-ticket-event" name="has_ticket_event">
+                {% for event in events -%}
+                    <option value="{{ event.id }}">{{ event.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="event" class="form-group hidden">
+            <label for="has-ticket-event">Ранее покупали на </label>
+            <select class="form-control" id="has-ticket-group" name="has_ticket_group">
+                {% for group in groups -%}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Скачать файл">
+    </form>
+    <p></p>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.radio_label').on('click', function () {
+                var id = $(this).data('choice');
+                $('#' + id).addClass('hidden').siblings().removeClass('hidden');
+            });
+
+            $('.iCheck-helper').on('click', function () {
+                $(this).closest('.radio_label').click();
+            });
+        });
+    </script>
+{% endblock javascripts %}
