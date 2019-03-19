@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityManager;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = 'e41fa4f8f91eff3bf42ed94689524f21';
-    const UK_FILE_HASH = '2317035330ba4a26d7220f9901b11a26';
+    const EN_FILE_HASH = 'bb93bfbc18dfa0a8956b6aee7a9466f6';
+    const UK_FILE_HASH = '7a4916c2839dc31d6c2ad6ea3375a285';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -59,7 +59,7 @@ class TicketControllerTest extends WebTestCase
      */
     public function testEnTicketHash()
     {
-        $this->assertEquals($this->getFileHash('en'), self::EN_FILE_HASH);
+        $this->assertEquals(self::EN_FILE_HASH, $this->getFileHash('en'));
     }
 
     /**
@@ -67,7 +67,7 @@ class TicketControllerTest extends WebTestCase
      */
     public function testUkTicketHash()
     {
-        $this->assertEquals($this->getFileHash('uk'), self::UK_FILE_HASH);
+        $this->assertEquals(self::UK_FILE_HASH, $this->getFileHash('uk'));
     }
 
     /**
@@ -75,7 +75,7 @@ class TicketControllerTest extends WebTestCase
      */
     public function testUkCookieLocale()
     {
-        $this->assertEquals($this->getLangCookie('uk'), 'uk');
+        $this->assertEquals('uk', $this->getLangCookie('uk'));
     }
 
     /**
@@ -83,7 +83,7 @@ class TicketControllerTest extends WebTestCase
      */
     public function testEnCookieLocale()
     {
-        $this->assertEquals($this->getLangCookie('en'), 'en');
+        $this->assertEquals('en', $this->getLangCookie('en'));
     }
 
     /**

@@ -85,7 +85,7 @@ class PaymentServiceTest extends WebTestCase
 
         $paymentService->setPaidByBonusMoney($payment, $event);
 
-        $this->assertEquals($payment->getAmount(), 0);
+        $this->assertEquals(0, $payment->getAmount());
         $this->assertEquals($payment->getBaseAmount(), $ticket->getAmountWithoutDiscount());
         $this->assertEquals($payment->getFwdaysAmount(), $ticket->getAmount());
         $this->assertTrue($payment->isPaid());

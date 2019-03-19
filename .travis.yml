@@ -11,7 +11,6 @@ before_script:
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
     - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - export ADDITIONAL_PATH=`php -i | grep -F --color=never 'Scan this dir for additional .ini files'`
-#    - echo 'xdebug.max_nesting_level=9999' | sudo tee ${ADDITIONAL_PATH:42}/symfony2.ini
     - export MINK_EXTENSION_PARAMS='base_url=http://localhost:8000/app_test.php'
     - ls -l ~/.phpenv/bin
     - php -i
