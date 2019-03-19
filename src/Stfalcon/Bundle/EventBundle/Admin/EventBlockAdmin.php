@@ -31,7 +31,7 @@ class EventBlockAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->add(
                 'type',

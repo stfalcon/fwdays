@@ -63,8 +63,8 @@ class SponsorAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
-        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [

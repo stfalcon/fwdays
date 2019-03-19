@@ -103,10 +103,8 @@ class ReferralService
      */
     public function utilizeBalance(Payment $payment)
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-
-        //списываем реферальные средства если они были использованы
         if ($payment->getFwdaysAmount() > 0) {
+            $em = $this->container->get('doctrine.orm.default_entity_manager');
             $user = $payment->getUser();
             $userBalance = $payment->getUser()->getBalance();
             $balance = $userBalance - $payment->getFwdaysAmount();

@@ -45,7 +45,7 @@ class SpeakerAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
         $formMapper
             ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [

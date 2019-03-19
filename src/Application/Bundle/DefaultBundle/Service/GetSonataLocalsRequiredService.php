@@ -27,7 +27,7 @@ class GetSonataLocalsRequiredService
      *
      * @return array
      */
-    public function getLocalsRequredArray($setAllAs = null)
+    public function getLocalsRequiredArray($setAllAs = null)
     {
         $result = [];
         foreach ($this->locales as $locale) {
