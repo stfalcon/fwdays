@@ -2,6 +2,7 @@ It's engine for site of conference Frameworks Days
 ========================================
 
 [![Build Status](https://secure.travis-ci.org/stfalcon/fwdays.png?branch=master)](https://travis-ci.org/stfalcon/fwdays)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/stfalcon/fwdays/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/stfalcon/fwdays/?branch=master)
 
 ### a) Install Composer 
 

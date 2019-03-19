@@ -19,15 +19,11 @@ class TicketCostRepository extends EntityRepository
      */
     public function getEventCurrentCost(Event $event)
     {
-        $qb = $this->createQueryBuilder('tc');
-        $qb->select('tc.amount')
-            ->where('tc.event = :event')
-            ->andWhere('tc.enabled = 1')
-            ->setParameter(':event', $event)
-            ->orderBy('tc.amount');
-        $query = $qb->getQuery();
+        $qb = $this->getEventTicketsCostQB($event);
+        $qb->select('tc.amount');
+        $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
 
-        $result = $query->getResult();
+        $result = $qb->getQuery()->getResult();
         $result = is_array($result) ? array_shift($result) : null;
 
         $currentCost = $result ? $result['amount'] : null;
@@ -44,13 +40,9 @@ class TicketCostRepository extends EntityRepository
      */
     public function getEventTicketsCost(Event $event)
     {
-        $qb = $this->createQueryBuilder('tc');
-        $qb->where('tc.event = :event')
-            ->setParameter(':event', $event)
-            ->orderBy('tc.amount');
-        $query = $qb->getQuery();
+        $qb = $this->getEventTicketsCostQB($event);
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -62,13 +54,24 @@ class TicketCostRepository extends EntityRepository
      */
     public function getEventEnabledTicketsCost(Event $event)
     {
+        $qb = $this->getEventTicketsCostQB($event);
+        $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
+
+        return  $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getEventTicketsCostQB(Event $event)
+    {
         $qb = $this->createQueryBuilder('tc');
-        $qb->where('tc.event = :event')
-            ->andWhere('tc.enabled = 1')
+        $qb->where($qb->expr()->eq('tc.event', ':event'))
             ->setParameter(':event', $event)
             ->orderBy('tc.amount');
-        $query = $qb->getQuery();
 
-        return $query->getResult();
+        return $qb;
     }
 }

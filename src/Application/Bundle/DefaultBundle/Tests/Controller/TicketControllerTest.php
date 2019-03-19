@@ -26,6 +26,7 @@ class TicketControllerTest extends WebTestCase
     public function setUp()
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
+        $this->client = $this->createClient();
 
         $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
         $connection->exec('DELETE FROM users;');
@@ -43,7 +44,6 @@ class TicketControllerTest extends WebTestCase
             'doctrine',
             ORMPurger::PURGE_MODE_DELETE
         );
-        $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
         $this->translator = $this->getContainer()->get('translator');
     }
@@ -147,6 +147,9 @@ class TicketControllerTest extends WebTestCase
         /* start Login */
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
+        if (200 !== $this->client->getResponse()->getStatusCode()) {
+            $this->assertEquals('', $this->client->getResponse()->getContent());
+        }
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
             </button>', $crawler->html());
