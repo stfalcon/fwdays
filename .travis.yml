@@ -7,6 +7,8 @@ before_install:
     - sudo apt-get update > /dev/null
 
 before_script:
+    - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+    - unxz geodata/GeoLiteCity.dat.xz
     - printf "\n" | pecl install imagick
     - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
     - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -25,7 +27,6 @@ before_script:
     - export DISPLAY=:99
     - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar > selenium.jar
     - java -jar selenium.jar > /dev/null &
-    - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
     - sleep 5
 
 script:
