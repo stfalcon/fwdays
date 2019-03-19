@@ -147,9 +147,6 @@ class TicketControllerTest extends WebTestCase
         /* start Login */
         $this->client->followRedirects();
         $crawler = $this->client->request('GET', $lang.'/login');
-        if (200 !== $this->client->getResponse()->getStatusCode()) {
-            $this->assertEquals('', $this->client->getResponse()->getContent());
-        }
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
             </button>', $crawler->html());
