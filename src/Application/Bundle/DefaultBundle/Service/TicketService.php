@@ -190,15 +190,14 @@ class TicketService
     }
 
     /**
-     * @param Event      $event
-     * @param string     $position
-     * @param TicketCost $ticketCost
+     * @param Event           $event
+     * @param string          $position
+     * @param TicketCost|null $ticketCost
      *
      * @return array
      */
     public function getTicketHtmlData($event, $position, $ticketCost)
     {
-        $eventState = null;
         $ticket = null;
         /** @var Payment $payment */
         $payment = null;
@@ -219,10 +218,8 @@ class TicketService
         $ticketState = null;
         $isDiv = null;
         $data = null;
-        $class = '';
         $ticketClass = '';
         $href = null;
-        $isMob = null;
         $caption = '';
         $ticketCaption = '';
 
@@ -341,7 +338,7 @@ class TicketService
             } elseif (self::CAN_WANNA_VISIT === $eventState && (!$user || !$user->isEventInWants($event))) {
                 $class .= ' set-modal-header add-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.take_apart');
-            } elseif (self::CAN_WANNA_VISIT === $eventState && $user->isEventInWants($event)) {
+            } elseif (self::CAN_WANNA_VISIT === $eventState && ($user && $user->isEventInWants($event))) {
                 $class .= ' set-modal-header sub-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.not_take_apart');
             } elseif (self::CAN_BUY_TICKET === $eventState) {
