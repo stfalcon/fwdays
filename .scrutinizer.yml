@@ -1,12 +1,3 @@
-checks:
-  php:
-    code_rating: true
-    duplication: true
-
-filter:
-  excluded_paths:
-    - vendor/*
-
 before_commands:
   - "composer install --prefer-source"
 
@@ -16,15 +7,11 @@ checks:
     duplication: true
 
 filter:
+  paths:
+    - src/*
   excluded_paths:
     - vendor/*
-    - app/*
-    - bin/*
-    - web/*
-    - spec/*
-
-before_commands:
-  - "composer install --prefer-source"
+    - tests/*
 
 tools:
   php_code_sniffer:
