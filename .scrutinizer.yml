@@ -1,5 +1,6 @@
 build:
   nodes:
+    analysis: true
     tests:
       services:
         mysql: 5.5
@@ -7,9 +8,9 @@ build:
         override:
           - composer install --no-interaction --no-scripts
           - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
-          - php app/console do:da:cr --env=test
-          - php app/console do:mi:mi --no-interaction --env=test
-          - php app/console do:fi:lo --no-interaction --env=test
+          - php app/console do:da:cr
+          - php app/console do:mi:mi --no-interaction
+          - php app/console do:fi:lo --no-interaction
           - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
           - unxz geodata/GeoLiteCity.dat.xz
   tests:
