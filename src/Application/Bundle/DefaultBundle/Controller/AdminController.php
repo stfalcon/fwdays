@@ -519,7 +519,7 @@ class AdminController extends Controller
                     $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
                     $otherColor = (int) round($green/($maxGreen / $green));
                     $otherColor = dechex($otherColor);
-                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                    $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
                 } else {
                     $result = [
                         'cnt' => 0,

@@ -479,7 +479,7 @@ class PaymentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
                 ->findActivePromoCodeByCodeAndEvent($code, $event);
-            if ($promoCode && !$promoCode->isCanBeUsed()) {
+            if (($promoCode && !$promoCode->isCanBeUsed()) || is_array($promoCode)) {
                 $promoCode = null;
             }
         }
