@@ -2,9 +2,13 @@ build:
   environment:
     php:
       version: '5.4'
+  nodes:
+    composer:
+      dependencies:
+        before:
+          - 'mysql -u root -pqwerty -h mysql -e "create database fwdays_com_development"'
 
 before_commands:
-  - 'mysql -e "CREATE DATABASE fwdays_com_development"'
   - 'composer install --prefer-source'
 
 checks:
