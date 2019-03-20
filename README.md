@@ -1,8 +1,8 @@
 It's engine for site of conference Frameworks Days
 ========================================
-
-[![Build Status](https://secure.travis-ci.org/stfalcon/fwdays.png?branch=master)](https://travis-ci.org/stfalcon/fwdays)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/stfalcon/fwdays/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/stfalcon/fwdays/?branch=master)
+[![Build Status](https://img.shields.io/travis/stfalcon/fwdays.svg)](https://travis-ci.org/stfalcon/fwdays)
+[![Scrutinizer code quality](https://img.shields.io/scrutinizer/g/stfalcon/fwdays.svg)](https://scrutinizer-ci.com/g/stfalcon/fwdays/?branch=master)
+[![SymfonyInsight](https://insight.symfony.com/projects/dfc2b470-7519-47e0-83d4-83b6c063bbb2/mini.svg)](https://insight.symfony.com/projects/dfc2b470-7519-47e0-83d4-83b6c063bbb2)
 
 ### a) Install Composer 
 
