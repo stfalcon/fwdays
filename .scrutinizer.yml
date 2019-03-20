@@ -1,6 +1,5 @@
 build:
   nodes:
-    analysis: true
     tests:
       services:
         mysql: 5.5
