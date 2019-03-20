@@ -108,12 +108,13 @@ class PaymentController extends Controller
 
         $this->get('session')->set('active_payment_id', $payment->getId());
 
+        $promoCode = null;
         $request = $this->get('request_stack')->getCurrentRequest();
-        if ($request && $promoCode = $request->query->get('promoCode')) {
-            return $this->addPromoCodeFromQuery($promoCode, $event);
+        if ($request && $code = $request->query->get('promoCode')) {
+            $promoCode = $this->getPromoCodeFromQuery($event, $payment, $code);
         }
 
-        return $this->getPaymentHtml($event, $payment);
+        return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 
     /**
@@ -465,16 +466,16 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param string $code
-     * @param Event  $event
+     * @param Event   $event
+     * @param Payment $payment
+     * @param string  $code
      *
-     * @return JsonResponse
+     * @return PromoCode|null
      */
-    private function addPromoCodeFromQuery($code, Event $event)
+    private function getPromoCodeFromQuery(Event $event, Payment $payment, $code)
     {
-        $payment = $this->getPaymentIfAccess();
         $promoCode = null;
-        if ($payment && !$payment->isPaid()) {
+        if (!$payment->isPaid()) {
             $em = $this->getDoctrine()->getManager();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
                 ->findActivePromoCodeByCodeAndEvent($code, $event);
@@ -483,6 +484,6 @@ class PaymentController extends Controller
             }
         }
 
-        return $this->getPaymentHtml($event, $payment, $promoCode);
+        return $promoCode;
     }
 }
