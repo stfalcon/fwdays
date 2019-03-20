@@ -1,4 +1,7 @@
 build:
+  tests:
+    override:
+      - bin/phpunit -c src
   environment:
     rabbitmq: false
     mysql: 5.6
@@ -13,8 +16,6 @@ build:
   services:
     mysql: 5.6
   dependencies:
-    before:
-      - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
     override:
       - true
   project_setup:
