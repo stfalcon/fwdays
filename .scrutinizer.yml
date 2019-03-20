@@ -2,11 +2,8 @@ build:
   nodes:
     analysis:
       tests:
-        before:
-          - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
-          - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
         override:
-          - phpcs-run -p src/*/*Bundle/Tests src/*/Bundle/*Bundle/Tests --extensions=php
+          - phpcs-run -p src/*/Bundle/*Bundle/Tests --extensions=php
           - php-scrutinizer-run --disable-security-analysis
   cache:
     directories:
