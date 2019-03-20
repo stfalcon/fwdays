@@ -4,7 +4,6 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -17,12 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
- *
- * @UniqueEntity(
- *     "slug",
- *     errorPath="slug",
- *     message="Поле slug повинне бути унікальне."
- * )
  */
 class Sponsor
 {
