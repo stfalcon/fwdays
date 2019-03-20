@@ -1,13 +1,32 @@
 build:
-  environment:
-    php:
-      version: '5.4'
   nodes:
-    composer:
-      dependencies:
-        before:
-          - sudo service start mysql || true
-          - mysql -e "CREATE DATABASE fwdays_com_development"
+    analysis:
+      project_setup:
+        override: true
+      tests:
+        override:
+          - phpcs-run -p src/ tests/ --ignore=tests/perf.php,tests/coverage --extensions=php
+          - php-scrutinizer-run --disable-security-analysis
+  cache:
+    directories:
+      - ~/.composer   # Composer home directory (avoid fetching already fetched packages)
+      # vendor is already included.
+
+  environment:
+    rabbitmq: false
+    mysql: false
+    postgresql: false
+    mongodb: false
+    elasticsearch: false
+    redis: false
+    memcached: false
+    neo4j: false
+    php:
+      version: 5.4
+
+  dependencies:
+    override:
+      - composer install --no-interaction
 
 before_commands:
   - 'composer install --prefer-source'
