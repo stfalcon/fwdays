@@ -1,4 +1,10 @@
 build:
+  nodes:
+    tests:
+      dependencies:
+        override:
+          - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
+          - composer install --ignore-platform-reqs --no-interaction --no-scripts
   tests:
     override:
       - bin/phpunit -c app
@@ -15,15 +21,6 @@ build:
       version: 5.4
   services:
     mysql: 5.6
-  dependencies:
-    before:
-      - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
-  project_setup:
-    before:
-      - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
-
-before_commands:
-  - 'composer install --prefer-source'
 
 checks:
   php:
