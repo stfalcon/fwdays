@@ -1,22 +1,23 @@
 build:
   nodes:
     tests:
-      services:
-        mysql: 5.5
+#      services:
+#        mysql: 5.5
       dependencies:
         override:
-          - composer install --no-interaction --no-scripts
-          - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
-          - php app/console do:da:cr
-          - php app/console do:mi:mi --no-interaction
-          - php app/console do:fi:lo --no-interaction
-          - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
-          - unxz geodata/GeoLiteCity.dat.xz
+#          - composer install --no-interaction --no-scripts
+#          - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
+#          - php app/console do:da:cr
+#          - php app/console do:mi:mi --no-interaction
+#          - php app/console do:fi:lo --no-interaction
+#          - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+#          - unxz geodata/GeoLiteCity.dat.xz
+          - true
   tests:
-    stop_on_failure: false
+    stop_on_failure: true
     override:
-      - bin/phpunit -c app
-
+#      - bin/phpunit -c app
+      - true
   environment:
     rabbitmq: false
     mysql: 5.5
