@@ -2,22 +2,24 @@ build:
   nodes:
     tests:
       services:
-        mysql: 5.6
+        mysql: 5.5
       dependencies:
         override:
-#          - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
-#          - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
           - composer install --no-interaction --no-scripts
           - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
-
+          - php app/console do:da:cr --env=test
+          - php app/console do:mi:mi --no-interaction --env=test
+          - php app/console do:fi:lo --no-interaction --env=test
+          - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+          - unxz geodata/GeoLiteCity.dat.xz
   tests:
     stop_on_failure: false
     override:
       - bin/phpunit -c app
-#      - true
+
   environment:
     rabbitmq: false
-    mysql: 5.6
+    mysql: 5.5
     postgresql: false
     mongodb: false
     elasticsearch: false
