@@ -7,12 +7,13 @@ build:
         override:
 #          - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
 #          - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
-#          - composer install --no-interaction
-          - true
+          - composer install --no-interaction --no-script
+          - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
+          - php app/console assets:install
   tests:
     override:
-#      - bin/phpunit -c app
-      - true
+      - bin/phpunit -c app
+#      - true
   environment:
     rabbitmq: false
     mysql: 5.6
