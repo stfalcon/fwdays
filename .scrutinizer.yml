@@ -1,4 +1,7 @@
-build: { tests: false }
+build:
+  tests:
+    override:
+      command: "php -v"
 
 before_commands:
   - "composer install --prefer-source"
