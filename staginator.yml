@@ -1,0 +1,32 @@
+apt_packages: ['libpng-dev'] 
+deploy_callbacks:
+    deploy_steps:
+        - 'rm app/config/parameters.ini'
+        - 'cp app/config/parameters.ini.stag app/config/parameters.ini'
+        - 'sed -i "s/database_host     =.*/database_host     = fwdays-php71-mysql/" app/config/parameters.ini'
+        - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
+        - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
+        - 'curl -s https://getcomposer.org/installer | php'
+        - 'mv composer.phar /usr/local/bin/composer'
+        - 'composer install --prefer-dist --optimize-autoloader --classmap-authoritative'
+        - './console do:da:dr --force'
+        - './console do:da:cr -q'
+        - './console --no-interaction doctrine:migrations:migrate'
+        - './console --no-interaction do:fi:lo'
+        - 'cp -a web/app_stag.php web/app.php'
+        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
+        - 'chown -R www-data:www-data /stag/www/web/uploads/'
+        - "php app/console lexik:translations:import"
+        - 'wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz'
+        - 'unxz geodata/GeoLiteCity.dat.xz'
+        - 'apt-get remove nodejs -y'
+        - 'cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz'
+        - 'cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz'
+        - 'cp -a /node-v6.11.3-linux-x64/* /'
+        - 'npm install -g gulp'
+        - 'npm install'
+        - 'npm run gulp-prod'
+
+ci:
+    commands:
+        - 'app/run-ci-pack.sh -e=prod'

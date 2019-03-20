@@ -1,0 +1,30 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+    <!--BEGIN event-list-->
+    <section class="event-list">
+        <div class="container container--sm">
+            <div class="event-list__box">
+                <div class="event-list__label">{{ 'events.future'|trans }}</div>
+                <div class="event-list__items">
+                    {% for event in activeEvents %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="event-list__box">
+                <div class="event-list__label">{{ 'events.past'|trans }}</div>
+                <div class="event-list__items">
+                    {% for event in pastEvents %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--END event-list-->
+{% endblock content %}

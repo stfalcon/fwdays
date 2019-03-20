@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-header">
+            <h2>{{ 'share_contact.title'|trans }}</h2>
+        </div>
+
+        <div class="modal-body">
+            <p>
+                {{ 'share_contact.text'|trans|raw }}
+            </p>
+
+            <div class="btn-row">
+                <a class="btn-cancel" href="{{ path('share_contacts', {'reply' : 'no'}) }}">{{ 'share_contact.not_agree'|trans }}</a>
+                <a class="btn-success" href="{{ path('share_contacts', {'reply' : 'yes'}) }}">{{ 'share_contact.agree'|trans }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /Modal -->
+<div  class="simplemodal-overlay"></div>
+

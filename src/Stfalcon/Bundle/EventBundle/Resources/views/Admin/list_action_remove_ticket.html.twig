@@ -1,0 +1,4 @@
+{% if admin.granted('EDIT') and object.payment is not null and object.payment.isPaid and not object.used %}
+    <a href="{{ admin.generateObjectUrl('remove_paid_ticket_from_payment', object) }}" class="btn btn-sm btn-default edit_link remove-paid-tiket" title=''>Убрать</a>
+{% endif %}
+

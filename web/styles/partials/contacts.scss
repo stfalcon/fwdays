@@ -1,0 +1,106 @@
+
+.contacts {
+  margin-top: 40px;
+
+  &__title {
+    margin-bottom: 32px;
+  }
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+
+  &__item {
+    padding-right: 16px;
+    flex: 1;
+  }
+
+  &__label {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  &__link {
+    border-bottom: 1px solid rgba(18, 19, 20, 0.4);
+    color: $dark-color;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 14px;
+
+    &:hover {
+      border-color: transparent;
+    }
+
+    &--blue-light {
+      border-color: rgba(0, 145, 173, 0.4);
+      color: $blue-light-color;
+    }
+
+    &--blue-dark {
+      border-color: rgba(52, 78, 135, 0.4);
+      color: $blue-dark-color;
+    }
+  }
+}
+
+.organizers {
+  &__label {
+    margin-bottom: 20px;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    flex-basis: 33.333%;
+    margin-bottom: 32px;
+  }
+}
+
+.organizer-card {
+  &__caption {
+    margin-bottom: 16px;
+    max-width: 230px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  &__photo {
+    display: block;
+    margin-bottom: 16px;
+    width: 160px;
+    height: 160px;
+  }
+
+  &__name {
+    margin-bottom: 4px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  &__tel {
+    display: inline-block;
+    margin-bottom: 3px;
+    color: $dark-color;
+    text-decoration: none;
+  }
+
+  &__mail {
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+    color: $blue-light-color;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}

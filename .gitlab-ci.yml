@@ -1,0 +1,21 @@
+image: jekakm/php71-core:201901222
+cache:
+    paths:
+        - vendor/
+
+before_script:
+    - sudo chown -R www-data:www-data /var/www
+    - curl -sS https://getcomposer.org/installer | php
+    - php composer.phar install
+
+stages:
+    - 'CI jobs'
+    - 'SonarQube'
+
+sonar-scanner:
+    image: gitlab.stfalcon.com:4567/stfalcon/sonar-docker-image/jekakm/php71-core:201807161
+    stage: 'SonarQube'
+    only:
+        - symfony-upgrade
+    script:
+        - sudo sonar-scanner -Dsonar.projectKey=fwdays -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN

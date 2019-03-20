@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>social_te</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="66.67%" y1="16.67%" x2="41.67%" y2="75%" id="linearGradient-1">
+            <stop stop-color="#37AEE2" offset="0%"></stop>
+            <stop stop-color="#1E96C8" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="61.2346759%" y1="43.69%" x2="74.7064382%" y2="80.24%" id="linearGradient-2">
+            <stop stop-color="#EFF7FC" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Event-1920" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-440.000000, -5606.000000)">
+        <g id="footer" transform="translate(0.000000, 5569.000000)">
+            <g id="Group" transform="translate(400.000000, 37.000000)">
+                <g id="social_te" transform="translate(40.000000, 0.000000)">
+                    <rect id="Rectangle-3" x="0" y="0" width="26" height="26"></rect>
+                    <circle id="Oval" fill="url(#linearGradient-1)" fill-rule="nonzero" cx="13" cy="13" r="12"></circle>
+                    <path d="M10.8,18.5 C10.41124,18.5 10.4773,18.35321 10.34322,17.98305 L9.2,14.22059 L18,9" id="Shape" fill="#C8DAEA" fill-rule="nonzero"></path>
+                    <path d="M10.8,18.5 C11.1,18.5 11.23255,18.3628 11.4,18.2 L13,16.6442 L11.0042,15.4407" id="Shape" fill="#A9C9DD" fill-rule="nonzero"></path>
+                    <path d="M11.004,15.441 L15.84,19.0139 C16.39185,19.31839 16.79014,19.16074 16.9276,18.50155 L18.8961,9.22525 C19.09764,8.41723 18.58809,8.05075 18.06016,8.29043 L6.50116,12.74753 C5.71215,13.064 5.71675,13.50419 6.35734,13.70033 L9.32364,14.62616 L16.19094,10.29366 C16.51513,10.09707 16.81267,10.202761 16.56846,10.4195" id="Shape" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,44 @@
+{% if position is not defined or position == 'header' %}
+    {% set add_filename = '' %}
+{% else %}
+    {% set add_filename = '_color' %}
+{% endif %}
+{% set labels = {
+        0: {
+            'title': 'facebook',
+            'link': 'https://www.facebook.com/fwdays/',
+            'img': asset('assets/img/social/icon_fb'~add_filename~'.svg'),
+        },
+        1: {
+            'title': 'telegram',
+            'link': 'https://t.me/fwdays',
+            'img': asset('assets/img/social/icon_te'~add_filename~'.svg'),
+        },
+        2: {
+            'title': 'twitter',
+            'link': 'https://twitter.com/fwdays',
+            'img': asset('assets/img/social/icon_twitter'~add_filename~'.svg'),
+        },
+        3: {
+            'title': 'youtube',
+            'link': 'https://www.youtube.com/user/fwdays/',
+            'img': asset('assets/img/social/icon_youtube'~add_filename~'.svg'),
+        },
+        4: {
+            'title': 'instagram',
+            'link': 'https://www.instagram.com/fwdays/',
+            'img': asset('assets/img/social/icon_insta'~add_filename~'.svg'),
+        },
+    }
+%}
+
+<ul class="social__items">
+    {% for i in 0..4 %}
+    <li class="social__item">
+        <a href="{{ labels[i].link }}" class="social__link" target="_blank">
+            <img class="social__icon" src="{{ labels[i].img }}" alt="{{ labels[i].title }}">
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+

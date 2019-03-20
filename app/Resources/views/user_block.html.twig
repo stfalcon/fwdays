@@ -1,0 +1,10 @@
+{% block user_block %}
+    <li class="logged-in text-center">
+        {{ 'You are logged in as'|trans({}, 'SonataAdminBundle') }} <b>{{ app.user.username }}</b>
+    </li>
+    <li>
+        <a href="{{ path('fos_user_security_logout') }}">
+            <i class="fa fa-sign-out fa-fw logout"></i> {{ 'menu.logout'|trans }}
+        </a>
+    </li>
+{% endblock user_block %}

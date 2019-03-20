@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .container-email {
+            max-width: 600px;
+            border: 1px dashed #ccc;;
+            box-sizing: content-box;
+            padding: 0 16px;
+        }
+    </style>
+</head>
+<body style="font-family:'Helvetica Neue', arial;
+             font-size: 13px;
+             line-height: 18px;
+             color: #121314;
+             margin: 0;
+             background: #FFFFFF;
+             -webkit-font-smoothing: initial;">
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+
+    <h2 class="h2">Заголовок h2 для розділу (простий та з посиланням)</h2>
+    <div class="container-email">
+        <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+            18 березня 2018 року в Києві пройде конференція JavaScript fwdays '18
+        </h2>
+        <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+            <a href="#" style="color: #0c9db9;">
+                Что нам стоит AAA построить?
+            </a>
+        </h2>
+    </div>
+    <br>
+    <textarea id="code-1" class="input-code" readonly hidden>
+        <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+            18 березня 2018 року в Києві пройде конференція JavaScript fwdays '18
+        </h2>
+
+        <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+            <a href="#" style="color: #0c9db9;">
+                Что нам стоит AAA построить?
+            </a>
+        </h2>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Підзаголовок h3 для абзацу (простий та з посиланням)</h2>
+    <div class="container-email">
+        <h3 style="margin: 4px 0;
+                   font-size: 15px;">
+            Tero Parviainen
+        </h3>
+        <h3 style="margin: 4px 0;
+                   font-size: 15px;">
+            <a href="#" style="color: #0c9db9;">
+                Kharkiv.js 18
+            </a>
+        </h3>
+    </div>
+    <br>
+    <textarea id="code-2" class="input-code" readonly hidden>
+        <h3 style="margin: 4px 0;
+                   font-size: 15px;">
+            Tero Parviainen
+        </h3>
+
+        <h3 style="margin: 4px 0;
+                   font-size: 15px;">
+            <a href="#" style="color: #0c9db9;">
+                Kharkiv.js 18
+            </a>
+        </h3>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-2" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Розділи</h2>
+    <div class="container-email">
+        <div style="">
+            <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+                Розділ 1
+            </h2>
+            <p style="margin: 10px 0; line-height: 20px;">
+                Максим, вітаємо вас з Новим Роком! Бажаємо в 2018 році більше
+                грошей та меньше багів ;) Приходьте на нові заходи для розробників,
+                менеджерів проектів і всіх, хто пов'язаний з IT.
+            </p>
+        </div>
+        <div style="margin-top: 70px;">
+            <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+                Розділ 2
+            </h2>
+            <p style="margin: 10px 0; line-height: 20px">
+                Зараз ми шукаємо спікерів. Якщо ви JS розробник, маєте досвід роботи і
+                бажання виступити та поділитися знаннями - заповнюйте форму
+                <a href="#" style="color: #0091AD;">Call for Papers</a>
+            </p>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-3" class="input-code" readonly hidden>
+         <!--Якщо це перший розділ і він не потребує відступу зверху, то залишити 'style' пустим-->
+        <div style="">
+            <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+                Розділ 1
+            </h2>
+            <p style="margin: 10px 0; line-height: 20px">
+                Максим, вітаємо вас з Новим Роком! Бажаємо в 2018 році більше
+                грошей та меньше багів ;) Приходьте на нові заходи для розробників,
+                менеджерів проектів і всіх, хто пов'язаний з IT.
+            </p>
+        </div>
+
+        <!--Для другого та подальших розділів додавати відступ зверху 'style="margin-top: 70px;"'-->
+        <div style="margin-top: 70px;">
+            <h2 style="font-size: 20px;
+                   font-weight: 700;
+                   line-height: 28px;
+                   margin: 16px 0;">
+                Розділ 2
+            </h2>
+            <p style="margin: 10px 0; line-height: 20px;">
+                Зараз ми шукаємо спікерів. Якщо ви JS розробник, маєте досвід роботи і
+                бажання виступити та поділитися знаннями - заповнюйте форму
+                <a href="#" style="color: #0091AD;">Call for Papers</a>
+            </p>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-3" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Параграфи та посилання в середині</h2>
+    <div class="container-email">
+        <p style="margin: 10px 0; line-height: 20px;">
+            Максим, вітаємо вас з Новим Роком! Бажаємо в 2018 році більше
+            грошей та меньше багів ;) Приходьте на нові заходи для розробників,
+            менеджерів проектів і всіх, хто пов'язаний з IT.
+        </p>
+        <p style="margin: 10px 0; line-height: 20px;">
+            На вас очікують доповіді, Speakers' Corner, workshops. Конференція пройде у декілька потоків.
+        </p>
+        <p style="margin: 10px 0; line-height: 20px;">
+            Зараз ми шукаємо спікерів. Якщо ви JS розробник, маєте досвід роботи і
+            бажання виступити та поділитися знаннями - заповнюйте форму
+            <a href="#" style="color: #0091AD;">Call for Papers</a>
+        </p>
+    </div>
+    <br>
+    <textarea id="code-4" class="input-code" readonly hidden>
+        <p style="margin: 10px 0; line-height: 20px;">
+            Максим, вітаємо вас з Новим Роком! Бажаємо в 2018 році більше
+            грошей та меньше багів ;) Приходьте на нові заходи для розробників,
+            менеджерів проектів і всіх, хто пов'язаний з IT.
+        </p>
+
+        <p style="margin: 10px 0; line-height: 20px;">
+            На вас очікують доповіді, Speakers' Corner, workshops. Конференція пройде у декілька потоків.
+        </p>
+
+        <p style="margin: 10px 0; line-height: 20px;">
+            Зараз ми шукаємо спікерів. Якщо ви JS розробник, маєте досвід роботи і
+            бажання виступити та поділитися знаннями - заповнюйте форму
+            <a href="#" style="color: #0091AD;">Call for Papers</a>
+        </p>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-4" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Посилання в новому рядку</h2>
+    <div class="container-email">
+        <p style="margin: 10px 0;">
+            <a href="#" style="color: #0091AD;">Дивіться, як пройшла конференція в 2017 році</a>
+        </p>
+    </div>
+    <br>
+    <textarea id="code-5" class="input-code" readonly hidden>
+        <p style="margin: 10px 0;">
+            <a href="#" style="color: #0091AD;">Дивіться, як пройшла конференція в 2017 році</a>
+        </p>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-5" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Список</h2>
+    <div class="container-email">
+        <ul style="list-style-type: none;
+                   padding: 0;
+                   margin: 0;">
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — An independent software developer, writer of programming
+                    books and articles, and an Angular 2 documentation author.
+                </p>
+            </li>
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — Tero is the two-time organizer of the <a href="#" style="color: #0c9db9;">Clojure Cup</a> programming
+                    competition, and the author of <a href="#" style="color: #0c9db9;">Build Your Own AngularJS</a>
+                </p>
+            </li>
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — Believes in the web platform and is working with bleeding edge
+                    technologies that will allow the web to prosper.
+                </p>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <textarea id="code-6" class="input-code" readonly hidden>
+        <ul style="list-style-type: none;
+                   padding: 0;
+                   margin: 0;">
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — An independent software developer, writer of programming
+                    books and articles, and an Angular 2 documentation author.
+                </p>
+            </li>
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — Tero is the two-time organizer of the <a href="#" style="color: #0c9db9;">Clojure Cup</a> programming
+                    competition, and the author of <a href="#" style="color: #0c9db9;">Build Your Own AngularJS</a>
+                </p>
+            </li>
+            <li>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    — Believes in the web platform and is working with bleeding edge
+                    technologies that will allow the web to prosper.
+                </p>
+            </li>
+        </ul>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-6" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Велика ілюстрація</h2>
+    <div class="container-email">
+        <center>
+            <p style="margin: 10px 0;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/3df581d6-453a-456a-ad18-482c7e07ba82.jpg"
+                     alt=""
+                     style="max-width: 100%;
+                            width: 100%;">
+            </p>
+        </center>
+    </div>
+    <br>
+    <textarea id="code-7" class="input-code" readonly hidden>
+        <center>
+            <p style="margin: 10px 0;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/3df581d6-453a-456a-ad18-482c7e07ba82.jpg"
+                     alt=""
+                     style="max-width: 100%;
+                            width: 100%;">
+            </p>
+        </center>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-7" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Фактоїди</h2>
+    <div class="container-email">
+        <div style="margin: 16px 0;">
+            <div style="display: inline-block;
+                        margin-right: 40px;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">12</div>
+                <div>спікерів</div>
+            </div>
+            <div style="display: inline-block;
+                        margin-right: 40px;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">690</div>
+                <div>учасників</div>
+            </div>
+            <div style="display: inline-block;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">1230</div>
+                <div>хвилин доповідей</div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-8" class="input-code" readonly hidden>
+        <div style="margin: 16px 0;">
+            <div style="display: inline-block;
+                        margin-right: 40px;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">12</div>
+                <div>спікерів</div>
+            </div>
+            <div style="display: inline-block;
+                        margin-right: 40px;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">690</div>
+                <div>учасників</div>
+            </div>
+            <div style="display: inline-block;
+                        margin-bottom: 8px;">
+                <div style="font-size: 20px;
+                            font-weight: 700;
+                            line-height: 24px;">1230</div>
+                <div>хвилин доповідей</div>
+            </div>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-8" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Кнопка</h2>
+    <div class="container-email">
+        <a href="#" style="display: block;
+                           max-width: 275px;
+                           width: 100%;
+                           height: 50px;
+                           font-size: 14px;
+                           font-weight: 600;
+                           line-height: 50px;
+                           color: #FFFFFF;
+                           background: #3DCC85;
+                           text-decoration: none;
+                           text-transform: uppercase;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;">
+            Купити квиток
+        </a>
+    </div>
+    <br>
+    <textarea id="code-9" class="input-code" readonly hidden>
+        <a href="#" style="display: block;
+                           max-width: 275px;
+                           width: 100%;
+                           height: 50px;
+                           font-size: 14px;
+                           font-weight: 600;
+                           line-height: 50px;
+                           color: #FFFFFF;
+                           background: #3DCC85;
+                           text-decoration: none;
+                           text-transform: uppercase;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;">
+            Купити квиток
+        </a>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-9" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Інформація про спікера</h2>
+    <div class="container-email">
+        <p style="margin: 10px 0;">
+            Знайомтесь з першими доповідачами:
+        </p>
+        <div style="overflow: hidden;
+                    margin: 10px 0 22px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Tero Parviainen</h3>
+                <p style="margin: 4px 0;">Software Developer</p>
+                <ul style="list-style-type: none;
+                           padding: 0;
+                           margin: 0;">
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — An independent software developer, writer of programming
+                            books and articles, and an Angular 2 documentation author.
+                        </p>
+                    </li>
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — Tero is the two-time organizer of the <a href="#" style="color: #0c9db9;">Clojure Cup</a> programming
+                            competition, and the author of <a href="#" style="color: #0c9db9;">Build Your Own AngularJS</a>
+                        </p>
+                    </li>
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — <a href="#" style="color: #0c9db9;">Blog</a> and <a href="#" style="color: #0c9db9;">Twitter</a>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div style="float: left;
+                        margin: 8px 0 24px;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/d6972521-62b7-4f05-be62-53adf2212ee3.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-10" class="input-code" readonly hidden>
+        <div style="overflow: hidden;
+                    margin: 10px 0 22px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Tero Parviainen</h3>
+                <p style="margin: 4px 0;">Software Developer</p>
+                <ul style="list-style-type: none;
+                           padding: 0;
+                           margin: 0;">
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — An independent software developer, writer of programming
+                            books and articles, and an Angular 2 documentation author.
+                        </p>
+                    </li>
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — Tero is the two-time organizer of the <a href="#" style="color: #0c9db9;">Clojure Cup</a> programming
+                            competition, and the author of <a href="#" style="color: #0c9db9;">Build Your Own AngularJS</a>
+                        </p>
+                    </li>
+                    <li>
+                        <p style="margin: 10px 0; line-height: 20px;">
+                            — <a href="#" style="color: #0c9db9;">Blog</a> and <a href="#" style="color: #0c9db9;">Twitter</a>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div style="float: left;
+                        margin: 8px 0 24px;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/d6972521-62b7-4f05-be62-53adf2212ee3.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-10" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Інформація про доповідь</h2>
+    <div class="container-email">
+        <div style="overflow: hidden;
+                    margin: 10px 0 16px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h2 style="font-size: 20px;
+                           font-weight: 700;
+                           line-height: 28px;
+                           margin: 16px 0;">
+                    <a href="#" style="color: #0c9db9;">
+                        Что нам стоит AAA построить?
+                    </a>
+                </h2>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    «Речь пойдёт о проектирование AAA сервиса для микросервисной архитектуры.
+                    (AAA - Authentication, Authorization, Accounting). Вопрос о том,
+                    как нам идентифицировать пользователя в распределённой системе,
+                    очень не прост (как и всё остальное в распределённых системах).»
+                </p>
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Алексей Петров</h3>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    Co-organizer of Kiev PHP User Group, Solution Architect at Innovecs
+                </p>
+            </div>
+            <div style="display: block;
+                        margin: 16px 0 24px;
+                        float: left;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/d6972521-62b7-4f05-be62-53adf2212ee3.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-11" class="input-code" readonly hidden>
+        <div style="overflow: hidden;
+                    margin: 10px 0 16px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h2 style="font-size: 20px;
+                           font-weight: 700;
+                           line-height: 28px;
+                           margin: 16px 0;">
+                    <a href="#" style="color: #0c9db9;">
+                        Что нам стоит AAA построить?
+                    </a>
+                </h2>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    «Речь пойдёт о проектирование AAA сервиса для микросервисной архитектуры.
+                    (AAA - Authentication, Authorization, Accounting). Вопрос о том,
+                    как нам идентифицировать пользователя в распределённой системе,
+                    очень не прост (как и всё остальное в распределённых системах).»
+                </p>
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Алексей Петров</h3>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    Co-organizer of Kiev PHP User Group, Solution Architect at Innovecs
+                </p>
+            </div>
+            <div style="display: block;
+                        margin: 16px 0 24px;
+                        float: left;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/d6972521-62b7-4f05-be62-53adf2212ee3.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-11" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Новина від партнерів</h2>
+    <div class="container-email">
+        <div style="overflow: hidden;
+                    margin: 10px 0 32px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Kharkiv.js 18</h3>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    На вас очікують доповіді, Speakers' Corner, workshops.
+                    Конференція пройде у декілька потоків.
+                </p>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    <a href="#" style="color: #0c9db9;">Корисне посилання</a>
+                </p>
+            </div>
+            <div style="float: left;
+                        margin-bottom: 24px;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/2fa28be5-4838-4ae9-ab66-d36071b09164.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-12" class="input-code" readonly hidden>
+        <div style="overflow: hidden;
+                    margin: 10px 0 32px;">
+            <div style="display: block;
+                        max-width: 468px;
+                        width: 100%;
+                        vertical-align: top;
+                        padding-right: 16px;
+                        float: left;">
+                <h3 style="margin: 4px 0;
+                           font-size: 15px;">Kharkiv.js 18</h3>
+                <p style="margin: 10px 0; line-height: 20px;">
+                    На вас очікують доповіді, Speakers' Corner, workshops.
+                    Конференція пройде у декілька потоків.
+                </p>
+                <p style="margin: 10px 0;">
+                    <a href="#" style="color: #0c9db9;">Корисне посилання</a>
+                </p>
+            </div>
+            <div style="float: left;
+                        margin-bottom: 24px;">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/2fa28be5-4838-4ae9-ab66-d36071b09164.jpg"
+                     alt=""
+                     width="116">
+            </div>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-12" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+    <h2 class="h2">Блок із зображенням</h2>
+    <div class="container-email">
+        <div style="overflow: hidden;
+                    margin: 10px 0 22px;">
+            <div style="float: left;
+                        padding-right: 16px;
+                        border-radius: 50%">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/2fa28be5-4838-4ae9-ab66-d36071b09164.jpg"
+                     alt=""
+                     width="50"
+                     style="border-radius: 50%">
+            </div>
+            <div style="display: block;
+                        width: 100%;
+                        text-align: left;">
+                <p style="margin:0 0 10px 0"><strong>1. Ми проведемо цей день у:</strong></p>
+                <p style="margin:10px 0; line-height: 20px;">Конгрес Холі "Mercure", <a href="#" style="color: #0c9db9;" target="_blank">м.Київ, вул. В.Гетьмана 6, 4</a> поверх. <a href="#" style="color: #0c9db9;" target="_blank">Перегляньте,</a> як зручніше доїхати.</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <textarea id="code-13" class="input-code" readonly hidden>
+        <div style="overflow: hidden;
+                    margin: 10px 0 22px;">
+            <div style="float: left;
+                        padding-right: 16px;
+                        border-radius: 50%">
+                <img src="https://gallery.mailchimp.com/53b0450abf361ce4c696d9b01/images/2fa28be5-4838-4ae9-ab66-d36071b09164.jpg"
+                     alt=""
+                     width="50"
+                     style="border-radius: 50%">
+            </div>
+            <div style="display: block;
+                        width: 100%;
+                        text-align: left;">
+                <p style="margin:0 0 10px 0"><strong>1. Ми проведемо цей день у:</strong></p>
+                <p style="margin:10px 0; line-height: 20px;">Конгрес Холі "Mercure", <a href="#" style="color: #0c9db9;" target="_blank">м.Київ, вул. В.Гетьмана 6, 4</a> поверх.
+                    <a href="#"  style="color: #0c9db9;" target="_blank">Перегляньте,</a> як зручніше доїхати.</p>
+            </div>
+        </div>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-13" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+
+</div>
+<script src="../js/main.js"></script>
+</body>
+<script>
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+            document.getElementById("output-1"));
+    }
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+    function doHighlight4() {
+        CodeMirror.runMode(document.getElementById("code-4").value, "application/xml",
+            document.getElementById("output-4"));
+    }
+    function doHighlight5() {
+        CodeMirror.runMode(document.getElementById("code-5").value, "application/xml",
+            document.getElementById("output-5"));
+    }
+    function doHighlight6() {
+        CodeMirror.runMode(document.getElementById("code-6").value, "application/xml",
+            document.getElementById("output-6"));
+    }
+    function doHighlight7() {
+        CodeMirror.runMode(document.getElementById("code-7").value, "application/xml",
+            document.getElementById("output-7"));
+    }
+    function doHighlight8() {
+        CodeMirror.runMode(document.getElementById("code-8").value, "application/xml",
+            document.getElementById("output-8"));
+    }
+    function doHighlight9() {
+        CodeMirror.runMode(document.getElementById("code-9").value, "application/xml",
+            document.getElementById("output-9"));
+    }
+    function doHighlight10() {
+        CodeMirror.runMode(document.getElementById("code-10").value, "application/xml",
+            document.getElementById("output-10"));
+    }
+    function doHighlight11() {
+        CodeMirror.runMode(document.getElementById("code-11").value, "application/xml",
+            document.getElementById("output-11"));
+    }
+    function doHighlight12() {
+        CodeMirror.runMode(document.getElementById("code-12").value, "application/xml",
+            document.getElementById("output-12"));
+    }
+    function doHighlight13() {
+        CodeMirror.runMode(document.getElementById("code-13").value, "application/xml",
+            document.getElementById("output-13"));
+    }
+
+    doHighlight1();
+    doHighlight2();
+    doHighlight3();
+    doHighlight4();
+    doHighlight5();
+    doHighlight6();
+    doHighlight7();
+    doHighlight8();
+    doHighlight9();
+    doHighlight10();
+    doHighlight11();
+    doHighlight12();
+    doHighlight13();
+</script>
+</html>

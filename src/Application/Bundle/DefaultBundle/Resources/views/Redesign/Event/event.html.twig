@@ -1,0 +1,128 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if event.metaDescription is not null %}
+    <meta name="description" content="{{ event.metaDescription }}">
+    {% else %}
+    {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block body_class %}
+{% if event.smallEvent %}
+<body class="short-event">
+{% else %}
+{{ parent() }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include 'ApplicationDefaultBundle:Redesign/Event:event.header.html.twig' with {
+        'event':event,
+        'programPage':programPage,
+        'venuePage':venuePage,
+        'pages':pages,
+        'position':'event',
+        'eventCurrentAmount':eventCurrentAmount
+    } %}
+
+    {% if futureEvent is not null %}
+        {% if (futureEvent.adminOnly and is_granted('ROLE_ADMIN')) or (futureEvent.adminOnly != true) %}
+            <div class="event-alert event-alert--mrt-50">
+                <div class="container container--sm">
+                    {% if futureEvent.receivePayments %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% else %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% endif %}
+                    {% include 'ApplicationDefaultBundle:Redesign/Event:event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% set event_blocks_rendered = 0 %}
+    {%- for block in event.blocks if block.visible -%}
+        {% set event_blocks_rendered = event_blocks_rendered + 1 %}
+        {% set block_type = 'sonata.block.event.' ~ block.type %}
+        {{ sonata_block_render({ 'type': block_type }, {'event': event, 'event_block': block}) }}
+    {%- endfor -%}
+    {%- if event_blocks_rendered == 0 -%}
+        {% include '@ApplicationDefault/Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
+    {%- endif -%}
+
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+{% endblock content %}
+
+{% block popups %}
+{{ parent() }}
+<!--BEGIN speaker-popup-->
+<div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close"
+            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+    <div id="speaker-popup-content" class="remodal__body static-styles">
+    <!-- popup content  -->
+    </div>
+</div>
+<!--END speaker-popup-->
+{% endblock popups %}
+
+{% block scripts %}
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places"></script>
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            function getCurrentDateStr() {
+                var month = d.getMonth()+1;
+                var day = d.getDate();
+                return d.getFullYear() + '-' +
+                    (month < 10 ? '0' : '') + month + '-' +
+                    (day < 10 ? '0' : '') + day;
+            }
+
+            function getCurrentTimeStr() {
+                return d.getHours() + ":" + d.getMinutes();
+            }
+
+            function scrollToNearReport() {
+                var scrollTo = null;
+                var current_report = null;
+                var prev_report = null;
+                var now_time = getCurrentTimeStr();
+
+                $('.program-body__td--time').each(function (index, value) {
+                    if (current_report !== null) {
+                        prev_report = current_report;
+                    }
+                    current_report = $(this);
+                    if (now_time < current_report.text()) {
+                        if (prev_report !== null) {
+                            scrollTo = prev_report;
+                        } else {
+                            scrollTo = current_report;
+                        }
+                        return false;
+                    }
+                });
+                if (scrollTo !== null) {
+                    $('body,html').animate({
+                        scrollTop: scrollTo.offset().top - 125
+                    }, 600);
+                }
+            }
+
+            var d = new Date();
+            var now_date = getCurrentDateStr();
+            var event_header_date_element = $('.event-header__date');
+            var event_date = event_header_date_element.attr('datetime');
+
+            if (event_date === now_date) {
+                scrollToNearReport();
+            }
+        });
+    </script>
+{% endblock scripts %}

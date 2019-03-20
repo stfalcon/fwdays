@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<!--BEGIN layout-box-->
+<div class="layout-box">
+
+    <!--BEGIN layout-box__top-->
+    <div class="layout-box__top">
+
+        <!--BEGIN header-->
+        <header class="header">
+            <div class="container">
+            <div class="header__left">
+                <a href="#" class="logo header__logo">
+                    <img class="logo__img" src="img/logo_header.svg" alt="">
+                </a>
+                <nav class="header-nav">
+                    <ul class="header-nav__items">
+                        <li class="header-nav__item">
+                            <a href="events.html" class="header-nav__link header-nav__link--active">Події</a>
+                        </li>
+                        <li class="header-nav__item">
+                            <a href="contacts.html" class="header-nav__link">Контакти</a>
+                        </li>
+                        <li class="header-nav__item">
+                            <a href="#" class="header-nav__link">Про нас</a>
+                        </li>
+                        <li class="header-nav__item header-nav__item--sign-in header-nav__item--mob">
+                            <a href="#modal-signin" class="header-nav__link">Увійти</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header__right">
+                <a href="#" class="header__language">In English</a>
+                <div class="social header__social">
+                    <ul class="social__items">
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_fb.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_te.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_twitter.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_youtube.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_insta.svg" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="#" class="header__auth header__auth--sign-in">Увійти</a>
+            </div>
+            </div>
+        </header>
+        <!--END header-->
+
+        <!--BEGIN event-list-->
+        <section class="event-list">
+            <div class="container container--sm">
+                <div class="event-list__box">
+                    <div class="event-list__label">Будущие события</div>
+                    <div class="event-list__items">
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-1-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция Highload fwdays '17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">октябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Зарегистрироваться</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-2-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция Frontend fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">ноябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Зарегистрироваться</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-3-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PM fwdays</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">сентябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Зарегистрироваться</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-4-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Big Data IT Суббота</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">27 мая</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Купить билет</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-5-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Training for PHP developers by Marco
+                                        Pivetta</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">10 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Купить билет</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-6-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PHP fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">11 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--primary btn--sm">Купить билет</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-6-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PHP fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">11 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <a href="#" class="event-row__btn btn btn--tertiary btn--sm">Скачать билет</a>
+                            </div>
+                        </div>
+                        <div class="event-row event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-6-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PHP fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">11 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Участие оплачено</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-list__box">
+                    <div class="event-list__label">Прошедшие события</div>
+                    <div class="event-list__items">
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-1-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция Highload fwdays '17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">октябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-2-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция Frontend fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">ноябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-3-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PM fwdays</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">сентябрь</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-4-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Big Data IT Суббота</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">27 мая</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-5-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Training for PHP developers by Marco
+                                        Pivetta</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">10 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                        <div class="event-row event-row--inactive event-list__item">
+                            <div class="event-row__left">
+                                <a href="" class="event-row__logo-link">
+                                    <img class="event-row__logo" src="img/events/event-6-thumb.jpg" alt="">
+                                </a>
+                                <div class="event-row__details">
+                                    <a href="#" class="event-row__title">Конференция PHP fwdays'17</a>
+                                    <div class="event-row__location">Киев</div>
+                                </div>
+                            </div>
+                            <div class="event-row__right">
+                                <div class="event-row__date">
+                                    <time class="event-row__month">11 июня</time>
+                                    <time class="event-row__year">2017</time>
+                                </div>
+                                <div class="event-row__status">Событие состоялось</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--END event-list-->
+
+    </div>
+    <!--END layout-box__top-->
+
+    <!--BEGIN layout-box__bottom-->
+    <div class="layout-box__bottom">
+
+        <!--BEGIN footer-->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer__start">
+                    <div class="social social--contrast footer__social">
+                        <ul class="social__items">
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_fb_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_te_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_twitter_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_youtube_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_insta_color.svg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer__copyright">© 2010–2018 fwdays.com</div>
+                </div>
+                <div class="footer__center">
+                    <nav class="footer-nav">
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Події</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Контакти</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Про нас</a>
+                            </li>
+                        </ul>
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Code of conduct</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Faq</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__end">
+                    <a href="#" class="footer__cabinet footer__cabinet--sign-in">Увійти</a>
+                    <a href="#" class="footer__language">In english</a>
+                    <a href="#" class="made-by footer__made-by">
+                        Зроблено в <i class="made-by__icon icon-stfalcon"></i> stfalcon.com
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!--END footer-->
+
+    </div>
+    <!--END layout-box__bottom-->
+
+</div>
+<!--END layout-box-->
+
+</body>
+</html>

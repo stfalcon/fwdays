@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<!--BEGIN layout-box-->
+<div class="layout-box">
+
+    <!--BEGIN layout-box__top-->
+    <div class="layout-box__top">
+
+        <!--BEGIN header-->
+        <header class="header">
+            <div class="container">
+            <div class="header__left">
+                <a href="#" class="logo header__logo">
+                    <img class="logo__img" src="img/logo_header.svg" alt="">
+                </a>
+                <nav class="header-nav">
+                    <ul class="header-nav__items">
+                        <li class="header-nav__item">
+                            <a href="events.html" class="header-nav__link">Події</a>
+                        </li>
+                        <li class="header-nav__item">
+                            <a href="contacts.html" class="header-nav__link">Контакти</a>
+                        </li>
+                        <li class="header-nav__item">
+                            <a href="#" class="header-nav__link">Про нас</a>
+                        </li>
+                        <li class="header-nav__item header-nav__item--mob">
+                            <a href="#modal-signin" class="header-nav__link">Увійти</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header__right">
+                <a href="#" class="header__language">In English</a>
+                <div class="social header__social">
+                    <ul class="social__items">
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_fb.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_te.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_twitter.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_youtube.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a href="#" class="social__link">
+                                <img class="social__icon" src="img/social/icon_insta.svg" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="#" class="header__auth">Увійти</a>
+            </div>
+            </div>
+        </header>
+        <!--END header-->
+
+        <!--BEGIN event-header-->
+        <section class="event-header" style="background-color: #4690C9;">
+            <div class="container">
+            <div class="event-header__box">
+                <h1 class="event-header__title">JavaScript fwdays '17</h1>
+                <div class="event-header__info">
+                    <div class="event-header__description">Международная конференция, посвященная популярным JavaScript
+                        фреймворкам.
+                    </div>
+                    <div class="event-header__details">
+                        <div class="event-header__details-left">
+                            <time class="event-header__date">4 декабря, 2016 года,<br>09:00–20:00</time>
+                            <a href="#program-event" class="event-header__program go-to-block">Программа</a>
+                        </div>
+                        <div class="event-header__details-right">
+                            <a href="#location-event" class="event-header__location go-to-block">Киев, Конференц-центр
+                                отеля Ramada Encore,
+                                Столичное
+                                шоссе,
+                                103</a>
+                        </div>
+                    </div>
+                    <div class="event-header__action">
+                        <div class="event-header__action-ticket">
+                            <button class="btn btn--primary btn--lg event-header__btn">Купить билет</button>
+                            <div class="event-header__download">
+                                <a href="#">Завантажити квиток</a>
+                            </div>
+                        </div>
+                        <a href="#price-event" class="event-header__tickets go-to-block">Билеты от 550 грн</a>
+                    </div>
+                </div>
+            </div>
+            <div class="event-header__photo">
+                <img class="event-header__img" src="img/events/event-1.png" alt="">
+            </div>
+            </div>
+        </section>
+        <!--END event-header-->
+
+        <!--BEGIN fix-event-header-->
+        <section class="fix-event-header" style="background-color: #4690C9;">
+            <div class="container">
+            <div class="fix-event-header__left">
+                <div id="event-menu-trigger" class="fix-event-header__trigger-menu">
+                    <i class="icon-arrow"></i>
+                </div>
+                <div class="fix-event-header__title">JavaScript fwdays '17</div>
+            </div>
+            <div class="fix-event-header__right">
+                <nav class="event-menu">
+                    <ul class="event-menu__items">
+                        <li class="event-menu__item">
+                            <a href="#speakers-event" class="event-menu__link go-to-block">Докладчики</a>
+                        </li>
+                        <li class="event-menu__item">
+                            <a href="#program-event" class="event-menu__link go-to-block">Программа</a>
+                        </li>
+                        <li class="event-menu__item">
+                            <a href="#price-event" class="event-menu__link go-to-block">Стоимость участия</a>
+                        </li>
+                        <li class="event-menu__item">
+                            <a href="#location-event" class="event-menu__link go-to-block">Место проведения</a>
+                        </li>
+                    </ul>
+                </nav>
+                <a href="#" class="fix-event-header__download">Скачать билет</a>
+                <a href="#" class="fix-event-header__download fix-event-header__download--mob">Скачать</a>
+            </div>
+            </div>
+        </section>
+        <!--END fix-event-header-->
+
+        <!--BEGIN event-buy-mob-->
+        <section class="event-action-mob">
+            <div class="container">
+                <button class="btn btn--primary btn--lg event-action-mob__btn">Купить билет</button>
+                <div class="event-action-mob__download">
+                    <a href="#">Завантажити квиток</a>
+                </div>
+            </div>
+        </section>
+        <!--END event-buy-mob-->
+
+        <!--BEGIN event-description-->
+        <section class="event-description">
+            <div class="container container--sm">
+                <div class="event-description__title">Началась онлайн-трансляция</div>
+                <div class="video-list">
+                    <div class="video-list__items">
+                        <div class="video-list__item">
+                            <h3 class="video-list__title">Main Stage</h3>
+                            <div class="video-list__frame">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1"
+                                        frameborder="0"
+                                        allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="video-list__item">
+                            <h3 class="video-list__title">Track A</h3>
+                            <div class="video-list__frame">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/LJ6O2cBvSzg?ecver=1"
+                                        frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="video-list__item">
+                            <h3 class="video-list__title">Track B</h3>
+                            <div class="video-list__frame">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/TZr0uBDlZJI?ecver=1"
+                                        frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="event-description__text">
+                    <p>Традиционно, мы выбрали для вас актуальные и полезные темы докладов от продвинутых иностранных и
+                        украинских экспертов с большим практическим опытом работы.</p>
+                    <p>Вас ждут доклады в 3 потока, общение со спикерами, перерывы на вкусные кофе-брейки и&nbsp;питательный
+                        обед. В конце дня мы разыграем ценные призы от наших постоянных партнеров, а&nbsp;также
+                        пригласим всех
+                        на
+                        веселую афтепати, где сможем расслабиться, еще больше подружиться и&nbsp;пообщаться в
+                        неформальной
+                        обстановке.</p>
+                    <p>PHP Frameworks Day уже в четвертый раз проводится в Киеве и собирает множество впечатлений и&nbsp;отзывов
+                        от участников.</p>
+                </div>
+            </div>
+        </section>
+        <!--END event-description-->
+
+        <!--BEGIN speakers-->
+        <section id="speakers-event" class="speakers">
+            <div class="container">
+                <div class="speakers__box">
+                    <h2 class="h2 speakers__title">Докладчики</h2>
+                    <ul class="speakers__items">
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-1.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Юлия Пучнина</span>
+                                    <span class="speaker-card__position">JavaScript Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-5.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Прототипій Назгул-Арагорнський</span>
+                                    <span class="speaker-card__position">Juno</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#modal-speaker" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-4.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Андрей Шумада</span>
+                                    <span class="speaker-card__position">Ciklum/Debitoor</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-6.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Алексей Косинский</span>
+                                    <span class="speaker-card__position">Senior Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-7.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Илья Климов</span>
+                                    <span class="speaker-card__position">WookieeLabs</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-1.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Юлия Пучнина</span>
+                                    <span class="speaker-card__position">JavaScript Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-5.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Евгений Жарков</span>
+                                    <span class="speaker-card__position">Juno</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-4.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Андрей Шумада</span>
+                                    <span class="speaker-card__position">Ciklum/Debitoor</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-6.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Алексей Косинский</span>
+                                    <span class="speaker-card__position">Senior Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-7.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Илья Климов</span>
+                                    <span class="speaker-card__position">WookieeLabs</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="speakers__box">
+                    <h2 class="h2 speakers__title">На рассмотрении</h2>
+                    <ul class="speakers__items">
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-1.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Юлия Пучнина</span>
+                                    <span class="speaker-card__position">JavaScript Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-5.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Евгений Жарков</span>
+                                    <span class="speaker-card__position">Juno</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-4.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Андрей Шумада</span>
+                                    <span class="speaker-card__position">Ciklum/Debitoor</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-6.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Алексей Косинский</span>
+                                    <span class="speaker-card__position">Senior Developer</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <a href="#" class="speaker-card__report">Reactive Music Apps in Angular and RxJS</a>
+                                    <div class="like-btn speaker-card__likes">
+                                        <a href="#" class="like-btn__action">Хочу послушать</a>
+                                        <div class="like-btn__amount">
+                                            <i class="icon-like like-btn__icon"></i>5
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="speakers__item speaker-card">
+                            <div class="speaker-card__box">
+                                <a href="#" class="speaker-card__top">
+                                    <div class="speaker-card__photo">
+                                        <img class="speaker-card__img" src="img/speakers/speaker-7.jpg" alt="">
+                                    </div>
+                                    <span class="speaker-card__name">Илья Климов</span>
+                                    <span class="speaker-card__position">WookieeLabs</span>
+                                </a>
+                                <div class="speaker-card__bottom">
+                                    <div class="speaker-card__hint-report">Тема доповіді уточнюється</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!--END speakers-->
+
+        <!--BEGIN program-->
+        <section id="program-event" class="schedule">
+            <div class="container schedule__container">
+                <h2 class="h2 schedule__title">Программа</h2>
+                <div class="program">
+                    <div class="program-header">
+                        <div class="program-header__td program-header__td--active" style="background-color: #FF700A;">
+                            <span class="program-header__text">Main Stage</span>
+                        </div>
+                        <div class="program-header__td" style="background-color: #FECD4A; color: #121314;">
+                            <span class="program-header__text">Track A</span>
+                        </div>
+                        <div class="program-header__td" style="background-color: #00C1AA;">
+                            <span class="program-header__text">Track B</span>
+                        </div>
+                        <div class="program-header__td" style="background-color: #09A0BD;">
+                            <span class="program-header__text">Q&A session</span>
+                        </div>
+                    </div>
+                    <div class="program-body">
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">09:00</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Registration & morning tea/coffee</div>
+                                    <div class="event-outside__duration">1 час 30 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">10:30</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Opening ceremony</div>
+                                    <div class="event-outside__duration">10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">10:40</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">О драконах ни слова</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Илья Климов</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td"></div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Разработка realtime SPA с&nbsp;использованием
+                                        VueJS
+                                        и&nbsp;RethinkDB</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Сергей Морковкин</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td"></div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">11:20</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Coffee-break #1</div>
+                                    <div class="event-outside__duration">30 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">11:50</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Web Apps Performance & JavaScript
+                                        Compilers</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Роман Лютиков</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Let's Build a Web Application (and Talk
+                                        About
+                                        Ways to Improve Bad Parts)</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Игорь Фесенко</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Riot.JS, или как приготовить современные
+                                        Web
+                                        Components</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Анджей Гужовский</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                Илья Климов, Сергей Морковкин, Андрей Шумада
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">12:30</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Break</div>
+                                    <div class="event-outside__duration">10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">12:40</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Еще несколько слов об архитектуре</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Алексей Волков</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Hyperops</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Mathias Buus [eng]</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Architecting React Native app</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Филипп Шурпик</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                Анджей Гужовский, Игорь Фесенко, Роман Лютиков, Борис Могила
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">13:20</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Lunch</div>
+                                    <div class="event-outside__duration">1 час 10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">14:30</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">The Road to Native Web Components</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Michael North [eng]</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Критерии выбора JS-фреймворков</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Юрий Лучанинов</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">React Native vs. React+WebView</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Алексей Косинский</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                Филипп Шурпик, Paul Miller, Алексей Волков, Григорий Шехет
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">15:10</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Break</div>
+                                    <div class="event-outside__duration">10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">15:20</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">The Road to Native Web Components</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Michael North [eng]</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Treasure hunt in the land of Reactive
+                                        frameworks</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Григорий Шехет</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Міграція даних в Node.js REST API і
+                                        MongoDB</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Андрей Шумада</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">Алексей Косинский, Юлия Пучнина, Юрий Лучанинов, Евгений
+                                Жарков
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">16:00</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Coffee-break #2</div>
+                                    <div class="event-outside__duration">30 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">16:30</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Как подняться на open source</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Paul Miller</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">PhaserJS for advertisement: игры внутри
+                                        баннеров</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Юлия Пучнина</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Isomorphic React apps in production</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Борис Могила</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td">Tero Parviainen, Mathias Buus, Michael North</div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">17:10</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Break</div>
+                                    <div class="event-outside__duration">10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--event">
+                            <div class="program-body__td program-body__td--time">17:20</div>
+                            <div class="program-body__td">
+                                <div class="report-details">
+                                    <a href="#" class="report-details__title">Как быть хорошим
+                                        фронтенд-разработчиком</a>
+                                    <div class="report-details__bottom">
+                                        <div class="report-details__speaker">Евгений Жарков</div>
+                                        <div class="report-details__duration">40 мин</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="program-body__td"></div>
+                            <div class="program-body__td"></div>
+                            <div class="program-body__td"></div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">18:00</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Prize drawing from partners</div>
+                                    <div class="event-outside__duration">20 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">18:20</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">Closing ceremony & family photo</div>
+                                    <div class="event-outside__duration">10 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="program-body__tr program-body__tr--pause">
+                            <div class="program-body__td program-body__td--time">18:30</div>
+                            <div class="program-body__td">
+                                <div class="event-outside">
+                                    <div class="event-outside__title">AfterParty</div>
+                                    <div class="event-outside__duration">2 часа 30 мин</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--END program-->
+
+        <!--BEGIN price-list-->
+        <section id="price-event" class="price-list">
+            <div class="container container--sm">
+                <h2 class="h2 price-list__title">Стоимость участия</h2>
+                <div class="price-list__items">
+                    <div class="cost cost--last price-list__item">
+                        <div class="cost__type">Early birds</div>
+                        <div class="cost__tickets">
+                            <span class="cost__strike">50 билетов</span>
+                            <span class="cost__sales">Продано</span>
+                        </div>
+                        <div class="cost__price">1 700 грн <span class="cost__dollars">≈$62</span></div>
+                    </div>
+                    <div class="cost cost--active price-list__item">
+                        <div class="cost__type">Regular</div>
+                        <div class="cost__tickets">150 билетов</div>
+                        <div class="cost__price cost__price--mob">1 900 грн <span class="cost__dollars">≈$77</span>
+                        </div>
+                        <a href="#" class="btn btn--primary btn--lg cost__buy">Купить за 1 900 грн <span
+                                class="cost__dollars">≈$70</span></a>
+                        <a href="#" class="btn btn--primary btn--lg cost__buy cost__buy--mob">Купить билет</a>
+                    </div>
+                    <div class="cost price-list__item">
+                        <div class="cost__type">Late birds</div>
+                        <div class="cost__tickets">Оставшиеся билеты</div>
+                        <div class="cost__price">2 100 грн <span class="cost__dollars">≈$77</span></div>
+                    </div>
+                </div>
+                <div class="price-list__hint">
+                    Для учасників попередніх конференцій знижка 20%
+                </div>
+                <div class="price-list__hint-small">
+                    Нараховується автоматично аккаунту з якого була здійснена покупка
+                </div>
+            </div>
+        </section>
+        <!--END price-list-->
+
+        <!--BEGIN partners-->
+        <section class="partners">
+            <div class="container container--sm">
+                <div class="partners__box">
+                    <div class="partners__title">Золотые партнеры</div>
+                    <ul class="partners__items">
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/zone3000.png');"></span>
+                            </a>
+                        </li>
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/Software_cmyk.png');"></span>
+                            </a>
+                        </li>
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/Svitla_140.png');"></span>
+                            </a>
+                        </li>
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/Dataart-logo-new_140.png');"></span>
+                            </a>
+                        </li>
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/InfoPulse.jpg');"></span>
+                            </a>
+                        </li>
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/levi9.png');"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="partners__box">
+                    <div class="partners__title">Серебряные партнеры</div>
+                    <ul class="partners__items">
+                        <li class="partners__item">
+                            <a href="#" class="partners__link">
+                        <span class="partners__logo"
+                              style="background-image: url('https://frameworksdays.com/uploads/sponsors/Intetics_140_new.png');"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="partners__box partners__box--cols">
+                    <div class="partners__cols">
+                        <div class="partners__left">
+                            <div class="partners__title">Партнеры</div>
+                            <ul class="partners__items">
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                                <span class="partners__logo"
+                                      style="background-image: url('https://frameworksdays.com/uploads/sponsors/logo_triangle.png');"></span>
+                                    </a>
+                                </li>
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                                <span class="partners__logo"
+                                      style="background-image: url('https://frameworksdays.com/uploads/sponsors/logo-small-125.png');"></span>
+                                    </a>
+                                </li>
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                                <span class="partners__logo"
+                                      style="background-image: url('https://frameworksdays.com/uploads/sponsors/taxer-logo.png');"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="partners__right">
+                            <div class="partners__title">Инфо партнеры</div>
+                            <ul class="partners__items">
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                                <span class="partners__logo"
+                                      style="background-image: url('https://frameworksdays.com/uploads/sponsors/logo_triangle.png');"></span>
+                                    </a>
+                                </li>
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                               <span class="partners__logo"
+                                     style="background-image: url('https://frameworksdays.com/uploads/sponsors/logo-small-125.png');"></span>
+                                    </a>
+                                </li>
+                                <li class="partners__item">
+                                    <a href="#" class="partners__link">
+                            <span class="partners__logo"
+                                  style="background-image: url('https://frameworksdays.com/uploads/sponsors/taxer-logo.png');"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="partners__detail-link">Детальніше про партнерів</a>
+            </div>
+        </section>
+        <!--END partners-->
+
+        <!--BEGIN location-->
+        <section id="location-event" class="location">
+            <div class="container container--sm">
+                <h2 class="h2 location__title">Место проведения</h2>
+                <div class="location__description">
+                    Бизнес-центр «Инком» г. Киев, ул. Смоленская, 31-33, 2-й этаж — вход с&nbsp;улицы по внешней
+                    лестнице (М&nbsp;Шулявская)
+                </div>
+                <a href="#" class="location__help">Как добраться</a>
+            </div>
+            <div class="container">
+                <div id="map" class="location__map"></div>
+            </div>
+        </section>
+        <!--END location-->
+    </div>
+    <!--END layout-box__top-->
+
+    <!--BEGIN layout-box__bottom-->
+    <div class="layout-box__bottom">
+
+        <!--BEGIN footer-->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer__start">
+                    <div class="social social--contrast footer__social">
+                        <ul class="social__items">
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_fb_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_te_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_twitter_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_youtube_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_insta_color.svg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer__copyright">© 2010–2018 fwdays.com</div>
+                </div>
+                <div class="footer__center">
+                    <nav class="footer-nav">
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Події</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Контакти</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Про нас</a>
+                            </li>
+                        </ul>
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Code of conduct</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Faq</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__end">
+                    <a href="#" class="footer__cabinet footer__cabinet--sign-in">Увійти</a>
+                    <a href="#" class="footer__language">In english</a>
+                    <a href="#" class="made-by footer__made-by">
+                        Зроблено в <i class="made-by__icon icon-stfalcon"></i> stfalcon.com
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!--END footer-->
+
+    </div>
+    <!--END layout-box__bottom-->
+
+</div>
+<!--END layout-box-->
+
+<!--BEGIN speaker-popup-->
+<div class="remodal remodal--lg" data-remodal-id="modal-speaker">
+    <button data-remodal-action="close"
+            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+    <div class="remodal__body">
+        <div class="speaker-popup">
+            <img class="speaker-popup__photo" src="img/speakers/speaker-4.jpg" alt="">
+            <div class="speaker-popup__description">
+                <div class="speaker-popup__name">Андрій Шумада</div>
+                <div class="speaker-popup__position">Ciklum/Debitoor</div>
+                <div class="speaker-popup__info">
+                    <p>
+                        — An independent software developer, writer of programming books and articles, and an
+                        Angular 2 documentation author.
+                    </p>
+                    <p>
+                        — Tero is the two-time organizer of the <a href="#">Clojure Cup</a> programming competition,
+                        and the author
+                        of <a href="#">Build Your Own AngularJS</a>
+                    </p>
+                    <p>
+                        — <a href="#">Blog</a> and <a href="#">Twitter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="report-popup">
+            <a href="#" class="report-popup__title">Reactive Music Apps in Angular and RxJS</a>
+            <div class="like-btn report-popup__likes">
+                <a href="#" class="like-btn__action">Хочу послушать</a>
+                <div class="like-btn__amount">
+                    <i class="icon-like like-btn__icon"></i>5
+                </div>
+            </div>
+            <div class="report-popup__description">
+                <p>
+                    Angular 2 combined with RxJS, @ngrx/store, and Immutable.js is a fantastic platform for
+                    reactive web applications. If we also add hot loading and the Web Audio API to the mix, we
+                    have something truly exciting: A platform for reactive music creation.
+                </p>
+                <p>
+                    This talk is about creating musical systems on the Angular platform. We’ll see how we can
+                    model a process that generates music right in the browser and allows the user to control it
+                    on the fly. It’s a really enjoyable way to learn reactive Angular application
+                    development.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END speaker-popup-->
+
+<script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYjtkOBMAvn04LagTZlNETdepqxeEd5sw&libraries=places"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

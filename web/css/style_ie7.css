@@ -1,0 +1,186 @@
+*+html #header {
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('afterBegin', '<div class="before"></div><div class="after"></div>'));
+}
+*+html #header .before {
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 430px;
+    height: 300px;
+    z-index: 0;
+    background: #ebf7d9 url(images/sprite-header-footer.jpg) left -2px no-repeat;
+}
+*+html #header .after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 285px;
+    height: 215px;
+    z-index: 0;
+    background: #ebf7d9 url(images/sprite-header-footer.jpg) -430px -2px no-repeat;
+}
+*+html #wrapper.wide-content #header .before,
+*+html #wrapper.sidebars-right #header .before {
+    width: 402px;
+    height: 180px;
+    background-position: -430px -217px;
+}
+*+html #wrapper.wide-content #header .after,
+*+html #wrapper.sidebars-right #header .after {
+    width: 200px;
+    height: 45px;
+    background-position: -715px -2px;
+}
+*+html #wrapper.no-head #header .before,
+*+html #wrapper.no-head #header .after {
+    display: none;
+}
+*+html #footer {
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('beforeEnd', '<div class="after"></div>'));
+}
+*+html #footer .after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 100%;
+    height: 2px;
+    background: #12e6b6 url(images/bg-footer-bottom.png) center top no-repeat;
+}
+*+html .event-slider .slide .know-more {
+    display: inline;
+    zoom: 1;
+}
+*+html .side-right-wrap {
+    zoom: 1;
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('beforeEnd', '<div class="before"></div><div class="after"></div>'));
+}
+*+html .side-right-wrap .before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 44px;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 0;
+    background: url(images/sprite-rightside-bg.png) left top no-repeat;
+}
+*+html .side-right-wrap .after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30px;
+    height: 44px;
+    text-indent: -9999px;
+    overflow: hidden;
+    z-index: 0;
+    background: url(images/sprite-rightside-bg.png) -30px top no-repeat;
+}
+*+html #footer .copyright {
+    text-indent: 0;
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('afterBegin', '<div class="before"></div>'));
+}
+*+html #footer .copyright .before {
+    float: left;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 40px;
+    height: 20px;
+    margin-right: 10px;
+    margin-top: -3px;
+    background: url(images/sprite-objects.png) left -120px no-repeat;
+}
+*+html #footer .created-by {
+    top: 15px;
+}
+*+html #footer .stfalcon {
+    vertical-align: baseline;
+    top: 4px;
+}
+*+html .allnews-link,
+*+html .allpresenters-link,
+*+html .allparticipants-link {
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('afterBegin', '<div class="before"></div>'));
+}
+*+html .allnews-link .before,
+*+html .allpresenters-link .before,
+*+html .allparticipants-link .before {
+    width: 17px;
+    height: 9px;
+    overflow: hidden;
+    border-top: 2px solid #6d8587;
+}
+*+html .info-msg-block,
+*+html .error-msg-block {
+    zoom: 1;
+    z-index: expression(runtimeStyle.zIndex = 1, insertAdjacentHTML('afterBegin', '<div class="before"></div>'));
+}
+*+html .info-msg-block .before,
+*+html .error-msg-block .before {
+    float: left;
+    width: 23px;
+    height: 23px;
+    margin-right: 14px;
+    background: url(images/sprite-icons.png) -5px -5px no-repeat;
+}
+*+html .error-msg-block .before {
+    width: 24px;
+    margin-right: 13px;
+    background-position: -4px -33px;
+}
+*+html .form {
+    display: inline;
+    zoom: 1;
+}
+*+html .form-input {
+    zoom: 1;
+}
+*+html .form-group {
+    margin-top: -7px;
+}
+*+html .form-group legend {
+    margin: 0 0 6px -.55em;
+}
+*+html .presenters .presenter-photo,
+*+html .presenters .presenter-info {
+    display: inline;
+    zoom: 1;
+}
+*+html .socnet-likes,
+*+html div.presenters .presenter,
+*+html div.presenters .presenter-info,
+*+html .add-comment-link a:link,
+*+html .add-comment-link a:visited {
+    zoom: 1;
+}
+
+*+html #footer .stfalcon .icon {
+    display: inline;
+    zoom: 1;
+}
+
+*+html .side-participants li,
+*+html .participants li {
+    display: inline;
+    zoom: 1;
+}
+.fos_user_profile_edit #fos_user_profile_form {
+    zoom: 1;
+}
+*+html .fos_user_profile_edit input[type="text"],
+*+html .fos_user_profile_edit input[type="email"] {
+    width: expression((this.parentNode.clientWidth - parseInt(this.currentStyle['paddingLeft']) - parseInt(this.currentStyle['paddingRight']) - 2) + 'px');
+}
+
+.contacts-page-social li,
+.contacts-page-orgs-list .vcard .photo,
+.contacts-page-orgs-list .vcard .contacts {
+    display: inline;
+    zoom: 1;
+}

@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<!--BEGIN layout-box-->
+<div class="layout-box">
+
+    <!--BEGIN layout-box__top-->
+    <div class="layout-box__top">
+
+        <!--BEGIN header-->
+        <header class="header">
+            <div class="container">
+                <div class="header__left">
+                    <a href="#" class="logo header__logo">
+                        <img class="logo__img" src="img/logo_header.svg" alt="">
+                    </a>
+                    <nav class="header-nav">
+                        <ul class="header-nav__items">
+                            <li class="header-nav__item">
+                                <a href="events.html" class="header-nav__link">Події</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a href="contacts.html" class="header-nav__link">Контакти</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a href="#" class="header-nav__link">Про нас</a>
+                            </li>
+                            <li class="header-nav__item header-nav__item--sign-in header-nav__item--mob">
+                                <a href="#modal-signin" class="header-nav__link">Увійти</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="header__right">
+                    <a href="#" class="header__language">In English</a>
+                    <div class="social header__social">
+                        <ul class="social__items">
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_fb.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_te.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_twitter.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_youtube.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_insta.svg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="#modal-signin" class="header__auth header__auth--sign-in">Увійти</a>
+                </div>
+            </div>
+        </header>
+        <!--END header-->
+
+        <!--BEGIN home-->
+        <section class="home" style="background-image: url('img/header_bg.jpg');">
+            <div class="home__box">
+                <h1 class="home__title">Series of high-caliber developer events in Ukraine</h1>
+                <p class="home__description">Since 2007, more then 30 events</p>
+            </div>
+        </section>
+        <!--END home-->
+
+        <!--BEGIN events-->
+        <section class="events">
+            <div class="container">
+                <div class="events__box">
+                    <div class="event-card events__item">
+                        <div class="event-card__box" style="background-color: #4690C9;">
+                            <div class="event-card__info">
+                                <h2 class="h2 h2--white event-card__title">
+                                    <a href="#">Конференция<br>JavaScript fwdays '17</a>
+                                </h2>
+                                <time class="event-card__date">22 апреля 2017, Киев</time>
+                                <div class="event-card__action">
+                                    <div class="event-card__status">Событие состоялось</div>
+                                </div>
+                            </div>
+                            <div class="event-card__photo">
+                                <a href="#">
+                                    <img class="event-card__img" src="img/events/event-1.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card events__item">
+                        <div class="event-card__box" style="background-color: #687BCD;">
+                            <div class="event-card__info">
+                                <h2 class="h2 h2--white event-card__title">
+                                    <a href="#">Training for PHP developers by Marco Pivetta</a>
+                                </h2>
+                                <time class="event-card__date">10 июня 2017, Киев</time>
+                                <div class="event-card__action">
+                                    <a href="#modal-signin-payment" class="btn btn--primary btn--sm event-card__btn">Купить
+                                        билет</a>
+                                </div>
+                            </div>
+                            <div class="event-card__photo">
+                                <a href="#">
+                                    <img class="event-card__img" src="img/events/event-2.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card events__item">
+                        <div class="event-card__box" style="background-color: #687BCD;">
+                            <div class="event-card__info">
+                                <h2 class="h2 h2--white event-card__title">
+                                    <a href="#">Конференция<br>PHP fwdays '17</a>
+                                </h2>
+                                <time class="event-card__date">11 июня 2017, Киев</time>
+                                <div class="event-card__action">
+                                    <a href="#modal-signin-payment" class="btn btn--primary btn--sm event-card__btn">Купить
+                                        билет</a>
+                                    <div class="event-card__download">
+                                        <a href="#">Завантажити квиток</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="event-card__photo">
+                                <a href="#">
+                                    <img class="event-card__img" src="img/events/event-3.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card events__item">
+                        <div class="event-card__box" style="background-color: #058DA3;">
+                            <div class="event-card__info">
+                                <h2 class="h2 h2--white event-card__title">
+                                    <a href="#">Конференция<br>Highload fwdays '17</a>
+                                </h2>
+                                <time class="event-card__date">октябрь, Киев</time>
+                                <div class="event-card__action">
+                                    <a href="#modal-signup-payment" class="btn btn--primary btn--sm event-card__btn">Зарегистрироваться</a>
+                                </div>
+                            </div>
+                            <div class="event-card__photo">
+                                <a href="#">
+                                    <img class="event-card__img" src="img/events/event-4.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-card events__item">
+                        <div class="event-card__box" style="background-color: #DB5862;">
+                            <div class="event-card__info">
+                                <h2 class="h2 h2--white event-card__title">
+                                    <a href="#">Training: Angular 2</a>
+                                </h2>
+                                <time class="event-card__date">3 декабря 2016, Киев</time>
+                                <div class="event-card__action">
+                                    <a href="#modal-signin-payment" class="btn btn--primary btn--sm event-card__btn">Купить
+                                        билет</a>
+                                </div>
+                            </div>
+                            <div class="event-card__photo">
+                                <a href="#">
+                                    <img class="event-card__img" src="img/events/event-5.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="more-link events__more">Все события</a>
+            </div>
+        </section>
+        <!--END events-->
+
+        <!--BEGIN video-->
+        <section class="video">
+            <div class="container">
+                <div class="video__box">
+                    <div class="video__frame">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DWc9JuTMXnM?ecver=1"
+                                frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div class="video__description">
+                        <p>
+                            Традиционно, мы выбрали для вас актуальные
+                            и полезные темы докладов от продвинутых иностранных и украинских экспертов с большим
+                            практическим
+                            опытом
+                            работы.
+                        </p>
+                        <p>
+                            Вас ждут доклады в 3 потока, общение со спикерами, перерывы на вкусные кофе-брейки
+                            и питательный обед.
+                        </p>
+                    </div>
+                </div>
+                <a href="#" class="more-link">Наш YouTube канал</a>
+            </div>
+        </section>
+        <!--END video-->
+
+        <!--BEGIN gallery-->
+        <section class="gallery">
+            <div class="container">
+                <div class="gallery__cols">
+                    <div class="gallery__col gallery__col--1">
+                        <img class="gallery__item gallery__item--w-2" src="img/gallery/gallery_image_1.jpg" alt="">
+                        <img class="gallery__item gallery__item--w-1" src="img/gallery/gallery_image_5.png" alt="">
+                        <img class="gallery__item gallery__item--w-1 gallery__item--hide-mob" src="img/gallery/gallery_image_6.png" alt="">
+                    </div>
+                    <div class="gallery__col gallery__col--2">
+                        <img class="gallery__item gallery__item--w-1" src="img/gallery/gallery_image_2.png" alt="">
+                        <img class="gallery__item gallery__item--h-2" src="img/gallery/gallery_image_7.png" alt="">
+                    </div>
+                    <div class="gallery__col gallery__col--3">
+                        <img class="gallery__item gallery__item--w-1 gallery__item--hide-mob" src="img/gallery/gallery_image_3.png" alt="">
+                        <img class="gallery__item gallery__item--w-1" src="img/gallery/gallery_image_4.png" alt="">
+                        <img class="gallery__item gallery__item--w-2" src="img/gallery/gallery_image_8.png" alt="">
+                    </div>
+                </div>
+                <a href="#" class="more-link">Все галереи на Flickr</a>
+            </div>
+        </section>
+        <!--END gallery-->
+
+    </div>
+    <!--END layout-box__top-->
+
+    <!--BEGIN layout-box__bottom-->
+    <div class="layout-box__bottom">
+
+        <!--BEGIN footer-->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer__start">
+                    <div class="social social--contrast footer__social">
+                        <ul class="social__items">
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_fb_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_te_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_twitter_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_youtube_color.svg" alt="">
+                                </a>
+                            </li>
+                            <li class="social__item">
+                                <a href="#" class="social__link">
+                                    <img class="social__icon" src="img/social/icon_insta_color.svg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer__copyright">© 2010–2018 fwdays.com</div>
+                </div>
+                <div class="footer__center">
+                    <nav class="footer-nav">
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Події</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Контакти</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Про нас</a>
+                            </li>
+                        </ul>
+                        <ul class="footer-nav__col">
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Code of conduct</a>
+                            </li>
+                            <li class="footer-nav__item">
+                                <a href="#" class="footer-nav__link">Faq</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__end">
+                    <a href="#" class="footer__cabinet footer__cabinet--sign-in">Увійти</a>
+                    <a href="#" class="footer__language">In english</a>
+                    <a href="#" class="made-by footer__made-by">
+                        Зроблено в <i class="made-by__icon icon-stfalcon"></i> stfalcon.com
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!--END footer-->
+
+    </div>
+    <!--END layout-box__bottom-->
+
+</div>
+<!--END layout-box-->
+
+<!--BEGIN signin-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-signin">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <div class="h2 remodal__title">Вход</div>
+        </div>
+        <form action="">
+            <div class="login-social-buttons">
+                <div class="form-hint">Войдите как пользователь</div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <a href="#" class="btn btn--lg btn--facebook form-col__btn">
+                            <i class="icon-login-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <a href="#" class="btn btn--lg btn--google form-col__btn">
+                            <i class="icon-login-google"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-hint">Или по почте</div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">Электронная почта</label>
+                        <input class="input" type="email" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <label class="form-label" for="">Пароль</label>
+                    <input class="input" type="password" value="">
+                </div>
+            </div>
+            <div class="form-row form-row--checkbox">
+                <div class="form-col">
+                    <div class="checkbox">
+                        <input id="check1" type="checkbox" class="checkbox__input">
+                        <label for="check1" class="checkbox__label">Запомнить меня</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-row--align-center">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Войти</button>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="help-links">
+                        <div class="help-links__item">
+                            <a href="#modal-forgot-password" class="form-link">Забыли пароль?</a>
+                        </div>
+                        <div class="help-links__item">
+                            <a href="#modal-signup-payment" class="form-link">Зарегистрироваться </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--END signin-popup-->
+
+<!--BEGIN signin-payment-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-signin-payment">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">Оплата участия в конференции PHP&nbsp;fwdays '17</h2>
+        </div>
+        <form action="">
+            <div class="login-social-buttons">
+                <div class="form-hint">Войдите как пользователь</div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <a href="#" class="btn btn--lg btn--facebook form-col__btn">
+                            <i class="icon-login-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <a href="#" class="btn btn--lg btn--google form-col__btn">
+                            <i class="icon-login-google"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-hint">Или по почте</div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">Электронная почта</label>
+                        <input class="input" type="email" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <label class="form-label" for="">Пароль</label>
+                    <input class="input" type="password" value="">
+                </div>
+            </div>
+            <div class="form-row form-row--checkbox">
+                <div class="form-col">
+                    <div class="checkbox">
+                        <input id="check2" type="checkbox" class="checkbox__input">
+                        <label for="check2" class="checkbox__label">Запомнить меня</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-row--align-center">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Войти</button>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="help-links">
+                        <div class="help-links__item">
+                            <a href="#modal-forgot-password" class="form-link">Забыли пароль?</a>
+                        </div>
+                        <div class="help-links__item">
+                            <a href="#modal-signup-payment" class="form-link">Зарегистрироваться </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--END signin-payment-popup-->
+
+<!--BEGIN signup-payment-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-signup-payment">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <h2 class="h2 remodal__title">Оплата участия в конференции PHP&nbsp;fwdays '17</h2>
+        </div>
+        <form action="">
+            <div class="form-hint">Регистрация на сайте</div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label form-label--required" for="">Имя</label>
+                        <input class="input" type="text" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <label class="form-label form-label--required" for="">Фамилия</label>
+                    <input class="input" type="text" value="">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label form-label--required" for="">Электронная почта</label>
+                        <input class="input" type="email" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <label class="form-label form-label--required" for="">Пароль</label>
+                    <div class="input-password">
+                        <input class="input input-password__field" type="password" value="">
+                        <i class="input-password__icon icon-eye icon-password--js"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">Номер телефона</label>
+                        <input class="input mask-phone-input--js" type="tel" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-row--checkbox">
+                <div class="form-col">
+                    <div class="checkbox">
+                        <input id="check3" type="checkbox" class="checkbox__input">
+                        <label for="check3" class="checkbox__label">Я согласен получать важные новости на e-mail</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row form-row--align-center">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Создать аккаунт</button>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="help-links">
+                        <div class="help-links__item">
+                            <a href="#modal-signin" class="form-link">У меня уже есть аккаунт</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--END signup-payment-popup-->
+
+<!--BEGIN forgot-password-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-forgot-password">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head">
+            <div class="h2 remodal__title">Забыли пароль?</div>
+        </div>
+        <form action="">
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">Ваша электронная почта</label>
+                        <input class="input" type="email" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Сбросить пароль</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--END forgot-password-popup-->
+
+<!--BEGIN payment-popup-->
+<div class="remodal remodal--md" data-remodal-id="modal-payment">
+    <button data-remodal-action="close" class="remodal-close icon-close"></button>
+    <div class="remodal__body">
+        <div class="remodal__head remodal__head--payment">
+            <h2 class="h2 remodal__title">Оплата участия в&nbsp;конференции PHP&nbsp;fwdays '17</h2>
+        </div>
+        <form action="">
+            <div class="user-payment">
+                <button class="icon-circle-close user-payment__remove"></button>
+                <div class="user-payment__left">
+                    <div class="user-payment__name">Константинопольский Костя</div>
+                    <div class="user-payment__email">johndoe@gmail.com</div>
+                </div>
+                <div class="user-payment__right">
+                    <div class="user-payment__price">1900 грн</div>
+                </div>
+            </div>
+            <div class="user-payment">
+                <button class="icon-circle-close user-payment__remove"></button>
+                <div class="user-payment__left">
+                    <div class="user-payment__name">Петров Андрей</div>
+                    <div class="user-payment__email">andrew_petrov@yahoo.com</div>
+                </div>
+                <div class="user-payment__right">
+                    <div class="user-payment__price">
+                        <span class="user-payment__price-strike">1900 грн</span>1520 грн
+                    </div>
+                    <div class="user-payment__discount">скидка 20% для постоянного участника</div>
+                </div>
+            </div>
+            <div id="payment-add-user" class="form-add">
+                <div class="form-add__hint">
+                    Укажите как зовут участника и куда высылать билет&nbsp;&nbsp;<a id="cancel-add-user" href="#"
+                                                                                    class="btn-link">Отмена</a>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">Имя</label>
+                            <input class="input" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--col-6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">Фамилия</label>
+                            <input class="input" type="text" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">Электронная почта</label>
+                            <input class="input" type="email" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
+                        <button class="btn btn--secondary btn--md form-col__btn">Добавить</button>
+                    </div>
+                </div>
+            </div>
+            <div id="add-promo-code" class="form-add">
+                <div class="form-add__hint">
+                    Введите промокод для получения скидки&nbsp;&nbsp;<a id="cancel-promo-code" href="#"
+                                                                        class="btn-link">Отмена</a>
+                </div>
+                <div class="form-row">
+                    <div class="form-col form-col--6 form-col--xs-12">
+                        <div class="form-group">
+                            <label class="form-label" for="">Промокод</label>
+                            <input class="input" type="text" value="">
+                        </div>
+                    </div>
+                    <div class="form-col form-col--6 form-col--xs-12 form-col--btn-md">
+                        <button class="btn btn--secondary btn--md form-col__btn">Добавить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-info">
+                <div class="payment-info__left">
+                    <div class="payment-info__btn-link">
+                        <a id="add-user-trigger" href="#" class="btn-link">Добавить участника</a>
+                    </div>
+                    <div class="payment-info__btn-link">
+                        <a id="promo-code-trigger" href="#" class="btn-link">У меня есть промокод</a>
+                    </div>
+                </div>
+                <div class="payment-info__right">
+                    <div class="payment-info__total">Сума: <b>3420 грн</b></div>
+                    <div class="payment-info__total">Ваши бонусы fwdays: <b>300 грн</b></div>
+                    <div class="payment-info__total">К оплате: <b>1600 грн</b></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-12">
+                    <div class="form-group">
+                        <label class="form-label" for="">Контактный номер телефона</label>
+                        <input class="input mask-phone-input--js" type="tel" value="">
+                    </div>
+                </div>
+                <div class="form-col form-col--6 form-col--xs-12 form-col--btn-lg">
+                    <button class="btn btn--primary btn--lg form-col__btn" type="submit">Оплатить участие</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--END payment-popup-->
+
+<script src="js/main.js"></script>
+</body>
+</html>

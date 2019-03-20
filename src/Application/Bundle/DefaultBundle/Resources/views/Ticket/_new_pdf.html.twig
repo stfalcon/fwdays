@@ -1,0 +1,207 @@
+{% set event = ticket.event %}
+{% set locale = 'uk' %}
+{% if app.request is not null %} {% set locale = app.request.locale %} {% endif %}
+
+<!DOCTYPE HTML>
+<html lang="{{ locale }}">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ event.name }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style media="print">
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:'Fwdays', serif;
+            font-weight: 500;
+            color: #121314;
+            background: #FFFFFF;
+        }
+
+        .ticket {
+            width: 330px;
+            height: 550px;
+            border-radius: 5px;
+            border: 1px solid #BCBCBC;
+        }
+
+        .ticket__top {
+            height: 356px;
+            background: #F5F3EA;
+            border-radius: 5px 5px 0 0;
+            padding: 5px 20px 10px;
+        }
+
+        .ticket__bottom {
+            padding: 24px 0 12px;
+            background: #FFFFFF;
+        }
+
+        .ticket__head {
+            position: relative;
+        }
+
+        .icon-circle-left {
+            display: block;
+            position: absolute;
+            top: 91px;
+            left: 2px;
+        }
+
+        .icon-circle-right {
+            position: absolute;
+            top: 91px;
+            right: 2px;
+        }
+
+
+        .ticket-info-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: wrap;
+        }
+
+        .ticket-info-table td {
+            vertical-align: top;
+            padding: 8px 4px;
+        }
+
+
+        .ticket-info-table .second-td {
+            width: 110px;
+            padding-left: 10px;
+        }
+
+        .label-td {
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 20px;
+            color: #727272;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-td {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+        }
+
+        .content-td-link {
+            font-size: 12px;
+            line-height: 18px;
+            color: #83837E;
+            text-decoration: none;
+            border-bottom: 1px solid #D0CEC7;
+        }
+
+        .qr-code {
+            text-align: center;
+        }
+
+        .qr-code__number {
+            font-size: 12px;
+            color: #000000;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="ticket">
+    <div class="ticket__top">
+        <div class="ticket__head">
+            {% if app.environment != 'test' %}
+            <img class="ticket__logo" src="data:image/jpeg;base64,{{ event_logo }}" alt="" width="70">
+            {% endif %}
+        </div>
+        <table class="ticket-info-table">
+            <tr>
+                <td colspan="2">
+                    <div class="label-td">{{ 'ticket.email.event.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        {{ event.name }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="label-td">{{ 'contacts.address.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        {{ event.city }}, {{ event.place }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="label-td">{{ 'ticket.email.event_date.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        {% if 'uk' != locale %}
+                            {{ event.date|format_date('MMMM dd, Y', locale, 'Europe/Kiev') }}
+                        {% else %}
+                            {{ event.date|format_date('dd MMMM Y', locale, 'Europe/Kiev') }}
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="second-td">
+                    <div class="label-td">{{ 'ticket.email.event_reg.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        {% if app.environment != 'test' %}
+                        {{ event.date|format_time('HH:mm', locale, 'Europe/Kiev') }}
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="label-td">{{ 'ticket.email.event_member.title'|trans }}</div>
+                    <br>
+                    {% set fullname = ticket.user.fullname %}
+                    {% if fullname is empty %}
+                        {% set fullname = ticket.user.name~' '~ticket.user.surname %}
+                    {% endif %}
+                    <div class="content-td">
+                        {{ fullname }}
+                    </div>
+                </td>
+                <td class="second-td">
+                    <div class="label-td">{{ 'ticket.email.ticket_price.title'|trans }}</div>
+                    <br>
+                    <div class="content-td">
+                        {{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
+                    </div>
+                </td>
+            </tr>
+            {#<tr>#}
+                {#<td colspan="2">#}
+                    {#<div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>#}
+                    {#<br>#}
+                    {#<div class="content-td">#}
+                        {#<a href="{{ url('show_page', {'slug':'public-offer'}) }}" target="_blank" class="content-td-link">{{ url('show_page', {'slug':'public-offer'}) }}</a>#}
+                    {#</div>#}
+                {#</td>#}
+            {#</tr>#}
+        </table>
+    </div>
+    <div class="ticket__bottom">
+        <div class="qr-code">
+            {% if app.environment != 'test' %}
+            <img class="qr-code__img" src="data:image/png;base64,{{ qrCodeBase64 }}" alt="" width="120">
+            {% endif %}
+            <div class="qr-code__number">No{{ ticket.id }}</div>
+        </div>
+    </div>
+</div>
+<div class="icon-circle-left">
+    <img src="{{ asset('assets/img/email/circle_left.png', null, true) }}" alt="" width="14">
+</div>
+<div class="icon-circle-right">
+    <img src="{{ asset('assets/img/email/circle_right.png', null, true) }}" alt="" width="14">
+</div>
+</body>
+</html>

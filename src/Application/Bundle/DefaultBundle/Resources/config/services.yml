@@ -1,0 +1,114 @@
+services:
+
+    app.validator.event_block.text:
+        class: Stfalcon\Bundle\EventBundle\Validator\Constraints\EventBlock\EventBlockTypeText
+
+    app.ticket_cost.admin:
+        class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
+
+    app.event_block.admin:
+        class: Stfalcon\Bundle\EventBundle\Admin\EventBlockAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'Stfalcon\Bundle\EventBundle\Entity\EventBlock', ~]
+
+    app.wayforpay_log.admin:
+        class: Application\Bundle\DefaultBundle\Admin\WayForPayLogAdmin
+        tags:
+        - { name: sonata.admin, manager_type: orm, group: Логи, label: Логи wayforpay}
+        arguments: [~, 'Application\Bundle\DefaultBundle\Entity\WayForPayLog', ~]
+
+    app.pluralization.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppPluralizationExtension
+        tags:
+            - { name: twig.extension}
+
+    app.url_for_redirect:
+        class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
+        arguments: ["@router", "%locales%"]
+
+    app.ticket_cost.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketCostService
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    stfalcon_event.ticket.service:
+        class: Application\Bundle\DefaultBundle\Service\TicketService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%stfalcon_event.config%"
+            - "@translator"
+            - "@router"
+            - "@app.ticket_cost.service"
+            - "@security.token_storage"
+
+    app.datetime.twig.extension:
+        class: Application\Bundle\DefaultBundle\Twig\AppDateTimeExtension
+        arguments:
+            - "@sonata.intl.twig.extension.datetime"
+        tags:
+            - { name: twig.extension}
+
+    twig_asset_version_extension:
+        class: Application\Bundle\DefaultBundle\Twig\AssetVersionExtension
+        arguments: ["%kernel.root_dir%", "%kernel.environment%"]
+        tags:
+            - { name: twig.extension }
+
+    app.need_user_data.exception:
+        class: Application\Bundle\DefaultBundle\EventListener\ExceptionListener
+        arguments: ["@session"]
+        calls:
+            - [setRouter, ['@router']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.helper.new_pdf_generator:
+        class: Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper
+        arguments:
+            - "@twig"
+            - "@router"
+            - "@stfalcon_event.qr_code"
+            - "@kernel"
+            - "@tfox.mpdfport"
+            - "@app.svg_to_jpg.service"
+
+    app.svg_to_jpg.service:
+        class: Application\Bundle\DefaultBundle\Service\SvgToJpg
+        arguments:
+            - "@monolog.logger"
+            - "%kernel.root_dir%"
+            - "%upload_dir%"
+
+    app.my_mailer.service:
+        class: Application\Bundle\DefaultBundle\Service\MyMailer
+        arguments: ['@swiftmailer.transport']
+
+    app.promocode_request.listener:
+        class: Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    app.service.google_map_service:
+        class: Application\Bundle\DefaultBundle\Service\GoogleMapService
+        arguments: ['%google_api_key%', '@buzz']
+
+    app.way_for_pay.service:
+        class: Application\Bundle\DefaultBundle\Service\WayForPayService
+        arguments:
+            - "%stfalcon_event.config%"
+            - "@translator"
+            - "@request_stack"
+            - "@router"
+            - "@security.token_storage"
+            - "@doctrine.orm.entity_manager"
+
+    app.event.service:
+       class: Application\Bundle\DefaultBundle\Service\EventService
+       arguments:
+            - '@app.event.repository.service'
+            - '@app.ticket_cost_repository.service'
+            - '@app.event_review.repository.service'
+            - '@security.authorization_checker'
