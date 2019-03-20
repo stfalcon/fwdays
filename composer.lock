@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "451d3f1df4400d72ab0b049ac0761cac",
+    "content-hash": "48a8b9c0ea407b045f61b75b7efeca78",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -5350,17 +5350,17 @@
         },
         {
             "name": "tfox/mpdf-port-bundle",
-            "version": "dev-fix-yellow-square",
+            "version": "dev-fix-default",
             "target-dir": "TFox/MpdfPortBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stfalcon-studio/MpdfPortBundle.git",
-                "reference": "7c013230da58b85617aa6f777cde3ab157c9151a"
+                "reference": "363eec87ac9024b4e2b63293df78b07c623a4e70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stfalcon-studio/MpdfPortBundle/zipball/7c013230da58b85617aa6f777cde3ab157c9151a",
-                "reference": "7c013230da58b85617aa6f777cde3ab157c9151a",
+                "url": "https://api.github.com/repos/stfalcon-studio/MpdfPortBundle/zipball/363eec87ac9024b4e2b63293df78b07c623a4e70",
+                "reference": "363eec87ac9024b4e2b63293df78b07c623a4e70",
                 "shasum": ""
             },
             "require": {
@@ -5400,10 +5400,10 @@
                 "mPDF"
             ],
             "support": {
-                "source": "https://github.com/stfalcon-studio/MpdfPortBundle/tree/fix-yellow-square",
+                "source": "https://github.com/stfalcon-studio/MpdfPortBundle/tree/fix-default",
                 "issues": "https://github.com/stfalcon-studio/MpdfPortBundle/issues"
             },
-            "time": "2017-08-04T15:09:12+00:00"
+            "time": "2019-03-18T09:58:10+00:00"
         },
         {
             "name": "twig/extensions",
