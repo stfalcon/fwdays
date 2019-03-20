@@ -14,7 +14,7 @@ build:
 
   environment:
     rabbitmq: false
-    mysql: false
+    mysql: 5.5
     postgresql: false
     mongodb: false
     elasticsearch: false
@@ -23,10 +23,14 @@ build:
     neo4j: false
     php:
       version: 5.4
-
+  services:
+    mysql: 5.5
   dependencies:
-    override:
-      - composer install --no-interaction
+    before:
+      - mysql -e "CREATE DATABASE fwdays_com_development"
+  project_setup:
+    before:
+      - mysql -e "CREATE DATABASE fwdays_com_test"
 
 before_commands:
   - 'composer install --prefer-source'
