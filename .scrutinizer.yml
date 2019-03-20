@@ -1,7 +1,7 @@
 build:
   tests:
     override:
-      - bin/phpunit -c src
+      - true
   environment:
     rabbitmq: false
     mysql: 5.6
