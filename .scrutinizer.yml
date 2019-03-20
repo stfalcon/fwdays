@@ -1,3 +1,8 @@
+build:
+  environment:
+    php:
+      version: '5.4'
+
 before_commands:
   - 'mysql -e "CREATE DATABASE fwdays_com_development"'
   - 'composer install --prefer-source'
