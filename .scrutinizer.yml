@@ -1,11 +1,12 @@
 build:
   nodes:
     analysis:
-      project_setup:
-        override: true
       tests:
+        before:
+          - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
+          - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
         override:
-          - phpcs-run -p src/ tests/ --ignore=tests/perf.php,tests/coverage --extensions=php
+          - phpcs-run -p src/*/*Bundle/Tests src/*/Bundle/*Bundle/Tests --extensions=php
           - php-scrutinizer-run --disable-security-analysis
   cache:
     directories:
@@ -27,10 +28,10 @@ build:
     mysql: 5.5
   dependencies:
     before:
-      - mysql -e "CREATE DATABASE fwdays_com_development"
+      - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development"
   project_setup:
     before:
-      - mysql -e "CREATE DATABASE fwdays_com_test"
+      - mysql -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
 
 before_commands:
   - 'composer install --prefer-source'
