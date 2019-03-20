@@ -3,7 +3,7 @@ build:
     tests:
       dependencies:
         override:
-          - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
+          - mysql -uroot -e "CREATE DATABASE IF NOT EXISTS fwdays_com_test"
           - composer install --no-interaction
   tests:
     override:
@@ -19,8 +19,6 @@ build:
     neo4j: false
     php:
       version: 5.4
-  services:
-    mysql: 5.6
 
 checks:
   php:
@@ -28,10 +26,14 @@ checks:
     duplication: true
 
 filter:
-  paths:
-    - src/*
   excluded_paths:
-    - vendor/*
+    - 'app/*'
+    - 'bin/*'
+    - '*.min.js'
+    - 'web/assets/*'
+
+coding_style:
+  php: {  }
 
 tools:
   php_code_sniffer:
