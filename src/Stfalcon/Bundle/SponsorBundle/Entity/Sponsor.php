@@ -232,9 +232,28 @@ class Sponsor
      *
      * @return $this
      */
-    public function addSponsorEvents(EventSponsor $sponsorEvent)
+    public function addSponsorEvent(EventSponsor $sponsorEvent)
     {
-        $this->sponsorEvents[] = $sponsorEvent;
+        $sponsorEvent->setSponsor($this);
+        $this->sponsorEvents->add($sponsorEvent);
+
+        return $this;
+    }
+
+    /**
+     * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
+     */
+    public function removeSponsorEvent(EventSponsor $sponsorEvent)
+    {
+        if ($this->sponsorEvents->contains($sponsorEvent)) {
+                $this->sponsorEvents->removeElement($sponsorEvent);
+            $sponsorEvent->setCategory(null)
+                ->setEvent(null)
+                ->setSponsor(null)
+            ;
+        }
 
         return $this;
     }
