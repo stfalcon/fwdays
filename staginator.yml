@@ -13,6 +13,7 @@ deploy_callbacks:
         - './console do:da:cr -q'
         - './console --no-interaction doctrine:migrations:migrate'
         - './console --no-interaction do:fi:lo'
+        - './console --no-interaction ass:in web'
         - 'cp -a web/app_stag.php web/app.php'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
