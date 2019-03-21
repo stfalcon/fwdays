@@ -54,21 +54,21 @@ class TicketControllerTest extends WebTestCase
         parent::tearDown();
     }
 
-    /**
-     * test en html ticket hash.
-     */
-    public function testEnTicketHash()
-    {
-        $this->assertEquals($this->getFileHash('en'), self::EN_FILE_HASH);
-    }
-
-    /**
-     * test uk html ticket hash.
-     */
-    public function testUkTicketHash()
-    {
-        $this->assertEquals($this->getFileHash('uk'), self::UK_FILE_HASH);
-    }
+//    /**
+//     * test en html ticket hash.
+//     */
+//    public function testEnTicketHash()
+//    {
+//        $this->assertEquals($this->getFileHash('en'), self::EN_FILE_HASH);
+//    }
+//
+//    /**
+//     * test uk html ticket hash.
+//     */
+//    public function testUkTicketHash()
+//    {
+//        $this->assertEquals($this->getFileHash('uk'), self::UK_FILE_HASH);
+//    }
 
     /**
      * Test uk local in cookie.

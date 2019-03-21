@@ -28,7 +28,6 @@
         "stof/doctrine-extensions-bundle": "1.2.*",
         "vich/uploader-bundle": "0.8.1",
         "ornicar/gravatar-bundle" : "1.1.*",
-        "zendframework/zend-feed": "2.0.*",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
