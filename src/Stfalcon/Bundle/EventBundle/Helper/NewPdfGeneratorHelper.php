@@ -3,8 +3,8 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\DefaultBundle\Service\SvgToJpg;
+use Mpdf\Mpdf;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use TFox\MpdfPortBundle\Service\MpdfService;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
@@ -36,11 +36,6 @@ class NewPdfGeneratorHelper
     protected $kernel;
 
     /**
-     * @var MpdfService
-     */
-    protected $mPdfPort;
-
-    /**
      * @var SvgToJpg
      */
     protected $svgToJpgService;
@@ -52,16 +47,14 @@ class NewPdfGeneratorHelper
      * @param Router           $router          Router
      * @param QrCode           $qrCode          QrCode generator
      * @param Kernel           $kernel          Kernel
-     * @param MpdfService      $mPdfPort
      * @param SvgToJpg         $svgToJpgService
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $mPdfPort, $svgToJpgService)
+    public function __construct($templating, $router, $qrCode, $kernel, $svgToJpgService)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
         $this->kernel = $kernel;
-        $this->mPdfPort = $mPdfPort;
         $this->svgToJpgService = $svgToJpgService;
     }
 
@@ -75,12 +68,7 @@ class NewPdfGeneratorHelper
      */
     public function generatePdfFile(Ticket $ticket, $html)
     {
-        // Override default fonts directory for mPDF
-        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
-
-        $this->mPdfPort->setAddDefaultConstructorArgs(false);
-
-        $constructorArgs = array(
+        $constructorArgs = [
             'mode' => 'BLANK',
             'format' => [87, 151],
             'margin_left' => 2,
@@ -89,19 +77,18 @@ class NewPdfGeneratorHelper
             'margin_bottom' => 2,
             'margin_header' => 2,
             'margin_footer' => 2,
-        );
+        ];
 
-        $mPDF = $this->mPdfPort->getMpdf($constructorArgs);
+        $mPDF = new Mpdf($constructorArgs);
+        $mPDF->AddFontDirectory(realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
 
-        // Fwdays font settings
-        $mPDF->fontdata['fwdays'] = array(
-            'R' => 'FwDaysFont-Medium.ttf',
-        );
+        $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysFont-Medium.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';
         $mPDF->available_unifonts[] = 'fwdays';
         $mPDF->default_available_fonts[] = 'fwdays';
         // phpcs:enable
+
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
         $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');
