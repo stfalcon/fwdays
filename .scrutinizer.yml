@@ -39,6 +39,7 @@ filter:
   excluded_paths:
     - 'app/*'
     - 'bin/*'
+    - 'vendor/*'
     - '*.min.js'
     - 'web/assets/*'
 
