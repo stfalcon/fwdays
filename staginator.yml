@@ -33,4 +33,4 @@ ci:
         - './console do:mi:mi --env=test --no-interaction > /dev/null'
         - './console do:fi:lo --env=test --no-interaction > /dev/null'
         - 'app/run-ci-pack.sh -e=prod'
-        - './console do:da:dr --force > /dev/null'
+        - './console do:da:dr --env=test --force > /dev/null'
