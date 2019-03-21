@@ -1,3 +1,35 @@
+build:
+  nodes:
+    tests:
+#      services:
+#        mysql: 5.5
+      dependencies:
+        override:
+#          - composer install --no-interaction --no-scripts
+#          - php vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/bin/build_bootstrap.php
+#          - php app/console do:da:cr
+#          - php app/console do:mi:mi --no-interaction
+#          - php app/console do:fi:lo --no-interaction
+#          - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+#          - unxz geodata/GeoLiteCity.dat.xz
+          - true
+  tests:
+    stop_on_failure: true
+    override:
+#      - bin/phpunit -c app
+      - true
+  environment:
+    rabbitmq: false
+    mysql: 5.5
+    postgresql: false
+    mongodb: false
+    elasticsearch: false
+    redis: false
+    memcached: false
+    neo4j: false
+    php:
+      version: 5.4
+
 checks:
   php:
     code_rating: true
@@ -5,26 +37,13 @@ checks:
 
 filter:
   excluded_paths:
-    - vendor/*
+    - 'app/*'
+    - 'bin/*'
+    - '*.min.js'
+    - 'web/assets/*'
 
-before_commands:
-  - "composer install --prefer-source"
-
-checks:
-  php:
-    code_rating: true
-    duplication: true
-
-filter:
-  excluded_paths:
-    - vendor/*
-    - app/*
-    - bin/*
-    - web/*
-    - spec/*
-
-before_commands:
-  - "composer install --prefer-source"
+coding_style:
+  php: {  }
 
 tools:
   php_code_sniffer:

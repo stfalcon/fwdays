@@ -10,19 +10,6 @@ use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
 class SponsorEntityTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test setter and getter methods for slug.
-     */
-    public function testSetAndGetSponsorSlug()
-    {
-        $slug = 'coca-cola-fanta-sprite';
-
-        $sponsor = new Sponsor();
-        $sponsor->setSlug($slug);
-
-        $this->assertEquals($sponsor->getSlug(), $slug);
-    }
-
-    /**
      * Test setter and getter methods for name.
      */
     public function testSetAndGetSponsorName()
@@ -75,19 +62,6 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setter and getter methods for about.
-     */
-    public function testSetAndGetSponsorAbout()
-    {
-        $slug = 'This is very short about me story.';
-
-        $sponsor = new Sponsor();
-        $sponsor->setAbout($slug);
-
-        $this->assertEquals($sponsor->getAbout(), $slug);
-    }
-
-    /**
      * Test empty fields.
      */
     public function testEmptyPerson()
@@ -95,10 +69,8 @@ class SponsorEntityTest extends \PHPUnit_Framework_TestCase
         $sponsor = new Sponsor();
 
         $this->assertNull($sponsor->getId());
-        $this->assertNull($sponsor->getSlug());
         $this->assertNull($sponsor->getName());
         $this->assertNull($sponsor->getSite());
-        $this->assertNull($sponsor->getAbout());
         $this->assertNull($sponsor->getLogo());
         $this->assertNull($sponsor->getFile());
         $this->assertNull($sponsor->getCreatedAt());

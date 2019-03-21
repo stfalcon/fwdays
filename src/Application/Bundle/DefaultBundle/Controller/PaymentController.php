@@ -51,14 +51,14 @@ class PaymentController extends Controller
         /* @var  User $user */
         $user = $this->getUser();
 
-        /* @var $ticket Ticket */
+        /* @var Ticket|null $ticket  */
         $ticket = $this->getDoctrine()->getManager()
             ->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
         $paymentService = $this->get('stfalcon_event.payment.service');
 
-        /** @var Payment $payment */
+        /** @var Payment|null $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
         $em = $this->getDoctrine()->getManager();
@@ -108,12 +108,13 @@ class PaymentController extends Controller
 
         $this->get('session')->set('active_payment_id', $payment->getId());
 
+        $promoCode = null;
         $request = $this->get('request_stack')->getCurrentRequest();
-        if ($request && $promoCode = $request->query->get('promoCode')) {
-            return $this->addPromoCodeFromQuery($promoCode, $event);
+        if ($request && $code = $request->query->get('promoCode')) {
+            $promoCode = $this->getPromoCodeFromQuery($event, $payment, $code);
         }
 
-        return $this->getPaymentHtml($event, $payment);
+        return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 
     /**
@@ -143,6 +144,7 @@ class PaymentController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
+        /** @var PromoCode|null $promoCode */
         $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
@@ -229,7 +231,7 @@ class PaymentController extends Controller
         if ($payment->isPaid()) {
             return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
         }
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
 
         if (!$user) {
@@ -248,7 +250,7 @@ class PaymentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        /** @var Ticket $ticket */
+        /** @var Ticket|null $ticket */
         $ticket = $em->getRepository('StfalconEventBundle:Ticket')
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
@@ -369,9 +371,9 @@ class PaymentController extends Controller
     /**
      * Get payment html for popup.
      *
-     * @param Event     $event
-     * @param Payment   $payment
-     * @param Promocode $promoCode
+     * @param Event          $event
+     * @param Payment        $payment
+     * @param Promocode|null $promoCode
      *
      * @return JsonResponse
      */
@@ -442,7 +444,7 @@ class PaymentController extends Controller
      *
      * @param Ticket $removeTicket
      *
-     * @return Payment $payment
+     * @return Payment|null $payment
      */
     private function getPaymentIfAccess($removeTicket = null)
     {
@@ -464,24 +466,24 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param string $code
-     * @param Event  $event
+     * @param Event   $event
+     * @param Payment $payment
+     * @param string  $code
      *
-     * @return JsonResponse
+     * @return PromoCode|null
      */
-    private function addPromoCodeFromQuery($code, Event $event)
+    private function getPromoCodeFromQuery(Event $event, Payment $payment, $code)
     {
-        $payment = $this->getPaymentIfAccess();
         $promoCode = null;
-        if ($payment && !$payment->isPaid()) {
+        if (!$payment->isPaid()) {
             $em = $this->getDoctrine()->getManager();
             $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
                 ->findActivePromoCodeByCodeAndEvent($code, $event);
-            if ($promoCode && !$promoCode->isCanBeUsed()) {
+            if (($promoCode && !$promoCode->isCanBeUsed()) || is_array($promoCode)) {
                 $promoCode = null;
             }
         }
 
-        return $this->getPaymentHtml($event, $payment, $promoCode);
+        return $promoCode;
     }
 }
