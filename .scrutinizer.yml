@@ -7,4 +7,4 @@ filter:
     - Tests/*
 
 before_commands:
-  - "composer install --prefer-dist"
+  - "composer install --prefer-dist --no-scripts"
