@@ -108,8 +108,8 @@ final class EventAdmin extends AbstractAdmin
             $this->savePlace = $subject->getPlace();
         }
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
-        $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $datetimePickerOptions =
             [
                 'dp_use_seconds' => false,
@@ -211,7 +211,7 @@ final class EventAdmin extends AbstractAdmin
                     [
                         'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
-                        'help' => 'Осноное изображения. '.$subject->getLogo(),
+                        'help' => 'Основное изображение. '.$subject->getLogo(),
                     ]
                 )
                 ->add(

@@ -59,7 +59,7 @@ final class PromoCodeAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
         $datetimePickerOptions =
             [
                 'format' => 'dd.MM.y',

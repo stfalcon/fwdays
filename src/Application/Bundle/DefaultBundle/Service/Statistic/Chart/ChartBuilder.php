@@ -44,6 +44,7 @@ class ChartBuilder
         $chart->getOptions()->getTitleTextStyle()->setFontSize(20);
         $chart->getOptions()->getHAxis()->getTextStyle()->setFontSize(12);
         $chart->getOptions()->getVAxis()->getTextStyle()->setFontSize(12);
+        $chart->getOptions()->setCurveType('function');
 
         return $chart;
     }
