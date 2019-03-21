@@ -5,6 +5,7 @@
     "homepage": "http://fwdays.com/",
     "require": {
         "php": ">=7.1",
+        "ext-imagick": "*",
         "symfony/symfony": "2.8.*",
         "symfony/assetic-bundle": "2.8.*",
         "symfony/swiftmailer-bundle": "2.3.*",
