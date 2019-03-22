@@ -108,7 +108,7 @@ class Category implements Translatable
     /**
      * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {

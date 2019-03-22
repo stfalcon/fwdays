@@ -46,6 +46,7 @@ class OAuthUserProvider extends BaseClass
 
             if (!$user || !$user instanceof UserInterface) {
                 try {
+                    /** @var User $user */
                     $user = $this->userManager->createUser();
                     $user->setName($response->getFirstName());
                     $user->setSurname($response->getLastName());

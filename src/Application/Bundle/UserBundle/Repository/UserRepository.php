@@ -56,7 +56,7 @@ class UserRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->Join('u.wantsToVisitEvents', 'wve')
+        $qb->join('u.wantsToVisitEvents', 'wve')
             ->where($qb->expr()->in('wve.id', ':events'))
             ->setParameter(':events', $events->toArray())
             ->andWhere('u.subscribe = 1')
