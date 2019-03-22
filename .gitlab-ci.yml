@@ -19,10 +19,10 @@ composer checks:
     script:
         - composer ci:composer-validate
 
-#security checks:
-#    stage: 'CI jobs'
-#    script:
-#        - composer ci:security-check
+security checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:security-check
 
 #doctrine checks:
 #    stage: 'CI jobs'
