@@ -24,10 +24,10 @@ composer checks:
 #    script:
 #        - composer ci:security-check
 
-doctrine checks:
-    stage: 'CI jobs'
-    script:
-        - composer ci:doctrine-schema-validate
+#doctrine checks:
+#    stage: 'CI jobs'
+#    script:
+#        - composer ci:doctrine-schema-validate
 
 twig checks:
     stage: 'CI jobs'
@@ -44,17 +44,17 @@ code style checks:
     script:
         - composer ci:code-style
 
-phpunit:
-    stage: 'CI jobs'
-    artifacts:
-        paths:
-            - './phpunit-coverage.xml'
-            - './clover-coverage.xml'
-            - './junit.xml'
-        reports:
-            junit: './junit.xml'
-    script:
-        - composer ci:phpunit-with-coverage
+#phpunit:
+#    stage: 'CI jobs'
+#    artifacts:
+#        paths:
+#            - './phpunit-coverage.xml'
+#            - './clover-coverage.xml'
+#            - './junit.xml'
+#        reports:
+#            junit: './junit.xml'
+#    script:
+#        - composer ci:phpunit-with-coverage
 
 sonar-scanner:
     image: black15/php71-core-sonar:201807162
