@@ -89,7 +89,7 @@
         "ci:composer-validate": "composer validate --no-check-all",
         "ci:security-check": "app/console security:check",
         "ci:doctrine-schema-validate": [
-            "app/console doctrine:database:create --if-exists",
+            "app/console doctrine:database:create --if-not-exists",
             "app/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
             "app/console doctrine:schema:validate"
         ],
