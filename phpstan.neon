@@ -1,0 +1,6 @@
+parameters:
+    excludes_analyse:
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Features/Context/MinkRedirectContext.php'
+    fileExtensions:
+        - 'php'
+    reportUnmatchedIgnoredErrors: false
