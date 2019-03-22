@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\ORM\EntityManager;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
@@ -33,8 +34,9 @@ class TicketCostService
      */
     public function getCurrentEventTicketCost($event)
     {
-        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')
-            ->getEventEnabledTicketsCost($event);
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
 
         $currentTicketCost = null;
 
@@ -56,8 +58,9 @@ class TicketCostService
      */
     public function getEventFreeTicketCount($event)
     {
-        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')
-            ->getEventEnabledTicketsCost($event);
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+         $eventCosts =  $ticketCostRepository->getEventEnabledTicketsCost($event);
         $count = 0;
         /** @var TicketCost $cost */
         foreach ($eventCosts as $cost) {

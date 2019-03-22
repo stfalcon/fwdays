@@ -1,6 +1,22 @@
 parameters:
     excludes_analyse:
         - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Features/Context/MinkRedirectContext.php'
+        - '%rootDir%/../../../src/Application/Bundle/UserBundle/Features/Context/FeatureContext.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Tests/Controller/WayForPayControllerTest.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Service/WayForPayService.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Service/SvgToJpg.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/EventController.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/PaymentController.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/DefaultController.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/AdminController.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Validator/Constraints/Event/EventDateValidator.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Entity/Mail.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/EventListener/PaymentListener.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Admin/MailAdmin.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Features/Context/FeatureContext.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/SponsorBundle/Features/Context/FeatureContext.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Controller/MailAdminController.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Repository/TicketRepository.php'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false
