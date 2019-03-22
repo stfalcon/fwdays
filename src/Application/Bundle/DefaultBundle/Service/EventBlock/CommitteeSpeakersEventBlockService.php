@@ -2,11 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -11,8 +11,7 @@ class AppDateTimeExtension extends \Twig_Extension
 {
     private $months =
         [
-            'uk' =>
-                [
+            'uk' => [
                     'січня' => ['січень', 'зима'],
                     'лютого' => ['лютий', 'зима'],
                     'березня' => ['березень', 'весна'],
@@ -26,8 +25,7 @@ class AppDateTimeExtension extends \Twig_Extension
                     'листопада' => ['листопад', 'осінь'],
                     'грудня' => ['грудень', 'зима'],
                 ],
-             'en' =>
-                [
+             'en' => [
                     'January' => ['January', 'Winter'],
                     'February' => ['February', 'Winter'],
                     'March' => ['March', 'Spring'],

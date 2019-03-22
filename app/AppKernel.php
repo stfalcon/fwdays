@@ -53,7 +53,6 @@ class AppKernel extends Kernel
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
 
-            new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),

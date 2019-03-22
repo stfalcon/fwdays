@@ -21,3 +21,14 @@ app/config/parameters.ini
 # Geo Data
 !/geodata/.gitkeep
 /geodata/GeoLiteCity.dat
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+/phpunit-coverage.xml
+/clover-coverage.xml
+/junit.xml
+/app/spool
+###< symfony/phpunit-bridge ###

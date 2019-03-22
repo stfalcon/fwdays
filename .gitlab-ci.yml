@@ -1,21 +1,76 @@
-image: jekakm/php71-core:201901222
+image: stfalconstudio/php71-core:201903211
 cache:
     paths:
         - vendor/
 
+services:
+  - name: jekakm/mysql-core:201902201
+    alias: fwdays-php71-mysql
+
+variables:
+  MYSQL_ROOT_PASSWORD: qwerty
+
 before_script:
     - sudo chown -R www-data:www-data /var/www
+    - cp app/config/parameters.ini.stag app/config/parameters.ini
+    - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
     - curl -sS https://getcomposer.org/installer | php
+    - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+    - unxz geodata/GeoLiteCity.dat.xz
     - php composer.phar install
 
 stages:
     - 'CI jobs'
     - 'SonarQube'
 
+# CI jobs
+composer checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:composer-validate
+
+security checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:security-check
+
+doctrine checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:doctrine-schema-validate
+
+twig checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:twig-lint
+
+yaml checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:yaml-lint
+
+code style checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:code-style
+
+phpunit:
+    stage: 'CI jobs'
+    artifacts:
+        paths:
+            - './phpunit-coverage.xml'
+            - './clover-coverage.xml'
+            - './junit.xml'
+        reports:
+            junit: './junit.xml'
+    script:
+        - composer ci:phpunit-with-coverage
+
 sonar-scanner:
-    image: gitlab.stfalcon.com:4567/stfalcon/sonar-docker-image/jekakm/php71-core:201807161
+    image: black15/php71-core-sonar:201807162
     stage: 'SonarQube'
     only:
-        - symfony-upgrade
+        - master
+        - develop
     script:
-        - sudo sonar-scanner -Dsonar.projectKey=fwdays -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN

@@ -72,7 +72,7 @@ class WayForPayLogAdmin extends Admin
                 'actions' => [
                     'show' => [],
                 ],
-                'label'   => 'Actions',
+                'label' => 'Actions',
             ])
         ;
     }

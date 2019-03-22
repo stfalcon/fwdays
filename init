@@ -1,4 +1,5 @@
 cp app/config/parameters.ini.docker app/config/parameters.ini
+sudo apt-get install -y libxml2 librsvg2-bin imagemagick
 mysql -u root -pqwerty -h mysql -e "create database fwdays_com_development"
 composer install
 php app/console do:mi:mi --no-interaction
