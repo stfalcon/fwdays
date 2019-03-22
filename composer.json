@@ -60,7 +60,8 @@
         "phpspec/prophecy": "1.6.*",
         "escapestudios/symfony2-coding-standard": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.2",
-        "squizlabs/php_codesniffer": "^3.3"
+        "squizlabs/php_codesniffer": "^3.3",
+        "phpstan/phpstan": "^0.8"
     },
     "config": {
         "bin-dir": "bin",
@@ -106,6 +107,9 @@
             "app/console do:fi:lo --env=test --no-interaction",
             "bin/phpunit -c app/phpunit.xml.dist",
             "app/console do:da:dr --force --env=test"
+        ],
+        "ci:static-analysis": [
+            "bin/phpstan analyse -l 1 --no-progress  -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
             "app/console doctrine:database:drop --env=test --force --if-exists",

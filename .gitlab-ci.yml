@@ -54,6 +54,11 @@ code style checks:
     script:
         - composer ci:code-style
 
+static analysis:
+  stage: 'CI jobs'
+  script:
+    - composer ci:static-analysis
+
 phpunit:
     stage: 'CI jobs'
     artifacts:
