@@ -1,4 +1,4 @@
-image: jekakm/php71-core:201901222
+image: stfalconstudio/php71-core:201903211
 cache:
     paths:
         - vendor/
@@ -14,7 +14,6 @@ before_script:
     - sudo chown -R www-data:www-data /var/www
     - cp app/config/parameters.ini.stag app/config/parameters.ini
     - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
-    - cat app/config/parameters.ini | grep database_password
     - curl -sS https://getcomposer.org/installer | php
     - php composer.phar install
 
