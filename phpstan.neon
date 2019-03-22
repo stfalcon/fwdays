@@ -34,6 +34,8 @@ parameters:
         - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Repository/MailQueueRepository.php'
         - '%rootDir%/../../../src/Stfalcon/Bundle/SponsorBundle/Entity/Sponsor.php'
         - '%rootDir%/../../../src/Stfalcon/Bundle/SponsorBundle/DataFixtures/ORM/LoadSponsorData.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Service/TicketService.php'
+        - '%rootDir%/../../../src/Application/Bundle/UserBundle/Entity/User.php'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false

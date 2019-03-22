@@ -589,7 +589,7 @@ class Event implements Translatable
     /**
      * Get event name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {

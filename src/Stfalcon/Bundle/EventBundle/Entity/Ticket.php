@@ -249,7 +249,7 @@ class Ticket
      */
     public function isPaid()
     {
-        return (bool) ($this->hasPayment() && $this->getPayment()->isPaid());
+        return $this->hasPayment() && $this->getPayment()->isPaid();
     }
 
     /**

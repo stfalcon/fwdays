@@ -113,7 +113,7 @@ class TicketService
      *
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
-     * @param float     $discount
+     * @param float|int $discount
      *
      * @return Ticket
      */
