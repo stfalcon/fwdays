@@ -55,22 +55,6 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * test en html ticket hash.
-     */
-    public function testEnTicketHash()
-    {
-        $this->assertEquals($this->getFileHash('en'), self::EN_FILE_HASH);
-    }
-
-    /**
-     * test uk html ticket hash.
-     */
-    public function testUkTicketHash()
-    {
-        $this->assertEquals($this->getFileHash('uk'), self::UK_FILE_HASH);
-    }
-
-    /**
      * Test uk local in cookie.
      */
     public function testUkCookieLocale()
@@ -100,26 +84,6 @@ class TicketControllerTest extends WebTestCase
             $this->client->request('GET', sprintf('/%s', $lang));
 
             return $this->client->getRequest()->cookies->get('hl');
-        }
-
-        return '';
-    }
-
-    /**
-     * get file hash by lang.
-     *
-     * @param string $lang
-     *
-     * @return string
-     */
-    private function getFileHash($lang)
-    {
-        if (!empty($lang)) {
-            $this->loginUser('user@fwdays.com', 'qwerty', $lang);
-            $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
-            $content = $this->client->getResponse()->getContent();
-
-            return md5($content);
         }
 
         return '';

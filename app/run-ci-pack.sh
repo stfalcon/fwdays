@@ -85,6 +85,10 @@ echo -e " - Additional php-cs-fixer checks for source .php files: ${RESULT}"
 
 touch /tmp/fwdays_test_coverage.txt
 
+php app/console do:da:cr --env=test > /dev/null;
+php app/console do:mi:mi --env=test --no-interaction > /dev/null;
+php app/console do:fi:lo --env=test --no-interaction > /dev/null;
+
 if php bin/phpunit -c app/phpunit.xml.dist --coverage-text=/tmp/fwdays_test_coverage.txt > /dev/null; then
     RESULT=${OK}
 else
@@ -92,6 +96,8 @@ else
     ERROR=1
 fi
 echo -e " - Fwdays Test Suite: ${RESULT}"
+
+php app/console do:da:dr --force --env=test > /dev/null;
 
 i=1
 cat /tmp/fwdays_test_coverage.txt | while read LINE

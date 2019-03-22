@@ -66,8 +66,6 @@ class SvgToJpg
 
             $im->readImageBlob($svg);
             $im->setImageFormat('jpeg');
-//            $fileName = $this->kernelPath."/../web/".$this->uploadDir.'/test_ticket.jpg';
-//            $im->writeImage($fileName);
         } catch (\Exception $e) {
             $this->logger->addError($e->getMessage(), [$e]);
         }

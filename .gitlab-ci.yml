@@ -16,6 +16,7 @@ sonar-scanner:
     image: gitlab.stfalcon.com:4567/stfalcon/sonar-docker-image/jekakm/php71-core:201807161
     stage: 'SonarQube'
     only:
-        - symfony-upgrade
+        - master
+        - develop
     script:
         - sudo sonar-scanner -Dsonar.projectKey=fwdays -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
