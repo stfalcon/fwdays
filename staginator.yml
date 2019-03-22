@@ -1,5 +1,7 @@
 apt_packages:
     - 'libpng-dev'
+    - 'php-imagick'
+    - 'imagemagick'
     - 'libxml2'
     - 'librsvg2-bin'
 deploy_callbacks:
