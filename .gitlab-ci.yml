@@ -3,6 +3,10 @@ cache:
     paths:
         - vendor/
 
+services:
+  - name: jekakm/mysql-core:201902201
+    alias: mysql
+
 before_script:
     - sudo chown -R www-data:www-data /var/www
     - cp app/config/parameters.ini.stag app/config/parameters.ini
