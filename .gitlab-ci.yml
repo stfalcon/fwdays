@@ -5,12 +5,56 @@ cache:
 
 before_script:
     - sudo chown -R www-data:www-data /var/www
+    - cp app/config/parameters.ini.docker app/config/parameters.ini
     - curl -sS https://getcomposer.org/installer | php
     - php composer.phar install
 
 stages:
     - 'CI jobs'
     - 'SonarQube'
+
+# CI jobs
+composer checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:composer-validate
+
+security checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:security-check
+
+doctrine checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:doctrine-schema-validate-staging
+
+twig checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:twig-lint
+
+yaml checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:yaml-lint
+
+code style checks:
+    stage: 'CI jobs'
+    script:
+        - composer ci:code-style
+
+phpunit:
+    stage: 'CI jobs'
+    artifacts:
+        paths:
+            - './phpunit-coverage.xml'
+            - './clover-coverage.xml'
+            - './junit.xml'
+        reports:
+            junit: './junit.xml'
+    script:
+        - composer ci:phpunit-with-coverage
 
 sonar-scanner:
     image: gitlab.stfalcon.com:4567/stfalcon/sonar-docker-image/jekakm/php71-core:201807161
