@@ -20,8 +20,8 @@ deploy_callbacks:
         - './console --no-interaction do:fi:lo'
         - './console --no-interaction assets:install'
         - 'cp -a web/app_stag.php web/app.php'
-        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
-        - 'chown -R www-data:www-data /stag/www/web/uploads/'
+        - 'cp -a /stag/shared/uploads/ web/'
+        - 'chown -R www-data:www-data web/uploads/'
         - "php app/console lexik:translations:import"
         - 'wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz'
         - 'unxz geodata/GeoLiteCity.dat.xz'
