@@ -46,6 +46,7 @@ parameters:
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/TicketAdminController.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Tests/Listener/PaymentListenerTest.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Tests/Service/ReferralServiceTest.php'
+        - '%rootDir%/../../../src/Application/Bundle/UserBundle/Handler/LoginHandler.php'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false
