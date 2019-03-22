@@ -30,7 +30,7 @@ class TicketCostService
     /**
      * @param Event $event
      *
-     * @return TicketCost
+     * @return TicketCost|null
      */
     public function getCurrentEventTicketCost($event)
     {

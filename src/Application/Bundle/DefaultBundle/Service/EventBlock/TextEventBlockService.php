@@ -22,7 +22,7 @@ class TextEventBlockService extends BaseBlockService
         $eventBlock = $blockContext->getSetting('event_block');
 
         if (!$eventBlock instanceof EventBlock) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [

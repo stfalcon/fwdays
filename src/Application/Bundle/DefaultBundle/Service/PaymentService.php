@@ -139,7 +139,7 @@ class PaymentService
      *
      * @param Payment $payment
      *
-     * @return int|void
+     * @return int|null
      */
     public function getTicketNumberFromPayment($payment)
     {
@@ -150,7 +150,7 @@ class PaymentService
             return $tickets->first()->getId();
         }
 
-        return;
+        return null;
     }
 
     /**
