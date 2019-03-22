@@ -60,7 +60,7 @@ class TicketCostService
     {
         /** @var TicketCostRepository $ticketCostRepository */
         $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
-         $eventCosts =  $ticketCostRepository->getEventEnabledTicketsCost($event);
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
         $count = 0;
         /** @var TicketCost $cost */
         foreach ($eventCosts as $cost) {
