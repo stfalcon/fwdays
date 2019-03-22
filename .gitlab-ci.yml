@@ -63,7 +63,7 @@ phpunit:
         reports:
             junit: './junit.xml'
     script:
-        - composer ci:phpunit-with-coverage
+        - composer ci:phpunit
 
 sonar-scanner:
     image: black15/php71-core-sonar:201807162
