@@ -57,7 +57,7 @@ phpunit:
         - composer ci:phpunit-with-coverage
 
 sonar-scanner:
-    image: gitlab.stfalcon.com:4567/stfalcon/sonar-docker-image/jekakm/php71-core:201807161
+    image: black15/php71-core-sonar:201807162
     stage: 'SonarQube'
     only:
         - master
