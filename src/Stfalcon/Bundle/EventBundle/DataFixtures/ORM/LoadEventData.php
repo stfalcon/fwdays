@@ -120,9 +120,9 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setBackgroundColor('#7586D2')
             ->setDescription('PHP frameworks day это конференция по современным PHP фреймворкам (Zend Framework 2, Symfony 2, Silex, Lithium и др.)')
             ->setLogoFile($this->generateUploadedFile('PHP_big.svg'))
-            ->setSmallLogoFile($this->generateUploadedFile('PHP_small.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('php_small.svg'))
             ->setLogo('PHP_big.svg')
-            ->setSmallLogo('PHP_small.svg')
+            ->setSmallLogo('php_small.svg')
             ->setCity('Киев')
             ->setPlace('Пока неизвестно')
             ->setAbout('<h3>Панельная дискуссия</h3>
@@ -319,9 +319,9 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setBackgroundColor('#7586D2')
             ->setDescription('test description')
             ->setLogoFile($this->generateUploadedFile('PHP_big.svg'))
-            ->setSmallLogoFile($this->generateUploadedFile('PHP_small.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('php_small.svg'))
             ->setLogo('PHP_big.svg')
-            ->setSmallLogo('PHP_small.svg')
+            ->setSmallLogo('php_small.svg')
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h2>Панельная дискуссия</h2>

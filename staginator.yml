@@ -14,15 +14,6 @@ deploy_callbacks:
         - 'curl -s https://getcomposer.org/installer | php'
         - 'mv composer.phar /usr/local/bin/composer'
         - 'composer install --prefer-dist --optimize-autoloader --classmap-authoritative'
-        - './console do:da:dr --force'
-        - './console do:da:cr -q'
-        - './console --no-interaction doctrine:migrations:migrate'
-        - './console --no-interaction do:fi:lo'
-        - './console --no-interaction assets:install'
-        - 'cp -a web/app_stag.php web/app.php'
-        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
-        - 'chown -R www-data:www-data /stag/www/web/uploads/'
-        - "php app/console lexik:translations:import"
         - 'wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz'
         - 'unxz geodata/GeoLiteCity.dat.xz'
         - 'apt-get remove nodejs -y'
@@ -32,7 +23,16 @@ deploy_callbacks:
         - 'npm install -g gulp'
         - 'npm install'
         - 'npm run gulp-prod'
-
+    after_deploy:
+        - 'cp -a web/app_stag.php web/app.php'
+        - './console do:da:dr --force'
+        - './console do:da:cr -q'
+        - './console --no-interaction doctrine:migrations:migrate'
+        - './console --no-interaction do:fi:lo'
+        - './console --no-interaction assets:install'
+        - 'cp -a /stag/shared/uploads/ /stag/www/web/'
+        - 'chown -R www-data:www-data /stag/www/web/uploads/'
+        - "php app/console lexik:translations:import"
 ci:
     commands:
         - 'app/run-ci-pack.sh -e=prod'
