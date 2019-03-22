@@ -5,7 +5,7 @@ cache:
 
 services:
   - name: jekakm/mysql-core:201902201
-    alias: fwdays-php71-mysql
+    alias: mysql
 
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
@@ -14,7 +14,10 @@ before_script:
     - sudo chown -R www-data:www-data /var/www
     - cp app/config/parameters.ini.stag app/config/parameters.ini
     - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
+    - 'sed -i "s/database_host =.*/database_host = mysql/" app/config/parameters.ini'
     - curl -sS https://getcomposer.org/installer | php
+    - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+    - unxz geodata/GeoLiteCity.dat.xz
     - php composer.phar install
 
 stages:
@@ -62,7 +65,7 @@ phpunit:
         reports:
             junit: './junit.xml'
     script:
-        - composer ci:phpunit
+        - composer ci:phpunit-with-coverage
 
 sonar-scanner:
     image: black15/php71-core-sonar:201807162
