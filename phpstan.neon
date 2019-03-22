@@ -36,6 +36,16 @@ parameters:
         - '%rootDir%/../../../src/Stfalcon/Bundle/SponsorBundle/DataFixtures/ORM/LoadSponsorData.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Service/TicketService.php'
         - '%rootDir%/../../../src/Application/Bundle/UserBundle/Entity/User.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/SponsorBundle/Tests/Entity/SponsorEntityTest.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Repository/EventNewsRepository.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Repository/EventRepository.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Command/StfalconMailerCommand.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Admin/EventGroupAdmin.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/DataFixtures/ORM/LoadReviewData.php'
+        - '%rootDir%/../../../src/Stfalcon/Bundle/EventBundle/Entity/EventGroup.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Controller/TicketAdminController.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Tests/Listener/PaymentListenerTest.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Tests/Service/ReferralServiceTest.php'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false

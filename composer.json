@@ -110,7 +110,7 @@
             "app/console do:da:dr --force --env=test"
         ],
         "ci:static-analysis": [
-            "bin/phpstan analyse -l 4 --no-progress  -c phpstan.neon src/"
+            "bin/phpstan analyse -l 5 --no-progress  -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
             "app/console doctrine:database:drop --env=test --force --if-exists",
