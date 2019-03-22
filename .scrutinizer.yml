@@ -1,3 +1,16 @@
+build:
+  nodes:
+    tests:
+      dependencies:
+        override:
+          - true
+  tests:
+    override:
+      - true
+  environment:
+    php:
+      version: 5.4
+
 checks:
   php:
     code_rating: true
@@ -5,26 +18,14 @@ checks:
 
 filter:
   excluded_paths:
-    - vendor/*
+    - 'app/*'
+    - 'bin/*'
+    - 'vendor/*'
+    - '*.min.js'
+    - 'web/assets/*'
 
-before_commands:
-  - "composer install --prefer-source"
-
-checks:
-  php:
-    code_rating: true
-    duplication: true
-
-filter:
-  excluded_paths:
-    - vendor/*
-    - app/*
-    - bin/*
-    - web/*
-    - spec/*
-
-before_commands:
-  - "composer install --prefer-source"
+coding_style:
+  php: {  }
 
 tools:
   php_code_sniffer:
