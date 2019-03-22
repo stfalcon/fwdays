@@ -5,7 +5,7 @@ cache:
 
 services:
   - name: jekakm/mysql-core:201902201
-    alias: mysql
+    alias: fwdays-php71-mysql
 
 before_script:
     - sudo chown -R www-data:www-data /var/www
