@@ -30,6 +30,7 @@ deploy_callbacks:
         - './console --no-interaction doctrine:migrations:migrate'
         - './console --no-interaction do:fi:lo'
         - './console --no-interaction assets:install'
+        - './console --no-interaction assetic:dump'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
