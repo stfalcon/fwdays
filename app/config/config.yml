@@ -78,9 +78,10 @@ doctrine:
         mappings:
             StofDoctrineExtensionsBundle: false
         dql:
-            string_functions:
+            datetime_functions:
                 MONTH: DoctrineExtensions\Query\Mysql\Month
                 DAY: DoctrineExtensions\Query\Mysql\Day
+                DATE: DoctrineExtensions\Query\Mysql\Date
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:

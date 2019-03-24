@@ -205,117 +205,150 @@ class AdminController extends Controller
      */
     public function showStatisticAction()
     {
-        $repo = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('ApplicationUserBundle:User');
-
-        $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.enabled = :enabled')
-        ->setParameter('enabled', 1);
-        $enabledUsersCount = $qb->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.subscribe = :subscribed')
-            ->setParameter('subscribed', 1);
-        $subscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.subscribe = :subscribed')
-            ->setParameter('subscribed', 0);
-        $unSubscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
-
-        //Кол-во людей которые не купили билеты никогда
-        //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
-
-        $usersTicketsCount = [];
-
-        $ticketRepository = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Ticket');
-
-        $paidTickets = $ticketRepository->getPaidTicketsCount();
-
-        foreach ($paidTickets as $paidTicket) {
-            if (isset($usersTicketsCount[$paidTicket[1]])) {
-                ++$usersTicketsCount[$paidTicket[1]];
-            } else {
-                $usersTicketsCount[$paidTicket[1]] = 1;
-            }
-        }
-
-        $haveTickets = 0;
-        foreach ($usersTicketsCount as $item) {
-            $haveTickets += $item;
-        }
-        $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
-        ksort($usersTicketsCount);
-
-        $ticketsByEventGroup = $ticketRepository->getTicketsCountByEventGroup();
-
-        $countsByGroup = [];
-
-        foreach ($ticketsByEventGroup as $key => $item) {
-            if (isset($countsByGroup[$item['name']][$item[1]])) {
-                ++$countsByGroup[$item['name']][$item[1]];
-            } else {
-                $countsByGroup[$item['name']][$item[1]] = 1;
-            }
-        }
-        foreach ($countsByGroup as $key => $item) {
-            ksort($item);
-            $countsByGroup[$key] = $item;
-        }
-        //сколько людей отказалось предоставлять свои данные партнерам
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.allowShareContacts = :allowShareContacts');
-        $qb->setParameter('allowShareContacts', 0);
-        $countRefusedProvideData = $qb->getQuery()->getSingleScalarResult();
-
-        //сколько согласилось
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.allowShareContacts = :allowShareContacts');
-        $qb->setParameter('allowShareContacts', 1);
-        $countAgreedProvideData = $qb->getQuery()->getSingleScalarResult();
-
-        //сколько еще не ответило
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where($qb->expr()->isNull('u.allowShareContacts'));
-        $countNotAnswered = $qb->getQuery()->getSingleScalarResult();
-
-        //сколько было переходов
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where($qb->expr()->isNotNull('u.userReferral'));
-        $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
-
-        $event = $this
-            ->getDoctrine()
+        // беру список активних івентів через івент сервіс чи репозиторій (на морді виводиться, значить має бути готовий)
+        $events = $this->getDoctrine()
             ->getRepository('StfalconEventBundle:Event')
-            ->findOneBy([], ['date' => 'DESC']);
+            ->findBy(['active' => true], ['date' => 'ASC']);
 
-        $eventStatisticSlug = '';
-        if ($event instanceof Event) {
-            $eventStatisticSlug = $event->getSlug();
+        // йду по ньому і витягую статистику продажів по кожному івенту через готовий метод.
+        $eventsData = array();
+        foreach ($events as $event) {
+            $dataForDailyStatistics = $this->get('app.statistic.service')
+                ->getDataForDailyStatisticsOfTicketsSold($event);
+            array_unshift($dataForDailyStatistics, [['label' => 'Date', 'type' => 'date'], ['label' => 'Tickets sold number', 'type' => 'number']]);
+
+            $dataForTotalStatistics = $this->get('app.statistic.service')
+                ->getDataForTotalStatisticsOfTicketsSold($event);
+
+            // передаю в графік
+            $chart = $this->container->get('app.statistic.chart_builder')->calendarChart($dataForDailyStatistics);
+            $eventsData[] = ['id' => $event->getId(), 'name' => $event->getName(), 'chart' => $chart, 'total' => $dataForTotalStatistics];
+
+            break; // @todo забрати
         }
+
+        // 4. таблиця з статистикою по поточним конференціям (к-ть проданих квитків, сумарна вартість)
 
         return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
-            'data' => [
-                'countRefusedProvideData' => $countRefusedProvideData,
-                'countAgreedProvideData' => $countAgreedProvideData,
-                'countNotAnswered' => $countNotAnswered,
-                'countUseReferralProgram' => $countUseReferralProgram,
-                'totalUsersCount' => $totalUsersCount,
-                'enabledUsersCount' => $enabledUsersCount,
-                'subscribedUsersCount' => $subscribedUsersCount,
-                'unSubscribedUsersCount' => $unSubscribedUsersCount,
-                'haveTicketsCount' => $haveTickets,
-                'usersTicketsCount' => $usersTicketsCount,
-                'countsByGroup' => $countsByGroup,
-                'event_statistic_slug' => $eventStatisticSlug,
-            ],
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
+            'events' => $eventsData
         ]);
+
+//        $dataForDailyStatistics = $this->ticketRepository
+//            ->getDataForDailyStatisticsOfTicketsSold($dateFrom, $dateTo, $event);
+//        array_unshift($dataForDailyStatistics, ['Date', 'Number of tickets sold']);
+
+//        $repo = $this->getDoctrine()
+//            ->getManager()
+//            ->getRepository('ApplicationUserBundle:User');
+//
+//        $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
+//
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where('u.enabled = :enabled')
+//        ->setParameter('enabled', 1);
+//        $enabledUsersCount = $qb->getQuery()->getSingleScalarResult();
+//
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where('u.subscribe = :subscribed')
+//            ->setParameter('subscribed', 1);
+//        $subscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+//
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where('u.subscribe = :subscribed')
+//            ->setParameter('subscribed', 0);
+//        $unSubscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+//
+//        //Кол-во людей которые не купили билеты никогда
+//        //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
+//
+//        $usersTicketsCount = [];
+//
+//        $ticketRepository = $this->getDoctrine()
+//            ->getRepository('StfalconEventBundle:Ticket');
+//
+//        $paidTickets = $ticketRepository->getPaidTicketsCount();
+//
+//        foreach ($paidTickets as $paidTicket) {
+//            if (isset($usersTicketsCount[$paidTicket[1]])) {
+//                ++$usersTicketsCount[$paidTicket[1]];
+//            } else {
+//                $usersTicketsCount[$paidTicket[1]] = 1;
+//            }
+//        }
+//
+//        $haveTickets = 0;
+//        foreach ($usersTicketsCount as $item) {
+//            $haveTickets += $item;
+//        }
+//        $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
+//        ksort($usersTicketsCount);
+//
+//        $ticketsByEventGroup = $ticketRepository->getTicketsCountByEventGroup();
+//
+//        $countsByGroup = [];
+//
+//        foreach ($ticketsByEventGroup as $key => $item) {
+//            if (isset($countsByGroup[$item['name']][$item[1]])) {
+//                ++$countsByGroup[$item['name']][$item[1]];
+//            } else {
+//                $countsByGroup[$item['name']][$item[1]] = 1;
+//            }
+//        }
+//        foreach ($countsByGroup as $key => $item) {
+//            ksort($item);
+//            $countsByGroup[$key] = $item;
+//        }
+//        //сколько людей отказалось предоставлять свои данные партнерам
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where('u.allowShareContacts = :allowShareContacts');
+//        $qb->setParameter('allowShareContacts', 0);
+//        $countRefusedProvideData = $qb->getQuery()->getSingleScalarResult();
+//
+//        //сколько согласилось
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where('u.allowShareContacts = :allowShareContacts');
+//        $qb->setParameter('allowShareContacts', 1);
+//        $countAgreedProvideData = $qb->getQuery()->getSingleScalarResult();
+//
+//        //сколько еще не ответило
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where($qb->expr()->isNull('u.allowShareContacts'));
+//        $countNotAnswered = $qb->getQuery()->getSingleScalarResult();
+//
+//        //сколько было переходов
+//        $qb = $repo->getCountBaseQueryBuilder();
+//        $qb->where($qb->expr()->isNotNull('u.userReferral'));
+//        $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
+//
+//        $event = $this
+//            ->getDoctrine()
+//            ->getRepository('StfalconEventBundle:Event')
+//            ->findOneBy([], ['date' => 'DESC']);
+//
+//        $eventStatisticSlug = '';
+//        if ($event instanceof Event) {
+//            $eventStatisticSlug = $event->getSlug();
+//        }
+//
+//        return $this->render('@ApplicationDefault/Statistic/statistic.html.twig', [
+//            'admin_pool' => $this->get('sonata.admin.pool'),
+//            'dataForDailyStatistics' => [
+//                'countRefusedProvideData' => $countRefusedProvideData,
+//                'countAgreedProvideData' => $countAgreedProvideData,
+//                'countNotAnswered' => $countNotAnswered,
+//                'countUseReferralProgram' => $countUseReferralProgram,
+//                'totalUsersCount' => $totalUsersCount,
+//                'enabledUsersCount' => $enabledUsersCount,
+//                'subscribedUsersCount' => $subscribedUsersCount,
+//                'unSubscribedUsersCount' => $unSubscribedUsersCount,
+//                'haveTicketsCount' => $haveTickets,
+//                'usersTicketsCount' => $usersTicketsCount,
+//                'countsByGroup' => $countsByGroup,
+//                'event_statistic_slug' => $eventStatisticSlug,
+//            ],
+//            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
+//        ]);
     }
 
     /**
