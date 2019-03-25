@@ -25,7 +25,7 @@ services:
             
     php_cli:
         build:
-            context: docker-configs/fwdays-dev-cli
+            context: ./docker-configs/fwdays-dev-cli
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
