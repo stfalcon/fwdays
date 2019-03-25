@@ -1,4 +1,4 @@
-FROM jekakm/php71-core:201901222
+FROM stfalconstudio/php71-core:201903211
 RUN sudo apt-get update
 RUN sudo apt-get install libpng-dev -y
 RUN sudo apt-get remove nodejs -y
