@@ -17,8 +17,8 @@ liip_imagine:
 #    default:
 #      filesystem:
 #        locator: filesystem_insecure
+  cache: profile_photos
   filter_sets:
-    cache: profile_photos
     speaker_size:
       filters:
         relative_resize: { widen: 232 }
