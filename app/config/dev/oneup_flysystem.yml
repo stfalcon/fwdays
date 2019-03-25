@@ -1,0 +1,22 @@
+oneup_flysystem:
+    adapters:
+        sponsor_image_adapter:
+            local:
+                directory: '%kernel.root_dir%/../web%app.sponsor_image%'
+        speaker_photo_adapter:
+            local:
+                directory: '%kernel.root_dir%/../web%app.speaker_image%'
+        event_image_adapter:
+            local:
+                directory: '%kernel.root_dir%/../web%app.event_image%'
+
+    filesystems:
+        sponsor_image:
+            adapter: 'sponsor_image_adapter'
+            mount: 'sponsor_image'
+        speaker_photo:
+            adapter: 'speaker_photo_adapter'
+            mount: 'speaker_photo'
+        event_image:
+            adapter: 'event_image_adapter'
+            mount: 'event_image'

@@ -11,9 +11,9 @@
         </div>
         <div class="event-card__photo">
             <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } )}}">
-                {% if event.logoFile is not empty %}
+                {#{% if event.logoFile is not empty %}#}
                     <img class="event-card__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
-                {% endif %}
+                {#{% endif %}#}
             </a>
         </div>
     </div>

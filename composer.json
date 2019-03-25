@@ -28,7 +28,7 @@
         "jms/security-extra-bundle": "1.6.*",
         "friendsofsymfony/user-bundle": "1.3.*",
         "stof/doctrine-extensions-bundle": "1.2.*",
-        "vich/uploader-bundle": "0.8.1",
+        "vich/uploader-bundle": "1.7.*",
         "ornicar/gravatar-bundle" : "1.1.*",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
@@ -44,7 +44,9 @@
         "sentry/sentry-symfony": "^0.8.7",
         "egulias/email-validator": "^1.2",
         "maxmind/geoip": "^1.1",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "oneup/flysystem-bundle": "2.0.1",
+        "aws/aws-sdk-php": "^3.90"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",

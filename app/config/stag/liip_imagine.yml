@@ -1,0 +1,25 @@
+liip_imagine:
+  resolvers:
+    profile_photos:
+      aws_s3:
+        client_config:
+          credentials:
+            key:    '%aws_access_key_id%'
+            secret: '%aws_secret_access_key%'
+          region: '%aws_region%'
+          version: 'latest'
+        bucket: "%aws_s3_bucketname%"
+        get_options:
+          Scheme: https
+        put_options:
+          CacheControl: "max-age=86400"
+#  loaders:
+#    default:
+#      filesystem:
+#        locator: filesystem_insecure
+  filter_sets:
+    cache: profile_photos
+    speaker_size:
+      filters:
+        relative_resize: { widen: 232 }
+        crop: { size: [ 232, 232 ], start: [ 0, 0 ] }

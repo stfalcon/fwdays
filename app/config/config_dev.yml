@@ -1,5 +1,8 @@
 imports:
     - { resource: config.yml }
+    - { resource: dev/oneup_flysystem.yml}
+    - { resource: dev/liip_imagine.yml}
+    - { resource: vich_uploader.yml }
 
 doctrine:
     dbal:
