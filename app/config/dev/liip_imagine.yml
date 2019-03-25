@@ -3,8 +3,8 @@ liip_imagine:
     default:
       filesystem:
         locator: filesystem_insecure
+  cache: ~
   filter_sets:
-    cache: ~
     speaker_size:
       filters:
         relative_resize: { widen: 232 }
