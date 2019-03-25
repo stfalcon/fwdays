@@ -5,19 +5,18 @@ services:
         ports:
             - "127.0.0.1:8000:80"
         volumes:
-            - "./docker-configs/nginx.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/nginx.conf:/etc/nginx/sites-enabled/default"
             - ".:/app:cached"
         depends_on:
             - "php"
 
     php:
-        build:
-            context: ./docker-configs/php-image
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
-            - "./docker-configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
+            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
         depends_on:
@@ -26,12 +25,12 @@ services:
             
     php_cli:
         build:
-            context: ./docker-configs/php-image-cli
+            context: docker-configs/fwdays-dev-cli
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
-            - "./docker-configs/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
+            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
 
@@ -40,7 +39,7 @@ services:
         volumes:
             - "mysqldata:/var/lib/mysql"
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_ROOT_PASSWORD: qwerty
         ports:
             - "127.0.0.1:13306:3306"
 
