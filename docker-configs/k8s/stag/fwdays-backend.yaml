@@ -31,7 +31,7 @@ spec:
         app: fwdays-backend
     spec:
       containers:
-      - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:1553596764
+      - image: <place latest image>
         name: fwdays-backend
         env:
         - name: SERVER_NAME
