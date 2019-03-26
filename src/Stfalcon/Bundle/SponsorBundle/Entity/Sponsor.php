@@ -4,6 +4,8 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,9 +18,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
+ *
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
-class Sponsor
+class Sponsor implements Translatable
 {
+    use TranslateTrait;
+
     /**
      * @var int
      *
@@ -27,6 +33,15 @@ class Sponsor
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
 
     /**
      * @var string
@@ -57,6 +72,15 @@ class Sponsor
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     protected $sortOrder = 1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    protected $about;
 
     /**
      * @var resource
@@ -99,6 +123,7 @@ class Sponsor
     public function __construct()
     {
         $this->sponsorEvents = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -248,7 +273,7 @@ class Sponsor
     public function removeSponsorEvent(EventSponsor $sponsorEvent)
     {
         if ($this->sponsorEvents->contains($sponsorEvent)) {
-                $this->sponsorEvents->removeElement($sponsorEvent);
+            $this->sponsorEvents->removeElement($sponsorEvent);
             $sponsorEvent->setCategory(null)
                 ->setEvent(null)
                 ->setSponsor(null)
@@ -337,5 +362,25 @@ class Sponsor
     public function __toString()
     {
         return (string) $this->getName() ?: '-';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * @param string $about
+     *
+     * @return $this
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+
+        return $this;
     }
 }
