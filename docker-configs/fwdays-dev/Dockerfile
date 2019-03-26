@@ -1,4 +1,4 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1
 RUN apt-get install -y sudo
 RUN echo 'www-data ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/10_www_data
 ADD configs/www.conf /etc/php/7.1/fpm/pool.d/www.conf
