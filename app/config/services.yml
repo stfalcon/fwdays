@@ -11,40 +11,15 @@ services:
 #         class: Monolog\Handler\GelfHandler
 #         arguments: [@gelf.publisher]
     monolog.processor.added_host:
-         class: Monolog\Processor\WebProcessor
-         tags:
-             - { name: monolog.processor, method: __invoke }
+        class: Monolog\Processor\WebProcessor
+        tags:
+            - { name: monolog.processor, method: __invoke }
 
-#    app.imagine.cache.resolver.amazon_s3:
-#        class: Liip\ImagineBundle\Imagine\Cache\Resolver\AmazonS3Resolver
-#        arguments:
-#            - "@app.amazon_s3"
-#            - "%aws_s3_bucketname"
-##        calls:
-##          - [ setObjectUrlOption, [ 'https', true ] ]
-#        tags:
-#            - { name: "liip_imagine.cache.resolver", resolver: "amazon_s3" }
-#
-#    app.amazon_s3:
-#      class: AmazonS3
-#      arguments:
-#        -
-#          key:    "%aws_access_key_id%"
-#          secret: "%aws_secret_access_key%"
-#
-#    acme.amazon_s3:
-#      class: Aws\S3\S3Client
-#      factory_class: Aws\S3\S3Client
-#      factory_method: factory
-#      arguments:
-#        -
-#          credentials: { key: "%amazon.s3.key%", secret: "%amazon.s3.secret%" }
-#          region: "%amazon.s3.region%"
-#
-#    acme.imagine.cache.resolver.amazon_s3:
-#      class: Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver
-#      arguments:
-#        - "@acme.amazon_s3"
-#        - "%amazon.s3.bucket%"
-#      tags:
-#        - { name: "liip_imagine.cache.resolver", resolver: "amazon_s3" }
+    app.prepare_file_storage:
+        class: Application\Bundle\DefaultBundle\DataFixtures\PrepareFileStorage
+        arguments:
+            - '%kernel.environment%'
+            -
+                - '@oneup_flysystem.sponsor_image_filesystem'
+                - '@oneup_flysystem.speaker_photo_filesystem'
+                - '@oneup_flysystem.event_image_filesystem'

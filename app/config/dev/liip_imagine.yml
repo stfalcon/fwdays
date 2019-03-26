@@ -1,11 +1,20 @@
 liip_imagine:
+  resolvers:
+    speaker:
+      flysystem:
+          filesystem_service: oneup_flysystem.speaker_photo_filesystem
+          root_url:           '%aws_s3_public_endpoint%'
+          cache_prefix:       'media/cache'
+          visibility:         public
   loaders:
-    default:
-      filesystem:
-        locator: filesystem_insecure
-  cache: ~
+    speaker:
+      flysystem:
+        filesystem_service: oneup_flysystem.speaker_photo_filesystem
+
   filter_sets:
-    speaker_size:
+    speaker:
+      data_loader: speaker
+      cache: speaker
       filters:
         relative_resize: { widen: 232 }
         crop: { size: [ 232, 232 ], start: [ 0, 0 ] }

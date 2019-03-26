@@ -7,17 +7,18 @@ imports:
     - { resource: sonata/admin.yml }
     - { resource: sonata/block.yml }
     - { resource: aws.yml }
-    - { resource: oneup_flysystem.yaml }
+    - { resource: oneup_flysystem.yml }
+    - { resource: sns_redis.yml }
 
 parameters:
     graylog.fromname: "https://fwdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
     google_apikey: "%google_api_key%"
-    upload_dir: "uploads/images"
     app.sponsor_image: "/uploads/sponsors"
     app.speaker_image: "/uploads/speakers"
     app.event_image: "/uploads/events"
+    app.upload_image: "/uploads/images"
 
 framework:
     #esi:             ~
@@ -33,9 +34,7 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:
-        handler_id: session.handler.native_file
-        save_path: "%kernel.root_dir%/sessions/"
-
+        handler_id: snc_redis.session.handler
 
 # Twig Configuration
 twig:

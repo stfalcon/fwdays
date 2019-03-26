@@ -1,13 +1,14 @@
 liip_imagine:
   resolvers:
-    profile_photos:
+    images:
       aws_s3:
         client_config:
           credentials:
             key:    '%aws_access_key_id%'
             secret: '%aws_secret_access_key%'
-          region: '%aws_region%'
           version: 'latest'
+          region: '%aws_region%'
+          endpoint: '%aws_endpoint%'
         bucket: "%aws_s3_bucketname%"
         get_options:
           Scheme: https
@@ -19,7 +20,7 @@ liip_imagine:
   #        locator: filesystem_insecure
   cache: profile_photos
   filter_sets:
-    speaker_size:
+    speaker:
       filters:
         relative_resize: { widen: 232 }
         crop: { size: [ 232, 232 ], start: [ 0, 0 ] }

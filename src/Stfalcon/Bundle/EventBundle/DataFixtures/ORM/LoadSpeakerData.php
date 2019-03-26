@@ -83,20 +83,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad])
             ->setSortOrder(1);
         $manager->persist($speaker);
-        $this->addReference('speaker-shkodyak', $speaker);
-
-        $speaker = (new Speaker())
-            ->setName('Валера Питерский')
-            ->setEmail('v_r@test.com')
-            ->setCompany('ZZZ')
-            ->setAbout($this->abouts[1])
-            ->setSlug('valeriy-pitersky')
-            ->setFile($this->generateUploadedFile('speaker-1.jpg'))
-            ->setEvents([$eventPHPDay2018, $eventNotActive])
-            ->setCandidateEvents([$eventPHPDay2017])
-            ->setSortOrder(11);
-        $manager->persist($speaker);
-        $this->addReference('speaker-rabievskiy', $speaker);
+        $this->addReference('speaker', $speaker);
 
         for ($i = 0; $i < 4; ++$i) {
             $speaker = (new Speaker())

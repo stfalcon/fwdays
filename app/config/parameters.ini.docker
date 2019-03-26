@@ -42,6 +42,9 @@
     sentry_dsn_js_public = your_sentry_dsn_js_public
 
     aws_region = ""
+    aws_endpoint = ""
     aws_access_key_id = ""
     aws_secret_access_key = ""
     aws_s3_bucketname = ""
+
+    redis_session_url = redis://localhost:6379/0

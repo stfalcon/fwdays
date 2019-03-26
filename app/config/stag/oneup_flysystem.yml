@@ -15,6 +15,11 @@ oneup_flysystem:
                 client: 'app.assets.s3'
                 bucket: '%aws_s3_bucketname%'
                 prefix: '%kernel.environment%%app.event_image%'
+        upload_image_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%aws_s3_bucketname%'
+                prefix: '%kernel.environment%%app.upload_image%'
 
     filesystems:
         sponsor_image:
@@ -26,3 +31,7 @@ oneup_flysystem:
         event_image:
             adapter: 'event_image_adapter'
             mount: 'event_image'
+        upload_image:
+            adapter: 'upload_image_adapter'
+            mount: 'upload_image'
+            visibility: public

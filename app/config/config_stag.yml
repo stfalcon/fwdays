@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
     - { resource: stag/oneup_flysystem.yml}
     - { resource: stag/liip_imagine.yml}
-    - { resource: vich_uploader.yml }
+    - { resource: stag/vich_uploader.yml }
 
 sentry:
     skip_capture:

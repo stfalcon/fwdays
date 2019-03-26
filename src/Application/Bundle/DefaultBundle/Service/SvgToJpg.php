@@ -13,16 +13,6 @@ class SvgToJpg
     /** @var Logger */
     private $logger;
 
-    /**
-     * @var string
-     */
-    private $kernelPath;
-
-    /**
-     * @var string
-     */
-    private $uploadDir;
-
     private $xResolution = 500;
     private $yResolution = 500;
 
@@ -30,14 +20,10 @@ class SvgToJpg
      * SvgToJpg constructor.
      *
      * @param Logger $logger
-     * @param string $kernelPath
-     * @param string $uploadDir
      */
-    public function __construct($logger, $kernelPath, $uploadDir)
+    public function __construct($logger)
     {
         $this->logger = $logger;
-        $this->kernelPath = $kernelPath;
-        $this->uploadDir = $uploadDir;
     }
 
     /**
@@ -51,16 +37,16 @@ class SvgToJpg
     }
 
     /**
-     * @param File   $file
+     * @param string $fileName
      * @param string $backgroundColor
      *
      * @return \Imagick
      */
-    public function convert(File $file, $backgroundColor = '#F5F3EA')
+    public function convert($fileName, $backgroundColor = '#F5F3EA')
     {
         $im = new \Imagick();
         try {
-            $svg = file_get_contents($file);
+            $svg = \file_get_contents($fileName);
             $im->setBackgroundColor(new \ImagickPixel($backgroundColor));
             $im->setResolution($this->xResolution, $this->yResolution);
 

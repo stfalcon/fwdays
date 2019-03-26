@@ -2,9 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Image;
@@ -45,34 +48,79 @@ class UploadController extends Controller
 
         // Validate
         /** @var $errors \Symfony\Component\Validator\ConstraintViolationList */
-        $errors = $this->get('validator')->validateValue(array('file' => $file), $fileConstraint);
+        $errors = $this->get('validator')->validateValue(['file' => $file], $fileConstraint);
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
-
-        $uploadDir = $this->container->getParameter('upload_dir');
-
-        // Move uploaded file
         $newFileName = uniqid().'.'.$file->guessExtension();
-        $path = $this->container->getParameter('kernel.root_dir').'/../web/'.$uploadDir;
-        try {
-            $file->move($path, $newFileName);
-        } catch (FileException $e) {
-            return new JsonResponse(['msg' => $e->getMessage()], 400);
+
+        $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
+        if ($adapter instanceof AwsS3Adapter) {
+            try {
+                $newFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
+                $source = $newFile;
+            } catch (\Exception $e) {
+                return new JsonResponse(['msg' => $e->getMessage()], 400);
+            }
+        } else {
+            $uploadDir = $this->container->getParameter('app.upload_image');
+            $path = $this->container->getParameter('kernel.root_dir').'/../web/'.$uploadDir;
+            try {
+                $file->move($path, $newFileName);
+                $newFile = $path.DIRECTORY_SEPARATOR.$newFileName;
+                $source = $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName;
+            } catch (FileException $e) {
+                return new JsonResponse(['msg' => $e->getMessage()], 400);
+            }
         }
 
         // Get image width/height
-        list($width, $height) = getimagesize(
-            $path.DIRECTORY_SEPARATOR.$newFileName
-        );
+        list($width, $height) = getimagesize($newFile);
 
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName,
+                'src' => $source,
                 'width' => $width,
                 'height' => $height,
             ]
         );
+    }
+
+    /**
+     * @param string       $fileName
+     * @param string|null  $newFilename
+     * @param array        $meta
+     * @param string       $privacy
+     * @return string file url
+     */
+    public function uploadFile($fileName, $newFilename = null, array $meta = [], $privacy = 'public-read') {
+
+        if(!$newFilename) {
+            $newFilename = basename($fileName);
+        }
+        if(!isset($meta['contentType'])) {
+            $mimeTypeHandler = \finfo_open(FILEINFO_MIME_TYPE);
+            $meta['contentType'] = \finfo_file($mimeTypeHandler, $fileName);
+            \finfo_close($mimeTypeHandler);
+        }
+        return $this->upload($newFilename, \file_get_contents($fileName), $meta, $privacy);
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $content
+     * @param array  $meta
+     * @param string $privacy
+     * @return string file url
+     */
+    public function upload($fileName, $content, array $meta = [], $privacy = 'public-read')
+    {
+        $s3client = $this->get('app.assets.s3');
+        $bucket = $this->getParameter('aws_s3_bucketname');
+
+        return $s3client->upload($bucket, $fileName, $content, $privacy, [
+            'Metadata' => $meta
+        ])->toArray()['ObjectURL'];
     }
 }

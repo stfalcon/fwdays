@@ -105,16 +105,13 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        // Get references for event fixtures
         $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
         $eventPHPDay2018 = $manager->merge($this->getReference('event-phpday2018'));
         $eventHighLoad = $manager->merge($this->getReference('event-highload-day'));
         $eventNotActive = $manager->merge($this->getReference('event-not-active'));
 
-        // Get references for speaker fixtures
-        $rabievskiy = $manager->merge($this->getReference('speaker-rabievskiy'));
-        $shkodyak = $manager->merge($this->getReference('speaker-shkodyak'));
+        $speaker = $manager->merge($this->getReference('speaker'));
         $speakers = [];
         for ($i = 0; $i < 4; ++$i) {
             $speakers[] = $manager->merge($this->getReference('speaker-'.$i));
@@ -125,7 +122,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             ->setSlug('php-first-steps')
             ->setText($this->reviews[0])
             ->setEvent($eventPHPDay2018)
-            ->setSpeaker([$rabievskiy, $speakers[0]]);
+            ->setSpeaker([$speaker, $speakers[0]]);
         $manager->persist($review);
 
         $review = (new Review())
@@ -133,7 +130,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             ->setSlug('symfony-2.1-first-steps')
             ->setText($this->reviews[0])
             ->setEvent($eventNotActive)
-            ->setSpeaker([$rabievskiy, $speakers[1]]);
+            ->setSpeaker([$speaker, $speakers[1]]);
         $manager->persist($review);
 
         $review = (new Review())
@@ -141,7 +138,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             ->setSlug('simple-api-via-zend-framework')
             ->setText($this->reviews[1])
             ->setEvent($eventJsDay)
-            ->setSpeaker([$shkodyak]);
+            ->setSpeaker([$speaker]);
         $manager->persist($review);
 
         $review = (new Review())
@@ -149,7 +146,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
             ->setSlug('symfony-forever')
             ->setText($this->reviews[1])
             ->setEvent($eventNotActive)
-            ->setSpeaker([$shkodyak, $speakers[2]]);
+            ->setSpeaker([$speaker, $speakers[2]]);
         $manager->persist($review);
 
         for ($i = 0; $i < 4; ++$i) {

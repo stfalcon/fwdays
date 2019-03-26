@@ -3,7 +3,9 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\PrepareFileStorage;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -32,6 +34,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
+        $this->container->get('app.prepare_file_storage')->clearStorage();
         $event = (new Event())
             ->setName('Конференция JavaScript fwdays \'18')
             ->setSlug('javaScript-framework-day-2018')
@@ -314,14 +317,14 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         $manager->flush();
 
         $event = (new Event())
-            ->setName('PHP Day')
-            ->setSlug('php-day-2017')
+            ->setName('Zend Day')
+            ->setSlug('zend-day-2017')
             ->setBackgroundColor('#7586D2')
             ->setDescription('test description')
-            ->setLogoFile($this->generateUploadedFile('PHP_big.svg'))
-            ->setSmallLogoFile($this->generateUploadedFile('php_small.svg'))
-            ->setLogo('PHP_big.svg')
-            ->setSmallLogo('php_small.svg')
+            ->setLogoFile($this->generateUploadedFile('zend_big.svg'))
+            ->setSmallLogoFile($this->generateUploadedFile('zend_small.svg'))
+            ->setLogo('zend_big.svg')
+            ->setSmallLogo('zend_small.svg')
             ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h2>Панельная дискуссия</h2>
@@ -411,11 +414,12 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, true);
+            return new UploadedFile($tmpFile, $filename, null, null, null, false);
         }
 
         return null;
     }
+
 
     /**
      * @return string

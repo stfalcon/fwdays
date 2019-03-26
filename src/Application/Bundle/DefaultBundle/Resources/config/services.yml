@@ -73,13 +73,13 @@ services:
             - "@stfalcon_event.qr_code"
             - "@kernel"
             - "@app.svg_to_jpg.service"
+            - "@oneup_flysystem.event_image_filesystem"
+            - "@vich_uploader.property_mapping_factory"
 
     app.svg_to_jpg.service:
         class: Application\Bundle\DefaultBundle\Service\SvgToJpg
         arguments:
             - "@monolog.logger"
-            - "%kernel.root_dir%"
-            - "%upload_dir%"
 
     app.my_mailer.service:
         class: Application\Bundle\DefaultBundle\Service\MyMailer
@@ -111,3 +111,8 @@ services:
             - '@app.ticket_cost_repository.service'
             - '@app.event_review.repository.service'
             - '@security.authorization_checker'
+
+    app.liip_imagine.twig.extension:
+       class: Application\Bundle\DefaultBundle\Twig\AppImagineExtension
+       tags: [name: "twig.extension"]
+       arguments: ["@liip_imagine.cache.manager"]

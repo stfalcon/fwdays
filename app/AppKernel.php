@@ -69,6 +69,7 @@ class AppKernel extends Kernel
 
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
+            new Snc\RedisBundle\SncRedisBundle(),
 
         );
 
