@@ -1,4 +1,4 @@
-image: stfalconstudio/php71-core:201903211
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
 cache:
     paths:
         - vendor/
@@ -85,15 +85,12 @@ phpunit:
         - composer ci:phpunit-with-coverage
 
 sonar-scanner:
-    image: black15/php71-core-sonar:201807162
     stage: 'SonarQube'
     only:
-        - master
         - develop
     <<: *build_ci
     script:
         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
-
 staging deploy:
     stage: 'Deploy to staging'
     image: docker:stable
