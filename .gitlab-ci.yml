@@ -66,10 +66,10 @@ code style checks:
         - composer ci:code-style
 
 static analysis:
-  stage: 'CI jobs'
+    stage: 'CI jobs'
     <<: *build_ci
-  script:
-    - composer ci:static-analysis
+    script:
+        - composer ci:static-analysis
 
 phpunit:
     stage: 'CI jobs'
