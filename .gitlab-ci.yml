@@ -6,56 +6,68 @@ cache:
 services:
   - name: jekakm/mysql-core:201902201
     alias: fwdays-php71-mysql
+  - docker:dind
 
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
 
-before_script:
-    - sudo chown -R www-data:www-data /var/www
-    - cp app/config/parameters.ini.stag app/config/parameters.ini
-    - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
-    - curl -sS https://getcomposer.org/installer | php
-    - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
-    - unxz geodata/GeoLiteCity.dat.xz
-    - php composer.phar install
+.before_script_template: &build_ci
+    before_script:
+        - sudo chown -R www-data:www-data /var/www
+        - cp app/config/parameters.ini.stag app/config/parameters.ini
+        - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
+        - curl -sS https://getcomposer.org/installer | php
+        - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+        - unxz geodata/GeoLiteCity.dat.xz
+        - php composer.phar install
 
 stages:
     - 'CI jobs'
     - 'SonarQube'
+    - 'Deploy to staging'
 
 # CI jobs
 composer checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:composer-validate
 
 security checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:security-check
 
 doctrine checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:doctrine-schema-validate
 
 twig checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:twig-lint
 
 yaml checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:yaml-lint
 
 code style checks:
     stage: 'CI jobs'
+    <<: *build_ci
     script:
         - composer ci:code-style
 
 static analysis:
   stage: 'CI jobs'
+    <<: *build_ci
   script:
     - composer ci:static-analysis
 
@@ -68,6 +80,7 @@ phpunit:
             - './junit.xml'
         reports:
             junit: './junit.xml'
+    <<: *build_ci
     script:
         - composer ci:phpunit-with-coverage
 
@@ -77,5 +90,20 @@ sonar-scanner:
     only:
         - master
         - develop
+    <<: *build_ci
     script:
         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+
+staging deploy:
+    stage: 'Deploy to staging'
+    image: docker:stable
+    tags:
+        - dind
+    script:
+        - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
+        - docker build -t fwdays-deployment .
+        - docker images
+    environment:
+        name: staging
+        url: https://fwdays-stag.k8s.stfalcon.com
+    when: manual

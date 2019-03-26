@@ -1,5 +1,5 @@
 FROM debian:stretch
-RUN apt-get update && apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git libpng-dev
+RUN apt-get update && apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git libpng-dev libxml2 librsvg2-bin imagemagick
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 RUN echo 'deb https://packages.sury.org/php/ stretch main' > /etc/apt/sources.list.d/php.list
 RUN apt-get update && apt-get install -y php-pear php7.1 php7.1-apcu php7.1-cli php7.1-common php7.1-curl php7.1-dev php7.1-gd php7.1-imagick php7.1-imap php7.1-intl php7.1-mcrypt php7.1-redis php7.1-sqlite3 php7.1-bcmath php7.1-mbstring php7.1-xml php-amqplib php7.1-fpm

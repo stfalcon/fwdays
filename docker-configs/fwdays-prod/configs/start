@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sed -i s/%fwdays_web_server_name%/$SERVER_NAME/ /etc/nginx/conf.d/fwdays.conf
+/etc/init.d/php7.1-fpm start
+/etc/init.d/nginx start
+
+tail -f /var/log/nginx/access.log
