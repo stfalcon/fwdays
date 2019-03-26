@@ -60,6 +60,20 @@ services:
         depends_on:
             - "mysql"
 
+    minio:
+        image: minio/minio:latest
+        hostname: minio
+        container_name: minio
+        command: server /data
+        volumes:
+            - "minio:/data"
+        ports:
+            - "127.0.0.1:9001:9000"
+        environment:
+            MINIO_ACCESS_KEY: minio
+            MINIO_SECRET_KEY: qwe12345
+
 volumes:
     mysqldata:
     composer:
+    minio:
