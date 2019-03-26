@@ -100,7 +100,7 @@ staging deploy:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker build -t fwdays-deployment .
-        - docker images
+        - DEPLOY_TIMESTAMP=`date +%s` && docker tag fwdays-deployment:latest gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:$DEPLOY_TIMESTAMP && docker push gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:$DEPLOY_TIMESTAMP
     environment:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com

@@ -9,7 +9,6 @@ RUN unxz geodata/GeoLiteCity.dat.xz
 RUN php composer.phar install --no-dev --optimize-autoloader
 RUN php app/console assets:install web --symlink
 RUN php app/console assetic:dump
-RUN php app/console lexik:translations:import
 RUN npm install
 RUN npm run gulp-prod
 RUN chown -R www-data:www-data /app
