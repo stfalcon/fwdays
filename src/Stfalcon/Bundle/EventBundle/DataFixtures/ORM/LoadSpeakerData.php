@@ -85,7 +85,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         $manager->persist($speaker);
         $this->addReference('speaker', $speaker);
 
-        for ($i = 0; $i < 4; ++$i) {
+        for ($i = 0; $i < 5; ++$i) {
             $speaker = (new Speaker())
                 ->setName('speaker'.$i)
                 ->setEmail('test@test.com')

@@ -2,10 +2,10 @@ liip_imagine:
   resolvers:
     speaker:
       flysystem:
-          filesystem_service: oneup_flysystem.speaker_photo_filesystem
-          root_url:           '%aws_s3_public_endpoint%'
-          cache_prefix:       'media/cache'
-          visibility:         public
+        filesystem_service: oneup_flysystem.speaker_photo_filesystem
+        root_url:           '%aws_s3_public_endpoint%/%app.speaker_image%'
+        cache_prefix:       'media/cache'
+        visibility:         public
   loaders:
     speaker:
       flysystem:

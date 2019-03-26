@@ -3,14 +3,17 @@ vich_uploader:
     storage: flysystem
     mappings:
         sponsor_image:
-            uri_prefix: '%app.sponsor_image%'
+            uri_prefix: '%aws_s3_public_endpoint%/%app.sponsor_image%'
             upload_destination: sponsor_image
             delete_on_update: true
             delete_on_remove: true
         speaker_photo:
-            uri_prefix: '%app.speaker_image%'
+            uri_prefix: '%aws_s3_public_endpoint%/%app.speaker_image%'
             upload_destination: speaker_photo
             delete_on_update: true
         event_image:
-            uri_prefix: '%aws_s3_public_endpoint%%app.event_image%'
+            uri_prefix: '%aws_s3_public_endpoint%/%app.event_image%'
             upload_destination: event_image
+        upload_image:
+            uri_prefix: '%aws_s3_public_endpoint%/%app.upload_image%'
+            upload_destination: upload_image

@@ -111,7 +111,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, true);
+            return new UploadedFile($tmpFile, $filename, null, null, null, false);
         }
 
         return null;

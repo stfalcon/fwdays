@@ -1,8 +1,11 @@
 imports:
     - { resource: config.yml }
-    - { resource: stag/oneup_flysystem.yml}
-    - { resource: stag/liip_imagine.yml}
-    - { resource: stag/vich_uploader.yml }
+
+parameters:
+    app.sponsor_image: "%kernel.environment%/uploads/sponsors"
+    app.speaker_image: "%kernel.environment%/uploads/speakers"
+    app.event_image: "%kernel.environment%/uploads/events"
+    app.upload_image: "%kernel.environment%/uploads/images"
 
 sentry:
     skip_capture:

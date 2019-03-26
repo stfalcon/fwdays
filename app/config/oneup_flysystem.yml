@@ -4,7 +4,44 @@ oneup_flysystem:
         default_adapter:
             local:
                 directory: '%kernel.cache_dir%/flysystem'
+        sponsor_image_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%aws_s3_bucketname%'
+                prefix: '%app.sponsor_image%'
+        speaker_photo_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%aws_s3_bucketname%'
+                prefix: '%app.speaker_image%'
+        event_image_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%aws_s3_bucketname%'
+                prefix: '%app.event_image%'
+        upload_image_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%aws_s3_bucketname%'
+                prefix: '%app.upload_image%'
+
     filesystems:
         default_filesystem:
             adapter: default_adapter
             alias: League\Flysystem\Filesystem
+        sponsor_image:
+            adapter: 'sponsor_image_adapter'
+            mount: 'sponsor_image'
+            visibility: public
+        speaker_photo:
+            adapter: 'speaker_photo_adapter'
+            mount: 'speaker_photo'
+            visibility: public
+        event_image:
+            adapter: 'event_image_adapter'
+            mount: 'event_image'
+            visibility: public
+        upload_image:
+            adapter: 'upload_image_adapter'
+            mount: 'upload_image'
+            visibility: public
