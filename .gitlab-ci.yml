@@ -98,6 +98,7 @@ staging deploy:
         - dind
     script:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker build -t fwdays-deployment .
         - docker images
     environment:
