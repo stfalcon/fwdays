@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fwdays-backend
+  namespace: fwdays-stag
+  labels:
+    app: fwdays-backend
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: fwdays-backend
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: fwdays-backend
+  namespace: fwdays-stag
+  labels:
+    app: fwdays-backend
+spec:
+  selector:
+    matchLabels:
+      app: fwdays-backend
+  strategy:
+    type: Recreate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: fwdays-backend
+    spec:
+      containers:
+      - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:1553596764
+        name: fwdays-backend
+        env:
+        - name: SERVER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: server-name
+              key: server-name
+        - name: PARAMETERS
+          valueFrom:
+            secretKeyRef:
+              name: fwdays-backend-parameters
+              key: parameters.ini
+        ports:
+        - containerPort: 80
+          name: fwdays-backend
+      imagePullSecrets:
+      - name: regcred
