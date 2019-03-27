@@ -111,8 +111,3 @@ services:
             - '@app.ticket_cost_repository.service'
             - '@app.event_review.repository.service'
             - '@security.authorization_checker'
-
-    app.liip_imagine.twig.extension:
-       class: Application\Bundle\DefaultBundle\Twig\AppImagineExtension
-       tags: [name: "twig.extension"]
-       arguments: ["@liip_imagine.cache.manager"]

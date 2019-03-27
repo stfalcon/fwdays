@@ -2,18 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -55,23 +50,12 @@ class UploadController extends Controller
         $newFileName = uniqid().'.'.$file->guessExtension();
 
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
-        if ($adapter instanceof AwsS3Adapter) {
-            try {
-                $newFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
-                $source = $newFile;
-            } catch (\Exception $e) {
-                return new JsonResponse(['msg' => $e->getMessage()], 400);
-            }
-        } else {
-            $uploadDir = $this->container->getParameter('app.upload_image');
-            $path = $this->container->getParameter('kernel.root_dir').'/../web/'.$uploadDir;
-            try {
-                $file->move($path, $newFileName);
-                $newFile = $path.DIRECTORY_SEPARATOR.$newFileName;
-                $source = $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName;
-            } catch (FileException $e) {
-                return new JsonResponse(['msg' => $e->getMessage()], 400);
-            }
+
+        try {
+            $newFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
+            $source = $newFile;
+        } catch (\Exception $e) {
+            return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
         // Get image width/height
@@ -88,22 +72,24 @@ class UploadController extends Controller
     }
 
     /**
-     * @param string       $fileName
-     * @param string|null  $newFilename
-     * @param array        $meta
-     * @param string       $privacy
+     * @param string      $fileName
+     * @param string|null $newFilename
+     * @param array       $meta
+     * @param string      $privacy
+     *
      * @return string file url
      */
-    public function uploadFile($fileName, $newFilename = null, array $meta = [], $privacy = 'public-read') {
-
-        if(!$newFilename) {
+    public function uploadFile($fileName, $newFilename = null, array $meta = [], $privacy = 'public-read')
+    {
+        if (!$newFilename) {
             $newFilename = basename($fileName);
         }
-        if(!isset($meta['contentType'])) {
+        if (!isset($meta['contentType'])) {
             $mimeTypeHandler = \finfo_open(FILEINFO_MIME_TYPE);
             $meta['contentType'] = \finfo_file($mimeTypeHandler, $fileName);
             \finfo_close($mimeTypeHandler);
         }
+
         return $this->upload($newFilename, \file_get_contents($fileName), $meta, $privacy);
     }
 
@@ -112,6 +98,7 @@ class UploadController extends Controller
      * @param string $content
      * @param array  $meta
      * @param string $privacy
+     *
      * @return string file url
      */
     public function upload($fileName, $content, array $meta = [], $privacy = 'public-read')
@@ -120,7 +107,7 @@ class UploadController extends Controller
         $bucket = $this->getParameter('aws_s3_bucketname');
 
         return $s3client->upload($bucket, $fileName, $content, $privacy, [
-            'Metadata' => $meta
+            'Metadata' => $meta,
         ])->toArray()['ObjectURL'];
     }
 }

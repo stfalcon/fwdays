@@ -29,16 +29,16 @@ doctrine:
 
 liip_functional_test: ~
 
-vich_uploader:
-     db_driver: orm
-     mappings:
-          sponsor_image:
-              uri_prefix: /tmp/uploads/sponsors
-              upload_destination: %kernel.root_dir%/../web/tmp/uploads/sponsors
-          speaker_photo:
-              uri_prefix: /tmp/uploads/speakers
-              upload_destination: %kernel.root_dir%/../web/tmp/uploads/speakers
-          event_image:
-              uri_prefix: /tmp/uploads/events
-              upload_destination: %kernel.root_dir%/../web/tmp/uploads/events
+#vich_uploader:
+#     db_driver: orm
+#     mappings:
+#          sponsor_image:
+#              uri_prefix: /tmp/uploads/sponsors
+#              upload_destination: %kernel.root_dir%/../web/tmp/uploads/sponsors
+#          speaker_photo:
+#              uri_prefix: /tmp/uploads/speakers
+#              upload_destination: %kernel.root_dir%/../web/tmp/uploads/speakers
+#          event_image:
+#              uri_prefix: /tmp/uploads/events
+#              upload_destination: %kernel.root_dir%/../web/tmp/uploads/events
 

@@ -36,12 +36,11 @@ class PrepareFileStorage
         $this->filesystem = $filesystem;
     }
 
+    /**
+     *  Clear storeg for fixture files.
+     */
     public function clearStorage(): void
     {
-//        if (!$this->filesystem->exists($this->tmpDirectory)) {
-//            $this->filesystem->mkdir($this->tmpDirectory);
-//        }
-
         foreach ($this->remoteFilesystems as $filesystem) {
             $contents = $filesystem->listContents('/', true);
             foreach ($contents as $contentItem) {

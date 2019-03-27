@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class SvgToJpg.

@@ -3,9 +3,7 @@
 namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\PrepareFileStorage;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -419,7 +417,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 
         return null;
     }
-
 
     /**
      * @return string
