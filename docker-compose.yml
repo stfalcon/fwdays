@@ -22,7 +22,7 @@ services:
         depends_on:
             - "mysql"
             - "mailcatcher"
-            - "redis"
+            - "sessions"
 
     php_cli:
         build:
@@ -61,7 +61,7 @@ services:
         depends_on:
             - "mysql"
 
-    redis:
+    sessions:
         image: redis:5.0.4
 
     minio:
