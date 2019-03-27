@@ -33,14 +33,17 @@ oneup_flysystem:
             adapter: 'sponsor_image_adapter'
             mount: 'sponsor_image'
             visibility: public
+            disable_asserts: true
         speaker_photo:
             adapter: 'speaker_photo_adapter'
             mount: 'speaker_photo'
             visibility: public
+            disable_asserts: true
         event_image:
             adapter: 'event_image_adapter'
             mount: 'event_image'
             visibility: public
+            disable_asserts: true
         upload_image:
             adapter: 'upload_image_adapter'
             mount: 'upload_image'

@@ -48,4 +48,4 @@
     aws_s3_bucketname = "fwdays-stag"
     aws_s3_public_endpoint = "https://fwdays-stag.ams3.digitaloceanspaces.com"
 
-    redis_session_url = redis://localhost:6379/0
+    redis_session_url = redis://sessions:6379/0
