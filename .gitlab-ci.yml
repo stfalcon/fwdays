@@ -29,48 +29,48 @@ stages:
     - 'Deploy to staging'
 
 # CI jobs
-#composer checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:composer-validate
-#
-#security checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:security-check
-#
-#doctrine checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:doctrine-schema-validate
-#
-#twig checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:twig-lint
-#
-#yaml checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:yaml-lint
-#
-#code style checks:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:code-style
-#
-#static analysis:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    script:
-#        - composer ci:static-analysis
-#
+composer checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:composer-validate
+
+security checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:security-check
+
+doctrine checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:doctrine-schema-validate
+
+twig checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:twig-lint
+
+yaml checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:yaml-lint
+
+code style checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:code-style
+
+static analysis:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:static-analysis
+
 #phpunit:
 #    stage: 'CI jobs'
 #    artifacts:
@@ -84,13 +84,13 @@ stages:
 #    script:
 #        - composer ci:phpunit-with-coverage
 #
-#sonar-scanner:
-#    stage: 'SonarQube'
-#    only:
-#        - develop
-#    <<: *build_ci
-#    script:
-#        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+sonar-scanner:
+    stage: 'SonarQube'
+    only:
+        - develop
+    <<: *build_ci
+    script:
+        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
 staging deploy:
     stage: 'Deploy to staging'
     image: docker:stable
@@ -99,7 +99,7 @@ staging deploy:
     script:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-        - docker pull fwdays-deployment:latest || true
+        - docker pull gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:latest || true
         - docker build --cache-from fwdays-deployment:latest -t fwdays-deployment .
         - DEPLOY_TIMESTAMP=`date +%s`
         - docker tag fwdays-deployment:latest gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:$DEPLOY_TIMESTAMP
