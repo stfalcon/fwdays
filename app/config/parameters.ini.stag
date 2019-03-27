@@ -46,5 +46,6 @@
     aws_access_key_id = "DYHAGM6LZTLQVEET4N4F"
     aws_secret_access_key = "j9VblsZeLUDoo+nkh34FeiyfB7VNMoL0aGrJB5tNeh4"
     aws_s3_bucketname = "fwdays-stag"
+    aws_s3_public_endpoint = "https://fwdays-stag.ams3.digitaloceanspaces.com"
 
     redis_session_url = redis://localhost:6379/0
