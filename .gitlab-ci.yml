@@ -77,7 +77,6 @@ generate npm cache:
     <<: *build_ci
     script:
         - npm install
-        - npm run gulp-prod
 
 #phpunit:
 #    stage: 'CI jobs'
