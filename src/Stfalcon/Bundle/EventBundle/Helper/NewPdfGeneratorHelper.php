@@ -132,8 +132,8 @@ class NewPdfGeneratorHelper
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_new_pdf.html.twig');
 
-        $event =  $ticket->getEvent();
-        $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile': 'logoFile';
+        $event = $ticket->getEvent();
+        $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile' : 'logoFile';
         $path = $this->vichUploader->fromField($event, $fieldFileName);
         $fileName = $event->getSmallLogo() ?: $event->getLogo();
         if ($this->filesystem->has($fileName)) {
