@@ -1,6 +1,12 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    app.sponsor_image: "%kernel.environment%/uploads/sponsors"
+    app.speaker_image: "%kernel.environment%/uploads/speakers"
+    app.event_image: "%kernel.environment%/uploads/events"
+    app.upload_image: "%kernel.environment%/uploads/images"
+
 doctrine:
     dbal:
         server_version: 5.6

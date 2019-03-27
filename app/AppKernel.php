@@ -50,6 +50,7 @@ class AppKernel extends Kernel
             new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
             new Application\Bundle\UserBundle\ApplicationUserBundle(),
 
+            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
 
@@ -68,6 +69,8 @@ class AppKernel extends Kernel
 
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
+            new Snc\RedisBundle\SncRedisBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {

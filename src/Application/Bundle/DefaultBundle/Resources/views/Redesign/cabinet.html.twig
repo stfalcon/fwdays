@@ -60,11 +60,11 @@
                             <select id="ref-dropdown" name="" class="share-ref__select">
                                 {% for event in events %}
                                     {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                                        {% if firstEvent.logoFile is not empty %}
+                                        {#{% if firstEvent.logoFile is not empty %}#}
                                             {% set image = absolute_url(vich_uploader_asset(event, 'logoFile')) %}
-                                        {% else %}
-                                            {% set image = '' %}
-                                        {% endif %}
+                                        {#{% else %}#}
+                                            {#{% set image = '' %}#}
+                                        {#{% endif %}#}
                                         <option value="{{ loop.index }}"
                                             data-ref="{{ url('event_show_redesign', {'eventSlug' : event.slug, 'ref': code}) }}"
                                             data-image="{{ image }}">

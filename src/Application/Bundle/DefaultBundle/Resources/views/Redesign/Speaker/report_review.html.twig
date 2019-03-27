@@ -73,8 +73,8 @@
                     <div class="review-layout__speaker">
                         {% for speaker in review.speakers %}
                             <div class="review-speaker review">
-                                {% if speaker.file is not empty %}
-                                    <img class="review-speaker__photo" src="{{ vich_uploader_asset(speaker, 'file')|imagine_filter('speaker_size') }}"
+                                {% if speaker.photo is not null %}
+                                    <img class="review-speaker__photo" src="{{ speaker.photo|imagine_filter('speaker')  }}"
                                          alt="">
                                 {% else %}
                                     <img class="review-speaker__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}"

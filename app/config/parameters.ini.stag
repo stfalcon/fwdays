@@ -40,3 +40,11 @@
     sentry_dsn_stag = "http://77c8377f656a416394b62de4876f38dc:c39d527c3297441fa771883ea03f116a@sentry.stfalcon.com/60"
     sentry_dsn_prod = "http://77c8377f656a416394b62de4876f38dc:c39d527c3297441fa771883ea03f116a@sentry.stfalcon.com/60"
     sentry_dsn_js_public = "http://77c8377f656a416394b62de4876f38dc@sentry.stfalcon.com/60"
+
+    aws_region = "ams3"
+    aws_endpoint = "https://ams3.digitaloceanspaces.com"
+    aws_access_key_id = "DYHAGM6LZTLQVEET4N4F"
+    aws_secret_access_key = "j9VblsZeLUDoo+nkh34FeiyfB7VNMoL0aGrJB5tNeh4"
+    aws_s3_bucketname = "fwdays-stag"
+
+    redis_session_url = redis://localhost:6379/0

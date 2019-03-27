@@ -1,0 +1,11 @@
+services:
+    app.assets.s3:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                version: 'latest'
+                region: '%aws_region%'
+                endpoint: '%aws_endpoint%'
+                credentials:
+                    key: '%aws_access_key_id%'
+                    secret: '%aws_secret_access_key%'

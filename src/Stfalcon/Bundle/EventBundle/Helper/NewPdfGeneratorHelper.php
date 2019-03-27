@@ -3,12 +3,14 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\DefaultBundle\Service\SvgToJpg;
+use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpKernel\Kernel;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * Class PdfGeneratorHelper.
@@ -40,22 +42,29 @@ class NewPdfGeneratorHelper
      */
     protected $svgToJpgService;
 
+    private $filesystem;
+    private $vichUploader;
+
     /**
      * Constructor.
      *
-     * @param Twig_Environment $templating      Twig
-     * @param Router           $router          Router
-     * @param QrCode           $qrCode          QrCode generator
-     * @param Kernel           $kernel          Kernel
-     * @param SvgToJpg         $svgToJpgService
+     * @param Twig_Environment       $templating      Twig
+     * @param Router                 $router          Router
+     * @param QrCode                 $qrCode          QrCode generator
+     * @param Kernel                 $kernel          Kernel
+     * @param SvgToJpg               $svgToJpgService
+     * @param Filesystem             $filesystem
+     * @param PropertyMappingFactory $vichUploader
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $svgToJpgService)
+    public function __construct($templating, $router, $qrCode, $kernel, $svgToJpgService, $filesystem, $vichUploader)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
         $this->kernel = $kernel;
         $this->svgToJpgService = $svgToJpgService;
+        $this->filesystem = $filesystem;
+        $this->vichUploader = $vichUploader;
     }
 
     /**
@@ -122,8 +131,17 @@ class NewPdfGeneratorHelper
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_new_pdf.html.twig');
-        $logoFile = $ticket->getEvent()->getSmallLogoFile() ?: $ticket->getEvent()->getLogoFile();
-        $imageData = $this->svgToJpgService->convert($logoFile);
+
+        $event =  $ticket->getEvent();
+        $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile': 'logoFile';
+        $path = $this->vichUploader->fromField($event, $fieldFileName);
+        $fileName = $event->getSmallLogo() ?: $event->getLogo();
+        if ($this->filesystem->has($fileName)) {
+            $fileName = $path->getUriPrefix().'/'.$fileName;
+            $imageData = $this->svgToJpgService->convert($fileName);
+        } else {
+            $imageData = null;
+        }
 
         $base64EventSmallLogo = base64_encode($imageData);
 

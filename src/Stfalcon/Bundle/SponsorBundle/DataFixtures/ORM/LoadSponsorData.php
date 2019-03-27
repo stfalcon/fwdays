@@ -3,6 +3,7 @@
 namespace Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -80,12 +81,12 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             $this->addReference('partner-'.$i, $partner);
         }
 
-        for ($i = 0; $i < 6; ++$i) {
+        for ($i = 4; $i < 10; ++$i) {
             $partner = (new Sponsor())
                 ->setName('info partner-'.$i)
                 ->setSlug('info-partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->generateUploadedFile('partner-'.($i + 5).'.jpg'))
+                ->setFile($this->generateUploadedFile('partner-'.$i.'.jpg'))
                 ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder($i + 10)
                 ->setOnMain(true);
@@ -110,7 +111,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, true);
+            return new UploadedFile($tmpFile, $filename, null, null, null, false);
         }
 
         return null;

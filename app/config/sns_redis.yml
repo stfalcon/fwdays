@@ -1,0 +1,11 @@
+snc_redis:
+    clients:
+        session:
+            dsn: "%redis_session_url%"
+            type: predis
+            logging: false
+            alias: session
+    session:
+        client: session
+        locking: false
+        prefix: session_prefix_
