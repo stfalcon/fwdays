@@ -41,11 +41,11 @@
     sentry_dsn_prod = your_sentry_dsn_prod
     sentry_dsn_js_public = your_sentry_dsn_js_public
 
-    aws_region = "ams3"
-    aws_endpoint = "https://ams3.digitaloceanspaces.com"
-    aws_access_key_id = "DYHAGM6LZTLQVEET4N4F"
-    aws_secret_access_key = "j9VblsZeLUDoo+nkh34FeiyfB7VNMoL0aGrJB5tNeh4"
-    aws_s3_bucketname = "fwdays-stag"
-    aws_s3_public_endpoint = "https://fwdays-stag.ams3.digitaloceanspaces.com"
+    aws_region = ""
+    aws_endpoint = "http://minio:9000"
+    aws_access_key_id = "minio"
+    aws_secret_access_key = "qwe12345"
+    aws_s3_bucketname = "fwdays"
+    aws_s3_public_endpoint = "http://127.0.0.1:9001/fwdays"
 
     redis_session_url = redis://sessions:6379/0
