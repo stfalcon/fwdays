@@ -41,14 +41,14 @@ class PrepareFileStorage
      */
     public function clearStorage(): void
     {
-        foreach ($this->remoteFilesystems as $filesystem) {
-            $contents = $filesystem->listContents('/', true);
-            foreach ($contents as $contentItem) {
-                if ('file' !== $contentItem['type']) {
-                    continue;
-                }
-                $filesystem->delete($contentItem['path']);
-            }
-        }
+//        foreach ($this->remoteFilesystems as $filesystem) {
+//            $contents = $filesystem->listContents('/', true);
+//            foreach ($contents as $contentItem) {
+//                if ('file' !== $contentItem['type']) {
+//                    continue;
+//                }
+//                $filesystem->delete($contentItem['path']);
+//            }
+//        }
     }
 }
