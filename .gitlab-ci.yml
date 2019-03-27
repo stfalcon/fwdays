@@ -24,8 +24,8 @@ variables:
         - php composer.phar install
 
 stages:
-    #- 'CI jobs'
-    #- 'SonarQube'
+    - 'CI jobs'
+    - 'SonarQube'
     - 'Deploy to staging'
 
 # CI jobs
