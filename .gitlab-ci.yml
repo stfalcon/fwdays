@@ -2,6 +2,7 @@ image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
 cache:
     paths:
         - vendor/
+        - node_modules/
 
 services:
   - name: jekakm/mysql-core:201902201
@@ -21,7 +22,7 @@ variables:
         - curl -sS https://getcomposer.org/installer | php
         - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
         - unxz geodata/GeoLiteCity.dat.xz
-        - php composer.phar install
+        - php composer.phar install --optimize-autoloader
 
 stages:
     - 'CI jobs'
@@ -71,6 +72,13 @@ static analysis:
     script:
         - composer ci:static-analysis
 
+generate npm cache:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - npm install
+        - npm run gulp-prod
+
 #phpunit:
 #    stage: 'CI jobs'
 #    artifacts:
@@ -99,8 +107,7 @@ staging deploy:
     script:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
-        - docker pull gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:latest || true
-        - docker build --cache-from fwdays-deployment:latest -t fwdays-deployment .
+        - docker build -t fwdays-deployment .
         - DEPLOY_TIMESTAMP=`date +%s`
         - docker tag fwdays-deployment:latest gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:$DEPLOY_TIMESTAMP
         - docker push gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-deployment:$DEPLOY_TIMESTAMP
