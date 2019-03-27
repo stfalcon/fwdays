@@ -23,7 +23,10 @@ spec:
     matchLabels:
       app: fwdays-backend
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
   replicas: 2
   template:
     metadata:

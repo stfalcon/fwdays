@@ -24,73 +24,73 @@ variables:
         - php composer.phar install
 
 stages:
-    - 'CI jobs'
-    - 'SonarQube'
+    #- 'CI jobs'
+    #- 'SonarQube'
     - 'Deploy to staging'
 
 # CI jobs
-composer checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:composer-validate
-
-security checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:security-check
-
-doctrine checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:doctrine-schema-validate
-
-twig checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:twig-lint
-
-yaml checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:yaml-lint
-
-code style checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:code-style
-
-static analysis:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer ci:static-analysis
-
-phpunit:
-    stage: 'CI jobs'
-    artifacts:
-        paths:
-            - './phpunit-coverage.xml'
-            - './clover-coverage.xml'
-            - './junit.xml'
-        reports:
-            junit: './junit.xml'
-    <<: *build_ci
-    script:
-        - composer ci:phpunit-with-coverage
-
-sonar-scanner:
-    stage: 'SonarQube'
-    only:
-        - develop
-    <<: *build_ci
-    script:
-        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+#composer checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:composer-validate
+#
+#security checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:security-check
+#
+#doctrine checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:doctrine-schema-validate
+#
+#twig checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:twig-lint
+#
+#yaml checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:yaml-lint
+#
+#code style checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:code-style
+#
+#static analysis:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer ci:static-analysis
+#
+#phpunit:
+#    stage: 'CI jobs'
+#    artifacts:
+#        paths:
+#            - './phpunit-coverage.xml'
+#            - './clover-coverage.xml'
+#            - './junit.xml'
+#        reports:
+#            junit: './junit.xml'
+#    <<: *build_ci
+#    script:
+#        - composer ci:phpunit-with-coverage
+#
+#sonar-scanner:
+#    stage: 'SonarQube'
+#    only:
+#        - develop
+#    <<: *build_ci
+#    script:
+#        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
 staging deploy:
     stage: 'Deploy to staging'
     image: docker:stable
