@@ -51,4 +51,4 @@ spec:
         - containerPort: 80
           name: fwdays-backend
       imagePullSecrets:
-      - name: regcred
+      - name: regcred-dockerhub

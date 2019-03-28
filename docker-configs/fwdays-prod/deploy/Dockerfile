@@ -11,4 +11,4 @@ RUN php app/console assets:install web --symlink
 RUN php app/console assetic:dump
 RUN npm install
 RUN npm run gulp-prod
-RUN chown -R www-data:www-data /app
+RUN chown -R www-data:www-data /app/app/cache /app/app/logs /app/web
