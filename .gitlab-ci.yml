@@ -107,6 +107,22 @@ staging deploy:
         - chmod a+x /usr/local/bin/kubectl
         - mkdir /root/.kube && echo $K8S_CONF|base64 -d > /root/.kube/config
         - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
+    environment:
+        name: staging
+        url: https://fwdays-stag.k8s.stfalcon.com
+    when: manual
+
+staging rollback:
+    stage: 'Deploy to staging'
+    image: docker:stable
+    tags:
+        - k8s-deploy
+    script:
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - chmod a+x /usr/local/bin/kubectl
+        - mkdir /root/.kube && echo $K8S_CONF|base64 -d > /root/.kube/config
+        - kubectl -n fwdays-stag rollout undo deployments/fwdays-backend
     environment:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com
