@@ -23,6 +23,7 @@ variables:
         - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
         - unxz geodata/GeoLiteCity.dat.xz
         - php composer.phar install --optimize-autoloader
+        - npm install
 
 stages:
     - 'CI jobs'
@@ -72,12 +73,6 @@ static analysis:
     script:
         - composer ci:static-analysis
 
-generate npm cache:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - npm install
-
 #phpunit:
 #    stage: 'CI jobs'
 #    artifacts:
@@ -102,7 +97,7 @@ staging deploy:
     stage: 'Deploy to staging'
     image: docker:stable
     tags:
-        - k8s-deploy
+        - dind
     script:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
