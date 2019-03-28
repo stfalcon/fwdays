@@ -7,12 +7,9 @@ cache:
 services:
   - name: jekakm/mysql-core:201902201
     alias: fwdays-php71-mysql
-  - docker:dind
 
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
 
 .before_script_template: &build_ci
     before_script:
@@ -97,7 +94,7 @@ staging deploy:
     stage: 'Deploy to staging'
     image: docker:stable
     tags:
-        - dind
+        - k8s-deploy
     script:
         - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
