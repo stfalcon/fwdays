@@ -10,24 +10,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 /**
  * Class AbstractNewsAdmin.
  */
-abstract class AbstractNewsAdmin extends Admin
+abstract class AbstractNewsAdmin extends AbstractTranslateAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      *
@@ -88,17 +72,5 @@ abstract class AbstractNewsAdmin extends Admin
             ->add('created_at');
 
         return $listMapper;
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }
