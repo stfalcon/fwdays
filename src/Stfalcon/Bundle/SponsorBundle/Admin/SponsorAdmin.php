@@ -2,15 +2,15 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-class SponsorAdmin extends Admin
+class SponsorAdmin extends AbstractTranslateAdmin
 {
     /**
      * @return array|void
