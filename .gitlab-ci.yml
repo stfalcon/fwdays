@@ -108,7 +108,7 @@ staging deploy:
         - mkdir /root/.kube && echo $K8S_CONF|base64 -d > /root/.kube/config
         - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
         - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
-        - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1`
+        - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
         - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
     environment:
         name: staging
