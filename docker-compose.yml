@@ -10,6 +10,16 @@ services:
         depends_on:
             - "php"
 
+    minio-public:
+        image: jekakm/nginx-core:201802261
+        ports:
+            - "127.0.0.1:8001:80"
+        volumes:
+            - "./docker-configs/fwdays-dev/nginx2.conf:/etc/nginx/sites-enabled/default"
+            - "minio:/data"
+        depends_on:
+            - "php"
+
     php:
         image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v2
         environment:
