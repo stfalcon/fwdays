@@ -2,8 +2,6 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
@@ -19,23 +17,6 @@ class SponsorAdmin extends AbstractTranslateAdmin
      */
     public function getBatchActions()
     {
-        $actions = [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
     }
 
     /**
@@ -72,7 +53,6 @@ class SponsorAdmin extends AbstractTranslateAdmin
                 'label' => 'Переводы',
                 'translatable_class' => $this->getClass(),
                 'fields' => [
-
                     'about' => [
                         'label' => 'Описание',
                         'locale_options' => $localOptionsAllFalse,
@@ -110,17 +90,5 @@ class SponsorAdmin extends AbstractTranslateAdmin
                     ]
                 )
             ->end();
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }
