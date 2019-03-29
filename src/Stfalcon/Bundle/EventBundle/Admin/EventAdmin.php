@@ -35,7 +35,7 @@ class EventAdmin extends AbstractTranslateAdmin
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
-        foreach ($object->getBlocks() as $key => $block) {
+        foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
@@ -50,7 +50,7 @@ class EventAdmin extends AbstractTranslateAdmin
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
-        foreach ($object->getBlocks() as $key => $block) {
+        foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
         $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
