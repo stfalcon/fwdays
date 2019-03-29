@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fwdays-mailhog-stag
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: fwdays-smtp.fwdays-stag.svc.cluster.local
+  ports:
+  - port: 80
