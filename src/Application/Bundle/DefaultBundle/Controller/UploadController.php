@@ -47,24 +47,22 @@ class UploadController extends Controller
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
+        list($width, $height) = getimagesize($file);
         $newFileName = uniqid().'.'.$file->guessExtension();
 
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
 
         try {
-            $newFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
-            $source = $newFile;
+            $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
+            $newFile = $this->getParameter('aws_s3_public_endpoint').'/'.$adapter->getPathPrefix().$newFileName;
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
-        // Get image width/height
-        list($width, $height) = getimagesize($newFile);
-
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $source,
+                'src' => $newFile,
                 'width' => $width,
                 'height' => $height,
             ]

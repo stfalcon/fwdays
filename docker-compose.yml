@@ -33,6 +33,7 @@ services:
             - "mysql"
             - "mailcatcher"
             - "sessions"
+            - "redis_storage"
 
     php_cli:
         build:
@@ -72,6 +73,9 @@ services:
             - "mysql"
 
     sessions:
+        image: redis:5.0.4
+
+    redis_storage:
         image: redis:5.0.4
 
     minio:
