@@ -556,7 +556,7 @@ class User extends BaseUser
      */
     public function isSubscribe()
     {
-        return $this->subscribe;
+        return (bool) $this->subscribe;
     }
 
     /**
@@ -703,7 +703,7 @@ class User extends BaseUser
      */
     public function getBalance()
     {
-        return (is_null($this->balance)) ? 0 : (int) $this->balance;
+        return (int) $this->balance;
     }
 
     /**

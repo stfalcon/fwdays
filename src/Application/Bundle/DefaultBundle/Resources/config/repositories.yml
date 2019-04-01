@@ -17,6 +17,11 @@ services:
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ["ApplicationDefaultBundle:TicketCost"]
 
+    app.ticket.repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ["Stfalcon\\Bundle\\EventBundle\\Entity\\Ticket"]
+
     app.event_review.repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'

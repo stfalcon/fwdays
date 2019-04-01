@@ -59,7 +59,6 @@ class SpeakerController extends Controller
 
         return new JsonResponse(['result' => true, 'html' => $html]);
     }
-
 //
 //    /**
 //     * Lists all speakers for event.

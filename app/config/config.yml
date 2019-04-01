@@ -85,6 +85,10 @@ doctrine:
         auto_mapping: true
         mappings:
             StofDoctrineExtensionsBundle: false
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:
@@ -134,8 +138,6 @@ stfalcon_event:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
     discount: 0.2
-
-
 
 ornicar_gravatar: ~
 

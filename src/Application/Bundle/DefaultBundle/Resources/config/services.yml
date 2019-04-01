@@ -111,3 +111,8 @@ services:
             - '@app.ticket_cost_repository.service'
             - '@app.event_review.repository.service'
             - '@security.authorization_checker'
+
+    app.statistic.chart_builder:
+       class: Application\Bundle\DefaultBundle\Service\Statistic\Chart\ChartBuilder
+       arguments:
+            - '@app.ticket.repository.service'

@@ -35,6 +35,11 @@ services:
         arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@app.event_review.repository.service']
         tags: [name: 'sonata.block']
 
+    sonata.block.event.reviews:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\ReviewsEventBlockService
+        arguments: ['sonata.block.event.reviews', '@templating', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
     sonata.block.event.candidate_speakers:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\CandidateSpeakersEventBlockService
         arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@app.event_review.repository.service']

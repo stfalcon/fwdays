@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityManager;
  */
 class TicketControllerTest extends WebTestCase
 {
-    const EN_FILE_HASH = 'e41fa4f8f91eff3bf42ed94689524f21';
-    const UK_FILE_HASH = '2317035330ba4a26d7220f9901b11a26';
+    const EN_FILE_HASH = 'bb93bfbc18dfa0a8956b6aee7a9466f6';
+    const UK_FILE_HASH = '7a4916c2839dc31d6c2ad6ea3375a285';
     /** @var Client */
     protected $client;
     /** @var EntityManager */
@@ -26,6 +26,7 @@ class TicketControllerTest extends WebTestCase
     public function setUp()
     {
         $connection = $this->getContainer()->get('doctrine')->getConnection();
+        $this->client = $this->createClient();
 
         $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
         $connection->exec('DELETE FROM users;');
@@ -43,7 +44,6 @@ class TicketControllerTest extends WebTestCase
             'doctrine',
             ORMPurger::PURGE_MODE_DELETE
         );
-        $this->client = $this->createClient();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
         $this->translator = $this->getContainer()->get('translator');
     }

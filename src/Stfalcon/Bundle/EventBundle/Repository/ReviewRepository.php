@@ -33,4 +33,19 @@ class ReviewRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @param Event $event
+     *
+     * @return array
+     */
+    public function findReviewsByEvent(Event $event)
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        $qb->where($qb->expr()->eq('r.event', ':event'))
+            ->setParameter('event', $event);
+
+        return $qb->getQuery()->getResult();
+    }
 }

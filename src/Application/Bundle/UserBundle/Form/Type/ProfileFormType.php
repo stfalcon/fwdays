@@ -17,6 +17,16 @@ class ProfileFormType extends BaseProfileFormType
     private $class;
 
     /**
+     * Constructor.
+     *
+     * @param string $class
+     */
+    public function __construct($class)
+    {
+        $this->class = $class;
+    }
+
+    /**
      * Builds the embedded form representing the user.
      *
      * @param FormBuilderInterface $builder

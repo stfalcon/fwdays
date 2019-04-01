@@ -1,0 +1,23 @@
+<section class="talks">
+    <div class="container container--sm">
+        <h2 class="h2 talks__title">{{ 'talks.title'|trans }}</h2>
+        {% set event_date_mod = 'uk' == app.request.locale ? event.date|date_modify("-5 day")|format_date('dd MMMM') : event.date|date_modify("-5 day")|format_date('MMMM dd') %}
+        <p class="talks__text">{{ 'talks.text'|trans({'%date%': event_date_mod}) }}</p>
+        <div class="talks__list">
+            {%- for review in reviews -%}
+                <div class="talks__item">
+                    <div class="talks__content" style="border-top: 6px solid {{ event.backgroundColor }}">
+                        <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
+                           class="talks__name">{{ review.title }}</a>
+                        {%- for speaker in review.speakers -%}
+                            <div class="talks__bottom">
+                                <span class="talks__speaker">{{ speaker.name }}</span>
+                                <span class="talks__company">{{ speaker.company }}</span>
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                </div>
+            {%- endfor -%}
+        </div>
+    </div>
+</section>

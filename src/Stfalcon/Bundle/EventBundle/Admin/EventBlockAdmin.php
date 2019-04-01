@@ -2,15 +2,14 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Stfalcon\Bundle\EventBundle\Entity\EventBlock;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * Class EventBlockAdmin.
  */
-class EventBlockAdmin extends Admin
+class EventBlockAdmin extends AbstractTranslateAdmin
 {
     /**
      * @param ListMapper $listMapper
@@ -31,7 +30,7 @@ class EventBlockAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->add(
                 'type',
