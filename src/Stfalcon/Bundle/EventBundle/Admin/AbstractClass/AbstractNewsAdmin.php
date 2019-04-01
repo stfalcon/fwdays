@@ -2,8 +2,6 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 

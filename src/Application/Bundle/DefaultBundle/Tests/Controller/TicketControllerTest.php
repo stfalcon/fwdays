@@ -88,41 +88,4 @@ class TicketControllerTest extends WebTestCase
 
         return '';
     }
-
-    /**
-     * @param string $userName
-     * @param string $userPass
-     * @param string $lang
-     *
-     * @return User $user
-     */
-    private function loginUser($userName, $userPass, $lang)
-    {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => $userName]);
-        $this->assertNotNull($user, sprintf('User %s not founded!', $userName));
-
-        $loginBtnCaption = 'Sign in';
-        $accountLinkCaption = ' Account';
-
-        if ('uk' === $lang) {
-            $loginBtnCaption = 'Увійти';
-            $accountLinkCaption = ' Кабінет';
-        }
-        /* start Login */
-        $this->client->followRedirects();
-        $crawler = $this->client->request('GET', $lang.'/login');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
-            </button>', $crawler->html());
-        $form = $crawler->selectButton($loginBtnCaption)->form();
-        $form['_username'] = $user->getEmail();
-        $form['_password'] = $userPass;
-
-        $this->client->submit($form);
-        /** end Login */
-        $crawler = $this->client->request('GET', '/');
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("'.$accountLinkCaption.'")')->count());
-
-        return $user;
-    }
 }
