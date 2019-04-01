@@ -7,5 +7,8 @@ ADD configs/nginx.conf /etc/nginx/nginx.conf
 ADD configs/nginx-vhost.conf /etc/nginx/conf.d/fwdays.conf
 ADD configs/start /usr/local/bin/start
 RUN chmod a+x /usr/local/bin/start
+ADD configs/services /usr/local/bin/services
+RUN chmod a+x /usr/local/bin/services
 RUN usermod -s /bin/bash www-data
-CMD /usr/local/bin/start
+ENTRYPOINT ["/usr/local/bin/start"]
+CMD ["/usr/local/bin/services"]
