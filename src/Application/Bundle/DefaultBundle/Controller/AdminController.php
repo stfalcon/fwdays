@@ -185,10 +185,8 @@ class AdminController extends Controller
      */
     public function widgetShareContactsAction()
     {
-        if (null !== ($user = $this->getUser())) {
-            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-            }
+        if (null !== ($user = $this->getUser()) && (null === $user->isAllowShareContacts()) && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
         }
 
         return new Response();
@@ -475,15 +473,13 @@ class AdminController extends Controller
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
         ]);
-
-        return $html;
     }
 
     /**
@@ -532,11 +528,9 @@ class AdminController extends Controller
             }
         }
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
             'events' => $events,
         ]);
-
-        return $html;
     }
 
     /**
@@ -562,8 +556,6 @@ class AdminController extends Controller
             return $usersFile;
         };
 
-        $response = new StreamedResponse($callback, 200, $headers);
-
-        return $response;
+        return new StreamedResponse($callback, 200, $headers);
     }
 }

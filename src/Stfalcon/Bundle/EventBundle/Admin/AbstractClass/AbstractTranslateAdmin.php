@@ -31,7 +31,7 @@ class AbstractTranslateAdmin extends Admin
      */
     public function removeNullTranslate($object)
     {
-        foreach ($object->getTranslations() as $key => $translation) {
+        foreach ($object->getTranslations() as $translation) {
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }

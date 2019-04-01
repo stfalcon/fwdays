@@ -67,7 +67,7 @@ class EventAdmin extends AbstractTranslateAdmin
         $isSuperAdmin = false;
         if ($token) {
             $user = $token->getUser();
-            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+            $isSuperAdmin = $user instanceof User ? \in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
         }
 
         if (!$isSuperAdmin) {

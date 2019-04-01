@@ -252,11 +252,6 @@ class Payment
      *
      * @param string $status
      */
-    // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
-
-    /**
-     * @param string $status
-     */
     public function setStatus($status)
     {
         $this->status = $status;
@@ -383,9 +378,7 @@ class Payment
      */
     public function __toString()
     {
-        $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
-
-        return $string;
+        return "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
     }
 
     /**
