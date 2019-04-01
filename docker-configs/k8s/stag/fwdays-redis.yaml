@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fwdays-redis
+  namespace: fwdays-stag
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: fwdays-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fwdays-redis
+  namespace: fwdays-stag
+spec:
+  selector:
+    matchLabels:
+      app: fwdays-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fwdays-redis
+    spec:
+      containers:
+      - name: fwdays-redis
+        image: redis:5.0.4
+        ports:
+        - containerPort: 6379
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 5
+          periodSeconds: 10
