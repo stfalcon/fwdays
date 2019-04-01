@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
