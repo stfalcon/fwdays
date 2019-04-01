@@ -32,9 +32,9 @@ monolog:
 assetic:
     use_controller: true
 
-swiftmailer:
-    transport: mail
-    host:      localhost
+#swiftmailer:
+#    transport: mail
+#    host:      localhost
 
 stfalcon_event:
     wayforpay:
