@@ -36,6 +36,15 @@ spec:
       containers:
       - image: <place latest image>
         name: fwdays-backend
+        livenessProbe:
+          httpGet:
+            path: /about
+            port: 80
+            httpHeaders:
+            - name: Host
+              value: fwdays-stag.k8s.stfalcon.com
+          initialDelaySeconds: 10
+          periodSeconds: 10
         env:
         - name: SERVER_NAME
           valueFrom:
