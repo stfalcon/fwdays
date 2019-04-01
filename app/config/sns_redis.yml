@@ -5,7 +5,15 @@ snc_redis:
             type: predis
             logging: false
             alias: session
+        swiftmailer:
+            type: predis
+            alias: swiftmailer
+            dsn: "%redis_swiftmailer_url%"
     session:
         client: session
+        ttl: 1728000
         locking: false
         prefix: session_prefix_
+    swiftmailer:
+        client: swiftmailer
+        key: swiftmailer

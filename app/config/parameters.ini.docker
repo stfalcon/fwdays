@@ -49,3 +49,4 @@
     aws_s3_public_endpoint = "http://127.0.0.1:8001/fwdays"
 
     redis_session_url = redis://sessions:6379/0
+    redis_swiftmailer_url = redis://redis_storage:6379/0
