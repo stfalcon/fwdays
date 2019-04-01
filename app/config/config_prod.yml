@@ -1,12 +1,6 @@
 imports:
     - { resource: config.yml }
 
-parameters:
-    app.sponsor_image: "uploads/sponsors"
-    app.speaker_image: "uploads/speakers"
-    app.event_image: "uploads/events"
-    app.upload_image: "uploads/images"
-
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc
@@ -18,6 +12,8 @@ parameters:
 sentry:
     skip_capture:
         - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+        - 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException'
+        - 'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException'
     dsn: "%sentry_dsn_prod%"
 
 monolog:

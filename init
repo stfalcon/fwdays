@@ -1,6 +1,9 @@
+#!/bin/bash
+
+cd /app
 cp app/config/parameters.ini.docker app/config/parameters.ini
 mysql -u root -pqwerty -h mysql -e "create database fwdays_com_development"
-composer install
+composer.phar install
 php app/console do:mi:mi --no-interaction
 php app/console do:fi:lo --no-interaction
 php app/console assets:install web --symlink

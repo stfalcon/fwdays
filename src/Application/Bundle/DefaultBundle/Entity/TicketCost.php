@@ -2,8 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
+use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 
 /**
  * @ORM\Table(name="event__ticketsCost")
@@ -28,6 +30,8 @@ class TicketCost
     private $event;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
      *      cascade={"persist"})
@@ -90,6 +94,14 @@ class TicketCost
     private $temporaryCount = 0;
 
     /**
+     * TicketCost constructor.
+     */
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -124,13 +136,27 @@ class TicketCost
     }
 
     /**
-     * @param mixed $tickets
+     * @param ArrayCollection $tickets
      *
      * @return $this
      */
     public function setTickets($tickets)
     {
         $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
+    public function addTicket($ticket)
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+        }
 
         return $this;
     }
@@ -256,16 +282,24 @@ class TicketCost
     }
 
     /**
-     * @return $this
+     * @return int
      */
-    public function incSoldCount()
+    public function recalculateSoldCount()
     {
-        ++$this->soldCount;
+        $soldCount = 0;
+        /** @var Ticket $ticket */
+        foreach ($this->getTickets() as $ticket) {
+            if ($ticket->isPaid()) {
+                ++$soldCount;
+            }
+        }
+        $this->soldCount = $soldCount;
+
         if (!$this->unlimited && $this->isEnabled()) {
             $this->setEnabled($this->count > $this->soldCount);
         }
 
-        return $this;
+        return $this->soldCount;
     }
 
     /**
@@ -323,8 +357,6 @@ class TicketCost
      */
     public function __toString()
     {
-        $countText = $this->isUnlimited() ? ' count:unlimited' : ' count:'.$this->getCount();
-
-        return $this->getName().' price:'.$this->getAmount().$countText;
+        return $this->event->getName().'-'.$this->getName();
     }
 }

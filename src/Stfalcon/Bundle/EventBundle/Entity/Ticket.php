@@ -142,6 +142,7 @@ class Ticket
     public function setTicketCost($ticketCost)
     {
         $this->ticketCost = $ticketCost;
+        $this->ticketCost->addTicket($this);
 
         return $this;
     }

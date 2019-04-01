@@ -1,0 +1,35 @@
+build:
+  nodes:
+    tests:
+      dependencies:
+        override:
+          - true
+  tests:
+    override:
+      - true
+  environment:
+    php:
+      version: 5.4
+
+checks:
+  php:
+    code_rating: true
+    duplication: true
+
+filter:
+  excluded_paths:
+    - 'app/*'
+    - 'bin/*'
+    - 'vendor/*'
+    - '*.min.js'
+    - 'web/assets/*'
+
+coding_style:
+  php: {  }
+
+tools:
+  php_code_sniffer:
+    config:
+      standard: "PSR2"
+  php_cs_fixer: true
+  sensiolabs_security_checker: true

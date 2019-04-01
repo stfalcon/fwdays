@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class AdminController.
@@ -184,10 +185,8 @@ class AdminController extends Controller
      */
     public function widgetShareContactsAction()
     {
-        if (null !== ($user = $this->getUser())) {
-            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-            }
+        if (null !== ($user = $this->getUser()) && (null === $user->isAllowShareContacts()) && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
         }
 
         return new Response();
@@ -313,6 +312,7 @@ class AdminController extends Controller
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
             ],
+            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
         ]);
     }
 
@@ -371,6 +371,7 @@ class AdminController extends Controller
             'events' => $events,
             'event_statistic_html' => $eventStatisticHtml,
             'current_event_slug' => $event->getSlug(),
+            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
         ]);
     }
 
@@ -415,6 +416,42 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/admin/users_not_buy_tickets", name="admin_user_tickets")
+     *
+     * @param Request $request
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response|StreamedResponse
+     */
+    public function usersNotBuyTicketAction(Request $request)
+    {
+        $checkEventId = $request->request->getInt('check_event');
+        $checkType = $request->request->get('check_type', 'event');
+        $hasTicketObjectId = 'event' === $checkType ? $request->request->getInt('has_ticket_event')
+            : $request->request->getInt('has_ticket_group');
+
+        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')
+            ->findBy([], ['date' => 'DESC']);
+        $groups = $this->getDoctrine()->getRepository('StfalconEventBundle:EventGroup')
+            ->findAll();
+
+        if ($checkEventId > 0 && $hasTicketObjectId > 0) {
+            $users = $this->getDoctrine()->getRepository('ApplicationUserBundle:User')
+                ->getUsersNotBuyTicket($checkEventId, $hasTicketObjectId, $checkType);
+            if (\count($users)) {
+                return $this->getCsvResponse($users);
+            }
+        }
+
+        return $this->render('@ApplicationDefault/Statistic/user_ticket_statistic.html.twig', [
+            'admin_pool' => $this->get('sonata.admin.pool'),
+            'events' => $events,
+            'groups' => $groups,
+        ]);
+    }
+
+    /**
      * @param Event $event
      *
      * @return string
@@ -427,23 +464,22 @@ class AdminController extends Controller
         $totalSoldTicketCount = 0;
         /** @var TicketCost $ticketBlock */
         foreach ($ticketBlocks as $ticketBlock) {
-            $totalSoldTicketCount += $ticketBlock->getSoldCount();
+            $blockSold = $ticketBlock->recalculateSoldCount();
             $totalTicketCount += $ticketBlock->getCount();
+            $totalSoldTicketCount += $blockSold;
         }
 
         $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
         ]);
-
-        return $html;
     }
 
     /**
@@ -477,9 +513,9 @@ class AdminController extends Controller
                     $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
 
                     $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $div = $maxGreen / $green;
-                    $otherColor = dechex(round($green / $div));
-                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                    $otherColor = (int) round($green / ($maxGreen / $green));
+                    $otherColor = dechex($otherColor);
+                    $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
                 } else {
                     $result = [
                         'cnt' => 0,
@@ -492,10 +528,34 @@ class AdminController extends Controller
             }
         }
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
             'events' => $events,
         ]);
+    }
 
-        return $html;
+    /**
+     * @param array  $users
+     * @param string $filename
+     *
+     * @return Response
+     */
+    private function getCsvResponse($users, $filename = 'users.csv')
+    {
+        \array_unshift($users, ['Fullname', 'email']);
+
+        $headers = [
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            'Content-Type' => 'text/csv',
+        ];
+        $callback = function () use ($users) {
+            $usersFile = \fopen('php://output', 'w');
+            foreach ($users as $fields) {
+                \fputcsv($usersFile, $fields);
+            }
+
+            return $usersFile;
+        };
+
+        return new StreamedResponse($callback, 200, $headers);
     }
 }

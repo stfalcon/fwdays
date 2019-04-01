@@ -796,6 +796,15 @@
       margin-bottom: 16px;
     }
   }
+
+  .talks {
+    margin-bottom: 76px;
+
+    &__item {
+      flex-basis: 50%;
+      max-width: 50%;
+    }
+  }
 }
 
 @media only screen and (max-width: 860px) {
@@ -1826,6 +1835,20 @@
     &__logo {
       margin-right: 0;
       margin-bottom: 30px;
+    }
+  }
+
+  .talks {
+    margin-bottom: 50px;
+
+    &__item {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+
+    &__content {
+      min-height: initial;
+      padding-bottom: 40px;
     }
   }
 }

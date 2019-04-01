@@ -2,38 +2,21 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-class SponsorAdmin extends Admin
+class SponsorAdmin extends AbstractTranslateAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
     /**
      * @return array|void
      */
     public function getBatchActions()
     {
-        $actions = [];
     }
 
     /**
@@ -42,11 +25,9 @@ class SponsorAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('slug')
-            ->add('name', null, ['label' => 'Название'])
+            ->addIdentifier('name', null, ['label' => 'Название'])
             ->add('site', null, ['label' => 'Сайт'])
             ->add('about', null, ['label' => 'Описание'])
-            ->add('onMain', null, ['label' => 'Использовать на главной'])
             ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('_action', 'actions', [
                 'label' => 'Действие',
@@ -62,29 +43,25 @@ class SponsorAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var Sponsor $subject */
+        $subject = $this->getSubject();
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
-        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-                ->add('translations', 'a2lix_translations_gedmo', [
-                        'label' => 'Переводы',
-                        'translatable_class' => $this->getClass(),
-                        'fields' => [
-                            'name' => [
-                                'label' => 'Название',
-                                'locale_options' => $localOptions,
-                            ],
-                            'about' => [
-                                'label' => 'Описание',
-                                'locale_options' => $localOptionsAllFalse,
-                            ],
-                        ],
-                ])
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'label' => 'Переводы',
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'about' => [
+                        'label' => 'Описание',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                ],
+            ])
             ->end()
             ->with('Общие')
-                ->add('slug')
-                ->add('onMain', null, ['required' => false, 'label' => 'Использовать на главной'])
+                ->add('name')
                 ->add('site', null, ['label' => 'Сайт'])
                 ->add(
                     'file',
@@ -94,6 +71,7 @@ class SponsorAdmin extends Admin
                         'required' => false,
                         'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                         'property_path' => 'file',
+                        'help' => $subject->getLogo() ? $subject->getLogo() : '',
                     ]
                 )
                 ->add('sortOrder', null, ['attr' => ['min' => 1], 'label' => 'Номер сортировки'])
@@ -103,7 +81,7 @@ class SponsorAdmin extends Admin
                     'sponsorEvents',
                     'sonata_type_collection',
                     [
-                        'label' => 'Спонсируємые события',
+                        'label' => 'Спонсируемые события',
                         'by_reference' => false,
                     ],
                     [
@@ -112,17 +90,5 @@ class SponsorAdmin extends Admin
                     ]
                 )
             ->end();
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

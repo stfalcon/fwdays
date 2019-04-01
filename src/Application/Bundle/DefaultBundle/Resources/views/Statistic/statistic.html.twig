@@ -1,5 +1,7 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
 {% block sonata_breadcrumb %}
     <div class="navbar-left">
         <ol class="nav navbar-top-links breadcrumb">
@@ -27,7 +29,8 @@
         <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
         <br>
     {% endif %}
-        <a href="{{ path('admin_events_statistic_all') }}">Перейти к статистике по пересечению аудитории событий</a>
+        <a href="{{ path('admin_events_statistic_all') }}">Перейти к статистике по пересечению аудитории событий</a><br>
+        <a href="{{ path('admin_user_tickets') }}">Перейти к статистике по посетителям не купившим билет</a>
     <h1>Статистика</h1>
 
     <h4>Общая статистика участников</h4>
@@ -85,6 +88,8 @@
         </tbody>
     </table>
 
+    <div id="div_chart"></div>
+
     <h4>статистика по принятию/отказов в предоставлении своих данных участниками</h4>
     <table>
         <tbody>
@@ -116,4 +121,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        {{ gc_draw(chart, 'div_chart') }}
+    </script>
 {% endblock javascripts %}
