@@ -277,6 +277,11 @@ class Sponsor implements Translatable
         return $this;
     }
 
+    /**
+     * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
+     */
     public function removeSponsorEvent(EventSponsor $sponsorEvent)
     {
         if ($this->sponsorEvents->contains($sponsorEvent)) {

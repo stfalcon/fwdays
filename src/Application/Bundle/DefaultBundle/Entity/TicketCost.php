@@ -93,6 +93,9 @@ class TicketCost
      */
     private $temporaryCount = 0;
 
+    /**
+     * TicketCost constructor.
+     */
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -133,7 +136,7 @@ class TicketCost
     }
 
     /**
-     * @param mixed $tickets
+     * @param ArrayCollection $tickets
      *
      * @return $this
      */
@@ -145,7 +148,7 @@ class TicketCost
     }
 
     /**
-     * @param $ticket
+     * @param Ticket $ticket
      *
      * @return $this
      */
