@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Tests;
 
-use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
