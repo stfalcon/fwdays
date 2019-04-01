@@ -25,9 +25,9 @@ class ReviewsEventBlockService extends BaseBlockService
      *
      * @param string           $name
      * @param EngineInterface  $templating
-     * @param ObjectRepository $reviewRepository
+     * @param ReviewRepository $reviewRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $reviewRepository)
+    public function __construct($name, EngineInterface $templating, ReviewRepository $reviewRepository)
     {
         parent::__construct($name, $templating);
 
@@ -42,7 +42,7 @@ class ReviewsEventBlockService extends BaseBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $reviews = $this->reviewRepository->findReviewsByEvent($event);

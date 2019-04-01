@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Stfalcon\Bundle\EventBundle\Entity\EventBlock;
 
 /**
  * Class EventBlockAdmin.
