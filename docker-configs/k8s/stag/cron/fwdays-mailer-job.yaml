@@ -28,3 +28,5 @@ spec:
             - -c
             - su www-data -c  "php app/console stfalcon:mailer --host=fwdays.com --amount=10 --env=prod"
           restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: regcred-dockerhub
