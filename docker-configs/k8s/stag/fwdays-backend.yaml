@@ -50,7 +50,7 @@ spec:
         name: fwdays-backend
         livenessProbe:
           httpGet:
-            path: /about
+            path: /service/status
             port: 80
             httpHeaders:
             - name: Host
