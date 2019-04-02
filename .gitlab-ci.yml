@@ -110,6 +110,8 @@ staging deploy:
         - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
         - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - sed -i s/%job-image-name%/fwdays-deployment:$DEPLOY_TIMESTAMP/ docker-configs/k8s/stag/cron/*
+        - kubectl apply -f docker-configs/k8s/stag/cron/*
     environment:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com
@@ -125,6 +127,9 @@ staging rollback:
         - chmod a+x /usr/local/bin/kubectl
         - mkdir /root/.kube && echo $K8S_CONF|base64 -d > /root/.kube/config
         - kubectl -n fwdays-stag rollout undo deployments/fwdays-backend
+        - DEPLOYMENT_IMAGE=`kubectl -n fwdays-stag get deployment fwdays-backend -o=jsonpath='{$.spec.template.spec.containers[:1].image}'`
+        - sed -i s/%job-image-name%/$DEPLOYMENT_IMAGE/ docker-configs/k8s/stag/cron/*
+        - kubectl apply -f docker-configs/k8s/stag/cron/*
     environment:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com

@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fwdays-mailer
+  namespace: fwdays-stag
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: fwdays-backend
+            image: %job-image-name%
+            env:
+            - name: SERVER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: server-name
+                  key: server-name
+            - name: PARAMETERS
+              valueFrom:
+                secretKeyRef:
+                  name: fwdays-backend-parameters
+                  key: parameters.ini
+            args:
+            - bash
+            - -c
+            - su www-data -c  "php app/console stfalcon:mailer --host=fwdays.com --amount=10 --env=prod"
+          restartPolicy: OnFailure
