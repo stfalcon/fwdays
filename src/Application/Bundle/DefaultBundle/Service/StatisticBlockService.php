@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 
 /**
  * StatisticBlockService.
  */
-class StatisticBlockService extends BaseBlockService
+class StatisticBlockService extends AbstractBlockService
 {
     /**
      * {@inheritdoc}

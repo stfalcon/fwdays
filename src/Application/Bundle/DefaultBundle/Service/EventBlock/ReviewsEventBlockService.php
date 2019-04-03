@@ -2,35 +2,36 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
-use Application\Bundle\DefaultBundle\Service\EventService;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Stfalcon\Bundle\EventBundle\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ProgramEventBlockService.
+ * Class ReviewsEventBlockService.
  */
-class ProgramEventBlockService extends AbstractBlockService
+class ReviewsEventBlockService extends AbstractBlockService
 {
-    /** @var EventService */
-    private $eventService;
+    /** @var ReviewRepository */
+    private $reviewRepository;
 
     /**
-     * ProgramEventBlockService constructor.
+     * SpeakersEventBlockService constructor.
      *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EventService    $eventService
+     * @param string           $name
+     * @param EngineInterface  $templating
+     * @param ObjectRepository $reviewRepository
      */
-    public function __construct($name, EngineInterface $templating, EventService $eventService)
+    public function __construct($name, EngineInterface $templating, ObjectRepository $reviewRepository)
     {
         parent::__construct($name, $templating);
 
-        $this->eventService = $eventService;
+        $this->reviewRepository = $reviewRepository;
     }
 
     /**
@@ -44,12 +45,12 @@ class ProgramEventBlockService extends AbstractBlockService
             return new NotFoundHttpException();
         }
 
-        $pages = $this->eventService->getEventPages($event);
-        $programPage = isset($pages['programPage']) ? $pages['programPage'] : null;
+        $reviews = $this->reviewRepository->findReviewsByEvent($event);
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
-            'program_page' => $programPage,
+            'reviews' => $reviews,
+            'event' => $event,
         ], $response);
     }
 
@@ -59,7 +60,7 @@ class ProgramEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'ApplicationDefaultBundle:Redesign/Event:event.program.html.twig',
+            'template' => 'ApplicationDefaultBundle:Redesign/Event:event.reviews.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

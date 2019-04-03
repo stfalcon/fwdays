@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,7 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 /**
  * Class TicketCostAdmin.
  */
-class TicketCostAdmin extends Admin
+final class TicketCostAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagrid

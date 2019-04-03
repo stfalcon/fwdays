@@ -41,14 +41,19 @@
     <!--END events-->
 
     <!--BEGIN share-->
+    {% set bonus = constant('Application\\Bundle\\DefaultBundle\\Service\\ReferralService::REFERRAL_BONUS') %}
+    {% set special_bonus = constant('Application\\Bundle\\DefaultBundle\\Service\\ReferralService::SPECIAL_REFERRAL_BONUS') %}
+    {% set special_bonus_event = constant('Application\\Bundle\\DefaultBundle\\Service\\ReferralService::SPECIAL_BONUS_EVENT') %}
+
     <section class="share">
         <div class="container">
             <div class="share-banner">
                 <div class="share-banner__info">
                     <h2 class="h2 h2--white share-banner__title">{{ 'referral.invaite.title2'|trans }}</h2>
                     <div class="share-banner__hint-show">{{ 'referral.program.conditions.title'|trans }}</div>
-                    <div class="share-banner__hint">
-                        {{ 'referral.program.conditions.text'|trans({'%referal_bonus%':constant('Application\\Bundle\\DefaultBundle\\Service\\ReferralService::REFERRAL_BONUS') }) }}
+                    {% set current_bonus = special_bonus_event == firstEvent.slug ? special_bonus : bonus %}
+                    <div id="bonus_text" class="share-banner__hint">
+                        {{ 'referral.program.conditions.text'|trans({'%referal_bonus%':current_bonus }) }}
                     </div>
                     <div class="share-banner__balance">{{ 'referral.balance.redesign'|trans({'%user_balance%': user.balance}) }}</div>
                 </div>
@@ -67,6 +72,7 @@
                                         {% endif %}
                                         <option value="{{ loop.index }}"
                                             data-ref="{{ url('event_show_redesign', {'eventSlug' : event.slug, 'ref': code}) }}"
+                                            data-bonus="{% if special_bonus_event == event.slug %}{{ special_bonus }}{% else %}{{ bonus }}{% endif %}"
                                             data-image="{{ image }}">
                                         {{ event.name }}
                                         </option>
@@ -135,3 +141,17 @@
     </div>
     <!--END profile-popup-->
 {% endblock popups %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        var bonus_translate = '{{ 'referral.program.conditions.text'|trans }}';
+        $(document).ready(function () {
+            $('#ref-dropdown').on('change', function () {
+                var bonus = $('option:selected', this).data('bonus');
+                var bonus_text = bonus_translate.replace('%referal_bonus%', bonus);
+                $('#bonus_text').text(bonus_text);
+            });
+        })
+    </script>
+{% endblock %}

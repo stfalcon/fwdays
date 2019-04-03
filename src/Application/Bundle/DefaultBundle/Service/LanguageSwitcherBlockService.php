@@ -2,18 +2,18 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class LanguageSwitcherBlockService.
  */
-class LanguageSwitcherBlockService extends BaseBlockService
+class LanguageSwitcherBlockService extends AbstractBlockService
 {
     /** @var Request */
     private $request;
@@ -58,7 +58,7 @@ class LanguageSwitcherBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign:language_switcher.html.twig',

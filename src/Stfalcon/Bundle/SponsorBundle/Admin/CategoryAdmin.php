@@ -2,32 +2,15 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-class CategoryAdmin extends Admin
+class CategoryAdmin extends AbstractTranslateAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,7 +36,7 @@ class CategoryAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
         $formMapper
             ->with('Переводы')
                 ->add(
@@ -75,17 +58,5 @@ class CategoryAdmin extends Admin
                 ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

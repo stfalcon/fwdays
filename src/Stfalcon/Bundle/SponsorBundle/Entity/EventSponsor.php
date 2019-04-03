@@ -26,7 +26,7 @@ class EventSponsor
      * @var \Stfalcon\Bundle\SponsorBundle\Entity\Sponsor
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Sponsor", inversedBy="sponsorEvents")
-     * @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id", onDelete="cascade")
      */
     protected $sponsor;
 

@@ -2,17 +2,16 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Application\Bundle\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
  */
-class EventAdmin extends Admin
+class EventAdmin extends AbstractTranslateAdmin
 {
     /** @var string */
     protected $saveCity;
@@ -36,6 +35,9 @@ class EventAdmin extends Admin
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
+        foreach ($object->getBlocks() as $block) {
+            $this->removeNullTranslate($block);
+        }
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
             $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
                 ->setEventMapPosition($object);
@@ -48,6 +50,9 @@ class EventAdmin extends Admin
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
+        foreach ($object->getBlocks() as $block) {
+            $this->removeNullTranslate($block);
+        }
         $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
             ->setEventMapPosition($object);
     }
@@ -109,8 +114,8 @@ class EventAdmin extends Admin
             $this->savePlace = $subject->getPlace();
         }
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
-        $localAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $datetimePickerOptions =
             [
                 'dp_use_seconds' => false,
@@ -141,7 +146,7 @@ class EventAdmin extends Admin
                             ],
                             'description' => [
                                 'label' => 'Краткое описание',
-                                'locale_options' => $localAllFalse,
+                                'locale_options' => $localOptions,
                             ],
                             'about' => [
                                 'label' => 'Описание',
@@ -212,7 +217,7 @@ class EventAdmin extends Admin
                     [
                         'label' => 'Логотип',
                         'required' => is_null($subject->getLogo()),
-                        'help' => 'Осноное изображения. '.$subject->getLogo(),
+                        'help' => 'Основное изображение. '.$subject->getLogo(),
                     ]
                 )
                 ->add(
@@ -280,17 +285,5 @@ class EventAdmin extends Admin
                 ->end()
             ->end()
         ;
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

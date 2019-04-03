@@ -10,7 +10,7 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 /**
  * Class EventPageAdmin.
  */
-class EventPageAdmin extends AbstractPageAdmin
+final class EventPageAdmin extends AbstractPageAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
@@ -31,8 +31,8 @@ class EventPageAdmin extends AbstractPageAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
-        $localOptions = $localsRequiredService->getLocalsRequredArray();
-        $localOptionsAllFalse = $localsRequiredService->getLocalsRequredArray(false);
+        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
                 ->add('translations', 'a2lix_translations_gedmo', [
