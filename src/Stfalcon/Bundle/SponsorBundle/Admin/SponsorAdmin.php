@@ -2,22 +2,21 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-final class SponsorAdmin extends AbstractAdmin
+class SponsorAdmin extends AbstractTranslateAdmin
 {
     /**
      * @return array|void
      */
     public function getBatchActions()
     {
-        $actions = [];
     }
 
     /**
@@ -28,6 +27,7 @@ final class SponsorAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name', null, ['label' => 'Название'])
             ->add('site', null, ['label' => 'Сайт'])
+            ->add('about', null, ['label' => 'Описание'])
             ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('_action', 'actions', [
                 'label' => 'Действие',
@@ -45,7 +45,21 @@ final class SponsorAdmin extends AbstractAdmin
     {
         /** @var Sponsor $subject */
         $subject = $this->getSubject();
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
+            ->with('Переводы')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'label' => 'Переводы',
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'about' => [
+                        'label' => 'Описание',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                ],
+            ])
+            ->end()
             ->with('Общие')
                 ->add('name')
                 ->add('site', null, ['label' => 'Сайт'])

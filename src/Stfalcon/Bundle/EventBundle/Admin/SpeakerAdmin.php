@@ -2,32 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * Class SpeakerAdmin.
  */
-final class SpeakerAdmin extends AbstractAdmin
+class SpeakerAdmin extends AbstractTranslateAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -118,17 +101,5 @@ final class SpeakerAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

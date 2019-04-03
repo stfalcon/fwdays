@@ -2,32 +2,14 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * Class AbstractNewsAdmin.
  */
-abstract class AbstractNewsAdmin extends AbstractAdmin
+abstract class AbstractNewsAdmin extends AbstractTranslateAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      *
@@ -88,17 +70,5 @@ abstract class AbstractNewsAdmin extends AbstractAdmin
             ->add('created_at');
 
         return $listMapper;
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

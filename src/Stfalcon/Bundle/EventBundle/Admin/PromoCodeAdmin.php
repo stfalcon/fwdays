@@ -2,16 +2,15 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * Class PromoCodeAdmin.
  */
-final class PromoCodeAdmin extends AbstractAdmin
+class PromoCodeAdmin extends AbstractTranslateAdmin
 {
     /**
      * @var array
@@ -22,22 +21,6 @@ final class PromoCodeAdmin extends AbstractAdmin
             '_sort_order' => 'DESC',
             '_sort_by' => 'id',
         ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function preUpdate($object)
-    {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prePersist($object)
-    {
-        $this->removeNullTranslate($object);
-    }
 
     /**
      * @param ListMapper $listMapper
@@ -106,17 +89,5 @@ final class PromoCodeAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('event');
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

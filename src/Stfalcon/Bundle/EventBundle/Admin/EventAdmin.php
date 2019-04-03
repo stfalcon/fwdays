@@ -3,15 +3,15 @@
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 
 /**
  * Class EventAdmin.
  */
-final class EventAdmin extends AbstractAdmin
+class EventAdmin extends AbstractTranslateAdmin
 {
     /** @var string */
     protected $saveCity;
@@ -35,6 +35,9 @@ final class EventAdmin extends AbstractAdmin
     public function preUpdate($object)
     {
         $this->removeNullTranslate($object);
+        foreach ($object->getBlocks() as $block) {
+            $this->removeNullTranslate($block);
+        }
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
             $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
                 ->setEventMapPosition($object);
@@ -47,6 +50,9 @@ final class EventAdmin extends AbstractAdmin
     public function prePersist($object)
     {
         $this->removeNullTranslate($object);
+        foreach ($object->getBlocks() as $block) {
+            $this->removeNullTranslate($block);
+        }
         $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
             ->setEventMapPosition($object);
     }
@@ -279,17 +285,5 @@ final class EventAdmin extends AbstractAdmin
                 ->end()
             ->end()
         ;
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }
