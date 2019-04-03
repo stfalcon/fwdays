@@ -68,6 +68,8 @@ spec:
             secretKeyRef:
               name: fwdays-backend-parameters
               key: parameters.ini
+        - name: STAGING
+          value: "true"
         ports:
         - containerPort: 80
           name: fwdays-backend

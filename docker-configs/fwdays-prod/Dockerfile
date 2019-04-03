@@ -5,6 +5,8 @@ ADD configs/php-fpm.ini /etc/php/7.1/fpm/php.ini
 ADD configs/php-cli.ini /etc/php/7.1/cli/php.ini
 ADD configs/nginx.conf /etc/nginx/nginx.conf
 ADD configs/nginx-vhost.conf /etc/nginx/conf.d/fwdays.conf
+RUN mkdir /etc/nginx/stag_conf_avaliable /etc/nginx/stag_conf_enabled
+COPY configs/stag_conf/* /etc/nginx/stag_conf_avaliable
 ADD configs/start /usr/local/bin/start
 RUN chmod a+x /usr/local/bin/start
 ADD configs/services /usr/local/bin/services
