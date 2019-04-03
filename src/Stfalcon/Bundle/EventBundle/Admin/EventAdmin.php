@@ -146,7 +146,7 @@ class EventAdmin extends AbstractTranslateAdmin
                             ],
                             'description' => [
                                 'label' => 'Краткое описание',
-                                'locale_options' => $localAllFalse,
+                                'locale_options' => $localOptions,
                             ],
                             'about' => [
                                 'label' => 'Описание',

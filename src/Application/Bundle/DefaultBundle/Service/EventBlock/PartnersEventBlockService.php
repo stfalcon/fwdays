@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\SponsorBundle\Repository\CategoryRepository;
@@ -12,12 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class PartnersEventBlockService.
  */
-class PartnersEventBlockService extends BaseBlockService
+class PartnersEventBlockService extends AbstractBlockService
 {
     /** @var SponsorRepository */
     private $partnerRepository;
@@ -80,7 +79,7 @@ class PartnersEventBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Partner:partners.html.twig',

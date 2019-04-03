@@ -3,7 +3,7 @@
 namespace Application\Bundle\UserBundle\Admin;
 
 use Application\Bundle\UserBundle\Entity\User;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 /**
  * Class UserAdmin.
  */
-class UserAdmin extends Admin
+final class UserAdmin extends AbstractAdmin
 {
     /**
      * {@inheritdoc}

@@ -3,12 +3,12 @@
 namespace Stfalcon\Bundle\EventBundle\Admin\AbstractClass;
 
 use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
  * AbstractTranslateAdmin.
  */
-class AbstractTranslateAdmin extends Admin
+class AbstractTranslateAdmin extends AbstractAdmin
 {
     /**
      * {@inheritdoc}
