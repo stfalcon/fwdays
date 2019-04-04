@@ -15,17 +15,6 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->addIdentifier('slug')
-            ->add('name', null, ['label' => 'Имя'])
-        ;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function postUpdate($object)
     {
         $this->prepareImageCache($object);
@@ -136,6 +125,17 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'label' => 'События',
                 ])
             ->end()
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('slug')
+            ->add('name', null, ['label' => 'Имя'])
         ;
     }
 }
