@@ -29,25 +29,6 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @param Speaker $speaker
-     */
-    private function prepareImageCache(Speaker $speaker)
-    {
-        $filter = 'speaker';
-        $target = $speaker->getPhoto();
-        if (empty($target)) {
-            return;
-        }
-        $container = $this->getConfigurationPool()->getContainer();
-        $cacheManager = $container->get('liip_imagine.cache.manager');
-        if (!$cacheManager->isStored($target, $filter)) {
-            $filterManager = $container->get('liip_imagine.filter.manager');
-            $dataManager = $container->get('liip_imagine.data.manager');
-            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -137,5 +118,24 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             ->addIdentifier('slug')
             ->add('name', null, ['label' => 'Имя'])
         ;
+    }
+
+    /**
+     * @param Speaker $speaker
+     */
+    private function prepareImageCache(Speaker $speaker)
+    {
+        $filter = 'speaker';
+        $target = $speaker->getPhoto();
+        if (empty($target)) {
+            return;
+        }
+        $container = $this->getConfigurationPool()->getContainer();
+        $cacheManager = $container->get('liip_imagine.cache.manager');
+        if (!$cacheManager->isStored($target, $filter)) {
+            $filterManager = $container->get('liip_imagine.filter.manager');
+            $dataManager = $container->get('liip_imagine.data.manager');
+            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+        }
     }
 }
