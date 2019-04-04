@@ -46,7 +46,7 @@ services:
             - "composer:/var/www/.composer"
 
     mysql:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v2
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3
         volumes:
             - "mysqldata:/var/lib/mysql"
         environment:
