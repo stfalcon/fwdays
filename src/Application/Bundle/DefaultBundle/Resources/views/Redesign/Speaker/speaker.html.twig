@@ -4,7 +4,7 @@
         <a data-event="{{ event.slug }}" data-speaker="{{ speaker.slug }}" data-review="{{ with_review ? 1 : 0 }}" class="speaker-card__top">
             <div class="speaker-card__photo">
             {% if speaker.photo is not null %}
-                <img class="speaker-card__img" src="{{ speaker.photo|imagine_filter('speaker') }}" alt="">
+                <img class="speaker-card__img" src="{{ speaker_cache_path ~ '/' ~ speaker.photo}}" alt="">
             {% else %}
                 <img class="speaker-card__img" src="{{ asset('assets/img/speakers/default_avatar.png') }}" alt="">
             {% endif %}
