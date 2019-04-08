@@ -1,6 +1,11 @@
-apt_packages: ['libpng12-dev']
 deploy_callbacks:
     after_clone:
+        - 'rm /etc/apt/sources.list'
+        - 'touch /etc/apt/sources.list'
+        - 'echo  "deb http://archive.debian.org/debian wheezy main" >> /etc/apt/sources.list'
+        - 'apt-get update'
+        - 'gpg --keyserver keys.gnupg.net --recv-key 89DF5277 && gpg -a --export 89DF5277 | apt-key add -'
+        - 'apt-get install -y libpng12-dev'
         - 'apt-get remove nodejs -y'
         - 'cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz'
         - 'cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz'
