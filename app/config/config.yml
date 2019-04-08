@@ -6,6 +6,7 @@ imports:
     - { resource: mobile_detect.yml }
     - { resource: sonata/admin.yml }
     - { resource: sonata/block.yml }
+    - { resource: liip_imagine.yml }
 
 parameters:
     graylog.fromname: "https://fwdays.com"
@@ -104,18 +105,6 @@ swiftmailer:
 # KnpMenuBundle
 knp_menu:
     twig: true
-
-liip_imagine:
-    loaders:
-        default:
-            filesystem:
-                locator: filesystem_insecure
-    filter_sets:
-        cache: ~
-        speaker_size:
-            filters:
-                relative_resize: { widen: 232 }
-                crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
