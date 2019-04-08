@@ -248,6 +248,7 @@ class Sponsor implements Translatable
     public function setFile($file)
     {
         $this->file = $file;
+        $this->setUpdatedAt(new \DateTime());
 
         return $this;
     }

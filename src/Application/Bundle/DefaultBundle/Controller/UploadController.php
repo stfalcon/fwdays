@@ -61,7 +61,16 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
-        // Get image width/height
+//        $filter = 'upload';
+//        $target = $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName;
+//        $cacheManager = $this->get('liip_imagine.cache.manager');
+//        $filterManager = $this->get('liip_imagine.filter.manager');
+//        $dataManager = $this->get('liip_imagine.data.manager');
+//
+//        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+//
+//        $newFileName = $cacheManager->resolve($target, $filter);
+
         list($width, $height) = getimagesize(
             $path.DIRECTORY_SEPARATOR.$newFileName
         );
