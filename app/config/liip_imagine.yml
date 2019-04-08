@@ -4,7 +4,7 @@ liip_imagine:
       flysystem:
         filesystem_service: oneup_flysystem.speaker_photo_filesystem
         root_url:           '%aws_s3_public_endpoint%/%app.speaker_image%'
-        cache_prefix:       'media/cache'
+        cache_prefix:       '%app.media_cache%'
         visibility:         public
   loaders:
     speaker:
