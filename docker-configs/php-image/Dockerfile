@@ -1,12 +1,16 @@
 FROM debian:wheezy
-RUN apt-get update && apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git sudo make libpng-dev
+RUN rm /etc/apt/sources.list
+RUN touch /etc/apt/sources.list
+RUN echo  "deb http://archive.debian.org/debian wheezy main" >> /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian-security wheezy/updates main" >> /etc/apt/sources.list
+RUN apt-get update && gpg --keyserver keys.gnupg.net --recv-key 89DF5277 && gpg -a --export 89DF5277 | apt-key add -
+RUN apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git sudo make libpng-dev jpegoptim optipng && rm -rf /var/lib/apt/lists/*
 RUN curl -O https://www.dotdeb.org/dotdeb.gpg && sudo apt-key add dotdeb.gpg
 RUN echo 'deb http://packages.dotdeb.org wheezy all' > /etc/apt/sources.list.d/php.list
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get update && apt-get install -y nodejs php-pear php5 php5-cli php5-common php5-curl php5-dev php5-gd php5-imagick php5-imap php5-intl php5-mcrypt php5-apcu php5-sqlite php5-fpm php5-xdebug php5-mysqlnd
-RUN wget https://repo.percona.com/apt/percona-release_0.1-4.wheezy_all.deb -O /tmp/percona.deb
-RUN dpkg -i /tmp/percona.deb && rm /tmp/percona.deb && apt-get update
-RUN apt-get install -y percona-server-client-5.6 php5-mysql
+RUN apt-get update && apt-get install -y nodejs php-pear php5 php5-cli php5-common php5-curl php5-dev php5-gd php5-imagick php5-imap php5-intl php5-mcrypt php5-apcu php5-sqlite php5-fpm php5-xdebug php5-mysqlnd && rm -rf /var/lib/apt/lists/*
+RUN wget https://repo.percona.com/apt/percona-release_0.1-4.wheezy_all.deb -O /tmp/percona.deb && dpkg -i /tmp/percona.deb && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y percona-server-client-5.6 php5-mysql && rm -rf /var/lib/apt/lists/*
 ADD configs/xdebug.ini /etc/php5/mods-available/xdebug.ini
 ADD configs/xdebug-cli /usr/local/bin/xdebug-cli
 RUN mkdir /.macos_conigs
