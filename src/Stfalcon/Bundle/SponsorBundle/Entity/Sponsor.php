@@ -86,7 +86,7 @@ class Sponsor implements Translatable
      * @var resource
      *
      * @Assert\File(maxSize="6000000")
-     * @Assert\Image
+     * @Assert\Image(minHeight=150, minWidth=280)
      *
      * @Vich\UploadableField(mapping="sponsor_image", fileNameProperty="logo")
      */
