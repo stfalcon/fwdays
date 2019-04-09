@@ -7,7 +7,7 @@ liip_imagine:
     cache: ~
     speaker_size:
       filters:
-        relative_resize: { widen: 232, heighten: 232 }
+        relative_resize: {heighten: 232 }
         crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }
