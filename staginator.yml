@@ -1,3 +1,6 @@
+apt_packages:
+    - 'jpegoptim'
+    - 'optipng'
 deploy_callbacks:
     after_clone:
         - 'rm /etc/apt/sources.list'
