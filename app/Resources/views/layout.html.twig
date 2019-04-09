@@ -93,6 +93,9 @@
     <script id="widget-wfp-script" language="javascript" type="text/javascript"
             src="https://secure.wayforpay.com/server/pay-widget.js" async defer></script>
     {% if app.environment in ['prod', 'stag'] -%}
+        <script>
+            var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';
+        </script>
         <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
     {% endif -%}
     {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
