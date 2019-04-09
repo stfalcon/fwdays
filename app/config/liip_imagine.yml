@@ -19,7 +19,7 @@ liip_imagine:
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }
         optipng: { strip_all: true, level: 5 }
-    upload:
+    image:
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }
         optipng: { strip_all: true, level: 5 }
