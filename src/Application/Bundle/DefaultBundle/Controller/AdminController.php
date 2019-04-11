@@ -213,16 +213,32 @@ class AdminController extends Controller
         // йду по ньому і витягую статистику продажів по кожному івенту через готовий метод.
         $eventsData = array();
         foreach ($events as $event) {
-            $dataForDailyStatistics = $this->get('app.statistic.service')
-                ->getDataForDailyStatisticsOfTicketsSold($event);
-            array_unshift($dataForDailyStatistics, [['label' => 'Date', 'type' => 'date'], ['label' => 'Tickets sold number', 'type' => 'number']]);
 
-            $dataForTotalStatistics = $this->get('app.statistic.service')
+            $statisticService = $this->get('app.statistic.service');
+
+            /**
+             * Загальна статистика
+             */
+
+            // подобова статистика для графіка календаря
+            $dataForDailyStatistics = $statisticService
+                ->getDataForDailyStatisticsOfTicketsSold($event);
+            array_unshift($dataForDailyStatistics,
+                [['label' => 'Date', 'type' => 'date'], ['label' => 'Tickets sold number', 'type' => 'number']]
+            );
+
+            $chart = $this->container->get('app.statistic.chart_builder')->calendarChart($dataForDailyStatistics);
+
+            // загальна статистика
+            $dataForTotalStatistics = $statisticService
                 ->getDataForTotalStatisticsOfTicketsSold($event);
 
-            // передаю в графік
-            $chart = $this->container->get('app.statistic.chart_builder')->calendarChart($dataForDailyStatistics);
-            $eventsData[] = ['id' => $event->getId(), 'name' => $event->getName(), 'chart' => $chart, 'total' => $dataForTotalStatistics];
+            /**
+             * Динаміка продажів у порівнянні з минулими конференціями (по тижням)
+             */
+            $dataForIntervalsChart = $statisticService->getDataForForecastingTicketsSales($event);
+
+            $eventsData[] = ['id' => $event->getId(), 'name' => $event->getName(), 'chart' => $chart, 'total' => $dataForTotalStatistics, 'dataForIntervalsChart' => $dataForIntervalsChart];
 
             break; // @todo забрати
         }

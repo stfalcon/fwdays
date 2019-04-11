@@ -39,6 +39,8 @@
         <div id="div_chart_{{ event.id }}"></div>
 
         <h2>Динаміка продажів у порівнянні з минулими конференціями (по тижням)</h2>
+        <div id="chart_lines" style="width: 900px; height: 500px;"></div>
+
         <h2>Графік продажів + графік розсилок по базі</h2>
         <h2>Графік розподілу цін (як точки)</h2>
         <h2>Повторна участь (мейбі теж як точки)</h2>
@@ -146,6 +148,45 @@
     <script type="text/javascript">
         {% for event in events %}
             {{ gc_draw(event.chart, 'div_chart_' ~ event.id) }}
+
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('number', 'x');
+                data.addColumn('number', 'values');
+
+                {% for i in 0..event.dataForIntervalsChart[0]|length-2 %}
+                    data.addColumn({id:'i{{ loop.index0 }}', type:'number', role:'interval'});
+                {% endfor %}
+
+                data.addRows([
+                    {% for eventsWeeklyData in event.dataForIntervalsChart%}
+                        [{{ loop.index }}
+                            {% for eventWeeklyData in eventsWeeklyData %}
+                                ,{{ eventWeeklyData|default(0) }}
+                            {% endfor %}
+                        ],
+                    {% endfor %}
+                ]);
+
+                // The intervals data as narrow lines (useful for showing raw source data)
+                var options_lines = {
+                    title: 'Line intervals, default',
+                    curveType:'function',
+                    lineWidth: 5,
+                    interval: {
+                        'i0': { 'style':'line', 'color':'gray', 'lineWidth': 3 },
+                        'i1': { 'style':'line', 'color':'silver', 'lineWidth': 2 },
+                        'i2': { 'style':'line', 'color':'silver', 'lineWidth': 1 },
+                    },
+                    legend: 'none',
+                };
+
+                var chart_lines = new google.visualization.LineChart(document.getElementById('chart_lines'));
+                chart_lines.draw(data, options_lines);
+            }
         {% endfor %}
     </script>
 {% endblock javascripts %}

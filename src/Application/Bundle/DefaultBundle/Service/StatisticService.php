@@ -12,7 +12,7 @@ class StatisticService
     protected $em;
 
     /**
-     * @param EntityManager         $em
+     * @param EntityManager $em
      */
     public function __construct($em)
     {
@@ -28,23 +28,8 @@ class StatisticService
      */
     public function getDataForDailyStatisticsOfTicketsSold(Event $event)
     {
-        // get createdAt of the first event ticket
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('t.createdAt')
-            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
-            ->where($qb->expr()->eq('t.event', ':event'))
-            ->setParameters([
-                'event' => $event,
-            ])
-            ->orderBy('t.createdAt', 'ASC')
-            ->setMaxResults(1);
-
-        $dateFrom = new \DateTime($qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        );
-
-        $dateTo = new \DateTime('now');
+        $dateFrom = $this->_getFirstDayOfTicketSales($event);
+        $dateTo = $this->_getLastDayOfTicketSales($event);
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('DATE(p.updatedAt) as date_of_sale, COUNT(t.id) as tickets_sold_number')
@@ -70,9 +55,10 @@ class StatisticService
         ;
 
         // fill the possible gap in sequence of dates
-        $period = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo);
+        $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify( '+1 day' ));
+
         $formattedResult = [];
-        foreach ($period as $date) {
+        foreach ($dateRange as $date) {
             $key = $date->format('Y-m-d');
             $formattedResult[$key][0] = $date;
             $formattedResult[$key][1] = null;
@@ -120,5 +106,89 @@ class StatisticService
         $results['total_tickets_number'] = $results['free_tickets_number'] + $results['tickets_sold_number'];
 
         return $results;
+    }
+
+    /**
+     * Get the first day of ticket sales (get createdAt of the first event ticket)
+     * @param Event $event
+     *
+     * @return \DateTime
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    private function _getFirstDayOfTicketSales(Event $event) {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('t.createdAt')
+            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
+            ->where($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->eq('t.event', ':event'))
+            ->setParameters([
+                'event' => $event,
+            ])
+            ->orderBy('t.createdAt', 'ASC')
+            ->setMaxResults(1);
+
+        return new \DateTime($qb
+            ->getQuery()
+            ->getSingleScalarResult()
+        );
+    }
+
+    /**
+     * Get the last day of ticket sales
+     *
+     * @param Event $event
+     * @return \DateTime|null
+     */
+    private function _getLastDayOfTicketSales(Event $event) {
+        return $event->getDateEnd() ?: $event->getDate();
+    }
+
+    /**
+     * Get data for forecasting tickets sales (based on previous events)
+     *
+     * @param Event $event
+     */
+    public function getDataForForecastingTicketsSales(Event $event)
+    {
+        $weeksMaxNumber = 20; // задаєм максимальну глибину аналізу
+
+        // витягнути івенти з цієї групи
+        $events = $this->em->getRepository('StfalconEventBundle:Event')
+            ->findBy(['group' => $event->getGroup()], ['date' => 'DESC'], 4);
+
+        // формуєм масив ключів з айдшок івентів, щоб використати його в формуванні заготовки масиву результатів
+        $resultsKeys = [$event->getId()];
+        foreach ($events as $e) {
+            $resultsKeys[] = $e->getId();
+        }
+        $resultsValueTemplate = array_fill_keys($resultsKeys, null);
+        // заповнюєм заготовку масиву результатів
+        $results = array_fill(0, $weeksMaxNumber, $resultsValueTemplate);
+
+        // витягуєм статистику продажів для івентів з цієї групи
+        foreach ($events as $event) {
+            $dataForDailyStatistics = $this->getDataForDailyStatisticsOfTicketsSold($event);
+            $reverseDataForDailyStatistics = array_reverse($dataForDailyStatistics);
+
+            // групуєм статистику продажів для івенту по тижнях
+            $oneEventResults = [];
+            foreach ($reverseDataForDailyStatistics as $oneDateData) {
+                $date = $oneDateData[0];
+                $number = $oneDateData[1];
+
+                $key = $date->format("Y-W");
+                $oneEventResults[$key] = (isset($oneEventResults[$key])? $oneEventResults[$key]: 0) + $number;
+            }
+
+            // мержим отриману статистику івента в загальний масив результатів
+            foreach(array_values($oneEventResults) as $week => $number) {
+                if($week == $weeksMaxNumber) {
+                    break;
+                }
+                $results[$week][$event->getId()] = $number;
+            }
+        }
+
+        return array_reverse($results);
     }
 }
