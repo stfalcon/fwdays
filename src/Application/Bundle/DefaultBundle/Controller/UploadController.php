@@ -62,7 +62,7 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
-        $filter = 'image';
+        $filter = 'upload_image';
         $target = $uploadDir.'/'.$newFileName;
         $cacheManager = $this->get('liip_imagine.cache.manager');
         $filterManager = $this->get('liip_imagine.filter.manager');
@@ -71,7 +71,6 @@ class UploadController extends Controller
         $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
 
         $newFileName = $cacheManager->resolve($target, $filter);
-
 
         return new JsonResponse(
             $response = [

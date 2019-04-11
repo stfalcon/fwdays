@@ -17,6 +17,24 @@ liip_imagine:
           max: [280, 150]
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }
-    image:
+    upload_image:
+      post_processors:
+        jpegoptim: { strip_all: true, max: 80, progressive: true }
+    static_image_438_331:
+      filters:
+        downscale:
+          max: [438, 331]
+      post_processors:
+        jpegoptim: { strip_all: true, max: 80, progressive: true }
+    static_image_211_332:
+      filters:
+        downscale:
+          max: [211, 332]
+      post_processors:
+        jpegoptim: { strip_all: true, max: 80, progressive: true }
+    static_image_211_158:
+      filters:
+        downscale:
+          max: [211, 158]
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }
