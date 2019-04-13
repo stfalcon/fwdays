@@ -10,7 +10,7 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractNewsAdmin;
 /**
  * Class EventNewsAdmin.
  */
-class EventNewsAdmin extends AbstractNewsAdmin
+final class EventNewsAdmin extends AbstractNewsAdmin
 {
     /**
      * {@inheritdoc}

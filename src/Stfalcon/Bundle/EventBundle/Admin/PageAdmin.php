@@ -9,7 +9,7 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 /**
  * Class PageAdmin.
  */
-class PageAdmin extends AbstractPageAdmin
+final class PageAdmin extends AbstractPageAdmin
 {
     /**
      * @param ListMapper $listMapper

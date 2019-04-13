@@ -51,6 +51,7 @@ class ChartBuilder
         // рахуєм різницю в роках між першою датою графіка і останньою, щоб динамічно підлаштувати висоту канви
         $firstDate = array_keys($data)[1]; // в 0-му елементі заголовки графіка. перша дата в 1-му
         $lastDate = array_keys($data)[count($data)-1];
+
         $years = (new \DateTime($lastDate))->format('Y') - (new \DateTime($firstDate))->format('Y') + 1;
         $chart->getOptions()->setHeight(200*$years);
 

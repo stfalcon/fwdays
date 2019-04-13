@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NoResultException;
 
 class StatisticService
 {
@@ -127,10 +128,14 @@ class StatisticService
             ->orderBy('t.createdAt', 'ASC')
             ->setMaxResults(1);
 
-        return new \DateTime($qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        );
+        try {
+            $date = $qb->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $date = $this->_getLastDayOfTicketSales($event)->modify('-1 week')->format('Y-m-d');
+        }
+
+        return new \DateTime($date);
     }
 
     /**

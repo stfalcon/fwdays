@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
 use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -20,17 +19,12 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
  *
- * @UniqueEntity(
- *     "slug",
- *     errorPath="slug",
- *     message="Поле slug повинне бути унікальне."
- * )
- *
  * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
 class Sponsor implements Translatable
 {
     use TranslateTrait;
+
     /**
      * @var int
      *
@@ -39,6 +33,7 @@ class Sponsor implements Translatable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
@@ -51,16 +46,7 @@ class Sponsor implements Translatable
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    protected $slug;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
-     *
-     * @Gedmo\Translatable(fallback=true)
      */
     protected $name;
 
@@ -88,6 +74,15 @@ class Sponsor implements Translatable
     protected $sortOrder = 1;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    protected $about;
+
+    /**
      * @var resource
      *
      * @Assert\File(maxSize="6000000")
@@ -96,15 +91,6 @@ class Sponsor implements Translatable
      * @Vich\UploadableField(mapping="sponsor_image", fileNameProperty="logo")
      */
     protected $file;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="about", type="text", nullable=true)
-     *
-     * @Gedmo\Translatable(fallback=true)
-     */
-    protected $about;
 
     /**
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\EventSponsor",
@@ -132,13 +118,6 @@ class Sponsor implements Translatable
     protected $updatedAt;
 
     /**
-     * @var bool onMain
-     *
-     * @ORM\Column(name="on_main", type="boolean")
-     */
-    protected $onMain = false;
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -155,30 +134,6 @@ class Sponsor implements Translatable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set slug.
-     *
-     * @param string $slug
-     *
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
@@ -298,27 +253,16 @@ class Sponsor implements Translatable
     }
 
     /**
-     * Set about.
-     *
-     * @param string $about
+     * @param EventSponsor $sponsorEvent
      *
      * @return $this
      */
-    public function setAbout($about)
+    public function addSponsorEvent(EventSponsor $sponsorEvent)
     {
-        $this->about = $about;
+        $sponsorEvent->setSponsor($this);
+        $this->sponsorEvents->add($sponsorEvent);
 
         return $this;
-    }
-
-    /**
-     * Get about.
-     *
-     * @return string
-     */
-    public function getAbout()
-    {
-        return $this->about;
     }
 
     /**
@@ -326,9 +270,15 @@ class Sponsor implements Translatable
      *
      * @return $this
      */
-    public function addSponsorEvents(EventSponsor $sponsorEvent)
+    public function removeSponsorEvent(EventSponsor $sponsorEvent)
     {
-        $this->sponsorEvents[] = $sponsorEvent;
+        if ($this->sponsorEvents->contains($sponsorEvent)) {
+            $this->sponsorEvents->removeElement($sponsorEvent);
+            $sponsorEvent->setCategory(null)
+                ->setEvent(null)
+                ->setSponsor(null)
+            ;
+        }
 
         return $this;
     }
@@ -415,22 +365,22 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param bool $onMain
-     *
-     * @return $this
+     * @return string
      */
-    public function setOnMain($onMain)
+    public function getAbout()
     {
-        $this->onMain = $onMain;
-
-        return $this;
+        return $this->about;
     }
 
     /**
-     * @return bool
+     * @param string $about
+     *
+     * @return $this
      */
-    public function getOnMain()
+    public function setAbout($about)
     {
-        return $this->onMain;
+        $this->about = $about;
+
+        return $this;
     }
 }
