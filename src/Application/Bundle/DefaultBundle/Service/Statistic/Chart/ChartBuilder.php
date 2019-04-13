@@ -38,11 +38,15 @@ class ChartBuilder
         return $chart;
     }
 
+    /**
+     *
+     *
+     * @param $data
+     * @return \CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart
+     */
     public function calendarChart($data) {
         $chart = new \CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart();
         $chart->getData()->setArrayToDataTable($data);
-
-//        $chart->getOptions()->setTitle('Статистика продаж');
 
         // рахуєм різницю в роках між першою датою графіка і останньою, щоб динамічно підлаштувати висоту канви
         $firstDate = array_keys($data)[1]; // в 0-му елементі заголовки графіка. перша дата в 1-му
@@ -50,10 +54,10 @@ class ChartBuilder
         $years = (new \DateTime($lastDate))->format('Y') - (new \DateTime($firstDate))->format('Y') + 1;
         $chart->getOptions()->setHeight(200*$years);
 
-//        $chart->getOptions()->setWidth(1000);
         $chart->getOptions()->getCalendar()->setCellSize(18);
         $chart->getOptions()->getNoDataPattern()->setBackgroundColor('#76a7fa');
         $chart->getOptions()->getNoDataPattern()->setColor('#a0c3ff');
+
         return $chart;
     }
 
