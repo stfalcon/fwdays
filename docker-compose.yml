@@ -11,7 +11,7 @@ services:
             - "php"
 
     php:
-        image: black15/fwdays:201902221 
+        image: black15/fwdays:201908041
         # build:
         #     context: ./docker-configs/php-image
         environment:

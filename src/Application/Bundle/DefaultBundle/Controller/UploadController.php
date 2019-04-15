@@ -50,6 +50,7 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
 
+        list($width, $height) = getimagesize($file);
         $uploadDir = $this->container->getParameter('upload_dir');
 
         // Move uploaded file
@@ -61,15 +62,20 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
-        // Get image width/height
-        list($width, $height) = getimagesize(
-            $path.DIRECTORY_SEPARATOR.$newFileName
-        );
+        $filter = 'upload_image';
+        $target = $uploadDir.'/'.$newFileName;
+        $cacheManager = $this->get('liip_imagine.cache.manager');
+        $filterManager = $this->get('liip_imagine.filter.manager');
+        $dataManager = $this->get('liip_imagine.data.manager');
+
+        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+
+        $newFileName = $cacheManager->resolve($target, $filter);
 
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $this->get('router')->generate('homepage', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL).$uploadDir.'/'.$newFileName,
+                'src' => $newFileName,
                 'width' => $width,
                 'height' => $height,
             ]
