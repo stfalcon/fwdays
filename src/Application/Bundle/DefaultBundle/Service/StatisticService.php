@@ -56,7 +56,7 @@ class StatisticService
         ;
 
         // fill the possible gap in sequence of dates
-        $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify( '+1 day' ));
+        $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify('+1 day'));
 
         $formattedResult = [];
         foreach ($dateRange as $date) {
@@ -182,12 +182,12 @@ class StatisticService
                 $number = $oneDateData[1];
 
                 $key = $date->format("Y-W");
-                $oneEventResults[$key] = (isset($oneEventResults[$key])? $oneEventResults[$key]: 0) + $number;
+                $oneEventResults[$key] = (isset($oneEventResults[$key]) ? $oneEventResults[$key] : 0) + $number;
             }
 
             // мержим отриману статистику івента в загальний масив результатів
-            foreach(array_values($oneEventResults) as $week => $number) {
-                if($week == $weeksMaxNumber) {
+            foreach (array_values($oneEventResults) as $week => $number) {
+                if ($week == $weeksMaxNumber) {
                     break;
                 }
                 $results[$week][$event->getId()] = $number;

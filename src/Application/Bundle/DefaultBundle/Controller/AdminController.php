@@ -527,7 +527,7 @@ class AdminController extends Controller
                     $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
 
                     $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $otherColor = (int) round($green/($maxGreen / $green));
+                    $otherColor = (int) round($green / ($maxGreen / $green));
                     $otherColor = dechex($otherColor);
                     $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
                 } else {
@@ -563,7 +563,7 @@ class AdminController extends Controller
             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             'Content-Type' => 'text/csv',
         ];
-        $callback = function () use ($users) {
+        $callback = function() use ($users) {
             $usersFile = \fopen('php://output', 'w');
             foreach ($users as $fields) {
                 \fputcsv($usersFile, $fields);

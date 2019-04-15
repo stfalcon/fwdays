@@ -26,7 +26,7 @@ class AppDateTimeExtension extends \Twig_Extension
                     'листопада' => ['листопад', 'осінь'],
                     'грудня' => ['грудень', 'зима'],
                 ],
-             'en' =>
+                'en' =>
                 [
                     'January' => ['January', 'Winter'],
                     'February' => ['February', 'Winter'],
