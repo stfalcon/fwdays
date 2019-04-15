@@ -81,7 +81,7 @@ class ReferralService
 
         $tickets = $payment->getTickets();
         /** @var Ticket $firstTicket */
-        $firstTicket = $tickets->count() > 0 ? $tickets[0] :  null;
+        $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
         $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
 
         if ($userReferral) {
