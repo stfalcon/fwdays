@@ -1,32 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: fwdays-redis
-  namespace: fwdays-stag
+  name: fwdays-sessions
+  namespace: fwdays-prod
 spec:
   ports:
   - port: 6379
     targetPort: 6379
   selector:
-    app: fwdays-redis
+    app: fwdays-sessions
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fwdays-redis
-  namespace: fwdays-stag
+  name: fwdays-sessions
+  namespace: fwdays-prod
 spec:
   selector:
     matchLabels:
-      app: fwdays-redis
+      app: fwdays-sessions
   replicas: 1
   template:
     metadata:
       labels:
-        app: fwdays-redis
+        app: fwdays-sessions
     spec:
       containers:
-      - name: fwdays-redis
+      - name: fwdays-sessions
         image: redis:5.0.4
         ports:
         - containerPort: 6379
