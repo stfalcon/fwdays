@@ -90,7 +90,7 @@ class LocaleUrlResponseListener
             }
             if (false !== $matched) {
                 $params = $request->query->all();
-                $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : '/'), 301));
+                $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : ''), 301));
             }
         }
     }
