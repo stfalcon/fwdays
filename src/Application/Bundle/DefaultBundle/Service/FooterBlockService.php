@@ -3,17 +3,17 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class FooterBlockService.
  */
-class FooterBlockService extends BaseBlockService
+class FooterBlockService extends AbstractBlockService
 {
     /** @var PageRepository */
     private $pageRepository;
@@ -48,7 +48,7 @@ class FooterBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign:_footer_pages.html.twig',

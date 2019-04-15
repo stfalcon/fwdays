@@ -137,15 +137,6 @@ function setSpeakerHtml(e_slug, s_slug, with_review) {
         });
 }
 
-function paymentAfterLogin() {
-    var e_slug = Cookies.get('event');
-    if (e_slug) {
-        Cookies.remove('event', { path: '/', http: false, secure : false });
-        Cookies.remove('bye-event', { path: '/', http: false, secure : false });
-        setModalHeader(e_slug, 'buy');
-        setPaymentHtml(e_slug);
-    }
-}
 var registrationFormId = null;
 
 function submitRegistrationForm(token) {
@@ -498,5 +489,11 @@ $(document).ready(function () {
                     $("div[data-review='"+rv_slug+"']").html('<i class="icon-like like-btn__icon"></i>error');
                 }
         });
+    });
+
+    $('iframe').each(function() {
+        if ($(this).data('src')) {
+            $(this).attr('src', $(this).data('src'));
+        }
     });
 });

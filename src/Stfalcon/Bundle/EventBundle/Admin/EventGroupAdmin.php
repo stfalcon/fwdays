@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -12,7 +12,7 @@ use Stfalcon\Bundle\EventBundle\Entity\EventGroup;
 /**
  * Class EventGroupAdmin.
  */
-class EventGroupAdmin extends Admin
+final class EventGroupAdmin extends AbstractAdmin
 {
     private $prevEvents = null;
 

@@ -10,7 +10,7 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 /**
  * Class EventPageAdmin.
  */
-class EventPageAdmin extends AbstractPageAdmin
+final class EventPageAdmin extends AbstractPageAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper

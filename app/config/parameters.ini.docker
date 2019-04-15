@@ -4,7 +4,7 @@
 [parameters]
     database_driver   = pdo_mysql
     database_host     = mysql
-    database_port     =
+    database_port     = null
     database_name     = fwdays_com_development
     database_user     = root
     database_password = qwerty
@@ -13,7 +13,7 @@
     mailer_host       = mailcatcher
     mailer_user       =
     mailer_password   =
-    mailer_port       = 25
+    mailer_port       = 1025
 
     locale            = uk
     locales[0]        = uk

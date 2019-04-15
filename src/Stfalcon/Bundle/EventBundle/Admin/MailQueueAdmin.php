@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -11,7 +11,7 @@ use Stfalcon\Bundle\EventBundle\Entity\MailQueue;
 /**
  * Class MailQueueAdmin.
  */
-class MailQueueAdmin extends Admin
+final class MailQueueAdmin extends AbstractAdmin
 {
     /**
      * @var string
