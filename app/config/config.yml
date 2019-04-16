@@ -56,6 +56,8 @@ twig:
         google_site_key: "%google_captcha_site_key%"
         facebook_api_id: "%facebook_client_id%"
         fb_page_id: "235981893111914"
+        speaker_cache_path: '%aws_s3_public_endpoint%/%app.speaker_image%%app.media_cache%speaker'
+
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
