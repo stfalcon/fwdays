@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="http://localhost:8000/assets/styles/main-ce33605687.css">
     <style>
         .output-code {
             font-family: 'Inconsolata', monospace;
@@ -562,6 +563,91 @@
     </textarea>
     <h2 class="h2">Код:</h2>
     <pre id="output-7" class="output-code cm-s-default"></pre>
+  <h2 class="h2">Блок із знижками:</h2>
+  <br>
+  <br>
+  <br>
+  <div class="container container--sm">
+    <div class="event-discount">
+      <div class="event-discount__date">з 24 по 31 грудня</div>
+      <div class="event-discount__title">Квитки у подарунок</div>
+      <p class="event-discount__text">
+        Купуйте два квитки за ціною одного на конференцію Java Script fwdays'19.
+        Після придбання квитка, ми надішлемо вам промокод на другий безкоштовний квиток.
+        Або пишіть нам на пошту <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і отримайте промокод у формі
+        стильного подарункового сертифікату.
+      </p>
+    </div>
+  </div>
+  <textarea id="code-8" class="input-code" readonly hidden>
+        <div class="event-discount">
+          <div class="event-discount__date">з 24 по 31 грудня</div>
+          <div class="event-discount__title">Квитки у подарунок</div>
+          <p class="event-discount__text">
+             Купуйте два квитки за ціною одного на конференцію Java Script fwdays'19.
+              Після придбання квитка, ми надішлемо вам промокод на другий безкоштовний квиток.
+             Або пишіть нам на пошту <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> і отримайте промокод у формі стильного подарункового сертифікату.
+          </p>
+        </div>
+    </textarea>
+  <h2 class="h2">Код:</h2>
+  <pre id="output-8" class="output-code cm-s-default"></pre>
+  <h2 class="h2">Блок із знижками:</h2>
+  <br>
+  <br>
+  <br>
+  <div class="container container--sm">
+    <div class="event-discount">
+      <div class="event-discount__date">Тільки сьогодні</div>
+      <div class="event-discount__title">Знижка 10%</div>
+      <p class="event-discount__text">
+        Купуй білет та отримуй знижку 10% на JavaScript fwdays’19.
+      </p>
+      <div class="event-discount__copy-field">
+        Промокод —
+        <div class="share-ref share-ref--promocode">
+          <div class="share-ref__bottom">
+            <div class="share-ref__field">
+              <input id="ref-input" class="share-ref__input" type="text"
+                     value="SN-JSFWDAYS-19"
+                     readonly>
+              <button id="ref-copy" class="share-ref__copy tooltip-copy" type="button"
+                      data-copy="Скопійовано">
+                <i class="icon-copy share-ref__copy-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <textarea id="code-9" class="input-code" readonly hidden>
+        <div class="event-discount">
+          <div class="event-discount__date">Тільки сьогодні</div>
+          <div class="event-discount__title">Знижка 10%</div>
+          <p class="event-discount__text">
+             Купуй білет та отримуй знижку 10% на JavaScript fwdays’19.
+          </p>
+          <div class="event-discount__copy-field">
+              Промокод —
+              <div class="share-ref share-ref--promocode">
+                  <div class="share-ref__bottom">
+                      <div class="share-ref__field">
+                          <input id="ref-input" class="share-ref__input" type="text"
+                            value="SN-JSFWDAYS-19"
+                            readonly>
+                          <button id="ref-copy" class="share-ref__copy tooltip-copy" type="button"
+                            data-copy="Скопійовано">
+                              <i class="icon-copy share-ref__copy-icon"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </textarea>
+  <h2 class="h2">Код:</h2>
+  <pre id="output-9" class="output-code cm-s-default"></pre>
 </div>
 <script src="../js/main.js"></script>
 </body>
@@ -599,6 +685,14 @@
         CodeMirror.runMode(document.getElementById("code-7").value, "application/xml",
             document.getElementById("output-7"));
     }
+    function doHighlight8() {
+      CodeMirror.runMode(document.getElementById("code-8").value, "application/xml",
+        document.getElementById("output-8"));
+    }
+    function doHighlight9() {
+      CodeMirror.runMode(document.getElementById("code-9").value, "application/xml",
+        document.getElementById("output-9"));
+    }
 
     doHighlight1();
     doHighlight2();
@@ -607,5 +701,7 @@
     doHighlight5();
     doHighlight6();
     doHighlight7();
+    doHighlight8();
+    doHighlight9();
 </script>
 </html>
