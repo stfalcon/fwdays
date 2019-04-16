@@ -25,6 +25,7 @@ swiftmailer:
 doctrine:
     dbal:
         dbname: fwdays_com_testing
+        server_version: 5.6
 
 liip_functional_test: ~
 

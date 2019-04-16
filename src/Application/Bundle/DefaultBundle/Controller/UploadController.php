@@ -47,8 +47,8 @@ class UploadController extends Controller
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
-        list($width, $height) = getimagesize($file);
-        $newFileName = uniqid().'.'.$file->guessExtension();
+        list($width, $height) = \getimagesize($file);
+        $newFileName = \uniqid('', false).'.'.$file->guessExtension();
 
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
 
@@ -59,10 +59,20 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
+        $filter = 'upload_image';
+        $target = $newFileName;
+        $cacheManager = $this->get('liip_imagine.cache.manager');
+        $filterManager = $this->get('liip_imagine.filter.manager');
+        $dataManager = $this->get('liip_imagine.data.manager');
+
+        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+
+        $newFileName = $cacheManager->resolve($target, $filter);
+
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $newFile,
+                'src' => $newFileName,
                 'width' => $width,
                 'height' => $height,
             ]

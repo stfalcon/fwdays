@@ -3,18 +3,18 @@
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Application\Bundle\DefaultBundle\Service\EventService;
-use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ProgramEventBlockService.
  */
-class ProgramEventBlockService extends BaseBlockService
+class ProgramEventBlockService extends AbstractBlockService
 {
     /** @var EventService */
     private $eventService;
@@ -56,7 +56,7 @@ class ProgramEventBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.program.html.twig',

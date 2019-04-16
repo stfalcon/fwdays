@@ -2,20 +2,20 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
-use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class CommitteeSpeakersEventBlockService.
  */
-class CommitteeSpeakersEventBlockService extends BaseBlockService
+class CommitteeSpeakersEventBlockService extends AbstractBlockService
 {
     /** @var IdentityTranslator */
     private $translator;
@@ -60,7 +60,7 @@ class CommitteeSpeakersEventBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig',

@@ -96,7 +96,7 @@ class Speaker implements Translatable
 
     /**
      * @Assert\File(maxSize="6000000")
-     * @Assert\Image
+     * @Assert\Image(minHeight=232, minWidth=232)
      *
      * @Vich\UploadableField(mapping="speaker_photo", fileNameProperty="photo")
      */

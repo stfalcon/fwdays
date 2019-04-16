@@ -86,5 +86,10 @@
             <argument>%jms_i18n_routing.default_locale%</argument>
             <argument>%jms_i18n_routing.locales%</argument>
         </service>
+
+<!--fix sonata Circular reference detected for service "knp_menu.matcher"-->
+        <service id="sonata.admin.menu.matcher.voter.children" class="Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter">
+            <argument type="service" id="knp_menu.matcher"/>
+        </service>
     </services>
 </container>

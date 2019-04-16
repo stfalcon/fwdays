@@ -340,12 +340,17 @@ class TicketRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('t');
         $qb->select('MONTH(p.updatedAt) as paymentMonth, DAY(p.updatedAt) as paymentDay, COUNT(t.id) as ticketsCount')
-           ->join('t.payment', 'p')
-           ->where($qb->expr()->gte('p.updatedAt', ':monthAgo'))
-           ->andWhere($qb->expr()->lte('p.updatedAt', ':now'))
-           ->andWhere($qb->expr()->eq('p.status', ':status'))
-           ->setParameters(['monthAgo' => $monthAgo, 'now' => $now, 'status' => Payment::STATUS_PAID])
-        ;
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->gte('p.updatedAt', ':monthAgo'))
+            ->andWhere($qb->expr()->lte('p.updatedAt', ':now'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(
+                [
+                    'monthAgo' => $monthAgo,
+                    'now' => $now,
+                    'status' => Payment::STATUS_PAID,
+                ]
+            );
 
         if ($event instanceof Event) {
             $qb->andWhere($qb->expr()->eq('t.event', ':event'))

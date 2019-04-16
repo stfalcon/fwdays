@@ -1219,17 +1219,26 @@
 
   .event-header {
     margin-bottom: 20px;
-    min-height: 180px;
+    min-height: 226px;
 
     .container {
       padding: 24px 16px;
     }
 
+    &__box, &__info, &__details {
+      height: 100%;
+    }
+
+    &__details-right {
+      margin-top: auto;
+    }
+
     &__title {
       margin-bottom: 20px;
       padding-right: 16px;
-      font-size: 28px;
-      line-height: 30px;
+      font-size: 24px;
+      line-height: 28px;
+      width: 55%;
     }
 
     &__description {
@@ -1241,6 +1250,7 @@
     }
 
     &__date {
+      line-height: 22px;
       font-weight: 400;
     }
 
@@ -1248,11 +1258,11 @@
       border-bottom: none;
       font-weight: 400;
       font-size: 14px;
-      line-height: 18px;
+      line-height: 16px;
     }
 
     &__photo {
-      max-width: 180px;
+      max-width: 226px;
     }
   }
 
@@ -1892,7 +1902,7 @@
 
   .event-header {
     &__photo {
-      max-width: 150px;
+      max-width: 180px;
     }
   }
 
