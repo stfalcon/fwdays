@@ -91,5 +91,10 @@
         <service id="sonata.admin.menu.matcher.voter.children" class="Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter">
             <argument type="service" id="knp_menu.matcher"/>
         </service>
+
+        <service id="vich_uploader.my_storage.flysystem" class="Application\Bundle\DefaultBundle\Service\MyFlySystemStorage">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="oneup_flysystem.mount_manager" />
+        </service>
     </services>
 </container>
