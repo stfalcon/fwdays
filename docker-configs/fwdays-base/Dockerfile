@@ -1,5 +1,5 @@
 FROM debian:stretch
-RUN apt-get update && apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git libpng-dev libxml2 librsvg2-bin imagemagick gnupg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget curl ca-certificates procps locales zip apt-transport-https git libpng-dev libxml2 librsvg2-bin imagemagick gnupg jpegoptim optipng && rm -rf /var/lib/apt/lists/*
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 RUN echo 'deb https://packages.sury.org/php/ stretch main' > /etc/apt/sources.list.d/php.list
 RUN wget https://repo.percona.com/apt/percona-release_0.1-4.stretch_all.deb -O /tmp/percona.deb && dpkg -i /tmp/percona.deb && rm /tmp/percona.deb
