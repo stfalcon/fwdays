@@ -53,26 +53,26 @@ class UploadController extends Controller
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
 
         try {
-            $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
+            $tmpFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
             $newFile = $this->getParameter('aws_s3_public_endpoint').'/'.$adapter->getPathPrefix().$newFileName;
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
-        $filter = 'upload_image';
-        $target = $newFileName;
-        $cacheManager = $this->get('liip_imagine.cache.manager');
-        $filterManager = $this->get('liip_imagine.filter.manager');
-        $dataManager = $this->get('liip_imagine.data.manager');
-
-        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
-
-        $newFileName = $cacheManager->resolve($target, $filter);
+//        $filter = 'upload_image';
+//        $target = $newFileName;
+//        $cacheManager = $this->get('liip_imagine.cache.manager');
+//        $filterManager = $this->get('liip_imagine.filter.manager');
+//        $dataManager = $this->get('liip_imagine.data.manager');
+//
+//        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+//
+//        $newFile = $cacheManager->resolve($target, $filter);
 
         return new JsonResponse(
             $response = [
                 'status' => 'success',
-                'src' => $newFileName,
+                'src' => $newFile,
                 'width' => $width,
                 'height' => $height,
             ]

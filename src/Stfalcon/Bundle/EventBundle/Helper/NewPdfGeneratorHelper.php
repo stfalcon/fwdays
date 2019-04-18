@@ -86,6 +86,7 @@ class NewPdfGeneratorHelper
             'margin_bottom' => 2,
             'margin_header' => 2,
             'margin_footer' => 2,
+            'tempDir' => '/tmp',
         ];
 
         $mPDF = new Mpdf($constructorArgs);
