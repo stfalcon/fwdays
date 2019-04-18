@@ -42,7 +42,7 @@ class EventSponsor
      * @var \Stfalcon\Bundle\SponsorBundle\Entity\Category
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Category")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="cascade")
      */
     protected $category;
 
