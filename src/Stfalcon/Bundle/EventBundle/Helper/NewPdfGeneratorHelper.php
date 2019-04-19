@@ -152,7 +152,6 @@ class NewPdfGeneratorHelper
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
-                'path' => realpath($this->kernel->getRootDir().'/../web').'/',
                 'event_logo' => $base64EventSmallLogo,
                 'circle_left' => $base64CircleLeftImg,
                 'circle_right' => $base64CircleRightImg,
