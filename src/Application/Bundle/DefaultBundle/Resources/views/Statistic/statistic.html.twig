@@ -25,6 +25,10 @@
 {% block title %} - {{ 'Статистика' }}{% endblock title %}
 
 {% block content %}
+        {#<h1>{{ event.name }}</h1>#}
+
+
+
     {% if data['event_statistic_slug'] is not empty %}
         <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
         <br>
@@ -118,12 +122,3 @@
         </tbody>
     </table>
 {% endblock content %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        {{ gc_draw(chart, 'div_chart') }}
-    </script>
-{% endblock javascripts %}

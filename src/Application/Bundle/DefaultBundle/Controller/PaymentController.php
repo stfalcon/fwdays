@@ -404,8 +404,7 @@ class PaymentController extends Controller
         if ($payment->getTickets()->count() > 0) {
             if (0 === (int) $payment->getAmount()) {
                 $formAction = $payment->getFwdaysAmount() > 0 ?
-                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
-                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
             } else {
                 $payType = 'wayforpay';

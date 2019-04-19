@@ -203,6 +203,15 @@ class AdminController extends Controller
      */
     public function showStatisticAction()
     {
+//        // беру список активних івентів через івент сервіс чи репозиторій (на морді виводиться, значить має бути готовий)
+//        $events = $this->getDoctrine()
+//            ->getRepository('StfalconEventBundle:Event')
+//            ->findBy(['active' => true], ['date' => 'ASC']);
+
+//        $dataForDailyStatistics = $this->ticketRepository
+//            ->getDataForDailyStatisticsOfTicketsSold($dateFrom, $dateTo, $event);
+//        array_unshift($dataForDailyStatistics, ['Date', 'Number of tickets sold']);
+
         $repo = $this->getDoctrine()
             ->getManager()
             ->getRepository('ApplicationUserBundle:User');
@@ -312,7 +321,7 @@ class AdminController extends Controller
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
             ],
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
+//            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
         ]);
     }
 
@@ -369,9 +378,10 @@ class AdminController extends Controller
         return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
+            'event' => $event,
             'event_statistic_html' => $eventStatisticHtml,
             'current_event_slug' => $event->getSlug(),
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
+//            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
         ]);
     }
 
@@ -547,7 +557,7 @@ class AdminController extends Controller
             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             'Content-Type' => 'text/csv',
         ];
-        $callback = function () use ($users) {
+        $callback = function() use ($users) {
             $usersFile = \fopen('php://output', 'w');
             foreach ($users as $fields) {
                 \fputcsv($usersFile, $fields);

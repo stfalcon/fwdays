@@ -506,6 +506,12 @@
     }
   }
 
+  .event-discount {
+    border-radius: 0;
+    padding: 72px 25px 72px 210px;
+    margin: 0 -24px 60px;
+  }
+
   .cost {
     padding: 0 26px 0 23px;
 
@@ -1393,6 +1399,13 @@
     }
   }
 
+  .event-discount {
+    border-radius: 0;
+    padding: 70px 16px;
+    margin: 0 -16px 60px;
+    background-image: none;
+  }
+
   .schedule {
     margin-bottom: 50px;
   }
@@ -1764,6 +1777,12 @@
       width: 100%;
       max-width: 362px;
       margin: auto;
+    }
+
+    &--promocode {
+      .share-ref__field {
+        margin-bottom: 0;
+      }
     }
   }
 

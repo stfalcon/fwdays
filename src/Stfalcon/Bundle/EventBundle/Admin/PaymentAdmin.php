@@ -100,7 +100,7 @@ final class PaymentAdmin extends AbstractAdmin
                 'doctrine_orm_callback',
                 [
                     'label' => 'Событие',
-                    'callback' => function ($queryBuilder, $alias, $field, $value) {
+                    'callback' => function($queryBuilder, $alias, $field, $value) {
                         $eventsId = [];
                         /** @var $event \Stfalcon\Bundle\EventBundle\Entity\Event */
                         foreach ($value['value'] as $event) {
