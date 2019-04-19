@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Form\Type;
 
+use Application\Bundle\UserBundle\Entity\User;
 use FOS\UserBundle\Form\Type\ProfileFormType as BaseProfileFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -11,11 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProfileFormType extends BaseProfileFormType
 {
-    /**
-     * @var string
-     */
-    private $class;
-
     /**
      * Builds the embedded form representing the user.
      *
@@ -75,7 +71,7 @@ class ProfileFormType extends BaseProfileFormType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->class,
+            'data_class' => User::class,
             'intention' => 'profile',
         ));
     }
