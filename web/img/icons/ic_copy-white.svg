@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>ic_copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Updates" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="js_v2_10" transform="translate(-652.000000, -390.000000)" fill-rule="nonzero">
+            <g id="Group-2" transform="translate(170.000000, 204.000000)">
+                <g id="Group" transform="translate(230.000000, 74.000000)">
+                    <g id="copy-content" transform="translate(252.000000, 112.000000)">
+                        <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                        <path d="M15.3157895,4 L6.47368421,4 C5.66315789,4 5,4.69545455 5,5.54545455 L5,16.3636364 L6.47368421,16.3636364 L6.47368421,5.54545455 L15.3157895,5.54545455 L15.3157895,4 Z M17.5263158,7.09090909 L9.42105263,7.09090909 C8.61052632,7.09090909 7.94736842,7.78636364 7.94736842,8.63636364 L7.94736842,19.4545455 C7.94736842,20.3045455 8.61052632,21 9.42105263,21 L17.5263158,21 C18.3368421,21 19,20.3045455 19,19.4545455 L19,8.63636364 C19,7.78636364 18.3368421,7.09090909 17.5263158,7.09090909 Z M17.5263158,19.4545455 L9.42105263,19.4545455 L9.42105263,8.63636364 L17.5263158,8.63636364 L17.5263158,19.4545455 Z" id="Shape" fill="#EAEAEA"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
