@@ -17,6 +17,23 @@ class SponsorAdmin extends AbstractTranslateAdmin
      */
     public function getBatchActions()
     {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate($object)
+    {
+        $this->prepareImageCache($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postPersist($object)
+    {
+        $this->prepareImageCache($object);
     }
 
     /**
@@ -90,5 +107,24 @@ class SponsorAdmin extends AbstractTranslateAdmin
                     ]
                 )
             ->end();
+    }
+
+    /**
+     * @param Sponsor $sponsor
+     */
+    private function prepareImageCache(Sponsor $sponsor)
+    {
+        $filter = 'partner';
+        $target = $sponsor->getLogo();
+        if (empty($target)) {
+            return;
+        }
+        $container = $this->getConfigurationPool()->getContainer();
+        $cacheManager = $container->get('liip_imagine.cache.manager');
+        if (!$cacheManager->isStored($target, $filter)) {
+            $filterManager = $container->get('liip_imagine.filter.manager');
+            $dataManager = $container->get('liip_imagine.data.manager');
+            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+        }
     }
 }

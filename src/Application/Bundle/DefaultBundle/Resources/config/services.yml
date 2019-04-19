@@ -116,3 +116,7 @@ services:
        class: Application\Bundle\DefaultBundle\Service\Statistic\Chart\ChartBuilder
        arguments:
             - '@app.ticket.repository.service'
+
+    app.statistic.service:
+        class: Application\Bundle\DefaultBundle\Service\StatisticService
+        arguments: ["@doctrine.orm.entity_manager"]

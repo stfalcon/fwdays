@@ -40,16 +40,25 @@
     <p></p>
     <div id="event-data">{{ event_statistic_html|raw }}</div>
 
-    <div id="div_chart"></div>
+    {{ render(controller('ApplicationDefaultBundle:Analytics:generalStatistics', { 'event': event })) }}
+
+    {{ render(controller('ApplicationDefaultBundle:Analytics:forecastedSales', { 'event': event })) }}
+
+    {#<h2>Графік продажів + графік розсилок по базі</h2>#}
+    {#<h2>Графік розподілу цін (як точки)</h2>#}
+    {#<h2>Повторна участь (мейбі теж як точки)</h2>#}
+    {#<h2>Час від початку до завершення продажу</h2>#}
+
+    {#<div id="div_chart"></div>#}
 {% endblock content %}
 
 {% block javascripts %}
     {{ parent() }}
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        {{ gc_draw(chart, 'div_chart') }}
-    </script>
+    {#<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>#}
+    {#<script type="text/javascript">#}
+        {#{{ gc_draw(chart, 'div_chart') }}#}
+    {#</script>#}
 
     <script>
         $(document).on('change', '#select-event-statistic', function () {
