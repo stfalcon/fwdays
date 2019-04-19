@@ -21,6 +21,11 @@ class ChartBuilder
         $this->ticketRepository = $ticketRepository;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return \CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart
+     */
     public function columnChart($data)
     {
         $chart = new \CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart();
@@ -40,7 +45,7 @@ class ChartBuilder
     }
 
     /**
-     * @param $data
+     * @param array $data
      *
      * @return \CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart
      */

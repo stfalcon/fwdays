@@ -7,6 +7,9 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 
+/**
+ * Class StatisticService.
+ */
 class StatisticService
 {
     /** @var EntityManager */
@@ -31,8 +34,8 @@ class StatisticService
      */
     public function getDataForDailyStatisticsOfTicketsSold(Event $event)
     {
-        $dateFrom = $this->_getFirstDayOfTicketSales($event);
-        $dateTo = $this->_getLastDayOfTicketSales($event);
+        $dateFrom = $this->getFirstDayOfTicketSales($event);
+        $dateTo = $this->getLastDayOfTicketSales($event);
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('DATE(p.updatedAt) as date_of_sale, COUNT(t.id) as tickets_sold_number')
@@ -113,53 +116,11 @@ class StatisticService
     }
 
     /**
-     * Get the first day of ticket sales (get createdAt of the first event ticket).
-     *
-     * @param Event $event
-     *
-     * @return \DateTime
-     *
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    private function _getFirstDayOfTicketSales(Event $event)
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('t.createdAt')
-            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
-            ->where($qb->expr()->eq('t.event', ':event'))
-            ->andWhere($qb->expr()->eq('t.event', ':event'))
-            ->setParameters([
-                'event' => $event,
-            ])
-            ->orderBy('t.createdAt', 'ASC')
-            ->setMaxResults(1);
-
-        try {
-            $date = $qb->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            $date = $this->_getLastDayOfTicketSales($event)->modify('-1 week')->format('Y-m-d');
-        }
-
-        return new \DateTime($date);
-    }
-
-    /**
-     * Get the last day of ticket sales.
-     *
-     * @param Event $event
-     *
-     * @return \DateTime|null
-     */
-    private function _getLastDayOfTicketSales(Event $event)
-    {
-        return $event->getDateEnd() ?: $event->getDate();
-    }
-
-    /**
      * Get data for forecasting tickets sales (based on previous events).
      *
      * @param Event $event
+     *
+     * @return array
      */
     public function getDataForForecastingTicketsSales(Event $event)
     {
@@ -203,5 +164,49 @@ class StatisticService
         }
 
         return array_reverse($results);
+    }
+
+    /**
+     * Get the first day of ticket sales (get createdAt of the first event ticket).
+     *
+     * @param Event $event
+     *
+     * @return \DateTime
+     *
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    private function getFirstDayOfTicketSales(Event $event)
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('t.createdAt')
+            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
+            ->where($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->eq('t.event', ':event'))
+            ->setParameters([
+                'event' => $event,
+            ])
+            ->orderBy('t.createdAt', 'ASC')
+            ->setMaxResults(1);
+
+        try {
+            $date = $qb->getQuery()
+                ->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $date = $this->getLastDayOfTicketSales($event)->modify('-1 week')->format('Y-m-d');
+        }
+
+        return new \DateTime($date);
+    }
+
+    /**
+     * Get the last day of ticket sales.
+     *
+     * @param Event $event
+     *
+     * @return \DateTime|null
+     */
+    private function getLastDayOfTicketSales(Event $event)
+    {
+        return $event->getDateEnd() ?: $event->getDate();
     }
 }

@@ -42,8 +42,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
             ->setName('app:liip_imagine:cache:resolve')
             ->setDescription('liip imagine resolve cache for all files by filter')
             ->addArgument('filter', InputArgument::REQUIRED, 'Filter name to resolve caches for')
-            ->addOption('force', 'F', InputOption::VALUE_OPTIONAL,
-                'Force asset cache resolution (ignoring whether it already cached)')
+            ->addOption('force', 'F', InputOption::VALUE_OPTIONAL, 'Force asset cache resolution (ignoring whether it already cached)')
         ;
     }
 
@@ -60,7 +59,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
         $this->output = $output;
 
         $filter = $input->getArgument('filter');
-        $doForce = $input->getOption('force');
+        $doForce = (bool) $input->getOption('force');
         try {
             $fileSystemName = self::FILTER_MAPPING[$filter];
         } catch (\Exception $e) {
@@ -80,29 +79,6 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
                 continue;
             }
             $this->doCacheResolve($contentItem['path'], $filter, $doForce);
-        }
-    }
-
-    /**
-     * @param string $target
-     * @param string $filter
-     * @param bool   $forced
-     */
-    private function doCacheResolve($target, $filter, $forced)
-    {
-        $this->writeActionStart($filter, $target);
-
-        try {
-            if ($forced || !$this->cacheManager->isStored($target, $filter)) {
-                $this->cacheManager->store($this->filterManager->applyFilter($this->dataManager->find($filter, $target), $filter), $target, $filter);
-                $this->writeActionResult('resolved');
-            } else {
-                $this->writeActionResult('skipped');
-            }
-
-            $this->writeActionDetail($this->cacheManager->resolve($target, $filter));
-        } catch (\Exception $e) {
-            $this->writeActionDetail($e->getMessage());
         }
     }
 
@@ -143,5 +119,28 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
     private function writeNewline($count = 1)
     {
         $this->output->write(str_repeat(PHP_EOL, $count));
+    }
+
+    /**
+     * @param string $target
+     * @param string $filter
+     * @param bool   $forced
+     */
+    private function doCacheResolve(string $target, string $filter, bool $forced)
+    {
+        $this->writeActionStart($filter, $target);
+
+        try {
+            if ($forced || !$this->cacheManager->isStored($target, $filter)) {
+                $this->cacheManager->store($this->filterManager->applyFilter($this->dataManager->find($filter, $target), $filter), $target, $filter);
+                $this->writeActionResult('resolved');
+            } else {
+                $this->writeActionResult('skipped');
+            }
+
+            $this->writeActionDetail($this->cacheManager->resolve($target, $filter));
+        } catch (\Exception $e) {
+            $this->writeActionDetail($e->getMessage());
+        }
     }
 }
