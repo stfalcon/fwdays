@@ -14,6 +14,7 @@ use Vich\UploaderBundle\Storage\FlysystemStorage;
 class MyFlySystemStorage extends FlysystemStorage
 {
     private const CACHE_MAX_AGE = 2678400;
+
     /**
      * {@inheritdoc}
      */

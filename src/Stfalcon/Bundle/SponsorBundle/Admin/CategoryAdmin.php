@@ -12,7 +12,6 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
  */
 class CategoryAdmin extends AbstractTranslateAdmin
 {
-
     /**
      * @param RouteCollection $collection
      */
@@ -20,6 +19,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
     {
         $collection->remove('stfalcon_sponsor.admin.category.delete');
     }
+
     /**
      * Allows you to customize batch actions.
      *
