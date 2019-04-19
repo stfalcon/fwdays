@@ -21,10 +21,12 @@ class StatisticService
     }
 
     /**
-     * Get data for daily statistics of tickets sold
+     * Get data for daily statistics of tickets sold.
+     *
      * @param Event $event
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function getDataForDailyStatisticsOfTicketsSold(Event $event)
@@ -73,12 +75,13 @@ class StatisticService
         return $formattedResult;
     }
 
-
     /**
-     * Get data for total statistics of tickets sold
+     * Get data for total statistics of tickets sold.
+     *
      * @param Event|null $event
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function getDataForTotalStatisticsOfTicketsSold(Event $event)
@@ -110,13 +113,16 @@ class StatisticService
     }
 
     /**
-     * Get the first day of ticket sales (get createdAt of the first event ticket)
+     * Get the first day of ticket sales (get createdAt of the first event ticket).
+     *
      * @param Event $event
      *
      * @return \DateTime
+     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    private function _getFirstDayOfTicketSales(Event $event) {
+    private function _getFirstDayOfTicketSales(Event $event)
+    {
         $qb = $this->em->createQueryBuilder();
         $qb->select('t.createdAt')
             ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
@@ -139,17 +145,19 @@ class StatisticService
     }
 
     /**
-     * Get the last day of ticket sales
+     * Get the last day of ticket sales.
      *
      * @param Event $event
+     *
      * @return \DateTime|null
      */
-    private function _getLastDayOfTicketSales(Event $event) {
+    private function _getLastDayOfTicketSales(Event $event)
+    {
         return $event->getDateEnd() ?: $event->getDate();
     }
 
     /**
-     * Get data for forecasting tickets sales (based on previous events)
+     * Get data for forecasting tickets sales (based on previous events).
      *
      * @param Event $event
      */
@@ -181,7 +189,7 @@ class StatisticService
                 $date = $oneDateData[0];
                 $number = $oneDateData[1];
 
-                $key = $date->format("Y-W");
+                $key = $date->format('Y-W');
                 $oneEventResults[$key] = (isset($oneEventResults[$key]) ? $oneEventResults[$key] : 0) + $number;
             }
 

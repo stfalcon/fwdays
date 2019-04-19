@@ -557,7 +557,7 @@ class AdminController extends Controller
             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             'Content-Type' => 'text/csv',
         ];
-        $callback = function() use ($users) {
+        $callback = function () use ($users) {
             $usersFile = \fopen('php://output', 'w');
             foreach ($users as $fields) {
                 \fputcsv($usersFile, $fields);

@@ -8,16 +8,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class AnalyticsController extends Controller
 {
-
     /**
-     * Show general statistics for event
+     * Show general statistics for event.
      *
      * @param Event $event
      * @Template("@ApplicationDefault/Analytics/generalStatistics.html.twig")
      *
      * @return array
      */
-    public function generalStatisticsAction(Event $event) {
+    public function generalStatisticsAction(Event $event)
+    {
         $statisticService = $this->get('app.statistic.service');
 
         // подобова статистика для графіка календаря
@@ -37,18 +37,18 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * Sales dynamics compared to past conferences (in weeks)
+     * Sales dynamics compared to past conferences (in weeks).
      *
      * @param Event $event
      * @Template("@ApplicationDefault/Analytics/forecastedSales.html.twig")
      *
      * @return array
      */
-    public function forecastedSalesAction(Event $event) {
+    public function forecastedSalesAction(Event $event)
+    {
         $statisticService = $this->get('app.statistic.service');
         $data = $statisticService->getDataForForecastingTicketsSales($event);
 
         return array('event' => $event, 'data' => $data);
     }
-
 }
