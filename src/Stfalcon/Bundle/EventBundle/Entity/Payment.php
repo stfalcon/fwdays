@@ -42,7 +42,7 @@ class Payment
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -110,7 +110,7 @@ class Payment
     /**
      * @var Ticket[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $tickets;

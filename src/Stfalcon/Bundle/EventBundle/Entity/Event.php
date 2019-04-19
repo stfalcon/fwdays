@@ -48,20 +48,20 @@ class Event implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\EventTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventGroup", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventGroup", inversedBy="events", fetch="EXTRA_LAZY")
      */
     private $group;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience", mappedBy="events", fetch="EXTRA_LAZY")
      */
     private $audiences;
 
@@ -78,7 +78,7 @@ class Event implements Translatable
      * @var ArrayCollection|EventBlock[]
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventBlock",
-     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"position" = "ASC"})
      *
      * @Assert\Valid()
@@ -219,7 +219,7 @@ class Event implements Translatable
 
     /**
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
-     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     protected $ticketsCost;
     /**
@@ -267,7 +267,7 @@ class Event implements Translatable
     protected $showLogoWithBackground = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
     protected $pages;
@@ -275,7 +275,7 @@ class Event implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $speakers;
@@ -285,7 +285,7 @@ class Event implements Translatable
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="candidateEvents")
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="candidateEvents", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $candidateSpeakers;
@@ -295,13 +295,13 @@ class Event implements Translatable
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="committeeEvents")
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="committeeEvents", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $committeeSpeakers;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event", fetch="EXTRA_LAZY")
      */
     protected $tickets;
 
