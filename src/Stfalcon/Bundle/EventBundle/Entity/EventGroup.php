@@ -34,7 +34,7 @@ class EventGroup
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", mappedBy="group", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", mappedBy="group", cascade={"persist"})
      */
     private $events;
 

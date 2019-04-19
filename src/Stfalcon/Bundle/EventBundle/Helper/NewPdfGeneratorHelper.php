@@ -145,13 +145,16 @@ class NewPdfGeneratorHelper
         }
 
         $base64EventSmallLogo = base64_encode($imageData);
+        $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
+        $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
 
         $body = $templateContent->render(
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
-                'path' => realpath($this->kernel->getRootDir().'/../web').'/',
                 'event_logo' => $base64EventSmallLogo,
+                'circle_left' => $base64CircleLeftImg,
+                'circle_right' => $base64CircleRightImg,
             ]
         );
 

@@ -74,7 +74,7 @@
                         {% for speaker in review.speakers %}
                             <div class="review-speaker review">
                                 {% if speaker.photo is not null %}
-                                    <img class="review-speaker__photo" src="{{ speaker.photo|imagine_filter('speaker')  }}"
+                                    <img class="review-speaker__photo" src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}"
                                          alt="">
                                 {% else %}
                                     <img class="review-speaker__photo" src="{{ asset('assets/img/speakers/default_avatar.png') }}"

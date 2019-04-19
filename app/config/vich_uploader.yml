@@ -1,6 +1,6 @@
 vich_uploader:
     db_driver: orm
-    storage: flysystem
+    storage: "@vich_uploader.my_storage.flysystem"
     mappings:
         sponsor_image:
             uri_prefix: '%app.sponsor_image%'

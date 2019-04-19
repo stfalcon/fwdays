@@ -37,6 +37,30 @@ final class EventGroupAdmin extends AbstractAdmin
     }
 
     /**
+     * @param EventGroup $object
+     */
+    public function preRemove($object)
+    {
+        foreach ($object->getEvents() as $event) {
+            $object->removeEvent($event);
+        }
+    }
+
+    /**
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
+    /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)

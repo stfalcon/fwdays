@@ -25,7 +25,7 @@ class TicketCost
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="cascade")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
 
