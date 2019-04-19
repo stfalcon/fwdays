@@ -45,7 +45,7 @@ class Ticket
     /**
      * @var PromoCode
      *
-     * @ORM\ManyToOne(targetEntity="PromoCode")
+     * @ORM\ManyToOne(targetEntity="PromoCode", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="promo_code_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $promoCode;
@@ -53,7 +53,7 @@ class Ticket
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="tickets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
@@ -61,7 +61,7 @@ class Ticket
     /**
      * @var TicketCost
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $ticketCost;
@@ -71,7 +71,7 @@ class Ticket
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", inversedBy="tickets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -79,7 +79,7 @@ class Ticket
     /**
      * @var \Stfalcon\Bundle\EventBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment", inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment", inversedBy="tickets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;

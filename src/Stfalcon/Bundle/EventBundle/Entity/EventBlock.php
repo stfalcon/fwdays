@@ -47,7 +47,7 @@ class EventBlock implements Translatable
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="blocks")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="blocks", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="cascade")
      */
     private $event;
@@ -56,7 +56,7 @@ class EventBlock implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\BlockTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;
