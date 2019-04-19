@@ -1,4 +1,5 @@
 liip_imagine:
+
   resolvers:
     speaker:
       flysystem:
@@ -18,6 +19,7 @@ liip_imagine:
         root_url:           '%aws_s3_public_endpoint%/%app.upload_image%'
         cache_prefix:       '%app.media_cache%'
         visibility:         public
+
   loaders:
     speaker:
       flysystem:
@@ -28,8 +30,8 @@ liip_imagine:
     upload_image:
       flysystem:
         filesystem_service: oneup_flysystem.upload_image_filesystem
-  filter_sets:
 
+  filter_sets:
     speaker:
       data_loader: speaker
       cache: speaker

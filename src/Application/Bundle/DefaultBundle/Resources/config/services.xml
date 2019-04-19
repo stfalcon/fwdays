@@ -102,5 +102,13 @@
             <argument type="service" id="vich_uploader.property_mapping_factory" />
             <argument type="service" id="oneup_flysystem.mount_manager" />
         </service>
+
+        <service id="liip_imagine.cache.resolver.prototype.flysystem" class="Application\Bundle\DefaultBundle\Service\MyFlySystemResolver" public="true" abstract="true">
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument type="service" id="router.request_context" />
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+        </service>
     </services>
 </container>
