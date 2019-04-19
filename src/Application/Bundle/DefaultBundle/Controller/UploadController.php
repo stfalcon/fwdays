@@ -36,10 +36,10 @@ class UploadController extends Controller
 
         $fileConstraint = new Collection(
             [
-                 'file' => [
-                     new NotBlank(),
-                     new Image(),
-                 ],
+                    'file' => [
+                        new NotBlank(),
+                        new Image(),
+                    ],
             ]
         );
 

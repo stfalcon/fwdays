@@ -31,12 +31,12 @@ class TicketRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
 
         return $qb->join('t.event', 'e')
-                  ->where($qb->expr()->eq('e.active', ':active'))
-                  ->andWhere($qb->expr()->eq('t.user', ':user'))
-                  ->setParameters(['user' => $user, 'active' => true])
-                  ->orderBy('e.date', 'ASC')
-                  ->getQuery()
-                  ->getResult();
+                    ->where($qb->expr()->eq('e.active', ':active'))
+                    ->andWhere($qb->expr()->eq('t.user', ':user'))
+                    ->setParameters(['user' => $user, 'active' => true])
+                    ->orderBy('e.date', 'ASC')
+                    ->getQuery()
+                    ->getResult();
     }
 
     /**
@@ -324,60 +324,6 @@ class TicketRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param Event|null $event
-     *
-     * @return array
-     */
-    public function getBoughtTicketsCountForTheLastGroupedByDateForChart(Event $event = null)
-    {
-        $now = new \DateTime();
-        $monthAgo = clone $now;
-        $monthAgo->modify('-1 month')->setTime(0, 0);
-        $periodDates = new \DatePeriod($monthAgo, new \DateInterval('P1D'), $now);
-
-        $qb = $this->createQueryBuilder('t');
-        $qb->select('MONTH(p.updatedAt) as paymentMonth, DAY(p.updatedAt) as paymentDay, COUNT(t.id) as ticketsCount')
-           ->join('t.payment', 'p')
-           ->where($qb->expr()->gte('p.updatedAt', ':monthAgo'))
-           ->andWhere($qb->expr()->lte('p.updatedAt', ':now'))
-           ->andWhere($qb->expr()->eq('p.status', ':status'))
-           ->setParameters([
-               'monthAgo' => $monthAgo,
-               'now' => $now,
-               'status' => Payment::STATUS_PAID,
-           ])
-        ;
-
-        if ($event instanceof Event) {
-            $qb->andWhere($qb->expr()->eq('t.event', ':event'))
-               ->setParameter('event', $event);
-        }
-
-        $results = $qb
-            ->groupBy('paymentMonth')
-            ->addGroupBy('paymentDay')
-            ->getQuery()
-            ->getResult()
-        ;
-
-        $formattedResult = [];
-        foreach ($periodDates as $periodDate) {
-            $date = $periodDate->format('d.m');
-            $formattedResult[$date] = [$date, 0];
-        }
-
-        foreach ($results as $result) {
-            $day = $result['paymentDay'] < 10 ? '0'.$result['paymentDay'] : $result['paymentDay'];
-            $month = $result['paymentMonth'] < 10 ? '0'.$result['paymentMonth'] : $result['paymentMonth'];
-            $date = $day.'.'.$month;
-
-            $formattedResult[$date][1] += (int) $result['ticketsCount'];
-        }
-
-        return array_values($formattedResult);
     }
 
     /**
