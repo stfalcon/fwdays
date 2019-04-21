@@ -29,7 +29,7 @@ class ChartService
 
         $firstYear = (int) (new \DateTime($firstDate))->format('Y');
         $lastYear = (int) (new \DateTime($lastDate))->format('Y');
-        $years =  $lastYear - $firstYear + 1;
+        $years = $lastYear - $firstYear + 1;
         $chart->getOptions()->setHeight(200 * $years);
 
         $chart->getOptions()->getCalendar()->setCellSize(18);
