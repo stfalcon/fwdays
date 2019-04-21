@@ -85,7 +85,6 @@ class AnalyticsService
      * @param Event|null $event
      *
      * @throws \Exception
-
      * @return array
      */
     public function getSummaryTicketsSoldData(Event $event)
