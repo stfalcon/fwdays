@@ -199,9 +199,11 @@ class AdminController extends Controller
      *
      * @Route("/admin/statistic", name="admin_statistic_all")
      *
-     * @return Response
-     *
      * @Method({"GET", "POST"})
+     *
+     * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @return Response
      */
     public function showStatisticAction()
     {
@@ -323,7 +325,6 @@ class AdminController extends Controller
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
             ],
-//            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
         ]);
     }
 
@@ -383,7 +384,6 @@ class AdminController extends Controller
             'event' => $event,
             'event_statistic_html' => $eventStatisticHtml,
             'current_event_slug' => $event->getSlug(),
-//            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
         ]);
     }
 

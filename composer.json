@@ -50,7 +50,7 @@
         "egulias/email-validator": "^1.2",
         "maxmind/geoip": "^1.1",
         "cmen/google-charts-bundle": "^2.2",
-        "beberlei/DoctrineExtensions": "^1.1"
+        "beberlei/doctrineextensions": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
