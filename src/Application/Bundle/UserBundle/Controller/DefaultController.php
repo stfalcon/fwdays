@@ -5,6 +5,7 @@ namespace Application\Bundle\UserBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Stfalcon\Bundle\EventBundle\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,17 +28,18 @@ class DefaultController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-        $userActiveEvents = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+        /** @var EventRepository $eventRepository */
+        $eventRepository = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event');
+
+        $userActiveEvents = $eventRepository
             ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
 
-        $userPastEvents = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+        $userPastEvents = $eventRepository
             ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
 
         // list of events for refferal url
-        $allActiveEvents = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+        $allActiveEvents = $eventRepository
             ->findBy(['active' => true, 'adminOnly' => false]);
 
         return $this->render('@ApplicationUser/Default/cabinet.html.twig', [
