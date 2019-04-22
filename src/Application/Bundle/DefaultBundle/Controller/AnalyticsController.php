@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AnalyticsController extends Controller
 {
     /**
-     * Shows the dynamics of daily ticket sales
+     * Shows the dynamics of daily ticket sales.
      *
      * @param Event $event
      *
@@ -44,7 +43,7 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * Sales dynamics compared to past conferences (in weeks)
+     * Sales dynamics compared to past conferences (in weeks).
      *
      * @param Event $event
      *
@@ -61,5 +60,4 @@ class AnalyticsController extends Controller
             'event' => $event, 'data' => $data,
         ]);
     }
-
 }

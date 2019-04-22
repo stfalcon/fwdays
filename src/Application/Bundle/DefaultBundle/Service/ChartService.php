@@ -6,13 +6,12 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
 
 /**
- * Service for initialization and configuration charts
+ * Service for initialization and configuration charts.
  */
 class ChartService
 {
-
     /**
-     * Initialize the calendar chart object
+     * Initialize the calendar chart object.
      *
      * @param array $data
      *
@@ -40,7 +39,7 @@ class ChartService
     }
 
     /**
-     * Initialize the line chart object
+     * Initialize the line chart object.
      *
      * @param array $data
      *
