@@ -25,7 +25,7 @@ class News extends AbstractNews implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\NewsTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;

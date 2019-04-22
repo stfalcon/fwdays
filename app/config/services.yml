@@ -2,6 +2,7 @@ imports:
     - { resource: "@ApplicationUserBundle/Resources/config/services.yml" }
     - { resource: "@StfalconEventBundle/Resources/config/admin.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
+    - { resource: "@ApplicationDefaultBundle/Resources/config/services.xml" }
 
 services:
 #     gelf.publisher:

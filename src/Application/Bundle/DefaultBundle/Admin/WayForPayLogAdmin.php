@@ -53,7 +53,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     {
         $datagridMapper->add('id')
             ->add('date', null, ['label' => 'Дата'])
-            ->add('payment', null, ['label' => 'Платіж'])
+            ->add('payment.id', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
         ;
     }

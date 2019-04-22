@@ -87,9 +87,28 @@
             <argument>%jms_i18n_routing.locales%</argument>
         </service>
 
+        <service id="app_liip_cache_resolve_command" class="Application\Bundle\DefaultBundle\Command\AppResolveLiipCacheCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
 <!--fix sonata Circular reference detected for service "knp_menu.matcher"-->
         <service id="sonata.admin.menu.matcher.voter.children" class="Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter">
             <argument type="service" id="knp_menu.matcher"/>
+        </service>
+
+        <service id="vich_uploader.my_storage.flysystem" class="Application\Bundle\DefaultBundle\Service\MyFlySystemStorage">
+            <argument type="service" id="vich_uploader.property_mapping_factory" />
+            <argument type="service" id="oneup_flysystem.mount_manager" />
+        </service>
+
+        <service id="liip_imagine.cache.resolver.prototype.flysystem" class="Application\Bundle\DefaultBundle\Service\MyFlySystemResolver" public="true" abstract="true">
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument type="service" id="router.request_context" />
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument><!-- will be injected by a ResolverFactory --></argument>
+            <argument><!-- will be injected by a ResolverFactory --></argument>
         </service>
     </services>
 </container>

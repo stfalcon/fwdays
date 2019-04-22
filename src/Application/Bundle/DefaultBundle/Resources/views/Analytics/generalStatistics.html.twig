@@ -1,0 +1,15 @@
+<h2>Загальна статистика</h2>
+<h4>
+    Total amount: <b>{{ total.tickets_amount|number_format(0, '.', ',') }} ₴‎</b>
+    (avg price {{ (total.tickets_amount / total.total_tickets_number)|number_format(0, '.', ',') }} ₴‎)
+</h4>
+<h4>
+    Total sold number: <b>{{ total.total_tickets_number }} tickets</b> ({{  total.free_tickets_number }} free)
+</h4>
+<div id="div_chart_{{ event.id }}"></div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    {{ gc_draw(chart, 'div_chart_' ~ event.id) }}
+</script>

@@ -48,3 +48,4 @@ oneup_flysystem:
             adapter: 'upload_image_adapter'
             mount: 'upload_image'
             visibility: public
+            disable_asserts: true

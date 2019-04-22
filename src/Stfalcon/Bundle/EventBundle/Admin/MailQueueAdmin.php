@@ -71,11 +71,11 @@ final class MailQueueAdmin extends AbstractAdmin
             ->add('user.fullname', null, ['label' => 'Имя пользователя'])
             ->add('mail.title', null, ['label' => 'Название'])
             ->add('_action', 'actions', [
-                 'label' => 'Действие',
-                 'actions' => [
-                     'edit' => [],
-                     'delete' => [],
-                 ],
+                    'label' => 'Действие',
+                    'actions' => [
+                        'edit' => [],
+                        'delete' => [],
+                    ],
             ]);
     }
 

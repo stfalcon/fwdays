@@ -166,6 +166,40 @@
       box-shadow: 0 2px 10px 0 #344E87;
     }
   }
+
+  &--promocode {
+    display: inline-block;
+    line-height: 19px;
+
+    .share-ref__input {
+      width: auto;
+      background: transparent;
+      color: #DADADA;
+      font-size: 16px;
+      outline: 0;
+    }
+
+    .share-ref__copy {
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      top: -3px;
+      right: 0;
+
+      &:before {
+        content: none;
+      }
+    }
+
+    .share-ref__field {
+      margin-right: 0;
+    }
+
+    .share-ref__copy-icon {
+      opacity: 1;
+      background: url("../img/icons/ic_copy-white.svg") no-repeat;
+    }
+  }
 }
 
 .tooltip-copy {

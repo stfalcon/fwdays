@@ -1,4 +1,5 @@
 liip_imagine:
+
   resolvers:
     speaker:
       flysystem:
@@ -18,6 +19,7 @@ liip_imagine:
         root_url:           '%aws_s3_public_endpoint%/%app.upload_image%'
         cache_prefix:       '%app.media_cache%'
         visibility:         public
+
   loaders:
     speaker:
       flysystem:
@@ -28,8 +30,8 @@ liip_imagine:
     upload_image:
       flysystem:
         filesystem_service: oneup_flysystem.upload_image_filesystem
-  filter_sets:
 
+  filter_sets:
     speaker:
       data_loader: speaker
       cache: speaker
@@ -51,32 +53,5 @@ liip_imagine:
     upload_image:
       data_loader: upload_image
       cache: upload_image
-      post_processors:
-        jpegoptim: { strip_all: true, max: 80, progressive: true }
-
-    static_image_438_331:
-      data_loader: upload_image
-      cache: upload_image
-      filters:
-        downscale:
-          max: [438, 331]
-      post_processors:
-        jpegoptim: { strip_all: true, max: 80, progressive: true }
-
-    static_image_211_332:
-      data_loader: upload_image
-      cache: upload_image
-      filters:
-        downscale:
-          max: [211, 332]
-      post_processors:
-        jpegoptim: { strip_all: true, max: 80, progressive: true }
-
-    static_image_211_158:
-      data_loader: upload_image
-      cache: upload_image
-      filters:
-        downscale:
-          max: [211, 158]
       post_processors:
         jpegoptim: { strip_all: true, max: 80, progressive: true }

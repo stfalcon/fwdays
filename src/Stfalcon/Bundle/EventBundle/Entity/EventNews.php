@@ -23,7 +23,7 @@ class EventNews extends AbstractNews implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\EventNewsTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;
@@ -31,7 +31,7 @@ class EventNews extends AbstractNews implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Event", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;

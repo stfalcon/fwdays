@@ -4,6 +4,7 @@ namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
@@ -11,6 +12,28 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
  */
 class CategoryAdmin extends AbstractTranslateAdmin
 {
+    /**
+     * @param RouteCollection $collection
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('stfalcon_sponsor.admin.category.delete');
+    }
+
+    /**
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +48,6 @@ class CategoryAdmin extends AbstractTranslateAdmin
                 'label' => 'Действие',
                 'actions' => [
                     'edit' => [],
-                    'delete' => [],
                 ],
             ]);
     }
