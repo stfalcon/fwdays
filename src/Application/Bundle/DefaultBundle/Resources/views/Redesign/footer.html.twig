@@ -14,10 +14,10 @@
                         <a href="{{ path('events') }}" class="footer-nav__link">{{ 'main.menu.events'|trans }}</a>
                     </li>
                     <li class="footer-nav__item">
-                        <a href="{{ path('contacts') }}" class="footer-nav__link">{{ 'main.menu.contacts'|trans }}</a>
+                        <a href="{{ path('page', {'slug': 'contacts'}) }}" class="footer-nav__link">{{ 'main.menu.contacts'|trans }}</a>
                     </li>
                     <li class="footer-nav__item">
-                        <a href="{{ path('about') }}" class="footer-nav__link">{{ 'main.menu.about'|trans }}</a>
+                        <a href="{{ path('page', {'slug': 'about'}) }}" class="footer-nav__link">{{ 'main.menu.about'|trans }}</a>
                     </li>
                 </ul>
                 {{ sonata_block_render({ 'type': 'sonata.block.footer' }) }}
