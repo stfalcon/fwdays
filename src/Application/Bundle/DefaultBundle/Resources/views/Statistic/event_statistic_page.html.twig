@@ -28,7 +28,7 @@
     <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
     <h1>Статистика событий</h1>
 
-    <select id="select-event-statistic" style="width: 36%">
+    <select id="select-event-statistic" style="width: 36%" title="List of events">
         {% for event in events -%}
             {% if current_event_slug is not empty and current_event_slug == event.slug%}
                 <option value="{{ event.slug }}" selected>{{ event.name }}</option>
@@ -40,9 +40,9 @@
     <p></p>
     <div id="event-data">{{ event_statistic_html|raw }}</div>
 
-    {{ render(controller('ApplicationDefaultBundle:Analytics:generalStatistics', { 'event': event })) }}
+    {{ render(controller('ApplicationDefaultBundle:Analytics:showDailyDynamics', { 'event': event })) }}
 
-    {{ render(controller('ApplicationDefaultBundle:Analytics:forecastedSales', { 'event': event })) }}
+    {{ render(controller('ApplicationDefaultBundle:Analytics:showComparisonWithPreviousEvents', { 'event': event })) }}
 
     {#<h2>Графік продажів + графік розсилок по базі</h2>#}
     {#<h2>Графік розподілу цін (як точки)</h2>#}
@@ -62,9 +62,8 @@
 
     <script>
         $(document).on('change', '#select-event-statistic', function () {
-            var event_slag = $('#select-event-statistic option:selected').val();
-            var url = "{{ path('admin_event_without_slug_statistic') }}" +'/'+ event_slag;
-            window.location.href = url;
+            let event_slag = $('#select-event-statistic option:selected').val();
+            window.location.href = "{{ path('admin_event_without_slug_statistic') }}" +'/'+ event_slag;
         });
     </script>
 {% endblock javascripts %}

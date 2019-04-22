@@ -40,7 +40,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $loader = new Loader();
         $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
-//        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData());
         $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
 
         $this->em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');

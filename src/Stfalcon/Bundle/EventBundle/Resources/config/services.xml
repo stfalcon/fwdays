@@ -17,10 +17,6 @@
         <parameter key="stfalcon_event.admin.event_page.entity">Stfalcon\Bundle\EventBundle\Entity\EventPage</parameter>
         <parameter key="stfalcon_event.admin.event_page.controller">SonataAdminBundle:CRUD</parameter>
 
-        <parameter key="stfalcon_event.admin.event_news.class">Stfalcon\Bundle\EventBundle\Admin\EventNewsAdmin</parameter>
-        <parameter key="stfalcon_event.admin.event_news.entity">Stfalcon\Bundle\EventBundle\Entity\EventNews</parameter>
-        <parameter key="stfalcon_event.admin.event_news.controller">SonataAdminBundle:CRUD</parameter>
-
         <parameter key="stfalcon_event.admin.reviews.class">Stfalcon\Bundle\EventBundle\Admin\ReviewAdmin</parameter>
         <parameter key="stfalcon_event.admin.reviews.entity">Stfalcon\Bundle\EventBundle\Entity\Review</parameter>
         <parameter key="stfalcon_event.admin.reviews.controller">SonataAdminBundle:CRUD</parameter>
@@ -57,9 +53,6 @@
 
         <parameter key="stfalcon_event.admin.page.class">Stfalcon\Bundle\EventBundle\Admin\PageAdmin</parameter>
         <parameter key="stfalcon_event.admin.page.entity">Stfalcon\Bundle\EventBundle\Entity\Page</parameter>
-
-        <parameter key="stfalcon_event.admin.news.class">Stfalcon\Bundle\EventBundle\Admin\NewsAdmin</parameter>
-        <parameter key="stfalcon_event.admin.news.entity">Stfalcon\Bundle\EventBundle\Entity\News</parameter>
     </parameters>
 
     <services>
@@ -70,13 +63,6 @@
             <argument>%stfalcon_event.admin.page.entity%</argument>
             <argument />
         </service>
-
-        <!--<service id="stfalcon_event.admin.news" class="%stfalcon_event.admin.news.class%">-->
-            <!--<tag name="sonata.admin" manager_type="orm" group="Новости" label="Новости"/>-->
-            <!--<argument />-->
-            <!--<argument>%stfalcon_event.admin.news.entity%</argument>-->
-            <!--<argument />-->
-        <!--</service>-->
 
         <service id="user_mail_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconMailerCommand">
          <call method="setContainer">
@@ -90,7 +76,7 @@
             </call>
         </service>
 
-        <service id="recalculate_ticket_sold_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconRecalculateTicketSoldCount">
+        <service id="recalculate_ticket_sold_command_service" class="Stfalcon\Bundle\EventBundle\Command\StfalconRecalculateTicketSoldCountCommand">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
@@ -132,13 +118,6 @@
             <argument>%stfalcon_event.admin.speaker.entity%</argument>
             <argument>%stfalcon_event.admin.speaker.controller%</argument>
         </service>
-
-        <!--<service id="stfalcon_event.admin.event_news" class="%stfalcon_event.admin.event_news.class%">-->
-            <!--<tag name="sonata.admin" manager_type="orm" group="События" label="Новости"/>-->
-            <!--<argument />-->
-            <!--<argument>%stfalcon_event.admin.event_news.entity%</argument>-->
-            <!--<argument>%stfalcon_event.admin.event_news.controller%</argument>-->
-        <!--</service>-->
 
         <service id="stfalcon_event.admin.event_page" class="%stfalcon_event.admin.event_page.class%">
             <tag name="sonata.admin" manager_type="orm" group="События" label="Страницы"/>

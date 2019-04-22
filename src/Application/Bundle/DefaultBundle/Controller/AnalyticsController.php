@@ -13,53 +13,53 @@ use Symfony\Component\HttpFoundation\Response;
 class AnalyticsController extends Controller
 {
     /**
-     * Show general statistics for event.
+     * Shows the dynamics of daily ticket sales
      *
      * @param Event $event
      *
-     * @Template("@ApplicationDefault/Analytics/generalStatistics.html.twig")
-     *
-     * @return array
-     */
-    public function generalStatisticsAction(Event $event)
-    {
-        $statisticService = $this->get('app.statistic.service');
-
-        // подобова статистика для графіка календаря
-        $dailyData = $statisticService
-            ->getDataForDailyStatisticsOfTicketsSold($event);
-        array_unshift(
-            $dailyData,
-            [['label' => 'Date', 'type' => 'date'], ['label' => 'Tickets sold number', 'type' => 'number']]
-        );
-
-        $chart = $this->container->get('app.statistic.chart_builder')->calendarChart($dailyData);
-
-        // загальна статистика
-        $totalData = $statisticService
-            ->getDataForTotalStatisticsOfTicketsSold($event);
-
-        return array('event' => $event, 'chart' => $chart, 'total' => $totalData);
-    }
-
-    /**
-     * Sales dynamics compared to past conferences (in weeks).
-     *
-     * @param Event $event
+     * @throws \Exception
      *
      * @return Response
      */
-    public function forecastedSalesAction(Event $event)
+    public function showDailyDynamicsAction(Event $event)
     {
-        $statisticService = $this->get('app.statistic.service');
-        $data = $statisticService->getDataForForecastingTicketsSales($event);
+        $analyticsService = $this->get('app.analytics.service');
 
-        return $this->render(
-            '@ApplicationDefault/Analytics/forecastedSales.html.twig',
-            [
-                'event' => $event,
-                'data' => $data,
-            ]
-        );
+        // daily statistics
+        $dailyData = $analyticsService->getDailyTicketsSoldData($event);
+        array_unshift($dailyData, [
+            ['label' => 'Date', 'type' => 'date'],
+            ['label' => 'Tickets sold number', 'type' => 'number'],
+        ]);
+
+        $chart = $this->container->get('app.chart.service')->calendarChart($dailyData);
+
+        // summary statistics
+        $summary = $analyticsService
+            ->getSummaryTicketsSoldData($event);
+
+        return $this->render('ApplicationDefaultBundle:Analytics:daily_dynamics.html.twig', [
+            'event' => $event, 'chart' => $chart, 'summary' => $summary,
+        ]);
     }
+
+    /**
+     * Sales dynamics compared to past conferences (in weeks)
+     *
+     * @param Event $event
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    public function showComparisonWithPreviousEventsAction(Event $event)
+    {
+        $analyticsService = $this->get('app.analytics.service');
+        $data = $analyticsService->getDataForCompareTicketSales($event);
+
+        return $this->render('ApplicationDefaultBundle:Analytics:comparison_with_previous_events.html.twig', [
+            'event' => $event, 'data' => $data,
+        ]);
+    }
+
 }

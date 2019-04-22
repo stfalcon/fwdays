@@ -5,12 +5,11 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NoResultException;
 
 /**
- * Class StatisticService.
+ * Service to get sales analytics data
  */
-class StatisticService
+class AnalyticsService
 {
     /** @var EntityManager */
     protected $em;
@@ -24,15 +23,15 @@ class StatisticService
     }
 
     /**
-     * Get data for daily statistics of tickets sold.
+     * Get data for daily statistics of tickets sold
      *
      * @param Event $event
      *
-     * @return array
-     *
      * @throws \Exception
+     *
+     * @return array
      */
-    public function getDataForDailyStatisticsOfTicketsSold(Event $event)
+    public function getDailyTicketsSoldData(Event $event)
     {
         $dateFrom = $this->getFirstDayOfTicketSales($event);
         $dateTo = $this->getLastDayOfTicketSales($event);
@@ -65,6 +64,7 @@ class StatisticService
 
         $formattedResult = [];
         foreach ($dateRange as $date) {
+            /* @var $date \DateTime */
             $key = $date->format('Y-m-d');
             $formattedResult[$key][0] = $date;
             $formattedResult[$key][1] = null;
@@ -78,16 +78,16 @@ class StatisticService
         return $formattedResult;
     }
 
+
     /**
-     * Get data for total statistics of tickets sold.
+     * Get data for summary statistics of tickets sold
      *
      * @param Event|null $event
      *
-     * @return array
-     *
      * @throws \Exception
+     * @return array
      */
-    public function getDataForTotalStatisticsOfTicketsSold(Event $event)
+    public function getSummaryTicketsSoldData(Event $event)
     {
         $qbTicketsSold = $this->em->createQueryBuilder();
         $qbTicketsSold->select('COUNT(t.id) as tickets_sold_number, SUM(t.amount) as tickets_amount')
@@ -114,15 +114,16 @@ class StatisticService
 
         return $results;
     }
-
     /**
-     * Get data for forecasting tickets sales (based on previous events).
+     * Get data for compare ticket sales (with previous events)
      *
      * @param Event $event
      *
+     * @throws \Exception
+     *
      * @return array
      */
-    public function getDataForForecastingTicketsSales(Event $event)
+    public function getDataForCompareTicketSales(Event $event)
     {
         $weeksMaxNumber = 20; // задаєм максимальну глибину аналізу
 
@@ -133,6 +134,7 @@ class StatisticService
         // формуєм масив ключів з айдшок івентів, щоб використати його в формуванні заготовки масиву результатів
         $resultsKeys = [$event->getId()];
         foreach ($events as $e) {
+            /* @var $e Event */
             $resultsKeys[] = $e->getId();
         }
         $resultsValueTemplate = array_fill_keys($resultsKeys, null);
@@ -140,17 +142,19 @@ class StatisticService
         $results = array_fill(0, $weeksMaxNumber, $resultsValueTemplate);
 
         // витягуєм статистику продажів для івентів з цієї групи
-        foreach ($events as $event) {
-            $dataForDailyStatistics = $this->getDataForDailyStatisticsOfTicketsSold($event);
+        foreach ($events as $e) {
+            /* @var $e Event */
+            $dataForDailyStatistics = $this->getDailyTicketsSoldData($e);
             $reverseDataForDailyStatistics = array_reverse($dataForDailyStatistics);
 
             // групуєм статистику продажів для івенту по тижнях
             $oneEventResults = [];
             foreach ($reverseDataForDailyStatistics as $oneDateData) {
+                /* @var $date \DateTime */
                 $date = $oneDateData[0];
                 $number = $oneDateData[1];
 
-                $key = $date->format('Y-W');
+                $key = $date->format("Y-W");
                 $oneEventResults[$key] = (isset($oneEventResults[$key]) ? $oneEventResults[$key] : 0) + $number;
             }
 
@@ -159,7 +163,7 @@ class StatisticService
                 if ($week == $weeksMaxNumber) {
                     break;
                 }
-                $results[$week][$event->getId()] = $number;
+                $results[$week][$e->getId()] = $number;
             }
         }
 
@@ -167,13 +171,13 @@ class StatisticService
     }
 
     /**
-     * Get the first day of ticket sales (get createdAt of the first event ticket).
+     * Get the first day of ticket sales (get createdAt of the first event ticket)
      *
      * @param Event $event
      *
-     * @return \DateTime
-     *
      * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @return \DateTime
      */
     private function getFirstDayOfTicketSales(Event $event)
     {
@@ -188,18 +192,14 @@ class StatisticService
             ->orderBy('t.createdAt', 'ASC')
             ->setMaxResults(1);
 
-        try {
-            $date = $qb->getQuery()
-                ->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            $date = $this->getLastDayOfTicketSales($event)->modify('-1 week')->format('Y-m-d');
-        }
+        $date = $qb->getQuery()
+            ->getSingleScalarResult();
 
         return new \DateTime($date);
     }
 
     /**
-     * Get the last day of ticket sales.
+     * Get the last day of ticket sales
      *
      * @param Event $event
      *
