@@ -197,9 +197,11 @@ class AdminController extends Controller
      *
      * @Route("/admin/statistic", name="admin_statistic_all")
      *
-     * @return Response
-     *
      * @Method({"GET", "POST"})
+     *
+     * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @return Response
      */
     public function showStatisticAction()
     {

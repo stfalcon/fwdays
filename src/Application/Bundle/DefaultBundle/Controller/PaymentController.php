@@ -33,6 +33,8 @@ class PaymentController extends Controller
      *
      * @param Event $event
      *
+     * @throws \Exception
+     *
      * @return JsonResponse
      */
     public function payAction(Event $event)
@@ -129,6 +131,8 @@ class PaymentController extends Controller
      * @param string $code
      * @param Event  $event
      *
+     * @throws \Exception
+     *
      * @return JsonResponse
      */
     public function addPromoCodeAction($code, Event $event)
@@ -183,7 +187,7 @@ class PaymentController extends Controller
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
-                '@ApplicationDefault/Redesign/static.page.html.twig',
+                '@ApplicationDefault/Default/index.html.twig',
                 ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
@@ -468,6 +472,8 @@ class PaymentController extends Controller
      * @param Event   $event
      * @param Payment $payment
      * @param string  $code
+     *
+     * @throws \Exception
      *
      * @return PromoCode|null
      */

@@ -1,0 +1,45 @@
+<h2>Динаміка продажів у порівнянні з минулими конференціями (по тижням)</h2>
+<div id="chart_lines" style="width: 900px; height: 500px;"></div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        let data = new google.visualization.DataTable();
+        data.addColumn('number', 'x');
+        data.addColumn('number', 'values');
+
+        {% for i in 0..data[0]|length-2 %}
+            data.addColumn({id:'i{{ loop.index0 }}', type:'number', role:'interval'});
+        {% endfor %}
+
+        data.addRows([
+        {% for eventsWeeklyData in data%}
+            [{{ loop.index }}
+            {% for eventWeeklyData in eventsWeeklyData %}
+                ,{{ eventWeeklyData|default(0) }}
+            {% endfor %}
+            ],
+        {% endfor %}
+        ]);
+
+        // The intervals data as narrow lines (useful for showing raw source data)
+        let options_lines = {
+            title: 'Line intervals, default',
+            curveType:'function',
+            lineWidth: 5,
+            interval: {
+                'i0': { 'style':'line', 'color':'gray', 'lineWidth': 3 },
+                'i1': { 'style':'line', 'color':'silver', 'lineWidth': 2 },
+                'i2': { 'style':'line', 'color':'silver', 'lineWidth': 1 },
+            },
+            legend: 'none',
+        };
+
+        let chart_lines = new google.visualization.LineChart(document.getElementById('chart_lines'));
+        chart_lines.draw(data, options_lines);
+    }
+</script>

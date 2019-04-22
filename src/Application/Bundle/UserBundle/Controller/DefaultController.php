@@ -5,8 +5,10 @@ namespace Application\Bundle\UserBundle\Controller;
 use Application\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Stfalcon\Bundle\EventBundle\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
 
 /**
@@ -14,6 +16,41 @@ use Symfony\Component\Validator\ConstraintViolation;
  */
 class DefaultController extends Controller
 {
+    /**
+     * @Route(path="/cabinet", name="cabinet")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @return Response
+     */
+    public function cabinetAction()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /** @var EventRepository $eventRepository */
+        $eventRepository = $this->getDoctrine()
+            ->getRepository('StfalconEventBundle:Event');
+
+        $userActiveEvents = $eventRepository
+            ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
+
+        $userPastEvents = $eventRepository
+            ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
+
+        // list of events for refferal url
+        $allActiveEvents = $eventRepository
+            ->findBy(['active' => true, 'adminOnly' => false]);
+
+        return $this->render('@ApplicationUser/Default/cabinet.html.twig', [
+            'user' => $user,
+            'user_active_events' => $userActiveEvents,
+            'user_past_events' => $userPastEvents,
+            'events' => $allActiveEvents,
+            'code' => $this->get('stfalcon_event.referral.service')->getReferralCode(),
+        ]);
+    }
+
     /**
      * @Route(path="/update-user-phone/{phoneNumber}", name="update_user_phone",
      *     methods={"POST"},
