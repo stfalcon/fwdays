@@ -1,64 +1,34 @@
 <?php
 
-namespace Application\Bundle\DefaultBundle\Service\Statistic\Chart;
+namespace Application\Bundle\DefaultBundle\Service;
 
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
-use Stfalcon\Bundle\EventBundle\Repository\TicketRepository;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
 
 /**
- * ChartBuilder.
+ * Service for initialization and configuration charts.
  */
-class ChartBuilder
+class ChartService
 {
-    /** @var TicketRepository */
-    private $ticketRepository;
-
     /**
-     * @param TicketRepository $ticketRepository
-     */
-    public function __construct(TicketRepository $ticketRepository)
-    {
-        $this->ticketRepository = $ticketRepository;
-    }
-
-    /**
+     * Initialize the calendar chart object.
+     *
      * @param array $data
      *
-     * @return \CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart
-     */
-    public function columnChart($data)
-    {
-        $chart = new \CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart();
-        $chart->getData()->setArrayToDataTable($data);
-        $chart->getOptions()->getChart()
-            ->setTitle('Статистика продаж')
-            ->setSubtitle('За последние 30 дней');
-        $chart->getOptions()
-            ->setBars('vertical')
-            ->setHeight(400)
-            ->setWidth(1400)
-//            ->setColors(['#1b9e77', '#d95f02', '#7570b3'])
-            ->getVAxis()
-            ->setFormat('decimal');
-
-        return $chart;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return \CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart
+     * @return CalendarChart
      */
     public function calendarChart($data)
     {
-        $chart = new \CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart();
+        $chart = new CalendarChart();
         $chart->getData()->setArrayToDataTable($data);
 
         // рахуєм різницю в роках між першою датою графіка і останньою, щоб динамічно підлаштувати висоту канви
         $firstDate = array_keys($data)[1]; // в 0-му елементі заголовки графіка. перша дата в 1-му
         $lastDate = array_keys($data)[count($data) - 1];
 
-        $years = (new \DateTime($lastDate))->format('Y') - (new \DateTime($firstDate))->format('Y') + 1;
+        $firstYear = (int) (new \DateTime($firstDate))->format('Y');
+        $lastYear = (int) (new \DateTime($lastDate))->format('Y');
+        $years = $lastYear - $firstYear + 1;
         $chart->getOptions()->setHeight(200 * $years);
 
         $chart->getOptions()->getCalendar()->setCellSize(18);
@@ -69,11 +39,11 @@ class ChartBuilder
     }
 
     /**
+     * Initialize the line chart object.
+     *
      * @param array $data
      *
      * @return LineChart
-     *
-     * @throws \Exception
      */
     public function lineChart($data)
     {

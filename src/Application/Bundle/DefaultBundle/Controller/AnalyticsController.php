@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -13,33 +12,34 @@ use Symfony\Component\HttpFoundation\Response;
 class AnalyticsController extends Controller
 {
     /**
-     * Show general statistics for event.
+     * Shows the dynamics of daily ticket sales.
      *
      * @param Event $event
      *
-     * @Template("@ApplicationDefault/Analytics/generalStatistics.html.twig")
+     * @throws \Exception
      *
-     * @return array
+     * @return Response
      */
-    public function generalStatisticsAction(Event $event)
+    public function showDailyDynamicsAction(Event $event)
     {
-        $statisticService = $this->get('app.statistic.service');
+        $analyticsService = $this->get('app.analytics.service');
 
-        // подобова статистика для графіка календаря
-        $dailyData = $statisticService
-            ->getDataForDailyStatisticsOfTicketsSold($event);
-        array_unshift(
-            $dailyData,
-            [['label' => 'Date', 'type' => 'date'], ['label' => 'Tickets sold number', 'type' => 'number']]
-        );
+        // daily statistics
+        $dailyData = $analyticsService->getDailyTicketsSoldData($event);
+        array_unshift($dailyData, [
+            ['label' => 'Date', 'type' => 'date'],
+            ['label' => 'Tickets sold number', 'type' => 'number'],
+        ]);
 
-        $chart = $this->container->get('app.statistic.chart_builder')->calendarChart($dailyData);
+        $chart = $this->container->get('app.chart.service')->calendarChart($dailyData);
 
-        // загальна статистика
-        $totalData = $statisticService
-            ->getDataForTotalStatisticsOfTicketsSold($event);
+        // summary statistics
+        $summary = $analyticsService
+            ->getSummaryTicketsSoldData($event);
 
-        return array('event' => $event, 'chart' => $chart, 'total' => $totalData);
+        return $this->render('ApplicationDefaultBundle:Analytics:daily_dynamics.html.twig', [
+            'event' => $event, 'chart' => $chart, 'summary' => $summary,
+        ]);
     }
 
     /**
@@ -47,19 +47,17 @@ class AnalyticsController extends Controller
      *
      * @param Event $event
      *
+     * @throws \Exception
+     *
      * @return Response
      */
-    public function forecastedSalesAction(Event $event)
+    public function showComparisonWithPreviousEventsAction(Event $event)
     {
-        $statisticService = $this->get('app.statistic.service');
-        $data = $statisticService->getDataForForecastingTicketsSales($event);
+        $analyticsService = $this->get('app.analytics.service');
+        $data = $analyticsService->getDataForCompareTicketSales($event);
 
-        return $this->render(
-            '@ApplicationDefault/Analytics/forecastedSales.html.twig',
-            [
-                'event' => $event,
-                'data' => $data,
-            ]
-        );
+        return $this->render('ApplicationDefaultBundle:Analytics:comparison_with_previous_events.html.twig', [
+            'event' => $event, 'data' => $data,
+        ]);
     }
 }
