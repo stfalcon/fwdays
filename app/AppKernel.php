@@ -44,11 +44,7 @@ class AppKernel extends Kernel
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
-            new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
-
             new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
-            new Application\Bundle\UserBundle\ApplicationUserBundle(),
 
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),

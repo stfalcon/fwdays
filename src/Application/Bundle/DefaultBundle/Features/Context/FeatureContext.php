@@ -39,8 +39,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function beforeScenario()
     {
         $loader = new Loader();
-        $loader->addFixture(new \Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData());
-        $loader->addFixture(new \Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData());
+        $loader->addFixture(new \Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData());
+        $loader->addFixture(new \Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData());
 
         $this->em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
 
@@ -58,7 +58,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userIsSubscribed($username)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['username' => $username]);
 
         Assert::assertTrue($user->isSubscribe());
@@ -69,7 +69,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userGoToLinkUnsubscribe($username)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['username' => $username]);
 
         $url = $this->kernel->getContainer()->get('router')->generate(
@@ -88,7 +88,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userGoToLinkSubscribe($username)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['username' => $username]);
 
         $url = $this->kernel->getContainer()->get('router')->generate(
@@ -107,7 +107,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userShouldBeSubscribed($username)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['username' => $username]);
         $this->em->refresh($user);
 
@@ -120,7 +120,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function userIsUnsubscribed($username)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['username' => $username]);
         $this->em->refresh($user);
 

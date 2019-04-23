@@ -1,11 +1,11 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\DataFixtures\ORM;
+namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Stfalcon\Bundle\EventBundle\Entity\EventPage;
+use Application\Bundle\DefaultBundle\Entity\EventPage;
 
 /**
  * LoadPagesData Class.
@@ -469,7 +469,7 @@ HTML5 canvas.</a></div>
     public function getDependencies()
     {
         return array(
-            'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
+            'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
         );
     }
 

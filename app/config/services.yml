@@ -1,16 +1,9 @@
 imports:
-    - { resource: "@ApplicationUserBundle/Resources/config/services.yml" }
-    - { resource: "@StfalconEventBundle/Resources/config/admin.yml" }
+    - { resource: "@ApplicationDefaultBundle/Resources/config/admin.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.xml" }
 
 services:
-#     gelf.publisher:
-#         class: Application\Bundle\DefaultBundle\Publisher\MessagePublisher
-#         arguments: [%graylog.fromname%, %graylog.hostname%, %graylog.port%]
-#     monolog.gelf_handler:
-#         class: Monolog\Handler\GelfHandler
-#         arguments: [@gelf.publisher]
     monolog.processor.added_host:
         class: Monolog\Processor\WebProcessor
         tags:

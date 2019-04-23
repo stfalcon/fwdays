@@ -1,0 +1,1001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2df6acde-1cd3-4cf1-aedd-7b5eddb26440" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailSubscribeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/EmailSubscribe/subscribe.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/subscribe.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/EmailSubscribe/unsubscribe.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/unsubscribe.html.twig" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <executablePath>composer</executablePath>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="68" selection-start-line="7" selection-start-column="68" selection-end-line="7" selection-end-column="68" />
+              <folding>
+                <element signature="e#2272#2300#1#PHP" expanded="true" />
+                <element signature="e#1736#1764#1#PHP" expanded="true" />
+                <element signature="e#2009#2035#1#PHP" expanded="true" />
+                <element signature="e#2235#2266#1#PHP" expanded="true" />
+                <element signature="e#3084#3112#1#PHP" expanded="true" />
+                <element signature="e#3302#3333#1#PHP" expanded="true" />
+                <element signature="e#3539#3565#1#PHP" expanded="true" />
+                <element signature="e#3865#3875#1#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="206">
+              <caret line="32" column="28" selection-start-line="32" selection-start-column="24" selection-end-line="32" selection-end-column="28" />
+              <folding>
+                <element signature="e#63#120#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>name</find>
+      <find>stans</find>
+      <find>mpdf</find>
+      <find>xdebug</find>
+      <find>volumes</find>
+      <find>xde</find>
+      <find>getDataForDailyStatisticsOfTicketsSold</find>
+      <find>total.</find>
+      <find>ChartBuilder.php</find>
+      <find>char</find>
+      <find>dele</find>
+      <find>chart_builder</find>
+      <find>LoadNewsData</find>
+      <find>news</find>
+      <find>stfalco</find>
+      <find>about</find>
+      <find>events</find>
+      <find>Microlayout</find>
+      <find>share_contacts</find>
+      <find>sharec</find>
+      <find>contacts</find>
+      <find>con</find>
+      <find>sh</find>
+      <find>show_pa</find>
+      <find>page</find>
+      <find>ApplicationDefaultBundle/Page/index.html.twig</find>
+      <find>bonus_translate</find>
+      <find>fpm</find>
+      <find>black15</find>
+      <find>bundle</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>summary.</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src/Application</dir>
+      <dir>$PROJECT_DIR$/vendor/cmen/google-charts-bundle</dir>
+      <dir>$PROJECT_DIR$/src/Application/Bundle/DefaultBundle</dir>
+      <dir>$PROJECT_DIR$/src/Application/Bundle</dir>
+      <dir>$PROJECT_DIR$/app</dir>
+      <dir>$PROJECT_DIR$/src</dir>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Repository/TicketRepository.php" />
+        <option value="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Repository/StatisticRepository.php" />
+        <option value="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Services/StatisticRepository.php" />
+        <option value="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Repository/EventRepository.php" />
+        <option value="$PROJECT_DIR$/app/config/config.yml" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Admin/AnalyticsController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Statistic/statistic.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Analytics/generalStatistics.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/StatisticService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Analytics/forecastedSales.html.twig" />
+        <option value="$PROJECT_DIR$/web/app_dev.php" />
+        <option value="$PROJECT_DIR$/app/Resources/views/admin.html.twig" />
+        <option value="$PROJECT_DIR$/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/AnalyticsService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Analytics/comparison_with_previous_events.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/Statistic/Chart/ChartBuilder.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Analytics/daily_dynamics.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/Statistic/Chart/ChartBuilderService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Statistic/event_statistic_page.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/Chart/ChartBuilderService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/Chart/ChartService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/config/services.yml" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/AdminController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/AnalyticsController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Service/ChartService.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Features/Context/FeatureContext.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Features/homepage.feature" />
+        <option value="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Resources/config/services.xml" />
+        <option value="$PROJECT_DIR$/composer.json" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/contacts.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/RedirectController.php" />
+        <option value="$PROJECT_DIR$/redirects.txt" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/_footer_pages.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/Payment/payment_form.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Ticket/_new_pdf.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Menu/MenuBuilder.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/footer.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Trash/shareContacts.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/TrashController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/UserBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/UserBundle/Resources/views/Default/cabinet.html.twig" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/PaymentController.php" />
+        <option value="$PROJECT_DIR$/app/DoctrineMigrations/Version20190422130804.php" />
+        <option value="$PROJECT_DIR$/app/DoctrineMigrations/Version20190421175142.php" />
+        <option value="$PROJECT_DIR$/app/config/parameters.ini" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailSubscribeController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailController.php" />
+        <option value="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/beberlei/DoctrineExtensions" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/assetic-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php70" />
+      <path value="$PROJECT_DIR$/vendor/symfony/symfony" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-util" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-acl" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php56" />
+      <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php55" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php54" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-apcu" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/vendor/ornicar/gravatar-bundle" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/mockery/mockery" />
+      <path value="$PROJECT_DIR$/vendor/mlehner/gelf-php" />
+      <path value="$PROJECT_DIR$/vendor/maxmind/geoip" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-menu" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-menu-bundle" />
+      <path value="$PROJECT_DIR$/vendor/imagine/imagine" />
+      <path value="$PROJECT_DIR$/vendor/endroid/qrcode" />
+      <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/vendor/suncat/mobile-detect-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry" />
+      <path value="$PROJECT_DIR$/vendor/sentry/sentry-symfony" />
+      <path value="$PROJECT_DIR$/vendor/sensio/generator-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sensio/distribution-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sensio/buzz-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/ibrows/sonata-translation-bundle" />
+      <path value="$PROJECT_DIR$/vendor/accord/mandrill-swiftmailer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/accord/mandrill-swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/lexik/translation-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/gedmo/doctrine-extensions" />
+      <path value="$PROJECT_DIR$/vendor/cocur/slugify" />
+      <path value="$PROJECT_DIR$/vendor/behat/gherkin" />
+      <path value="$PROJECT_DIR$/vendor/behat/behat" />
+      <path value="$PROJECT_DIR$/vendor/behat/mink" />
+      <path value="$PROJECT_DIR$/vendor/behat/mink-selenium2-driver" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
+      <path value="$PROJECT_DIR$/vendor/behat/mink-browserkit-driver" />
+      <path value="$PROJECT_DIR$/vendor/behat/common-contexts" />
+      <path value="$PROJECT_DIR$/vendor/behat/mink-extension" />
+      <path value="$PROJECT_DIR$/vendor/behat/symfony2-extension" />
+      <path value="$PROJECT_DIR$/vendor/a2lix/translation-form-bundle" />
+      <path value="$PROJECT_DIR$/vendor/vich/uploader-bundle" />
+      <path value="$PROJECT_DIR$/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/vendor/twig/extensions" />
+      <path value="$PROJECT_DIR$/vendor/stof/doctrine-extensions-bundle" />
+      <path value="$PROJECT_DIR$/vendor/liip/functional-test-bundle" />
+      <path value="$PROJECT_DIR$/vendor/liip/imagine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/cmen/google-charts-bundle" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/jms/parser-lib" />
+      <path value="$PROJECT_DIR$/vendor/jms/di-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/i18n-routing-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/security-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/aop-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/cg" />
+      <path value="$PROJECT_DIR$/vendor/jms/metadata" />
+      <path value="$PROJECT_DIR$/vendor/hwi/oauth-bundle" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/polishsymfonycommunity/symfony-mocker-container" />
+      <path value="$PROJECT_DIR$/vendor/polishsymfonycommunity/symfony2-mocker-extension" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/user-bundle" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/intl-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/doctrine-orm-admin-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/admin-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/block-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/exporter" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/cache" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/core-bundle" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/vendor/kriswallsmith/buzz" />
+      <path value="$PROJECT_DIR$/vendor/kriswallsmith/assetic" />
+      <path value="$PROJECT_DIR$/vendor/escapestudios/symfony2-coding-standard" />
+      <path value="$PROJECT_DIR$/vendor/mobiledetect/mobiledetectlib" />
+      <path value="$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer" />
+      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/jsonp-callback-validator" />
+      <path value="$PROJECT_DIR$/vendor/sensiolabs/security-checker" />
+      <path value="$PROJECT_DIR$/vendor/instaclick/php-webdriver" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/vendor/phpoption/phpoption" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/ircmaxell/password-compat" />
+      <path value="$PROJECT_DIR$/vendor/mandrill/mandrill" />
+      <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-cache-bundle" />
+      <path value="$PROJECT_DIR$/vendor/sonata-project/datagrid-bundle" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/vendor/league/flysystem-aws-s3-v3" />
+      <path value="$PROJECT_DIR$/vendor/predis/predis" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/vendor/ocramius/package-versions" />
+      <path value="$PROJECT_DIR$/vendor/ocramius/proxy-manager" />
+      <path value="$PROJECT_DIR$/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/vendor/mtdowling/jmespath.php" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/vendor/zendframework/zend-code" />
+      <path value="$PROJECT_DIR$/vendor/zendframework/zend-eventmanager" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/reflection" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/vendor/aws/aws-sdk-php" />
+      <path value="$PROJECT_DIR$/vendor/snc/redis-bundle" />
+      <path value="$PROJECT_DIR$/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/vendor/nette/schema" />
+      <path value="$PROJECT_DIR$/vendor/nette/php-generator" />
+      <path value="$PROJECT_DIR$/vendor/nette/robot-loader" />
+      <path value="$PROJECT_DIR$/vendor/nette/di" />
+      <path value="$PROJECT_DIR$/vendor/nette/neon" />
+      <path value="$PROJECT_DIR$/vendor/nette/utils" />
+      <path value="$PROJECT_DIR$/vendor/nette/bootstrap" />
+      <path value="$PROJECT_DIR$/vendor/nette/finder" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/oneup/flysystem-bundle" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="947" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="Default" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="Email" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="Redesign" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="DefaultBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="Ticket" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="UserBundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="UserBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="UserBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Application" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="UserBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Stfalcon" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Stfalcon" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Stfalcon" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="EventBundle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Stfalcon" type="462c0819:PsiDirectoryNode" />
+              <item name="Bundle" type="462c0819:PsiDirectoryNode" />
+              <item name="EventBundle" type="462c0819:PsiDirectoryNode" />
+              <item name="Entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fwdays.com" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fwdays.com" type="462c0819:PsiDirectoryNode" />
+              <item name="vendor" type="462c0819:PsiDirectoryNode" />
+              <item name="composer" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="addDependency /Users/stfalcon/projects/fwdays.com" value="--dev --no-progress --no-interaction --ansi" />
+    <property name="node.js.detected.package.stylelint" value="true" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
+    <property name="node.js.selected.package.stylelint" value="$PROJECT_DIR$/node_modules/stylelint" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="settings.php.quality.tools" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Analytics" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Admin" />
+      <recent name="$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Repository" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Trash" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Page" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/UserBundle/Resources/views/Default" />
+      <recent name="$PROJECT_DIR$/src/Application/Bundle/UserBundle/Resources" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2df6acde-1cd3-4cf1-aedd-7b5eddb26440" name="Default" comment="" />
+      <created>1552947880246</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1552947880246</updated>
+      <workItem from="1552947881960" duration="3495000" />
+      <workItem from="1553154310649" duration="23851000" />
+      <workItem from="1553393298853" duration="24241000" />
+      <workItem from="1554377538771" duration="17638000" />
+      <workItem from="1555577241806" duration="8729000" />
+      <workItem from="1555747624498" duration="2568000" />
+      <workItem from="1555768372250" duration="21626000" />
+      <workItem from="1555939241958" duration="1092000" />
+      <workItem from="1556055226320" duration="126000" />
+      <workItem from="1556055422136" duration="1018000" />
+    </task>
+    <task id="LOCAL-00001" summary="added forecasting tickets sales analytics">
+      <created>1554988145858</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1554988145858</updated>
+    </task>
+    <task id="LOCAL-00002" summary="rename Statistics service to AnalyticsService">
+      <created>1555717255202</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1555717255202</updated>
+    </task>
+    <task id="LOCAL-00003" summary="rename Statistics service to AnalyticsService">
+      <created>1555717650114</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1555717650114</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixed code style for analytics">
+      <created>1555824478965</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1555824478965</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed code style for analytics and refactoring">
+      <created>1555828383970</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1555828383970</updated>
+    </task>
+    <task id="LOCAL-00006" summary="rm default news and event news (unused)">
+      <created>1555857350485</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1555857350485</updated>
+    </task>
+    <task id="LOCAL-00007" summary="rm default news and event news (unused)">
+      <created>1555858600027</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1555858600027</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed migration">
+      <created>1555927875532</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1555927875532</updated>
+    </task>
+    <task id="LOCAL-00009" summary="rm about &amp; contacts pages actions &amp; templates. rm redirect controller. mv some templates to the right destinations">
+      <created>1555928482246</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1555928482246</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="104384000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1680" height="947" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25274727" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Gulp" order="2" side_tool="true" />
+      <window_info id="npm" order="3" side_tool="true" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32982457" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005952" side_tool="true" weight="0.3298969" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49940476" weight="0.3298969" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.3298969" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" x="0" y="0" width="370" height="747" id="Documentation" order="4" side_tool="true" weight="0.3297619" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added forecasting tickets sales analytics" />
+    <MESSAGE value="rename Statistics service to AnalyticsService" />
+    <MESSAGE value="fixed code style for analytics" />
+    <MESSAGE value="fixed code style for analytics and refactoring" />
+    <MESSAGE value="rm default news and event news (unused)" />
+    <MESSAGE value="fixed migration" />
+    <MESSAGE value="rm about &amp; contacts pages actions &amp; templates. rm redirect controller. mv some templates to the right destinations" />
+    <option name="LAST_COMMIT_MESSAGE" value="rm about &amp; contacts pages actions &amp; templates. rm redirect controller. mv some templates to the right destinations" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php</url>
+          <line>31</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Command/StfalconRecalculateTicketSoldCountCommand.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/UserBundle/DataFixtures/ORM/LoadUserData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/DataFixtures/ORM/LoadEventData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Features/homepage.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Features/events.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="46" column="43" lean-forward="true" selection-start-line="46" selection-end-line="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Features/ticket.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1435">
+          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Resources/markup/src/about.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1085" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/RedirectController.php" />
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/contacts.html.twig" />
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/login_form.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/redirects.txt" />
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/UserBundle/Controller/ProfileController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-581">
+          <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Entity/EventPage.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Entity/AbstractClass/AbstractPage.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stfalcon/Bundle/EventBundle/Entity/Page.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="31" column="8" lean-forward="true" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/microlayout.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Default/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="69" column="99" selection-start-line="69" selection-start-column="99" selection-end-line="69" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/_footer_pages.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/cache/dev/assetic/config/0/0d1c602e50011605195bc3adbbaae07c.php" />
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/AdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1554">
+          <caret line="189" column="71" selection-start-line="189" selection-start-column="71" selection-end-line="189" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Menu/knp_menu.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/footer.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="16" column="46" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Redesign/Payment/payment_form.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="84" column="38" selection-start-line="84" selection-start-column="38" selection-end-line="84" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Page/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="22" lean-forward="true" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/TrashController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Security/Csrf/TokenStorage/TokenStorageInterface.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-configs/php-fpm.ini" />
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Trash/shareContacts.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="46" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/UserBundle/Resources/views/Default/cabinet.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/DoctrineMigrations/Version20190422130804.php" />
+    <entry file="file://$PROJECT_DIR$/app/DoctrineMigrations/Version20190421175142.php" />
+    <entry file="file://$PROJECT_DIR$/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/PaymentController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Menu/MenuBuilder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Ticket/_new_pdf.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="62" column="22" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/UserBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="766">
+          <caret line="53" column="7" selection-start-line="53" selection-start-column="7" selection-end-line="53" selection-end-column="7" />
+          <folding>
+            <element signature="e#60#106#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/parameters.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="46" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/_email_end_table.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/_email_footer.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/_email_header.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/_email_social.html.twig">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Resources/views/Email/new_email.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+          <folding>
+            <element signature="e#12#61#0#Twig" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/EmailController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="68" selection-start-line="7" selection-start-column="68" selection-end-line="7" selection-end-column="68" />
+          <folding>
+            <element signature="e#2272#2300#1#PHP" expanded="true" />
+            <element signature="e#1736#1764#1#PHP" expanded="true" />
+            <element signature="e#2009#2035#1#PHP" expanded="true" />
+            <element signature="e#2235#2266#1#PHP" expanded="true" />
+            <element signature="e#3084#3112#1#PHP" expanded="true" />
+            <element signature="e#3302#3333#1#PHP" expanded="true" />
+            <element signature="e#3539#3565#1#PHP" expanded="true" />
+            <element signature="e#3865#3875#1#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Application/Bundle/DefaultBundle/Controller/DefaultController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="32" column="28" selection-start-line="32" selection-start-column="24" selection-end-line="32" selection-end-column="28" />
+          <folding>
+            <element signature="e#63#120#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

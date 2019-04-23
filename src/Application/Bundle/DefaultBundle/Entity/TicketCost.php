@@ -3,9 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 
 /**
  * @ORM\Table(name="event__ticketsCost")
@@ -24,7 +24,7 @@ class TicketCost
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="ticketsCost", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
@@ -32,7 +32,7 @@ class TicketCost
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
+     * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
      *      cascade={"persist"}, fetch="EXTRA_LAZY")
      */

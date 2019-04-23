@@ -123,7 +123,7 @@ knp_menu:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
     firewall_name: main
-    user_class: Application\Bundle\UserBundle\Entity\User
+    user_class: Application\Bundle\DefaultBundle\Entity\User
     registration:
         form:
             type: application_user_registration
@@ -133,18 +133,18 @@ fos_user:
     profile:
         form:
             type: application_user_profile
-            handler: application_user.profile.form.handler
+            handler: application.profile.form.handler
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
     service:
-        user_manager: stfalcon.user_manager
-
-stfalcon_event:
-    wayforpay:
-        shop_id: "%merchantAccount%"
-        secret: "%merchantSecretKey%"
-    discount: 0.2
+        user_manager: application.user_manager
+#
+#application_default:
+#    wayforpay:
+#        shop_id: "%merchantAccount%"
+#        secret: "%merchantSecretKey%"
+#    discount: 0.2
 
 ornicar_gravatar: ~
 

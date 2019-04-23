@@ -1,10 +1,10 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Features\Context;
+namespace Application\Bundle\DefaultBundle\Features\Context;
 
 use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Driver\Selenium2Driver;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
@@ -14,13 +14,13 @@ use Behat\CommonContexts\SymfonyMailerContext;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Application\Bundle\UserBundle\Features\Context\UserContext as ApplicationUserBundleUserContext;
+use Application\Bundle\DefaultBundle\Features\Context\UserContext as ApplicationDefaultBundleUserContext;
 use PSS\Behat\Symfony2MockerExtension\Context\ServiceMockerAwareInterface;
 use PSS\Behat\Symfony2MockerExtension\ServiceMocker;
 use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for StfalconEventBundle.
+ * Feature context for ApplicationDefaultBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface, ServiceMockerAwareInterface
 {
@@ -37,7 +37,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $this->useContext('DoctrineFixturesContext', new DoctrineFixturesContext());
         $this->useContext('MinkRedirectContext', new MinkRedirectContext());
         $this->useContext('SymfonyMailerContext', new SymfonyMailerContext());
-        $this->useContext('ApplicationUserBundleUserContext', new ApplicationUserBundleUserContext($this));
+        $this->useContext('ApplicationDefaultBundleUserContext', new ApplicationDefaultBundleUserContext($this));
     }
 
     /**
@@ -72,17 +72,17 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $this->getMainContext()
             ->getSubcontext('DoctrineFixturesContext')
             ->loadFixtureClasses($loader, array(
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadNewsData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPagesData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadReviewData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
-                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPromoCodeData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadMailQueueData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadNewsData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPagesData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadReviewData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadMailQueueData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPromoCodeData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadMailQueueData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadMailQueueData',
             ));
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -164,9 +164,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $user));
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('paid');
         $ticket->setPayment($payment);
 
@@ -183,9 +183,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $user));
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('StfalconEventBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $user));
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(array('user' => $user->getId()));
+        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(array('user' => $user->getId()));
         $payment->setStatus('pending');
         $ticket->setPayment($payment);
 
@@ -202,7 +202,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $mail));
         $this->assertPageContainsText($user->getFullname());
     }
 
@@ -241,10 +241,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
-        $user = $em->getRepository('ApplicationUserBundle:User')->findOneBy(array('username' => $mail));
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(array('slug' => $eventSlug));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $mail));
+        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(array('slug' => $eventSlug));
 
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneByUserAndEvent($user, $event);
 
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_registration',
             array(
@@ -368,7 +368,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
      */
     public function interkassaApiIsAvailable()
     {
-        $this->mocker->mockService('stfalcon_event.interkassa.service', 'Application\Bundle\DefaultBundle\Service\InterkassaService')
+        $this->mocker->mockService('application.interkassa.service', 'Application\Bundle\DefaultBundle\Service\InterkassaService')
             ->shouldReceive('checkPayment')
             ->andReturn(true);
     }
@@ -398,7 +398,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface, Servic
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
         /** @var Payment $payment */
-        $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
+        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
 
         Assert::assertTrue($payment->isPaid());
     }

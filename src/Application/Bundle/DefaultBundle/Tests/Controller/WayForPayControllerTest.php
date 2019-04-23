@@ -1,10 +1,10 @@
 <?php
 
-namespace Stfalcon\Bundle\EventBundle\Tests\Controller;
+namespace Application\Bundle\DefaultBundle\Tests\Controller;
 
 use Application\Bundle\DefaultBundle\Controller\WayForPayController;
 use Prophecy\Argument;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 
 class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,8 +34,8 @@ class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
         $container = $this->prophet->prophesize('Symfony\Component\DependencyInjection\Container');
         $doctrine = $this->prophet->prophesize('Doctrine\Bundle\DoctrineBundle\Registry');
         $em = $this->prophet->prophesize('Doctrine\ORM\EntityManager');
-        $paymentRepository = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Repository\PaymentRepository');
-        $payment = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Entity\Payment');
+        $paymentRepository = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Repository\PaymentRepository');
+        $payment = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Entity\Payment');
         $logger = $this->prophet->prophesize('Symfony\Bridge\Monolog\Logger');
         $referralService = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Service\ReferralService');
         $session = $this->prophet->prophesize('Symfony\Component\HttpFoundation\Session\Session');
@@ -43,7 +43,7 @@ class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
         $request->getContent()->shouldBeCalled()
             ->willReturn('{"orderNo":"1"}');
 
-        $doctrine->getRepository('StfalconEventBundle:Payment')
+        $doctrine->getRepository('ApplicationDefaultBundle:Payment')
             ->shouldBeCalled()
             ->willReturn($paymentRepository);
 
@@ -63,8 +63,8 @@ class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
         $paymentRepository->findOneBy(Argument::any())->willReturn($payment);
 
         $container->get('app.way_for_pay.service')->willReturn($wayforpayService);
-        $container->get('stfalcon_event.referral.service')->willReturn($referralService);
-        $container->get('stfalcon_event.payment.service')->willReturn($paymentService);
+        $container->get('application.referral.service')->willReturn($referralService);
+        $container->get('application.payment.service')->willReturn($paymentService);
         $container->get('logger')->willReturn($logger);
         $container->get('session')->willReturn($session);
 
@@ -92,7 +92,7 @@ class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
         $container = $this->prophet->prophesize('Symfony\Component\DependencyInjection\Container');
         $doctrine = $this->prophet->prophesize('Doctrine\Bundle\DoctrineBundle\Registry');
         $em = $this->prophet->prophesize('Doctrine\ORM\EntityManager');
-        $paymentRepository = $this->prophet->prophesize('Stfalcon\Bundle\EventBundle\Repository\PaymentRepository');
+        $paymentRepository = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Repository\PaymentRepository');
         $logger = $this->prophet->prophesize('Symfony\Bridge\Monolog\Logger');
         $wayforpayService = $this->prophet->prophesize('Application\Bundle\DefaultBundle\Service\WayForPayService');
 
@@ -102,7 +102,7 @@ class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
             ->willReturn('{"orderNo":"1"}');
 
         $doctrine->getManager()->willReturn($em);
-        $doctrine->getRepository('StfalconEventBundle:Payment')
+        $doctrine->getRepository('ApplicationDefaultBundle:Payment')
             ->shouldBeCalled()
             ->willReturn($paymentRepository);
         $logger->addCritical(Argument::any())->shouldBeCalled();

@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 
 /**
  * Class WayForPayController.
@@ -40,7 +40,7 @@ class WayForPayController extends Controller
         if (is_array($response) && isset($response['orderNo'])) {
             /** @var Payment $payment */
             $payment = $this->getDoctrine()
-                ->getRepository('StfalconEventBundle:Payment')
+                ->getRepository('ApplicationDefaultBundle:Payment')
                 ->findOneBy(['id' => $response['orderNo']]);
         }
 
@@ -60,7 +60,7 @@ class WayForPayController extends Controller
             $em->flush();
 
             try {
-                $referralService = $this->get('stfalcon_event.referral.service');
+                $referralService = $this->get('application.referral.service');
                 $referralService->chargingReferral($payment);
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
@@ -108,7 +108,7 @@ class WayForPayController extends Controller
         if (is_array($response) && isset($response['orderNo'])) {
             /** @var Payment $payment */
             $payment = $this->getDoctrine()
-                ->getRepository('StfalconEventBundle:Payment')
+                ->getRepository('ApplicationDefaultBundle:Payment')
                 ->findOneBy(['id' => $response['orderNo']]);
         }
 
@@ -134,7 +134,7 @@ class WayForPayController extends Controller
             $em->flush();
 
             try {
-                $referralService = $this->get('stfalcon_event.referral.service');
+                $referralService = $this->get('application.referral.service');
                 $referralService->chargingReferral($payment);
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
@@ -170,7 +170,7 @@ class WayForPayController extends Controller
 
         /** @var Payment $payment */
         $payment = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Payment')
+            ->getRepository('ApplicationDefaultBundle:Payment')
             ->findOneBy(['id' => $paymentId]);
 
         $eventName = '';

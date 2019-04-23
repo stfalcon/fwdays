@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -38,7 +38,7 @@ class AnalyticsService
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('DATE(p.updatedAt) as date_of_sale, COUNT(t.id) as tickets_sold_number')
-            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
+            ->from('Application\Bundle\DefaultBundle\Entity\Ticket', 't')
             ->join('t.payment', 'p')
             ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->gte('p.updatedAt', ':date_from'))
@@ -91,7 +91,7 @@ class AnalyticsService
     {
         $qbTicketsSold = $this->em->createQueryBuilder();
         $qbTicketsSold->select('COUNT(t.id) as tickets_sold_number, SUM(t.amount) as tickets_amount')
-            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
+            ->from('Application\Bundle\DefaultBundle\Entity\Ticket', 't')
             ->join('t.payment', 'p')
             ->andWhere($qbTicketsSold->expr()->eq('t.event', ':event'))
             ->andWhere($qbTicketsSold->expr()->eq('p.status', ':status'))
@@ -129,7 +129,7 @@ class AnalyticsService
         $weeksMaxNumber = 20; // задаєм максимальну глибину аналізу
 
         // витягнути івенти з цієї групи
-        $events = $this->em->getRepository('StfalconEventBundle:Event')
+        $events = $this->em->getRepository('ApplicationDefaultBundle:Event')
             ->findBy(['group' => $event->getGroup()], ['date' => 'DESC'], 4);
 
         // формуєм масив ключів з айдшок івентів, щоб використати його в формуванні заготовки масиву результатів
@@ -184,7 +184,7 @@ class AnalyticsService
     {
         $qb = $this->em->createQueryBuilder();
         $qb->select('t.createdAt')
-            ->from('Stfalcon\Bundle\EventBundle\Entity\Ticket', 't')
+            ->from('Application\Bundle\DefaultBundle\Entity\Ticket', 't')
             ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->eq('t.event', ':event'))
             ->setParameters([

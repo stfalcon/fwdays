@@ -4,7 +4,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Stfalcon\Bundle\EventBundle\Repository\PageRepository;
+use Application\Bundle\DefaultBundle\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;

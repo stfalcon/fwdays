@@ -4,8 +4,8 @@ namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Repository\ReviewRepository;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

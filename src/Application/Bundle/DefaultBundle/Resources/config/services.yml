@@ -1,7 +1,7 @@
 services:
 
     app.validator.event_block.text:
-        class: Stfalcon\Bundle\EventBundle\Validator\Constraints\EventBlock\EventBlockTypeText
+        class: Application\Bundle\DefaultBundle\Validator\Constraints\EventBlock\EventBlockTypeText
 
     app.ticket_cost.admin:
         class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
@@ -10,10 +10,10 @@ services:
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
 
     app.event_block.admin:
-        class: Stfalcon\Bundle\EventBundle\Admin\EventBlockAdmin
+        class: Application\Bundle\DefaultBundle\Admin\EventBlockAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
-        arguments: [~, 'Stfalcon\Bundle\EventBundle\Entity\EventBlock', ~]
+        arguments: [~, 'Application\Bundle\DefaultBundle\Entity\EventBlock', ~]
 
     app.wayforpay_log.admin:
         class: Application\Bundle\DefaultBundle\Admin\WayForPayLogAdmin
@@ -34,11 +34,11 @@ services:
         class: Application\Bundle\DefaultBundle\Service\TicketCostService
         arguments: ["@doctrine.orm.entity_manager"]
 
-    stfalcon_event.ticket.service:
+    application.ticket.service:
         class: Application\Bundle\DefaultBundle\Service\TicketService
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "%stfalcon_event.config%"
+            - "%application.config%"
             - "@translator"
             - "@router"
             - "@app.ticket_cost.service"
@@ -66,11 +66,11 @@ services:
             - { name: kernel.event_listener, event: kernel.exception }
 
     app.helper.new_pdf_generator:
-        class: Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper
+        class: Application\Bundle\DefaultBundle\Helper\NewPdfGeneratorHelper
         arguments:
             - "@twig"
             - "@router"
-            - "@stfalcon_event.qr_code"
+            - "@application.qr_code"
             - "@kernel"
             - "@app.svg_to_jpg.service"
             - "@oneup_flysystem.event_image_filesystem"
@@ -97,7 +97,7 @@ services:
     app.way_for_pay.service:
         class: Application\Bundle\DefaultBundle\Service\WayForPayService
         arguments:
-            - "%stfalcon_event.config%"
+            - "%application.config%"
             - "@translator"
             - "@request_stack"
             - "@router"
@@ -118,3 +118,23 @@ services:
     app.analytics.service:
         class: Application\Bundle\DefaultBundle\Service\AnalyticsService
         arguments: ["@doctrine.orm.entity_manager"]
+
+    user.login_entry_point:
+        class: Application\Bundle\DefaultBundle\EventListener\LoginEntryPoint
+        arguments: ["@jms_i18n_routing.router"]
+
+    user.handler.login_handler:
+        class: Application\Bundle\DefaultBundle\Handler\LoginHandler
+        arguments:
+            - "@router"
+            - "@application.referral.service"
+            - "@application.user_manager"
+            - "@app.url_for_redirect"
+
+    app.provider.oauth:
+        class: Application\Bundle\DefaultBundle\Security\OAuthUserProvider
+        arguments:
+            - "@fos_user.user_manager"
+            - {facebook: facebookID, google: googleID}
+            - "@service_container"
+

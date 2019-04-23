@@ -1,6 +1,6 @@
 security:
     encoders:
-        'Application\Bundle\UserBundle\Entity\User':
+        'Application\Bundle\DefaultBundle\Entity\User':
             algorithm: sha512
             encode_as_base64: false
             iterations: 1
