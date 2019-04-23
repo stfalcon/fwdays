@@ -1,6 +1,6 @@
 <?php
 
-namespace Stfalcon\Bundle\SponsorBundle\Features\Context;
+namespace Application\Bundle\DefaultBundle\Features\Context;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use PHPUnit_Framework_Assert as Assert;
 
 /**
- * Feature context for StfalconSponsorBundle.
+ * Feature context for ApplicationDefaultBundle.
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
@@ -45,7 +45,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $loader = new Loader();
         $this->getMainContext()
             ->getSubcontext('DoctrineFixturesContext')
-            ->loadFixtureClass($loader, 'Stfalcon\Bundle\SponsorBundle\DataFixtures\ORM\LoadEventSponsorData');
+            ->loadFixtureClass($loader, 'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventSponsorData');
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');

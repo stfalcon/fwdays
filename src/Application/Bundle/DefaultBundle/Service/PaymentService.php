@@ -6,11 +6,11 @@ use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\User;
 
 /**
  * Class PaymentService.
@@ -168,7 +168,7 @@ class PaymentService
     {
         $notUsedPromoCode = [];
 
-        $ticketService = $this->container->get('stfalcon_event.ticket.service');
+        $ticketService = $this->container->get('application.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             if (!$promoCode->isCanBeTmpUsed()) {
@@ -197,7 +197,7 @@ class PaymentService
      */
     public function checkTicketsPricesInPayment($payment, $event)
     {
-        $ticketService = $this->container->get('stfalcon_event.ticket.service');
+        $ticketService = $this->container->get('application.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             $currentTicketCost = $this->container->get('app.ticket_cost.service')->getCurrentEventTicketCost($event);
@@ -277,7 +277,7 @@ class PaymentService
         if ($payment->isPending() && 0 === (int) $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $payment->setPaidWithGate(Payment::BONUS_GATE);
 
-            $referralService = $this->container->get('stfalcon_event.referral.service');
+            $referralService = $this->container->get('application.referral.service');
             $referralService->utilizeBalance($payment);
 
             $this->em->flush();

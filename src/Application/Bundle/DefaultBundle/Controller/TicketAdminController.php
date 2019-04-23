@@ -31,7 +31,7 @@ class TicketAdminController extends CoreController
             ];
         }
 
-        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
+        $ticket = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['id' => $ticketId]);
 
         if (!is_null($ticket)) {

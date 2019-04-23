@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Prophecy\Prophet;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Repository\TicketRepository;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Repository\TicketRepository;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 
@@ -39,11 +39,11 @@ class PaymentServiceTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketCostData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketCostData',
             ],
             null,
             'doctrine',
@@ -71,20 +71,20 @@ class PaymentServiceTest extends WebTestCase
         $fwdaysAmount = 3000;
 
         /** @var User $user */
-        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => 'jack.sparrow@fwdays.com']);
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['email' => 'jack.sparrow@fwdays.com']);
         $user->setBalance($fwdaysAmount);
 
         /** @var Event $event */
-        $event = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
         /** @var TicketRepository $ticketRepository */
-        $ticketRepository = $this->em->getRepository('StfalconEventBundle:Ticket');
+        $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */
         $ticket = $ticketRepository->findOneByUserAndEvent($user, $event);
         /** @var Payment $payment */
         $payment = $ticket->getPayment();
 
         $referralBalance = $user->getBalance();
-        $paymentService = $this->getContainer()->get('stfalcon_event.payment.service');
+        $paymentService = $this->getContainer()->get('application.payment.service');
 
         $paymentService->setPaidByBonusMoney($payment, $event);
 

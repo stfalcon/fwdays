@@ -3,12 +3,12 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +28,7 @@ class TicketController extends Controller
      */
     public function statusAction(Event $event, $position = 'card', TicketCost $ticketCost = null)
     {
-        $result = $this->get('stfalcon_event.ticket.service')->getTicketHtmlData(
+        $result = $this->get('application.ticket.service')->getTicketHtmlData(
             $event,
             $position,
             $ticketCost
@@ -53,18 +53,18 @@ class TicketController extends Controller
     public function downloadAction($eventSlug, $asHtml = null)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
         /** @var User $user */
         $user = $this->getUser();
         /** @var Ticket $ticket */
-        $ticket = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Ticket')
+        $ticket = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket || !$ticket->isPaid()) {
             return new Response('Вы не оплачивали участие в "'.$event->getName().'"', 402);
         }
 
-        /** @var $pdfGen \Stfalcon\Bundle\EventBundle\Helper\NewPdfGeneratorHelper */
+        /** @var $pdfGen \Application\Bundle\DefaultBundle\Helper\NewPdfGeneratorHelper */
         $pdfGen = $this->get('app.helper.new_pdf_generator');
 
         $html = $pdfGen->generateHTML($ticket);

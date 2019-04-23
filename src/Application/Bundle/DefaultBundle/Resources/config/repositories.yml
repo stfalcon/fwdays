@@ -4,13 +4,13 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments:
-            - "Stfalcon\\Bundle\\SponsorBundle\\Entity\\Sponsor"
+            - "Application\\Bundle\\DefaultBundle\\Entity\\Sponsor"
 
     app.partners_category_repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments:
-            - "Stfalcon\\Bundle\\SponsorBundle\\Entity\\Category"
+            - "Application\\Bundle\\DefaultBundle\\Entity\\Category"
 
     app.ticket_cost_repository.service:
         class: Doctrine\ORM\EntityRepository
@@ -25,14 +25,14 @@ services:
     app.event_review.repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ["StfalconEventBundle:Review"]
+        arguments: ["ApplicationDefaultBundle:Review"]
 
     app.event.repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ["StfalconEventBundle:Event"]
+        arguments: ["ApplicationDefaultBundle:Event"]
 
     app.page.repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ["StfalconEventBundle:Page"]
+        arguments: ["ApplicationDefaultBundle:Page"]

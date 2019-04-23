@@ -1,0 +1,6 @@
+services:
+    application.admin.event_audience:
+        class: Application\Bundle\DefaultBundle\Admin\EventAudienceAdmin
+        arguments: [~, Application\Bundle\DefaultBundle\Entity\EventAudience, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: События, label: Аудитории}

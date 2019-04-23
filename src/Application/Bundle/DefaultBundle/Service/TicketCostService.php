@@ -5,7 +5,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\ORM\EntityManager;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * Class TicketCostService.

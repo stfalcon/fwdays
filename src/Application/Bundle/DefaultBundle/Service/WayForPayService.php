@@ -3,11 +3,11 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\WayForPayLog;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

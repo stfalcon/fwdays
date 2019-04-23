@@ -3,13 +3,13 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Stfalcon\Bundle\EventBundle\Repository\PaymentRepository;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Repository\PaymentRepository;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -84,7 +84,7 @@ class TicketService
             return false;
         }
 
-        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
+        $paidPayments = $this->em->getRepository('ApplicationDefaultBundle:Payment')
             ->findPaidPaymentsForUser($user);
 
         return \count($paidPayments) > 0;
@@ -207,10 +207,10 @@ class TicketService
         $user = $token instanceof TokenInterface && $token->getUser() instanceof User ? $token->getUser() : null;
         if ($user instanceof User) {
             /** @var PaymentRepository $paymentRepository */
-            $paymentRepository = $this->em->getRepository('StfalconEventBundle:Payment');
+            $paymentRepository = $this->em->getRepository('ApplicationDefaultBundle:Payment');
             $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
 
-            $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
+            $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         }
 

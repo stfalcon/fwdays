@@ -3,19 +3,19 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -73,8 +73,8 @@ class AdminController extends Controller
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $body = $this->container->get('stfalcon_event.mailer_helper')->renderTwigTemplate(
-                        'ApplicationUserBundle:Registration:automatically.html.twig',
+                    $body = $this->container->get('application.mailer_helper')->renderTwigTemplate(
+                        'ApplicationDefaultBundle:Registration:automatically.html.twig',
                         [
                             'user' => $user,
                             'plainPassword' => $password,
@@ -108,7 +108,7 @@ class AdminController extends Controller
 
                 // проверяем или у него нет билетов на этот ивент
                 /** @var Ticket $ticket */
-                $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')
                     ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
                 if (!$ticket) {
@@ -207,7 +207,7 @@ class AdminController extends Controller
     {
 //        // беру список активних івентів через івент сервіс чи репозиторій (на морді виводиться, значить має бути готовий)
 //        $events = $this->getDoctrine()
-//            ->getRepository('StfalconEventBundle:Event')
+//            ->getRepository('ApplicationDefaultBundle:Event')
 //            ->findBy(['active' => true], ['date' => 'ASC']);
 
 //        $dataForDailyStatistics = $this->ticketRepository
@@ -216,7 +216,7 @@ class AdminController extends Controller
 
         $repo = $this->getDoctrine()
             ->getManager()
-            ->getRepository('ApplicationUserBundle:User');
+            ->getRepository('ApplicationDefaultBundle:User');
 
         $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
 
@@ -241,7 +241,7 @@ class AdminController extends Controller
         $usersTicketsCount = [];
 
         $ticketRepository = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Ticket');
+            ->getRepository('ApplicationDefaultBundle:Ticket');
 
         $paidTickets = $ticketRepository->getPaidTicketsCount();
 
@@ -299,7 +299,7 @@ class AdminController extends Controller
 
         $event = $this
             ->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findOneBy([], ['date' => 'DESC']);
 
         $eventStatisticSlug = '';
@@ -371,7 +371,7 @@ class AdminController extends Controller
     {
         $events = $this
             ->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy([], ['date' => 'DESC']);
 
         $eventStatisticHtml = $this->getEventStatistic($event);
@@ -397,7 +397,7 @@ class AdminController extends Controller
      */
     public function showEventsStatisticAction($checkedEvents = '')
     {
-        $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
+        $ticketRepository = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket');
 
         $events = $ticketRepository->getEventWithTicketsCount();
         if (empty($checkedEvents)) {
@@ -441,13 +441,13 @@ class AdminController extends Controller
         $hasTicketObjectId = 'event' === $checkType ? $request->request->getInt('has_ticket_event')
             : $request->request->getInt('has_ticket_group');
 
-        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')
+        $events = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Event')
             ->findBy([], ['date' => 'DESC']);
-        $groups = $this->getDoctrine()->getRepository('StfalconEventBundle:EventGroup')
+        $groups = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:EventGroup')
             ->findAll();
 
         if ($checkEventId > 0 && $hasTicketObjectId > 0) {
-            $users = $this->getDoctrine()->getRepository('ApplicationUserBundle:User')
+            $users = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:User')
                 ->getUsersNotBuyTicket($checkEventId, $hasTicketObjectId, $checkType);
             if (\count($users)) {
                 return $this->getCsvResponse($users);
@@ -479,7 +479,7 @@ class AdminController extends Controller
             $totalSoldTicketCount += $blockSold;
         }
 
-        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
+        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
@@ -499,7 +499,7 @@ class AdminController extends Controller
      */
     private function getEventsTable($events)
     {
-        $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
+        $ticketRepository = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket');
 
         $minGreen = 127;
         $maxGreen = 255;

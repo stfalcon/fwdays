@@ -6,7 +6,7 @@ use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

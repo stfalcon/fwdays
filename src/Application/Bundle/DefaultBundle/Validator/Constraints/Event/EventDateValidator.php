@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Validator\Constraints\Event;
 
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

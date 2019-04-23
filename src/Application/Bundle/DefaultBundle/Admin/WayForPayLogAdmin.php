@@ -30,7 +30,8 @@ final class WayForPayLogAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->remove('create');
+        // remove all route except named ones
+        $collection->clearExcept(array('list', 'show'));
     }
 
     /**
@@ -68,12 +69,6 @@ final class WayForPayLogAdmin extends AbstractAdmin
             ->add('payment', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
             ->add('fwdaysResponse', null, ['label' => 'Відповіть fwdays'])
-            ->add('_action', 'actions', [
-                'actions' => [
-                    'show' => [],
-                ],
-                'label' => 'Actions',
-            ])
         ;
     }
 }

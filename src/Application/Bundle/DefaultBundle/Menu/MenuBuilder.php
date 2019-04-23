@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Menu;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\HttpFoundation\Request;

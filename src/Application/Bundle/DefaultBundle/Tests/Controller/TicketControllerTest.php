@@ -34,10 +34,10 @@ class TicketControllerTest extends WebTestCase
         $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
         $this->loadFixtures(
             [
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
             ],
             null,
             'doctrine',

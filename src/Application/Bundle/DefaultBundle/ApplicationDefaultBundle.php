@@ -9,4 +9,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class ApplicationDefaultBundle extends Bundle
 {
+    /**
+     * @return null|string
+     */
+    public function getParent()
+    {
+        return 'FOSUserBundle';
+    }
 }
