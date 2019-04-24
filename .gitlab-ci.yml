@@ -26,6 +26,7 @@ stages:
     - 'CI jobs'
     - 'SonarQube'
     - 'Deploy to staging'
+    - 'Deploy to production'
 
 # CI jobs
 composer checks:
@@ -134,3 +135,34 @@ staging rollback:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com
     when: manual
+
+production deploy:
+    stage: 'Deploy to production'
+    only:
+        - master
+    image: docker:stable
+    tags:
+        - k8s-deploy
+    script:
+        - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+        - docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
+        - docker build -t fwdays-deployment .
+        - DEPLOY_TIMESTAMP=`date +%s`
+        - docker tag fwdays-deployment:latest jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        - docker push jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        #- wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        #- chmod a+x /usr/local/bin/kubectl
+        #- 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        #- kubectl -n fwdays-prod set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        #- kubectl rollout status deployment/fwdays-backend -n fwdays-prod
+        #- POD=`kubectl get pods -l app=fwdays-backend -n fwdays-prod|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
+        #- kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        #- sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOY_TIMESTAMP/ docker-configs/k8s/stag/cron/*
+        #- kubectl apply -f docker-configs/k8s/prod/cron/*
+    environment:
+        name: production
+        url: https://fwdays.com
+    when: manual
+
+
