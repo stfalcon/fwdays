@@ -19,6 +19,7 @@ metadata:
   labels:
     app: fwdays-backend
 spec:
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: fwdays-backend
