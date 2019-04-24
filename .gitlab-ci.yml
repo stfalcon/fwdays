@@ -94,7 +94,7 @@ sonar-scanner:
 staging deploy:
     stage: 'Deploy to staging'
     only:
-        - k8s
+        - dev
     image: docker:stable
     tags:
         - k8s-deploy
@@ -122,7 +122,7 @@ staging deploy:
 staging rollback:
     stage: 'Deploy to staging'
     only:
-        - k8s
+        - dev
     image: docker:stable
     tags:
         - k8s-deploy
