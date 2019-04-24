@@ -8,6 +8,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Prophecy\Prophet;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Stfalcon\Bundle\EventBundle\Repository\TicketRepository;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 
@@ -76,8 +77,10 @@ class ReferralServiceTest extends WebTestCase
 
         /** @var Event $event */
         $event = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        /** @var TicketRepository $ticketRepository */
+        $ticketRepository = $this->em->getRepository('StfalconEventBundle:Ticket');
         /** @var Ticket $ticket */
-        $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
+        $ticket = $ticketRepository->findOneByUserAndEvent($user, $event);
         /** @var Payment $payment */
         $payment = $ticket->getPayment();
         $payment->setAmount($ticket->getAmount() - $fwdaysAmount);

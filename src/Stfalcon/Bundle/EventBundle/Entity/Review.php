@@ -32,7 +32,7 @@ class Review extends AbstractPage implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\ReviewTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;
@@ -40,7 +40,7 @@ class Review extends AbstractPage implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Event", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
@@ -48,7 +48,7 @@ class Review extends AbstractPage implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews")
+     * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews", fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="event__speakers_reviews",
      *   joinColumns={
      *     @ORM\JoinColumn(name="review_id", referencedColumnName="id")
@@ -63,7 +63,7 @@ class Review extends AbstractPage implements Translatable
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Application\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\UserBundle\Entity\User", fetch="EXTRA_LAZY")
      * @ORM\JoinTable(name="reviews_users_likes",
      *      joinColumns={@ORM\JoinColumn(name="review_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")}

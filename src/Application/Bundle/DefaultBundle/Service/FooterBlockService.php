@@ -4,10 +4,10 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Stfalcon\Bundle\EventBundle\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

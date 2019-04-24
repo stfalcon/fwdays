@@ -1,3 +1,0 @@
-shopt -s histappend
-PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-HISTFILE=/var/www/history/.bash_history

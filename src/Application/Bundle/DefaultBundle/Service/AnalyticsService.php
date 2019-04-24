@@ -7,7 +7,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Service to get sales analytics data
+ * Service to get sales analytics data.
  */
 class AnalyticsService
 {
@@ -23,7 +23,7 @@ class AnalyticsService
     }
 
     /**
-     * Get data for daily statistics of tickets sold
+     * Get data for daily statistics of tickets sold.
      *
      * @param Event $event
      *
@@ -78,13 +78,13 @@ class AnalyticsService
         return $formattedResult;
     }
 
-
     /**
-     * Get data for summary statistics of tickets sold
+     * Get data for summary statistics of tickets sold.
      *
      * @param Event|null $event
      *
      * @throws \Exception
+     *
      * @return array
      */
     public function getSummaryTicketsSoldData(Event $event)
@@ -114,8 +114,9 @@ class AnalyticsService
 
         return $results;
     }
+
     /**
-     * Get data for compare ticket sales (with previous events)
+     * Get data for compare ticket sales (with previous events).
      *
      * @param Event $event
      *
@@ -154,7 +155,7 @@ class AnalyticsService
                 $date = $oneDateData[0];
                 $number = $oneDateData[1];
 
-                $key = $date->format("Y-W");
+                $key = $date->format('Y-W');
                 $oneEventResults[$key] = (isset($oneEventResults[$key]) ? $oneEventResults[$key] : 0) + $number;
             }
 
@@ -171,7 +172,7 @@ class AnalyticsService
     }
 
     /**
-     * Get the first day of ticket sales (get createdAt of the first event ticket)
+     * Get the first day of ticket sales (get createdAt of the first event ticket).
      *
      * @param Event $event
      *
@@ -199,7 +200,7 @@ class AnalyticsService
     }
 
     /**
-     * Get the last day of ticket sales
+     * Get the last day of ticket sales.
      *
      * @param Event $event
      *

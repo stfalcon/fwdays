@@ -3,11 +3,11 @@
 cd /app
 cp app/config/parameters.ini.docker app/config/parameters.ini
 mysql -u root -pqwerty -h mysql -e "create database fwdays_com_development"
-composer install
+composer.phar install
 php app/console do:mi:mi --no-interaction
 php app/console do:fi:lo --no-interaction
 php app/console assets:install web --symlink
-php app/console ass:dump
+php app/console assetic:dump
 php app/console lexik:translations:import
 wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
 unxz geodata/GeoLiteCity.dat.xz

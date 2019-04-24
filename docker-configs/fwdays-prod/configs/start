@@ -1,0 +1,10 @@
+#!/bin/bash
+
+sed -i s/%fwdays_web_server_name%/$SERVER_NAME/ /etc/nginx/conf.d/fwdays.conf
+echo -e "$PARAMETERS" > /app/app/config/parameters.ini
+
+if [ -n "$STAGING" ]; then
+  cp /etc/nginx/stag_conf_avaliable/* /etc/nginx/stag_conf_enabled
+fi
+
+exec "$@"

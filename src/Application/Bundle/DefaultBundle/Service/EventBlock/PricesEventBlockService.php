@@ -42,7 +42,7 @@ class PricesEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);

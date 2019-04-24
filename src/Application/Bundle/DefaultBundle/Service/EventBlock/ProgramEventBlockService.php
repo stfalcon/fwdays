@@ -41,7 +41,7 @@ class ProgramEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $pages = $this->eventService->getEventPages($event);

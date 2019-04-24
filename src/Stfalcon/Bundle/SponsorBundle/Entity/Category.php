@@ -33,7 +33,7 @@ class Category implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\CategoryTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}
+     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
      * )
      */
     private $translations;
@@ -108,7 +108,7 @@ class Category implements Translatable
     /**
      * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {

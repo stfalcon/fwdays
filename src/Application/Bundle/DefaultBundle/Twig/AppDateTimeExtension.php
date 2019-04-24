@@ -11,8 +11,7 @@ class AppDateTimeExtension extends \Twig_Extension
 {
     private $months =
         [
-            'uk' =>
-                [
+            'uk' => [
                     'січня' => ['січень', 'зима'],
                     'лютого' => ['лютий', 'зима'],
                     'березня' => ['березень', 'весна'],
@@ -26,8 +25,7 @@ class AppDateTimeExtension extends \Twig_Extension
                     'листопада' => ['листопад', 'осінь'],
                     'грудня' => ['грудень', 'зима'],
                 ],
-                'en' =>
-                [
+             'en' => [
                     'January' => ['January', 'Winter'],
                     'February' => ['February', 'Winter'],
                     'March' => ['March', 'Spring'],
@@ -241,7 +239,7 @@ class AppDateTimeExtension extends \Twig_Extension
      */
     private function checkConvertToSeason($pattern)
     {
-        $this->convertToSeason = null !== $pattern ? false !== strpos($pattern, self::YEAR_SEASON_FORMAT) : false;
+        $this->convertToSeason = null !== $pattern ? (false !== strpos($pattern, self::YEAR_SEASON_FORMAT)) : false;
         if ($this->convertToSeason) {
             $pattern = str_replace(self::YEAR_SEASON_FORMAT, 'MMMM', $pattern);
         }

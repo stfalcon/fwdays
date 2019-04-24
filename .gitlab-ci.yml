@@ -1,0 +1,136 @@
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
+cache:
+    paths:
+        - vendor/
+        - node_modules/
+
+services:
+  - name: jekakm/mysql-core:201902201
+    alias: fwdays-php71-mysql
+
+variables:
+  MYSQL_ROOT_PASSWORD: qwerty
+
+.before_script_template: &build_ci
+    before_script:
+        - sudo chown -R www-data:www-data /var/www
+        - cp app/config/parameters.ini.stag app/config/parameters.ini
+        - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
+        - curl -sS https://getcomposer.org/installer | php
+        - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+        - unxz geodata/GeoLiteCity.dat.xz
+        - php composer.phar install --optimize-autoloader
+        - npm install
+
+stages:
+    - 'CI jobs'
+    - 'SonarQube'
+    - 'Deploy to staging'
+
+# CI jobs
+composer checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:composer-validate
+
+security checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:security-check
+
+doctrine checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:doctrine-schema-validate
+
+twig checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:twig-lint
+
+yaml checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:yaml-lint
+
+code style checks:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:code-style
+
+static analysis:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer ci:static-analysis
+
+#phpunit:
+#    stage: 'CI jobs'
+#    artifacts:
+#        paths:
+#            - './phpunit-coverage.xml'
+#            - './clover-coverage.xml'
+#            - './junit.xml'
+#        reports:
+#            junit: './junit.xml'
+#    <<: *build_ci
+#    script:
+#        - composer ci:phpunit-with-coverage
+#
+sonar-scanner:
+    stage: 'SonarQube'
+    only:
+        - develop
+    <<: *build_ci
+    script:
+        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+staging deploy:
+    stage: 'Deploy to staging'
+    image: docker:stable
+    tags:
+        - k8s-deploy
+    script:
+        - cp docker-configs/fwdays-prod/deploy/Dockerfile ./
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+        - docker login -u $DOCKERHUB_LOGIN -p $DOCKERHUB_PASSWORD
+        - docker build -t fwdays-deployment .
+        - DEPLOY_TIMESTAMP=`date +%s`
+        - docker tag fwdays-deployment:latest jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        - docker push jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - chmod a+x /usr/local/bin/kubectl
+        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
+        - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
+        - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
+        - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOY_TIMESTAMP/ docker-configs/k8s/stag/cron/*
+        - kubectl apply -f docker-configs/k8s/stag/cron/*
+    environment:
+        name: staging
+        url: https://fwdays-stag.k8s.stfalcon.com
+    when: manual
+
+staging rollback:
+    stage: 'Deploy to staging'
+    image: docker:stable
+    tags:
+        - k8s-deploy
+    script:
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - chmod a+x /usr/local/bin/kubectl
+        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - kubectl -n fwdays-stag rollout undo deployments/fwdays-backend
+        - DEPLOYMENT_IMAGE=`kubectl -n fwdays-stag get deployment fwdays-backend -o=jsonpath='{$.spec.template.spec.containers[:1].image}'`
+        - sed -i s/%job-image-name%/$DEPLOYMENT_IMAGE/ docker-configs/k8s/stag/cron/*
+        - kubectl apply -f docker-configs/k8s/stag/cron/*
+    environment:
+        name: staging
+        url: https://fwdays-stag.k8s.stfalcon.com
+    when: manual

@@ -1,0 +1,10 @@
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "fwdays-prod",
+    "labels": {
+      "name": "fwdays-prod"
+    }
+  }
+}

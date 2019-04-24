@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fwdays-smtp
+  namespace: fwdays-prod
+  labels:
+    app: fwdays-smtp
+spec:
+  ports:
+  - name: smtp
+    protocol: TCP
+    port: 25
+    targetPort: 25
+  selector:
+    app: fwdays-smtp
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: fwdays-smtp
+  namespace: fwdays-prod
+  labels:
+    app: fwdays-smtp
+spec:
+  selector:
+    matchLabels:
+      app: fwdays-smtp
+  template:
+    metadata:
+      labels:
+        app: fwdays-smtp
+    spec:
+      containers:
+      - name: fwdays-smtp
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/postfix:v1
+        livenessProbe:
+          tcpSocket:
+            port: 25
+          initialDelaySeconds: 15
+          periodSeconds: 60
+        ports:
+        - containerPort: 25
+          name: smtp
+        name: fwdays-smtp
+        env:
+          - name: SMTP_SERVER
+            valueFrom:
+              secretKeyRef:
+                name: smtp-host
+                key: smtp-host
+          - name: SMTP_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: smtp-user
+                key: smtp-user
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: smtp-password
+                key: smtp-password
+          - name: SERVER_HOSTNAME
+            valueFrom:
+              secretKeyRef:
+                name: smtp-mailname
+                key: smtp-mailname
+      imagePullSecrets:
+      - name: regcred

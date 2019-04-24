@@ -48,7 +48,7 @@ class PartnersEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $partners = $this->partnerRepository->getSponsorsOfEventWithCategory($event);

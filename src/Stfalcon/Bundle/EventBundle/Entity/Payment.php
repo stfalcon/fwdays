@@ -42,7 +42,7 @@ class Payment
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -110,7 +110,7 @@ class Payment
     /**
      * @var Ticket[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $tickets;
@@ -252,11 +252,6 @@ class Payment
      *
      * @param string $status
      */
-    // @todo тут треба міняти на приват. і юзати методи MarkedAsPaid
-
-    /**
-     * @param string $status
-     */
     public function setStatus($status)
     {
         $this->status = $status;
@@ -383,9 +378,7 @@ class Payment
      */
     public function __toString()
     {
-        $string = "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
-
-        return $string;
+        return "{$this->getStatus()} (#{$this->getId()})"; // для зручності перегляду платежів в списку квитків додав id
     }
 
     /**

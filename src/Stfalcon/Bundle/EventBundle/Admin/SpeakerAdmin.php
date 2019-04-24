@@ -5,6 +5,7 @@ namespace Stfalcon\Bundle\EventBundle\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 /**
  * Class SpeakerAdmin.
@@ -14,12 +15,17 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    public function postUpdate($object)
     {
-        $listMapper
-            ->addIdentifier('slug')
-            ->add('name', null, ['label' => 'Имя'])
-        ;
+        $this->prepareImageCache($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postPersist($object)
+    {
+        $this->prepareImageCache($object);
     }
 
     /**
@@ -61,7 +67,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             ->with('Участвует в событиях', ['class' => 'col-md-4'])
                 ->add('events', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' => function(\Doctrine\ORM\EntityRepository $repository) {
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
                         $qb = $repository->createQueryBuilder('e');
                         $repository = $qb->orderBy('e.id', 'DESC');
 
@@ -75,7 +81,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             ->with('Кандидат на события', ['class' => 'col-md-4'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' => function(\Doctrine\ORM\EntityRepository $repository) {
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
                         $qb = $repository->createQueryBuilder('e');
                         $repository = $qb->orderBy('e.id', 'DESC');
 
@@ -89,7 +95,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             ->with('Программный комитет', ['class' => 'col-md-4'])
                 ->add('committeeEvents', 'entity', [
                     'class' => 'Stfalcon\Bundle\EventBundle\Entity\Event',
-                    'query_builder' => function(\Doctrine\ORM\EntityRepository $repository) {
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
                         $qb = $repository->createQueryBuilder('e');
                         $repository = $qb->orderBy('e.id', 'DESC');
 
@@ -101,5 +107,35 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                 ])
             ->end()
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('slug')
+            ->add('name', null, ['label' => 'Имя'])
+        ;
+    }
+
+    /**
+     * @param Speaker $speaker
+     */
+    private function prepareImageCache(Speaker $speaker)
+    {
+        $filter = 'speaker';
+        $target = $speaker->getPhoto();
+        if (empty($target)) {
+            return;
+        }
+        $container = $this->getConfigurationPool()->getContainer();
+        $cacheManager = $container->get('liip_imagine.cache.manager');
+        if (!$cacheManager->isStored($target, $filter)) {
+            $filterManager = $container->get('liip_imagine.filter.manager');
+            $dataManager = $container->get('liip_imagine.data.manager');
+            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+        }
     }
 }

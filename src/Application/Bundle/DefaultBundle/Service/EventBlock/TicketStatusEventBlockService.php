@@ -41,7 +41,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $position = $blockContext->getSetting('position');

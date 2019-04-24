@@ -24,8 +24,8 @@ class TicketCost
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
 
@@ -34,7 +34,7 @@ class TicketCost
      *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
-     *      cascade={"persist"})
+     *      cascade={"persist"}, fetch="EXTRA_LAZY")
      */
     private $tickets;
 
@@ -93,6 +93,9 @@ class TicketCost
      */
     private $temporaryCount = 0;
 
+    /**
+     * TicketCost constructor.
+     */
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -133,7 +136,7 @@ class TicketCost
     }
 
     /**
-     * @param mixed $tickets
+     * @param ArrayCollection $tickets
      *
      * @return $this
      */
@@ -145,7 +148,7 @@ class TicketCost
     }
 
     /**
-     * @param $ticket
+     * @param Ticket $ticket
      *
      * @return $this
      */

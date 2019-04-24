@@ -3,12 +3,14 @@
 namespace Stfalcon\Bundle\EventBundle\Helper;
 
 use Application\Bundle\DefaultBundle\Service\SvgToJpg;
+use League\Flysystem\Filesystem;
+use Mpdf\Mpdf;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use TFox\MpdfPortBundle\Service\MpdfService;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpKernel\Kernel;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
  * Class PdfGeneratorHelper.
@@ -36,33 +38,33 @@ class NewPdfGeneratorHelper
     protected $kernel;
 
     /**
-     * @var MpdfService
-     */
-    protected $mPdfPort;
-
-    /**
      * @var SvgToJpg
      */
     protected $svgToJpgService;
 
+    private $filesystem;
+    private $vichUploader;
+
     /**
      * Constructor.
      *
-     * @param Twig_Environment $templating      Twig
-     * @param Router           $router          Router
-     * @param QrCode           $qrCode          QrCode generator
-     * @param Kernel           $kernel          Kernel
-     * @param MpdfService      $mPdfPort
-     * @param SvgToJpg         $svgToJpgService
+     * @param Twig_Environment       $templating      Twig
+     * @param Router                 $router          Router
+     * @param QrCode                 $qrCode          QrCode generator
+     * @param Kernel                 $kernel          Kernel
+     * @param SvgToJpg               $svgToJpgService
+     * @param Filesystem             $filesystem
+     * @param PropertyMappingFactory $vichUploader
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $mPdfPort, $svgToJpgService)
+    public function __construct($templating, $router, $qrCode, $kernel, $svgToJpgService, $filesystem, $vichUploader)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
         $this->kernel = $kernel;
-        $this->mPdfPort = $mPdfPort;
         $this->svgToJpgService = $svgToJpgService;
+        $this->filesystem = $filesystem;
+        $this->vichUploader = $vichUploader;
     }
 
     /**
@@ -75,12 +77,7 @@ class NewPdfGeneratorHelper
      */
     public function generatePdfFile(Ticket $ticket, $html)
     {
-        // Override default fonts directory for mPDF
-        define('_MPDF_SYSTEM_TTFONTS', realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
-
-        $this->mPdfPort->setAddDefaultConstructorArgs(false);
-
-        $constructorArgs = array(
+        $constructorArgs = [
             'mode' => 'BLANK',
             'format' => [87, 151],
             'margin_left' => 2,
@@ -89,19 +86,19 @@ class NewPdfGeneratorHelper
             'margin_bottom' => 2,
             'margin_header' => 2,
             'margin_footer' => 2,
-        );
+            'tempDir' => '/tmp',
+        ];
 
-        $mPDF = $this->mPdfPort->getMpdf($constructorArgs);
+        $mPDF = new Mpdf($constructorArgs);
+        $mPDF->AddFontDirectory(realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
 
-        // Fwdays font settings
-        $mPDF->fontdata['fwdays'] = array(
-            'R' => 'FwDaysFont-Medium.ttf',
-        );
+        $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysFont-Medium.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';
         $mPDF->available_unifonts[] = 'fwdays';
         $mPDF->default_available_fonts[] = 'fwdays';
         // phpcs:enable
+
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
         $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');
@@ -135,17 +132,29 @@ class NewPdfGeneratorHelper
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
         $templateContent = $twig->load('ApplicationDefaultBundle:Ticket:_new_pdf.html.twig');
-        $logoFile = $ticket->getEvent()->getSmallLogoFile() ?: $ticket->getEvent()->getLogoFile();
-        $imageData = $this->svgToJpgService->convert($logoFile);
+
+        $event = $ticket->getEvent();
+        $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile' : 'logoFile';
+        $path = $this->vichUploader->fromField($event, $fieldFileName);
+        $fileName = $event->getSmallLogo() ?: $event->getLogo();
+        if ($this->filesystem->has($fileName)) {
+            $fileName = $path->getUriPrefix().'/'.$fileName;
+            $imageData = $this->svgToJpgService->convert($fileName);
+        } else {
+            $imageData = null;
+        }
 
         $base64EventSmallLogo = base64_encode($imageData);
+        $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
+        $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
 
         $body = $templateContent->render(
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
-                'path' => realpath($this->kernel->getRootDir().'/../web').'/',
                 'event_logo' => $base64EventSmallLogo,
+                'circle_left' => $base64CircleLeftImg,
+                'circle_right' => $base64CircleRightImg,
             ]
         );
 

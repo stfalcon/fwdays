@@ -1,33 +1,52 @@
-version: '2'
+version: '3'
 services:
     nginx:
         image: jekakm/nginx-core:201802261
         ports:
             - "127.0.0.1:8000:80"
         volumes:
-            - "./docker-configs/nginx.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/nginx.conf:/etc/nginx/sites-enabled/default"
             - ".:/app:cached"
         depends_on:
             - "php"
 
+    minio-public:
+        image: jekakm/nginx-core:201802261
+        ports:
+            - "127.0.0.1:8001:80"
+        volumes:
+            - "./docker-configs/fwdays-dev/nginx2.conf:/etc/nginx/sites-enabled/default"
+            - "minio:/data"
+        depends_on:
+            - "php"
+
     php:
-        image: black15/fwdays:201908041
-        # build:
-        #     context: ./docker-configs/php-image
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v3
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/php-fpm.ini:/etc/php5/fpm/php.ini"
-            - "./docker-configs/php-cli.ini:/etc/php5/cli/php.ini"
+            - "./docker-configs/fwdays-dev/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
+            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
             - ".:/app:cached"
-            - "bash-history-user:/var/www/history/"
-            - "bash-history-root:/root/history/"
+            - "composer:/var/www/.composer"
         depends_on:
             - "mysql"
             - "mailcatcher"
+            - "sessions"
+
+    php_cli:
+        build:
+            context: ./docker-configs/fwdays-dev-cli
+        environment:
+            - "PHP_IDE_CONFIG=serverName=fwdays-docker"
+        volumes:
+            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
+            - ".:/app:cached"
+            - "composer:/var/www/.composer"
 
     mysql:
-        image: jekakm/mysql-core:201902201
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3
         volumes:
             - "mysqldata:/var/lib/mysql"
         environment:
@@ -52,7 +71,34 @@ services:
         depends_on:
             - "mysql"
 
+    sessions:
+        image: redis:5.0.4
+
+    minio:
+        image: minio/minio:latest
+        hostname: minio
+        container_name: minio
+        command: server /data
+        volumes:
+            - "minio:/data"
+        ports:
+            - "127.0.0.1:9001:9000"
+        environment:
+            MINIO_ACCESS_KEY: minio
+            MINIO_SECRET_KEY: qwe12345
+
+    createbuckets:
+        image: minio/mc
+        depends_on:
+            - minio
+        entrypoint: >
+            /bin/sh -c "
+            /usr/bin/mc config host add minio http://minio:9000 minio qwe12345;
+            /usr/bin/mc mb minio/fwdays;
+            exit 0;
+            "
+
 volumes:
-    bash-history-user:
-    bash-history-root:
     mysqldata:
+    composer:
+    minio:

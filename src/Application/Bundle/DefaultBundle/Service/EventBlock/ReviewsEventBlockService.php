@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
@@ -25,9 +24,9 @@ class ReviewsEventBlockService extends AbstractBlockService
      *
      * @param string           $name
      * @param EngineInterface  $templating
-     * @param ObjectRepository $reviewRepository
+     * @param ReviewRepository $reviewRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $reviewRepository)
+    public function __construct($name, EngineInterface $templating, ReviewRepository $reviewRepository)
     {
         parent::__construct($name, $templating);
 
@@ -42,7 +41,7 @@ class ReviewsEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $reviews = $this->reviewRepository->findReviewsByEvent($event);

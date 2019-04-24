@@ -9,7 +9,7 @@ use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Stfalcon\Bundle\EventBundle\Entity\Payment;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
 use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Stfalcon\Bundle\EventBundle\Repository\PaymentRepository;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -113,7 +113,7 @@ class TicketService
      *
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
-     * @param float     $discount
+     * @param float|int $discount
      *
      * @return Ticket
      */
@@ -206,9 +206,9 @@ class TicketService
 
         $user = $token instanceof TokenInterface && $token->getUser() instanceof User ? $token->getUser() : null;
         if ($user instanceof User) {
-            $payment = $this->em
-                ->getRepository('StfalconEventBundle:Payment')
-                ->findPaymentByUserAndEvent($user, $event);
+            /** @var PaymentRepository $paymentRepository */
+            $paymentRepository = $this->em->getRepository('StfalconEventBundle:Payment');
+            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
 
             $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);

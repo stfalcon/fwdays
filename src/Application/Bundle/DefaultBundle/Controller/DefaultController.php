@@ -45,6 +45,7 @@ class DefaultController extends Controller
 
     /**
      * @todo wtf?
+     *
      * @return Response
      */
     public function renderMicrolayoutAction()

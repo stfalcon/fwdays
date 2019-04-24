@@ -1,16 +1,13 @@
 {
     "name": "stfalcon/fwdays",
     "type": "project",
+    "license": "proprietary",
     "description": "Site for conference Frameworks Days",
     "homepage": "http://fwdays.com/",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/stfalcon-studio/MpdfPortBundle.git"
-        }
-    ],
     "require": {
-        "php": ">=5.4 <5.5",
+        "php": ">=7.1",
+        "ext-imagick": "*",
+        "ext-redis": "*",
         "symfony/symfony": "2.8.*",
         "symfony/assetic-bundle": "2.8.*",
         "symfony/swiftmailer-bundle": "2.3.*",
@@ -32,9 +29,8 @@
         "jms/security-extra-bundle": "1.6.*",
         "friendsofsymfony/user-bundle": "1.3.*",
         "stof/doctrine-extensions-bundle": "1.2.*",
-        "vich/uploader-bundle": "0.8.1",
+        "vich/uploader-bundle": "1.5.*",
         "ornicar/gravatar-bundle" : "1.1.*",
-        "tfox/mpdf-port-bundle": "dev-fix-default",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
@@ -46,9 +42,15 @@
         "hwi/oauth-bundle": "^0.5.3",
         "suncat/mobile-detect-bundle": "^0.10.3",
         "liip/imagine-bundle": "^1.9",
-        "sentry/sentry-symfony": "0.8.*",
+        "sentry/sentry-symfony": "^0.8.7",
         "egulias/email-validator": "^1.2",
         "maxmind/geoip": "^1.1",
+        "mpdf/mpdf": "^8.0",
+        "oneup/flysystem-bundle": "2.0.1",
+        "aws/aws-sdk-php": "^3.90",
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "snc/redis-bundle": "^2.1",
+        "predis/predis": "^1.1",
         "cmen/google-charts-bundle": "^2.2",
         "beberlei/doctrineextensions": "^1.1"
     },
@@ -66,7 +68,22 @@
         "phpspec/prophecy": "1.6.*",
         "escapestudios/symfony2-coding-standard": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.2",
-        "squizlabs/php_codesniffer": "^3.3"
+        "squizlabs/php_codesniffer": "^3.3",
+        "phpstan/phpstan": "^0.8",
+        "roave/security-advisories": "dev-master"
+    },
+    "config": {
+        "bin-dir": "bin",
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.1"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "scripts": {
         "post-install-cmd": [
@@ -78,24 +95,62 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+        ],
+        "ci:composer-validate": "composer validate --no-check-all",
+        "ci:security-check": "app/console security:check",
+        "ci:doctrine-schema-validate": [
+            "app/console doctrine:database:create --if-not-exists",
+            "app/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
+            "app/console doctrine:schema:validate"
+        ],
+        "ci:twig-lint": "app/console lint:twig src/Application/Bundle/DefaultBundle/Resources/views/",
+        "ci:yaml-lint": "app/console lint:yaml app/config/",
+        "ci:code-style": [
+            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
+            "bin/php-cs-fixer fix -q --dry-run --rules=@Symfony ./src"
+        ],
+        "ci:phpunit": [
+            "app/console doctrine:database:drop --env=test --force --if-exists",
+            "app/console do:da:cr --env=test",
+            "app/console do:mi:mi --env=test --no-interaction",
+            "app/console do:fi:lo --env=test --no-interaction",
+            "bin/phpunit -c app/phpunit.xml.dist",
+            "app/console do:da:dr --force --env=test"
+        ],
+        "ci:static-analysis": [
+            "bin/phpstan analyse -l 6 --no-progress  -c phpstan.neon src/"
+        ],
+        "ci:phpunit-with-coverage": [
+            "app/console doctrine:database:drop --env=test --force --if-exists",
+            "app/console do:da:cr --env=test",
+            "app/console do:mi:mi --env=test --no-interaction",
+            "app/console do:fi:lo --env=test --no-interaction",
+            "bin/phpunit -c app/phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml",
+            "app/console do:da:dr --force --env=test"
+        ],
+        "app:recreate-database": [
+            "app/console doctrine:database:drop --force --if-exists",
+            "app/console doctrine:database:create --if-exists",
+            "app/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
+            "app/console doctrine:schema:validate",
+            "app/console doctrine:fixtures:load --no-interaction"
+        ],
+        "ci:pack": [
+            "@ci:composer-validate",
+            "@ci:security-check",
+            "@ci:doctrine-schema-validate",
+            "@ci:twig-lint",
+            "@ci:yaml-lint",
+            "@ci:code-style",
+            "@ci:phpunit"
         ]
-    },
-    "autoload": {
-        "psr-4": {
-            "": "src/"
-        },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
-    },
-    "config": {
-        "bin-dir": "bin",
-        "optimize-autoloader": true,
-        "platform": {
-            "php": "5.4"
-        }
     },
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "symlink"
+        "symfony-assets-install": "symlink",
+        "symfony": {
+            "allow-contrib": true
+        }
     }
 }

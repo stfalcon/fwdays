@@ -7,13 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class AnalyticsController
+ * AnalyticsController.
  */
 class AnalyticsController extends Controller
 {
-
     /**
-     * Shows the dynamics of daily ticket sales
+     * Shows the dynamics of daily ticket sales.
      *
      * @param Event $event
      *
@@ -44,7 +43,7 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * Sales dynamics compared to past conferences (in weeks)
+     * Sales dynamics compared to past conferences (in weeks).
      *
      * @param Event $event
      *
@@ -61,5 +60,4 @@ class AnalyticsController extends Controller
             'event' => $event, 'data' => $data,
         ]);
     }
-
 }

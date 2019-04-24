@@ -568,7 +568,7 @@ class User extends BaseUser
      */
     public function setSubscribe($subscribe)
     {
-        $this->subscribe = $subscribe;
+        $this->subscribe = (bool) $subscribe;
 
         return $this;
     }

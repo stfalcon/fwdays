@@ -12,6 +12,7 @@ use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\Translator;
 
 class PaymentListenerTest extends WebTestCase
 {
@@ -25,6 +26,8 @@ class PaymentListenerTest extends WebTestCase
     protected $client;
     /** @var EntityManager */
     protected $em;
+    /** @var Translator */
+    protected $translator;
 
     /** set up fixtures */
     public function setUp()

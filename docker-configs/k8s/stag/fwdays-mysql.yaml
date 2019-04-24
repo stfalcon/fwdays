@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fwdays-mysql
+  namespace: fwdays-stag
+  labels:
+    app: fwdays-mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: fwdays-mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: fwdays-stag
+  labels:
+    app: fwdays-mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: fwdays-mysql
+  namespace: fwdays-stag
+  labels:
+    app: fwdays-mysql
+spec:
+  selector:
+    matchLabels:
+      app: fwdays-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: fwdays-mysql
+    spec:
+      containers:
+      - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3
+        args:
+        name: fwdays-mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+      imagePullSecrets:
+      - name: regcred

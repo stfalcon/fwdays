@@ -31,12 +31,12 @@ class TicketRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
 
         return $qb->join('t.event', 'e')
-                    ->where($qb->expr()->eq('e.active', ':active'))
-                    ->andWhere($qb->expr()->eq('t.user', ':user'))
-                    ->setParameters(['user' => $user, 'active' => true])
-                    ->orderBy('e.date', 'ASC')
-                    ->getQuery()
-                    ->getResult();
+                  ->where($qb->expr()->eq('e.active', ':active'))
+                  ->andWhere($qb->expr()->eq('t.user', ':user'))
+                  ->setParameters(['user' => $user, 'active' => true])
+                  ->orderBy('e.date', 'ASC')
+                  ->getQuery()
+                  ->getResult();
     }
 
     /**

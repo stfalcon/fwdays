@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Tests;
 
-use Application\Bundle\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
@@ -55,27 +54,11 @@ class TicketControllerTest extends WebTestCase
     }
 
     /**
-     * test en html ticket hash.
-     */
-    public function testEnTicketHash()
-    {
-        $this->assertEquals(self::EN_FILE_HASH, $this->getFileHash('en'));
-    }
-
-    /**
-     * test uk html ticket hash.
-     */
-    public function testUkTicketHash()
-    {
-        $this->assertEquals(self::UK_FILE_HASH, $this->getFileHash('uk'));
-    }
-
-    /**
      * Test uk local in cookie.
      */
     public function testUkCookieLocale()
     {
-        $this->assertEquals('uk', $this->getLangCookie('uk'));
+        $this->assertEquals($this->getLangCookie('uk'), 'uk');
     }
 
     /**
@@ -83,7 +66,7 @@ class TicketControllerTest extends WebTestCase
      */
     public function testEnCookieLocale()
     {
-        $this->assertEquals('en', $this->getLangCookie('en'));
+        $this->assertEquals($this->getLangCookie('en'), 'en');
     }
 
     /**
@@ -103,62 +86,5 @@ class TicketControllerTest extends WebTestCase
         }
 
         return '';
-    }
-
-    /**
-     * get file hash by lang.
-     *
-     * @param string $lang
-     *
-     * @return string
-     */
-    private function getFileHash($lang)
-    {
-        if (!empty($lang)) {
-            $this->loginUser('user@fwdays.com', 'qwerty', $lang);
-            $this->client->request('GET', sprintf('/%s/event/javaScript-framework-day-2018/ticket/html', $lang));
-            $content = $this->client->getResponse()->getContent();
-
-            return md5($content);
-        }
-
-        return '';
-    }
-
-    /**
-     * @param string $userName
-     * @param string $userPass
-     * @param string $lang
-     *
-     * @return User $user
-     */
-    private function loginUser($userName, $userPass, $lang)
-    {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => $userName]);
-        $this->assertNotNull($user, sprintf('User %s not founded!', $userName));
-
-        $loginBtnCaption = 'Sign in';
-        $accountLinkCaption = ' Account';
-
-        if ('uk' === $lang) {
-            $loginBtnCaption = 'Увійти';
-            $accountLinkCaption = ' Кабінет';
-        }
-        /* start Login */
-        $this->client->followRedirects();
-        $crawler = $this->client->request('GET', $lang.'/login');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertContains('<button class="btn btn--primary btn--lg form-col__btn" type="submit">'.$loginBtnCaption.'
-            </button>', $crawler->html());
-        $form = $crawler->selectButton($loginBtnCaption)->form();
-        $form['_username'] = $user->getEmail();
-        $form['_password'] = $userPass;
-
-        $this->client->submit($form);
-        /** end Login */
-        $crawler = $this->client->request('GET', '/');
-        $this->assertGreaterThan(0, $crawler->filter('a:contains("'.$accountLinkCaption.'")')->count());
-
-        return $user;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\UserBundle\Model;
 
+use Application\Bundle\UserBundle\Entity\User;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -43,15 +44,13 @@ class UserManager extends \FOS\UserBundle\Doctrine\UserManager
      *
      * @return \FOS\UserBundle\Model\UserInterface
      */
-    public function autoRegistration($participant)
+    public function autoRegistration($participant): User
     {
-        /**
-         * @var \Application\Bundle\UserBundle\Entity\User
-         */
+        /** @var User $user */
         $user = $this->createUser();
         $user->setEmail($participant['email']);
         $user->setName($participant['name']);
-        $user->setSurName($participant['surname']);
+        $user->setSurname($participant['surname']);
         $user->setFullname($participant['surname'].' '.$participant['name']);
 
         //Generate a temporary password

@@ -37,8 +37,8 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             ->setName('Magento')
             ->setSite('http://ua.magento.com/')
             ->setFile($this->generateUploadedFile('partner-10.jpg'))
-            ->setSortOrder(10)
-            ;
+            ->setAbout('The Magento eCommerce platform serves more than 125,000 merchants worldwide and is supported by a global ecosystem of solution partners and third-party developers.')
+            ->setSortOrder(10);
         $manager->persist($magento);
         $this->addReference('sponsor-magento', $magento);
 
@@ -47,6 +47,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
             ->setName('oDesk')
             ->setSite('http://odesk.com/')
             ->setFile($this->generateUploadedFile('partner-11.jpg'))
+            ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
             ->setSortOrder(20);
         $manager->persist($odesk);
         $this->addReference('sponsor-odesk', $odesk);
@@ -65,16 +66,18 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
                 ->setName('partner-'.$i)
                 ->setSite('http://example.com/')
                 ->setFile($this->generateUploadedFile('partner-'.($i + 1).'.jpg'))
+                ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder(20);
             $manager->persist($partner);
             $this->addReference('partner-'.$i, $partner);
         }
 
-        for ($i = 0; $i < 6; ++$i) {
+        for ($i = 4; $i < 10; ++$i) {
             $partner = (new Sponsor())
                 ->setName('info partner-'.$i)
                 ->setSite('http://example.com/')
-                ->setFile($this->generateUploadedFile('partner-'.($i + 5).'.jpg'))
+                ->setFile($this->generateUploadedFile('partner-'.$i.'.jpg'))
+                ->setAbout('oDesk is a global marketplace that helps employers hire, manage, and pay remote freelancers or teams. It\'s free to post a job and hire from over 1 million top professionals.')
                 ->setSortOrder($i + 10);
             $manager->persist($partner);
             $this->addReference('info-partner-'.$i, $partner);
@@ -97,7 +100,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, true);
+            return new UploadedFile($tmpFile, $filename, null, null, null, false);
         }
 
         return null;

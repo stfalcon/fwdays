@@ -64,7 +64,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
             $partners[] = $manager->merge($this->getReference('partner-'.$i));
         }
         $infoPartners = [];
-        for ($i = 0; $i < 6; ++$i) {
+        for ($i = 4; $i < 10; ++$i) {
             $infoPartners[] = $manager->merge($this->getReference('info-partner-'.$i));
         }
 

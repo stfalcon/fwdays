@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fwdays-pma-prod
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: phpmyadmin.fwdays-prod.svc.cluster.local
+  ports:
+  - port: 80
