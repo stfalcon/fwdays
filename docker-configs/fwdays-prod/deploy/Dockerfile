@@ -1,4 +1,4 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-prod:v15
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-prod:v16
 COPY . /app
 WORKDIR /app
 RUN cp app/config/parameters.ini.stag app/config/parameters.ini
