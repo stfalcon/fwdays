@@ -93,6 +93,8 @@ sonar-scanner:
         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
 staging deploy:
     stage: 'Deploy to staging'
+    only:
+        - k8s
     image: docker:stable
     tags:
         - k8s-deploy
@@ -116,10 +118,11 @@ staging deploy:
     environment:
         name: staging
         url: https://fwdays-stag.k8s.stfalcon.com
-    when: manual
 
 staging rollback:
     stage: 'Deploy to staging'
+    only:
+        - k8s
     image: docker:stable
     tags:
         - k8s-deploy
@@ -164,5 +167,4 @@ production deploy:
         name: production
         url: https://fwdays.com
     when: manual
-
 
