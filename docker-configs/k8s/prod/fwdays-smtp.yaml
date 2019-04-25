@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: fwdays-smtp
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/postfix:v1
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/postfix:v3
         livenessProbe:
           tcpSocket:
             port: 25
