@@ -19,17 +19,17 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-//        return $treeBuilder
-//            ->root('application_default')
-//                ->children()
-//                    ->scalarNode('discount')->end()
+        return $treeBuilder
+            ->root('application_default')
+                ->children()
 //                    ->arrayNode('wayforpay')
 //                        ->children()
 //                            ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
 //                            ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
 //                        ->end()
 //                    ->end()
-//                ->end()
-//        ;
+                    ->scalarNode('discount')->end()
+                ->end()
+        ;
     }
 }

@@ -29,7 +29,7 @@ class PromoCode
      * @ORM\OneToMany(
      *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\PromoCodeTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;
@@ -73,7 +73,7 @@ class PromoCode
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $event;

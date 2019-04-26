@@ -53,7 +53,7 @@ class Ticket
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Event", inversedBy="tickets", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $event;
@@ -61,7 +61,7 @@ class Ticket
     /**
      * @var TicketCost
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost", inversedBy="tickets")
      * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $ticketCost;
@@ -71,7 +71,7 @@ class Ticket
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\User", inversedBy="tickets", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\User", inversedBy="tickets")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -79,7 +79,7 @@ class Ticket
     /**
      * @var \Application\Bundle\DefaultBundle\Entity\Payment
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Payment", inversedBy="tickets", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Payment", inversedBy="tickets")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;

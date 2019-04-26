@@ -28,7 +28,7 @@ class Page extends AbstractPage implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\PageTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;

@@ -25,7 +25,7 @@ class EventAudience
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="audiences", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="audiences")
      * @ORM\JoinTable(name="events_audiences")
      */
     private $events;

@@ -5,7 +5,7 @@ services:
         ports:
             - "127.0.0.1:8000:80"
         volumes:
-            - "./docker-configs/fwdays-dev/nginx.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/configs/nginx.conf:/etc/nginx/sites-enabled/default"
             - ".:/app:cached"
         depends_on:
             - "php"
@@ -15,7 +15,7 @@ services:
         ports:
             - "127.0.0.1:8001:80"
         volumes:
-            - "./docker-configs/fwdays-dev/nginx2.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/configs/nginx-minio.conf:/etc/nginx/sites-enabled/default"
             - "minio:/data"
         depends_on:
             - "php"
@@ -25,8 +25,8 @@ services:
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/fwdays-dev/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
-            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/configs/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
+            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
         depends_on:
@@ -40,8 +40,8 @@ services:
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/fwdays-dev/php-cli.ini:/etc/php/7.1/cli/php.ini"
-            - "./docker-configs/fwdays-dev/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
+            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/configs/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
 

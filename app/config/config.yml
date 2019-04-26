@@ -141,9 +141,9 @@ fos_user:
         user_manager: application.user_manager
 
 application_default:
-    wayforpay:
-        shop_id: "%merchantAccount%"
-        secret: "%merchantSecretKey%"
+#    wayforpay:
+#        shop_id: "%merchantAccount%"
+#        secret: "%merchantSecretKey%"
     discount: 0.2
 
 ornicar_gravatar: ~

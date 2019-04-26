@@ -24,7 +24,7 @@ class TicketCost
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="ticketsCost", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="ticketsCost")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
@@ -34,7 +34,7 @@ class TicketCost
      *
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
-     *      cascade={"persist"}, fetch="EXTRA_LAZY")
+     *      cascade={"persist"})
      */
     private $tickets;
 

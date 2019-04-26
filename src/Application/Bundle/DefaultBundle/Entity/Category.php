@@ -33,7 +33,7 @@ class Category implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\CategoryTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;

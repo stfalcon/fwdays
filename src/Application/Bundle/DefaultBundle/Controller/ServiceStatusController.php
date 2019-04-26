@@ -18,11 +18,6 @@ class ServiceStatusController extends Controller
      */
     public function serviceStatusAction()
     {
-        $sncClient = $this->get('snc_redis.session.client');
-        $sncRedisResult = $sncClient->ping();
-
-        $code = 'PONG' === $sncRedisResult->getPayload() ? 200 : 500;
-
-        return new Response('', $code);
+        return new Response('', Response::HTTP_OK);
     }
 }

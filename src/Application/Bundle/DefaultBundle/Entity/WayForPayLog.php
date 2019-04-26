@@ -33,7 +33,7 @@ class WayForPayLog
     /**
      * @var Payment
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Payment", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Payment")
      */
     private $payment;
 

@@ -25,7 +25,7 @@ class EventSponsor
     /**
      * @var \Application\Bundle\DefaultBundle\Entity\Sponsor
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Sponsor", inversedBy="sponsorEvents", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Sponsor", inversedBy="sponsorEvents")
      * @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")
      */
     protected $sponsor;
@@ -33,7 +33,7 @@ class EventSponsor
     /**
      * @var Event
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     protected $event;
@@ -41,7 +41,7 @@ class EventSponsor
     /**
      * @var \Application\Bundle\DefaultBundle\Entity\Category
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Category", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
