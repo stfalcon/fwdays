@@ -38,7 +38,7 @@ class Sponsor implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;

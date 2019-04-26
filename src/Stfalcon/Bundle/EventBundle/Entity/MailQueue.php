@@ -26,7 +26,7 @@ class MailQueue
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -34,7 +34,7 @@ class MailQueue
     /**
      * @var Mail
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", inversedBy="mailQueues", cascade={"persist"}, fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Mail", inversedBy="mailQueues", cascade={"persist"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $mail;
