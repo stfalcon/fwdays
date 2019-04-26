@@ -211,9 +211,12 @@ mail.unsubscribe.no_more_news: We will not send you news about the Framework Day
 mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
 mail.unsubscribe.you_can_suscribe2: subscribe again
 mail.subcribe: You have subscribed on Framework Days news
-mail.with_ticket.text0: Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper
-mail.with_ticket.text1: Looking forward to meeting!
+mail.with_ticket.text0: Dear participant,
+mail.with_ticket.text1: Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.
+mail.with_ticket.text2: We are looking forward to seeing you in Kyiv at the conference.
 mail.news.title: '%site% news'
+mail.news.site: 'Web-site'
+mail.news.site_link: 'https://fwdays.com/en/'
 
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news

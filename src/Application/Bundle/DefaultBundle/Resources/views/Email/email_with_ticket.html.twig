@@ -6,10 +6,12 @@
                                             {{ 'mail.with_ticket.text1'|trans }}
                                         </p>
                                         <p style="margin: 10px 0;">
-                                            <a href="{{ url('event_show_redesign', {'eventSlug': event.slug }) }}#program-event" style="color: #0c9db9;">{{ 'new_ticket.event.programm'|trans }}</a>
+                                            {{ 'mail.with_ticket.text2'|trans }}
                                         </p>
                                         <p style="margin: 10px 0;">
-                                            <a href="https://twitter.com/fwdays" style="color: #0c9db9;">{{ 'mail.news.title'|trans({'%site%':'Twitter'}) }}</a>
+                                            <a href="{{ 'mail.news.site_link'|trans }}" style="color: #0c9db9;">{{ 'mail.news.site'|trans }}</a>
+                                            <a href="https://www.facebook.com/fwdays/" style="color: #0c9db9;">Facebook news</a>
+                                            <a href="https://t.me/fwdays" style="color: #0c9db9;">Telegram channel</a>
                                         </p>
 {% include '@ApplicationDefault/Email/_email_end_table.html.twig' %}
 </center>
