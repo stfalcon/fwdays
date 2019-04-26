@@ -42,7 +42,7 @@ class Payment
      *
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
@@ -110,7 +110,7 @@ class Payment
     /**
      * @var Ticket[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket", mappedBy="payment")
      * @ORM\OrderBy({"createdAt" = "ASC"})
      */
     private $tickets;
@@ -170,6 +170,8 @@ class Payment
         if ($ticket->getTicketCost() instanceof TicketCost) {
             $ticket->getTicketCost()->recalculateSoldCount();
         }
+
+        $ticket->setPayment(null);
 
         return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
     }

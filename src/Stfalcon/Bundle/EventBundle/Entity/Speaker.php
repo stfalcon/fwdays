@@ -35,7 +35,7 @@ class Speaker implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\SpeakerTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;
@@ -105,7 +105,7 @@ class Speaker implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="speakers", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
      *   joinColumns={
      *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
@@ -122,7 +122,7 @@ class Speaker implements Translatable
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
      * @ORM\JoinTable(name="event_speakers_candidate")
      */
     private $candidateEvents;
@@ -132,7 +132,7 @@ class Speaker implements Translatable
      *
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="committeeSpeakers", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="committeeSpeakers")
      * @ORM\JoinTable(name="event_speakers_committee")
      */
     private $committeeEvents;
@@ -140,7 +140,7 @@ class Speaker implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
      */
     private $reviews;
 

@@ -39,7 +39,7 @@ class Mail
     /**
      * @var Event[]
      *
-     * @ORM\ManyToMany(targetEntity="Event", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $events;
@@ -47,7 +47,7 @@ class Mail
     /**
      * @var EventAudience[]
      *
-     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\EventAudience")
      * @ORM\JoinColumn(name="audience_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $audiences;

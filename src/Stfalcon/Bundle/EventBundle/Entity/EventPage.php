@@ -25,7 +25,7 @@ class EventPage extends AbstractPage implements Translatable
      * @ORM\OneToMany(
      *   targetEntity="Stfalcon\Bundle\EventBundle\Entity\Translation\EventPageTranslation",
      *   mappedBy="object",
-     *   cascade={"persist", "remove"}, fetch="EXTRA_LAZY"
+     *   cascade={"persist", "remove"}
      * )
      */
     private $translations;
@@ -40,7 +40,7 @@ class EventPage extends AbstractPage implements Translatable
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToOne(targetEntity="Event", inversedBy="pages", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="pages")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     protected $event;
