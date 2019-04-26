@@ -18,28 +18,18 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-//        $rootNode = $treeBuilder->root('application_default');
-//
-//        $rootNode
-//            ->children()
-//            ->scalarNode('discount')->end()
-//            ->arrayNode('interkassa')
-//            ->children()
-//            ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
-//            ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
-//            ->end()
-//            ->end()
-//            ->arrayNode('wayforpay')
-//            ->children()
-//            ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
-//            ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
-//            ->end()
-//            ->end()
+
+//        return $treeBuilder
+//            ->root('application_default')
+//                ->children()
+//                    ->scalarNode('discount')->end()
+//                    ->arrayNode('wayforpay')
+//                        ->children()
+//                            ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
+//                            ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
+//                        ->end()
+//                    ->end()
+//                ->end()
 //        ;
-//
-//        return $treeBuilder;
-
-
-        return $treeBuilder;
     }
 }

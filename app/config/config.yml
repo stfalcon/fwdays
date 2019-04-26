@@ -139,12 +139,12 @@ fos_user:
         sender_name:    "Frameworks Days"
     service:
         user_manager: application.user_manager
-#
-#application_default:
-#    wayforpay:
-#        shop_id: "%merchantAccount%"
-#        secret: "%merchantSecretKey%"
-#    discount: 0.2
+
+application_default:
+    wayforpay:
+        shop_id: "%merchantAccount%"
+        secret: "%merchantSecretKey%"
+    discount: 0.2
 
 ornicar_gravatar: ~
 
