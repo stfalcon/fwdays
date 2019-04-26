@@ -263,7 +263,7 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $pageSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
+     * @Template("ApplicationDefaultBundle:Page:index.html.twig")
      *
      * @return array
      */
