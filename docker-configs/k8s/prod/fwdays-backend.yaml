@@ -57,7 +57,7 @@ spec:
             - name: Host
               value: fwdays.com
           initialDelaySeconds: 10
-          periodSeconds: 10
+          periodSeconds: 30
         env:
         - name: SERVER_NAME
           valueFrom:
