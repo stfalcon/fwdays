@@ -2,41 +2,30 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Stfalcon\Bundle\EventBundle\Entity\Speaker;
 
 /**
  * Class SpeakerAdmin.
  */
-class SpeakerAdmin extends Admin
+class SpeakerAdmin extends AbstractTranslateAdmin
 {
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function postUpdate($object)
     {
-        $this->removeNullTranslate($object);
+        $this->prepareImageCache($object);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prePersist($object)
+    public function postPersist($object)
     {
-        $this->removeNullTranslate($object);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->addIdentifier('slug')
-            ->add('name', null, ['label' => 'Имя'])
-        ;
+        $this->prepareImageCache($object);
     }
 
     /**
@@ -121,14 +110,32 @@ class SpeakerAdmin extends Admin
     }
 
     /**
-     * @param GedmoTranslatable $object
+     * {@inheritdoc}
      */
-    private function removeNullTranslate($object)
+    protected function configureListFields(ListMapper $listMapper)
     {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
+        $listMapper
+            ->addIdentifier('slug')
+            ->add('name', null, ['label' => 'Имя'])
+        ;
+    }
+
+    /**
+     * @param Speaker $speaker
+     */
+    private function prepareImageCache(Speaker $speaker)
+    {
+        $filter = 'speaker';
+        $target = $speaker->getPhoto();
+        if (empty($target)) {
+            return;
+        }
+        $container = $this->getConfigurationPool()->getContainer();
+        $cacheManager = $container->get('liip_imagine.cache.manager');
+        if (!$cacheManager->isStored($target, $filter)) {
+            $filterManager = $container->get('liip_imagine.filter.manager');
+            $dataManager = $container->get('liip_imagine.data.manager');
+            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
         }
     }
 }

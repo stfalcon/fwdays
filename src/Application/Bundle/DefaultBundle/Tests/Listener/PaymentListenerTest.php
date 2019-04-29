@@ -12,19 +12,22 @@ use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\Translator;
 
 class PaymentListenerTest extends WebTestCase
 {
-    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.';
-    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо на зустріч!';
+    const INTERKASSA_MAIL_MSG_HELLO_UK = 'У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.';
+    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо вас на конференції у Києві.';
 
-    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper';
-    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Looking forward to meeting!';
+    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.';
+    const INTERKASSA_MAIL_MSG_THANKS_EN = 'We are looking forward to seeing you in Kyiv at the conference.';
 
     /** @var Client */
     protected $client;
     /** @var EntityManager */
     protected $em;
+    /** @var Translator */
+    protected $translator;
 
     /** set up fixtures */
     public function setUp()
@@ -69,7 +72,7 @@ class PaymentListenerTest extends WebTestCase
         /* check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
         /* check email with string */
-        $this->findEmailWithText('Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.');
+        $this->findEmailWithText('У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.');
     }
 
     /**

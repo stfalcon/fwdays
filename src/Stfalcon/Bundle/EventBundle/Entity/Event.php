@@ -589,7 +589,7 @@ class Event implements Translatable
     /**
      * Get event name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -774,7 +774,7 @@ class Event implements Translatable
         $eventEndDate = $this->dateEnd ?: $this->date;
         $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
 
-        return $this->active && ($eventEndDate ? $eventEndDate > $pastDate : true);
+        return $this->active && $eventEndDate > $pastDate;
     }
 
     /**
@@ -1198,7 +1198,7 @@ class Event implements Translatable
     }
 
     /**
-     * @param EventAudience[] $audiences
+     * @param EventAudience[]|ArrayCollection $audiences
      *
      * @return $this
      */

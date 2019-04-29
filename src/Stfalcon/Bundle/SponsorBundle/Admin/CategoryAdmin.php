@@ -2,30 +2,36 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-class CategoryAdmin extends Admin
+class CategoryAdmin extends AbstractTranslateAdmin
 {
     /**
-     * {@inheritdoc}
+     * @param RouteCollection $collection
      */
-    public function preUpdate($object)
+    protected function configureRoutes(RouteCollection $collection)
     {
-        $this->removeNullTranslate($object);
+        $collection->remove('stfalcon_sponsor.admin.category.delete');
     }
 
     /**
-     * {@inheritdoc}
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
      */
-    public function prePersist($object)
+    protected function configureBatchActions($actions)
     {
-        $this->removeNullTranslate($object);
+        unset($actions['delete']);
+
+        return $actions;
     }
 
     /**
@@ -42,7 +48,6 @@ class CategoryAdmin extends Admin
                 'label' => 'Действие',
                 'actions' => [
                     'edit' => [],
-                    'delete' => [],
                 ],
             ]);
     }
@@ -75,17 +80,5 @@ class CategoryAdmin extends Admin
                 ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
-    }
-
-    /**
-     * @param GedmoTranslatable $object
-     */
-    private function removeNullTranslate($object)
-    {
-        foreach ($object->getTranslations() as $key => $translation) {
-            if (!$translation->getContent()) {
-                $object->getTranslations()->removeElement($translation);
-            }
-        }
     }
 }

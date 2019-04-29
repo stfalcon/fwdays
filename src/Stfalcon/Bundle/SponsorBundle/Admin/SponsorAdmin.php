@@ -2,22 +2,38 @@
 
 namespace Stfalcon\Bundle\SponsorBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Stfalcon\Bundle\SponsorBundle\Entity\Sponsor;
+use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 
 /**
  * SponsorAdmin Class.
  */
-class SponsorAdmin extends Admin
+class SponsorAdmin extends AbstractTranslateAdmin
 {
     /**
      * @return array|void
      */
     public function getBatchActions()
     {
-        $actions = [];
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate($object)
+    {
+        $this->prepareImageCache($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postPersist($object)
+    {
+        $this->prepareImageCache($object);
     }
 
     /**
@@ -28,6 +44,7 @@ class SponsorAdmin extends Admin
         $listMapper
             ->addIdentifier('name', null, ['label' => 'Название'])
             ->add('site', null, ['label' => 'Сайт'])
+            ->add('about', null, ['label' => 'Описание'])
             ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->add('_action', 'actions', [
                 'label' => 'Действие',
@@ -45,7 +62,21 @@ class SponsorAdmin extends Admin
     {
         /** @var Sponsor $subject */
         $subject = $this->getSubject();
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application_default.sonata.locales.required');
+        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
+            ->with('Переводы')
+            ->add('translations', 'a2lix_translations_gedmo', [
+                'label' => 'Переводы',
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'about' => [
+                        'label' => 'Описание',
+                        'locale_options' => $localOptionsAllFalse,
+                    ],
+                ],
+            ])
+            ->end()
             ->with('Общие')
                 ->add('name')
                 ->add('site', null, ['label' => 'Сайт'])
@@ -76,5 +107,24 @@ class SponsorAdmin extends Admin
                     ]
                 )
             ->end();
+    }
+
+    /**
+     * @param Sponsor $sponsor
+     */
+    private function prepareImageCache(Sponsor $sponsor)
+    {
+        $filter = 'partner';
+        $target = $sponsor->getLogo();
+        if (empty($target)) {
+            return;
+        }
+        $container = $this->getConfigurationPool()->getContainer();
+        $cacheManager = $container->get('liip_imagine.cache.manager');
+        if (!$cacheManager->isStored($target, $filter)) {
+            $filterManager = $container->get('liip_imagine.filter.manager');
+            $dataManager = $container->get('liip_imagine.data.manager');
+            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+        }
     }
 }

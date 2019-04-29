@@ -23,9 +23,9 @@ class SpeakerController extends Controller
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param string $speakerSlug
-     * @param string $eventSlug
-     * @param bool   $withReview
+     * @param string   $speakerSlug
+     * @param string   $eventSlug
+     * @param bool|int $withReview
      *
      * @return JsonResponse
      */
@@ -59,6 +59,7 @@ class SpeakerController extends Controller
 
         return new JsonResponse(['result' => true, 'html' => $html]);
     }
+
 //
 //    /**
 //     * Lists all speakers for event.

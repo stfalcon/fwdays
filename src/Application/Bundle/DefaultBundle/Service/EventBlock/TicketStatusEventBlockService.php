@@ -3,18 +3,18 @@
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Application\Bundle\DefaultBundle\Service\TicketService;
-use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class TicketStatusEventBlockService.
  */
-class TicketStatusEventBlockService extends BaseBlockService
+class TicketStatusEventBlockService extends AbstractBlockService
 {
     /** @var TicketService */
     private $ticketService;
@@ -41,7 +41,7 @@ class TicketStatusEventBlockService extends BaseBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $position = $blockContext->getSetting('position');
@@ -63,7 +63,7 @@ class TicketStatusEventBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.ticket.status.html.twig',

@@ -1,7 +1,7 @@
 <li class="partners__item">
     <a href="{{ partner.site }}" rel="nofollow" target="_blank" class="partners__link">
-        {% if partner.file is not empty%}
-        <span class="partners__logo" style="background-image:url('{{ vich_uploader_asset(partner, 'file') }}')"></span>
+        {% if partner.logo is not empty%}
+        <span class="partners__logo" style="background-image:url('{{ sponsor_cache_path ~ '/' ~ partner.logo}}')"></span>
         {% endif%}
     </a>
 </li>

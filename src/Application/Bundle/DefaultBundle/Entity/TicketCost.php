@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Stfalcon\Bundle\EventBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
 use Stfalcon\Bundle\EventBundle\Entity\Ticket;
@@ -24,11 +25,13 @@ class TicketCost
      * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Event", inversedBy="ticketsCost")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="cascade")
+     * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     private $event;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Ticket",
      *      mappedBy="ticketCost",
      *      cascade={"persist"})
@@ -91,6 +94,14 @@ class TicketCost
     private $temporaryCount = 0;
 
     /**
+     * TicketCost constructor.
+     */
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -125,13 +136,27 @@ class TicketCost
     }
 
     /**
-     * @param mixed $tickets
+     * @param ArrayCollection $tickets
      *
      * @return $this
      */
     public function setTickets($tickets)
     {
         $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
+    public function addTicket($ticket)
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+        }
 
         return $this;
     }

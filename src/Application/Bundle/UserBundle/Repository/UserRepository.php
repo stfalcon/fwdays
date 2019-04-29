@@ -57,7 +57,7 @@ class UserRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('u');
 
-        $qb->Join('u.wantsToVisitEvents', 'wve')
+        $qb->join('u.wantsToVisitEvents', 'wve')
             ->where($qb->expr()->in('wve.id', ':events'))
             ->setParameter(':events', $events->toArray())
             ->andWhere('u.subscribe = 1')
@@ -99,10 +99,7 @@ class UserRepository extends EntityRepository
                 'Stfalcon\Bundle\EventBundle\Entity\Ticket',
                 't1',
                 'WITH',
-                $qb->expr()->andX(
-                    $qb->expr()->eq('t1.event', ':check_event'),
-                    $qb->expr()->eq('t1.user', 'u')
-                )
+                't1.event = :check_event AND t1.user = u'
             )
             ->join('t.event', 'e')
             ->join('t.payment', 'p')

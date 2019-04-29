@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 /**
  * Class WayForPayLogAdmin.
  */
-class WayForPayLogAdmin extends Admin
+final class WayForPayLogAdmin extends AbstractAdmin
 {
     /**
      * Default Datagrid values.
@@ -53,7 +53,7 @@ class WayForPayLogAdmin extends Admin
     {
         $datagridMapper->add('id')
             ->add('date', null, ['label' => 'Дата'])
-            ->add('payment', null, ['label' => 'Платіж'])
+            ->add('payment.id', null, ['label' => 'Платіж'])
             ->add('status', null, ['label' => 'Статус'])
         ;
     }
@@ -72,7 +72,7 @@ class WayForPayLogAdmin extends Admin
                 'actions' => [
                     'show' => [],
                 ],
-                'label'   => 'Actions',
+                'label' => 'Actions',
             ])
         ;
     }

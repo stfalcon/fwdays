@@ -185,10 +185,8 @@ class AdminController extends Controller
      */
     public function widgetShareContactsAction()
     {
-        if (null !== ($user = $this->getUser())) {
-            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-            }
+        if (null !== ($user = $this->getUser()) && (null === $user->isAllowShareContacts()) && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
         }
 
         return new Response();
@@ -199,12 +197,23 @@ class AdminController extends Controller
      *
      * @Route("/admin/statistic", name="admin_statistic_all")
      *
-     * @return Response
-     *
      * @Method({"GET", "POST"})
+     *
+     * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @return Response
      */
     public function showStatisticAction()
     {
+//        // беру список активних івентів через івент сервіс чи репозиторій (на морді виводиться, значить має бути готовий)
+//        $events = $this->getDoctrine()
+//            ->getRepository('StfalconEventBundle:Event')
+//            ->findBy(['active' => true], ['date' => 'ASC']);
+
+//        $dataForDailyStatistics = $this->ticketRepository
+//            ->getDataForDailyStatisticsOfTicketsSold($dateFrom, $dateTo, $event);
+//        array_unshift($dataForDailyStatistics, ['Date', 'Number of tickets sold']);
+
         $repo = $this->getDoctrine()
             ->getManager()
             ->getRepository('ApplicationUserBundle:User');
@@ -314,7 +323,6 @@ class AdminController extends Controller
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
             ],
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
         ]);
     }
 
@@ -371,9 +379,9 @@ class AdminController extends Controller
         return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
+            'event' => $event,
             'event_statistic_html' => $eventStatisticHtml,
             'current_event_slug' => $event->getSlug(),
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
         ]);
     }
 
@@ -475,15 +483,13 @@ class AdminController extends Controller
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
         ]);
-
-        return $html;
     }
 
     /**
@@ -517,9 +523,9 @@ class AdminController extends Controller
                     $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
 
                     $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $div = $maxGreen / $green;
-                    $otherColor = dechex(round($green / $div));
-                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                    $otherColor = (int) round($green / ($maxGreen / $green));
+                    $otherColor = dechex($otherColor);
+                    $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
                 } else {
                     $result = [
                         'cnt' => 0,
@@ -532,11 +538,9 @@ class AdminController extends Controller
             }
         }
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
             'events' => $events,
         ]);
-
-        return $html;
     }
 
     /**
@@ -562,8 +566,6 @@ class AdminController extends Controller
             return $usersFile;
         };
 
-        $response = new StreamedResponse($callback, 200, $headers);
-
-        return $response;
+        return new StreamedResponse($callback, 200, $headers);
     }
 }

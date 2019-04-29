@@ -2,7 +2,7 @@
 
 namespace Stfalcon\Bundle\EventBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -12,7 +12,7 @@ use Stfalcon\Bundle\EventBundle\Entity\EventGroup;
 /**
  * Class EventGroupAdmin.
  */
-class EventGroupAdmin extends Admin
+final class EventGroupAdmin extends AbstractAdmin
 {
     private $prevEvents = null;
 
@@ -34,6 +34,30 @@ class EventGroupAdmin extends Admin
         foreach ($object->getEvents() as $event) {
             $event->setGroup($object);
         }
+    }
+
+    /**
+     * @param EventGroup $object
+     */
+    public function preRemove($object)
+    {
+        foreach ($object->getEvents() as $event) {
+            $object->removeEvent($event);
+        }
+    }
+
+    /**
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
     }
 
     /**

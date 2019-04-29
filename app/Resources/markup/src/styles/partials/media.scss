@@ -368,29 +368,11 @@
       margin-bottom: 40px;
       max-width: initial;
       flex-basis: initial;
-
-      &--with-icon {
-        .info-list__name {
-          padding-left: 0;
-        }
-
-        .info-list__text {
-          padding-left: 0;
-        }
-      }
-
-      ul {
-        padding-left: 24px;
-      }
     }
 
     &__description {
       width: 100%;
       max-width: initial;
-    }
-
-    &__icon {
-      display: none;
     }
 
     &__name {
@@ -522,6 +504,12 @@
     &__items {
       margin: 0 -24px 16px;
     }
+  }
+
+  .event-discount {
+    border-radius: 0;
+    padding: 72px 25px 72px 210px;
+    margin: 0 -24px 60px;
   }
 
   .cost {
@@ -812,6 +800,15 @@
 
     &__social {
       margin-bottom: 16px;
+    }
+  }
+
+  .talks {
+    margin-bottom: 76px;
+
+    &__item {
+      flex-basis: 50%;
+      max-width: 50%;
     }
   }
 }
@@ -1228,17 +1225,26 @@
 
   .event-header {
     margin-bottom: 20px;
-    min-height: 180px;
+    min-height: 226px;
 
     .container {
       padding: 24px 16px;
     }
 
+    &__box, &__info, &__details {
+      height: 100%;
+    }
+
+    &__details-right {
+      margin-top: auto;
+    }
+
     &__title {
       margin-bottom: 20px;
       padding-right: 16px;
-      font-size: 28px;
-      line-height: 30px;
+      font-size: 24px;
+      line-height: 28px;
+      width: 55%;
     }
 
     &__description {
@@ -1250,6 +1256,7 @@
     }
 
     &__date {
+      line-height: 22px;
       font-weight: 400;
     }
 
@@ -1257,11 +1264,11 @@
       border-bottom: none;
       font-weight: 400;
       font-size: 14px;
-      line-height: 18px;
+      line-height: 16px;
     }
 
     &__photo {
-      max-width: 180px;
+      max-width: 226px;
     }
   }
 
@@ -1390,6 +1397,13 @@
     &__hint {
       line-height: 22px;
     }
+  }
+
+  .event-discount {
+    border-radius: 0;
+    padding: 70px 16px;
+    margin: 0 -16px 60px;
+    background-image: none;
   }
 
   .schedule {
@@ -1764,6 +1778,12 @@
       max-width: 362px;
       margin: auto;
     }
+
+    &--promocode {
+      .share-ref__field {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .review-layout {
@@ -1846,6 +1866,20 @@
       margin-bottom: 30px;
     }
   }
+
+  .talks {
+    margin-bottom: 50px;
+
+    &__item {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+
+    &__content {
+      min-height: initial;
+      padding-bottom: 40px;
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1887,7 +1921,7 @@
 
   .event-header {
     &__photo {
-      max-width: 150px;
+      max-width: 180px;
     }
   }
 

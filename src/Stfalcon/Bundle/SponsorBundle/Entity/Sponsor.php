@@ -4,6 +4,8 @@ namespace Stfalcon\Bundle\SponsorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Translatable\Translatable;
+use Stfalcon\Bundle\EventBundle\Traits\TranslateTrait;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,9 +18,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="sponsors")
  * @ORM\Entity(repositoryClass="Stfalcon\Bundle\SponsorBundle\Repository\SponsorRepository")
+ *
+ * @Gedmo\TranslationEntity(class="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation")
  */
-class Sponsor
+class Sponsor implements Translatable
 {
+    use TranslateTrait;
+
     /**
      * @var int
      *
@@ -27,6 +33,15 @@ class Sponsor
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Stfalcon\Bundle\SponsorBundle\Entity\Translation\SponsorTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
 
     /**
      * @var string
@@ -59,10 +74,19 @@ class Sponsor
     protected $sortOrder = 1;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="about", type="text", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    protected $about;
+
+    /**
      * @var resource
      *
      * @Assert\File(maxSize="6000000")
-     * @Assert\Image
+     * @Assert\Image(minHeight=150, minWidth=280)
      *
      * @Vich\UploadableField(mapping="sponsor_image", fileNameProperty="logo")
      */
@@ -99,6 +123,7 @@ class Sponsor
     public function __construct()
     {
         $this->sponsorEvents = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -223,6 +248,19 @@ class Sponsor
     public function setFile($file)
     {
         $this->file = $file;
+        $this->setUpdatedAt(new \DateTime());
+
+        return $this;
+    }
+
+    /**
+     * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
+     */
+    public function addSponsorEvents(EventSponsor $sponsorEvent)
+    {
+        $this->sponsorEvents[] = $sponsorEvent;
 
         return $this;
     }

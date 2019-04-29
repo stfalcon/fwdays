@@ -1,0 +1,4 @@
+/etc/init.d/php7.1-fpm start
+/etc/init.d/nginx start
+
+tail -f /var/log/nginx/access.log

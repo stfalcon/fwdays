@@ -2,6 +2,7 @@ imports:
     - { resource: "@ApplicationUserBundle/Resources/config/services.yml" }
     - { resource: "@StfalconEventBundle/Resources/config/admin.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
+    - { resource: "@ApplicationDefaultBundle/Resources/config/services.xml" }
 
 services:
 #     gelf.publisher:
@@ -10,7 +11,17 @@ services:
 #     monolog.gelf_handler:
 #         class: Monolog\Handler\GelfHandler
 #         arguments: [@gelf.publisher]
-     monolog.processor.added_host:
-             class: Monolog\Processor\WebProcessor
-             tags:
-                 - { name: monolog.processor, method: __invoke }
+    monolog.processor.added_host:
+        class: Monolog\Processor\WebProcessor
+        tags:
+            - { name: monolog.processor, method: __invoke }
+
+    app.prepare_file_storage:
+        class: Application\Bundle\DefaultBundle\DataFixtures\PrepareFileStorage
+        arguments:
+            - '%kernel.environment%'
+            -
+                - '@oneup_flysystem.sponsor_image_filesystem'
+                - '@oneup_flysystem.speaker_photo_filesystem'
+                - '@oneup_flysystem.event_image_filesystem'
+                - '@oneup_flysystem.upload_image_filesystem'

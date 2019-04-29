@@ -182,7 +182,7 @@
                     {#<div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>#}
                     {#<br>#}
                     {#<div class="content-td">#}
-                        {#<a href="{{ url('show_page', {'slug':'public-offer'}) }}" target="_blank" class="content-td-link">{{ url('show_page', {'slug':'public-offer'}) }}</a>#}
+                        {#<a href="{{ url('page', {'slug':'public-offer'}) }}" target="_blank" class="content-td-link">{{ url('show_page', {'slug':'public-offer'}) }}</a>#}
                     {#</div>#}
                 {#</td>#}
             {#</tr>#}
@@ -198,10 +198,10 @@
     </div>
 </div>
 <div class="icon-circle-left">
-    <img src="{{ asset('assets/img/email/circle_left.png', null, true) }}" alt="" width="14">
+    <img src="data:image/png;base64,{{ circle_left }}" alt="" width="14">
 </div>
 <div class="icon-circle-right">
-    <img src="{{ asset('assets/img/email/circle_right.png', null, true) }}" alt="" width="14">
+    <img src="data:image/png;base64,{{ circle_right }}" alt="" width="14">
 </div>
 </body>
 </html>

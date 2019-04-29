@@ -37,7 +37,7 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
         $ticketsCost = $em->getRepository('ApplicationDefaultBundle:TicketCost')->findAll();
         foreach ($ticketsCost as $ticketCost) {
             $saveCount = $ticketCost->getSoldCount();
-            $newCount  = $ticketCost->recalculateSoldCount();
+            $newCount = $ticketCost->recalculateSoldCount();
             if ($saveCount !== $newCount) {
                 $output->writeln($ticketCost->__toString().' old:'.$saveCount.' new:'.$newCount);
             }

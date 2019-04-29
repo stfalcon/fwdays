@@ -1,6 +1,21 @@
-apt_packages: ['libpng12-dev']
+apt_packages:
+    - 'libpng-dev'
+    - 'php-imagick'
+    - 'imagemagick'
+    - 'libxml2'
+    - 'librsvg2-bin'
 deploy_callbacks:
-    after_clone:
+    deploy_steps:
+        - 'rm app/config/parameters.ini'
+        - 'cp app/config/parameters.ini.stag app/config/parameters.ini'
+        - 'sed -i "s/database_host     =.*/database_host     = fwdays-php71-mysql/" app/config/parameters.ini'
+        - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
+        - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
+        - 'curl -s https://getcomposer.org/installer | php'
+        - 'mv composer.phar /usr/local/bin/composer'
+        - 'composer install --prefer-dist --optimize-autoloader --classmap-authoritative'
+        - 'wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz'
+        - 'unxz geodata/GeoLiteCity.dat.xz'
         - 'apt-get remove nodejs -y'
         - 'cd / && wget https://nodejs.org/dist/v6.11.3/node-v6.11.3-linux-x64.tar.xz'
         - 'cd / && tar -xvf node-v6.11.3-linux-x64.tar.xz'
@@ -8,32 +23,17 @@ deploy_callbacks:
         - 'npm install -g gulp'
         - 'npm install'
         - 'npm run gulp-prod'
-
-    before_composer:
-        - 'rm app/config/parameters.ini'
-        - 'cp app/config/parameters.ini.stag app/config/parameters.ini'
-        - 'sed -i "s/google_captcha_secret_key = .*/google_captcha_secret_key = `echo -n $APP_GOOGLE_CAPTCHA_SECRET_KEY`/" app/config/parameters.ini'
-        - 'sed -i "s/google_captcha_site_key = .*/google_captcha_site_key = `echo -n $APP_GOOGLE_CAPTCHA_SITE_KEY`/" app/config/parameters.ini'
-        - 'sed -i "s/database_host     =.*/database_host     = fwdays-mysql/" app/config/parameters.ini'
-        - 'sed -i "s/database_password =.*/database_password = `mysql_password`/" app/config/parameters.ini'
-        - "sed -i \"s/database_name     =.*/database_name     = `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'`/\" app/config/parameters.ini"
-        - 'sed -i "s/facebook_client_id =.*/facebook_client_id = `echo -n $APP_FACEBOOK_CLIENT_ID`/" app/config/parameters.ini'
-        - 'sed -i "s/facebook_client_secret =.*/facebook_client_secret = `echo -n $APP_FACEBOOK_CLIENT_SECRET`/" app/config/parameters.ini'
-        - 'sed -i "s/google_client_id =.*/google_client_id = `echo -n $APP_GOOGLE_CLIENT_ID`/" app/config/parameters.ini'
-        - 'sed -i "s/google_client_secret =.*/google_client_secret = `echo -n $APP_GOOGLE_CLIENT_SECRET`/" app/config/parameters.ini'
-
     after_deploy:
         - 'cp -a web/app_stag.php web/app.php'
         - './console do:da:dr --force'
-        - './console do:da:cr'
-#        - "mysql -u root -p`mysql_password` -h fwdays-mysql `echo -n $STAGING_BRANCH|md5sum | awk '{print $1}'` < /stag/shared/db.sql"
+        - './console do:da:cr -q'
         - './console --no-interaction doctrine:migrations:migrate'
         - './console --no-interaction do:fi:lo'
-#        - 'rm -rf /stag/www/web/uploads/'
+        - './console --no-interaction assets:install'
+        - './console --no-interaction assetic:dump'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
         - "php app/console lexik:translations:import"
-        - "cp /stag/shared/GeoLiteCity.dat geodata/"
 ci:
     commands:
         - 'app/run-ci-pack.sh -e=prod'

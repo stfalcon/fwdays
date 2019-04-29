@@ -142,6 +142,7 @@ class Ticket
     public function setTicketCost($ticketCost)
     {
         $this->ticketCost = $ticketCost;
+        $this->ticketCost->addTicket($this);
 
         return $this;
     }
@@ -249,7 +250,7 @@ class Ticket
      */
     public function isPaid()
     {
-        return (bool) ($this->hasPayment() && $this->getPayment()->isPaid());
+        return $this->hasPayment() && $this->getPayment()->isPaid();
     }
 
     /**

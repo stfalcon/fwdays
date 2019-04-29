@@ -10,7 +10,7 @@ use Stfalcon\Bundle\EventBundle\Admin\AbstractClass\AbstractPageAdmin;
 /**
  * Class ReviewAdmin.
  */
-class ReviewAdmin extends AbstractPageAdmin
+final class ReviewAdmin extends AbstractPageAdmin
 {
     /**
      * {@inheritdoc}
