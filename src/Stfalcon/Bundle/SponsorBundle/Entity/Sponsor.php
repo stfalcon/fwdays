@@ -258,9 +258,10 @@ class Sponsor implements Translatable
      *
      * @return $this
      */
-    public function addSponsorEvents(EventSponsor $sponsorEvent)
+    public function addSponsorEvent(EventSponsor $sponsorEvent)
     {
-        $this->sponsorEvents[] = $sponsorEvent;
+        $sponsorEvent->setSponsor($this);
+        $this->sponsorEvents->add($sponsorEvent);
 
         return $this;
     }
@@ -273,6 +274,24 @@ class Sponsor implements Translatable
     public function addSponsorEvents(EventSponsor $sponsorEvent)
     {
         $this->sponsorEvents[] = $sponsorEvent;
+
+        return $this;
+    }
+
+    /**
+     * @param EventSponsor $sponsorEvent
+     *
+     * @return $this
+     */
+    public function removeSponsorEvent(EventSponsor $sponsorEvent)
+    {
+        if ($this->sponsorEvents->contains($sponsorEvent)) {
+            $this->sponsorEvents->removeElement($sponsorEvent);
+            $sponsorEvent->setCategory(null)
+                ->setEvent(null)
+                ->setSponsor(null)
+            ;
+        }
 
         return $this;
     }
@@ -356,5 +375,25 @@ class Sponsor implements Translatable
     public function __toString()
     {
         return (string) $this->getName() ?: '-';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * @param string $about
+     *
+     * @return $this
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+
+        return $this;
     }
 }
