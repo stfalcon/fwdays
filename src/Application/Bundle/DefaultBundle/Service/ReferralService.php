@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\DependencyInjection\Container;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -81,7 +81,7 @@ class ReferralService
 
         $tickets = $payment->getTickets();
         /** @var Ticket $firstTicket */
-        $firstTicket = $tickets->count() > 0 ? $tickets[0] :  null;
+        $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
         $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
 
         if ($userReferral) {
@@ -129,7 +129,7 @@ class ReferralService
     {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
-        $referralUser = $em->getRepository('ApplicationUserBundle:User')
+        $referralUser = $em->getRepository('ApplicationDefaultBundle:User')
             ->findOneBy(['referralCode' => $referralCode]);
 
         return $referralUser;

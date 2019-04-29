@@ -3,19 +3,19 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Stfalcon\Bundle\EventBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -73,8 +73,8 @@ class AdminController extends Controller
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $body = $this->container->get('stfalcon_event.mailer_helper')->renderTwigTemplate(
-                        'ApplicationUserBundle:Registration:automatically.html.twig',
+                    $body = $this->container->get('application.mailer_helper')->renderTwigTemplate(
+                        'ApplicationDefaultBundle:Registration:automatically.html.twig',
                         [
                             'user' => $user,
                             'plainPassword' => $password,
@@ -108,7 +108,7 @@ class AdminController extends Controller
 
                 // проверяем или у него нет билетов на этот ивент
                 /** @var Ticket $ticket */
-                $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+                $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')
                     ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
 
                 if (!$ticket) {
@@ -185,10 +185,8 @@ class AdminController extends Controller
      */
     public function widgetShareContactsAction()
     {
-        if (null !== ($user = $this->getUser())) {
-            if ((null === $user->isAllowShareContacts()) && !in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-                return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-            }
+        if (null !== ($user = $this->getUser()) && (null === $user->isAllowShareContacts()) && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
         }
 
         return new Response();
@@ -199,15 +197,26 @@ class AdminController extends Controller
      *
      * @Route("/admin/statistic", name="admin_statistic_all")
      *
-     * @return Response
-     *
      * @Method({"GET", "POST"})
+     *
+     * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @return Response
      */
     public function showStatisticAction()
     {
+//        // беру список активних івентів через івент сервіс чи репозиторій (на морді виводиться, значить має бути готовий)
+//        $events = $this->getDoctrine()
+//            ->getRepository('ApplicationDefaultBundle:Event')
+//            ->findBy(['active' => true], ['date' => 'ASC']);
+
+//        $dataForDailyStatistics = $this->ticketRepository
+//            ->getDataForDailyStatisticsOfTicketsSold($dateFrom, $dateTo, $event);
+//        array_unshift($dataForDailyStatistics, ['Date', 'Number of tickets sold']);
+
         $repo = $this->getDoctrine()
             ->getManager()
-            ->getRepository('ApplicationUserBundle:User');
+            ->getRepository('ApplicationDefaultBundle:User');
 
         $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
 
@@ -232,7 +241,7 @@ class AdminController extends Controller
         $usersTicketsCount = [];
 
         $ticketRepository = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Ticket');
+            ->getRepository('ApplicationDefaultBundle:Ticket');
 
         $paidTickets = $ticketRepository->getPaidTicketsCount();
 
@@ -290,7 +299,7 @@ class AdminController extends Controller
 
         $event = $this
             ->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findOneBy([], ['date' => 'DESC']);
 
         $eventStatisticSlug = '';
@@ -314,7 +323,6 @@ class AdminController extends Controller
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
             ],
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth(),
         ]);
     }
 
@@ -363,7 +371,7 @@ class AdminController extends Controller
     {
         $events = $this
             ->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy([], ['date' => 'DESC']);
 
         $eventStatisticHtml = $this->getEventStatistic($event);
@@ -371,9 +379,9 @@ class AdminController extends Controller
         return $this->render('@ApplicationDefault/Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
+            'event' => $event,
             'event_statistic_html' => $eventStatisticHtml,
             'current_event_slug' => $event->getSlug(),
-            'chart' => $this->container->get('app.statistic.chart_builder')->buildLineChartForSoldTicketsDuringLastMonth($event),
         ]);
     }
 
@@ -389,7 +397,7 @@ class AdminController extends Controller
      */
     public function showEventsStatisticAction($checkedEvents = '')
     {
-        $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
+        $ticketRepository = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket');
 
         $events = $ticketRepository->getEventWithTicketsCount();
         if (empty($checkedEvents)) {
@@ -433,13 +441,13 @@ class AdminController extends Controller
         $hasTicketObjectId = 'event' === $checkType ? $request->request->getInt('has_ticket_event')
             : $request->request->getInt('has_ticket_group');
 
-        $events = $this->getDoctrine()->getRepository('StfalconEventBundle:Event')
+        $events = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Event')
             ->findBy([], ['date' => 'DESC']);
-        $groups = $this->getDoctrine()->getRepository('StfalconEventBundle:EventGroup')
+        $groups = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:EventGroup')
             ->findAll();
 
         if ($checkEventId > 0 && $hasTicketObjectId > 0) {
-            $users = $this->getDoctrine()->getRepository('ApplicationUserBundle:User')
+            $users = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:User')
                 ->getUsersNotBuyTicket($checkEventId, $hasTicketObjectId, $checkType);
             if (\count($users)) {
                 return $this->getCsvResponse($users);
@@ -471,19 +479,17 @@ class AdminController extends Controller
             $totalSoldTicketCount += $blockSold;
         }
 
-        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
+        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket')->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
         ]);
-
-        return $html;
     }
 
     /**
@@ -493,7 +499,7 @@ class AdminController extends Controller
      */
     private function getEventsTable($events)
     {
-        $ticketRepository = $this->getDoctrine()->getRepository('StfalconEventBundle:Ticket');
+        $ticketRepository = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket');
 
         $minGreen = 127;
         $maxGreen = 255;
@@ -517,9 +523,9 @@ class AdminController extends Controller
                     $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
 
                     $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $div = $maxGreen / $green;
-                    $otherColor = dechex(round($green / $div));
-                    $result['color'] = '#'.$otherColor.dechex($green).$otherColor;
+                    $otherColor = (int) round($green / ($maxGreen / $green));
+                    $otherColor = dechex($otherColor);
+                    $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
                 } else {
                     $result = [
                         'cnt' => 0,
@@ -532,11 +538,9 @@ class AdminController extends Controller
             }
         }
 
-        $html = $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
+        return $this->renderView('@ApplicationDefault/Statistic/events_statistic_table.html.twig', [
             'events' => $events,
         ]);
-
-        return $html;
     }
 
     /**
@@ -562,8 +566,6 @@ class AdminController extends Controller
             return $usersFile;
         };
 
-        $response = new StreamedResponse($callback, 200, $headers);
-
-        return $response;
+        return new StreamedResponse($callback, 200, $headers);
     }
 }

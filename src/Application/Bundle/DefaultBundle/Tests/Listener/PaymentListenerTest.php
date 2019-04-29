@@ -2,29 +2,32 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\EventListener\PaymentListener;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\EventListener\PaymentListener;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\Translator;
 
 class PaymentListenerTest extends WebTestCase
 {
-    const INTERKASSA_MAIL_MSG_HELLO_UK = 'Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.';
-    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо на зустріч!';
+    const INTERKASSA_MAIL_MSG_HELLO_UK = 'У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.';
+    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо вас на конференції у Києві.';
 
-    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Dear participant, there is your ticket in attacments. You can show it on the phone screen or print it on paper';
-    const INTERKASSA_MAIL_MSG_THANKS_EN = 'Looking forward to meeting!';
+    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.';
+    const INTERKASSA_MAIL_MSG_THANKS_EN = 'We are looking forward to seeing you in Kyiv at the conference.';
 
     /** @var Client */
     protected $client;
     /** @var EntityManager */
     protected $em;
+    /** @var Translator */
+    protected $translator;
 
     /** set up fixtures */
     public function setUp()
@@ -39,10 +42,10 @@ class PaymentListenerTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
             ],
             null,
             'doctrine',
@@ -69,7 +72,7 @@ class PaymentListenerTest extends WebTestCase
         /* check email with ticket pdf file */
         $this->findEmailWithText('ticket-php-day-2017.pdf');
         /* check email with string */
-        $this->findEmailWithText('Шановний учасник, в вкладенні Ваш вхідний квиток. Покажіть його з екрану телефону або роздрукуйте на папері.');
+        $this->findEmailWithText('У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.');
     }
 
     /**
@@ -93,8 +96,8 @@ class PaymentListenerTest extends WebTestCase
         $user = $this->loginUser('user@fwdays.com', 'qwerty', $lang);
         $this->client->request('GET', '/'.$lang, ['_locale' => $lang]);
 
-        $eventPHPDay = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
-        $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
+        $eventPHPDay = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
         /**
          * @var Payment
@@ -117,7 +120,7 @@ class PaymentListenerTest extends WebTestCase
      */
     private function loginUser($userName, $userPass, $lang)
     {
-        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => $userName]);
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['email' => $userName]);
         $this->assertNotNull($user, sprintf('User %s not founded!', $userName));
 
         $loginBtnCaption = 'Sign in';

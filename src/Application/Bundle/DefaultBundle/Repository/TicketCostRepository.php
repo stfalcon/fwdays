@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * Class TicketCostRepository.

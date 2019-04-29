@@ -6,13 +6,22 @@ imports:
     - { resource: mobile_detect.yml }
     - { resource: sonata/admin.yml }
     - { resource: sonata/block.yml }
+    - { resource: aws.yml }
+    - { resource: oneup_flysystem.yml }
+    - { resource: liip_imagine.yml}
+    - { resource: vich_uploader.yml }
+    - { resource: sns_redis.yml }
 
 parameters:
     graylog.fromname: "https://fwdays.com"
     rss.title: "Frameworks Days"
     rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
     google_apikey: "%google_api_key%"
-    upload_dir: "uploads/images"
+    app.sponsor_image: "uploads/sponsors"
+    app.speaker_image: "uploads/speakers"
+    app.event_image: "uploads/events"
+    app.upload_image: "uploads/images"
+    app.media_cache: '/media/cache/'
 
 framework:
     #esi:             ~
@@ -28,9 +37,9 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:
-        handler_id: session.handler.native_file
-        save_path: "%kernel.root_dir%/sessions/"
-
+        handler_id: snc_redis.session.handler
+#        handler_id: session.handler.native_file
+#        save_path: "%kernel.root_dir%/sessions/"
 
 # Twig Configuration
 twig:
@@ -47,6 +56,9 @@ twig:
         google_site_key: "%google_captcha_site_key%"
         facebook_api_id: "%facebook_client_id%"
         fb_page_id: "235981893111914"
+        speaker_cache_path: '%aws_s3_public_endpoint%/%app.speaker_image%%app.media_cache%speaker'
+        sponsor_cache_path: '%aws_s3_public_endpoint%/%app.sponsor_image%%app.media_cache%partner'
+
 #    form:
 #        resources: ['form_table_layout.html.twig']
 
@@ -78,9 +90,12 @@ doctrine:
         mappings:
             StofDoctrineExtensionsBundle: false
         dql:
-            string_functions:
+            datetime_functions:
+                YEAR: DoctrineExtensions\Query\Mysql\Year
                 MONTH: DoctrineExtensions\Query\Mysql\Month
+                WEEK: DoctrineExtensions\Query\Mysql\Week
                 DAY: DoctrineExtensions\Query\Mysql\Day
+                DATE: DoctrineExtensions\Query\Mysql\Date
 
 # DoctrineExtensionsBundle
 stof_doctrine_extensions:
@@ -105,22 +120,10 @@ swiftmailer:
 knp_menu:
     twig: true
 
-liip_imagine:
-    loaders:
-        default:
-            filesystem:
-                locator: filesystem_insecure
-    filter_sets:
-        cache: ~
-        speaker_size:
-            filters:
-                relative_resize: { widen: 232 }
-                crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
-
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
     firewall_name: main
-    user_class: Application\Bundle\UserBundle\Entity\User
+    user_class: Application\Bundle\DefaultBundle\Entity\User
     registration:
         form:
             type: application_user_registration
@@ -130,38 +133,23 @@ fos_user:
     profile:
         form:
             type: application_user_profile
-            handler: application_user.profile.form.handler
+            handler: application.profile.form.handler
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
     service:
-        user_manager: stfalcon.user_manager
+        user_manager: application.user_manager
 
-stfalcon_event:
+application_default:
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
     discount: 0.2
 
-vich_uploader:
-     db_driver: orm
-     mappings:
-          sponsor_image:
-              uri_prefix: /uploads/sponsors
-              upload_destination: %kernel.root_dir%/../web/uploads/sponsors
-          speaker_photo:
-              uri_prefix: /uploads/speakers
-              upload_destination: %kernel.root_dir%/../web/uploads/speakers
-              #all images in upload folder could be deleted
-              delete_on_update: true
-          event_image:
-              uri_prefix: /uploads/events
-              upload_destination: %kernel.root_dir%/../web/uploads/events
-
 ornicar_gravatar: ~
 
 accord_mandrill_swift_mailer:
-    api_key: %mandrill_api_key%
+    api_key: '%mandrill_api_key%'
 
 hwi_oauth:
     firewall_names: [main]

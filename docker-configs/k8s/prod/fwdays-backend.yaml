@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fwdays-backend
+  namespace: fwdays-prod
+  labels:
+    app: fwdays-backend
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: fwdays-backend
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: fwdays-backend
+  namespace: fwdays-prod
+  labels:
+    app: fwdays-backend
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: fwdays-backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: fwdays-backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                 matchExpressions:
+                 - key: app
+                   operator: In
+                   values:
+                   - fwdays-backend
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - image: <place latest image>
+        name: fwdays-backend
+        livenessProbe:
+          httpGet:
+            path: /service/status
+            port: 80
+            httpHeaders:
+            - name: Host
+              value: fwdays.com
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        env:
+        - name: SERVER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: server-name
+              key: server-name
+        - name: PARAMETERS
+          valueFrom:
+            secretKeyRef:
+              name: fwdays-backend-parameters
+              key: parameters.ini
+        ports:
+        - containerPort: 80
+          name: fwdays-backend
+      imagePullSecrets:
+      - name: regcred-dockerhub

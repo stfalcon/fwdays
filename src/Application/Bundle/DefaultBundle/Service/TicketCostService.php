@@ -3,8 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\ORM\EntityManager;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * Class TicketCostService.
@@ -29,12 +30,13 @@ class TicketCostService
     /**
      * @param Event $event
      *
-     * @return TicketCost
+     * @return TicketCost|null
      */
     public function getCurrentEventTicketCost($event)
     {
-        $eventCosts = $this->em->getRepository('ApplicationDefaultBundle:TicketCost')
-            ->getEventEnabledTicketsCost($event);
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
 
         $currentTicketCost = null;
 
@@ -47,5 +49,26 @@ class TicketCostService
         }
 
         return $currentTicketCost;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return int
+     */
+    public function getEventFreeTicketCount($event)
+    {
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+        $count = 0;
+        /** @var TicketCost $cost */
+        foreach ($eventCosts as $cost) {
+            if (!$cost->isUnlimited()) {
+                $count += $cost->getCount() - $cost->getSoldCount();
+            }
+        }
+
+        return $count;
     }
 }

@@ -1451,3 +1451,47 @@ a.fix-event-header__title {   //for review-page, venue-page
 }
 
 // END content-block
+
+.event-discount {
+  border-radius: 2px;
+  padding: 72px 81px 72px 230px;
+  background: url("../img/ic_tickets.svg") left center no-repeat;
+  background-color: #1C2122;
+  color: $white-color;
+  margin-bottom: 60px;
+
+  &__date {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: 700;
+    border-radius: 2px;
+    background-color: #000000;
+    margin-bottom: 12px;
+    padding: 0 12px;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: 42px;
+    line-height: 44px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  &__text {
+    color: #DADADA;
+    font-size: 16px;
+    line-height: 22px;
+
+    a {
+      color: $blue-light-color;
+    }
+  }
+
+  &__copy-field {
+    color: #DADADA;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

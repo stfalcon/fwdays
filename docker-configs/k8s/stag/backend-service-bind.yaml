@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fwdays-stag-backend
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: fwdays-backend.fwdays-stag.svc.cluster.local
+  ports:
+  - port: 80

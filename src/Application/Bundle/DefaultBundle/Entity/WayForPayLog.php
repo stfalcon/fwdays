@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,7 +33,7 @@ class WayForPayLog
     /**
      * @var Payment
      *
-     * @ORM\ManyToOne(targetEntity="Stfalcon\Bundle\EventBundle\Entity\Payment")
+     * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Payment")
      */
     private $payment;
 

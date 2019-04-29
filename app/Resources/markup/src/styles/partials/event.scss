@@ -1389,4 +1389,109 @@ a.fix-event-header__title {   //for review-page, venue-page
   }
 }
 
+.talks {
+  margin-bottom: 68px;
+
+  &__title {
+    margin-bottom: 14px;
+  }
+
+  &__text {
+    font-size: 16px;
+    line-height: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -6px;
+  }
+
+  &__item {
+    flex-basis: 33.333%;
+    max-width: 33.333%;
+    padding: 6px;
+  }
+
+  &__content {
+    height: 100%;
+    min-height: 194px;
+    background-color: #F5F3EA;
+    padding: 20px 26px;
+  }
+
+  &__name {
+    display: block;
+    color: #121314;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__speaker {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    margin-right: 5px;
+  }
+
+  &__company {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    color: rgba(0, 0, 0, 0.53);
+  }
+}
+
 // END content-block
+
+.event-discount {
+  border-radius: 2px;
+  padding: 72px 81px 72px 230px;
+  background: url("../img/ic_tickets.svg") left center no-repeat;
+  background-color: #1C2122;
+  color: $white-color;
+  margin-bottom: 60px;
+
+  &__date {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 24px;
+    font-weight: 700;
+    border-radius: 2px;
+    background-color: #000000;
+    margin-bottom: 12px;
+    padding: 0 12px;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: 42px;
+    line-height: 44px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  &__text {
+    color: #DADADA;
+    font-size: 16px;
+    line-height: 22px;
+
+    a {
+      color: $blue-light-color;
+    }
+  }
+
+  &__copy-field {
+    color: #DADADA;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

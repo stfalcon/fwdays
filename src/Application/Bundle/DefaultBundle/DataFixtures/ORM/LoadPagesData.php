@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Stfalcon\Bundle\EventBundle\Entity\Page;
+use Application\Bundle\DefaultBundle\Entity\Page;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**

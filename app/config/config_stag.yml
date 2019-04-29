@@ -1,6 +1,12 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    app.sponsor_image: "%kernel.environment%/uploads/sponsors"
+    app.speaker_image: "%kernel.environment%/uploads/speakers"
+    app.event_image: "%kernel.environment%/uploads/events"
+    app.upload_image: "%kernel.environment%/uploads/images"
+
 sentry:
     skip_capture:
         - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
@@ -24,12 +30,6 @@ monolog:
         grouped_main:
             type:    group
             members: [nested]
-
-stfalcon_event:
-    wayforpay:
-        shop_id: "%merchantAccount%"
-        secret: "%merchantSecretKey%"
-    discount: 0.2
 
 twig:
     globals:

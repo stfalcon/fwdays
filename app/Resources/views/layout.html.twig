@@ -8,10 +8,10 @@
     {% endif -%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_9.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_4.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_6.jpg', null, true) }}" />
-    <meta property="og:image" content="{{ asset('assets/img/gallery/gallery_image_8.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/og_image/gallery_image_9.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/og_image/gallery_image_4.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/og_image/gallery_image_6.jpg', null, true) }}" />
+    <meta property="og:image" content="{{ asset('assets/img/gallery/og_image/gallery_image_8.jpg', null, true) }}" />
     {% endblock metatags %}
     {% block meta_description %}
     <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
@@ -88,42 +88,40 @@
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}";
     </script>
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" defer></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}" defer></script>
     <script id="widget-wfp-script" language="javascript" type="text/javascript"
             src="https://secure.wayforpay.com/server/pay-widget.js" async defer></script>
     {% if app.environment in ['prod', 'stag'] -%}
-        <script src="{{ asset('js/raven.min.js')}}" crossorigin="anonymous"></script>
-        <script>Raven.config("{{ sentry_dsn_js_public }}").install()</script>
+        <script>
+            var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';
+        </script>
+        <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
     {% endif -%}
     {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
-    <script src="{{ asset(main_script|app_asset_version) }}"></script>
+    <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
 
-    {% if app.request.cookies.has('event') %}
-        <script>paymentAfterLogin();</script>
+    {% if app.request.cookies.has('event') -%}
+        <script src="{{ asset('js/payment-after-login.js') }}" defer></script>
     {%- endif %}
 
     {% for message in app.session.flashBag.get('fos_user_success') %}
         <script>
             {%- if message == 'profile.flash.updated' -%}
-                setFlashTextAndShow('{{ 'flash_profile_updated.title'|trans }}');
+                var flashText = '{{ 'flash_profile_updated.title'|trans }}';
             {%- elseif message == 'registration.flash.user_created' -%}
-                setFlashTextAndShow('{{ 'flash_user_created.title'|trans }}');
+                var flashText = '{{ 'flash_user_created.title'|trans }}';
             {%- elseif message == 'registration.flash.user_need_data' -%}
-                setFlashTextAndShow('{{ 'flash_user_need_data.title'|trans }}');
+                var flashText = '{{ 'flash_user_need_data.title'|trans }}';
             {% endif %}
         </script>
+        <script src="{{ asset('js/flash-text.js') }}" defer></script>
     {% endfor %}
     <div id="fb-root"></div>
     <script>
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/{{ lang }}/all.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        var lang = '{{ lang }}';
     </script>
+    <script src="{{ asset('js/facebook-sdk.js') }}" async defer></script>
 {% endblock scripts %}
 </body>
 </html>

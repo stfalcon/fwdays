@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fwdays-pma
+  namespace: default
+spec:
+  type: ExternalName
+  externalName: phpmyadmin.fwdays-stag.svc.cluster.local
+  ports:
+  - port: 80

@@ -1,0 +1,10 @@
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
+    {%- block field %}
+        {% for element in value %}
+            <a class="sonata-link-identifier" href="{{ path('admin_application_default_ticket_show',{'id':element.id}) }}">
+                {{ element.user }}
+            </a>
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endblock -%}
+</td>

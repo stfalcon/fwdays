@@ -2,16 +2,16 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -33,6 +33,8 @@ class PaymentController extends Controller
      *
      * @param Event $event
      *
+     * @throws \Exception
+     *
      * @return JsonResponse
      */
     public function payAction(Event $event)
@@ -51,19 +53,19 @@ class PaymentController extends Controller
         /* @var  User $user */
         $user = $this->getUser();
 
-        /* @var $ticket Ticket */
+        /* @var Ticket|null $ticket  */
         $ticket = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Ticket')
+            ->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
-        $paymentService = $this->get('stfalcon_event.payment.service');
+        $paymentService = $this->get('application.payment.service');
 
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Payment')
+        /** @var Payment|null $payment */
+        $payment = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
         $em = $this->getDoctrine()->getManager();
         if (!$ticket && !$payment) {
-            $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $ticket = $this->get('application.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
             $em->flush();
         }
@@ -108,12 +110,13 @@ class PaymentController extends Controller
 
         $this->get('session')->set('active_payment_id', $payment->getId());
 
+        $promoCode = null;
         $request = $this->get('request_stack')->getCurrentRequest();
-        if ($request && $promoCode = $request->query->get('promoCode')) {
-            return $this->addPromoCodeFromQuery($promoCode, $event);
+        if ($request && $code = $request->query->get('promoCode')) {
+            $promoCode = $this->getPromoCodeFromQuery($event, $payment, $code);
         }
 
-        return $this->getPaymentHtml($event, $payment);
+        return $this->getPaymentHtml($event, $payment, $promoCode);
     }
 
     /**
@@ -127,6 +130,8 @@ class PaymentController extends Controller
      *
      * @param string $code
      * @param Event  $event
+     *
+     * @throws \Exception
      *
      * @return JsonResponse
      */
@@ -143,7 +148,8 @@ class PaymentController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
+        /** @var PromoCode|null $promoCode */
+        $promoCode = $em->getRepository('ApplicationDefaultBundle:PromoCode')
             ->findActivePromoCodeByCodeAndEvent($code, $event);
 
         if (!$promoCode) {
@@ -155,7 +161,7 @@ class PaymentController extends Controller
         }
 
         if ($payment->isPending()) {
-            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService = $this->get('application.payment.service');
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         }
 
@@ -181,7 +187,7 @@ class PaymentController extends Controller
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
-                '@ApplicationDefault/Redesign/static.page.html.twig',
+                '@ApplicationDefault/Default/index.html.twig',
                 ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
@@ -229,7 +235,7 @@ class PaymentController extends Controller
         if ($payment->isPaid()) {
             return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
         }
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
 
         if (!$user) {
@@ -248,18 +254,18 @@ class PaymentController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        /** @var Ticket $ticket */
-        $ticket = $em->getRepository('StfalconEventBundle:Ticket')
+        /** @var Ticket|null $ticket */
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket) {
-            $ticket = $this->get('stfalcon_event.ticket.service')->createTicket($event, $user);
+            $ticket = $this->get('application.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
             $em->flush();
         }
 
         if (!$ticket->isPaid()) {
-            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService = $this->get('application.payment.service');
             $paymentService->addTicketToPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
@@ -300,7 +306,7 @@ class PaymentController extends Controller
         }
 
         if (!$ticket->isPaid() && $payment->getTickets()->count() > 1) {
-            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService = $this->get('application.payment.service');
             $paymentService->removeTicketFromPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
@@ -329,7 +335,7 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService = $this->get('application.payment.service');
             $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
@@ -357,7 +363,7 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('stfalcon_event.payment.service');
+            $paymentService = $this->get('application.payment.service');
             $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
@@ -369,19 +375,19 @@ class PaymentController extends Controller
     /**
      * Get payment html for popup.
      *
-     * @param Event     $event
-     * @param Payment   $payment
-     * @param Promocode $promoCode
+     * @param Event          $event
+     * @param Payment        $payment
+     * @param Promocode|null $promoCode
      *
      * @return JsonResponse
      */
     private function getPaymentHtml(Event $event, Payment $payment, PromoCode $promoCode = null)
     {
-        $paymentsConfig = $this->container->getParameter('stfalcon_event.config');
+        $paymentsConfig = $this->container->getParameter('application_default.config');
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         $notUsedPromoCode = [];
-        $paymentService = $this->get('stfalcon_event.payment.service');
+        $paymentService = $this->get('application.payment.service');
 
         if (!$promoCode) {
             $promoCode = $paymentService->getPromoCodeFromPaymentTickets($payment);
@@ -402,8 +408,7 @@ class PaymentController extends Controller
         if ($payment->getTickets()->count() > 0) {
             if (0 === (int) $payment->getAmount()) {
                 $formAction = $payment->getFwdaysAmount() > 0 ?
-                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) :
-                    $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                    $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
             } else {
                 $payType = 'wayforpay';
@@ -442,7 +447,7 @@ class PaymentController extends Controller
      *
      * @param Ticket $removeTicket
      *
-     * @return Payment $payment
+     * @return Payment|null $payment
      */
     private function getPaymentIfAccess($removeTicket = null)
     {
@@ -450,7 +455,7 @@ class PaymentController extends Controller
         $payment = null;
         if ($this->get('session')->has('active_payment_id')) {
             $paymentId = $this->get('session')->get('active_payment_id');
-            $payment = $em->getRepository('StfalconEventBundle:Payment')->find($paymentId);
+            $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
         }
 
         if ($removeTicket instanceof Ticket) {
@@ -464,24 +469,26 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param string $code
-     * @param Event  $event
+     * @param Event   $event
+     * @param Payment $payment
+     * @param string  $code
      *
-     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @return PromoCode|null
      */
-    private function addPromoCodeFromQuery($code, Event $event)
+    private function getPromoCodeFromQuery(Event $event, Payment $payment, $code)
     {
-        $payment = $this->getPaymentIfAccess();
         $promoCode = null;
-        if ($payment && !$payment->isPaid()) {
+        if (!$payment->isPaid()) {
             $em = $this->getDoctrine()->getManager();
-            $promoCode = $em->getRepository('StfalconEventBundle:PromoCode')
+            $promoCode = $em->getRepository('ApplicationDefaultBundle:PromoCode')
                 ->findActivePromoCodeByCodeAndEvent($code, $event);
-            if ($promoCode && !$promoCode->isCanBeUsed()) {
+            if (($promoCode && !$promoCode->isCanBeUsed()) || is_array($promoCode)) {
                 $promoCode = null;
             }
         }
 
-        return $this->getPaymentHtml($event, $payment, $promoCode);
+        return $promoCode;
     }
 }

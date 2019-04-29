@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Buzz\Browser;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * Class GoogleMapService.

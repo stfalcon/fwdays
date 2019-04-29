@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,7 +30,7 @@ class ReferralController extends Controller
          */
         $user = $this->getUser();
 
-        $referralService = $this->get('stfalcon_event.referral.service');
+        $referralService = $this->get('application.referral.service');
 
         if ($referralService->getReferralCode($user) !== $code) {
             $response = new Response();
@@ -41,7 +41,7 @@ class ReferralController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('StfalconEventBundle:Event')->findBy(['slug' => $eventSlug]);
+        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findBy(['slug' => $eventSlug]);
 
         if ($event) {
             $url = $this->generateUrl('event_show', ['eventSlug' => $eventSlug]);

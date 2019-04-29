@@ -1,0 +1,1 @@
+setFlashTextAndShow(flashText);

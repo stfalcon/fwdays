@@ -1,0 +1,10 @@
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "fwdays-stag",
+    "labels": {
+      "name": "fwdays-stag"
+    }
+  }
+}

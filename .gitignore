@@ -9,12 +9,11 @@
 /bin/
 /web/bundles/*
 /composer.phar
+app/config/parameters.ini
 
 # Application
 /web/tmp/*
-/web/uploads/
-/web/cache/
-/web/media/
+/web/uploads/*
 /node_modules
 .idea
 /web/assets
@@ -22,3 +21,14 @@
 # Geo Data
 !/geodata/.gitkeep
 /geodata/GeoLiteCity.dat
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+/phpunit-coverage.xml
+/clover-coverage.xml
+/junit.xml
+/app/spool
+###< symfony/phpunit-bridge ###

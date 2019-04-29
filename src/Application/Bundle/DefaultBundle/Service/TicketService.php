@@ -3,13 +3,13 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
-use Stfalcon\Bundle\EventBundle\Entity\PromoCode;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Repository\PaymentRepository;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -80,11 +80,11 @@ class TicketService
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
 
-        if (!$event instanceof Event || !$user instanceof User || !$event->getUseDiscounts()) {
+        if (!$event->getUseDiscounts()) {
             return false;
         }
 
-        $paidPayments = $this->em->getRepository('StfalconEventBundle:Payment')
+        $paidPayments = $this->em->getRepository('ApplicationDefaultBundle:Payment')
             ->findPaidPaymentsForUser($user);
 
         return \count($paidPayments) > 0;
@@ -113,7 +113,7 @@ class TicketService
      *
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
-     * @param float     $discount
+     * @param float|int $discount
      *
      * @return Ticket
      */
@@ -190,15 +190,14 @@ class TicketService
     }
 
     /**
-     * @param Event      $event
-     * @param string     $position
-     * @param TicketCost $ticketCost
+     * @param Event           $event
+     * @param string          $position
+     * @param TicketCost|null $ticketCost
      *
      * @return array
      */
     public function getTicketHtmlData($event, $position, $ticketCost)
     {
-        $eventState = null;
         $ticket = null;
         /** @var Payment $payment */
         $payment = null;
@@ -207,11 +206,11 @@ class TicketService
 
         $user = $token instanceof TokenInterface && $token->getUser() instanceof User ? $token->getUser() : null;
         if ($user instanceof User) {
-            $payment = $this->em
-                ->getRepository('StfalconEventBundle:Payment')
-                ->findPaymentByUserAndEvent($user, $event);
+            /** @var PaymentRepository $paymentRepository */
+            $paymentRepository = $this->em->getRepository('ApplicationDefaultBundle:Payment');
+            $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
 
-            $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')
+            $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         }
 
@@ -219,10 +218,8 @@ class TicketService
         $ticketState = null;
         $isDiv = null;
         $data = null;
-        $class = '';
         $ticketClass = '';
         $href = null;
-        $isMob = null;
         $caption = '';
         $ticketCaption = '';
 
@@ -341,7 +338,7 @@ class TicketService
             } elseif (self::CAN_WANNA_VISIT === $eventState && (!$user || !$user->isEventInWants($event))) {
                 $class .= ' set-modal-header add-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.take_apart');
-            } elseif (self::CAN_WANNA_VISIT === $eventState && $user->isEventInWants($event)) {
+            } elseif (self::CAN_WANNA_VISIT === $eventState && ($user && $user->isEventInWants($event))) {
                 $class .= ' set-modal-header sub-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.not_take_apart');
             } elseif (self::CAN_BUY_TICKET === $eventState) {
@@ -349,7 +346,7 @@ class TicketService
                     $caption = $this->translator->trans('ticket.mob_status.pay');
                 } elseif ('price_block' === $position) {
                     $amount = $ticketCost ? $ticketCost->getAmount() : $event->getBiggestTicketCost()->getAmount();
-                    $altAmount = '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ');
+                    $altAmount = $ticketCost ? '≈$'.number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
                     $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
                             ->trans(
                                 'payment.price',

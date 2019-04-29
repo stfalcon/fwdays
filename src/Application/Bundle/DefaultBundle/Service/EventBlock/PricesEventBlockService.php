@@ -4,18 +4,18 @@ namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Sonata\BlockBundle\Block\BaseBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * PricesEventBlockService.
  */
-class PricesEventBlockService extends BaseBlockService
+class PricesEventBlockService extends AbstractBlockService
 {
     /** @var TicketCostRepository */
     private $ticketCostRepository;
@@ -42,7 +42,7 @@ class PricesEventBlockService extends BaseBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);
@@ -59,7 +59,7 @@ class PricesEventBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event_price.html.twig',

@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Stfalcon\Bundle\EventBundle\Entity\EventPage;
+use Application\Bundle\DefaultBundle\Entity\EventPage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,11 +31,11 @@ class EventController extends Controller
     public function eventsAction()
     {
         $activeEvents = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy(['active' => true], ['date' => 'ASC']);
 
         $pastEvents = $this->getDoctrine()->getManager()
-            ->getRepository('StfalconEventBundle:Event')
+            ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy(['active' => false], ['date' => 'DESC']);
 
         return [
@@ -58,7 +58,7 @@ class EventController extends Controller
      */
     public function showAction($eventSlug)
     {
-        $referralService = $this->get('stfalcon_event.referral.service');
+        $referralService = $this->get('application.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
         return $this->get('app.event.service')->getEventPagesArr($eventSlug);
@@ -96,7 +96,7 @@ class EventController extends Controller
     public function getModalHeaderAction($slug, $headerType)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
@@ -124,7 +124,7 @@ class EventController extends Controller
     public function getEventMapPosition($slug)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
         if (!$event) {
             return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
         }
@@ -161,7 +161,7 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
 
         if (!$event) {
             if ($request->isXmlHttpRequest()) {
@@ -213,7 +213,7 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $slug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
 
         if (!$event) {
             return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
@@ -263,14 +263,14 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $pageSlug
      *
-     * @Template("ApplicationDefaultBundle:Redesign:static.page.html.twig")
+     * @Template("ApplicationDefaultBundle:Page:index.html.twig")
      *
      * @return array
      */
     public function showEventPageInStaticAction($eventSlug, $pageSlug)
     {
         $event = $this->getDoctrine()
-            ->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
             throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
         }

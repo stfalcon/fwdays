@@ -2,12 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Prophecy\Prophet;
-use Stfalcon\Bundle\EventBundle\Entity\Payment;
-use Stfalcon\Bundle\EventBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Repository\TicketRepository;
 use Symfony\Component\BrowserKit\Client;
 use Doctrine\ORM\EntityManager;
 
@@ -37,10 +38,10 @@ class ReferralServiceTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadEventData',
-                'Application\Bundle\UserBundle\DataFixtures\ORM\LoadUserData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadPaymentData',
-                'Stfalcon\Bundle\EventBundle\DataFixtures\ORM\LoadTicketData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
+                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
             ],
             null,
             'doctrine',
@@ -68,16 +69,18 @@ class ReferralServiceTest extends WebTestCase
         $fwdaysAmount = 300;
 
         /** @var User $userReferral */
-        $userReferral = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => 'user@fwdays.com']);
+        $userReferral = $this->em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['email' => 'user@fwdays.com']);
         /** @var User $user */
-        $user = $this->em->getRepository('ApplicationUserBundle:User')->findOneBy(['email' => 'jack.sparrow@fwdays.com']);
+        $user = $this->em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['email' => 'jack.sparrow@fwdays.com']);
         $user->setBalance($fwdaysAmount);
         $user->setUserReferral($userReferral);
 
         /** @var Event $event */
-        $event = $this->em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        /** @var TicketRepository $ticketRepository */
+        $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */
-        $ticket = $this->em->getRepository('StfalconEventBundle:Ticket')->findOneByUserAndEvent($user, $event);
+        $ticket = $ticketRepository->findOneByUserAndEvent($user, $event);
         /** @var Payment $payment */
         $payment = $ticket->getPayment();
         $payment->setAmount($ticket->getAmount() - $fwdaysAmount);
@@ -86,7 +89,7 @@ class ReferralServiceTest extends WebTestCase
         $payment->markedAsPaid();
         $this->em->flush();
         $referralBalance = $userReferral->getBalance();
-        $referralService = $this->getContainer()->get('stfalcon_event.referral.service');
+        $referralService = $this->getContainer()->get('application.referral.service');
         $referralService->chargingReferral($payment);
         $referralService->utilizeBalance($payment);
 

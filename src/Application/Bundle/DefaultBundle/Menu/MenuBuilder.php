@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Menu;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,9 +57,9 @@ class MenuBuilder
 
         $menu->addChild($this->translator->trans('main.menu.events'), ['route' => 'events'])
             ->setAttribute('class', 'header-nav__item');
-        $menu->addChild($this->translator->trans('main.menu.contacts'), ['route' => 'contacts'])
+        $menu->addChild($this->translator->trans('main.menu.contacts'), ['route' => 'page', 'routeParameters' => ['slug' => 'contacts']])
             ->setAttribute('class', 'header-nav__item');
-        $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'about'])
+        $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'page', 'routeParameters' => ['slug' => 'about']])
             ->setAttribute('class', 'header-nav__item');
         $token = $this->tokenService->getToken();
         $user = $token ? $token->getUser() : null;

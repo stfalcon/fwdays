@@ -44,16 +44,12 @@ class AppKernel extends Kernel
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
 
-            new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
-            new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
-
             new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
-            new Application\Bundle\UserBundle\ApplicationUserBundle(),
 
+            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
 
-            new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),
@@ -71,6 +67,8 @@ class AppKernel extends Kernel
             new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
 
             new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
+            new Snc\RedisBundle\SncRedisBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {

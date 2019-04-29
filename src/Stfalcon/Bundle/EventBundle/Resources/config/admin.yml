@@ -1,6 +1,0 @@
-services:
-    stfalcon_event.admin.event_audience:
-        class: Stfalcon\Bundle\EventBundle\Admin\EventAudienceAdmin
-        arguments: [~, Stfalcon\Bundle\EventBundle\Entity\EventAudience, SonataAdminBundle:CRUD]
-        tags:
-            - {name: sonata.admin, manager_type: orm, group: События, label: Аудитории}

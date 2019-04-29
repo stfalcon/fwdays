@@ -1,0 +1,72 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+<!--BEGIN home-->
+<section class="home" style="background-image: url({{ asset('assets/img/header_bg.jpg') }});">
+    <div class="home__box">
+        <h1 class="home__title">{{ 'image.home.title'|trans }}</h1>
+        <p class="home__description">{{ 'image.home.description'|trans }}</p>
+    </div>
+</section>
+<!--END home-->
+
+<!--BEGIN events-->
+<section class="events">
+    <div class="container">
+        <div class="events__box">
+            {% for event in events %}
+                {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                    {% include '@ApplicationDefault/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a href="{{ path('events') }}" class="more-link events__more">{{ 'event.events.title'|trans }}</a>
+    </div>
+</section>
+<!--END events-->
+
+<!--BEGIN video-->
+<section class="video">
+    <div class="container">
+        <div class="video__box">
+            <div class="video__frame">
+                <iframe width="560" height="315" data-src="https://www.youtube.com/embed/lSQE5d1rbLI"
+                        allowfullscreen></iframe>
+            </div>
+            <div class="video__description">
+                {{ 'video.description.text'|trans|raw }}
+            </div>
+        </div>
+        <a href="https://www.youtube.com/user/fwdays/videos" class="more-link" target="_blank">{{ 'our.youtube.channel'|trans }}</a>
+    </div>
+</section>
+<!--END video-->
+
+<!--BEGIN gallery-->
+<section class="gallery">
+    <div class="container">
+        <div class="gallery__cols">
+            <div class="gallery__col gallery__col--1">
+                <img class="gallery__item gallery__item--w-2" src="{{ asset('assets/img/gallery/gallery_image_1.jpg') }}" alt="">
+                <img class="gallery__item gallery__item--w-1" src="{{ asset('assets/img/gallery/gallery_image_5.jpg') }}" alt="">
+                <img class="gallery__item gallery__item--w-1 gallery__item--hide-mob" src="{{ asset('assets/img/gallery/gallery_image_6.jpg') }}" alt="">
+            </div>
+            <div class="gallery__col gallery__col--2">
+                <img class="gallery__item gallery__item--w-1" src="{{ asset('assets/img/gallery/gallery_image_2.jpg') }}" alt="">
+                <img class="gallery__item gallery__item--h-2" src="{{ asset('assets/img/gallery/gallery_image_7.jpg') }}" alt="">
+            </div>
+            <div class="gallery__col gallery__col--3">
+                <img class="gallery__item gallery__item--w-1 gallery__item--hide-mob" src="{{ asset('assets/img/gallery/gallery_image_3.jpg') }}" alt="">
+                <img class="gallery__item gallery__item--w-1" src="{{ asset('assets/img/gallery/gallery_image_4.jpg') }}" alt="">
+                <img class="gallery__item gallery__item--w-2" src="{{ asset('assets/img/gallery/gallery_image_8.jpg') }}" alt="">
+            </div>
+        </div>
+        <a href="https://www.flickr.com/photos/140720579@N08/albums" class="more-link" target="_blank">{{ 'more.gallery.link'|trans }}</a>
+    </div>
+</section>
+<!--END gallery-->
+{% endblock content %}
+{% block scripts %}
+    {{ render(controller('Application\\Bundle\\DefaultBundle\\Controller\\DefaultController::renderMicrolayoutAction')) }}
+    {{ parent() }}
+{% endblock scripts %}

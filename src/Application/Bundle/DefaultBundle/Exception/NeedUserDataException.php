@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Exception;
 
-use Application\Bundle\UserBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\User;
 
 /**
  * Class NeedUserDataException.

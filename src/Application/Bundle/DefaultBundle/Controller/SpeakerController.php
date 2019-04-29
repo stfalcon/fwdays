@@ -3,7 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stfalcon\Bundle\EventBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,9 +23,9 @@ class SpeakerController extends Controller
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param string $speakerSlug
-     * @param string $eventSlug
-     * @param bool   $withReview
+     * @param string   $speakerSlug
+     * @param string   $eventSlug
+     * @param bool|int $withReview
      *
      * @return JsonResponse
      */
@@ -33,19 +33,19 @@ class SpeakerController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $speaker = $em->getRepository('StfalconEventBundle:Speaker')->findOneBy(['slug' => $speakerSlug]);
+        $speaker = $em->getRepository('ApplicationDefaultBundle:Speaker')->findOneBy(['slug' => $speakerSlug]);
         if (!$speaker) {
             return new JsonResponse(['result' => false, 'html' => 'Unable to find Speaker by slug: '.$speakerSlug]);
         }
 
-        $event = $em->getRepository('StfalconEventBundle:Event')->findOneBy(['slug' => $eventSlug]);
+        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
         if (!$event) {
             return new JsonResponse(['result' => false, 'html' => 'Unable to find Event by slug: '.$eventSlug]);
         }
 
         if ((bool) $withReview) {
-            /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
-            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
+            /** @var $reviewRepository \Application\Bundle\DefaultBundle\Repository\ReviewRepository */
+            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Review');
             $speaker->setReviews(
                 $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
             );
@@ -59,6 +59,7 @@ class SpeakerController extends Controller
 
         return new JsonResponse(['result' => true, 'html' => $html]);
     }
+
 //
 //    /**
 //     * Lists all speakers for event.
@@ -86,10 +87,10 @@ class SpeakerController extends Controller
 //        $withReview = false;
 //
 //        if (in_array($speakerType, [self::SPEAKER_TYPE_SPEAKER, self::SPEAKER_TYPE_CANDIDATE])) {
-//            /** @var $reviewRepository \Stfalcon\Bundle\EventBundle\Repository\ReviewRepository */
-//            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('StfalconEventBundle:Review');
+//            /** @var $reviewRepository \Application\Bundle\DefaultBundle\Repository\ReviewRepository */
+//            $reviewRepository = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Review');
 //
-//            /** @var $speaker \Stfalcon\Bundle\EventBundle\Entity\Speaker */
+//            /** @var $speaker \Application\Bundle\DefaultBundle\Entity\Speaker */
 //            foreach ($speakers as &$speaker) {
 //                $speaker->setReviews(
 //                    $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
