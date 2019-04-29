@@ -383,9 +383,7 @@ class PaymentController extends Controller
      */
     private function getPaymentHtml(Event $event, Payment $payment, PromoCode $promoCode = null)
     {
-        $paymentsConfig = $this->container->getParameter('application.config');
-        var_dump($paymentsConfig);
-        exit;
+        $paymentsConfig = $this->container->getParameter('application_default.config');
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         $notUsedPromoCode = [];

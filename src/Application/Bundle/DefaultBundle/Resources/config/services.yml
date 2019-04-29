@@ -38,7 +38,7 @@ services:
         class: Application\Bundle\DefaultBundle\Service\TicketService
         arguments:
             - "@doctrine.orm.entity_manager"
-            - "%application.config%"
+            - "%application_default.config%"
             - "@translator"
             - "@router"
             - "@app.ticket_cost.service"
@@ -97,7 +97,7 @@ services:
     app.way_for_pay.service:
         class: Application\Bundle\DefaultBundle\Service\WayForPayService
         arguments:
-            - "%application.config%"
+            - "%application_default.config%"
             - "@translator"
             - "@request_stack"
             - "@router"
