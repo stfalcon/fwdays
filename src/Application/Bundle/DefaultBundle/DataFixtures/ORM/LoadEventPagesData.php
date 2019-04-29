@@ -8,9 +8,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Application\Bundle\DefaultBundle\Entity\EventPage;
 
 /**
- * LoadPagesData Class.
+ * LoadEventPagesData Class.
  */
-class LoadPagesData extends AbstractFixture implements DependentFixtureInterface
+class LoadEventPagesData extends AbstractFixture implements DependentFixtureInterface
 {
     private $oldProgram = '<table class="event-program">
     <tbody>
