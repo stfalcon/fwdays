@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Router;
 
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Router;
  */
 class LocaleUrlResponseListener
 {
-    const UKRAINE_COUNTRY_CODE = 'UA';
+    private const UKRAINE_COUNTRY_CODE = 'UA';
 
     private $defaultLocale;
 
@@ -85,7 +86,7 @@ class LocaleUrlResponseListener
         } elseif (!in_array($currentLocal, $this->locales, true)) {
             try {
                 $matched = $this->routerService->match('/'.$locale.$path);
-            } catch (ResourceNotFoundException $e) {
+            } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
                 $matched = false;
             }
             if (false !== $matched) {
