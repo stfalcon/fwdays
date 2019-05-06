@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\EventListener;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,10 @@ class LoginEntryPoint implements AuthenticationEntryPointInterface
     public function start(Request $request, AuthenticationException $authException = null)
     {
         if ($request->isXmlHttpRequest()) {
-            $request->getSession()->set('request_params', $request->attributes->all());
+            $session = $request->getSession();
+            if ($session instanceof SessionInterface) {
+                $session->set('request_params', $request->attributes->all());
+            }
 
             return new JsonResponse('', 401);
         }

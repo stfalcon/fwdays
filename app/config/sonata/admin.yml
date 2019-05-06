@@ -22,3 +22,8 @@ sonata_admin:
       -
         position: left
         type: sonata.block.service.statistic
+
+sonata_exporter:
+  writers:
+    csv:
+      delimiter: ";"
