@@ -96,7 +96,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
         ],
-        "ci:composer-validate": "composer validate --no-check-all",
+        "ci:composer-validate": "composer.phar validate --no-check-all",
         "ci:security-check": "app/console security:check",
         "ci:doctrine-schema-validate": [
             "app/console doctrine:database:create --if-not-exists",
