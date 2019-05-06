@@ -57,7 +57,7 @@ spec:
             - name: Host
               value: fwdays-stag.k8s.stfalcon.com
           initialDelaySeconds: 10
-          periodSeconds: 10
+          periodSeconds: 30
         env:
         - name: SERVER_NAME
           valueFrom:
