@@ -43,6 +43,7 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
 
             new Stfalcon\Bundle\EventBundle\StfalconEventBundle(),
             new Stfalcon\Bundle\SponsorBundle\StfalconSponsorBundle(),
