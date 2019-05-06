@@ -17,6 +17,7 @@ variables:
         - cp app/config/parameters.ini.stag app/config/parameters.ini
         - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
         - curl -sS https://getcomposer.org/installer | php
+        - chown -R www-data geodata
         - unxz geodata/GeoLiteCity.dat.xz
         - php composer.phar install --optimize-autoloader
         - npm install
