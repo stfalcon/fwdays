@@ -16,7 +16,7 @@ variables:
         - cp app/config/parameters.ini.stag app/config/parameters.ini
         - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
         - unxz geodata/GeoLiteCity.dat.xz
-        - php composer.phar install --optimize-autoloader
+        - composer.phar install --optimize-autoloader
         - npm install
 
 stages:
