@@ -12,5 +12,6 @@ RUN chmod a+x /usr/local/bin/start
 ADD configs/services /usr/local/bin/services
 RUN chmod a+x /usr/local/bin/services
 RUN usermod -s /bin/bash www-data
+RUN rm /var/log/nginx/error.log && ln -s /dev/stderr /var/log/nginx/error.log && ln -s /dev/stdout /var/log/php7.1-fpm.log
 ENTRYPOINT ["/usr/local/bin/start"]
 CMD ["/usr/local/bin/services"]
