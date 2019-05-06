@@ -15,7 +15,6 @@ variables:
     before_script:
         - cp app/config/parameters.ini.stag app/config/parameters.ini
         - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
-        - curl -sS https://getcomposer.org/installer | php
         - unxz geodata/GeoLiteCity.dat.xz
         - php composer.phar install --optimize-autoloader
         - npm install
@@ -31,43 +30,43 @@ composer checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:composer-validate
+        - composer.phar ci:composer-validate
 
 security checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:security-check
+        - composer.phar ci:security-check
 
 doctrine checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:doctrine-schema-validate
+        - composer.phar ci:doctrine-schema-validate
 
 twig checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:twig-lint
+        - composer.phar ci:twig-lint
 
 yaml checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:yaml-lint
+        - composer.phar ci:yaml-lint
 
 code style checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:code-style
+        - composer.phar ci:code-style
 
 static analysis:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer ci:static-analysis
+        - composer.phar ci:static-analysis
 
 #phpunit:
 #    stage: 'CI jobs'
