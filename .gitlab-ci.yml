@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v3
 cache:
     paths:
         - vendor/
@@ -17,7 +17,6 @@ variables:
         - cp app/config/parameters.ini.stag app/config/parameters.ini
         - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
         - curl -sS https://getcomposer.org/installer | php
-        - sudo chown -R www-data geodata
         - unxz geodata/GeoLiteCity.dat.xz
         - php composer.phar install --optimize-autoloader
         - npm install
@@ -86,8 +85,9 @@ static analysis:
 #
 sonar-scanner:
     stage: 'SonarQube'
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
     only:
-        - develop
+        - master
     <<: *build_ci
     script:
         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
