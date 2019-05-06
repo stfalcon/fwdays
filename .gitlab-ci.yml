@@ -13,7 +13,6 @@ variables:
 
 .before_script_template: &build_ci
     before_script:
-        - sudo chown -R www-data:www-data /var/www
         - cp app/config/parameters.ini.stag app/config/parameters.ini
         - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
         - curl -sS https://getcomposer.org/installer | php
