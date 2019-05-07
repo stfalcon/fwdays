@@ -79,7 +79,7 @@ phpunit:
             junit: './junit.xml'
     <<: *build_ci
     script:
-        - composer ci:phpunit-with-coverage
+        - composer.phar ci:phpunit-with-coverage
 #
 sonar-scanner:
     stage: 'SonarQube'
