@@ -17,6 +17,7 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage", options = {"expose"=true})
+     *
      * @Template()
      *
      * @return array
@@ -32,10 +33,13 @@ class DefaultController extends Controller
 
     /**
      * @Route("/page/{slug}", name="page")
+     *
      * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     *
      * @Template()
      *
      * @param Page $page
+     *
      * @return array
      */
     public function pageAction(Page $page)

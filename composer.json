@@ -108,9 +108,9 @@
         "ci:twig-lint": "app/console lint:twig src/Application/Bundle/DefaultBundle/Resources/views/",
         "ci:yaml-lint": "app/console lint:yaml app/config/",
         "ci:code-style": [
-            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
-            "bin/php-cs-fixer fix -q --dry-run --rules=@Symfony ./src"
+            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony"
         ],
+        "ci:code-style-fixer": "bin/php-cs-fixer fix -q --dry-run --rules=@Symfony ./src",
         "ci:phpunit": [
             "app/console doctrine:database:drop --env=test --force --if-exists",
             "app/console do:da:cr --env=test",
@@ -132,7 +132,7 @@
         ],
         "app:recreate-database": [
             "app/console doctrine:database:drop --force --if-exists",
-            "app/console doctrine:database:create --if-exists",
+            "app/console doctrine:database:create --if-not-exists",
             "app/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
             "app/console doctrine:schema:validate",
             "app/console doctrine:fixtures:load --no-interaction"
