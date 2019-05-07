@@ -83,7 +83,7 @@ static analysis:
 #
 sonar-scanner:
     stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v2
     only:
         - master
     <<: *build_ci
