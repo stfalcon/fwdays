@@ -17,19 +17,19 @@ _sonata_admin:
         i18n: false
 
 sonata_admin_ticket_check:
-    pattern:  /admin/ticket/check
+    path:  /admin/ticket/check
     defaults: { _controller: ApplicationDefaultBundle:TicketAdmin:check }
     options:
         i18n: false
 
 admin_show_statistic:
-    pattern:  /admin/statistic
+    path:  /admin/statistic
     defaults: { _controller: ApplicationDefaultBundle:Admin:showStatistic }
     options:
         i18n: false
 
 admin_show_event_statistic:
-    pattern:  /admin/event_statistic
+    path:  /admin/event_statistic
     defaults: { _controller: ApplicationDefaultBundle:Admin:showEventStatistic }
     options:
         i18n: false

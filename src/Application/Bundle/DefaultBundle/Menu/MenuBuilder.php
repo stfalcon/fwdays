@@ -5,7 +5,7 @@ namespace Application\Bundle\DefaultBundle\Menu;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Translation\Translator;
 
@@ -44,14 +44,15 @@ class MenuBuilder
     }
 
     /**
-     * @param Request $request
+     * @param RequestStack $requestStack
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createMainMenuRedesign(Request $request)
+    public function createMainMenuRedesign(RequestStack $requestStack)
     {
         $menu = $this->factory->createItem('root');
 
+        $request = $requestStack->getCurrentRequest();
         $menu->setUri($request->getRequestUri());
         $menu->setAttribute('class', 'header-nav');
 
@@ -91,14 +92,15 @@ class MenuBuilder
     /**
      * Login menu.
      *
-     * @param Request $request
+     * @param RequestStack $request
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function createLoginMenu(Request $request)
+    public function createLoginMenu(RequestStack $requestStack)
     {
         $menu = $this->factory->createItem('root');
 
+        $request = $requestStack->getCurrentRequest();
         $menu->setUri($request->getRequestUri());
 
         $token = $this->tokenService->getToken();

@@ -1,3 +1,51 @@
+parameters:
+    application.admin.user.class: Application\Bundle\DefaultBundle\Admin\UserAdmin
+    application.admin.user.entity: Application\Bundle\DefaultBundle\Entity\User
+    application.admin.user.controller: 'SonataAdminBundle:CRUD'
+    application.admin.event.class: Application\Bundle\DefaultBundle\Admin\EventAdmin
+    application.admin.event.entity: Application\Bundle\DefaultBundle\Entity\Event
+    application.admin.event.controller: 'SonataAdminBundle:CRUD'
+    application.admin.speaker.class: Application\Bundle\DefaultBundle\Admin\SpeakerAdmin
+    application.admin.speaker.entity: Application\Bundle\DefaultBundle\Entity\Speaker
+    application.admin.speaker.controller: 'SonataAdminBundle:CRUD'
+    application.admin.event_page.class: Application\Bundle\DefaultBundle\Admin\EventPageAdmin
+    application.admin.event_page.entity: Application\Bundle\DefaultBundle\Entity\EventPage
+    application.admin.event_page.controller: 'SonataAdminBundle:CRUD'
+    application.admin.reviews.class: Application\Bundle\DefaultBundle\Admin\ReviewAdmin
+    application.admin.reviews.entity: Application\Bundle\DefaultBundle\Entity\Review
+    application.admin.reviews.controller: 'SonataAdminBundle:CRUD'
+    application.admin.mails.class: Application\Bundle\DefaultBundle\Admin\MailAdmin
+    application.admin.mails.entity: Application\Bundle\DefaultBundle\Entity\Mail
+    application.admin.mails.controller: 'ApplicationDefaultBundle:MailAdmin'
+    application.admin.tickets.class: Application\Bundle\DefaultBundle\Admin\TicketAdmin
+    application.admin.tickets.entity: Application\Bundle\DefaultBundle\Entity\Ticket
+    application.admin.tickets.controller: 'ApplicationDefaultBundle:TicketCRUD'
+    application.admin.mail_queue.class: Application\Bundle\DefaultBundle\Admin\MailQueueAdmin
+    application.admin.mail_queue.entity: Application\Bundle\DefaultBundle\Entity\MailQueue
+    application.admin.mail_queue.controller: 'SonataAdminBundle:CRUD'
+    application.admin.promo_code.class: Application\Bundle\DefaultBundle\Admin\PromoCodeAdmin
+    application.admin.promo_code.entity: Application\Bundle\DefaultBundle\Entity\PromoCode
+    application.admin.promo_code.controller: 'SonataAdminBundle:CRUD'
+    application.admin.payment.class: Application\Bundle\DefaultBundle\Admin\PaymentAdmin
+    application.admin.payment.entity: Application\Bundle\DefaultBundle\Entity\Payment
+    application.admin.payment.controller: 'SonataAdminBundle:CRUD'
+    application.qr_code.class: Endroid\QrCode\QrCode
+    application.mailer_helper.class: Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper
+    application.promo_code.form.type.class: Application\Bundle\DefaultBundle\Form\Type\PromoCodeFormType
+    application.listener.payment.class: Application\Bundle\DefaultBundle\EventListener\PaymentListener
+    application.payment_manager.class: Application\Bundle\DefaultBundle\Entity\PaymentManager
+    application.admin.page.class: Application\Bundle\DefaultBundle\Admin\PageAdmin
+    application.admin.page.entity: Application\Bundle\DefaultBundle\Entity\Page
+    application.admin.sponsor.class: Application\Bundle\DefaultBundle\Admin\SponsorAdmin
+    application.admin.sponsor.entity: Application\Bundle\DefaultBundle\Entity\Sponsor
+    application.admin.sponsor.controller: 'SonataAdminBundle:CRUD'
+    application.admin.event_sponsor.class: Application\Bundle\DefaultBundle\Admin\EventSponsorAdmin
+    application.admin.event_sponsor.entity: Application\Bundle\DefaultBundle\Entity\EventSponsor
+    application.admin.event_sponsor.controller: 'SonataAdminBundle:CRUD'
+    application.admin.category.class: Application\Bundle\DefaultBundle\Admin\CategoryAdmin
+    application.admin.category.entity: Application\Bundle\DefaultBundle\Entity\Category
+    application.admin.category.controller: 'SonataAdminBundle:CRUD'
+
 services:
 
     app.validator.event_block.text:
@@ -128,7 +176,7 @@ services:
         arguments:
             - "@router"
             - "@application.referral.service"
-            - "@application.user_manager"
+            - "@fos_user.user_manager"
             - "@app.url_for_redirect"
 
     app.provider.oauth:
@@ -138,3 +186,184 @@ services:
             - {facebook: facebookID, google: googleID}
             - "@service_container"
 
+
+    application.payment.service:
+        class: Application\Bundle\DefaultBundle\Service\PaymentService
+        arguments: ['@service_container']
+    application.referral.service:
+        class: Application\Bundle\DefaultBundle\Service\ReferralService
+        arguments: ['@service_container']
+    sonata.block.service.statistic:
+        class: Application\Bundle\DefaultBundle\Service\StatisticBlockService
+        tags:
+            - { name: sonata.block }
+        arguments: [sonata.block.service.statistic, '@templating']
+    application.menu_builder:
+        class: Application\Bundle\DefaultBundle\Menu\MenuBuilder
+        arguments: ['@knp_menu.factory', '@translator', '%jms_i18n_routing.locales%', '@security.token_storage', '@mobile_detect.mobile_detector']
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+    application.locale_url.listener:
+        class: Application\Bundle\DefaultBundle\EventListener\LocaleUrlResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 128 }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 128 }
+        arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%', '%jms_i18n_routing.cookie.name%', '@router', '@maxmind.geoip', '@logger']
+    application.sonata.locales.required:
+        class: Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService
+        arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
+    app_liip_cache_resolve_command:
+        class: Application\Bundle\DefaultBundle\Command\AppResolveLiipCacheCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    sonata.admin.menu.matcher.voter.children:
+        class: Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter
+        arguments: ['@knp_menu.matcher']
+    vich_uploader.my_storage.flysystem:
+        class: Application\Bundle\DefaultBundle\Service\MyFlySystemStorage
+        arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
+    liip_imagine.cache.resolver.prototype.flysystem:
+        class: Application\Bundle\DefaultBundle\Service\MyFlySystemResolver
+        arguments: ['', '@router.request_context', '', '', '']
+    application.admin.page:
+        class: %application.admin.page.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Страницы, label: Страницы }
+        arguments: ['', '%application.admin.page.entity%', '']
+    trans_command_service:
+        class: Application\Bundle\DefaultBundle\Command\StfalconChangeTranslationCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    recalculate_ticket_sold_command_service:
+        class: Application\Bundle\DefaultBundle\Command\StfalconRecalculateTicketSoldCountCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    application.admin.mail_admin:
+        class: %application.admin.mails.class%
+        tags:
+            - { name: mail_admin, manager_type: orm }
+        arguments: ['', '%application.admin.mails.entity%', '%application.admin.mails.controller%']
+    application.current_event:
+        class: %application.admin.event.entity%
+    application.admin.event:
+        class: %application.admin.event.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: События }
+        arguments: ['', '%application.admin.event.entity%', '%application.admin.event.controller%']
+    application.admin.event_group:
+        class: Application\Bundle\DefaultBundle\Admin\EventGroupAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Групы }
+        arguments: ['', Application\Bundle\DefaultBundle\Entity\EventGroup, '']
+    application.admin.reviews:
+        class: %application.admin.reviews.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
+        arguments: ['', '%application.admin.reviews.entity%', '%application.admin.reviews.controller%']
+    application.admin.speaker:
+        class: %application.admin.speaker.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Докладчики }
+        arguments: ['', '%application.admin.speaker.entity%', '%application.admin.speaker.controller%']
+    application.admin.event_page:
+        class: %application.admin.event_page.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Страницы }
+        arguments: ['', '%application.admin.event_page.entity%', '%application.admin.event_page.controller%']
+    application.admin.mails:
+        class: %application.admin.mails.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Рассылки }
+        arguments: ['', '%application.admin.mails.entity%', '%application.admin.mails.controller%']
+        calls:
+            - [addChild, ['@application.admin.mail_queue']]
+
+    application.admin.mail_queue:
+        class: %application.admin.mail_queue.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Очередь }
+        arguments: ['', '%application.admin.mail_queue.entity%', '%application.admin.mail_queue.controller%']
+    application.admin.tickets:
+        class: %application.admin.tickets.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: Билеты }
+        arguments: ['', '%application.admin.tickets.entity%', '%application.admin.tickets.controller%']
+    application.admin.payment:
+        class: %application.admin.payment.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: Платежи }
+        arguments: ['', '%application.admin.payment.entity%', '%application.admin.payment.controller%']
+    application.admin.promo_code:
+        class: %application.admin.promo_code.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: 'Промо коды' }
+        arguments: ['', '%application.admin.promo_code.entity%', '%application.admin.promo_code.controller%']
+    application.qr_code:
+        class: %application.qr_code.class%
+    application.mailer_helper:
+        class: %application.mailer_helper.class%
+        arguments: ['@twig', '@doctrine.orm.entity_manager', '@router', '@mailer']
+    application.promo_code.form.type:
+        class: Application\Bundle\DefaultBundle\Form\Type\PromoCodeFormType
+        tags:
+            - { name: form.type, alias: application_promo_code }
+    application.ticket.form.type:
+        class: Application\Bundle\DefaultBundle\Form\Type\TicketFormType
+        tags:
+            - { name: form.type, alias: application_ticket }
+    application.listener.payment:
+        class: %application.listener.payment.class%
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
+        arguments: ['@service_container']
+    application.admin.event_sponsor:
+        class: %application.admin.event_sponsor.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }
+        arguments: ['', '%application.admin.event_sponsor.entity%', '%application.admin.event_sponsor.controller%']
+    application.current_sponsor:
+        class: %application.admin.sponsor.entity%
+    application.admin.sponsor:
+        class: %application.admin.sponsor.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Спонсоры }
+        arguments: ['', '%application.admin.sponsor.entity%', '%application.admin.sponsor.controller%']
+    application.admin.category:
+        class: %application.admin.category.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Категории }
+        arguments: ['', '%application.admin.category.entity%', '%application.admin.category.controller%']
+
+    application.menu.main:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: main }
+        factory: ['@application.menu_builder', createMainMenu]
+        arguments: ['@request_stack']
+        scope: request
+        application.menu.event_sub:
+            class: Knp\Menu\MenuItem
+            tags:
+                - { name: knp_menu.menu, alias: event_sub }
+            factory: ['@application.menu_builder', createEventSubMenu]
+            arguments: ['@request_stack', '@application.current_event']
+            scope: request
+    application.menu.main.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: main_redesign }
+        factory: ['@application.menu_builder', createMainMenuRedesign]
+        arguments: ['@request_stack']
+        scope: request
+    application.menu.main.login.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: login_redesign }
+        factory: ['@application.menu_builder', createLoginMenu]
+        arguments: ['@request_stack']
+        scope: request

@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,7 +22,7 @@ class RegistrationController extends BaseController
      *
      * @throws \Twig_Error
      */
-    public function registerAction()
+    public function registerAction(Request $request)
     {
         $form = $this->container->get('fos_user.registration.form');
         $fromOAuth = false;
@@ -90,7 +91,7 @@ class RegistrationController extends BaseController
      *
      * @return RedirectResponse
      */
-    public function confirmAction($token)
+    public function confirmAction(Request $request, $token)
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $user = $this->container->get('fos_user.user_manager')->findUserByConfirmationToken($token);
@@ -115,7 +116,7 @@ class RegistrationController extends BaseController
      *
      * @return RedirectResponse
      */
-    public function confirmedAction()
+    public function confirmedAction(Request $request)
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $user = $this->container->get('security.token_storage')->getToken()->getUser();

@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Model\UserInterface;
@@ -34,7 +35,7 @@ class ResettingController extends BaseController
      *
      * @return Response
      */
-    public function sendEmailAction()
+    public function sendEmailAction(Request $request)
     {
         $username = $this->container->get('request')->request->get('username');
 
@@ -79,7 +80,7 @@ class ResettingController extends BaseController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function passwordAlreadyRequestedAction()
+    public function passwordAlreadyRequestedAction(Request $request)
     {
         $response = new Response();
         $response->setContent($this->container->get('twig')->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig'));

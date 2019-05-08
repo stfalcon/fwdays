@@ -48,7 +48,6 @@ class AppKernel extends Kernel
 
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-            new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
 
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
@@ -87,16 +86,22 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    /**
-     * Register container configuration
-     *
-     * @param LoaderInterface $loader
-     */
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
-
 
     /**
      * @return string
