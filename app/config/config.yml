@@ -132,7 +132,7 @@ fos_user:
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
-            type: application_user_profile
+            type: application_profile
             handler: application.profile.form.handler
     from_email:
         address:        orgs@fwdays.com
