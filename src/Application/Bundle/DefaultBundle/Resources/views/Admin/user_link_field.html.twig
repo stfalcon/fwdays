@@ -2,6 +2,6 @@
 
 {% block field %}
     {% if object.user  %}
-        <a href="{{ path('admin_application_user_user_edit', {'id':object.user.id}) }}">{{ object.user.fullname }}</a>
+        <a href="{{ path('admin_application_default_user_edit', {'id':object.user.id}) }}">{{ object.user.fullname }}</a>
     {% endif %}
 {% endblock %}
