@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v3
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
 cache:
     paths:
         - vendor/
@@ -83,7 +83,7 @@ phpunit:
 #
 sonar-scanner:
     stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v2
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
     only:
         - master
     <<: *build_ci

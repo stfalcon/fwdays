@@ -20,7 +20,7 @@ app/config/parameters.ini
 
 # Geo Data
 !/geodata/.gitkeep
-/geodata/GeoLiteCity.dat
+/geodata/*
 
 ###> friendsofphp/php-cs-fixer ###
 /.php_cs.cache

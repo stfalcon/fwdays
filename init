@@ -9,7 +9,6 @@ php app/console do:fi:lo --no-interaction
 php app/console assets:install web --symlink
 php app/console assetic:dump
 php app/console lexik:translations:import
-wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
 unxz geodata/GeoLiteCity.dat.xz
 npm install
 npm run gulp-dev
