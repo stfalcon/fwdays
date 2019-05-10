@@ -15,7 +15,6 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=7.1",
         "ext-imagick": "*",
         "ext-redis": "*",
         "symfony/symfony": "3.4.*",
@@ -39,12 +38,11 @@
         "sonata-project/block-bundle": "3.4.*",
         "sonata-project/core-bundle": "3.5.*",
         "sonata-project/doctrine-orm-admin-bundle": "3.1.7",
-        "jms/security-extra-bundle": "1.6.*",
         "friendsofsymfony/user-bundle": "*",
         "stof/doctrine-extensions-bundle": "1.2.*",
         "mlehner/gelf-php": "1.1.*",
         "endroid/qrcode": "1.6.*",
-        "vich/uploader-bundle": "^1.8.8",
+        "vich/uploader-bundle": "^1.9.2",
         "a2lix/translation-form-bundle": "1.x-dev",
 
         "accord/mandrill-swiftmailer-bundle": "^1.2",
@@ -89,7 +87,7 @@
         "bin-dir": "bin",
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.1"
+            "php": "7.3"
         }
     },
     "scripts": {

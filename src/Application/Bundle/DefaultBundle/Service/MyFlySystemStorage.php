@@ -18,7 +18,7 @@ class MyFlySystemStorage extends FlysystemStorage
     /**
      * {@inheritdoc}
      */
-    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name)
+    protected function doUpload(PropertyMapping $mapping, UploadedFile $file, ?string $dir, string $name): void
     {
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
@@ -29,4 +29,5 @@ class MyFlySystemStorage extends FlysystemStorage
             'mimetype' => $file->getMimeType(),
         ]);
     }
+
 }
