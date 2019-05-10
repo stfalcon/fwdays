@@ -16,3 +16,4 @@ _profiler:
 
 _main:
     resource: routing.yml
+#    type: be_simple_i18n
