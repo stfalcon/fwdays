@@ -21,6 +21,7 @@ class EmailController extends Controller
      * Unsubscribe action.
      *
      * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
+     *
      * @Template()
      *
      * @param string $hash

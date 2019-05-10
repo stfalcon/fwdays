@@ -38,6 +38,7 @@ Setup dev-env via docker and fig
 
 After it run:
 
+    $ docker login gitlab.stfalcon.com:4567
     $ docker-compose up -d
         
 After it run once for initialization:
