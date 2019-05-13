@@ -140,7 +140,7 @@ staging rollback:
 production deploy:
     stage: 'Deploy to production'
     only:
-        - master_before_path
+        - master
     image: docker:stable
     tags:
         - k8s-deploy
@@ -169,7 +169,7 @@ production deploy:
 production rollback:
     stage: 'Deploy to production'
     only:
-        - master_before_path
+        - master
     image: docker:stable
     tags:
         - k8s-deploy
