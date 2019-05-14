@@ -33,7 +33,9 @@ class ResettingController extends BaseController
     /**
      * Request reset user password: submit form and send email.
      *
-     * @return Response
+     * @param Request $request
+     *
+     * @return RedirectResponse
      */
     public function sendEmailAction(Request $request)
     {
@@ -75,12 +77,8 @@ class ResettingController extends BaseController
      * @Route("/password-already-requested", name="password_already_requested")
      *
      * @return Response
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
      */
-    public function passwordAlreadyRequestedAction(Request $request)
+    public function passwordAlreadyRequestedAction()
     {
         $response = new Response();
         $response->setContent($this->container->get('twig')->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig'));

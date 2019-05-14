@@ -18,9 +18,9 @@ use FOS\UserBundle\Model\UserInterface;
 class RegistrationController extends BaseController
 {
     /**
-     * @return mixed|RedirectResponse|Response
+     * @param Request $request
      *
-     * @throws \Twig_Error
+     * @return mixed|RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
@@ -87,7 +87,8 @@ class RegistrationController extends BaseController
     /**
      * Receive the confirmation token from user email provider, login the user.
      *
-     * @param string $token
+     * @param Request $request
+     * @param string  $token
      *
      * @return RedirectResponse
      */
@@ -113,6 +114,8 @@ class RegistrationController extends BaseController
 
     /**
      * Tell the user his account is now confirmed.
+     *
+     * @param Request $request
      *
      * @return RedirectResponse
      */

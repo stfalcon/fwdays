@@ -29,5 +29,4 @@ class MyFlySystemStorage extends FlysystemStorage
             'mimetype' => $file->getMimeType(),
         ]);
     }
-
 }

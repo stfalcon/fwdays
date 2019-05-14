@@ -92,7 +92,7 @@ class MenuBuilder
     /**
      * Login menu.
      *
-     * @param RequestStack $request
+     * @param RequestStack $requestStack
      *
      * @return \Knp\Menu\ItemInterface
      */
