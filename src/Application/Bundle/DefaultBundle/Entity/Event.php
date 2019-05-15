@@ -97,7 +97,7 @@ class Event implements Translatable
     protected $name = '';
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      *
