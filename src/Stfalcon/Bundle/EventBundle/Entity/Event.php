@@ -1349,7 +1349,7 @@ class Event implements Translatable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getSeoTitle(): ?string
     {
@@ -1357,11 +1357,11 @@ class Event implements Translatable
     }
 
     /**
-     * @param string $seoTitle
+     * @param string|null $seoTitle
      *
      * @return $this
      */
-    public function setSeoTitle(string $seoTitle): self
+    public function setSeoTitle(?string $seoTitle): self
     {
         $this->seoTitle = $seoTitle;
 
