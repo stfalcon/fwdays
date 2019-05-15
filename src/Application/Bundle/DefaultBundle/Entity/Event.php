@@ -99,7 +99,7 @@ class Event implements Translatable
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", name="seo_title", nullable=true)
      *
      * @Gedmo\Translatable(fallback=true)
      */
