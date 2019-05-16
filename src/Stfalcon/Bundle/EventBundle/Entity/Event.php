@@ -97,6 +97,15 @@ class Event implements Translatable
     protected $name = '';
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", name="seo_title", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    private $seoTitle;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -1335,6 +1344,26 @@ class Event implements Translatable
         if ($this->blocks->contains($block)) {
             $this->blocks->removeElement($block);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSeoTitle(): ?string
+    {
+        return $this->seoTitle;
+    }
+
+    /**
+     * @param string|null $seoTitle
+     *
+     * @return $this
+     */
+    public function setSeoTitle(?string $seoTitle): self
+    {
+        $this->seoTitle = $seoTitle;
 
         return $this;
     }
