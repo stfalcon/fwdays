@@ -40,10 +40,9 @@ class RegistrationController extends BaseController
             }
             $this->container->get('session')->remove('social-response');
         }
-        $formHandler = $this->container->get('fos_user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
-        $process = $fromOAuth ? false : $formHandler->process($confirmationEnabled);
+        $process = $fromOAuth ? false : $this->isGoogleCaptchaTrue($confirmationEnabled);
         if ($process) {
             $user = $form->getData();
 
@@ -153,5 +152,56 @@ class RegistrationController extends BaseController
         }
 
         return $user;
+    }
+
+    /**
+     * Перевіряєм капчу.
+     *
+     * @see https://www.google.com/recaptcha/admin#list
+     *
+     * @param string $captcha
+     *
+     * @return bool
+     */
+    private function isGoogleCaptchaTrue($captcha)
+    {
+        var_dump($this->environment);
+        exit;
+        if ('stag' === $this->environment) {
+            return true;
+        }
+
+        if (empty($captcha)) {
+            return false;
+        }
+
+        $captchaSecretKey = $this->getParameter('captchaSecretKey');
+        $captchaCheckUrl = $this->getParameter('captchaCheckUrl');
+
+        $params = [
+            'secret' => $captchaSecretKey,
+            'response' => $captcha,
+            'remoteip' => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        $response = json_decode(
+            $this->buzz->submit(
+                $captchaCheckUrl,
+                $params
+            )->getContent(),
+            true
+        );
+        if (!isset($response['success'])) {
+            $this->logger->addError('google captcha api response missing');
+
+            return false;
+        }
+        if (isset($response['error-codes'])) {
+            $this->logger->addError('google captcha api error: '.$response['error-codes'][0]);
+
+            return false;
+        }
+
+        return (bool) $response['success'];
     }
 }
