@@ -165,8 +165,6 @@ class RegistrationController extends BaseController
      */
     private function isGoogleCaptchaTrue($captcha)
     {
-        var_dump($this->environment);
-        exit;
         if ('stag' === $this->environment) {
             return true;
         }

@@ -35,7 +35,7 @@ class AppKernel extends Kernel
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-            new Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
+            new Sonata\Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
