@@ -7,7 +7,7 @@
 {% endif %}
 <!--BEGIN event-header-->
 <section class="event-header
-    {% if event.useCustomBackground == true and event.backgroundFile is not empty -%} event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
+    {% if event.useCustomBackground == true and event.background is not empty -%} event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
     {%- else -%}" style="background-color: {{ event.backgroundColor }};{%- endif -%}">
     <div class="container">
         <div class="event-header__box">
