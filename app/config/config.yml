@@ -126,7 +126,7 @@ fos_user:
     user_class: Application\Bundle\DefaultBundle\Entity\User
     registration:
         form:
-            type: application_user_registration
+            type: application_registration
         confirmation:
             enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
