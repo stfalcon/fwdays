@@ -66,7 +66,7 @@
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "~4.8",
+        "phpunit/phpunit": "*",
         "liip/functional-test-bundle": "*",
         "behat/behat": "*",
         "behat/mink": "*",
@@ -126,7 +126,7 @@
             "bin/console do:da:cr --env=test",
             "bin/console do:mi:mi --env=test --no-interaction",
             "bin/console do:fi:lo --env=test --no-interaction",
-            "bin/phpunit -c app/phpunit.xml.dist",
+            "bin/phpunit -c phpunit.xml.dist",
             "bin/console do:da:dr --force --env=test"
         ],
         "ci:static-analysis": [
@@ -137,7 +137,7 @@
             "bin/console do:da:cr --env=test",
             "bin/console do:mi:mi --env=test --no-interaction",
             "bin/console do:fi:lo --env=test --no-interaction",
-            "bin/phpunit -c app/phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml",
+            "bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml",
             "bin/console do:da:dr --force --env=test"
         ],
         "app:recreate-database": [

@@ -3,8 +3,8 @@
 /composer.phar
 
 # Symfony
-/app/bootstrap.php.cache
 /app/config/parameters.ini
+/app/config/parameters.yml
 /vendor/
 /bin/
 
