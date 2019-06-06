@@ -6,11 +6,12 @@ use Application\Bundle\DefaultBundle\Entity\Page;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Class DefaultController.
@@ -20,33 +21,27 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage", options = {"expose"=true})
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $events = $this->getDoctrine()
             ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy(['active' => true], ['date' => 'ASC']);
 
-        return ['events' => $events];
+        return $this->render('@ApplicationDefault/Default/index.html.twig', ['events' => $events]);
     }
 
     /**
      * @Route("/page/{slug}", name="page")
      *
-     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
-     *
-     * @Template()
-     *
      * @param Page $page
      *
-     * @return array
+     * @return Response
      */
-    public function pageAction(Page $page)
+    public function pageAction(Page $page): Response
     {
-        return ['page' => $page];
+        return $this->render('@ApplicationDefault/Default/page.html.twig', ['page' => $page]);
     }
 
     /**
@@ -56,7 +51,7 @@ class DefaultController extends Controller
      *
      * @return Response
      */
-    public function cabinetAction()
+    public function cabinetAction(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -95,7 +90,7 @@ class DefaultController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateUserPhoneAction($phoneNumber)
+    public function updateUserPhoneAction(string $phoneNumber): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();

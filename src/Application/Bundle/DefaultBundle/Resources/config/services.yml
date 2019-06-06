@@ -30,7 +30,6 @@ parameters:
     application.admin.payment.entity: Application\Bundle\DefaultBundle\Entity\Payment
     application.admin.payment.controller: 'SonataAdminBundle:CRUD'
     application.qr_code.class: Endroid\QrCode\QrCode
-    application.mailer_helper.class: Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper
     application.promo_code.form.type.class: Application\Bundle\DefaultBundle\Form\Type\PromoCodeFormType
     application.listener.payment.class: Application\Bundle\DefaultBundle\EventListener\PaymentListener
     application.payment_manager.class: Application\Bundle\DefaultBundle\Entity\PaymentManager
@@ -305,9 +304,16 @@ services:
         arguments: ['', '%application.admin.promo_code.entity%', '%application.admin.promo_code.controller%']
     application.qr_code:
         class: %application.qr_code.class%
+
     application.mailer_helper:
-        class: %application.mailer_helper.class%
-        arguments: ['@twig', '@doctrine.orm.entity_manager', '@router', '@mailer']
+        class: Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper
+        arguments:
+            - '@twig'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
+            - '@mailer'
+            - "@translator"
+
     application.promo_code.form.type:
         class: Application\Bundle\DefaultBundle\Form\Type\PromoCodeFormType
         tags:
@@ -367,3 +373,25 @@ services:
         factory: ['@application.menu_builder', createLoginMenu]
         arguments: ['@request_stack']
         scope: request
+
+    application.user_manager:
+        class: Application\Bundle\DefaultBundle\Model\UserManager
+        arguments:
+            - "@fos_user.util.password_updater"
+            - "@fos_user.util.canonical_fields_updater"
+            - "@fos_user.object_manager"
+            - "%fos_user.model.user.class%"
+            - "@validator"
+            - "@application.mailer_helper"
+
+    user_mail_command_service:
+        class: Application\Bundle\DefaultBundle\Command\StfalconMailerCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    application.profile.form.type:
+        class: Application\Bundle\DefaultBundle\Form\Type\ProfileFormType
+        tags:
+            - { name: form.type, alias: application_profile }
+        arguments:
+            - "%fos_user.model.user.class%"

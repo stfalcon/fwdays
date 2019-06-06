@@ -130,13 +130,13 @@ fos_user:
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
-            type: application_user_profile
+            type: application_profile
 #            handler: application.profile.form.handler
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
-#    service:
-#        user_manager: application.user_manager
+    service:
+        user_manager: application.user_manager
 
 application_default:
     wayforpay:

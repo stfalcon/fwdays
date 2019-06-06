@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <!--<parameter key="application.user_manager.class">Application\Bundle\DefaultBundle\Model\UserManager</parameter>-->
+
         <parameter key="application.user_login.listener.class">Application\Bundle\DefaultBundle\EventListener\UserLoginListener</parameter>
     </parameters>
     <services>
@@ -25,10 +25,7 @@
         <!--</service>-->
 
         <!-- profile form type -->
-        <!--<service id="application.profile.form.type" class="Application\Bundle\DefaultBundle\Form\Type\ProfileFormType">-->
-            <!--<tag name="form.type" alias="application_profile" />-->
-            <!--<argument>%fos_user.model.user.class%</argument>-->
-        <!--</service>-->
+
         <!-- profile form handler -->
         <!--<service id="application.profile.form.handler" class="Application\Bundle\DefaultBundle\Form\Handler\ProfileFormHandler" scope="request" public="false">-->
             <!--<argument type="service" id="fos_user.profile.form" />-->
@@ -36,19 +33,6 @@
             <!--<argument type="service" id="fos_user.user_manager" />-->
         <!--</service>-->
 
-        <!--<service id="application.user_manager" class="%application.user_manager.class%">-->
-            <!--<argument type="service" id="security.encoder_factory" />-->
-            <!--<argument type="service" id="fos_user.util.username_canonicalizer" />-->
-            <!--<argument type="service" id="fos_user.util.email_canonicalizer" />-->
-            <!--<argument type="service" id="fos_user.entity_manager" />-->
-            <!--<argument>%fos_user.model.user.class%</argument>-->
-            <!--<argument type="service" id="service_container" />-->
-        <!--</service>-->
 
-        <service id="user_mail_command_service" class="Application\Bundle\DefaultBundle\Command\StfalconMailerCommand">
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
-        </service>
     </services>
 </container>

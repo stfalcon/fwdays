@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
- *     message="Slug has to contin unique value."
+ *     message="Поле slug повинне бути унікальне."
  * )
  * @Gedmo\TranslationEntity(class="Application\Bundle\DefaultBundle\Entity\Translation\PageTranslation")
  */
@@ -51,7 +51,7 @@ class Page extends AbstractPage implements Translatable
     /**
      * @return bool
      */
-    public function isShowInFooter()
+    public function isShowInFooter(): bool
     {
         return $this->showInFooter;
     }
@@ -61,7 +61,7 @@ class Page extends AbstractPage implements Translatable
      *
      * @return $this
      */
-    public function setShowInFooter($showInFooter)
+    public function setShowInFooter($showInFooter): self
     {
         $this->showInFooter = $showInFooter;
 
