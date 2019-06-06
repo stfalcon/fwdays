@@ -2,20 +2,26 @@
 
 namespace Application\Bundle\DefaultBundle\Form\Type;
 
-use Application\Bundle\DefaultBundle\Entity\User;
-use FOS\UserBundle\Form\Type\ProfileFormType as BaseProfileFormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use FOS\UserBundle\Form\Type\ProfileFormType as FosProfileFormType;
 
 /**
  * ProfileFormType.
  */
-class ProfileFormType extends BaseProfileFormType
+class ProfileFormType extends FosProfileFormType
 {
+    /**
+     * @param string $class
+     */
+    public function __construct(string $class)
+    {
+        parent::__construct($class);
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -65,24 +71,5 @@ class ProfileFormType extends BaseProfileFormType
                 'label' => 'fos_user_profile_form_subscribe',
                 'translation_domain' => 'FOSUserBundle',
             ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults(array(
-            'data_class' => User::class,
-            'intention' => 'profile',
-        ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return 'application_profile';
     }
 }

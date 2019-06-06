@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Controller\ProfileController as BaseController;
 
 /**
  * Class ProfileController.
  */
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
     /**
      * Show the user.

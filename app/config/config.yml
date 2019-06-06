@@ -130,8 +130,7 @@ fos_user:
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
-            type: application_profile
-#            handler: application.profile.form.handler
+            type: Application\Bundle\DefaultBundle\Form\Type\ProfileFormType
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
