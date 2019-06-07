@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -32,18 +33,14 @@ class TicketFormType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'csrf_protection' => true,
-                'csrf_field_name' => '_token',
-                'intention' => 'event_ticket_intention',
-            ]
-        );
+        $resolver->setDefaults([
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'intention' => 'event_ticket_intention',
+        ]);
     }
 
     /**

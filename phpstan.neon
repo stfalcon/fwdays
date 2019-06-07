@@ -36,14 +36,12 @@ parameters:
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Admin/EventGroupAdmin.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Admin/EventGroupAdmin.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Admin/MailAdmin.php'
-        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Features/Context/MinkRedirectContext.php'
-        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Features/Context/FeatureContext.php'
-        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Features/Context/UserFeatureContext.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Handler/LoginHandler.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Command/StfalconMailerCommand.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Repository/TicketRepository.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Repository/EventRepository.php'
         - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Repository/MailQueueRepository.php'
+        - '%rootDir%/../../../src/Application/Bundle/DefaultBundle/Features/*'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false

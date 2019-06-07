@@ -161,6 +161,8 @@
             "@ci:twig-lint",
             "@ci:yaml-lint",
             "@ci:code-style",
+            "@ci:code-style-fixer",
+            "@ci:static-analysis",
             "@ci:phpunit"
         ]
     },
