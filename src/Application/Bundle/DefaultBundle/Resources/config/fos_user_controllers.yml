@@ -8,11 +8,6 @@ services:
             - "@fos_user.registration.form.factory"
             - "@fos_user.user_manager"
             - "@security.token_storage"
-            - "@session"
-            - "@validator"
-            - "@buzz"
-            - "@logger"
-            - "%google_captcha_secret_key%"
 
         calls:
             - [setContainer, ["@service_container"]]

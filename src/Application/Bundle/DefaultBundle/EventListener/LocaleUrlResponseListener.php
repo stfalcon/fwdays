@@ -20,39 +20,26 @@ use Symfony\Component\Routing\Router;
 class LocaleUrlResponseListener
 {
     private const UKRAINE_COUNTRY_CODE = 'UA';
-
     private $defaultLocale;
-
     private $locales;
-
     private $cookieName;
-
-    /** @var I18nRouter */
     private $routerService;
-
     private $geoIpService;
 
-    /** @var Logger */
-    private $logger;
-
     /**
-     * LocaleUrlResponseListener constructor.
-     *
      * @param string       $defaultLocale
      * @param array        $locales
      * @param string       $cookieName
-     * @param Router       $routerService
+     * @param I18nRouter   $routerService
      * @param GeoipManager $geoIpService
-     * @param Logger       $logger
      */
-    public function __construct($defaultLocale, array $locales, $cookieName, $routerService, $geoIpService, $logger)
+    public function __construct(string $defaultLocale, array $locales, string $cookieName, I18nRouter $routerService, GeoipManager $geoIpService)
     {
         $this->defaultLocale = $defaultLocale;
         $this->locales = $locales;
         $this->cookieName = $cookieName;
         $this->routerService = $routerService;
         $this->geoIpService = $geoIpService;
-        $this->logger = $logger;
     }
 
     /**

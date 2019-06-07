@@ -91,9 +91,9 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
      *
      * @param string $filename
      *
-     * @return UploadedFile
+     * @return UploadedFile|null
      */
-    private function generateUploadedFile($filename)
+    private function generateUploadedFile($filename): ?UploadedFile
     {
         $fullPath = realpath($this->getKernelDir().'/../web/assets/img/partners/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'sponsor');

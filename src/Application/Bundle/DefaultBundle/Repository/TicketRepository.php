@@ -2,10 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * TicketRepository.
@@ -76,14 +78,12 @@ class TicketRepository extends EntityRepository
     }
 
     /**
-     * Find users by event and status.
+     * @param ArrayCollection $events
+     * @param string|null     $status
      *
-     * @param array $events Events
-     * @param null  $status Status
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function findUsersByEventsAndStatusQueryBuilder($events = null, $status = null)
+    public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, ?string $status = null): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -92,9 +92,6 @@ class TicketRepository extends EntityRepository
             ->from('ApplicationDefaultBundle:Ticket', 't')
             ->join('t.user', 'u')
             ->join('t.event', 'e')
-            //@todo hot fix необходимо сделать рассылку для предыдущих ивентов
-            //->andWhere('e.active = :eventStatus')
-            //->setParameter(':eventStatus', true)
             ->groupBy('u');
 
         if (null !== $events) {
@@ -102,9 +99,9 @@ class TicketRepository extends EntityRepository
                 ->setParameter(':events', $events->toArray());
         }
         if (null !== $status) {
-            $statusOr = $qb->expr()->orX('p.status = :status');
-            if ('pending' == $status) {
-                $statusOr->add('p.status IS NULL');
+            $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
+            if ('pending' === $status) {
+                $statusOr->add($qb->expr()->isNull('p.status'));
             }
             $qb->leftJoin('t.payment', 'p')
                 ->andWhere($statusOr)
@@ -117,12 +114,12 @@ class TicketRepository extends EntityRepository
     /**
      * Find users by event and status.
      *
-     * @param array $events Events
-     * @param null  $status Status
+     * @param ArrayCollection $events
+     * @param string|null     $status
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return array
      */
-    public function findUsersSubscribedByEventsAndStatus($events = null, $status = null)
+    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, ?string $status = null): array
     {
         $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $status);
         $qb->andWhere('u.subscribe = 1');
@@ -130,25 +127,6 @@ class TicketRepository extends EntityRepository
         $users = [];
 
         foreach ($qb->getQuery()->execute() as $result) {
-            $users[] = $result->getUser();
-        }
-
-        return $users;
-    }
-
-    /**
-     * Find users by event and status.
-     *
-     * @param array $events Events
-     * @param null  $status Status
-     *
-     * @return array
-     */
-    public function findUsersByEventsAndStatus($events = null, $status = null)
-    {
-        $users = [];
-
-        foreach ($this->findUsersByEventsAndStatusQueryBuilder($events, $status)->getQuery()->execute() as $result) {
             $users[] = $result->getUser();
         }
 

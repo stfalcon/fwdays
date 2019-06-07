@@ -8,32 +8,28 @@ use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class CandidateSpeakersEventBlockService.
  */
 class CandidateSpeakersEventBlockService extends AbstractBlockService
 {
-    /** @var IdentityTranslator */
     private $translator;
-
-    /** @var ReviewRepository */
     private $reviewRepository;
 
     /**
      * SpeakersEventBlockService constructor.
      *
-     * @param string              $name
-     * @param EngineInterface     $templating
-     * @param TranslatorInterface $translator
-     * @param ObjectRepository    $reviewRepository
+     * @param string           $name
+     * @param EngineInterface  $templating
+     * @param Translator       $translator
+     * @param ObjectRepository $reviewRepository
      */
-    public function __construct($name, EngineInterface $templating, TranslatorInterface $translator, ObjectRepository $reviewRepository)
+    public function __construct($name, EngineInterface $templating, Translator $translator, ReviewRepository $reviewRepository)
     {
         parent::__construct($name, $templating);
 

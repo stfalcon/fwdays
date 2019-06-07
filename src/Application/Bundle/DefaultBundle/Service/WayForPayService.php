@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,20 +22,11 @@ class WayForPayService
 {
     /** @var mixed */
     protected $stfalconConfig;
-
-    /** @var Translator */
     protected $translator;
-
-    /** @var string */
     protected $locale;
-
-    /** @var Router */
     protected $router;
-
-    /** @var TokenStorageInterface */
     protected $securityToken;
-
-    /** @var RequestStack */
+/** @var Request|null */
     protected $request;
 
     /** @var EntityManager */
@@ -48,7 +40,7 @@ class WayForPayService
      * @param TokenStorageInterface $securityToken
      * @param EntityManager         $em
      */
-    public function __construct($stfalconConfig, $translator, $requestStack, $router, $securityToken, $em)
+    public function __construct($stfalconConfig, Translator $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em)
     {
         $this->stfalconConfig = $stfalconConfig;
         $this->translator = $translator;

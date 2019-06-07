@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
-use Buzz\Browser;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -15,22 +14,18 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class RegistrationController.
  */
 class RegistrationController extends BaseController
 {
-    private $captchaSecretKey;
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
     private $eventDispatcher;
@@ -46,21 +41,17 @@ class RegistrationController extends BaseController
      * @param FactoryInterface         $formFactory
      * @param UserManagerInterface     $userManager
      * @param TokenStorageInterface    $tokenStorage
-     * @param Session                  $session
-     * @param ValidatorInterface       $validator
-     * @param Browser                  $buzz
-     * @param DebugLoggerInterface     $logger
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage, Session $session, ValidatorInterface $validator, Browser $buzz, DebugLoggerInterface $logger)
+    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage)
     {
         parent::__construct($eventDispatcher, $formFactory, $userManager, $tokenStorage);
         $this->eventDispatcher = $eventDispatcher;
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
-        $this->session = $session;
-        $this->validator = $validator;
-        $this->buzz = $buzz;
-        $this->logger = $logger;
+        $this->session = $this->get('session');
+        $this->validator = $this->get('validator');
+        $this->buzz = $this->get('buzz');
+        $this->logger = $this->get('logger');
     }
 
     /**

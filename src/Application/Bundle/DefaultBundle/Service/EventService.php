@@ -19,27 +19,18 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class EventService
 {
-    /** @var EventRepository */
     private $eventRepository;
-
-    /** @var TicketCostRepository */
     private $ticketCostRepository;
-
-    /** @var ReviewRepository */
     private $reviewRepository;
-
-    /** @var AuthorizationChecker */
     private $authorizationChecker;
 
     /**
-     * EventService constructor.
-     *
-     * @param ObjectRepository              $eventRepository
-     * @param ObjectRepository              $ticketCostRepository
-     * @param ObjectRepository              $reviewRepository
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param EventRepository      $eventRepository
+     * @param TicketCostRepository $ticketCostRepository
+     * @param ReviewRepository     $reviewRepository
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(ObjectRepository $eventRepository, ObjectRepository $ticketCostRepository, ObjectRepository $reviewRepository, AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(EventRepository $eventRepository, TicketCostRepository $ticketCostRepository, ReviewRepository $reviewRepository, AuthorizationChecker $authorizationChecker)
     {
         $this->eventRepository = $eventRepository;
         $this->ticketCostRepository = $ticketCostRepository;

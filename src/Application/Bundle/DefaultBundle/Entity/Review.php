@@ -37,7 +37,7 @@ class Review extends AbstractPage implements Translatable
     private $translations;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
@@ -45,7 +45,7 @@ class Review extends AbstractPage implements Translatable
     private $event;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Speaker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews")
      * @ORM\JoinTable(name="event__speakers_reviews",
@@ -88,7 +88,7 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Event
      */
     public function getEvent()
     {

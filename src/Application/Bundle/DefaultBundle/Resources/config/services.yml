@@ -79,7 +79,7 @@ services:
         class: Application\Bundle\DefaultBundle\Service\WayForPayService
         arguments:
             - "%application_default.config%"
-            - "@translator"
+            - "@translator.default"
             - "@request_stack"
             - "@router"
             - "@security.token_storage"
@@ -119,21 +119,24 @@ services:
             - {facebook: facebookID, google: googleID}
             - "@service_container"
 
-
     application.payment.service:
         class: Application\Bundle\DefaultBundle\Service\PaymentService
         arguments: ['@service_container']
+
     application.referral.service:
         class: Application\Bundle\DefaultBundle\Service\ReferralService
         arguments: ['@service_container']
+
     sonata.block.service.statistic:
         class: Application\Bundle\DefaultBundle\Service\StatisticBlockService
         tags:
             - { name: sonata.block }
         arguments: [sonata.block.service.statistic, '@templating']
+
     application.menu_builder:
         class: Application\Bundle\DefaultBundle\Menu\MenuBuilder
         arguments: ['@knp_menu.factory', '@translator', '%jms_i18n_routing.locales%', '@security.token_storage', '@mobile_detect.mobile_detector']
+
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
@@ -143,10 +146,17 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 128 }
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 128 }
-        arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%', '%jms_i18n_routing.cookie.name%', '@router', '@maxmind.geoip', '@logger']
+        arguments:
+            - '%jms_i18n_routing.default_locale%'
+            - '%jms_i18n_routing.locales%'
+            - '%jms_i18n_routing.cookie.name%'
+            - '@router'
+            - '@maxmind.geoip'
+
     application.sonata.locales.required:
         class: Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService
         arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
+
     app_liip_cache_resolve_command:
         class: Application\Bundle\DefaultBundle\Command\AppResolveLiipCacheCommand
         calls:
@@ -155,9 +165,11 @@ services:
     sonata.admin.menu.matcher.voter.children:
         class: Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter
         arguments: ['@knp_menu.matcher']
+
     vich_uploader.my_storage.flysystem:
         class: Application\Bundle\DefaultBundle\Service\MyFlySystemStorage
         arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
+
     liip_imagine.cache.resolver.prototype.flysystem:
         class: Application\Bundle\DefaultBundle\Service\MyFlySystemResolver
         arguments: ['', '@router.request_context', '', '', '']

@@ -23,11 +23,11 @@ class PricesEventBlockService extends AbstractBlockService
     /**
      * PricesEventBlockService constructor.
      *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param ObjectRepository $ticketCostRepository
+     * @param string               $name
+     * @param EngineInterface      $templating
+     * @param TicketCostRepository $ticketCostRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $ticketCostRepository)
+    public function __construct($name, EngineInterface $templating, TicketCostRepository $ticketCostRepository)
     {
         parent::__construct($name, $templating);
 

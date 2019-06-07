@@ -21,11 +21,11 @@ class FooterBlockService extends AbstractBlockService
     /**
      * ProgramEventBlockService constructor.
      *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param ObjectRepository $pageRepository
+     * @param string          $name
+     * @param EngineInterface $templating
+     * @param PageRepository  $pageRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $pageRepository)
+    public function __construct($name, EngineInterface $templating, PageRepository $pageRepository)
     {
         parent::__construct($name, $templating);
 

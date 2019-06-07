@@ -27,12 +27,12 @@ class PartnersEventBlockService extends AbstractBlockService
     /**
      * PartnersEventBlockService constructor.
      *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param ObjectRepository $partnerRepository
-     * @param ObjectRepository $partnerCategoryRepository
+     * @param string             $name
+     * @param EngineInterface    $templating
+     * @param SponsorRepository  $partnerRepository
+     * @param CategoryRepository $partnerCategoryRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $partnerRepository, ObjectRepository $partnerCategoryRepository)
+    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, CategoryRepository $partnerCategoryRepository)
     {
         parent::__construct($name, $templating);
 

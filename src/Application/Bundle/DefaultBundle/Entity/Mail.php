@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -37,7 +38,7 @@ class Mail
     protected $text;
 
     /**
-     * @var Event[]
+     * @var Event[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
@@ -45,7 +46,7 @@ class Mail
     protected $events;
 
     /**
-     * @var EventAudience[]
+     * @var EventAudience[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\EventAudience")
      * @ORM\JoinColumn(name="audience_id", referencedColumnName="id", onDelete="CASCADE")
@@ -104,7 +105,7 @@ class Mail
     protected $openMessagesCount = 0;
 
     /**
-     * @var array
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="MailQueue", mappedBy="mail", cascade={"remove", "persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
@@ -366,7 +367,7 @@ class Mail
     }
 
     /**
-     * @return Event[]|ArrayCollection
+     * @return Event[]|Collection
      */
     public function getEvents()
     {
@@ -374,7 +375,7 @@ class Mail
     }
 
     /**
-     * @param ArrayCollection $events
+     * @param Collection $events
      */
     public function setEvents($events)
     {
@@ -488,7 +489,7 @@ class Mail
     /**
      * Get mailQueues.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getMailQueues()
     {
@@ -496,7 +497,7 @@ class Mail
     }
 
     /**
-     * @return EventAudience[]|ArrayCollection
+     * @return EventAudience[]|Collection
      */
     public function getAudiences()
     {
@@ -504,7 +505,7 @@ class Mail
     }
 
     /**
-     * @param EventAudience[]|ArrayCollection $audiences
+     * @param EventAudience[]|Collection $audiences
      *
      * @return $this
      */

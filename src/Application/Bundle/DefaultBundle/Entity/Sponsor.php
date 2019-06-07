@@ -83,7 +83,7 @@ class Sponsor implements Translatable
     protected $about;
 
     /**
-     * @var resource
+     * @var File
      *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image(minHeight=150, minWidth=280)
@@ -233,7 +233,7 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @return resource
+     * @return File
      */
     public function getFile()
     {
