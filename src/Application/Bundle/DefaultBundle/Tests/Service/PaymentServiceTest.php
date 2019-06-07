@@ -68,7 +68,6 @@ class PaymentServiceTest extends WebTestCase
      */
     public function testPayByFwdaysAmount()
     {
-//        $this->markTestSkipped();
         $fwdaysAmount = 3000;
 
         /** @var User $user */
