@@ -4,7 +4,7 @@ ApplicationDefaultBundle:
     prefix:   /
 
 admin:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    resource: '@ApplicationDefaultBundle/Resources/config/sonata_admin.xml'
     prefix: /admin
     options:
         i18n: false

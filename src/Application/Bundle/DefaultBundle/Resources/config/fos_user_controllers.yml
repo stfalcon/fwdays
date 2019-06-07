@@ -1,0 +1,18 @@
+services:
+
+    fos_user.registration.controller:
+        class: Application\Bundle\DefaultBundle\Controller\RegistrationController
+        public: true
+        arguments:
+            - "@event_dispatcher"
+            - "@fos_user.registration.form.factory"
+            - "@fos_user.user_manager"
+            - "@security.token_storage"
+            - "@session"
+            - "@validator"
+            - "@buzz"
+            - "@logger"
+            - "%google_captcha_secret_key%"
+
+        calls:
+            - [setContainer, ["@service_container"]]

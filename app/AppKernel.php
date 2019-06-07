@@ -36,19 +36,15 @@ class AppKernel extends Kernel
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-            new Sonata\Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
-            new Sonata\IntlBundle\SonataIntlBundle(),
-            new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-
-            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
+            new Sonata\Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle(),
 
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),
 
@@ -57,7 +53,9 @@ class AppKernel extends Kernel
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
 
@@ -67,13 +65,14 @@ class AppKernel extends Kernel
             new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
 
+            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
         );
 
         if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {
             $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

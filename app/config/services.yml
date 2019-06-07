@@ -1,7 +1,6 @@
 imports:
     - { resource: "@ApplicationDefaultBundle/Resources/config/admin.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
-    - { resource: "@ApplicationDefaultBundle/Resources/config/services.xml" }
 
 services:
     monolog.processor.added_host:

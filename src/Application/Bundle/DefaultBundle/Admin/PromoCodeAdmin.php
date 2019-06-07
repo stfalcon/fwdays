@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -49,7 +50,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ];
         $formMapper
             ->with('Переводы')
-                ->add('translations', 'a2lix_translations_gedmo', [
+                ->add('translations', MyGedmoTranslationsType::class, [
                     'label' => 'Переводы',
                     'translatable_class' => $this->getClass(),
                     'fields' => [

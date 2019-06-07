@@ -27,9 +27,8 @@ class ApplicationDefaultExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('event_blocks.yml');
         $loader->load('repositories.yml');
-
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        // @todo винести адмінку в окремий конфіг
-        $loader->load('services.xml');
+        $loader->load('fos_user_controllers.yml');
+        $loader->load('listeners.yml');
+        $loader->load('gedmo.yml');
     }
 }

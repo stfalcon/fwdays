@@ -15,8 +15,10 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
+        "php": "^7.1.3",
         "ext-imagick": "*",
         "ext-redis": "*",
+        "ext-json": "*",
         "symfony/symfony": "^3.4.27",
         "symfony/assetic-bundle": "^2.8.2",
         "symfony/swiftmailer-bundle": "^2.6.7",
@@ -32,25 +34,25 @@
         "twig/twig": "^2.10.0",
         "sensio/framework-extra-bundle": "^5.0.0",
         "sensio/generator-bundle": "^3.0",
-        "sensio/buzz-bundle": "^1.1.0",
-        "sonata-project/admin-bundle": "^3.23.0",
-        "sonata-project/intl-bundle": "^2.3.2",
+
+        "sonata-project/admin-bundle": "^3.49.0",
+        "sonata-project/intl-bundle": "^2.6",
         "sonata-project/block-bundle": "^3.4.0",
         "sonata-project/core-bundle": "^3.5.1",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.1.7",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.9",
+
         "friendsofsymfony/user-bundle": "^2.1.2",
         "stof/doctrine-extensions-bundle": "^1.2.2",
         "mlehner/gelf-php": "^1.1.0",
         "endroid/qrcode": "^1.6.6",
         "vich/uploader-bundle": "^1.9.2",
         "a2lix/translation-form-bundle": "1.x-dev",
+        "ibrows/sonata-translation-bundle": "^1.1",
 
         "accord/mandrill-swiftmailer-bundle": "^1.2",
-        "ibrows/sonata-translation-bundle": "^1.1",
         "jms/i18n-routing-bundle": "^2.0",
         "gedmo/doctrine-extensions": "^2.4",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "hwi/oauth-bundle": "^0.5.3",
         "suncat/mobile-detect-bundle": "^1.1.1",
         "liip/imagine-bundle": "^1.9.1",
         "sentry/sentry-symfony": "^1.0.3",
@@ -63,7 +65,10 @@
         "predis/predis": "^1.1.1",
         "cmen/google-charts-bundle": "^3.1.0",
         "beberlei/doctrineextensions": "^1.2",
-        "egulias/email-validator": "^2.1"
+        "egulias/email-validator": "^2.1",
+        "sensio/buzz-bundle": "1.0.*",
+        "kriswallsmith/buzz": "v0.16.1",
+        "hwi/oauth-bundle": "^0.5.3"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^3.0",
@@ -91,7 +96,8 @@
         "optimize-autoloader": true,
         "platform": {
             "php": "7.3"
-        }
+        },
+        "sort-packages": true
     },
     "scripts": {
         "scripts": {

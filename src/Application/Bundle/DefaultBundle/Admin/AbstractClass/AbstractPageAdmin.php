@@ -36,7 +36,7 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-                ->add('translations', 'a2lix_translations_gedmo', [
+                ->add('translations', MyGedmoTranslationsType::class, [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [

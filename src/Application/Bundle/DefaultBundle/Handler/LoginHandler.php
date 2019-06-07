@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Model\UserManager;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,9 +94,9 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         $referrer = $request->headers->get('referer');
 
         $session = $request->getSession();
-        if ($session->has('request_params')) {
+        if ($session instanceof SessionInterface && $session->has('request_params')) {
             $requestParams = $session->get('request_params');
-            $request->getSession()->remove('request_params');
+            $session->remove('request_params');
 
             if ($request->query->has('exception_login') || $request->cookies->has('bye-event')) {
                 $url = $this->urlForRedirectService->getRedirectUrl($referrer, $request->getHost());

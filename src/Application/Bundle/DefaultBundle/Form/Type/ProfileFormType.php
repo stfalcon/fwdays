@@ -15,14 +15,6 @@ use FOS\UserBundle\Form\Type\ProfileFormType as FosProfileFormType;
 class ProfileFormType extends FosProfileFormType
 {
     /**
-     * @param string $class
-     */
-    public function __construct(string $class)
-    {
-        parent::__construct($class);
-    }
-
-    /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */

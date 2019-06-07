@@ -80,6 +80,20 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/password-already-requested", name="password_already_requested")
+     *
+     * @return Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function passwordAlreadyRequestedAction(): Response
+    {
+        return $this->render('FOSUserBundle:Resetting:password_already_requested.html.twig');
+    }
+
+    /**
      * @Route(path="/update-user-phone/{phoneNumber}", name="update_user_phone",
      *     methods={"POST"},
      *     options = {"expose"=true},
