@@ -135,6 +135,10 @@ class EventAdmin extends AbstractTranslateAdmin
                                 'label' => 'Название',
                                 'locale_options' => $localOptions,
                             ],
+                            'seoTitle' => [
+                                'label' => 'Seo Title',
+                                'locale_options' => $localAllFalse,
+                            ],
                             'city' => [
                                 'label' => 'Город',
                                 'locale_options' => $localOptions,

@@ -1,6 +1,14 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
-{% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+{% block title %}
+    {% if event.seoTitle is not null %}
+        {{ event.seoTitle }}
+    {% elseif event.name is not null %}
+        {{ event.name }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock title %}
 
 {% block meta_description %}
     {% if event.metaDescription is not null %}
