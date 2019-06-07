@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class ApplicationDefaultBundle extends Bundle
 {
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getParent()
     {

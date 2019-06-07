@@ -177,7 +177,7 @@ class LocaleUrlResponseListener
     /**
      * @param Request $request
      *
-     * @return null|string
+     * @return string|null
      */
     private function getRealIpAddr($request)
     {

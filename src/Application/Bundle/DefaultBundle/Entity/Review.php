@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Application\Bundle\DefaultBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;

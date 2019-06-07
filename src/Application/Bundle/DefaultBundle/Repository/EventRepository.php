@@ -38,7 +38,7 @@ class EventRepository extends EntityRepository
     /**
      * @param EventGroup $eventGroup
      *
-     * @return null|Event
+     * @return Event|null
      */
     public function findFutureEventFromSameGroup(EventGroup $eventGroup)
     {

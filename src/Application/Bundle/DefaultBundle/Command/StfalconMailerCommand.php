@@ -30,7 +30,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int|void|null
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */

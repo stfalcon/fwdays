@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\EventSponsor.

@@ -128,7 +128,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         Assert::assertFalse($user->isSubscribe());
     }
 
-
     /**
      * Check that some element contains image from some source.
      *

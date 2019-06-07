@@ -120,7 +120,7 @@ class PaymentService
      *
      * @param Payment $payment
      *
-     * @return null|PromoCode
+     * @return PromoCode|null
      */
     public function getPromoCodeFromPaymentTickets($payment)
     {

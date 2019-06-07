@@ -26,7 +26,7 @@ class EventBlockTypeTextValidator extends ConstraintValidator
         }
 
         if ($entity instanceof EventBlock) {
-            if ($entity->getType() === EventBlock::HTML_TEXT && (null === $entity->getText() || '' === $entity->getText())) {
+            if (EventBlock::HTML_TEXT === $entity->getType() && (null === $entity->getText() || '' === $entity->getText())) {
                 $this->context
                     ->buildViolation($constraint->message)
                     ->atPath('text')
