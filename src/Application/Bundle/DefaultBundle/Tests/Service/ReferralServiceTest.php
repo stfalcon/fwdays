@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -66,7 +67,7 @@ class ReferralServiceTest extends WebTestCase
      */
     public function testReferralGetAmount()
     {
-        $this->markTestSkipped();
+//        $this->markTestSkipped();
         $fwdaysAmount = 300;
 
         /** @var User $userReferral */
@@ -77,7 +78,7 @@ class ReferralServiceTest extends WebTestCase
         $user->setUserReferral($userReferral);
 
         /** @var Event $event */
-        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'zend-day-2017']);
         /** @var TicketRepository $ticketRepository */
         $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */

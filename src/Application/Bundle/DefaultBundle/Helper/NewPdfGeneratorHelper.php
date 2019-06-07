@@ -145,8 +145,16 @@ class NewPdfGeneratorHelper
         }
 
         $base64EventSmallLogo = base64_encode($imageData);
-        $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
-        $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
+        try {
+            $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
+        } catch (\Exception $e) {
+            $base64CircleLeftImg = '';
+        }
+        try {
+            $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
+        } catch (\Exception $e) {
+            $base64CircleRightImg = '';
+        }
 
         $body = $templateContent->render(
             [

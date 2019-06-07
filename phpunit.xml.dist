@@ -10,23 +10,25 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="KERNEL_DIR" value="app/" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>./src/*/Bundle/*Bundle/Tests</directory>
+            <directory>src/*/Bundle/*Bundle/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">src</directory>
             <exclude>
-                <directory>./src/*/Bundle/*Bundle/Resources</directory>
-                <directory>./src/*/Bundle/*Bundle/Tests</directory>
-                <directory>./src/*/Bundle/*Bundle/DataFixtures</directory>
-                <directory>./src/*/Bundle/*Bundle/Repository</directory>
-                <directory>./src/*/Bundle/*Bundle/Features</directory>
+                <directory>src/*/Bundle/*Bundle/Resources</directory>
+                <directory>src/*/Bundle/*Bundle/Tests</directory>
+                <directory>src/*/Bundle/*Bundle/DataFixtures</directory>
+                <directory>src/*/Bundle/*Bundle/Repository</directory>
+                <directory>src/*/Bundle/*Bundle/Features</directory>
             </exclude>
         </whitelist>
     </filter>
