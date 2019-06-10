@@ -78,6 +78,8 @@ phpunit:
         reports:
             junit: './junit.xml'
     services:
+        - name: jekakm/mysql-core:201902201
+          alias: fwdays-php73-mysql
         - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-ci:v1
           alias: minio
           variables:
