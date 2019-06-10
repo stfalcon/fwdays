@@ -211,7 +211,7 @@ class Mail
      */
     public function __toString()
     {
-        return (string) $this->getTitle() ?: '';
+        return $this->getTitle() ?: '';
     }
 
     /**
@@ -337,33 +337,41 @@ class Mail
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
      * @param string $title
+     *
+     * @return $this
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
     /**
      * @param string $text
+     *
+     * @return $this
      */
-    public function setText($text)
+    public function setText($text): self
     {
         $this->text = $text;
+
+        return $this;
     }
 
     /**
@@ -376,10 +384,14 @@ class Mail
 
     /**
      * @param Collection $events
+     *
+     * @return $this
      */
-    public function setEvents($events)
+    public function setEvents($events): self
     {
         $this->events = $events;
+
+        return $this;
     }
 
     /**

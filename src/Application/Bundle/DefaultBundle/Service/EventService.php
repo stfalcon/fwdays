@@ -39,12 +39,12 @@ class EventService
     }
 
     /**
-     * @param Event $event
-     * @param null  $reviewSlug
+     * @param Event       $event
+     * @param string|null $reviewSlug
      *
      * @return array
      */
-    public function getEventPages(Event $event, $reviewSlug = null)
+    public function getEventPages(Event $event, ?string $reviewSlug = null)
     {
         if ($event->isAdminOnly() && !$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             throw new NotFoundHttpException(sprintf('Unable to find event by slug: %s', $event->getSlug()));
@@ -97,7 +97,7 @@ class EventService
      *
      * @return array
      */
-    public function getEventPagesArr($eventSlug, $reviewSlug = null)
+    public function getEventPagesArr($eventSlug, ?string $reviewSlug = null): array
     {
         /** @var Event $event */
         $event = $this->eventRepository->findOneBy(['slug' => $eventSlug]);

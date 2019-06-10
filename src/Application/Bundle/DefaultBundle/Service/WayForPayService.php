@@ -114,7 +114,7 @@ class WayForPayService
     public function checkPayment(Payment $payment, array $response)
     {
         if ($this->stfalconConfig['wayforpay']['shop_id'] === $this->getArrMean($response['merchantAccount']) &&
-            (float) $this->getArrMean($response['amount']) === (float) $payment->getAmount() &&
+            (float) $this->getArrMean($response['amount']) === $payment->getAmount() &&
             'Approved' === $this->getArrMean($response['transactionStatus'])
         ) {
             $params = [

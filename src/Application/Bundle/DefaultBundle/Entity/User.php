@@ -268,24 +268,6 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getPlainPassword()
-    {
-        return parent::getPlainPassword();
-    }
-
-    /**
-     * @param string $plainPassword
-     *
-     * @return $this
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        return parent::setPlainPassword($plainPassword);
-    }
-
-    /**
-     * @return string
-     */
     public function getFacebookID()
     {
         return $this->facebookID;
@@ -552,9 +534,9 @@ class User extends BaseUser
      *
      * @return bool
      */
-    public function isSubscribe()
+    public function isSubscribe(): bool
     {
-        return (bool) $this->subscribe;
+        return $this->subscribe;
     }
 
     /**
@@ -564,9 +546,9 @@ class User extends BaseUser
      *
      * @return $this
      */
-    public function setSubscribe($subscribe)
+    public function setSubscribe(bool $subscribe): self
     {
-        $this->subscribe = (bool) $subscribe;
+        $this->subscribe = $subscribe;
 
         return $this;
     }

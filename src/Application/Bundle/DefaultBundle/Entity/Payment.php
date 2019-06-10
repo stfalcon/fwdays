@@ -242,7 +242,7 @@ class Payment
      *
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }

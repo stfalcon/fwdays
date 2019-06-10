@@ -60,7 +60,7 @@ class DefaultController extends Controller
             ->getRepository('ApplicationDefaultBundle:Event');
 
         $userActiveEvents = $eventRepository
-            ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
+            ->getSortedUserWannaVisitEventsByActive($user);
 
         $userPastEvents = $eventRepository
             ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');

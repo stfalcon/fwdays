@@ -313,7 +313,7 @@ class Ticket
     /**
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
@@ -333,17 +333,17 @@ class Ticket
     /**
      * @return float
      */
-    public function getAmountWithoutDiscount()
+    public function getAmountWithoutDiscount(): float
     {
         return $this->amountWithoutDiscount;
     }
 
     /**
-     * @param \Application\Bundle\DefaultBundle\Entity\PromoCode $promoCode
+     * @param PromoCode|null $promoCode
      *
      * @return $this
      */
-    public function setPromoCode($promoCode)
+    public function setPromoCode(?PromoCode $promoCode): self
     {
         $this->promoCode = $promoCode;
 
@@ -351,9 +351,9 @@ class Ticket
     }
 
     /**
-     * @return \Application\Bundle\DefaultBundle\Entity\PromoCode
+     * @return PromoCode
      */
-    public function getPromoCode()
+    public function getPromoCode(): ?PromoCode
     {
         return $this->promoCode;
     }

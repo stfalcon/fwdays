@@ -1146,11 +1146,11 @@ class Event implements Translatable
     }
 
     /**
-     * @param EventGroup $group
+     * @param EventGroup|null $group
      *
      * @return $this
      */
-    public function setGroup($group)
+    public function setGroup(?EventGroup $group): self
     {
         $this->group = $group;
 
@@ -1158,9 +1158,9 @@ class Event implements Translatable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLat()
+    public function getLat(): ?float
     {
         return $this->lat;
     }
@@ -1170,7 +1170,7 @@ class Event implements Translatable
      *
      * @return $this
      */
-    public function setLat($lat)
+    public function setLat(float $lat): self
     {
         $this->lat = $lat;
 
@@ -1178,9 +1178,9 @@ class Event implements Translatable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLng()
+    public function getLng(): ?float
     {
         return $this->lng;
     }
@@ -1190,7 +1190,7 @@ class Event implements Translatable
      *
      * @return $this
      */
-    public function setLng($lng)
+    public function setLng(float $lng): self
     {
         $this->lng = $lng;
 

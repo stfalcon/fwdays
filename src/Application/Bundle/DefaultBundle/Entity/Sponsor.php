@@ -155,7 +155,7 @@ class Sponsor implements Translatable
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -372,15 +372,15 @@ class Sponsor implements Translatable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->getName() ?: '-';
+        return $this->getName() ?: '-';
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAbout()
+    public function getAbout(): ?string
     {
         return $this->about;
     }
@@ -390,7 +390,7 @@ class Sponsor implements Translatable
      *
      * @return $this
      */
-    public function setAbout($about)
+    public function setAbout(string $about): self
     {
         $this->about = $about;
 

@@ -48,7 +48,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
         }
 
         if ($input->getOption('host')) {
-            $context->setHost($input->getOption('host'));
+            $context->setHost((string) $input->getOption('host'));
         }
 
         /** @var $em \Doctrine\ORM\EntityManager */

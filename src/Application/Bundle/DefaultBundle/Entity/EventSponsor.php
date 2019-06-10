@@ -5,7 +5,7 @@ namespace Application\Bundle\DefaultBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Application\Bundle\DefaultBundle\Entity\EventSponsor.
+ * EventSponsor.
  *
  * @ORM\Table(name="event__events_sponsors")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\SponsorRepository")
@@ -22,7 +22,7 @@ class EventSponsor
     protected $id;
 
     /**
-     * @var \Application\Bundle\DefaultBundle\Entity\Sponsor
+     * @var Sponsor
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Sponsor", inversedBy="sponsorEvents")
      * @ORM\JoinColumn(name="sponsor_id", referencedColumnName="id")
@@ -38,7 +38,7 @@ class EventSponsor
     protected $event;
 
     /**
-     * @var \Application\Bundle\DefaultBundle\Entity\Category
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -72,11 +72,11 @@ class EventSponsor
     }
 
     /**
-     * @param \Application\Bundle\DefaultBundle\Entity\Category $category
+     * @param Category|null $category
      *
      * @return $this
      */
-    public function setCategory($category)
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
@@ -92,11 +92,11 @@ class EventSponsor
     }
 
     /**
-     * @param \Application\Bundle\DefaultBundle\Entity\Event $event
+     * @param Event|null $event
      *
      * @return $this
      */
-    public function setEvent($event)
+    public function setEvent(?Event $event): self
     {
         $this->event = $event;
 
@@ -112,11 +112,11 @@ class EventSponsor
     }
 
     /**
-     * @param \Application\Bundle\DefaultBundle\Entity\Sponsor $sponsor
+     * @param Sponsor|null $sponsor
      *
      * @return $this
      */
-    public function setSponsor($sponsor)
+    public function setSponsor(?Sponsor $sponsor): self
     {
         $this->sponsor = $sponsor;
 
