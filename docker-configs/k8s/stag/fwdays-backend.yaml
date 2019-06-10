@@ -68,7 +68,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: fwdays-backend-parameters
-              key: parameters.ini
+              key: parameters.yml
         - name: STAGING
           value: "true"
         ports:
