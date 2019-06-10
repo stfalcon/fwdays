@@ -111,7 +111,7 @@ class Review extends AbstractPage implements Translatable
     /**
      * @return Collection
      */
-    public function getSpeakers(): Collection
+    public function getSpeakers()
     {
         return $this->speakers;
     }
@@ -141,9 +141,9 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @return  User[]|Collection
+     * @return User[]|Collection
      */
-    public function getLikedUsers(): Collection
+    public function getLikedUsers()
     {
         return $this->likedUsers;
     }

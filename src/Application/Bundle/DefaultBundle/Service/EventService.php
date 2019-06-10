@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
 use Application\Bundle\DefaultBundle\Entity\EventPage;
@@ -12,7 +11,6 @@ use Application\Bundle\DefaultBundle\Repository\EventRepository;
 use Application\Bundle\DefaultBundle\Repository\ReviewRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class EventService.

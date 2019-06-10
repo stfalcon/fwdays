@@ -26,7 +26,7 @@ class WayForPayService
     protected $locale;
     protected $router;
     protected $securityToken;
-/** @var Request|null */
+    /** @var Request|null */
     protected $request;
 
     /** @var EntityManager */

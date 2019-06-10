@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\EventListener;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
-use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -12,7 +11,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Router;
 
 /**
  * Class LocaleUrlRequestListener.

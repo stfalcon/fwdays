@@ -372,7 +372,7 @@ class Speaker implements Translatable
     /**
      * @return Event[]|Collection
      */
-    public function getEvents(): Collection
+    public function getEvents()
     {
         return $this->events;
     }
@@ -392,7 +392,7 @@ class Speaker implements Translatable
     /**
      * @return Event[]|Collection
      */
-    public function getCommitteeEvents(): Collection
+    public function getCommitteeEvents()
     {
         return $this->committeeEvents;
     }
@@ -412,7 +412,7 @@ class Speaker implements Translatable
     /**
      * @return Event[]|Collection
      */
-    public function getCandidateEvents(): Collection
+    public function getCandidateEvents()
     {
         return $this->candidateEvents;
     }
@@ -432,7 +432,7 @@ class Speaker implements Translatable
     /**
      * @return Review[]|Collection
      */
-    public function getReviews(): Collection
+    public function getReviews()
     {
         return $this->reviews;
     }

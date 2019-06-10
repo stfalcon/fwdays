@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Application\Bundle\DefaultBundle\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

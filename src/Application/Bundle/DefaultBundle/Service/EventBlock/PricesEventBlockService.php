@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Application\Bundle\DefaultBundle\Entity\Event;
