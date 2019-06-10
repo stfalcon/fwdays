@@ -21,12 +21,12 @@ services:
             - "php"
 
     php:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v3
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.0
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/fwdays-dev/configs/php-fpm.ini:/etc/php/7.1/fpm/php.ini"
-            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
+            - "./docker-configs/fwdays-dev/configs/php-fpm.ini:/etc/php/7.3/fpm/php.ini"
+            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.3/cli/php.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
         depends_on:
@@ -40,8 +40,8 @@ services:
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
-            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.1/cli/php.ini"
-            - "./docker-configs/fwdays-dev/configs/xdebug.ini:/etc/php/7.1/mods-available/xdebug.ini"
+            - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.3/cli/php.ini"
+            - "./docker-configs/fwdays-dev/configs/xdebug.ini:/etc/php/7.3/mods-available/xdebug.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
 

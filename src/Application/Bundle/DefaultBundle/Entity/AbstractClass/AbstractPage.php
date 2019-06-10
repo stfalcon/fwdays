@@ -67,7 +67,7 @@ abstract class AbstractPage
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -79,7 +79,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
 
@@ -91,7 +91,7 @@ abstract class AbstractPage
      *
      * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
@@ -103,7 +103,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -115,7 +115,7 @@ abstract class AbstractPage
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -127,7 +127,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -139,7 +139,7 @@ abstract class AbstractPage
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -149,7 +149,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    public function setMetaKeywords($metaKeywords)
+    public function setMetaKeywords(string $metaKeywords): self
     {
         $this->metaKeywords = $metaKeywords;
 
@@ -159,7 +159,7 @@ abstract class AbstractPage
     /**
      * @return string
      */
-    public function getMetaKeywords()
+    public function getMetaKeywords(): string
     {
         return $this->metaKeywords;
     }
@@ -169,7 +169,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    public function setMetaDescription($metaDescription)
+    public function setMetaDescription($metaDescription): self
     {
         $this->metaDescription = $metaDescription;
 
@@ -179,7 +179,7 @@ abstract class AbstractPage
     /**
      * @return string
      */
-    public function getMetaDescription()
+    public function getMetaDescription(): string
     {
         return $this->metaDescription;
     }

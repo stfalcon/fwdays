@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin\AbstractClass;
 
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
@@ -36,7 +37,7 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-                ->add('translations', 'a2lix_translations_gedmo', [
+                ->add('translations', MyGedmoTranslationsType::class, [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [

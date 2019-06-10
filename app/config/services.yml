@@ -1,7 +1,6 @@
 imports:
     - { resource: "@ApplicationDefaultBundle/Resources/config/admin.yml" }
     - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
-    - { resource: "@ApplicationDefaultBundle/Resources/config/services.xml" }
 
 services:
     monolog.processor.added_host:
@@ -18,3 +17,7 @@ services:
                 - '@oneup_flysystem.speaker_photo_filesystem'
                 - '@oneup_flysystem.event_image_filesystem'
                 - '@oneup_flysystem.upload_image_filesystem'
+
+    Application\Bundle\DefaultBundle\DataFixtures\ORM\:
+        resource: '../../src/Application/Bundle/DefaultBundle/DataFixtures/ORM/*'
+        tags: ['doctrine.fixture.orm']

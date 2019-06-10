@@ -1,7 +1,7 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
             {% if value %}
                 <a href="{{ url('sonata_admin_set_object_field_value', { 'context': 'list', 'field': field_description.name, 'objectId': admin.id(object), 'value': 0, 'code': admin.code(object) }) }}" class="sonata-ba-action sonata-ba-edit-inline">
@@ -23,5 +23,5 @@
                 {%- trans from 'SonataAdminBundle' %}label_type_stfalcon_mail_no{% endtrans -%}
             {% endif %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

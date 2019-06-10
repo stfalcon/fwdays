@@ -135,18 +135,31 @@ class NewPdfGeneratorHelper
 
         $event = $ticket->getEvent();
         $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile' : 'logoFile';
-        $path = $this->vichUploader->fromField($event, $fieldFileName);
-        $fileName = $event->getSmallLogo() ?: $event->getLogo();
-        if ($this->filesystem->has($fileName)) {
-            $fileName = $path->getUriPrefix().'/'.$fileName;
-            $imageData = $this->svgToJpgService->convert($fileName);
-        } else {
-            $imageData = null;
+
+        try {
+            $path = $this->vichUploader->fromField($event, $fieldFileName);
+            $fileName = $event->getSmallLogo() ?: $event->getLogo();
+            if (null !== $path && $this->filesystem->has($fileName)) {
+                $fileName = $path->getUriPrefix().'/'.$fileName;
+                $imageData = $this->svgToJpgService->convert($fileName);
+            } else {
+                $imageData = null;
+            }
+            $base64EventSmallLogo = base64_encode($imageData);
+        } catch (\Exception $e) {
+            $base64EventSmallLogo = '';
         }
 
-        $base64EventSmallLogo = base64_encode($imageData);
-        $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
-        $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
+        try {
+            $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
+        } catch (\Exception $e) {
+            $base64CircleLeftImg = '';
+        }
+        try {
+            $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
+        } catch (\Exception $e) {
+            $base64CircleRightImg = '';
+        }
 
         $body = $templateContent->render(
             [

@@ -22,12 +22,12 @@ class EventRepository extends EntityRepository
      *
      * @return array
      */
-    public function getSortedUserWannaVisitEventsByActive(User $user, $active = true, $sort = 'ASC')
+    public function getSortedUserWannaVisitEventsByActive(User $user, $active = true, $sort = 'ASC'): array
     {
         $qb = $this->createQueryBuilder('e');
         $qb
-            ->join('Application\Bundle\DefaultBundle\Entity\User', 'u', 'WITH', $qb->expr()->eq('u.id', ':user_id'))
-            ->join('u.wantsToVisitEvents', 'wve', 'WITH', $qb->expr()->eq('e.id', 'wve.id'))
+            ->join(User::class, 'u', 'WITH', 'u.id = :user_id')
+            ->join('u.wantsToVisitEvents', 'wve', 'WITH', 'e.id = wve.id')
             ->where($qb->expr()->eq('e.active', ':active'))
             ->setParameters(['user_id' => $user, 'active' => $active])
             ->orderBy('e.date', $sort);
@@ -38,7 +38,7 @@ class EventRepository extends EntityRepository
     /**
      * @param EventGroup $eventGroup
      *
-     * @return null|Event
+     * @return Event|null
      */
     public function findFutureEventFromSameGroup(EventGroup $eventGroup)
     {

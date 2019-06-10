@@ -25,9 +25,7 @@ class LoadUserData extends AbstractFixture
             ->setEmail('admin@fwdays.com')
             ->setPlainPassword('qwerty')
             ->setRoles(array('ROLE_SUPER_ADMIN'))
-            ->setEnabled(true)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setEnabled(true);
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
 
@@ -38,9 +36,7 @@ class LoadUserData extends AbstractFixture
             ->setEmail('volunteer@fwdays.com')
             ->setPlainPassword('qwerty')
             ->setRoles(array('ROLE_VOLUNTEER'))
-            ->setEnabled(true)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setEnabled(true);
         $manager->persist($userVolunteer);
         $this->addReference('user-volunteer', $userVolunteer);
 
@@ -55,9 +51,7 @@ class LoadUserData extends AbstractFixture
             ->setCity('Boston')
             ->setCompany('NBA')
             ->setPost('Point Guard')
-            ->setEnabled(true)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setEnabled(true);
         $manager->persist($userDefault);
         $this->addReference('user-default', $userDefault);
 
@@ -72,9 +66,7 @@ class LoadUserData extends AbstractFixture
             ->setCity('Tortuga')
             ->setCompany('Pirates of the Caribbean')
             ->setPost('Captain')
-            ->setEnabled(true)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setEnabled(true);
         $manager->persist($userDefault2);
         $this->addReference('user-default2', $userDefault2);
 
@@ -90,9 +82,7 @@ class LoadUserData extends AbstractFixture
             ->setCity('New-York')
             ->setCompany('The New-York Times')
             ->setPost('Journalist')
-            ->setEnabled(true)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setEnabled(true);
         $manager->persist($userDefault3);
         $this->addReference('user-default3', $userDefault3);
 
@@ -109,9 +99,7 @@ class LoadUserData extends AbstractFixture
             ->setCompany('PHP')
             ->setPost('Core developer')
             ->setEnabled(true)
-            ->setSubscribe(false)
-            ->setExpired(false)
-            ->setLocked(false);
+            ->setSubscribe(false);
         $manager->persist($userDefault4);
         $this->addReference('user-default4', $userDefault4);
 
@@ -129,9 +117,7 @@ class LoadUserData extends AbstractFixture
                 ->setCity('Khmelnytskyi')
                 ->setCompany('Anonumous')
                 ->setPost('Tester')
-                ->setEnabled(true)
-                ->setExpired(false)
-                ->setLocked(false);
+                ->setEnabled(true);
             $manager->persist($userDefault);
             $this->addReference('user-default-'.$i, $userDefault);
         }

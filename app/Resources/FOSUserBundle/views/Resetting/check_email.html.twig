@@ -3,6 +3,6 @@
 {% block content %}
     <div class="container container--sm static-styles">
         <h2>{{ 'user.reset_password.title'|trans }}</h2>
-        <p>{{ 'resetting.check_email'|trans({'%email%': email}) }}</p>
+        <p>{{ 'resetting.check_email'|trans({'%email%': app.request.get('username')}) }}</p>
     </div>
 {% endblock content %}

@@ -3,9 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Application\Bundle\DefaultBundle\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 
 /**
  * @ORM\Table(name="event__ticketsCost")

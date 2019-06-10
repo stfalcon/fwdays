@@ -5,8 +5,9 @@ namespace Application\Bundle\DefaultBundle\Tests\Controller;
 use Application\Bundle\DefaultBundle\Controller\WayForPayController;
 use Prophecy\Argument;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class WayForPayControllerTest extends \PHPUnit_Framework_TestCase
+class WayForPayControllerTest extends WebTestCase
 {
     /**
      * @var \Prophecy\Prophet

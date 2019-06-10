@@ -6,11 +6,11 @@ use Application\Bundle\DefaultBundle\Entity\Page;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Class DefaultController.
@@ -20,33 +20,27 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage", options = {"expose"=true})
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $events = $this->getDoctrine()
             ->getRepository('ApplicationDefaultBundle:Event')
             ->findBy(['active' => true], ['date' => 'ASC']);
 
-        return ['events' => $events];
+        return $this->render('@ApplicationDefault/Default/index.html.twig', ['events' => $events]);
     }
 
     /**
      * @Route("/page/{slug}", name="page")
      *
-     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
-     *
-     * @Template()
-     *
      * @param Page $page
      *
-     * @return array
+     * @return Response
      */
-    public function pageAction(Page $page)
+    public function pageAction(Page $page): Response
     {
-        return ['page' => $page];
+        return $this->render('@ApplicationDefault/Default/page.html.twig', ['page' => $page]);
     }
 
     /**
@@ -56,7 +50,7 @@ class DefaultController extends Controller
      *
      * @return Response
      */
-    public function cabinetAction()
+    public function cabinetAction(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -66,7 +60,7 @@ class DefaultController extends Controller
             ->getRepository('ApplicationDefaultBundle:Event');
 
         $userActiveEvents = $eventRepository
-            ->getSortedUserWannaVisitEventsByActive($user, true, 'ASC');
+            ->getSortedUserWannaVisitEventsByActive($user);
 
         $userPastEvents = $eventRepository
             ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
@@ -85,6 +79,20 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/password-already-requested", name="password_already_requested")
+     *
+     * @return Response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function passwordAlreadyRequestedAction(): Response
+    {
+        return $this->render('FOSUserBundle:Resetting:password_already_requested.html.twig');
+    }
+
+    /**
      * @Route(path="/update-user-phone/{phoneNumber}", name="update_user_phone",
      *     methods={"POST"},
      *     options = {"expose"=true},
@@ -95,7 +103,7 @@ class DefaultController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateUserPhoneAction($phoneNumber)
+    public function updateUserPhoneAction(string $phoneNumber): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();

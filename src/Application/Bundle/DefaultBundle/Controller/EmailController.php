@@ -5,7 +5,6 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,7 +15,6 @@ use Application\Bundle\DefaultBundle\Entity\MailQueue;
  */
 class EmailController extends Controller
 {
-
     /**
      * Unsubscribe action.
      *
@@ -61,7 +59,7 @@ class EmailController extends Controller
     }
 
     /**
-     * Subscribe action
+     * Subscribe action.
      *
      * @Route("/subscribe/{hash}/{userId}", name="subscribe")
      *

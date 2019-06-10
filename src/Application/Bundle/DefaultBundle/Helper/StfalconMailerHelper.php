@@ -4,39 +4,36 @@ namespace Application\Bundle\DefaultBundle\Helper;
 
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Mail;
-use Twig_Environment;
+use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Class StfalconMailerHelper.
  */
 class StfalconMailerHelper
 {
-    /** @var Twig_Environment */
     protected $twig;
-
-    /** @var \Doctrine\ORM\EntityManager */
     protected $em;
-
-    /** @var \Symfony\Bundle\FrameworkBundle\Routing\Router */
     protected $router;
-
-    /** @var \Swift_Mailer */
     protected $mailer;
+    private $translator;
 
     /**
-     * Constructor.
-     *
-     * @param Twig_Environment                               $twig
-     * @param \Doctrine\ORM\EntityManager                    $em
-     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
-     * @param \Swift_Mailer                                  $mailer
+     * @param Environment         $twig
+     * @param EntityManager       $em
+     * @param Router              $router
+     * @param \Swift_Mailer       $mailer
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Twig_Environment $twig, $em, $router, $mailer)
+    public function __construct(Environment $twig, EntityManager $em, Router $router, \Swift_Mailer $mailer, TranslatorInterface $translator)
     {
         $this->twig = $twig;
         $this->em = $em;
         $this->router = $router;
         $this->mailer = $mailer;
+        $this->translator = $translator;
     }
 
     /**
@@ -47,12 +44,12 @@ class StfalconMailerHelper
      * @param bool $isTestMessage Test message (needed for admin mails)
      * @param bool $withTicket
      *
-     * @return \Swift_Mime_MimePart
+     * @return \Swift_Message
      */
-    public function formatMessage(User $user, Mail $mail, $isTestMessage = false, $withTicket = false)
+    public function formatMessage(User $user, Mail $mail, $isTestMessage = false, $withTicket = false): \Swift_Message
     {
         if ($withTicket) {
-            $event = isset($mail->getEvents()[0]) ? $mail->getEvents()[0] : null;
+            $event = $mail->getEvents()[0] ?? null;
             $params = ['event' => $event];
             $template = '@ApplicationDefault/Email/email_with_ticket.html.twig';
         } else {
@@ -91,7 +88,7 @@ class StfalconMailerHelper
      *
      * @return \Swift_Message
      */
-    public function createMessage($subject, $to, $body)
+    public function createMessage($subject, $to, $body): \Swift_Message
     {
         return \Swift_Message::newInstance()
             ->setSubject($subject)
@@ -108,7 +105,7 @@ class StfalconMailerHelper
      *
      * @return string
      */
-    public function renderTwigTemplate($view, $params)
+    public function renderTwigTemplate($view, $params): string
     {
         return $this->twig->loadTemplate($view)->render($params);
     }
@@ -118,13 +115,39 @@ class StfalconMailerHelper
      * @param string $view
      * @param array  $params
      * @param User   $user
+     *
+     * @return bool
      */
-    public function sendEasyEmail($emailSubject, $view, $params, $user)
+    public function sendEasyEmail(string $emailSubject, string $view, array $params, User $user): bool
     {
         $emailBody = $this->renderTwigTemplate($view, $params);
-
         $emailMessage = $this->createMessage($emailSubject, $user->getEmail(), $emailBody);
 
-        $this->mailer->send($emailMessage);
+        return $this->mailer->send($emailMessage) > 0;
+    }
+
+    /**
+     * @param User   $user
+     * @param string $plainPassword
+     *
+     * @return bool
+     */
+    public function sendAutoRegistration(User $user, string $plainPassword): bool
+    {
+        $body = $this->renderTwigTemplate(
+            'ApplicationDefaultBundle:Registration:automatically.html.twig',
+            [
+                'user' => $user,
+                'plainPassword' => $plainPassword,
+            ]
+        );
+
+        $message = $this->createMessage(
+            $this->translator->trans('registration.email.subject'),
+            $user->getEmail(),
+            $body
+        );
+
+        return $this->mailer->send($message) > 0;
     }
 }

@@ -45,11 +45,12 @@ class SvgToJpg
     {
         $im = new \Imagick();
         try {
-            $svg = \file_get_contents($fileName);
             $im->setBackgroundColor(new \ImagickPixel($backgroundColor));
             $im->setResolution($this->xResolution, $this->yResolution);
-
-            $im->readImageBlob($svg);
+            $svg = \file_get_contents($fileName);
+            if (false !== $svg) {
+                $im->readImageBlob($svg);
+            }
             $im->setImageFormat('jpeg');
         } catch (\Exception $e) {
             $this->logger->addError($e->getMessage(), [$e]);

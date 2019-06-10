@@ -59,7 +59,7 @@ class MailAdminController extends CRUDController
         if ($mail->getId()) {
             /**
              * @var \Doctrine\ORM\EntityManager
-             * @var \Swift_Mailer                                            $mailer
+             * @var \Swift_Mailer                                                 $mailer
              * @var \Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper $mailerHelper
              */
             $em = $this->get('doctrine')->getEntityManager('default');

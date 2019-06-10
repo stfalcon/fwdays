@@ -92,13 +92,13 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
         $ticket = new Ticket();
         $ticket->setEvent($manager->merge($eventZfDay));
         $ticket->setUser($userDefault2);
-        $ticket->setAmountWithoutDiscount($eventPHPDay->getCost());
-        $ticket->setAmount($eventPHPDay->getCost());
+        $ticket->setAmountWithoutDiscount($eventZfDay->getCost());
+        $ticket->setAmount($eventZfDay->getCost());
         $ticket->setCreatedAt(new \DateTime('2012-12-12 00:00:00'));
         $ticket->setUsed(false);
         $ticket->setPayment($manager->merge($this->getReference('payment2')));
         $manager->persist($ticket);
-        $userDefault2->addWantsToVisitEvents($eventPHPDay);
+        $userDefault2->addWantsToVisitEvents($eventZfDay);
 
         // Ticket 6: used with pending payment
         $ticket = new Ticket();

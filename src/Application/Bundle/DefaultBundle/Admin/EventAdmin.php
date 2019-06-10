@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
@@ -127,7 +128,7 @@ class EventAdmin extends AbstractTranslateAdmin
         $formMapper
             ->tab('Переводы')
                 ->with('Переводы')
-                    ->add('translations', 'a2lix_translations_gedmo', [
+                    ->add('translations', MyGedmoTranslationsType::class, [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
                             'name' => [

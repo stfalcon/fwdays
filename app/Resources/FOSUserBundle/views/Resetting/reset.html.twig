@@ -3,7 +3,7 @@
 {% block content %}
 <div class="form-box">
     <h2 class="h2 form-box__title">{{ 'user.change_password.title'|trans }}</h2>
-    <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
+    <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" method="POST" class="fos_user_resetting_reset">
         <div class="form-row">
             <div class="form-col form-col--6 form-col--xs-6">
                 <label class="form-label form-label--required" for="fos_user_resetting_form_new_first">{{ 'form.new_password'|trans({}, 'FOSUserBundle') }}</label>

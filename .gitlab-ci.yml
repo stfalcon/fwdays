@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v3
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
 cache:
     paths:
         - vendor/
@@ -6,15 +6,14 @@ cache:
 
 services:
   - name: jekakm/mysql-core:201902201
-    alias: fwdays-php71-mysql
+    alias: fwdays-php73-mysql
 
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
 
 .before_script_template: &build_ci
     before_script:
-        - cp app/config/parameters.ini.stag app/config/parameters.ini
-        - 'sed -i "s/database_password =.*/database_password = qwerty/" app/config/parameters.ini'
+        - cp app/config/parameters.yml.stag app/config/parameters.yml
         - unxz geodata/GeoLiteCity.dat.xz
         - composer.phar install --optimize-autoloader
         - npm install
@@ -83,7 +82,7 @@ phpunit:
 #
 sonar-scanner:
     stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v2
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
     only:
         - master
     <<: *build_ci

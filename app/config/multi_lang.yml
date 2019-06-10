@@ -20,4 +20,4 @@ jms_i18n_routing:
 a2lix_translation_form:
     locales: "%locales%"
     manager_registry: doctrine
-    default_required: true
+#    default_required: true
