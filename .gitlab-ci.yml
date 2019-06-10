@@ -80,9 +80,9 @@ phpunit:
     services:
         - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-ci:v1
           alias: minio
-          variables:
-              MINIO_ACCESS_KEY: minio
-              MINIO_SECRET_KEY: qwe12345
+    variables:
+        MINIO_ACCESS_KEY: minio
+        MINIO_SECRET_KEY: qwe12345
     <<: *build_ci
     script:
         - composer.phar ci:phpunit-with-coverage
@@ -194,4 +194,3 @@ production rollback:
         name: production
         url: https://fwdays.com
     when: manual
-
