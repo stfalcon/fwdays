@@ -7,6 +7,10 @@ cache:
 services:
   - name: jekakm/mysql-core:201902201
     alias: fwdays-php73-mysql
+  - name: minio/minio:latest
+    alias: minio
+    entrypoint: ['/bin/sh -c "/usr/bin/mc config host add minio http://minio:9000 minio qwe12345 && /usr/bin/mc mb minio/fwdays"']
+    command: ["server /data"]
 
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
