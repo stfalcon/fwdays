@@ -15,7 +15,7 @@
         <exec command="git submodule init" escape="false" />
         <exec command="git submodule update" escape="false" />
         <exec command="cp /var/lib/jenkins/configs/frameworksdays_com.ini ./app/config/parameters.ini" escape="false" />
-        <exec command="php app/console cache:clear" escape="false" />
+        <exec command="php bin/console cache:clear" escape="false" />
     </target>
 
     <target name="clean">
@@ -44,7 +44,7 @@
     <target name="phpunit">
         <mkdir dir="${logsdir}/reports" />
         <mkdir dir="${logsdir}/reports/coverage" />
-         <exec command="php app/console doctrine:schema:update --env=test --force" escape="false" />
+         <exec command="php bin/console doctrine:schema:update --env=test --force" escape="false" />
         <exec command="phpunit -c ./app/ --log-junit ${logsdir}/reports/phpunit/testsuites.xml --coverage-clover ${logsdir}/reports/coverage/clover.xml -c ./app/ " escape="false" />
         <exec command="./bin/run-all-features ci /var/lib/jenkins/jobs/frameworksdays.com/workspace/build/logs/reports/" escape="false" />
     </target>

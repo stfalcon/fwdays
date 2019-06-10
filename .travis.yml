@@ -20,9 +20,9 @@ before_script:
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_development CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS fwdays_com_testing CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - composer install --prefer-source --no-interaction
-    - app/console doctrine:mi:mi --no-interaction --env=test
-    - app/console doctrine:fixtures:load --no-interaction --env=test
-    - app/console cache:warmup --env=test > /dev/null
+    - bin/console doctrine:mi:mi --no-interaction --env=test
+    - bin/console doctrine:fixtures:load --no-interaction --env=test
+    - bin/console cache:warmup --env=test > /dev/null
     - sh -e /etc/init.d/xvfb start
     - export DISPLAY=:99
     - curl http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar > selenium.jar

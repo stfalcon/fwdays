@@ -33,7 +33,7 @@ deploy_callbacks:
         - './console --no-interaction assetic:dump'
         - 'cp -a /stag/shared/uploads/ /stag/www/web/'
         - 'chown -R www-data:www-data /stag/www/web/uploads/'
-        - "php app/console lexik:translations:import"
+        - "php bin/console lexik:translations:import"
 ci:
     commands:
         - 'app/run-ci-pack.sh -e=prod'

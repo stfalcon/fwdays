@@ -109,7 +109,7 @@ staging deploy:
         - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
         - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
-        - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"'
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOY_TIMESTAMP/ docker-configs/k8s/stag/cron/*
         - kubectl apply -f docker-configs/k8s/stag/cron/*
     environment:
@@ -157,7 +157,7 @@ production deploy:
         - kubectl -n fwdays-prod set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$DEPLOY_TIMESTAMP
         - kubectl rollout status deployment/fwdays-backend -n fwdays-prod
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-prod|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
-        - kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php app/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"'
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOY_TIMESTAMP/ docker-configs/k8s/prod/cron/*
         - kubectl apply -f docker-configs/k8s/prod/cron/*
     environment:
