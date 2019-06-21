@@ -117,6 +117,11 @@ class Ticket
     private $hasDiscount = false;
 
     /**
+     * @var bool
+     */
+    private $hideConditions = true;
+
+    /**
      * Get id.
      *
      * @return int
@@ -385,5 +390,25 @@ class Ticket
     public function generatePdfFilename()
     {
         return 'ticket-'.$this->getEvent()->getSlug().'.pdf';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHideConditions(): bool
+    {
+        return $this->hideConditions;
+    }
+
+    /**
+     * @param bool $hideConditions
+     *
+     * @return $this
+     */
+    public function setHideConditions(bool $hideConditions): self
+    {
+        $this->hideConditions = $hideConditions;
+
+        return $this;
     }
 }
