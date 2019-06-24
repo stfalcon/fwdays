@@ -92,7 +92,7 @@ sonar-scanner:
 staging deploy:
     stage: 'Deploy to staging'
     only:
-        - dev
+        - 50867-to-master-b-patch
     image: docker:stable
     tags:
         - k8s-deploy
