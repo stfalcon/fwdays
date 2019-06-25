@@ -173,9 +173,7 @@ pay.event.cupon: 'Promo code:'
 
 flash_you_registrated.title: You are registered for event
 flash_you_unsubscribe.title: You are unsubscribed for event
-flash_profile_updated.title: Your profile updated
-flash_user_created.title: You are registered on the site
-flash_user_need_data.title: Fill the required fields to complete the registration
+
 
 contact_info.title: Contact info
 candidate.speaker.title: On consideration
@@ -232,7 +230,6 @@ talks.title: Talks
 talks.text: 'Talks may be reordered. The final program to be released by %date%'
 
 welcome.email.title: Welcome!
-registration.email.subject: Registration completed on fwdays.com
 dear_user.email.text: |
                   Hello, %user_name%. <br/>
                   <br/>
@@ -247,3 +244,18 @@ resetting:
             <br/>
             You recently requested to reset your password.
             To complete your request, please click the link below: <a href="%confirmationUrl%">%confirmationUrl%</a>
+    profile:
+        show:
+            username: Username
+            email: Email
+    flash:
+        success: 'The password has been reset successfully.'
+profile:
+    flash:
+        updated: Your profile updated
+registration:
+    flash:
+        user_created: You are registered on the site
+        user_need_data: Fill the required fields to complete the registration
+    email:
+        subject: Registration completed on fwdays.com
