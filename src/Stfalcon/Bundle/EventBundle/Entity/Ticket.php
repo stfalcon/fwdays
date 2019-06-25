@@ -119,7 +119,7 @@ class Ticket
     /**
      * @var bool
      */
-    private $hideConditions = true;
+    private $hideConditions = false;
 
     /**
      * Get id.
