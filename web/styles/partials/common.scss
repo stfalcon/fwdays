@@ -451,6 +451,10 @@ iframe {
     font-size: 14px;
     line-height: 18px;
     cursor: pointer;
+
+    .btn-link {
+      border-bottom-style: solid;
+    }
   }
 
   &--offer-contract {
