@@ -1880,6 +1880,22 @@
       padding-bottom: 40px;
     }
   }
+
+  .checkbox {
+    &__input {
+      width: 24px;
+      height: 24px;
+    }
+
+    &__label {
+      padding-left: 38px;
+
+      .btn-link {
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
