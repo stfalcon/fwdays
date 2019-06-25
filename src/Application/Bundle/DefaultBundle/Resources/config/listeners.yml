@@ -16,3 +16,11 @@ services:
             - "@request_stack"
         tags:
             - { name: kernel.event_subscriber }
+
+    app.fos_use.resetting.subscriper:
+        class: Application\Bundle\DefaultBundle\EventListener\FOSUserEvents\UserResettingSubscriber
+        arguments:
+            - "@session"
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }

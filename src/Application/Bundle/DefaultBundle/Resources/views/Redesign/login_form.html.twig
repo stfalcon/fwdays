@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label class="form-label" for="user_email_{{ remodal }}">{{ 'user.email.title'|trans }}</label>
                 <input class="input" type="email" id="user_email_{{ remodal }}" name="_username" value="">
-                {% if error %}<p class="text-error">{{ error|trans() }}</p>{% endif %}
+                {% if error %}<p class="text-error">{{ error.messageKey|trans(error.messageData, 'security') }}</p>{% endif %}
             </div>
         </div>
         <div class="form-col form-col--6 form-col--xs-12">

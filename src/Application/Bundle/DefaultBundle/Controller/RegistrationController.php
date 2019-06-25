@@ -48,10 +48,6 @@ class RegistrationController extends BaseController
         $this->eventDispatcher = $eventDispatcher;
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
-        $this->session = $this->get('session');
-        $this->validator = $this->get('validator');
-        $this->buzz = $this->get('buzz');
-        $this->logger = $this->get('logger');
     }
 
     /**
@@ -61,6 +57,11 @@ class RegistrationController extends BaseController
      */
     public function registerAction(Request $request)
     {
+        $this->session = $this->get('session');
+        $this->validator = $this->get('validator');
+        $this->buzz = $this->get('buzz');
+        $this->logger = $this->get('logger');
+
         $user = $this->userManager->createUser();
         $user->setEnabled(true);
 
@@ -138,6 +139,11 @@ class RegistrationController extends BaseController
      */
     public function confirmAction(Request $request, $token): RedirectResponse
     {
+        $this->session = $this->get('session');
+        $this->validator = $this->get('validator');
+        $this->buzz = $this->get('buzz');
+        $this->logger = $this->get('logger');
+
         $user = $this->userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
@@ -152,7 +158,7 @@ class RegistrationController extends BaseController
         $response = new RedirectResponse($this->container->get('router')->generate('events'));
         $this->authenticateUser($user, $response);
 
-        return $this->container->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
     }
 
     /**
@@ -169,7 +175,7 @@ class RegistrationController extends BaseController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->container->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
     }
 
     /**
@@ -248,8 +254,8 @@ class RegistrationController extends BaseController
     private function authenticateUser(UserInterface $user, Response $response): void
     {
         try {
-            $this->container->get('fos_user.security.login_manager')->loginUser(
-                $this->container->getParameter('fos_user.firewall_name'),
+            $this->get('fos_user.security.login_manager')->loginUser(
+                $this->getParameter('fos_user.firewall_name'),
                 $user,
                 $response
             );
