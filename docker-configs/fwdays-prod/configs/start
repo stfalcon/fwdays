@@ -7,6 +7,4 @@ if [ -n "$STAGING" ]; then
   cp /etc/nginx/stag_conf_avaliable/* /etc/nginx/stag_conf_enabled
 fi
 
-su www-data -c "cd /app && rm app/cache/prod/ -rf && php app/console cache:warmup --env=prod"
-
 exec "$@"
