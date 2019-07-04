@@ -7,8 +7,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\EventBlock;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
 
 /**
  * Class EventBlockAdmin.
@@ -38,7 +36,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
         $formMapper
             ->add(
                 'type',
-                ChoiceType::class,
+                'choice',
                 [
                     'choices' => EventBlock::getTypeChoices(),
                     'label' => 'Тип',
