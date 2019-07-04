@@ -45,7 +45,7 @@ abstract class AbstractPage
     protected $text;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Gedmo\Translatable(fallback=true)
      *
@@ -54,7 +54,7 @@ abstract class AbstractPage
     protected $metaKeywords;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Gedmo\Translatable(fallback=true)
      *
@@ -157,9 +157,9 @@ abstract class AbstractPage
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMetaKeywords(): string
+    public function getMetaKeywords(): ?string
     {
         return $this->metaKeywords;
     }
@@ -177,9 +177,9 @@ abstract class AbstractPage
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMetaDescription(): string
+    public function getMetaDescription(): ?string
     {
         return $this->metaDescription;
     }

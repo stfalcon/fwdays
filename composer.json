@@ -47,7 +47,7 @@
         "endroid/qrcode": "^1.6.6",
         "vich/uploader-bundle": "^1.9.2",
         "a2lix/translation-form-bundle": "1.x-dev",
-        "ibrows/sonata-translation-bundle": "^1.1",
+        "ibrows/sonata-translation-bundle": "dev-master",
 
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "jms/i18n-routing-bundle": "^2.0",

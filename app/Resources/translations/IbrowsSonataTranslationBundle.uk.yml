@@ -3,6 +3,7 @@ group:
 
 translation:
   title:  Переводы
+  cache_removed: Кеш очищен
 
 action:
   clear_cache: "Очистить кеш"

@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\UnitOfWork;
@@ -167,7 +168,6 @@ final class MailAdmin extends AbstractAdmin
     {
         /** @var Mail $object */
         $object = $this->getSubject();
-        $isEdit = (bool) $object->getId();
         $this->savedEvents = [];
         foreach ($object->getEvents() as $event) {
             $this->savedEvents[] = $event->getId();
@@ -183,11 +183,10 @@ final class MailAdmin extends AbstractAdmin
                 ->add('text', null, ['label' => 'Текст'])
                 ->add('audiences', null, ['label' => 'Аудитории'])
                 ->add('events', 'entity', [
-                    'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
+                    'class' => Event::class,
                     'multiple' => true,
                     'expanded' => false,
                     'required' => false,
-                    'read_only' => $isEdit,
                     'label' => 'События',
                 ])
                 ->add('start', null, ['required' => false, 'label' => 'Запустить'])
@@ -198,7 +197,6 @@ final class MailAdmin extends AbstractAdmin
                         'pending' => 'Не оплачено',
                     ),
                     'required' => false,
-                    'read_only' => $isEdit,
                     'label' => 'Статус оплаты',
                 ))
             ->end();
@@ -219,7 +217,7 @@ final class MailAdmin extends AbstractAdmin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('application.admin.mail_queue.list', array('id' => $id))));
+        $menu->addChild('Line items', array('uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', array('id' => $id))));
     }
 
     /**

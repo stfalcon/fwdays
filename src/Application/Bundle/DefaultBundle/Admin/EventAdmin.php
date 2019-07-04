@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Sonata\Form\Type\CollectionType;
 
 /**
  * Class EventAdmin.
@@ -240,7 +241,7 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Блоки')
                     ->add(
                         'blocks',
-                        'sonata_type_collection',
+                        CollectionType::class,
                         [
                             'label' => 'Блоки отображения события',
                             'by_reference' => false,
