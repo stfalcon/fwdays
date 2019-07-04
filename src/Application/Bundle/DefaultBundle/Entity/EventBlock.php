@@ -212,7 +212,7 @@ class EventBlock implements Translatable
     /**
      * @return array
      */
-    public static function getTypeChoices()
+    public static function getTypeChoices(): array
     {
         return [
             self::HTML_TEXT => 'html текст',

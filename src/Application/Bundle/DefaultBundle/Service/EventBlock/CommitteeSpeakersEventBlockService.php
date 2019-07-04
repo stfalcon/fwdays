@@ -58,7 +58,7 @@ class CommitteeSpeakersEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig',

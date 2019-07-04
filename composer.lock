@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd9099d2ce7953dbb73c13bb668d9df3",
+    "content-hash": "27d085f7a868dd6732a809a2846722d6",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2564,16 +2564,16 @@
         },
         {
             "name": "ibrows/sonata-translation-bundle",
-            "version": "1.1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ibrows/IbrowsSonataTranslationBundle.git",
-                "reference": "2a5786b113456be6a8e0989fd76537eaeadcffbd"
+                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ibrows/IbrowsSonataTranslationBundle/zipball/2a5786b113456be6a8e0989fd76537eaeadcffbd",
-                "reference": "2a5786b113456be6a8e0989fd76537eaeadcffbd",
+                "url": "https://api.github.com/repos/ibrows/IbrowsSonataTranslationBundle/zipball/9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
+                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
                 "shasum": ""
             },
             "require": {
@@ -2599,7 +2599,7 @@
                 "sonata",
                 "translation"
             ],
-            "time": "2015-07-03T09:55:33+00:00"
+            "time": "2018-09-24T12:41:45+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -10819,6 +10819,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "a2lix/translation-form-bundle": 20,
+        "ibrows/sonata-translation-bundle": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

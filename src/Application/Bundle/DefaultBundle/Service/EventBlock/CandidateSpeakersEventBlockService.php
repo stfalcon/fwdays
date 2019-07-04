@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
+use Application\Bundle\DefaultBundle\Entity\Speaker;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -27,7 +28,7 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
      * @param string           $name
      * @param EngineInterface  $templating
      * @param Translator       $translator
-     * @param ObjectRepository $reviewRepository
+     * @param ReviewRepository $reviewRepository
      */
     public function __construct($name, EngineInterface $templating, Translator $translator, ReviewRepository $reviewRepository)
     {
@@ -50,7 +51,7 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
 
         $speakers = $event->getCandidateSpeakers();
 
-        /** @var $speaker \Application\Bundle\DefaultBundle\Entity\Speaker */
+        /** @var $speaker Speaker */
         foreach ($speakers as &$speaker) {
             $speaker->setReviews(
                 $this->reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
@@ -70,7 +71,7 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig',

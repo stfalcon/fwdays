@@ -187,7 +187,7 @@ final class MailAdmin extends AbstractAdmin
                     'multiple' => true,
                     'expanded' => false,
                     'required' => false,
-                    'read_only' => $isEdit,
+//                    'readonly' => $isEdit,
                     'label' => 'События',
                 ])
                 ->add('start', null, ['required' => false, 'label' => 'Запустить'])
@@ -198,7 +198,7 @@ final class MailAdmin extends AbstractAdmin
                         'pending' => 'Не оплачено',
                     ),
                     'required' => false,
-                    'read_only' => $isEdit,
+//                    'read_only' => $isEdit,
                     'label' => 'Статус оплаты',
                 ))
             ->end();
@@ -219,7 +219,7 @@ final class MailAdmin extends AbstractAdmin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('application.admin.mail_queue.list', array('id' => $id))));
+        $menu->addChild('Line items', array('uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', array('id' => $id))));
     }
 
     /**
