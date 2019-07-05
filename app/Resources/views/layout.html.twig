@@ -16,6 +16,16 @@
     {% block meta_description %}
     <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
     {% endblock meta_description %}
+
+    <meta http-equiv="Content-Security-Policy" content="script-src https://www.google-analytics.com 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="style-src 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="img-src https://www.google-analytics.com">
+    <meta http-equiv="Content-Security-Policy" content="script-src https://optimize.google.com 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="style-src https://optimize.google.com https://fonts.googleapis.com 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy" content="img-src https://optimize.google.com;">
+    <meta http-equiv="Content-Security-Policy" content="font-src https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy" content="frame-src https://optimize.google.com">
+
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css'|app_asset_version) }}">
