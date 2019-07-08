@@ -174,7 +174,7 @@ class EventAdmin extends AbstractTranslateAdmin
                     ->add('audiences', null, ['label' => 'Аудитории'])
                     ->add(
                         'ticketsCost',
-                        'sonata_type_collection',
+                        CollectionType::class,
                         [
                             'label' => 'Цены события',
                             'by_reference' => false,

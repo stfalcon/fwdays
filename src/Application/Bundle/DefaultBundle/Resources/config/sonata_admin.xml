@@ -12,15 +12,15 @@
         <default key="_controller">sonata.admin.action.retrieve_form_field_element</default>
     </route>
     <route id="sonata_admin_append_form_element" path="/core/append-form-field-element">
-        <default key="_controller">sonata.admin.action.append_form_field_element</default>
+        <default key="_controller">sonata.admin.controller.admin:appendFormFieldElementAction</default>
     </route>
     <route id="sonata_admin_short_object_information" path="/core/get-short-object-description.{_format}">
-        <default key="_controller">sonata.admin.action.get_short_object_description</default>
+        <default key="_controller">sonata.admin.controller.admin:getShortObjectDescriptionAction</default>
         <default key="_format">html</default>
         <requirement key="_format">html|json</requirement>
     </route>
     <route id="sonata_admin_set_object_field_value" path="/core/set-object-field-value">
-        <default key="_controller">sonata.admin.action.set_object_field_value</default>
+        <default key="_controller">sonata.admin.controller.admin:setObjectFieldValueAction</default>
     </route>
     <route id="sonata_admin_search" path="/search">
         <default key="_controller">Sonata\AdminBundle\Action\SearchAction</default>
