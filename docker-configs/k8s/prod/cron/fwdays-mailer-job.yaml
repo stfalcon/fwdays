@@ -4,7 +4,7 @@ metadata:
   name: fwdays-mailer
   namespace: fwdays-prod
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "* * * * *"
   jobTemplate:
     spec:
       template:
