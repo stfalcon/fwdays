@@ -1115,6 +1115,10 @@
   }
 
   .events {
+    .container {
+      padding: 0;
+    }
+
     &__box {
       margin: 0;
     }
@@ -1144,6 +1148,10 @@
     &__photo {
       width: 168px;
       right: 0;
+    }
+
+    &__box {
+      border-radius: 0;
     }
   }
 
@@ -1886,6 +1894,8 @@
     &__input {
       width: 24px;
       height: 24px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     &__label {
