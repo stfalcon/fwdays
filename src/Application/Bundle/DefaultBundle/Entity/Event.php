@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
@@ -218,6 +219,7 @@ class Event implements Translatable
      * @ORM\Column(type="boolean")
      */
     protected $smallEvent = false;
+
     /**
      * @var float
      *
@@ -226,10 +228,13 @@ class Event implements Translatable
     protected $cost = 0;
 
     /**
+     * @var TicketCost[]|Collection
+     *
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $ticketsCost;
+
     /**
      * @var bool
      *
@@ -1365,5 +1370,19 @@ class Event implements Translatable
         $this->seoTitle = $seoTitle;
 
         return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCurrentPrice(): ?float
+    {
+        foreach ($this->ticketsCost as $item) {
+            if ($item->isEnabled() || $item->isHaveTemporaryCount()) {
+                return $item->getAmount();
+            }
+        }
+
+        return null;
     }
 }

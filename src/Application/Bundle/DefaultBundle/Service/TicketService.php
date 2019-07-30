@@ -295,13 +295,12 @@ class TicketService
                 self::PAID_IS_RETURNED,
                 self::PAID_FOR_ANOTHER,
                 self::TICKETS_SOLD_OUT,
-            ]
+            ],
+            true
         )) {
-            $class = isset($states[$position][self::EVENT_DONE]) ? $states[$position][self::EVENT_DONE]
-                : $states[$position][self::EVENT_DEFAULT_STATE];
+            $class = $states[$position][self::EVENT_DONE] ?? $states[$position][self::EVENT_DEFAULT_STATE];
         } else {
-            $class = isset($states[$position][$eventState]) ? $states[$position][$eventState]
-                : $states[$position][self::EVENT_DEFAULT_STATE];
+            $class = $states[$position][$eventState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
         }
 
         $isMob = in_array($position, ['event_fix_header_mob', 'price_block_mob']);
@@ -310,10 +309,8 @@ class TicketService
             $data = $event->getSlug();
 
             if (self::CAN_DOWNLOAD_TICKET === $ticketState) {
-                $ticketCaption = $isMob ? $this->translator->trans('ticket.status.download')
-                    : $this->translator->trans('ticket.status.download');
-                $ticketClass = isset($states[$position][$ticketState]) ? $states[$position][$ticketState]
-                    : $states[$position][self::EVENT_DEFAULT_STATE];
+                $ticketCaption = $this->translator->trans('ticket.status.download');
+                $ticketClass = $states[$position][$ticketState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
                 if (!empty($ticketClass)) {
                     $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
                 }

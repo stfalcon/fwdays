@@ -120,7 +120,7 @@ class TicketCost
     /**
      * @return bool
      */
-    public function isHaveTemporaryCount()
+    public function isHaveTemporaryCount(): bool
     {
         return $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count;
     }
