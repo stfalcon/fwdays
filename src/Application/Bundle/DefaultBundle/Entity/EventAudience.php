@@ -74,6 +74,34 @@ class EventAudience
     }
 
     /**
+     * @param Event $event
+     *
+     * @return $this
+     */
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events - contains($event)) {
+            $this->events->add($event);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return $this
+     */
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events - contains($event)) {
+            $this->events->removeElement($event);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName()

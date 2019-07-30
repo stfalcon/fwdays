@@ -62,9 +62,9 @@ class EventPage extends AbstractPage implements Translatable
     protected $sortOrder = 1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTextNew()
+    public function getTextNew(): ?string
     {
         return $this->textNew;
     }
@@ -102,9 +102,9 @@ class EventPage extends AbstractPage implements Translatable
     }
 
     /**
-     * @return Event
+     * @return Event|null
      */
-    public function getEvent(): Event
+    public function getEvent(): ?Event
     {
         return $this->event;
     }

@@ -58,7 +58,7 @@ class Event implements Translatable
     private $group;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|EventAudience[]
      *
      * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\EventAudience", mappedBy="events")
      */
@@ -1213,6 +1213,36 @@ class Event implements Translatable
     public function setAudiences($audiences)
     {
         $this->audiences = $audiences;
+
+        return $this;
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
+    public function addAudience(EventAudience $audience): self
+    {
+        if (!$this->audiences->contains($audience)) {
+            $this->audiences->add($audience);
+            $audience->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
+    public function removeAudience(EventAudience $audience): self
+    {
+        if ($this->audiences->contains($audience)) {
+            $this->audiences->removeElement($audience);
+            $audience->removeEvent($this);
+        }
 
         return $this;
     }

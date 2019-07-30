@@ -65,9 +65,9 @@ abstract class AbstractPage
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -89,9 +89,9 @@ abstract class AbstractPage
     /**
      * Get text.
      *
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -113,9 +113,9 @@ abstract class AbstractPage
     /**
      * Get slug.
      *
-     * @return string
+     * @return string|null
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -137,9 +137,9 @@ abstract class AbstractPage
     /**
      * Get title.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }

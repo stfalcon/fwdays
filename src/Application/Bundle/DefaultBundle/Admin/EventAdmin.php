@@ -93,7 +93,7 @@ class EventAdmin extends AbstractTranslateAdmin
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
             ->add('group', null, ['label' => 'Группа'])
-            ->add('audiences', null, ['label' => 'Аудитории'])
+            ->add('audiences', CollectionType::class, ['label' => 'Аудитории', 'by_reference' => false])
             ->add(
                 'images',
                 'string',
