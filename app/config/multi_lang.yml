@@ -9,8 +9,6 @@ ibrows_sonata_translation:
 lexik_translation:
     fallback_locale: "%locale%"     # (required) default locale to use
     managed_locales: "%locales%"    # (required) locales that the bundle have to manage
-    auto_cache_clean: true
-    auto_cache_clean_interval: 600  # number of seconds to wait before trying to check if translations have changed in the database.
 
 jms_i18n_routing:
     default_locale: "%locale%"
