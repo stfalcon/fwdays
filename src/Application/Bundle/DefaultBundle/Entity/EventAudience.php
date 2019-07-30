@@ -80,7 +80,7 @@ class EventAudience
      */
     public function addEvent(Event $event): self
     {
-        if (!$this->events - contains($event)) {
+        if (!$this->events->contains($event)) {
             $this->events->add($event);
         }
 
@@ -94,7 +94,7 @@ class EventAudience
      */
     public function removeEvent(Event $event): self
     {
-        if ($this->events - contains($event)) {
+        if ($this->events->contains($event)) {
             $this->events->removeElement($event);
         }
 
