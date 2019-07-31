@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class UrlForRedirect.
@@ -26,22 +27,22 @@ class UrlForRedirect
     {
         $this->router = $router;
 
-        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], true);
-        $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', [], true), '\/');
-        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], true);
-        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], true);
-        $this->authorizationUrls[] = $this->router->generate('password_already_requested', [], true);
+        $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
+        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->authorizationUrls[] = $this->router->generate('password_already_requested', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $this->homePages[] = trim($router->generate('homepage', [], true), '\/');
-        $this->homePages[] = trim($router->generate('cabinet', [], true), '\/');
+        $this->homePages[] = trim($router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
+        $this->homePages[] = trim($router->generate('cabinet', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
         foreach ($locales as $locale) {
-            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], true);
-            $this->homePages[] = $router->generate('cabinet', ['_locale' => $locale], true);
+            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            $this->homePages[] = $router->generate('cabinet', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
 
-            $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', ['_locale' => $locale], true), '\/');
-            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], true);
-            $this->authorizationUrls[] = $this->router->generate('password_already_requested', ['_locale' => $locale], true);
+            $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
+            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            $this->authorizationUrls[] = $this->router->generate('password_already_requested', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
         }
     }
 

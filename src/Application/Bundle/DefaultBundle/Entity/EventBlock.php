@@ -215,16 +215,16 @@ class EventBlock implements Translatable
     public static function getTypeChoices(): array
     {
         return [
-            self::HTML_TEXT => 'html текст',
-            self::PROGRAM => 'програма',
-            self::PARTNERS => 'партнеры',
-            self::PRICES => 'цены',
-            self::DESCRIPTION => 'описание',
-            self::VENUE => 'карта',
-            self::SPEAKERS => 'докладчики',
-            self::REVIEWS => 'доклады',
-            self::CANDIDATE_SPEAKERS => 'кандидаты',
-            self::COMMITTEE_SPEAKERS => 'програмный комитет',
+            'html текст' => self::HTML_TEXT,
+            'програма' => self::PROGRAM,
+            'партнеры' => self::PARTNERS,
+            'цены' => self::PRICES,
+            'описание' => self::DESCRIPTION,
+            'карта' => self::VENUE,
+            'докладчики' => self::SPEAKERS,
+            'доклады' => self::REVIEWS,
+            'кандидаты' => self::CANDIDATE_SPEAKERS,
+            'програмный комитет' => self::COMMITTEE_SPEAKERS,
         ];
     }
 }
