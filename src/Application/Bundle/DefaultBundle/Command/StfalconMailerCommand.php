@@ -71,7 +71,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $user &&
                 $mail &&
                 $user->isEnabled() &&
-                $user->isSubscribe() &&
+                ($user->isSubscribe() || $mail->isIgnoreUnsubscribe()) &&
                 $user->isEmailExists() &&
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {

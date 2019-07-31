@@ -116,13 +116,19 @@ class TicketRepository extends EntityRepository
      *
      * @param ArrayCollection $events
      * @param string|null     $status
+     * @param bool            $ignoreUnsubscribe
      *
      * @return array
      */
-    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, ?string $status = null): array
+    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, ?string $status = null, bool $ignoreUnsubscribe = false): array
     {
         $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $status);
-        $qb->andWhere('u.subscribe = 1');
+
+        if (!$ignoreUnsubscribe) {
+            $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
+                ->setParameter('subscribe', true)
+            ;
+        }
 
         $users = [];
 
