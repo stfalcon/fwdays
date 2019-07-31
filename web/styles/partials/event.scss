@@ -367,7 +367,7 @@
   margin-bottom: 18px;
 
   &__title {
-    margin: 0 0 36px 90px;
+    margin: 0 0 56px 90px;
   }
 
   &__items {
@@ -1294,6 +1294,13 @@ a.fix-event-header__title {   //for review-page, venue-page
   &__text {
     line-height: 26px;
     margin-bottom: 20px;
+  }
+
+  &__text-sm {
+    font-size: 12px;
+    line-height: 18px;
+    color: $dark-color;
+    font-weight: 700;
   }
 
   &__box {
