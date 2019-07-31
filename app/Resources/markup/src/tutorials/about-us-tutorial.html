@@ -22,6 +22,25 @@
 </head>
 <body>
 <div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <h2 class="h2">Відео:</h2>
+    <section class="about-header">
+        <video autoplay muted loop class="about-header__video">
+            <source src="https://fwdays.com/img/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </section>
+    <textarea id="code-1" class="input-code" readonly hidden>
+    <section class="about-header">
+        <video autoplay muted loop class="about-header__video">
+            <source src="https://fwdays.com/img/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
     <h2 class="h2">Цифри:</h2>
     <section class="about-numbers">
         <div class="container">
@@ -350,6 +369,11 @@
 </body>
 <script>
 
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+          document.getElementById("output-1"));
+    }
+
     function doHighlight2() {
         CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
             document.getElementById("output-2"));
@@ -374,6 +398,7 @@
             document.getElementById("output-7"));
     }
 
+    doHighlight1();
     doHighlight2();
     doHighlight3();
     doHighlight4();
