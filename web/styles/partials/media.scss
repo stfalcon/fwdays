@@ -811,6 +811,61 @@
       max-width: 50%;
     }
   }
+
+  //about
+  .about-header {
+    display: none;
+  }
+
+  .about-numbers {
+    padding-top: 50px;
+
+    &__box {
+      padding-left: 0;
+    }
+
+    &__item {
+      flex-basis: 50%;
+      max-width: 50%;
+      padding-left: 0;
+    }
+  }
+
+  .famous-speakers {
+    &__title {
+      margin-left: 0;
+    }
+
+    &__item {
+      width: 33.33%;
+      padding: 0 8px;
+    }
+  }
+
+  .famous-speaker-card {
+    padding-bottom: 32%;
+
+    &__top {
+      padding: 0 8px 8px;
+    }
+  }
+
+  .top-partners {
+    &__box {
+      padding-left: 0;
+    }
+
+    &__item {
+      flex-basis: 33.33%;
+      max-width: 33.33%;
+    }
+  }
+
+  .collaboration {
+    &__info {
+      padding-left: 0;
+    }
+  }
 }
 
 @media only screen and (max-width: 860px) {
@@ -1240,7 +1295,9 @@
       padding: 24px 16px;
     }
 
-    &__box, &__info, &__details {
+    &__box,
+    &__info,
+    &__details {
       height: 100%;
     }
 
@@ -1905,6 +1962,81 @@
         font-size: 14px;
         line-height: 18px;
       }
+    }
+  }
+
+  //about
+
+  .about-numbers {
+    padding-top: 40px;
+
+    &__title {
+      font-size: 26px;
+      line-height: 30px;
+      margin-bottom: 40px;
+    }
+
+    &__label {
+      font-size: 70px;
+      line-height: 70px;
+      margin-bottom: 8px;
+    }
+
+    &__value {
+      font-size: 14px;
+    }
+
+    &__item {
+      margin-bottom: 70px;
+      padding-right: 10px;
+    }
+  }
+
+  .famous-speakers {
+    margin-bottom: 50px;
+
+    &__title {
+      font-size: 26px;
+      line-height: 30px;
+      margin-bottom: 20px;
+    }
+
+    &__item {
+      width: 50%;
+      margin-bottom: 0;
+    }
+  }
+
+  .famous-speaker-card {
+    padding-bottom: 50%;
+  }
+
+  .top-partners {
+    &__title {
+      font-size: 26px;
+      line-height: 30px;
+      margin-bottom: 0;
+    }
+
+    &__item {
+      height: 114px;
+      flex-basis: 50%;
+      max-width: 50%;
+    }
+  }
+
+  .collaboration {
+    padding: 50px 0;
+
+    &__title {
+      font-size: 26px;
+      line-height: 32px;
+      margin-bottom: 26px;
+    }
+
+    &__email,
+    &__tel {
+      font-size: 24px;
     }
   }
 }
