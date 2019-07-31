@@ -61,8 +61,6 @@ class Mail
     protected $start = false;
 
     /**
-     * @todo refact. это костыльное и временное решение
-     *
      * @var string
      *
      * @ORM\Column(name="payment_status", type="string", nullable=true)
@@ -111,6 +109,13 @@ class Mail
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $mailQueues;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ignore_unsubscribe", type="boolean")
+     */
+    private $ignoreUnsubscribe = false;
 
     /**
      * Constructor.
@@ -524,6 +529,26 @@ class Mail
     public function setAudiences($audiences)
     {
         $this->audiences = $audiences;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIgnoreUnsubscribe(): bool
+    {
+        return $this->ignoreUnsubscribe;
+    }
+
+    /**
+     * @param bool $ignoreUnsubscribe
+     *
+     * @return $this
+     */
+    public function setIgnoreUnsubscribe(bool $ignoreUnsubscribe): self
+    {
+        $this->ignoreUnsubscribe = $ignoreUnsubscribe;
 
         return $this;
     }

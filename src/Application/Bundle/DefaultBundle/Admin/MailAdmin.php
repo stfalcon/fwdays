@@ -4,7 +4,9 @@ namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Repository\MailQueueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -102,14 +104,15 @@ final class MailAdmin extends AbstractAdmin
         if ($eventsChange ||
             $audiencesChange ||
             $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
-            $originalObject['paymentStatus'] !== $object->getPaymentStatus()
+            $originalObject['paymentStatus'] !== $object->getPaymentStatus() ||
+            $originalObject['ignoreUnsubscribe'] !== $object->isIgnoreUnsubscribe()
         ) {
             $objectStatus = $object->getStart();
             if (true === $objectStatus) {
                 $object->setStart(false);
                 $em->flush();
             }
-            /** @var $queueRepository \Application\Bundle\DefaultBundle\Repository\MailQueueRepository */
+            /** @var MailQueueRepository $queueRepository */
             $queueRepository = $em->getRepository('ApplicationDefaultBundle:MailQueue');
             $deleteCount = $queueRepository->deleteAllNotSentMessages($object);
             $object->setTotalMessages($object->getTotalMessages() - $deleteCount);
@@ -199,6 +202,7 @@ final class MailAdmin extends AbstractAdmin
                     'required' => false,
                     'label' => 'Статус оплаты',
                 ))
+                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки', 'required' => false])
             ->end();
     }
 
@@ -240,15 +244,16 @@ final class MailAdmin extends AbstractAdmin
             $events[$event->getId()] = $event;
         }
         $events = new ArrayCollection($events);
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();
         if ($events->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users = $em->getRepository('ApplicationDefaultBundle:User')->getRegisteredUsers($events);
+            $users = $em->getRepository('ApplicationDefaultBundle:User')->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe());
         } elseif ($events->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('ApplicationDefaultBundle:Ticket')
-                ->findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus());
+                ->
+                findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus(), $mail->isIgnoreUnsubscribe());
         } else {
-            $users = $em->getRepository('ApplicationDefaultBundle:User')->getAllSubscribed();
+            $users = $em->getRepository('ApplicationDefaultBundle:User')->getAllSubscribed($mail->isIgnoreUnsubscribe());
         }
 
         return $users;
