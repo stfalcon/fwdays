@@ -43,12 +43,6 @@
     flex-basis: 33.333%;
     max-width: 33.333%;
     margin-bottom: 90px;
-    padding-left: 80px;
-
-    &:first-child,
-    &:nth-child(4n) {
-      padding-left: 0;
-    }
   }
 
   &__label {
