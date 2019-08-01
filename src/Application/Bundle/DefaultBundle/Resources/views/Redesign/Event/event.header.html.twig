@@ -9,6 +9,11 @@
 <section class="event-header
     {% if event.useCustomBackground == true and event.background is not empty -%} event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
     {%- else -%}" style="background-color: {{ event.backgroundColor }};{%- endif -%}">
+    <div class="event-header-video">
+        <video autoplay muted loop>
+            <source src="https://fwdays.com/img/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </div>
     <div class="container">
         <div class="event-header__box">
             <h1 class="event-header__title">{{ event.name }}</h1>
