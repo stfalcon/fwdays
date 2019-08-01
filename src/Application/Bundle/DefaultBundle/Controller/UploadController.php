@@ -34,16 +34,16 @@ class UploadController extends Controller
 
         $fileConstraint = new Collection(
             [
-                    'file' => [
-                        new NotBlank(),
-                        new Image(),
-                    ],
+                'file' => [
+                    new NotBlank(),
+                    new Image(),
+                ],
             ]
         );
 
         // Validate
         /** @var $errors \Symfony\Component\Validator\ConstraintViolationList */
-        $errors = $this->get('validator')->validateValue(['file' => $file], $fileConstraint);
+        $errors = $this->get('validator')->validate(['file' => $file], $fileConstraint);
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
@@ -58,16 +58,6 @@ class UploadController extends Controller
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
-
-//        $filter = 'upload_image';
-//        $target = $newFileName;
-//        $cacheManager = $this->get('liip_imagine.cache.manager');
-//        $filterManager = $this->get('liip_imagine.filter.manager');
-//        $dataManager = $this->get('liip_imagine.data.manager');
-//
-//        $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
-//
-//        $newFile = $cacheManager->resolve($target, $filter);
 
         return new JsonResponse(
             $response = [
