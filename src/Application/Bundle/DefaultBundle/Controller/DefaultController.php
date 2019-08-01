@@ -31,18 +31,6 @@ class DefaultController extends Controller
         return $this->render('@ApplicationDefault/Default/index.html.twig', ['events' => $events]);
     }
 
-//    todo: delete this action
-
-    /**
-     * @Route("/page/about", name="page_about")
-     *
-     * @return Response
-     */
-    public function pageAboutAction(): Response
-    {
-        return $this->render('@ApplicationDefault/Page/about.html.twig');
-    }
-
     /**
      * @Route("/page/{slug}", name="page")
      *
