@@ -32,19 +32,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/page/about", name="page_about")
-     *
-     * @return Response
-     */
-    public function pageAboutAction(): Response
-    {
-        $page = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Page')
-            ->findOneBy(['slug' => 'about']);
-
-        return $this->render('@ApplicationDefault/Page/about.html.twig', ['page' => $page]);
-    }
-
-    /**
      * @Route("/page/{slug}", name="page")
      *
      * @param Page $page
