@@ -4,11 +4,11 @@ namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Application\Bundle\DefaultBundle\Entity\MailQueue;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * EmailSubscribe controller.
@@ -20,15 +20,13 @@ class EmailController extends Controller
      *
      * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
      *
-     * @Template()
-     *
      * @param string $hash
      * @param int    $userId
      * @param int    $mailId
      *
-     * @return array
+     * @return Response
      */
-    public function unsubscribeAction($hash, $userId, $mailId = null)
+    public function unsubscribeAction($hash, $userId, $mailId = null): Response
     {
         $em = $this->getDoctrine()->getManager();
         /** @var User $subscriber */
@@ -55,7 +53,7 @@ class EmailController extends Controller
         $subscriber->setSubscribe(false);
         $em->flush();
 
-        return ['hash' => $hash, 'userId' => $userId];
+        return $this->render('@ApplicationDefault/Email/unsubscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
     }
 
     /**
@@ -66,11 +64,9 @@ class EmailController extends Controller
      * @param int    $userId
      * @param string $hash
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
-    public function subscribeAction($userId, $hash)
+    public function subscribeAction($userId, $hash): Response
     {
         $em = $this->getDoctrine()->getManager();
         /** @var User $user */
@@ -84,7 +80,7 @@ class EmailController extends Controller
         $user->setSubscribe(true);
         $em->flush();
 
-        return ['hash' => $hash, 'userId' => $userId];
+        return $this->render('@ApplicationDefault/Email/subscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
     }
 
     /**
@@ -98,7 +94,7 @@ class EmailController extends Controller
      *
      * @return RedirectResponse
      */
-    public function actionTrackOpenMail($userId, $hash, $mailId = null)
+    public function actionTrackOpenMail($userId, $hash, $mailId = null): RedirectResponse
     {
         if ($mailId) {
             $em = $this->getDoctrine()->getManager();
