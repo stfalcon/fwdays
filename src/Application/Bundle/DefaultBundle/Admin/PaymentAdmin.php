@@ -30,7 +30,7 @@ final class PaymentAdmin extends AbstractAdmin
      */
     public function getBatchActions()
     {
-        $actions = [];
+        return [];
     }
 
     /**
