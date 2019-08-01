@@ -126,6 +126,10 @@
 }
 
 .help-links {
+  &--right {
+    text-align: right;
+  }
+
   &__item {
     margin-bottom: 10px;
 
