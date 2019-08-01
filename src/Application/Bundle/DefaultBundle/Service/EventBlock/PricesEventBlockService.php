@@ -3,7 +3,6 @@
 namespace Application\Bundle\DefaultBundle\Service\EventBlock;
 
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Application\Bundle\DefaultBundle\Entity\Event;
@@ -23,11 +22,11 @@ class PricesEventBlockService extends AbstractBlockService
     /**
      * PricesEventBlockService constructor.
      *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param ObjectRepository $ticketCostRepository
+     * @param string               $name
+     * @param EngineInterface      $templating
+     * @param TicketCostRepository $ticketCostRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $ticketCostRepository)
+    public function __construct($name, EngineInterface $templating, TicketCostRepository $ticketCostRepository)
     {
         parent::__construct($name, $templating);
 

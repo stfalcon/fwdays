@@ -2,10 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\EventBlock;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class EventBlockAdmin.
@@ -35,7 +37,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
         $formMapper
             ->add(
                 'type',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => EventBlock::getTypeChoices(),
                     'label' => 'Тип',
@@ -44,7 +46,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
             ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
             ->add('visible', null, ['label' => 'включен'])
             ->add('position', null, ['label' => 'позиция'])
-            ->add('translations', 'a2lix_translations_gedmo', [
+            ->add('translations', MyGedmoTranslationsType::class, [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
                     'text' => [

@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -24,9 +25,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
-            new JMS\AopBundle\JMSAopBundle(),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
 
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
@@ -38,20 +36,15 @@ class AppKernel extends Kernel
 
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-            new Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
-            new Sonata\IntlBundle\SonataIntlBundle(),
-            new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-
-            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
+            new Sonata\Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle(),
 
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-            new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
-
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle(),
 
@@ -60,7 +53,9 @@ class AppKernel extends Kernel
             new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
 
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
 
@@ -70,13 +65,14 @@ class AppKernel extends Kernel
             new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
 
+            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
         );
 
         if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {
             $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -88,16 +84,30 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    /**
-     * Register container configuration
-     *
-     * @param LoaderInterface $loader
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function getRootDir()
     {
-        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+        return __DIR__;
     }
 
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
+
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
+        $loader->load(function (ContainerBuilder $container) {
+            $container->setParameter('container.autowiring.strict_mode', true);
+            $container->setParameter('container.dumper.inline_class_loader', true);
+            $container->addObjectResource($this);
+        });
+        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+    }
 
     /**
      * @return string

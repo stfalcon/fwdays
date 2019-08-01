@@ -3,11 +3,12 @@
 namespace Application\Bundle\DefaultBundle\Tests\Entity;
 
 use Application\Bundle\DefaultBundle\Entity\Sponsor;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Test cases for sponsor entity.
  */
-class SponsorEntityTest extends \PHPUnit_Framework_TestCase
+class SponsorEntityTest extends WebTestCase
 {
     /**
      * Test setter and getter methods for name.

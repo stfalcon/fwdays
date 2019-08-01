@@ -3,6 +3,11 @@
 namespace Application\Bundle\DefaultBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseRegistrationFormType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -17,43 +22,43 @@ class RegistrationFormType extends BaseRegistrationFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', [
+            ->add('email', EmailType::class, [
                 'required' => true,
                 'label' => 'fos_user_profile_form_email',
             ])
-            ->add('surname', null, [
+            ->add('surname', TextType::class, [
                 'required' => true,
                 'label' => 'fos_user_profile_form_surname',
             ])
-            ->add('fullname', null, [
+            ->add('fullname', TextType::class, [
                 'label' => 'fos_user_profile_form_fullname',
             ])
-            ->add('name', null, [
+            ->add('name', TextType::class, [
                 'required' => true,
                 'label' => 'fos_user_profile_form_name',
             ])
-            ->add('country', null, [
+            ->add('country', TextType::class, [
                 'label' => 'fos_user_profile_form_country',
             ])
-            ->add('phone', null, [
+            ->add('phone', TelType::class, [
                 'label' => 'fos_user_profile_form_phone',
             ])
-            ->add('city', null, [
+            ->add('city', TextType::class, [
                 'label' => 'fos_user_profile_form_city',
             ])
-            ->add('company', null, [
+            ->add('company', TextType::class, [
                 'required' => false,
                 'label' => 'fos_user_registration_form_company',
             ])
-            ->add('post', null, [
+            ->add('post', TextType::class, [
                 'required' => false,
                 'label' => 'fos_user_profile_form_post',
             ])
-            ->add('plainPassword', 'password', [
+            ->add('plainPassword', PasswordType::class, [
                 'required' => true,
                 'label' => 'fos_user_profile_form_password',
             ])
-            ->add('subscribe', 'checkbox', [
+            ->add('subscribe', CheckboxType::class, [
                 'required' => false,
                 'data' => true,
                 'label' => 'fos_user_profile_form_subscribe',
@@ -61,13 +66,5 @@ class RegistrationFormType extends BaseRegistrationFormType
             ->add('facebookID')
             ->add('googleID')
         ;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'application_registration';
     }
 }

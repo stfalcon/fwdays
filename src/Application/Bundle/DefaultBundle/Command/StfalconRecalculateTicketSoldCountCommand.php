@@ -27,7 +27,7 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
      *
-     * @return int|null|void
+     * @return int|void|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -68,10 +68,9 @@ class PaymentListenerTest extends WebTestCase
      */
     public function testPostUpdate()
     {
-        $this->markTestSkipped();
         $this->getEmailWithLocal('uk');
         /* check email with ticket pdf file */
-        $this->findEmailWithText('ticket-php-day-2017.pdf');
+        $this->findEmailWithText('ticket-zend-day-2017.pdf');
         /* check email with string */
         $this->findEmailWithText('У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.');
     }
@@ -81,7 +80,6 @@ class PaymentListenerTest extends WebTestCase
      */
     public function testEmailUkTranslate()
     {
-        $this->markTestSkipped();
         $this->getEmailWithLocal('uk');
         $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_HELLO_UK);
         $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_THANKS_UK);
@@ -95,15 +93,13 @@ class PaymentListenerTest extends WebTestCase
     private function getEmailWithLocal($lang)
     {
         $this->client->followRedirects();
-        $user = $this->loginUser('user@fwdays.com', 'qwerty', $lang);
+        $user = $this->loginUser('jack.sparrow@fwdays.com', 'qwerty', $lang);
         $this->client->request('GET', '/'.$lang, ['_locale' => $lang]);
 
-        $eventPHPDay = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $eventPHPDay = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'zend-day-2017']);
         $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
-        /**
-         * @var Payment
-         */
+        /** @var Payment $payment */
         $payment = $ticket->getPayment();
         $payment->markedAsPaid();
 

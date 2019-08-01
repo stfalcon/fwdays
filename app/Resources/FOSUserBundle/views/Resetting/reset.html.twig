@@ -3,19 +3,21 @@
 {% block content %}
 <div class="form-box">
     <h2 class="h2 form-box__title">{{ 'user.change_password.title'|trans }}</h2>
-    <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_resetting_reset">
+    <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" method="POST" class="fos_user_resetting_reset">
         <div class="form-row">
+            {% set is_first_error = form is defined and form.plainPassword.first.vars.errors|length %}
             <div class="form-col form-col--6 form-col--xs-6">
                 <label class="form-label form-label--required" for="fos_user_resetting_form_new_first">{{ 'form.new_password'|trans({}, 'FOSUserBundle') }}</label>
-                <input class="input {% if form is defined and form.new.first.vars.errors|length %}input--error{% endif %}" type="password" id="fos_user_resetting_form_new_first" name="fos_user_resetting_form[new][first]" required="required">
-                {% if form is defined and form.new.first.vars.errors|length %}<p class="text-error">{{ form.new.first.vars.errors[0].message|trans }}</p>{% endif %}
+                <input class="input {% if is_first_error %}input--error{% endif %}" type="password" id="fos_user_resetting_form_new_first" name="fos_user_resetting_form[plainPassword][first]" required="required">
+                {% if is_first_error %}<p class="text-error">{{ form.plainPassword.first.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
         <div class="form-row">
+            {% set is_second_error = form is defined and form.plainPassword.second.vars.errors|length %}
             <div class="form-col form-col--6 form-col--xs-6">
                 <label class="form-label form-label--required" for="fos_user_resetting_form_new_second">{{ 'form.new_password_confirmation'|trans({}, 'FOSUserBundle') }}</label>
-                <input class="input {% if form is defined and form.new.second.vars.errors|length %}input--error{% endif %}" type="password" id="fos_user_resetting_form_new_second" name="fos_user_resetting_form[new][second]" required="required">
-                {% if form is defined and form.new.second.vars.errors|length %}<p class="text-error">{{ form.new.second.vars.errors[0].message|trans }}</p>{% endif %}
+                <input class="input {% if is_second_error %}input--error{% endif %}" type="password" id="fos_user_resetting_form_new_second" name="fos_user_resetting_form[plainPassword][second]" required="required">
+                {% if is_second_error %}<p class="text-error">{{ form.plainPassword.second.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
         {{ form_widget(form._token) }}

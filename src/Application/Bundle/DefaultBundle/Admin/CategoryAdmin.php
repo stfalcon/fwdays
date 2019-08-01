@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -63,7 +64,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
             ->with('Переводы')
                 ->add(
                     'translations',
-                    'a2lix_translations_gedmo',
+                    MyGedmoTranslationsType::class,
                     [
                         'translatable_class' => $this->getClass(),
                         'label' => 'Переводы',

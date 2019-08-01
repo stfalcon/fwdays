@@ -68,7 +68,6 @@ class PaymentServiceTest extends WebTestCase
      */
     public function testPayByFwdaysAmount()
     {
-        $this->markTestSkipped();
         $fwdaysAmount = 3000;
 
         /** @var User $user */
@@ -76,7 +75,7 @@ class PaymentServiceTest extends WebTestCase
         $user->setBalance($fwdaysAmount);
 
         /** @var Event $event */
-        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-day-2017']);
+        $event = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'zend-day-2017']);
         /** @var TicketRepository $ticketRepository */
         $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */

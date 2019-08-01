@@ -38,7 +38,7 @@ class EventPage extends AbstractPage implements Translatable
     protected $showInMenu = false;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event", inversedBy="pages")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
@@ -62,9 +62,9 @@ class EventPage extends AbstractPage implements Translatable
     protected $sortOrder = 1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTextNew()
+    public function getTextNew(): ?string
     {
         return $this->textNew;
     }
@@ -94,7 +94,7 @@ class EventPage extends AbstractPage implements Translatable
      *
      * @return $this
      */
-    public function setEvent(Event $event)
+    public function setEvent(Event $event): self
     {
         $this->event = $event;
 
@@ -102,9 +102,9 @@ class EventPage extends AbstractPage implements Translatable
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return Event|null
      */
-    public function getEvent()
+    public function getEvent(): ?Event
     {
         return $this->event;
     }

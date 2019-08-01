@@ -22,11 +22,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: fwdays-backend-parameters
-                  key: parameters.ini
+                  key: parameters.yml
             args:
             - bash
             - -c
-            - su www-data -c  "php app/console stfalcon:mailer --host=fwdays.com --amount=10 --env=prod"
+            - su www-data -c  "php bin/console stfalcon:mailer --host=fwdays.com --amount=10 --env=prod"
           restartPolicy: OnFailure
           imagePullSecrets:
             - name: regcred-dockerhub

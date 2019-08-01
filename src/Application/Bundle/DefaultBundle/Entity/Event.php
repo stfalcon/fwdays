@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
@@ -59,7 +59,7 @@ class Event implements Translatable
     private $group;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|EventAudience[]
      *
      * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\EventAudience", mappedBy="events")
      */
@@ -95,6 +95,15 @@ class Event implements Translatable
      * @Gedmo\Translatable(fallback=true)
      */
     protected $name = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", name="seo_title", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    private $seoTitle;
 
     /**
      * @var string
@@ -210,6 +219,7 @@ class Event implements Translatable
      * @ORM\Column(type="boolean")
      */
     protected $smallEvent = false;
+
     /**
      * @var float
      *
@@ -218,10 +228,13 @@ class Event implements Translatable
     protected $cost = 0;
 
     /**
+     * @var TicketCost[]|Collection
+     *
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $ticketsCost;
+
     /**
      * @var bool
      *
@@ -1138,11 +1151,11 @@ class Event implements Translatable
     }
 
     /**
-     * @param EventGroup $group
+     * @param EventGroup|null $group
      *
      * @return $this
      */
-    public function setGroup($group)
+    public function setGroup(?EventGroup $group): self
     {
         $this->group = $group;
 
@@ -1150,9 +1163,9 @@ class Event implements Translatable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLat()
+    public function getLat(): ?float
     {
         return $this->lat;
     }
@@ -1162,7 +1175,7 @@ class Event implements Translatable
      *
      * @return $this
      */
-    public function setLat($lat)
+    public function setLat(float $lat): self
     {
         $this->lat = $lat;
 
@@ -1170,9 +1183,9 @@ class Event implements Translatable
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getLng()
+    public function getLng(): ?float
     {
         return $this->lng;
     }
@@ -1182,7 +1195,7 @@ class Event implements Translatable
      *
      * @return $this
      */
-    public function setLng($lng)
+    public function setLng(float $lng): self
     {
         $this->lng = $lng;
 
@@ -1205,6 +1218,36 @@ class Event implements Translatable
     public function setAudiences($audiences)
     {
         $this->audiences = $audiences;
+
+        return $this;
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
+    public function addAudience(EventAudience $audience): self
+    {
+        if (!$this->audiences->contains($audience)) {
+            $this->audiences->add($audience);
+            $audience->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
+    public function removeAudience(EventAudience $audience): self
+    {
+        if ($this->audiences->contains($audience)) {
+            $this->audiences->removeElement($audience);
+            $audience->removeEvent($this);
+        }
 
         return $this;
     }
@@ -1337,5 +1380,39 @@ class Event implements Translatable
         }
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSeoTitle(): ?string
+    {
+        return $this->seoTitle;
+    }
+
+    /**
+     * @param string|null $seoTitle
+     *
+     * @return $this
+     */
+    public function setSeoTitle(?string $seoTitle): self
+    {
+        $this->seoTitle = $seoTitle;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCurrentPrice(): ?float
+    {
+        foreach ($this->ticketsCost as $item) {
+            if ($item->isEnabled() || $item->isHaveTemporaryCount()) {
+                return $item->getAmount();
+            }
+        }
+
+        return null;
     }
 }

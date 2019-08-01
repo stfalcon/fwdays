@@ -2,10 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Application\Bundle\DefaultBundle\Entity\User;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Ticket.
@@ -115,6 +113,11 @@ class Ticket
      * @ORM\Column(name="has_discount", type="boolean")
      */
     private $hasDiscount = false;
+
+    /**
+     * @var bool
+     */
+    private $hideConditions = false;
 
     /**
      * Get id.
@@ -310,7 +313,7 @@ class Ticket
     /**
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
@@ -330,17 +333,17 @@ class Ticket
     /**
      * @return float
      */
-    public function getAmountWithoutDiscount()
+    public function getAmountWithoutDiscount(): float
     {
         return $this->amountWithoutDiscount;
     }
 
     /**
-     * @param \Application\Bundle\DefaultBundle\Entity\PromoCode $promoCode
+     * @param PromoCode|null $promoCode
      *
      * @return $this
      */
-    public function setPromoCode($promoCode)
+    public function setPromoCode(?PromoCode $promoCode): self
     {
         $this->promoCode = $promoCode;
 
@@ -348,9 +351,9 @@ class Ticket
     }
 
     /**
-     * @return \Application\Bundle\DefaultBundle\Entity\PromoCode
+     * @return PromoCode
      */
-    public function getPromoCode()
+    public function getPromoCode(): ?PromoCode
     {
         return $this->promoCode;
     }
@@ -385,5 +388,21 @@ class Ticket
     public function generatePdfFilename()
     {
         return 'ticket-'.$this->getEvent()->getSlug().'.pdf';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHideConditions()
+    {
+        return $this->hideConditions;
+    }
+
+    /**
+     * @param bool $hideConditions
+     */
+    public function setHideConditions($hideConditions)
+    {
+        $this->hideConditions = $hideConditions;
     }
 }

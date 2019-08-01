@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: services.yml }
     - { resource: security.yml }
     - { resource: multi_lang.yml }
@@ -45,10 +45,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    form:
-        resources:
-            - 'SonataCoreBundle:Form:colorpicker.html.twig'
     form_themes:
+        - 'SonataCoreBundle:Form:colorpicker.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
     globals:
         google_apikey: "%google_api_key%"
@@ -126,14 +124,13 @@ fos_user:
     user_class: Application\Bundle\DefaultBundle\Entity\User
     registration:
         form:
-            type: application_user_registration
+            type: Application\Bundle\DefaultBundle\Form\Type\RegistrationFormType
         confirmation:
             enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
-            type: application_profile
-            handler: application.profile.form.handler
+            type: Application\Bundle\DefaultBundle\Form\Type\ProfileFormType
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
@@ -145,8 +142,6 @@ application_default:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
     discount: 0.2
-
-ornicar_gravatar: ~
 
 accord_mandrill_swift_mailer:
     api_key: '%mandrill_api_key%'

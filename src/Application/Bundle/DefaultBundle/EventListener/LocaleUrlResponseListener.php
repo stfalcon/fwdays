@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\EventListener;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
-use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -12,7 +11,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Router;
 
 /**
  * Class LocaleUrlRequestListener.
@@ -20,39 +18,26 @@ use Symfony\Component\Routing\Router;
 class LocaleUrlResponseListener
 {
     private const UKRAINE_COUNTRY_CODE = 'UA';
-
     private $defaultLocale;
-
     private $locales;
-
     private $cookieName;
-
-    /** @var I18nRouter */
     private $routerService;
-
     private $geoIpService;
 
-    /** @var Logger */
-    private $logger;
-
     /**
-     * LocaleUrlResponseListener constructor.
-     *
      * @param string       $defaultLocale
      * @param array        $locales
      * @param string       $cookieName
-     * @param Router       $routerService
+     * @param I18nRouter   $routerService
      * @param GeoipManager $geoIpService
-     * @param Logger       $logger
      */
-    public function __construct($defaultLocale, array $locales, $cookieName, $routerService, $geoIpService, $logger)
+    public function __construct(string $defaultLocale, array $locales, string $cookieName, I18nRouter $routerService, GeoipManager $geoIpService)
     {
         $this->defaultLocale = $defaultLocale;
         $this->locales = $locales;
         $this->cookieName = $cookieName;
         $this->routerService = $routerService;
         $this->geoIpService = $geoIpService;
-        $this->logger = $logger;
     }
 
     /**
@@ -177,7 +162,7 @@ class LocaleUrlResponseListener
     /**
      * @param Request $request
      *
-     * @return null|string
+     * @return string|null
      */
     private function getRealIpAddr($request)
     {

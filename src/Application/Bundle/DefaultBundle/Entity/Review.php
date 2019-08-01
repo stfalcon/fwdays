@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Application\Bundle\DefaultBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Application\Bundle\DefaultBundle\Entity\AbstractClass\AbstractPage;
 use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -38,7 +38,7 @@ class Review extends AbstractPage implements Translatable
     private $translations;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event
      *
      * @ORM\ManyToOne(targetEntity="Event")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
@@ -46,7 +46,7 @@ class Review extends AbstractPage implements Translatable
     private $event;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Speaker[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", inversedBy="reviews")
      * @ORM\JoinTable(name="event__speakers_reviews",
@@ -61,7 +61,7 @@ class Review extends AbstractPage implements Translatable
     private $speakers;
 
     /**
-     * @var ArrayCollection
+     * @var User[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\User")
      * @ORM\JoinTable(name="reviews_users_likes",
@@ -89,7 +89,7 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Event
      */
     public function getEvent()
     {
@@ -109,7 +109,7 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getSpeakers()
     {
@@ -117,11 +117,11 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @param ArrayCollection $speakers
+     * @param Speaker[]|Collection $speakers
      *
      * @return $this
      */
-    public function setSpeaker($speakers)
+    public function setSpeaker($speakers): self
     {
         $this->speakers = $speakers;
 
@@ -129,11 +129,11 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @param ArrayCollection $likedUsers
+     * @param User[]|Collection $likedUsers
      *
      * @return $this
      */
-    public function setLikedUsers($likedUsers)
+    public function setLikedUsers($likedUsers): self
     {
         $this->likedUsers = $likedUsers;
 
@@ -141,7 +141,7 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return User[]|Collection
      */
     public function getLikedUsers()
     {
@@ -153,7 +153,7 @@ class Review extends AbstractPage implements Translatable
      *
      * @return $this
      */
-    public function addLikedUser($user)
+    public function addLikedUser(User $user): self
     {
         if (!$this->likedUsers->contains($user)) {
             $this->likedUsers->add($user);
@@ -167,9 +167,11 @@ class Review extends AbstractPage implements Translatable
      *
      * @return $this
      */
-    public function removeLikedUser($user)
+    public function removeLikedUser(User $user): self
     {
-        $this->likedUsers->removeElement($user);
+        if ($this->likedUsers->contains($user)) {
+            $this->likedUsers->removeElement($user);
+        }
 
         return $this;
     }
@@ -179,7 +181,7 @@ class Review extends AbstractPage implements Translatable
      *
      * @return bool
      */
-    public function isLikedByUser($user)
+    public function isLikedByUser($user): bool
     {
         return $this->likedUsers->contains($user);
     }

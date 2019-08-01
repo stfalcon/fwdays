@@ -16,6 +16,7 @@
     {% block meta_description %}
     <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
     {% endblock meta_description %}
+
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css'|app_asset_version) }}">
@@ -107,13 +108,7 @@
 
     {% for message in app.session.flashBag.get('fos_user_success') %}
         <script>
-            {%- if message == 'profile.flash.updated' -%}
-                var flashText = '{{ 'flash_profile_updated.title'|trans }}';
-            {%- elseif message == 'registration.flash.user_created' -%}
-                var flashText = '{{ 'flash_user_created.title'|trans }}';
-            {%- elseif message == 'registration.flash.user_need_data' -%}
-                var flashText = '{{ 'flash_user_need_data.title'|trans }}';
-            {% endif %}
+            var flashText = '{{ message|trans }}';
         </script>
         <script src="{{ asset('js/flash-text.js') }}" defer></script>
     {% endfor %}

@@ -2,8 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -244,7 +242,7 @@ class Payment
      *
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }

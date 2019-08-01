@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class UserRepository.
@@ -26,42 +27,45 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @return array
+     * @param bool $ignoreUnsubscribe
+     *
+     * @return mixed
      */
-    public function getAllSubscribed()
+    public function getAllSubscribed(bool $ignoreUnsubscribe = false)
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.subscribe = 1')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('u');
+        $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getCountBaseQueryBuilder()
     {
-        return $this->createQueryBuilder('u')
-                    ->select('COUNT(u)')
-        ;
+        return $this->createQueryBuilder('u')->select('COUNT(u)');
     }
 
     /**
      * Users registered for events.
      *
      * @param ArrayCollection $events
+     * @param bool            $ignoreUnsubscribe
      *
      * @return array
      */
-    public function getRegisteredUsers($events)
+    public function getRegisteredUsers($events, bool $ignoreUnsubscribe = false)
     {
         $qb = $this->createQueryBuilder('u');
 
         $qb->join('u.wantsToVisitEvents', 'wve')
             ->where($qb->expr()->in('wve.id', ':events'))
             ->setParameter(':events', $events->toArray())
-            ->andWhere('u.subscribe = 1')
-            ->groupBy('u');
+            ->groupBy('u')
+        ;
+
+        $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
 
         return $qb->getQuery()->execute();
     }
@@ -127,5 +131,18 @@ class UserRepository extends EntityRepository
         ]);
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param bool         $ignoreUnsubscribe
+     */
+    private function addIgnoreUnsubscribeFilter(QueryBuilder $qb, bool $ignoreUnsubscribe)
+    {
+        if (!$ignoreUnsubscribe) {
+            $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
+                ->setParameter('subscribe', true)
+            ;
+        }
     }
 }

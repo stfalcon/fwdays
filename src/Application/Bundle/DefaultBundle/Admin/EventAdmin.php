@@ -3,10 +3,12 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Sonata\Form\Type\CollectionType;
 
 /**
  * Class EventAdmin.
@@ -91,7 +93,7 @@ class EventAdmin extends AbstractTranslateAdmin
             ->add('useDiscounts', null, ['label' => 'Возможна скидка'])
             ->add('receivePayments', null, ['label' => 'Продавать билеты'])
             ->add('group', null, ['label' => 'Группа'])
-            ->add('audiences', null, ['label' => 'Аудитории'])
+            ->add('audiences', CollectionType::class, ['label' => 'Аудитории', 'by_reference' => false])
             ->add(
                 'images',
                 'string',
@@ -127,12 +129,16 @@ class EventAdmin extends AbstractTranslateAdmin
         $formMapper
             ->tab('Переводы')
                 ->with('Переводы')
-                    ->add('translations', 'a2lix_translations_gedmo', [
+                    ->add('translations', MyGedmoTranslationsType::class, [
                         'translatable_class' => $this->getClass(),
                         'fields' => [
                             'name' => [
                                 'label' => 'Название',
                                 'locale_options' => $localOptions,
+                            ],
+                            'seoTitle' => [
+                                'label' => 'Seo Title',
+                                'locale_options' => $localAllFalse,
                             ],
                             'city' => [
                                 'label' => 'Город',
@@ -168,7 +174,7 @@ class EventAdmin extends AbstractTranslateAdmin
                     ->add('audiences', null, ['label' => 'Аудитории'])
                     ->add(
                         'ticketsCost',
-                        'sonata_type_collection',
+                        CollectionType::class,
                         [
                             'label' => 'Цены события',
                             'by_reference' => false,
@@ -235,7 +241,7 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Блоки')
                     ->add(
                         'blocks',
-                        'sonata_type_collection',
+                        CollectionType::class,
                         [
                             'label' => 'Блоки отображения события',
                             'by_reference' => false,

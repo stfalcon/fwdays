@@ -1,10 +1,12 @@
 #!/bin/bash
 
 sed -i s/%fwdays_web_server_name%/$SERVER_NAME/ /etc/nginx/conf.d/fwdays.conf
-echo -e "$PARAMETERS" > /app/app/config/parameters.ini
+echo -e "$PARAMETERS" > /app/app/config/parameters.yml
 
 if [ -n "$STAGING" ]; then
   cp /etc/nginx/stag_conf_avaliable/* /etc/nginx/stag_conf_enabled
 fi
+
+su www-data -c "cd /app && rm var/cache/prod/ -rf && php bin/console cache:warmup --env=prod"
 
 exec "$@"

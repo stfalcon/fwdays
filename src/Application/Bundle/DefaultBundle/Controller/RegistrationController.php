@@ -3,56 +3,104 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Form\Factory\FactoryInterface;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 /**
  * Class RegistrationController.
  */
 class RegistrationController extends BaseController
 {
+    private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
+    private $eventDispatcher;
+    private $formFactory;
+    private $userManager;
+    private $session;
+    private $validator;
+    private $buzz;
+    private $logger;
+
     /**
-     * @return mixed|RedirectResponse|Response
-     *
-     * @throws \Twig_Error
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param FactoryInterface         $formFactory
+     * @param UserManagerInterface     $userManager
+     * @param TokenStorageInterface    $tokenStorage
      */
-    public function registerAction()
+    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage)
     {
-        $form = $this->container->get('fos_user.registration.form');
+        parent::__construct($eventDispatcher, $formFactory, $userManager, $tokenStorage);
+        $this->eventDispatcher = $eventDispatcher;
+        $this->formFactory = $formFactory;
+        $this->userManager = $userManager;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return mixed|RedirectResponse|Response
+     */
+    public function registerAction(Request $request)
+    {
+        $this->session = $this->get('session');
+        $this->validator = $this->get('validator');
+        $this->buzz = $this->get('buzz');
+        $this->logger = $this->get('logger');
+
+        $user = $this->userManager->createUser();
+        $user->setEnabled(true);
+
+        $event = new GetResponseUserEvent($user, $request);
+        $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+
+        if (null !== $event->getResponse()) {
+            return $event->getResponse();
+        }
+
+        $form = $this->formFactory->createForm();
+        $form->setData($user);
+
         $fromOAuth = false;
-        if ($this->container->get('session')->has('social-response')) {
-            $oAuthData = $this->container->get('session')->get('social-response');
-            $user = new User();
-            $user = $this->setUserFromOAuthResponse($user, $oAuthData);
+        if ($this->session->has('social-response')) {
+            $oAuthData = $this->session->get('social-response');
             if ($user instanceof User) {
-                $form = $this->container->get('form.factory')->create('application_registration', $user);
-                $errors = $this->container->get('validator')->validate($user);
+                $this->setUserFromOAuthResponse($user, $oAuthData);
+                $form->setData($user);
+                $errors = $this->validator->validate($user);
                 foreach ($errors as $error) {
                     $form->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
                 }
                 $fromOAuth = true;
             }
-            $this->container->get('session')->remove('social-response');
+            $this->session->remove('social-response');
+        } else {
+            $form->handleRequest($request);
         }
-        $formHandler = $this->container->get('fos_user.registration.form.handler');
-        $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
+        $captcha = $request->get('g-recaptcha-response');
+        $process = $fromOAuth ? false : $this->isGoogleCaptchaTrue($captcha);
 
-        $process = $fromOAuth ? false : $formHandler->process($confirmationEnabled);
         if ($process) {
-            $user = $form->getData();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $event = new FormEvent($form, $request);
+                $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
-            $authUser = false;
-            if ($confirmationEnabled) {
-                $this->container->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
-                $route = 'fos_user_registration_check_email';
-            } else {
-                $authUser = true;
-                $route = 'fos_user_registration_confirmed';
+                $user = $form->getData();
+                $this->userManager->updateUser($user);
 
                 $this->container->get('application.mailer_helper')->sendEasyEmail(
                     $this->container->get('translator')->trans('registration.email.subject'),
@@ -60,40 +108,43 @@ class RegistrationController extends BaseController
                     ['user' => $user],
                     $user
                 );
-            }
 
-            $request = $this->container->get('request_stack')->getCurrentRequest();
-            $query = $request->getQueryString();
-            $this->setFlash('fos_user_success', 'registration.flash.user_created');
-            $url = $this->container->get('router')->generate($route);
-            if ($query) {
-                $url .= '?'.$query;
-            }
-            $response = new RedirectResponse($url);
-
-            if ($authUser) {
+                if (null === $response = $event->getResponse()) {
+                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $response = new RedirectResponse($url);
+                }
+                $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
                 $this->authenticateUser($user, $response);
-            }
 
-            return $response;
+                return $response;
+            }
+            $event = new FormEvent($form, $request);
+            $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
+
+            if (null !== $response = $event->getResponse()) {
+                return $response;
+            }
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Registration:register.html.'.$this->getEngine(), array(
+        return $this->render('@FOSUser/Registration/register.html.twig', [
             'regForm' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
-     * Receive the confirmation token from user email provider, login the user.
-     *
-     * @param string $token
+     * @param Request $request
+     * @param string  $token
      *
      * @return RedirectResponse
      */
-    public function confirmAction($token)
+    public function confirmAction(Request $request, $token): RedirectResponse
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        $user = $this->container->get('fos_user.user_manager')->findUserByConfirmationToken($token);
+        $this->session = $this->get('session');
+        $this->validator = $this->get('validator');
+        $this->buzz = $this->get('buzz');
+        $this->logger = $this->get('logger');
+
+        $user = $this->userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {
             throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
@@ -103,36 +154,35 @@ class RegistrationController extends BaseController
         $user->setEnabled(true);
         $user->setLastLogin(new \DateTime());
 
-        $this->container->get('fos_user.user_manager')->updateUser($user);
+        $this->userManager->updateUser($user);
         $response = new RedirectResponse($this->container->get('router')->generate('events'));
         $this->authenticateUser($user, $response);
 
-        return $this->container->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
     }
 
     /**
      * Tell the user his account is now confirmed.
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      */
-    public function confirmedAction()
+    public function confirmedAction(Request $request): RedirectResponse
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->container->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
     }
 
     /**
      * @param User  $user
      * @param array $response
-     *
-     * @return User
      */
-    private function setUserFromOAuthResponse(User $user, array $response)
+    private function setUserFromOAuthResponse(User $user, array $response): void
     {
         $user->setName($response['first_name']);
         $user->setSurname($response['last_name']);
@@ -147,7 +197,69 @@ class RegistrationController extends BaseController
                 $user->setFacebookID($socialID);
                 break;
         }
+    }
 
-        return $user;
+    /**
+     * Перевіряєм капчу.
+     *
+     * @see https://www.google.com/recaptcha/admin#list
+     *
+     * @param string $captcha
+     *
+     * @return bool
+     */
+    private function isGoogleCaptchaTrue($captcha): bool
+    {
+        if ('stag' === $this->getParameter('kernel.environment')) {
+            return true;
+        }
+
+        if (empty($captcha)) {
+            return false;
+        }
+
+        $captchaSecretKey = $this->getParameter('google_captcha_secret_key');
+
+        $params = [
+            'secret' => $captchaSecretKey,
+            'response' => $captcha,
+            'remoteip' => $_SERVER['REMOTE_ADDR'],
+        ];
+
+        $response = json_decode(
+            $this->buzz->submitForm(
+                $this->captchaCheckUrl,
+                $params
+            )->getBody()->getContents(),
+            true
+        );
+        if (!isset($response['success'])) {
+            $this->logger->addError('google captcha api response missing');
+
+            return false;
+        }
+        if (isset($response['error-codes'])) {
+            $this->logger->addError('google captcha api error: '.$response['error-codes'][0]);
+
+            return false;
+        }
+
+        return (bool) $response['success'];
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param Response      $response
+     */
+    private function authenticateUser(UserInterface $user, Response $response): void
+    {
+        try {
+            $this->get('fos_user.security.login_manager')->loginUser(
+                $this->getParameter('fos_user.firewall_name'),
+                $user,
+                $response
+            );
+        } catch (AccountStatusException $ex) {
+        }
     }
 }

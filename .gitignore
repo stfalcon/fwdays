@@ -1,26 +1,34 @@
+.idea
+/node_modules
+/composer.phar
+
 # Symfony
-/app/bootstrap.php.cache
-/app/logs/*
-/app/cache/*
-/app/sessions/*
 /app/config/parameters.ini
-!/app/sessions/.gitkeep
+/app/config/parameters.yml
 /vendor/
 /bin/
-/web/bundles/*
-/composer.phar
-app/config/parameters.ini
+
+/var/*
+!/var/cache
+/var/cache/*
+!var/cache/.gitkeep
+!/var/logs
+/var/logs/*
+!var/logs/.gitkeep
+!/var/sessions
+/var/sessions/*
+!var/sessions/.gitkeep
+!var/SymfonyRequirements.php
 
 # Application
+/web/assets
+/web/bundles/*
 /web/tmp/*
 /web/uploads/*
-/node_modules
-.idea
-/web/assets
 
 # Geo Data
 !/geodata/.gitkeep
-/geodata/GeoLiteCity.dat
+/geodata/*
 
 ###> friendsofphp/php-cs-fixer ###
 /.php_cs.cache

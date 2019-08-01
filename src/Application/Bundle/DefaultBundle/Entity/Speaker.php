@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Translatable\Translatable;
@@ -103,7 +104,7 @@ class Speaker implements Translatable
     private $file;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
@@ -120,7 +121,7 @@ class Speaker implements Translatable
     /**
      * Євенти в яких спикер знаходиться на розгляді.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
      * @ORM\JoinTable(name="event_speakers_candidate")
@@ -130,7 +131,7 @@ class Speaker implements Translatable
     /**
      * Євенти в яких спикер знаходиться на розгляді.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Event[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="committeeSpeakers")
      * @ORM\JoinTable(name="event_speakers_committee")
@@ -138,7 +139,7 @@ class Speaker implements Translatable
     private $committeeEvents;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Review[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
      */
@@ -359,7 +360,7 @@ class Speaker implements Translatable
      *
      * @return $this
      */
-    public function setFile($file)
+    public function setFile($file): self
     {
         $this->file = $file;
 
@@ -369,7 +370,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Event[]|Collection
      */
     public function getEvents()
     {
@@ -377,11 +378,11 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param ArrayCollection $events
+     * @param Event[]|Collection $events
      *
      * @return $this
      */
-    public function setEvents($events)
+    public function setEvents($events): self
     {
         $this->events = $events;
 
@@ -389,7 +390,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Event[]|Collection
      */
     public function getCommitteeEvents()
     {
@@ -397,11 +398,11 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param ArrayCollection $committeeEvents
+     * @param Event[]|Collection $committeeEvents
      *
      * @return $this
      */
-    public function setCommitteeEvents($committeeEvents)
+    public function setCommitteeEvents($committeeEvents): self
     {
         $this->committeeEvents = $committeeEvents;
 
@@ -409,7 +410,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Event[]|Collection
      */
     public function getCandidateEvents()
     {
@@ -417,11 +418,11 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param ArrayCollection $candidateEvents
+     * @param Event[]|Collection $candidateEvents
      *
      * @return $this
      */
-    public function setCandidateEvents($candidateEvents)
+    public function setCandidateEvents($candidateEvents): self
     {
         $this->candidateEvents = $candidateEvents;
 
@@ -429,7 +430,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Review[]|Collection
      */
     public function getReviews()
     {
@@ -437,11 +438,11 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param ArrayCollection $reviews
+     * @param Review[]|Collection $reviews
      *
      * @return $this
      */
-    public function setReviews($reviews)
+    public function setReviews($reviews): self
     {
         $this->reviews = $reviews;
 

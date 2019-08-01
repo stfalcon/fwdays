@@ -9,25 +9,23 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Class CommitteeSpeakersEventBlockService.
  */
 class CommitteeSpeakersEventBlockService extends AbstractBlockService
 {
-    /** @var IdentityTranslator */
     private $translator;
 
     /**
      * SpeakersEventBlockService constructor.
      *
-     * @param string              $name
-     * @param EngineInterface     $templating
-     * @param TranslatorInterface $translator
+     * @param string          $name
+     * @param EngineInterface $templating
+     * @param Translator      $translator
      */
-    public function __construct($name, EngineInterface $templating, TranslatorInterface $translator)
+    public function __construct($name, EngineInterface $templating, Translator $translator)
     {
         parent::__construct($name, $templating);
 
@@ -60,7 +58,7 @@ class CommitteeSpeakersEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'ApplicationDefaultBundle:Redesign/Event:event.speakers.html.twig',

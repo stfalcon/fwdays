@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Model\UserManager;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,28 +57,27 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-        return $this->processAuthSuccess($request, $token->getUser());
+        $user = $token->getUser();
+        $user = $user instanceof User ? $user : null;
+
+        return $this->processAuthSuccess($request, $user);
     }
 
     /**
-     * @param Request $request
-     * @param User    $user
+     * @param Request   $request
+     * @param User|null $user
      *
      * @return RedirectResponse
      */
-    public function processAuthSuccess(Request $request, User $user)
+    public function processAuthSuccess(Request $request, ?User $user)
     {
         if ($request->cookies->has(ReferralService::REFERRAL_CODE)) {
             $referralCode = $request->cookies->get(ReferralService::REFERRAL_CODE);
-
-            //check self referral code
-            if ($this->referralService->getReferralCode($user) !== $referralCode) {
+            if ($user && $this->referralService->getReferralCode($user) !== $referralCode) {
                 $userReferral = $this->userManager->findUserBy(['referralCode' => $referralCode]);
-
                 if ($userReferral) {
                     $user->setUserReferral($userReferral);
                 }
-
                 $this->userManager->updateUser($user);
             }
         }
@@ -93,9 +93,9 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         $referrer = $request->headers->get('referer');
 
         $session = $request->getSession();
-        if ($session->has('request_params')) {
+        if ($session instanceof SessionInterface && $session->has('request_params')) {
             $requestParams = $session->get('request_params');
-            $request->getSession()->remove('request_params');
+            $session->remove('request_params');
 
             if ($request->query->has('exception_login') || $request->cookies->has('bye-event')) {
                 $url = $this->urlForRedirectService->getRedirectUrl($referrer, $request->getHost());

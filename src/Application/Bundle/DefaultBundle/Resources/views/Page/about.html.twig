@@ -1,0 +1,320 @@
+{% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
+
+{% block content %}
+    <section class="about-header">
+        <video autoplay muted loop class="about-header__video">
+            <source src="{{ asset('assets/img/video/videoplayback.mp4') }}" type="video/mp4">
+        </video>
+    </section>
+    <section class="about-numbers">
+        <div class="container">
+            <div class="about-numbers__box">
+                <h2 class="h2 about-numbers__title">Наша місія — поширювати ідеї та ділитись досвідом</h2>
+                <ul class="about-numbers__list">
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #39C6B0">8</div>
+                            <div class="about-numbers__value">років організовуємо івенти</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F97F37">43</div>
+                            <div class="about-numbers__value">конференцій організовано</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #2A8CDD">9k</div>
+                            <div class="about-numbers__value">учасників відвідало наші конференції</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #3BBAD1">186</div>
+                            <div class="about-numbers__value">спікерів виступило</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #6BC654">16</div>
+                            <div class="about-numbers__value"> країн залучено</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F5B31D">312</div>
+                            <div class="about-numbers__value">годин доповідей</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="cooperation">
+        <div class="container">
+            <div class="cooperation__box">
+                <div class="cooperation__photo">
+                    <img src="{{ asset('assets/img/founders.jpg') }}" alt="" class="cooperation__img">
+                </div>
+                <div class="cooperation__info">
+                    <h2 class="h2 cooperation__title">“</h2>
+                    <p class="cooperation__text">Ідея організувати конференцію прийшла до нас під час поїздки на першу
+                        конференцію в СНД — Zendframework.
+                        У листопаді 2010 року спільно з Magento ми організували ZFConf Ukraine,
+                        а вже у 2011 відкрили новий проект присвячений фреймворку взагалі — Zend Framework Day.</p>
+                    <p class="cooperation__text-sm">Степан Танасійчук та Олександр Махомет, засновники Fwdays</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="famous-speakers">
+        <div class="container">
+            <div class="famous-speakers__box">
+                <h2 class="h2 famous-speakers__title">Відомі допоповідачі</h2>
+                <ul class="famous-speakers__items">
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-1.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-7.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-8.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-4.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-6.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-7.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-8.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-7.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-6.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-5.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="{{ asset('assets/img//speakers/speaker-4.jpg') }}" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="top-partners">
+        <div class="container">
+            <div class="top-partners__box">
+                <h2 class="h2 top-partners__title">Топ партнери</h2>
+                <ul class="top-partners__list">
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Svitla_140.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/gr@2x.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/NCp_Z3000_dark.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Dataart-logo-new_140.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/softserve_49_83.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Logo_Full_49.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/logo2.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Software_cmyk.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="collaboration">
+        <div class="container">
+            <div class="collaboration__info">
+                <h2 class="h2 collaboration__title">З питань співпраці та&nbsp;партнерства</h2>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Зателефонуйте за номером</div>
+                    <a class="collaboration__tel" href="tel:tel:+380679995888">+ 38 (067) 999-5-888</a>
+                </div>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Або напишіть на пошту</div>
+                    <a href="mailto:iryna.bozhyk@fwdays.com" class="collaboration__email">iryna.bozhyk@fwdays.com</a>
+                </div>
+            </div>
+            <div class="collaboration__phoot">
+                <img src="{{ asset('assets/img/team_photo.png') }}" alt="" class="collaboration__img">
+            </div>
+        </div>
+    </section>
+{% endblock content %}

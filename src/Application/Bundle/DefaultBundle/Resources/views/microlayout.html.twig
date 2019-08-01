@@ -5,7 +5,16 @@
                 "@type":"Event",
                 "name":"{{ event.name }}",
                 "url":"{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ path('event_show', {'eventSlug': event.slug}) }}",
+                "description": "{{ event.description  }}",
                 "startDate":"{{ event.date|date('Y-m-d') }}",
+                {% if event.dateEnd -%}
+                  "endDate":"{{ event.dateEnd|date('Y-m-d') }}",
+                {%- else -%}
+                  "endDate":"{{ event.date|date('Y-m-d') }}",
+                {% endif -%}
+                {% if (event.showLogoWithBackground or event.useCustomBackground == false) -%}
+                  "image" : "{{ vich_uploader_asset(event, 'logoFile') }}",
+                {% endif -%}
                 "location": {
                     "@type": "Place",
                     "name": "{{ event.place }}",
@@ -18,7 +27,12 @@
                 "offers": {
                     "@type":"Offer",
                     "url":"{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ path('event_show', {'eventSlug': event.slug}) }}",
-                    "availability":"https://schema.org/InStock"
+                    {% if event.isHaveFreeTickets() -%}
+                      "price": "{{ event.getCurrentPrice }}",
+                    "priceCurrency": "UAH",
+                    {% endif -%}
+                    "validFrom": "{{ event.date|date('Y-m-d') }}",
+                    "availability": "https://schema.org/InStock"
                 }
             }
     </script>

@@ -30,7 +30,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|null|void
+     * @return int|void|null
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -48,7 +48,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
         }
 
         if ($input->getOption('host')) {
-            $context->setHost($input->getOption('host'));
+            $context->setHost((string) $input->getOption('host'));
         }
 
         /** @var $em \Doctrine\ORM\EntityManager */
@@ -71,7 +71,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $user &&
                 $mail &&
                 $user->isEnabled() &&
-                $user->isSubscribe() &&
+                ($user->isSubscribe() || $mail->isIgnoreUnsubscribe()) &&
                 $user->isEmailExists() &&
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {

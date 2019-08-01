@@ -68,7 +68,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: fwdays-backend-parameters
-              key: parameters.ini
+              key: parameters.yml
         ports:
         - containerPort: 80
           name: fwdays-backend

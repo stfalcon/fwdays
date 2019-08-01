@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Application\Bundle\DefaultBundle\Repository\PageRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -21,11 +20,11 @@ class FooterBlockService extends AbstractBlockService
     /**
      * ProgramEventBlockService constructor.
      *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param ObjectRepository $pageRepository
+     * @param string          $name
+     * @param EngineInterface $templating
+     * @param PageRepository  $pageRepository
      */
-    public function __construct($name, EngineInterface $templating, ObjectRepository $pageRepository)
+    public function __construct($name, EngineInterface $templating, PageRepository $pageRepository)
     {
         parent::__construct($name, $templating);
 

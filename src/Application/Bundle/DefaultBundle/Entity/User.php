@@ -3,12 +3,10 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Entity\User as BaseUser;
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\Validator\Constraints as Assert;
-use Application\Bundle\DefaultBundle\Entity\Event;
 
 /**
  * User Class.
@@ -265,24 +263,6 @@ class User extends BaseUser
         $this->emailExists = $emailExists;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPlainPassword()
-    {
-        return parent::getPlainPassword();
-    }
-
-    /**
-     * @param string $plainPassword
-     *
-     * @return $this
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        return parent::setPlainPassword($plainPassword);
     }
 
     /**
@@ -554,9 +534,9 @@ class User extends BaseUser
      *
      * @return bool
      */
-    public function isSubscribe()
+    public function isSubscribe(): bool
     {
-        return (bool) $this->subscribe;
+        return $this->subscribe;
     }
 
     /**
@@ -566,9 +546,9 @@ class User extends BaseUser
      *
      * @return $this
      */
-    public function setSubscribe($subscribe)
+    public function setSubscribe(bool $subscribe): self
     {
-        $this->subscribe = (bool) $subscribe;
+        $this->subscribe = $subscribe;
 
         return $this;
     }

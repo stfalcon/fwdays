@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frameworks Days</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/addon/runmode/runmode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .output-code {
+            font-family: 'Inconsolata', monospace;
+            font-size: 13px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1120px; margin: 40px auto; padding: 0 20px; box-sizing: content-box;">
+    <h2 class="h2">Відео:</h2>
+    <section class="about-header">
+        <video autoplay muted loop class="about-header__video">
+            <source src="https://fwdays.com/img/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </section>
+    <textarea id="code-1" class="input-code" readonly hidden>
+    <section class="about-header">
+        <video autoplay muted loop class="about-header__video">
+            <source src="https://fwdays.com/img/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-1" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Цифри:</h2>
+    <section class="about-numbers">
+        <div class="container">
+            <div class="about-numbers__box">
+                <h2 class="h2 about-numbers__title">Наша місія — поширювати ідеї та ділитись досвідом</h2>
+                <ul class="about-numbers__list">
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #39C6B0">8</div>
+                            <div class="about-numbers__value">років організовуємо івенти</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F97F37">43</div>
+                            <div class="about-numbers__value">конференцій організовано</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #2A8CDD">9k</div>
+                            <div class="about-numbers__value">учасників відвідало наші конференції</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #3BBAD1">186</div>
+                            <div class="about-numbers__value">спікерів виступило</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #6BC654">16</div>
+                            <div class="about-numbers__value"> країн залучено</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F5B31D">312</div>
+                            <div class="about-numbers__value">годин доповідей</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-3" class="input-code" readonly hidden>
+    <section class="about-numbers">
+        <div class="container">
+            <div class="about-numbers__box">
+                <h2 class="h2 about-numbers__title">Наша місія — поширювати ідеї та ділитись досвідом</h2>
+                <ul class="about-numbers__list">
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #39C6B0">8</div>
+                            <div class="about-numbers__value">років організовуємо івенти</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F97F37">43</div>
+                            <div class="about-numbers__value">конференцій організовано</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #2A8CDD">9k</div>
+                            <div class="about-numbers__value">учасників відвідало наші конференції</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #3BBAD1">186</div>
+                            <div class="about-numbers__value">спікерів виступило</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #6BC654">16</div>
+                            <div class="about-numbers__value"> країн залучено</div>
+                        </div>
+                    </li>
+                    <li class="about-numbers__item">
+                        <div class="about-numbers__info">
+                            <div class="about-numbers__label" style="color: #F5B31D">312</div>
+                            <div class="about-numbers__value">годин доповідей</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-3" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Засновники:</h2>
+    <section class="cooperation">
+        <div class="container">
+            <div class="cooperation__box">
+                <div class="cooperation__photo">
+                    <img src="https://fwdays.com/img/founders.jpg" alt="founders" class="cooperation__img">
+                </div>
+                <div class="cooperation__info">
+                    <h2 class="h2 cooperation__title">“</h2>
+                    <p class="cooperation__text">Ідея організувати конференцію прийшла до нас під час поїздки на першу
+                        конференцію в СНД — Zendframework.
+                        У листопаді 2010 року спільно з Magento ми організували ZFConf Ukraine,
+                        а вже у 2011 відкрили новий проект присвячений фреймворку взагалі — Zend Framework Day.</p>
+                    <p class="cooperation__text-sm">Степан Танасійчук та Олександр Махомет, засновники Fwdays</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-2" class="input-code" readonly hidden>
+    <section class="cooperation">
+        <div class="container">
+            <div class="cooperation__box">
+                <div class="cooperation__photo">
+                    <img src="https://fwdays.com/img/founders.jpg" alt="founders" class="cooperation__img">
+                </div>
+                <div class="cooperation__info">
+                    <h2 class="h2 cooperation__title">“</h2>
+                    <p class="cooperation__text">Ідея організувати конференцію прийшла до нас під час поїздки на першу
+                        конференцію в СНД — Zendframework.
+                        У листопаді 2010 року спільно з Magento ми організували ZFConf Ukraine,
+                        а вже у 2011 відкрили новий проект присвячений фреймворку взагалі — Zend Framework Day.</p>
+                    <p class="cooperation__text-sm">Степан Танасійчук та Олександр Махомет, засновники Fwdays</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-2" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Спікери:</h2>
+    <section class="famous-speakers">
+        <div class="container">
+            <div class="famous-speakers__box">
+                <h2 class="h2 famous-speakers__title">Відомі допоповідачі</h2>
+                <ul class="famous-speakers__items">
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="https://fwdays.com/img/speakers/speaker-1.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="https://fwdays.com/img/speakers/speaker-6.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-4" class="input-code" readonly hidden>
+    <section class="famous-speakers">
+        <div class="container">
+            <div class="famous-speakers__box">
+                <h2 class="h2 famous-speakers__title">Відомі допоповідачі</h2>
+                <ul class="famous-speakers__items">
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="https://fwdays.com/img/speakers/speaker-1.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="famous-speakers__item famous-speaker-card">
+                        <div class="famous-speaker-card__box">
+                            <div class="famous-speaker-card__top">
+                                <div class="famous-speaker-card__photo">
+                                    <img class="famous-speaker-card__img"
+                                         src="https://fwdays.com/img/speakers/speaker-6.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="famous-speaker-card__bottom">
+                                <div class="famous-speaker-card__name">Юлия Пучнина</div>
+                                <div class="famous-speaker-card__position">JavaScript Developer</div>
+                                <a href="#" class="famous-speaker-card__report">PHP fwdays 2013</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-4" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Партнери:</h2>
+    <section class="top-partners">
+        <div class="container">
+            <div class="top-partners__box">
+                <h2 class="h2 top-partners__title">Топ партнери</h2>
+                <ul class="top-partners__list">
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Svitla_140.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://storage.fwdays.com/uploads/sponsors/media/cache/partner/Svitla_140.png" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <textarea id="code-6" class="input-code" readonly hidden>
+    <section class="top-partners">
+        <div class="container">
+            <div class="top-partners__box">
+                <h2 class="h2 top-partners__title">Топ партнери</h2>
+                <ul class="top-partners__list">
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://fwdays.com/img/partners/partner-1.jpg" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                    <li class="top-partners__item">
+                        <a href="#" rel="nofollow" target="_blank" class="top-partners__link">
+                            <img src="https://fwdays.com/img/partners/partner-2.jpg" alt=""
+                                 class="top-partners__img">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-6" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 class="h2">Співпраця:</h2>
+    <section class="collaboration">
+        <div class="container">
+            <div class="collaboration__info">
+                <h2 class="h2 collaboration__title">З питань співпраці та&nbsp;партнерства</h2>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Зателефонуйте за номером</div>
+                    <a class="collaboration__tel" href="tel:tel:+380679995888">+ 38 (067) 999-5-888</a>
+                </div>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Або напишіть на пошту</div>
+                    <a href="mailto:iryna.bozhyk@fwdays.com" class="collaboration__email">iryna.bozhyk@fwdays.com</a>
+                </div>
+            </div>
+            <div class="collaboration__phoot">
+                <img src="https://fwdays.com/img/team_photo.png" alt="" class="collaboration__img">
+            </div>
+        </div>
+    </section>
+    <textarea id="code-7" class="input-code" readonly hidden>
+        <section class="collaboration">
+        <div class="container">
+            <div class="collaboration__info">
+                <h2 class="h2 collaboration__title">З питань співпраці та&nbsp;партнерства</h2>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Зателефонуйте за номером</div>
+                    <a class="collaboration__tel" href="tel:tel:+380679995888">+ 38 (067) 999-5-888</a>
+                </div>
+                <div class="collaboration__item">
+                    <div class="collaboration__label">Або напишіть на пошту</div>
+                    <a href="mailto:iryna.bozhyk@fwdays.com" class="collaboration__email">iryna.bozhyk@fwdays.com</a>
+                </div>
+            </div>
+            <div class="collaboration__phoot">
+                <img src="https://fwdays.com/img/team_photo.png" alt="" class="collaboration__img">
+            </div>
+        </div>
+    </section>
+    </textarea>
+    <br>
+    <br>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-7" class="output-code cm-s-default"></pre>
+</div>
+<script src="../js/main.js"></script>
+</body>
+<script>
+
+    function doHighlight1() {
+        CodeMirror.runMode(document.getElementById("code-1").value, "application/xml",
+          document.getElementById("output-1"));
+    }
+
+    function doHighlight2() {
+        CodeMirror.runMode(document.getElementById("code-2").value, "application/xml",
+            document.getElementById("output-2"));
+    }
+
+    function doHighlight3() {
+        CodeMirror.runMode(document.getElementById("code-3").value, "application/xml",
+            document.getElementById("output-3"));
+    }
+
+    function doHighlight4() {
+        CodeMirror.runMode(document.getElementById("code-4").value, "application/xml",
+            document.getElementById("output-4"));
+    }
+
+    function doHighlight6() {
+        CodeMirror.runMode(document.getElementById("code-6").value, "application/xml",
+            document.getElementById("output-6"));
+    }
+    function doHighlight7() {
+        CodeMirror.runMode(document.getElementById("code-7").value, "application/xml",
+            document.getElementById("output-7"));
+    }
+
+    doHighlight1();
+    doHighlight2();
+    doHighlight3();
+    doHighlight4();
+    doHighlight6();
+    doHighlight7();
+</script>
+</html>
