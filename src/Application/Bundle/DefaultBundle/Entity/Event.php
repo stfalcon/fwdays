@@ -373,6 +373,20 @@ class Event implements Translatable
     private $lng = null;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", name="header_video", nullable=true)
+     */
+    private $headerVideo;
+
+    /**
+     * @Assert\File(maxSize="25165824", mimeTypes={"video/webm", "video/mp4"})
+     *
+     * @Vich\UploadableField(mapping="event_header_video", fileNameProperty="headerVideo")
+     */
+    private $headerVideoFile;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -1328,6 +1342,47 @@ class Event implements Translatable
     public function setBackgroundFile($backgroundFile)
     {
         $this->backgroundFile = $backgroundFile;
+        $this->setUpdatedAt(new \DateTime());
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHeaderVideo(): ?string
+    {
+        return $this->headerVideo;
+    }
+
+    /**
+     * @param string $headerVideo
+     *
+     * @return $this
+     */
+    public function setHeaderVideo($headerVideo)
+    {
+        $this->headerVideo = $headerVideo;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeaderVideoFile()
+    {
+        return $this->headerVideoFile;
+    }
+
+    /**
+     * @param mixed $headerVideoFile
+     *
+     * @return $this
+     */
+    public function setHeaderVideoFile($headerVideoFile): self
+    {
+        $this->headerVideoFile = $headerVideoFile;
         $this->setUpdatedAt(new \DateTime());
 
         return $this;

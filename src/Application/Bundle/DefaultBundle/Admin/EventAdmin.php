@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Sonata\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
  * Class EventAdmin.
@@ -168,10 +169,16 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->end()
             ->end()
             ->tab('Настройки')
-                ->with('Настройки')
+                ->with('Slug', ['class' => 'col-md-4'])
                     ->add('slug')
+                ->end()
+                ->with('Группа', ['class' => 'col-md-4'])
                     ->add('group', null, ['label' => 'Группа'])
-                    ->add('audiences', null, ['label' => 'Аудитории'])
+                ->end()
+                ->with('Аудитории', ['class' => 'col-md-4'])
+                        ->add('audiences', null, ['label' => 'Аудитории'])
+                ->end()
+                ->with('Цены')
                     ->add(
                         'ticketsCost',
                         CollectionType::class,
@@ -189,52 +196,64 @@ class EventAdmin extends AbstractTranslateAdmin
                         ]
                     )
                 ->end()
-                ->with('Переключатели', ['class' => 'col-md-6'])
+                ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
                     ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
-                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Использовать фоновое изображение'])
-                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Использовать логотип c фоновым изображением'])
+                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Показать фон'])
+                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Показать логотип на фоне'])
                 ->end()
-            ->with('Изображения и цвет', ['class' => 'col-md-6'])
-                ->add(
-                    'backgroundColor',
-                    'text',
-                    [
-                        'required' => true,
-                        'label' => 'Цвет фона',
-                        'help' => 'цвет в формате #1F2B3C',
-                    ]
-                )
-                ->add(
-                    'backgroundFile',
-                    'file',
-                    [
-                        'label' => 'Фоновое изображение',
-                        'required' => false,
-                        'help' => 'Заменяет цвет фона на странице ивента. '.$subject->getBackground(),
-                    ]
-                )
-                ->add(
-                    'logoFile',
-                    'file',
-                    [
-                        'label' => 'Логотип',
-                        'required' => is_null($subject->getLogo()),
-                        'help' => 'Основное изображение. '.$subject->getLogo(),
-                    ]
-                )
-                ->add(
-                    'smallLogoFile',
-                    'file',
-                    [
-                        'label' => 'Мини логотип',
-                        'required' => false,
-                        'help' => 'Если не указан, тогда используєтся основной. '.$subject->getSmallLogo(),
-                    ]
-                )
+                ->with('Логотип и цвет', ['class' => 'col-md-4'])
+                    ->add(
+                        'backgroundColor',
+                        'text',
+                        [
+                            'label' => 'Цвет',
+                            'required' => true,
+                            'help' => 'цвет в формате #1F2B3C',
+                        ]
+                    )
+                    ->add(
+                        'logoFile',
+                        FileType::class,
+                        [
+                            'label' => $subject->getLogo() ? 'Логотип | '.$subject->getLogo() : 'Логотип',
+                            'required' => is_null($subject->getLogo()),
+                            'help' => 'Основной логотип.',
+                        ]
+                    )
+                    ->add(
+                        'smallLogoFile',
+                        FileType::class,
+                        [
+                            'label' => $subject->getSmallLogo() ? 'Мини логотип | '.$subject->getSmallLogo() : 'Мини логотип',
+                            'required' => false,
+                            'help' => 'Если не указан, тогда используєтся основной.',
+                            'delete' => true,
+                        ]
+                    )
+                ->end()
+                ->with('Фон', ['class' => 'col-md-4'])
+                    ->add(
+                        'backgroundFile',
+                        FileType::class,
+                        [
+                            'label' => $subject->getBackground() ? 'Изображение | '.$subject->getBackground() : 'Изображение',
+                            'required' => false,
+                            'help' => 'Фоновое изображение в шапке ивента.',
+                        ]
+                    )
+                    ->add(
+                        'headerVideoFile',
+                        FileType::class,
+                        [
+                            'label' => $subject->getHeaderVideo() ? 'Видео | '.$subject->getHeaderVideo() : 'Видео',
+                            'required' => false,
+                            'help' => 'Фоновое видео в шапке ивента.',
+                        ]
+                    )
                 ->end()
             ->end()
             ->tab('Блоки')

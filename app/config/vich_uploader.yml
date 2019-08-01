@@ -14,6 +14,9 @@ vich_uploader:
         event_image:
             uri_prefix: '%aws_s3_public_endpoint%/%app.event_image%'
             upload_destination: event_image
+        event_header_video:
+            uri_prefix: '%aws_s3_public_endpoint%/%app.event_header_video%'
+            upload_destination: event_header_video
         upload_image:
             uri_prefix: '%app.upload_image%'
             upload_destination: upload_image

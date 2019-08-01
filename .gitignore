@@ -3,7 +3,6 @@
 /composer.phar
 
 # Symfony
-/app/config/parameters.ini
 /app/config/parameters.yml
 /vendor/
 /bin/
