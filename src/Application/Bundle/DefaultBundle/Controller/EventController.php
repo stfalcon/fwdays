@@ -263,11 +263,9 @@ class EventController extends Controller
      * @param string $eventSlug
      * @param string $pageSlug
      *
-     * @Template("ApplicationDefaultBundle:Page:index.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function showEventPageInStaticAction($eventSlug, $pageSlug)
+    public function showEventPageInStaticAction($eventSlug, $pageSlug): Response
     {
         $event = $this->getDoctrine()
             ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
@@ -291,6 +289,6 @@ class EventController extends Controller
         $newText = $myPage->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
 
-        return ['text' => $text];
+        return $this->render('@ApplicationDefault/Default/page.html.twig', ['text' => $text]);
     }
 }
