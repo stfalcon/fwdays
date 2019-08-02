@@ -159,11 +159,7 @@ final class TicketAdmin extends AbstractAdmin
                 [
                     'label' => 'Статус оплаты',
                     'field_options' => [
-                        'choices' => [
-                            'paid' => 'оплачено',
-                            'pending' => 'ожидание',
-                            'returned' => 'возращен',
-                        ],
+                        'choices' => Payment::getPaymentStatusChoice(),
                     ],
                     'field_type' => 'choice',
                 ]
@@ -171,17 +167,12 @@ final class TicketAdmin extends AbstractAdmin
             ->add(
                 'payment.gate',
                 'doctrine_orm_choice',
-                ['label' => 'Способ оплаты'],
-                'choice',
                 [
-                    'choices' => [
-                        'interkassa' => Payment::INTERKASSA_GATE,
-                        'wayforpay' => Payment::WAYFORPAY_GATE,
-                        'admin' => Payment::ADMIN_GATE,
-                        'bonus' => Payment::BONUS_GATE,
-                        'promocode' => Payment::PROMOCODE_GATE,
+                    'label' => 'Способ оплаты',
+                    'field_options' => [
+                        'choices' => Payment::getPaymentTypeChoice(),
                     ],
-                    'required' => false,
+                    'field_type' => 'choice',
                 ]
             );
     }

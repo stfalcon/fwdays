@@ -447,4 +447,30 @@ class Payment
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public static function getPaymentTypeChoice(): array
+    {
+        return [
+            Payment::INTERKASSA_GATE => Payment::INTERKASSA_GATE,
+            Payment::WAYFORPAY_GATE => Payment::WAYFORPAY_GATE,
+            Payment::ADMIN_GATE => Payment::ADMIN_GATE,
+            Payment::BONUS_GATE => Payment::BONUS_GATE,
+            Payment::PROMOCODE_GATE => Payment::PROMOCODE_GATE,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getPaymentStatusChoice(): array
+    {
+        return [
+            'оплачено' => Payment::STATUS_PAID,
+            'ожидание' => Payment::STATUS_PENDING,
+            'возращен' => Payment::STATUS_RETURNED,
+        ];
+    }
 }
