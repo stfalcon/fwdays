@@ -255,6 +255,10 @@ $(document).on('click', '.alert__close', function () {
     }
 });
 
+$(document).on('click', '.language_switcher', function (e) {
+    Cookies.set('hl', $(this).data('lang'));
+});
+
 $(document).on('click', '.add-wants-visit-event', function () {
         var elem = $(this);
         var e_slug = elem.data('event');
