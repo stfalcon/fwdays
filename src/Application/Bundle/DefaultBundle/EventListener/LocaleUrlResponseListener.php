@@ -4,7 +4,6 @@ namespace Application\Bundle\DefaultBundle\EventListener;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
