@@ -62,12 +62,12 @@ class LocaleUrlResponseListener
         $currentLocal = $this->getInnerSubstring($path, '/');
         if ('' === rtrim($path, '/')) {
             $params = $request->query->all();
-            $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.($params ? '?'.http_build_query($params) : '/'), 301));
+            $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.($params ? '?'.http_build_query($params) : '/'), 302));
         } elseif ('admin' === $currentLocal && $locale !== $this->defaultLocale) {
             $params = $request->query->all();
             unset($params[$this->cookieName]);
             $request->setLocale($this->defaultLocale);
-            $event->setResponse(new RedirectResponse($request->getBaseUrl().$path.($params ? '?'.http_build_query($params) : '/'), 301));
+            $event->setResponse(new RedirectResponse($request->getBaseUrl().$path.($params ? '?'.http_build_query($params) : '/'), 302));
         } elseif (!in_array($currentLocal, $this->locales, true)) {
             try {
                 $matched = $this->routerService->match('/'.$locale.$path);
@@ -76,7 +76,7 @@ class LocaleUrlResponseListener
             }
             if (false !== $matched) {
                 $params = $request->query->all();
-                $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : ''), 301));
+                $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$locale.$path.($params ? '?'.http_build_query($params) : ''), 302));
             }
         }
     }
@@ -108,7 +108,7 @@ class LocaleUrlResponseListener
             $params = $request->query->all();
             unset($params[$this->cookieName]);
             $path = ltrim($path, '/'.$currentLocal);
-            $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$path.($params ? '?'.http_build_query($params) : ''), 301));
+            $event->setResponse(new RedirectResponse($request->getBaseUrl().'/'.$path.($params ? '?'.http_build_query($params) : ''), 302));
         }
     }
 
