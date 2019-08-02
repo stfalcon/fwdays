@@ -4,9 +4,11 @@
     {% set class = 'footer__language' %}
 {% endif %}
 {% set currentLink = '#' %}
+{% set currentKey = '#' %}
 {% for key, link in locales %}
     {% if app.request.locale != key %}
         {% set currentLink = link %}
+        {% set currentKey = key %}
     {% endif %}
 {% endfor %}
-<a href="{{ currentLink }}" class="{{ class }}">{{ 'in.lang.link'|trans }}</a>
+<a href="{{ currentLink }}" class="{{ class }} language_switcher" data-lang="{{ currentKey }}">{{ 'in.lang.link'|trans }}</a>
