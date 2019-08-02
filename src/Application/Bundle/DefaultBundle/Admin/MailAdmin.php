@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\MailQueueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,6 +18,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Application\Bundle\DefaultBundle\Entity\EventAudience;
 use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Application\Bundle\DefaultBundle\Entity\Mail;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class MailAdmin.
@@ -194,14 +196,11 @@ final class MailAdmin extends AbstractAdmin
                 ])
                 ->add('start', null, ['required' => false, 'label' => 'Запустить'])
                 ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
-                ->add('paymentStatus', 'choice', array(
-                    'choices' => array(
-                        'paid' => 'Оплачено',
-                        'pending' => 'Не оплачено',
-                    ),
+                ->add('paymentStatus', ChoiceType::class, [
+                    'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
                     'label' => 'Статус оплаты',
-                ))
+                ])
                 ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки', 'required' => false])
             ->end();
     }

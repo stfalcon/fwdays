@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class UserAdmin.
@@ -153,7 +154,7 @@ final class UserAdmin extends AbstractAdmin
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
                     ->add(
                         'roles',
-                        'choice',
+                        ChoiceType::class,
                         [
                             'choices' => $this->getAvailableRoles(),
                             'multiple' => true,

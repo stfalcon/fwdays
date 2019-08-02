@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class PaymentAdmin.
@@ -85,13 +86,17 @@ final class PaymentAdmin extends AbstractAdmin
                 ['label' => 'Способ оплаты'],
                 'choice',
                 [
-                    'choices' => [
-                        'interkassa' => Payment::INTERKASSA_GATE,
-                        'wayforpay' => Payment::WAYFORPAY_GATE,
-                        'admin' => Payment::ADMIN_GATE,
-                        'bonus' => Payment::BONUS_GATE,
-                        'promocode' => Payment::PROMOCODE_GATE,
-                    ],
+                    'choices' => Payment::getPaymentTypeChoice(),
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'status',
+                'doctrine_orm_choice',
+                ['label' => 'Стутус оплаты'],
+                'choice',
+                [
+                    'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
                 ]
             )
@@ -157,24 +162,14 @@ final class PaymentAdmin extends AbstractAdmin
                     'label' => 'Сума реферальных',
                     'disabled' => $subject->isPaid(),
                 ])
-                ->add('status', 'choice', [
+                ->add('status', ChoiceType::class, [
                     'label' => 'статус оплаты',
-                    'choices' => [
-                        'pending' => 'ожидание',
-                        'paid' => 'оплачено',
-                        'returned' => 'возвращенно',
-                    ],
+                    'choices' => Payment::getPaymentStatusChoice(),
                     'disabled' => !$isSuperAdmin,
                 ])
-                ->add('gate', 'choice', [
+                ->add('gate', ChoiceType::class, [
                     'label' => 'способ оплаты',
-                    'choices' => [
-                        'interkassa' => Payment::INTERKASSA_GATE,
-                        'wayforpay' => Payment::WAYFORPAY_GATE,
-                        'admin' => Payment::ADMIN_GATE,
-                        'bonus' => Payment::BONUS_GATE,
-                        'promocode' => Payment::PROMOCODE_GATE,
-                    ],
+                    'choices' => Payment::getPaymentTypeChoice(),
                     'disabled' => !$isSuperAdmin,
                 ])
                 ->add('user', 'text', ['required' => true, 'label' => 'Пользователь', 'disabled' => true])
