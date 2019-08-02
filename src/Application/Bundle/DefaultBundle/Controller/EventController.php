@@ -289,6 +289,6 @@ class EventController extends Controller
         $newText = $myPage->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
 
-        return $this->render('@ApplicationDefault/Default/page.html.twig', ['text' => $text]);
+        return $this->render('@ApplicationDefault/Page/index.html.twig', ['text' => $text]);
     }
 }
