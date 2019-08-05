@@ -250,3 +250,7 @@ registration:
         user_need_data: 'Для завершення реєстраціі заповніть необхідні поля'
     email:
         subject: 'Ви успішно зареєстровані на сайті fwdays.com'
+
+change_password:
+    flash:
+        success: 'Пароль змінено.'

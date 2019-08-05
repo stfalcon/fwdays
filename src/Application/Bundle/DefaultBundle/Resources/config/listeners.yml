@@ -24,3 +24,11 @@ services:
             - "@router"
         tags:
             - { name: kernel.event_subscriber }
+
+    app.fos_use.change_password.subscriper:
+        class: Application\Bundle\DefaultBundle\EventListener\FOSUserEvents\UserChangePasswordSubscriber
+        arguments:
+            - "@session"
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }
