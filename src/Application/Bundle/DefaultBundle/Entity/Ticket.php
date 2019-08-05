@@ -116,6 +116,8 @@ class Ticket
 
     /**
      * @var bool
+     *
+     * @ORM\Column(name="hide_conditions", type="boolean")
      */
     private $hideConditions = false;
 
