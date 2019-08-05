@@ -177,17 +177,17 @@
                     </div>
                 </td>
             </tr>
-{#            {% if not ticket.hideConditions %}#}
-{#                <tr>#}
-{#                    <td colspan="2">#}
-{#                        <div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>#}
-{#                        <br>#}
-{#                        <div class="content-td">#}
-{#                            <a href="{{ url('page', {'slug':'public-offer'}) }}" target="_blank" class="content-td-link">{{ url('page', {'slug':'public-offer'}) }}</a>#}
-{#                        </div>#}
-{#                    </td>#}
-{#                </tr>#}
-{#            {% endif %}#}
+            {% if not ticket.hideConditions %}
+                <tr>
+                    <td colspan="2">
+                        <div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>
+                        <br>
+                        <div class="content-td">
+                            <a href="{{ url('page', {'slug':'public-offer'}) }}" target="_blank" class="content-td-link">{{ url('page', {'slug':'public-offer'}) }}</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
         </table>
     </div>
     <div class="ticket__bottom">
