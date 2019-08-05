@@ -58,6 +58,15 @@ spec:
               value: fwdays.com
           initialDelaySeconds: 10
           periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /service/status
+            port: 80
+            httpHeaders:
+            - name: Host
+              value: fwdays.com
+          initialDelaySeconds: 10
+          periodSeconds: 30
         env:
         - name: SERVER_NAME
           valueFrom:
