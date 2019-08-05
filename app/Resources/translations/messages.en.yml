@@ -259,3 +259,7 @@ registration:
         user_need_data: Fill the required fields to complete the registration
     email:
         subject: Registration completed on fwdays.com
+
+change_password:
+    flash:
+        success: 'The password has been changed.'
