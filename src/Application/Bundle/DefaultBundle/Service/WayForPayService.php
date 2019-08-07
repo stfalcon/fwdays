@@ -20,6 +20,15 @@ use Symfony\Component\Translation\Translator;
  */
 class WayForPayService
 {
+    public const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
+    public const WFP_PAY_BY_WIDGET = 'wfp_pay_widget';
+    public const WFP_PAY_BY_SECURE_PAGE = 'wfp_pay_secure_page';
+    public const WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS = 'approved_and_set_paid';
+    public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
+    public const WFP_TRANSACTION_PENDING_STATUS = 'Pending';
+    public const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
+    public const WFP_PAYMENT_KEY = 'way_for_pay_payment';
+
     /** @var mixed */
     protected $stfalconConfig;
     protected $translator;
@@ -43,9 +52,10 @@ class WayForPayService
     public function __construct($stfalconConfig, Translator $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em)
     {
         $this->stfalconConfig = $stfalconConfig;
-        $this->translator = $translator;
         $this->request = $requestStack->getCurrentRequest();
         $this->locale = null !== $this->request ? $this->request->getLocale() : 'uk';
+        $this->translator = $translator;
+        $this->translator->setLocale($this->locale);
         $this->router = $router;
         $this->securityToken = $securityToken;
         $this->em = $em;
@@ -89,10 +99,10 @@ class WayForPayService
 
     /**
      * @param Payment|null $payment
-     * @param array        $response
+     * @param array|null   $response
      * @param string       $fwdaysResponse
      */
-    public function saveResponseLog($payment, array $response, $fwdaysResponse = null)
+    public function saveResponseLog($payment, ?array $response, $fwdaysResponse = null)
     {
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
@@ -115,7 +125,7 @@ class WayForPayService
     {
         if ($this->stfalconConfig['wayforpay']['shop_id'] === $this->getArrMean($response['merchantAccount']) &&
             (float) $this->getArrMean($response['amount']) === $payment->getAmount() &&
-            'Approved' === $this->getArrMean($response['transactionStatus'])
+            self::WFP_TRANSACTION_APPROVED_STATUS === $this->getArrMean($response['transactionStatus'])
         ) {
             $params = [
                 'merchantAccount' => $this->getArrMean($response['merchantAccount']),
@@ -201,7 +211,7 @@ class WayForPayService
         $params['language'] = 'uk' === $this->locale ? 'ua' : $this->locale;
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
-//        $params['returnUrl'] = $this->router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['returnUrl'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
