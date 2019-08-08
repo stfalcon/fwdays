@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\ConstraintViolation;
 
@@ -29,6 +30,22 @@ class DefaultController extends Controller
             ->findBy(['active' => true], ['date' => 'ASC']);
 
         return $this->render('@ApplicationDefault/Default/index.html.twig', ['events' => $events]);
+    }
+
+    /**
+     * @Route("/page/contacts", name="contact_page")
+     *
+     * @return Response
+     */
+    public function contactPageAction(): Response
+    {
+        $page = $this->getDoctrine()->getRepository(Page::class)->findOneBy(['slug' => 'contacts']);
+
+        if (!$page) {
+            throw new NotFoundHttpException('Page with slug "contacts" not found!');
+        }
+
+        return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', ['page' => $page]);
     }
 
     /**
