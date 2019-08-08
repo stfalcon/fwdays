@@ -1,7 +1,7 @@
-{% if pay_type == 'wayforpay' -%}
+{% if pay_type == constant('Application\\Bundle\\DefaultBundle\\Service\\WayForPayService::WFP_PAY_BY_WIDGET') -%}
     <script type="text/javascript">
-        var wayforpay = new Wayforpay();
-        var paymentSystemPay = function () {
+        let wayforpay = new Wayforpay();
+        let paymentSystemPay = function () {
             wayforpay.run({
                     {% for key, param in params -%}
                         {{ key }} : "{{ param|raw }}",
@@ -9,19 +9,23 @@
             },
                 function (response) {
                     wayforpay.closeit();
-                    window.location.href = homePath+'payment/success';
+                    window.location.href = '{{ url('payment_success') }}';
                 },
                 function (response) {
                     wayforpay.closeit();
-                    window.location.href = homePath+'payment/fail';
+                    window.location.href = '{{ url('payment_fail') }}';
                 },
                 function (response) {
                     wayforpay.closeit();
-                    window.location.href = homePath+'payment/pending';
+                    window.location.href = '{{ url('payment_pending') }}';
                 }
             );
         }
     </script>
+{% elseif pay_type == constant('Application\\Bundle\\DefaultBundle\\Service\\WayForPayService::WFP_PAY_BY_SECURE_PAGE')  %}
+    {% for name, value in params %}
+        <input name="{{ name }}" value="{{ value }}" type="hidden">
+    {% endfor %}
 {% endif %}
 
 {% for ticket in payment.tickets %}

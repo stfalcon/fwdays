@@ -185,7 +185,7 @@ function submitValidForm(rId, withCaptcha) {
 
 $(document).on('submit', '#payment', function (e) {
     var form = $(this);
-    if (form.data('pay-type') === 'wayforpay') {
+    if (form.data('pay-type') === 'wfp_pay_widget') {
         e.preventDefault();
         if (!detectmob()) {
             var inst = $('[data-remodal-id=modal-payment]').remodal();
@@ -475,10 +475,10 @@ $(document).ready(function () {
     });
 
     $('#buy-ticket-btn').on('click', function () {
-        var use_phone = $('#user_phone').val();
-        if (use_phone !== '' && $('#user_phone').valid()) {
-            $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {
-            });
+        let user_phone_elem = $('#user_phone');
+        let use_phone = user_phone_elem.val();
+        if (use_phone !== '' && user_phone_elem.valid()) {
+            $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
         }
     });
 
