@@ -23,19 +23,20 @@ class AnalyticsController extends Controller
     public function showDailyDynamicsAction(Event $event)
     {
         $analyticsService = $this->get('app.analytics.service');
-
-        // daily statistics
-        $dailyData = $analyticsService->getDailyTicketsSoldData($event);
-        array_unshift($dailyData, [
-            ['label' => 'Date', 'type' => 'date'],
-            ['label' => 'Tickets sold number', 'type' => 'number'],
-        ]);
-
-        $chart = $this->container->get('app.chart.service')->calendarChart($dailyData);
-
         // summary statistics
         $summary = $analyticsService
             ->getSummaryTicketsSoldData($event);
+        $chart = null;
+        // daily statistics
+        $dailyData = $analyticsService->getDailyTicketsSoldData($event);
+        if (!empty($dailyData)) {
+            array_unshift($dailyData, [
+                ['label' => 'Date', 'type' => 'date'],
+                ['label' => 'Tickets sold number', 'type' => 'number'],
+            ]);
+
+            $chart = $this->container->get('app.chart.service')->calendarChart($dailyData);
+        }
 
         return $this->render('ApplicationDefaultBundle:Analytics:daily_dynamics.html.twig', [
             'event' => $event, 'chart' => $chart, 'summary' => $summary,
