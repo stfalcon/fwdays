@@ -33,22 +33,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/page/contacts", name="contact_page")
-     *
-     * @return Response
-     */
-    public function contactPageAction(): Response
-    {
-        $page = $this->getDoctrine()->getRepository(Page::class)->findOneBy(['slug' => 'contacts']);
-
-        if (!$page) {
-            throw new NotFoundHttpException('Page with slug "contacts" not found!');
-        }
-
-        return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', ['page' => $page]);
-    }
-
-    /**
      * @Route("/page/{slug}", name="page")
      *
      * @param Page $page
@@ -57,6 +41,10 @@ class DefaultController extends Controller
      */
     public function pageAction(Page $page): Response
     {
+        if ('contacts' === $page->getSlug()) {
+            return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', ['page' => $page]);
+        }
+
         return $this->render('@ApplicationDefault/Default/page.html.twig', ['page' => $page]);
     }
 
