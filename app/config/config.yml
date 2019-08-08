@@ -20,6 +20,7 @@ parameters:
     app.sponsor_image: "uploads/sponsors"
     app.speaker_image: "uploads/speakers"
     app.event_image: "uploads/events"
+    app.event_header_video: "uploads/video"
     app.upload_image: "uploads/images"
     app.media_cache: '/media/cache/'
 

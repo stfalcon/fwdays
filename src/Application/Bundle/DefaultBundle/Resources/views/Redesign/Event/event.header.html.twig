@@ -7,8 +7,18 @@
 {% endif %}
 <!--BEGIN event-header-->
 <section class="event-header
-    {% if event.useCustomBackground == true and event.background is not empty -%} event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
+    {% if event.useCustomBackground and event.background is not empty and (event.headerVideo is empty or is_mobile()) -%}
+        event-header--background" style="background-image: url({{ vich_uploader_asset(event, 'backgroundFile') }});
     {%- else -%}" style="background-color: {{ event.backgroundColor }};{%- endif -%}">
+
+    {%- if event.useCustomBackground and not is_mobile() and event.headerVideo is not empty -%}
+        <div class="event-header-video">
+            <video autoplay muted loop>
+                <source src="{{ vich_uploader_asset(event, 'headerVideoFile') }}" type="video/mp4">
+            </video>
+        </div>
+    {%- endif -%}
+
     <div class="container">
         <div class="event-header__box">
             <h1 class="event-header__title">{{ event.name }}</h1>
