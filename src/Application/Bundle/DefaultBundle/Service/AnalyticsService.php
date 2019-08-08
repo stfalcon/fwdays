@@ -59,20 +59,23 @@ class AnalyticsService
             ->getResult()
         ;
 
-        // fill the possible gap in sequence of dates
-        $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify('+1 day'));
-
         $formattedResult = [];
-        foreach ($dateRange as $date) {
-            /* @var $date \DateTime */
-            $key = $date->format('Y-m-d');
-            $formattedResult[$key][0] = $date;
-            $formattedResult[$key][1] = null;
-        }
 
-        // merge real data with array of prepared results
-        foreach ($results as $result) {
-            $formattedResult[$result['date_of_sale']][1] = (int) $result['tickets_sold_number'];
+        if ($dateFrom instanceof \DateTime && $dateTo instanceof \DateTime) {
+            // fill the possible gap in sequence of dates
+            $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify('+1 day'));
+
+            foreach ($dateRange as $date) {
+                /* @var $date \DateTime */
+                $key = $date->format('Y-m-d');
+                $formattedResult[$key][0] = $date;
+                $formattedResult[$key][1] = null;
+            }
+
+            // merge real data with array of prepared results
+            foreach ($results as $result) {
+                $formattedResult[$result['date_of_sale']][1] = (int) $result['tickets_sold_number'];
+            }
         }
 
         return $formattedResult;
@@ -178,9 +181,9 @@ class AnalyticsService
      *
      * @throws \Doctrine\ORM\Query\QueryException
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    private function getFirstDayOfTicketSales(Event $event)
+    private function getFirstDayOfTicketSales(Event $event): ?\DateTime
     {
         $qb = $this->em->createQueryBuilder();
         $qb->select('t.createdAt')
@@ -193,10 +196,9 @@ class AnalyticsService
             ->orderBy('t.createdAt', 'ASC')
             ->setMaxResults(1);
 
-        $date = $qb->getQuery()
-            ->getSingleScalarResult();
+        $date = $qb->getQuery()->getOneOrNullResult();
 
-        return new \DateTime($date);
+        return $date['createdAt'] ?? null;
     }
 
     /**
