@@ -875,10 +875,24 @@
   &__sales {
     display: inline-block;
     margin-left: 10px;
-    padding: 0 16px;
+    padding: 0 8px;
     height: 24px;
     border-radius: 2px;
     background-color: $red-light-color;
+    color: $white-color;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 26px;
+  }
+
+  &__runout {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 0 8px;
+    height: 24px;
+    border-radius: 2px;
+    background-color: orange;
     color: $white-color;
     text-transform: uppercase;
     font-weight: 700;

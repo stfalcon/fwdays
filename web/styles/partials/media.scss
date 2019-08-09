@@ -528,6 +528,10 @@
     &__sales {
       margin-left: 46px;
     }
+
+    &__runout {
+      margin-left: 46px;
+    }
   }
 
   .partners {
@@ -1582,6 +1586,14 @@
       line-height: 22px;
     }
 
+    &__runout {
+      margin-left: 6px;
+      padding: 0 6px;
+      height: 19px;
+      font-size: 10px;
+      line-height: 22px;
+    }
+
     &__price {
       padding: 0 0 0 16px;
       width: auto;
@@ -2123,6 +2135,10 @@
 
   .cost {
     &__sales {
+      display: none;
+    }
+
+    &__runout {
       display: none;
     }
   }
