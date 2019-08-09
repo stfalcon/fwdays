@@ -42,6 +42,7 @@ class TicketCost
      * @ORM\Column(name="count", type="integer", nullable=true)
      */
     private $count;
+
     /**
      * Сумма для оплаты.
      *
@@ -59,6 +60,7 @@ class TicketCost
      * @ORM\Column(name="alt_amount", type="decimal", precision=10, scale=2)
      */
     private $altAmount;
+
     /**
      * @var int
      *
@@ -86,10 +88,18 @@ class TicketCost
      * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
+
     /**
      * @var int
      */
     private $temporaryCount = 0;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="tickets_run_out", type="boolean", options={"default":false})
+     */
+    private $ticketsRunOut = false;
 
     /**
      * TicketCost constructor.
@@ -356,5 +366,25 @@ class TicketCost
     public function __toString()
     {
         return $this->event->getName().'-'.$this->getName();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTicketsRunOut(): bool
+    {
+        return $this->ticketsRunOut;
+    }
+
+    /**
+     * @param bool $ticketsRunOut
+     *
+     * @return $this
+     */
+    public function setTicketsRunOut(bool $ticketsRunOut): self
+    {
+        $this->ticketsRunOut = $ticketsRunOut;
+
+        return $this;
     }
 }
