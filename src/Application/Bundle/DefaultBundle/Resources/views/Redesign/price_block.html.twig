@@ -33,13 +33,13 @@
 {%- else -%}
     <div class="cost cost--active price-list__item">
         <div class="cost__type">{{ ticket.name }}</div>
-        {%- if ticket.count -%}
+        {%- if ticket.count or ticket.unlimited -%}
             <div class="cost__tickets cost__tickets_with-hint">{{ 'tickets.count'|trans({'%count%': ticket.count})|transchoice(ticket.count|pluralization) }}
-                {%- if loop.first -%}
-                    <div class="cost__hint">{{ 'tickets.hint'|trans }}</div>
-                {% endif %}
                 {%- if ticket.isTicketsRunOut -%}
                     <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans }}</span>
+                {% endif %}
+                {%- if loop.first -%}
+                    <div class="cost__hint">{{ 'tickets.hint'|trans }}</div>
                 {% endif %}
             </div>
         {%- else -%}
