@@ -86,6 +86,7 @@ pay.sum_for_pay.bold.title: 'For payment: <b>%sum% UAH</b>'
 event.price.title: Event price
 tickets.count: '{0}%count% ticket|{1}%count% tickets|{2}%count% tickets'
 tickets.hint: available only via website
+tickets.tickets_run_out: Only few left
 tickets.other.title: other tickets
 sold_out.title: Sold out
 
