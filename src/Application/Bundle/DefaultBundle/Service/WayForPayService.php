@@ -202,7 +202,7 @@ class WayForPayService
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
 //        $params['returnUrl'] = $this->router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
     }
