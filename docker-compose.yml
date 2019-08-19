@@ -1,27 +1,27 @@
 version: '3'
 services:
     nginx:
-        image: jekakm/nginx-core:201802261
+        image: nginx:1.17.0
         ports:
             - "127.0.0.1:8000:80"
         volumes:
-            - "./docker-configs/fwdays-dev/configs/nginx.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/configs/nginx.conf:/etc/nginx/conf.d/default.conf"
             - ".:/app:cached"
         depends_on:
             - "php"
 
     minio-public:
-        image: jekakm/nginx-core:201802261
+        image: nginx:1.17.0
         ports:
             - "127.0.0.1:8001:80"
         volumes:
-            - "./docker-configs/fwdays-dev/configs/nginx-minio.conf:/etc/nginx/sites-enabled/default"
+            - "./docker-configs/fwdays-dev/configs/nginx-minio.conf:/etc/nginx/conf.d/default.conf"
             - "minio:/data"
         depends_on:
             - "php"
 
     php:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.0
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.1
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
@@ -29,6 +29,8 @@ services:
             - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.3/cli/php.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
+            - "bash-history-user:/var/www/history/"
+            - "bash-history-root:/root/history/"
         depends_on:
             - "mysql"
             - "mailcatcher"
@@ -102,3 +104,5 @@ volumes:
     mysqldata:
     composer:
     minio:
+    bash-history-user:
+    bash-history-root:

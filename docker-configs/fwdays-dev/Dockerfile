@@ -12,6 +12,8 @@ ADD configs/start /usr/local/bin/start
 RUN chmod a+x /usr/local/bin/start
 RUN mkdir /app && chown www-data:www-data /app
 RUN mkdir /var/www
+ADD configs/bash-history-user /var/www/.bashrc
+ADD configs/bash-history-root /root/.bashrc
 USER www-data
 WORKDIR /app
 CMD sudo /usr/local/bin/start
