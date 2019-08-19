@@ -98,6 +98,12 @@ iframe {
   line-height: 45px;
 }
 
+.btn--xs {
+  height: 36px;
+  font-size: 12px;
+  line-height: 36px;
+}
+
 .btn--primary {
   background-color: $green-light-color;
 
@@ -191,6 +197,11 @@ iframe {
   &:focus {
     border-color: rgba(151, 151, 151, 0.8);
   }
+}
+
+.input--xs {
+  font-size: 14px;
+  height: 36px;
 }
 
 .input--error {
@@ -402,6 +413,17 @@ iframe {
   padding-top: 24px;
 }
 
+.form-group {
+  &--flex {
+    display: flex;
+    align-items: center;
+
+    .form-label {
+      margin: 0 10px 0 0;
+    }
+  }
+}
+
 .form-label {
   display: inline-block;
   margin-bottom: 8px;
@@ -505,6 +527,26 @@ iframe {
   }
 }
 
+.btn-icon {
+  display: flex;
+  background: none;
+  padding: 0;
+  border: none;
+  align-items: center;
+  cursor: pointer;
+
+  &__img {
+    margin-right: 14px;
+  }
+
+  &__text {
+    font-size: 14px;
+    line-height: 14px;
+    color: $blue-light-color;
+    border-bottom: 1px solid rgba(0, 145, 173, 0.4);
+  }
+}
+
 .login-social-buttons {
   margin-bottom: 20px;
   padding-bottom: 28px;
@@ -512,12 +554,12 @@ iframe {
 }
 
 .user-payment {
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: row;
-  padding: 13px 0 20px;
+  padding: 20px 0;
   border-bottom: 1px solid #DFDBCC;
-  justify-content: space-between;
 
   &__remove {
     position: absolute;
@@ -537,9 +579,7 @@ iframe {
   }
 
   &__price {
-    margin-bottom: 3px;
     text-align: right;
-    font-weight: 500;
     font-size: 16px;
     line-height: 24px;
   }
@@ -548,7 +588,6 @@ iframe {
     position: relative;
     margin-right: 6px;
     color: #727272;
-    font-weight: 400;
 
     &:after {
       position: absolute;
@@ -559,6 +598,7 @@ iframe {
       height: 1px;
       background-color: #727272;
       content: '';
+      opacity: 0.5;
     }
   }
 
@@ -566,6 +606,50 @@ iframe {
     text-align: right;
     font-size: 12px;
     line-height: 12px;
+    margin-top: 4px;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+  }
+
+  &__controls {
+    min-width: 100px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-right: 15px;
+    cursor: pointer;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.user-payment-form {
+  padding: 20px 0;
+
+  .form-label {
+    min-width: 85px;
+  }
+
+  .input {
+    min-width: 310px;
+  }
+
+  .btn {
+    min-width: 310px;
+    margin-left: 95px;
   }
 }
 
@@ -810,4 +894,64 @@ iframe {
   color: white;
   padding: 8px 8px 6px;
   margin: 8px 8px 8px 0;
+}
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+
+  &__content {
+    display: none;
+    width: 204px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -102px;
+    background: $dark-color;
+    padding: 8px;
+    margin-bottom: 13px;
+    cursor: default;
+    font-size: 10px;
+    line-height: 12px;
+    color: $white-color;
+    z-index: 5;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -7px;
+      border-width: 7px;
+      border-style: solid;
+      border-color: black transparent transparent transparent;
+
+    }
+  }
+
+
+  &__icon {
+    opacity: 0.6;
+    position: relative;
+
+    &:before {
+      content: '';
+      display: none;
+      width: 90px;
+      height: 20px;
+      position: absolute;
+      top: -20px;
+      left: -13px;
+      background: transparent;
+      z-index: 2;
+    }
+  }
+
+  &:hover .tooltip__content {
+    display: block;
+  }
+
+  &:hover .tooltip__icon {
+    opacity: 1;
+  }
 }

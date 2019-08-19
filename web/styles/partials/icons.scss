@@ -14,6 +14,38 @@
   vertical-align: middle;
 }
 
+.icon-tooltip {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url("../img/icons/icon_tooltip2.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-closed {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background: url("../img/icons/icon_close.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-edit {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background: url("../img/icons/icon_edit.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-add {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  background: url("../img/icons/icon_add.svg") no-repeat;
+  vertical-align: middle;
+}
+
 .icon-facebook {
   display: inline-block;
   width: 8px;
@@ -69,6 +101,19 @@
   &:after {
     top: 10px;
     left: 26px;
+  }
+}
+
+.icon-close--sm {
+  width: 12px;
+  height: 12px;
+
+  &:before,
+  &:after {
+    top: 0;
+    left: 5px;
+    width: 1px;
+    height: 11px;
   }
 }
 
