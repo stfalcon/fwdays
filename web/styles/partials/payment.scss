@@ -15,6 +15,15 @@
     margin-right: 40px;
   }
 
+  &__right {
+    position: relative;
+
+    .payment-cart {
+      position: sticky;
+      top: 10px;
+    }
+  }
+
   &__list {
     margin-bottom: 20px;
   }
