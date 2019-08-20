@@ -36,6 +36,9 @@
     <!--BEGIN layout-box__top-->
     <div class="layout-box__top">
         {% include '@ApplicationDefault/Redesign/header.html.twig' %}
+
+        {#BEGIN markup for payment#}
+
         <section class="payment">
             <div class="container payment__container">
                 <div class="payment__left">
@@ -189,6 +192,24 @@
                 </div>
             </div>
         </section>
+
+        {#END markup for payment#}
+
+        {#BEGIN markup for info page#}
+
+        <section class="info-page">
+            <div class="container container--sm">
+                <img src="{{ asset('assets/img/icons/icon_tickets.svg') }}" class="info-page__img">
+                <h2 class="h2 info-page__title">Оплата пройшла успішно!</h2>
+                <p class="info-page__text">Квитки відправлені на ваш e-mail та на e-mail кожного учасника окремо.
+                     Також ви можете завантажити квитки на сторінці
+                    <a href="#" class="info-page__link">Мій кабінет</a>
+                </p>
+            </div>
+        </section>
+
+        {#END markup for info page#}
+
         {% block content %}{% endblock content %}
     </div>
     <!--END layout-box__top-->
