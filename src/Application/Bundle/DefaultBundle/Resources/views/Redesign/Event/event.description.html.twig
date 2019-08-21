@@ -1,11 +1,7 @@
-{%- if event.useCustomBackground != true -%}
-    <section class="event-description">
-        <div class="container container--sm">
-            <div class="event-description__text static-styles">
-                {{ about|raw }}
-            </div>
+<section class="event-description">
+    <div class="container container--sm">
+        <div class="event-description__text static-styles">
+            {{ about|raw }}
         </div>
-    </section>
-{%- else -%}
-    {{ about|raw }}
-{%- endif -%}
+    </div>
+</section>
