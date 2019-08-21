@@ -16,25 +16,25 @@
 
 .icon-tooltip {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: url("../img/icons/icon_tooltip2.svg") no-repeat;
+  width: 14px;
+  height: 14px;
+  background: url("../img/icons/ic_info.svg") no-repeat;
   vertical-align: middle;
 }
 
 .icon-closed {
   display: inline-block;
-  width: 25px;
-  height: 25px;
-  background: url("../img/icons/icon_close.svg") no-repeat;
+  width: 26px;
+  height: 26px;
+  background: url("../img/icons/ic_delete.svg") no-repeat;
   vertical-align: middle;
 }
 
 .icon-edit {
   display: inline-block;
-  width: 25px;
-  height: 25px;
-  background: url("../img/icons/icon_edit.svg") no-repeat;
+  width: 26px;
+  height: 26px;
+  background: url("../img/icons/ic_edit.svg") no-repeat;
   vertical-align: middle;
 }
 
@@ -42,7 +42,15 @@
   display: inline-block;
   width: 34px;
   height: 34px;
-  background: url("../img/icons/icon_add.svg") no-repeat;
+  background: url("../img/icons/ic_add.svg") no-repeat;
+  vertical-align: middle;
+}
+
+.icon-more {
+  display: inline-block;
+  width: 28px;
+  height: 14px;
+  background: url("../img/icons/ic_more.svg") no-repeat;
   vertical-align: middle;
 }
 
@@ -104,17 +112,12 @@
   }
 }
 
-.icon-close--sm {
-  width: 12px;
-  height: 12px;
-
-  &:before,
-  &:after {
-    top: 0;
-    left: 5px;
-    width: 1px;
-    height: 11px;
-  }
+.icon-close-sm {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: url("../img/icons/ic_delete_small.svg") no-repeat;
+  vertical-align: middle;
 }
 
 .icon-login-facebook {
