@@ -13,6 +13,16 @@ use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 final class ReviewAdmin extends AbstractPageAdmin
 {
     /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
+    /**
      * {@inheritdoc}
      */
     protected function configureListFields(ListMapper $listMapper)
