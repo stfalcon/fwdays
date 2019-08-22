@@ -40,6 +40,10 @@ class DefaultController extends Controller
      */
     public function pageAction(Page $page): Response
     {
+        if ('contacts' === $page->getSlug()) {
+            return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', ['page' => $page]);
+        }
+
         return $this->render('@ApplicationDefault/Default/page.html.twig', ['page' => $page]);
     }
 

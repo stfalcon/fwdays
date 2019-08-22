@@ -95,7 +95,7 @@ build image:
     image: docker:stable
     only:
         - master
-        - dev
+        - stag
     tags:
         - k8s-deploy
     script:
@@ -109,7 +109,7 @@ build image:
 staging deploy:
     stage: 'Deploy to staging'
     only:
-        - dev
+        - stag
     image: docker:stable
     tags:
         - k8s-deploy
@@ -130,7 +130,7 @@ staging deploy:
 staging rollback:
     stage: 'Deploy to staging'
     only:
-        - dev
+        - stag
     image: docker:stable
     tags:
         - k8s-deploy

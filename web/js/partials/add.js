@@ -475,8 +475,8 @@ $(document).ready(function () {
     });
 
     $('#buy-ticket-btn').on('click', function () {
-        let user_phone_elem = $('#user_phone');
-        let use_phone = user_phone_elem.val();
+        var user_phone_elem = $('#user_phone');
+        var use_phone = user_phone_elem.val();
         if (use_phone !== '' && user_phone_elem.valid()) {
             $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
         }
