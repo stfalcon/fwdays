@@ -14,6 +14,16 @@ use Application\Bundle\DefaultBundle\Entity\Speaker;
 class SpeakerAdmin extends AbstractTranslateAdmin
 {
     /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
+    /**
      * {@inheritdoc}
      */
     public function postUpdate($object)
