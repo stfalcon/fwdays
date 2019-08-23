@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class WayForPayService.
@@ -43,13 +43,13 @@ class WayForPayService
 
     /**
      * @param mixed                 $stfalconConfig
-     * @param Translator            $translator
+     * @param TranslatorInterface   $translator
      * @param RequestStack          $requestStack
      * @param Router                $router
      * @param TokenStorageInterface $securityToken
      * @param EntityManager         $em
      */
-    public function __construct($stfalconConfig, Translator $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em)
+    public function __construct($stfalconConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em)
     {
         $this->stfalconConfig = $stfalconConfig;
         $this->request = $requestStack->getCurrentRequest();
@@ -212,7 +212,7 @@ class WayForPayService
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
         $params['returnUrl'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
     }

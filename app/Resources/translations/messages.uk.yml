@@ -68,6 +68,7 @@ event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.hint: тільки через сайт
 tickets.other.title: Всі інші квитки
+tickets.tickets_run_out: Закінчуються
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
 sponsor.partners.title: Партнери

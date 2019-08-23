@@ -9,6 +9,5 @@ php bin/console do:fi:lo --no-interaction
 php bin/console assets:install web --symlink
 php bin/console assetic:dump
 php bin/console lexik:translations:import
-unxz geodata/GeoLiteCity.dat.xz
 npm install
 npm run gulp-dev
