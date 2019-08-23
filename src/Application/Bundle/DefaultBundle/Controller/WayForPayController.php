@@ -3,14 +3,14 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class WayForPayController.
@@ -21,9 +21,7 @@ class WayForPayController extends Controller
     protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
 
     /**
-     * @Route("/payment/interaction", name="payment_interaction",
-     *     methods={"POST"},
-     *     options={"expose"=true})
+     * @Route("/payment/interaction", name="payment_interaction", methods={"POST"})
      *
      * @param Request $request
      *
@@ -31,55 +29,25 @@ class WayForPayController extends Controller
      */
     public function interactionAction(Request $request)
     {
-        $response = $request->get('response');
-        if (null === $response) {
-            $response = $request->request->all();
-        }
-        $payment = null;
+        $response = $request->request->all();
 
-        if (is_array($response) && isset($response['orderNo'])) {
-            /** @var Payment $payment */
-            $payment = $this->getDoctrine()
-                ->getRepository('ApplicationDefaultBundle:Payment')
-                ->findOneBy(['id' => $response['orderNo']]);
+        try {
+            $transactionStatus = $this->processWayForPayResponse($response);
+        } catch (BadRequestHttpException $e) {
+            return new Response(['error' => $e->getMessage()], 400);
         }
 
-        if (!$payment) {
-            throw new Exception(sprintf('Платеж №%s не найден!', $this->getArrMean($response['orderNo'])));
+        if (WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
+            return $this->redirectToRoute('payment_success');
+        }
+        if (WayForPayService::WFP_TRANSACTION_PENDING_STATUS === $transactionStatus) {
+            return $this->redirectToRoute('payment_pending');
+        }
+        if (WayForPayService::WFP_TRANSACTION_FAIL_STATUS === $transactionStatus) {
+            return $this->redirectToRoute('payment_fail');
         }
 
-        $wayForPay = $this->get('app.way_for_pay.service');
-        if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
-            $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
-            if (isset($response['recToken'])) {
-                $user = $this->getUser();
-                $user->setRecToken($response['recToken']);
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            try {
-                $referralService = $this->get('application.referral.service');
-                $referralService->chargingReferral($payment);
-                $referralService->utilizeBalance($payment);
-            } catch (\Exception $e) {
-            }
-
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
-            if ($request->isXmlHttpRequest()) {
-                return new Response('ok', 200);
-            }
-
-            return $this->redirectToRoute('show_success');
-        }
-
-        $this->get('logger')->addCritical(
-            'Interkassa interaction Fail!',
-            $this->getRequestDataToArr($response, $payment)
-        );
-
-        return new Response('FAIL', 400);
+        return new Response('FAIL transaction status:'.$transactionStatus, 400);
     }
 
     /**
@@ -95,83 +63,29 @@ class WayForPayController extends Controller
     {
         $json = $request->getContent();
         $response = \json_decode($json, true);
-        if (null === $response) {
-            $this->get('logger')->addCritical(
-                'WayForPay interaction Fail! bad content'
-            );
-
-            return new JsonResponse(['error' => 'bad content'], 400);
-        }
         $wayForPay = $this->get('app.way_for_pay.service');
-
-        $payment = null;
-        if (is_array($response) && isset($response['orderNo'])) {
-            /** @var Payment $payment */
-            $payment = $this->getDoctrine()
-                ->getRepository('ApplicationDefaultBundle:Payment')
-                ->findOneBy(['id' => $response['orderNo']]);
+        try {
+            $this->processWayForPayResponse($response);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         }
-
-        if (!$payment) {
-            $this->get('logger')->addCritical(
-                'WayForPay interaction Fail! payment not found'
-            );
-            $wayForPay->saveResponseLog(null, $response, 'payment not found');
-
-            return new JsonResponse(['error' => 'payment not found'], 400);
-        }
-
-        if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
-            $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
-            if (isset($response['recToken'])) {
-                $user = $payment->getUser();
-                if ($user instanceof User) {
-                    $user->setRecToken($response['recToken']);
-                }
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            try {
-                $referralService = $this->get('application.referral.service');
-                $referralService->chargingReferral($payment);
-                $referralService->utilizeBalance($payment);
-            } catch (\Exception $e) {
-                $this->get('logger')->addCritical(
-                    $e->getMessage(),
-                    $this->getRequestDataToArr($response, $payment)
-                );
-            }
-
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
-
-            $wayForPay->saveResponseLog($payment, $response, 'set paid');
-            $result = $wayForPay->getResponseOnServiceUrl($response);
-
-            return new JsonResponse($result);
-        }
-
-        $wayForPay->saveResponseLog($payment, $response, $this->getArrMean($response['transactionStatus']));
         $result = $wayForPay->getResponseOnServiceUrl($response);
 
         return new JsonResponse($result);
     }
 
     /**
-     * @Route("/payment/success", name="show_success")
+     * @Route("/payment/success", name="payment_success")
      *
      * @return Response
      */
     public function showSuccessAction()
     {
-        $paymentId = $this->get('session')->get('way_for_pay_payment');
-        $this->get('session')->remove('way_for_pay_payment');
+        $paymentId = $this->get('session')->get(WayForPayService::WFP_PAYMENT_KEY);
+        $this->get('session')->remove(WayForPayService::WFP_PAYMENT_KEY);
 
         /** @var Payment $payment */
-        $payment = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Payment')
-            ->findOneBy(['id' => $paymentId]);
+        $payment = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
 
         $eventName = '';
         $eventType = '';
@@ -181,7 +95,7 @@ class WayForPayController extends Controller
             $eventType = $this->getItemVariant($eventName);
         }
 
-        return $this->render('@ApplicationDefault/Interkassa/success.html.twig', [
+        return $this->render('@ApplicationDefault/PaymentResult/success.html.twig', [
             'payment' => $payment,
             'event_name' => $eventName,
             'event_type' => $eventType,
@@ -189,31 +103,23 @@ class WayForPayController extends Controller
     }
 
     /**
-     * Возникла ошибка при проведении платежа. Показываем пользователю соответствующее сообщение.
-     *
      * @Route("/payment/fail", name="payment_fail")
      *
-     * @Template("@ApplicationDefault/Interkassa/fail.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function failAction()
+    public function failAction(): Response
     {
-        return [];
+        return $this->render('@ApplicationDefault/PaymentResult/fail.html.twig');
     }
 
     /**
-     * Оплата не завершена. Ожидаем ответ шлюза.
-     *
      * @Route("/payment/pending", name="payment_pending")
      *
-     * @Template("@ApplicationDefault/Interkassa/pending.html.twig")
-     *
-     * @return array|Response
+     * @return Response
      */
-    public function pendingAction()
+    public function pendingAction(): Response
     {
-        return [];
+        return $this->render('@ApplicationDefault/PaymentResult/pending.html.twig');
     }
 
     /**
@@ -269,5 +175,63 @@ class WayForPayController extends Controller
     private function getArrMean(&$var, $default = '')
     {
         return isset($var) ? $var : $default;
+    }
+
+    /**
+     * @param array|null $response
+     *
+     * @return string
+     */
+    private function processWayForPayResponse(?array $response): string
+    {
+        $wayForPay = $this->get('app.way_for_pay.service');
+        if (null === $response || !isset($response['transactionStatus'])) {
+            $this->get('logger')->addCritical('WayForPay interaction Fail! bad content');
+            $wayForPay->saveResponseLog(null, $response, 'bad content');
+            throw new BadRequestHttpException('bad content');
+        }
+
+        $payment = null;
+        if (\is_array($response) && isset($response['orderNo'])) {
+            $payment = $this->getDoctrine()
+                ->getRepository('ApplicationDefaultBundle:Payment')->find($response['orderNo']);
+        }
+
+        if (!$payment) {
+            $this->get('logger')->addCritical('WayForPay interaction Fail! payment not found');
+            $wayForPay->saveResponseLog(null, $response, 'payment not found');
+
+            throw new BadRequestHttpException('payment not found');
+        }
+
+        if ($payment->isPending() && $wayForPay->checkPayment($payment, $response)) {
+            $payment->setPaidWithGate(Payment::WAYFORPAY_GATE);
+            if (isset($response['recToken'])) {
+                $user = $payment->getUser();
+                if ($user instanceof User) {
+                    $user->setRecToken($response['recToken']);
+                }
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            try {
+                $referralService = $this->get('application.referral.service');
+                $referralService->chargingReferral($payment);
+                $referralService->utilizeBalance($payment);
+            } catch (\Exception $e) {
+                $this->get('logger')->addCritical(
+                    $e->getMessage(),
+                    $this->getRequestDataToArr($response, $payment)
+                );
+            }
+            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
+            $wayForPay->saveResponseLog($payment, $response, 'set paid');
+
+            return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
+        }
+
+        return $response['transactionStatus'];
     }
 }
