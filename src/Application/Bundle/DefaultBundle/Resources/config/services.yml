@@ -79,7 +79,7 @@ services:
         class: Application\Bundle\DefaultBundle\Service\WayForPayService
         arguments:
             - "%application_default.config%"
-            - "@translator.default"
+            - "@translator"
             - "@request_stack"
             - "@router"
             - "@security.token_storage"

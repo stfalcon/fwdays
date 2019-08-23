@@ -32,7 +32,7 @@ services:
 
     sonata.block.event.speakers:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\SpeakersEventBlockService
-        arguments: ['sonata.block.event.speakers', '@templating', '@translator.default', '@app.event_review.repository.service']
+        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@app.event_review.repository.service']
         tags: [name: 'sonata.block']
 
     sonata.block.event.reviews:
@@ -42,12 +42,12 @@ services:
 
     sonata.block.event.candidate_speakers:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\CandidateSpeakersEventBlockService
-        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator.default', '@app.event_review.repository.service']
+        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@app.event_review.repository.service']
         tags: [name: 'sonata.block']
 
     sonata.block.event.committee_speakers:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\CommitteeSpeakersEventBlockService
-        arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator.default']
+        arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator']
         tags: [name: 'sonata.block']
 
     sonata.block.event.ticket_status:
