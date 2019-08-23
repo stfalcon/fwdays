@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="event-header__photo">
-            {% if (event.showLogoWithBackground or event.useCustomBackground == false) %}
+            {% if event.showLogoWithBackground or event.useCustomBackground == false or (event.background is empty and is_mobile()) %}
                 <img class="event-header__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="{{ event.name }}">
             {% endif %}
         </div>
