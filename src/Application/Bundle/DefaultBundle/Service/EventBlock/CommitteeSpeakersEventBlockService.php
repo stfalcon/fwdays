@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class CommitteeSpeakersEventBlockService.
@@ -21,11 +21,11 @@ class CommitteeSpeakersEventBlockService extends AbstractBlockService
     /**
      * SpeakersEventBlockService constructor.
      *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Translator      $translator
+     * @param string              $name
+     * @param EngineInterface     $templating
+     * @param TranslatorInterface $translator
      */
-    public function __construct($name, EngineInterface $templating, Translator $translator)
+    public function __construct($name, EngineInterface $templating, TranslatorInterface $translator)
     {
         parent::__construct($name, $templating);
 

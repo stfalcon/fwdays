@@ -3,9 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -13,6 +13,7 @@ use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
@@ -171,19 +172,15 @@ class PaymentController extends Controller
     /**
      * static payment.
      *
-     * @Route("/static-payment/{eventSlug}")
+     * @Route(path="/static-payment/{slug}")
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
-     *
      * @param Event $event
      *
-     * @Template("@ApplicationDefault/Redesign/Payment/payment.html.twig")
-     *
-     * @return array|Response
+     * @return Response
      */
-    public function staticPaymentAction(Event $event)
+    public function staticPaymentAction(Event $event): Response
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
@@ -192,7 +189,7 @@ class PaymentController extends Controller
             );
         }
 
-        return ['event' => $event];
+        return $this->render('@ApplicationDefault/Redesign/Payment/payment.html.twig', ['event' => $event]);
     }
 
     /**
@@ -339,7 +336,7 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
@@ -367,7 +364,7 @@ class PaymentController extends Controller
             $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('show_success') : $this->generateUrl('payment_fail');
+        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
     }
@@ -411,7 +408,8 @@ class PaymentController extends Controller
                     $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 $byeBtnCaption = $this->get('translator')->trans('ticket.status.get');
             } else {
-                $payType = 'wayforpay';
+                $payType = WayForPayService::WFP_PAY_BY_SECURE_PAGE;
+                $formAction = WayForPayService::WFP_SECURE_PAGE;
             }
         }
 
@@ -423,7 +421,7 @@ class PaymentController extends Controller
             'pay_type' => $payType,
         ]);
 
-        if ('wayforpay' === $payType) {
+        if (\in_array($payType, [WayForPayService::WFP_PAY_BY_SECURE_PAGE, WayForPayService::WFP_PAY_BY_WIDGET, true])) {
             $this->get('session')->set('way_for_pay_payment', $payment->getId());
         }
 
