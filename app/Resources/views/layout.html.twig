@@ -137,13 +137,14 @@
                 <div class="payment__right">
                     <div class="payment-cart">
                         <div class="payment-cart__top">
+                            <i class="payment-cart__icon icon-more"></i>
                             <div class="payment-cart__text">До оплати:</div>
                             <div class="payment-cart__total">
                                 <div class="payment-cart__text payment-cart__text--strike">6 400 грн</div>
                                 <div class="payment-cart__text">4 400 грн</div>
                                 <div class="payment-cart__hint">
                                     − 1 300 грн бонуси Fwdays
-                                    <i class="icon-close icon-close--sm"></i>
+                                    <i class="icon-close-sm"></i>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +155,7 @@
                                 У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row payment-cart-hide-mob">
                             <div class="form-col form-col--5">
                                 <div class="form-group">
                                     <input class="input input--xs" type="text" value="">
@@ -164,7 +165,7 @@
                                 <button type="button" class="btn btn--xs btn--secondary form-col__btn">застосувати</button>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row payment-cart-hide-mob">
                             <div class="form-col form-col--12">
                                 <div class="form-group">
                                     <label class="form-label">телефон, не обов’язково</label>
@@ -172,7 +173,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row payment-cart-btn">
                             <div class="form-col form-col--12">
                                 <button type="button" class="btn btn--lg btn--primary form-col__btn">оплатити</button>
                             </div>
@@ -199,7 +200,7 @@
 
         <section class="info-page">
             <div class="container container--sm">
-                <img src="{{ asset('assets/img/icons/icon_tickets.svg') }}" class="info-page__img">
+                <img src="{{ asset('assets/img/icons/ic_thankyou.svg') }}" class="info-page__img">
                 <h2 class="h2 info-page__title">Оплата пройшла успішно!</h2>
                 <p class="info-page__text">Квитки відправлені на ваш e-mail та на e-mail кожного учасника окремо.
                      Також ви можете завантажити квитки на сторінці

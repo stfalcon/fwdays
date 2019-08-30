@@ -354,4 +354,27 @@ $(document).ready(function () {
             document.body.scrollLeft = scroll.left;
         }
     }
+
+    var paymentCartPosition = ($('.payment__left').offset().top + $('.payment__left').outerHeight(true)) - $(window).height() + $('.payment-cart__top').outerHeight(true);
+
+    if ($(window).width() < 768) {
+        $(document).bind('scroll load', function () {
+            if ($(this).scrollTop() < paymentCartPosition) {
+                $('.payment-cart__icon').show();
+            } else {
+                $('.payment-cart__icon').hide();
+            }
+        });
+
+        function togglePaymentCart() {
+            var paymentCartTop = $('.payment-cart__top');
+            paymentCartTop.on('click', function () {
+                $('.payment__right').toggleClass('payment__right--show');
+                $('.payment-cart__icon').toggleClass('payment-cart__icon--open');
+            });
+        }
+
+        togglePaymentCart();
+    }
+
 });

@@ -25,6 +25,7 @@
   }
 
   &__list {
+    border-bottom: 1px solid #DFDBCC;
     margin-bottom: 20px;
   }
 }
@@ -49,10 +50,20 @@
 }
 
 .payment-cart {
+  position: relative;
   width: 340px;
   background: #F5F3EA;
   border-radius: 2px;
   padding: 34px 24px;
+
+  &__icon {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    display: none;
+  }
 
   &__top {
     display: flex;
@@ -98,7 +109,7 @@
     align-items: center;
     font-size: 12px;
 
-    .icon-close {
+    .icon-close-sm {
       cursor: pointer;
       margin-left: 3px;
     }
