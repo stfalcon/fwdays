@@ -90,7 +90,7 @@ class ReferralServiceTest extends WebTestCase
         $payment->markedAsPaid();
         $this->em->flush();
         $referralBalance = $userReferral->getBalance();
-        $referralService = $this->getContainer()->get('application.referral.service');
+        $referralService = $this->getContainer()->get('app.referral.service');
         $referralService->chargingReferral($payment);
         $referralService->utilizeBalance($payment);
 

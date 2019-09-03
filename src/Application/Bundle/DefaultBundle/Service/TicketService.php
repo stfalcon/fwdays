@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
 use Doctrine\ORM\EntityManager;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
@@ -31,22 +32,19 @@ class TicketService
     const EVENT_DEFAULT_STATE = 'event default state';
 
     /** @var EntityManager */
-    protected $em;
+    private $em;
 
     /** @var array */
-    protected $paymentsConfig;
+    private $paymentsConfig;
 
     /** @var TranslatorInterface */
-    protected $translator;
+    private $translator;
 
     /** @var RouterInterface */
-    protected $router;
-
-    /** @var TicketCostService */
-    protected $ticketCostService;
+    private $router;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /**
      * TicketService constructor.
@@ -55,16 +53,14 @@ class TicketService
      * @param array                 $paymentsConfig
      * @param TranslatorInterface   $translator
      * @param RouterInterface       $router
-     * @param TicketCostService     $ticketCostService
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService, TokenStorageInterface $tokenStorage)
+    public function __construct($em, $paymentsConfig, $translator, $router, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
         $this->paymentsConfig = $paymentsConfig;
         $this->translator = $translator;
         $this->router = $router;
-        $this->ticketCostService = $ticketCostService;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -261,22 +257,22 @@ class TicketService
                 'event_header' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-card__download',
                         self::EVENT_DONE => 'event-header__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
                         self::EVENT_DONE => 'event-action-mob__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' => [
                         self::CAN_DOWNLOAD_TICKET => '',
@@ -357,9 +353,10 @@ class TicketService
                 } else {
                     $caption = $this->translator->trans('ticket.status.pay');
                 }
-                if (!in_array($position, ['event_header', 'event_fix_header', 'event_fix_header_mob'])) {
-                    $class .= ' get-payment';
-                }
+                $href = $this->router->generate('event_pay', ['slug' => $event->getSlug()]);
+//                if (!in_array($position, ['event_header', 'event_fix_header', 'event_fix_header_mob'])) {
+//                    $class .= ' get-payment';
+//                }
             } elseif (self::PAID_IS_RETURNED === $eventState) {
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.status.payment_returned_mob');
@@ -389,5 +386,50 @@ class TicketService
             ];
 
         return $result;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return TicketCost|null
+     */
+    public function getCurrentEventTicketCost($event)
+    {
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+
+        $currentTicketCost = null;
+
+        /** @var TicketCost $cost */
+        foreach ($eventCosts as $cost) {
+            if ($cost->isHaveTemporaryCount()) {
+                $currentTicketCost = $cost;
+                break;
+            }
+        }
+
+        return $currentTicketCost;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return int
+     */
+    public function getEventFreeTicketCount($event)
+    {
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+        $count = 0;
+        /** @var TicketCost $cost */
+        foreach ($eventCosts as $cost) {
+            if (!$cost->isUnlimited()) {
+                $count += $cost->getCount() - $cost->getSoldCount();
+            }
+        }
+
+        return $count;
     }
 }

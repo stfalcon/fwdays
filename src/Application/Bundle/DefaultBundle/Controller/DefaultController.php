@@ -78,7 +78,7 @@ class DefaultController extends Controller
             'user_active_events' => $userActiveEvents,
             'user_past_events' => $userPastEvents,
             'events' => $allActiveEvents,
-            'code' => $this->get('application.referral.service')->getReferralCode(),
+            'code' => $this->get('app.referral.service')->getReferralCode(),
         ]);
     }
 

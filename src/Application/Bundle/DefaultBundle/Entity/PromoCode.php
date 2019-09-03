@@ -2,12 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\PromoCode.
@@ -58,6 +59,8 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
+     * @Groups("payment.view")
      */
     protected $discountAmount;
 
@@ -67,6 +70,8 @@ class PromoCode
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     *
+     * @Groups("payment.view")
      */
     protected $code;
 

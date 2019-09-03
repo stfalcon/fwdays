@@ -28,17 +28,17 @@ function popupwindow(url, title, w, h) {
 function setPaymentHtmlbyData(data, e_slug) {
     $('#payment').data('pay-type', data.pay_type).attr('action', data.form_action);
     $('#pay-form').html(data.html).data('event', e_slug);
-    $('#payment-sums').html(data.paymentSums);
+    $('#payment-sums').html(data.payment_sums);
     $('#cancel-promo-code').click();
     $('#cancel-add-user').click();
-    $('#user_phone').val(data.phoneNumber);
+    $('#user_phone').val(data.phone_number);
     var buy_btn = $('#buy-ticket-btn');
     if (data.form_action === '') {
         buy_btn.prop("disabled", true);
     } else {
         buy_btn.prop('disabled', false);
     }
-    buy_btn.html(data.byeBtnCaption);
+    buy_btn.html(data.bye_btn_caption);
     var old_event = buy_btn.data('event');
     if (old_event) {
         buy_btn.removeClass('event-'+old_event);
@@ -51,24 +51,24 @@ function setPaymentHtmlbyData(data, e_slug) {
     }
 }
 
-function getPlaceByElem(elem) {
-    if (elem) {
-        var place = 'social';
-        if (elem.hasClass('cost__buy--mob')) {
-            place = 'event_pay_mob';
-        } else if (elem.hasClass('cost__buy')) {
-            place = 'event_pay';
-        } else if (elem.hasClass('event_fix_header_mob') || elem.hasClass('event-action-mob__btn')
-            || elem.hasClass('fix-event-header__btn--mob')) {
-            place = 'event_mob';
-        } else if (elem.hasClass('fix-event-header__btn') || elem.hasClass('event-header__btn')) {
-            place = 'event';
-        } else if (elem.hasClass('event-card__btn') || elem.hasClass('event-row__btn')) {
-            place = 'main';
-        }
-        return place;
-    }
-}
+// function getPlaceByElem(elem) {
+//     if (elem) {
+//         var place = 'social';
+//         if (elem.hasClass('cost__buy--mob')) {
+//             place = 'event_pay_mob';
+//         } else if (elem.hasClass('cost__buy')) {
+//             place = 'event_pay';
+//         } else if (elem.hasClass('event_fix_header_mob') || elem.hasClass('event-action-mob__btn')
+//             || elem.hasClass('fix-event-header__btn--mob')) {
+//             place = 'event_mob';
+//         } else if (elem.hasClass('fix-event-header__btn') || elem.hasClass('event-header__btn')) {
+//             place = 'event';
+//         } else if (elem.hasClass('event-card__btn') || elem.hasClass('event-row__btn')) {
+//             place = 'main';
+//         }
+//         return place;
+//     }
+// }
 
 function setPaymentHtml(e_slug, mobForce) {
     var inst = $('[data-remodal-id=modal-payment]').remodal();
@@ -195,23 +195,6 @@ $(document).on('submit', '#payment', function (e) {
     }
 });
 
-
-$(document).on('click', '.user-payment__remove', function () {
-    var elem = $(this);
-    var e_slug = $('#pay-form').data('event');
-    $.post(Routing.generate('remove_ticket_from_payment',
-        {
-            eventSlug: e_slug,
-            id: elem.data('ticket')
-        }),
-        function (data) {
-            if (data.result) {
-                setPaymentHtmlbyData(data, e_slug)
-            } else {
-                console.log('Error:'+data.error);
-            }
-        });
-});
 
 $(document).on('click', '.social-login', function () {
     var elem = $(this);
@@ -342,55 +325,6 @@ $(document).ready(function () {
         }
     });
 
-    $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
-    };
-
-    $('#payment').validate({
-        debug: false,
-        errorClass: "text-error",
-        errorElement: "p",
-        onkeyup: false,
-        highlight: function(element) {
-            $(element).addClass('input--error');
-        },
-        unhighlight: function(element) {
-            $(element).removeClass('input--error');
-        }
-    });
-
-    $.validator.addClassRules({
-        'valid-name': {
-            required: true,
-            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/,
-            minlength: 2,
-            maxlength: 32,
-        },
-        'valid-plainPassword' : {
-            required: true,
-            minlength: 2,
-            maxlength: 72,
-        },
-        'valid-email' : {
-            required: true,
-            email: true,
-        },
-        'valid-phone' : {
-            required: false,
-            minlength: 12,
-            maxlength: 16,
-            pattern: /\+[1-9]{1}[0-9]{10,14}$/i,
-        }
-    });
-
-    $('#user_promo_code').rules("add", {
-        minlength: 2,
-        messages: {
-            minlength: $.validator.format(Messages[locale].CORRECT_MIN),
-            required: Messages[locale].FIELD_REQUIRED,
-        }
-    });
-
     $('.open-speaker-popup').on('click', function () {
         var speakerElement = $('.speaker-card__top[data-speaker='+$(this).data('speaker')+']'),
              e_slug = speakerElement.data('event'),
@@ -417,22 +351,22 @@ $(document).ready(function () {
         setModalHeader(e_slug, h_type);
     });
 
-    $('.get-payment').on('click', function () {
-        var elem = $(this);
-        var e_slug = elem.data('event');
-        var promocode = Cookies.get('promocode');
-        var promoevent = Cookies.get('promoevent');
-        if (detectmob()) {
-            var queryParams = '';
-            if (promocode && promoevent === e_slug) {
-                queryParams = '?promocode='+promocode;
-            }
-            window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
-        } else {
-            setModalHeader(e_slug, 'buy');
-            setPaymentHtml(e_slug);
-        }
-    });
+    // $('.get-payment').on('click', function () {
+    //     var elem = $(this);
+    //     var e_slug = elem.data('event');
+    //     var promocode = Cookies.get('promocode');
+    //     var promoevent = Cookies.get('promoevent');
+    //     if (detectmob()) {
+    //         var queryParams = '';
+    //         if (promocode && promoevent === e_slug) {
+    //             queryParams = '?promocode='+promocode;
+    //         }
+    //         window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
+    //     } else {
+    //         setModalHeader(e_slug, 'buy');
+    //         setPaymentHtml(e_slug);
+    //     }
+    // });
 
     $('.add-promo-code-btn').on('click', function () {
         if ($('#user_promo_code').valid()) {
@@ -447,38 +381,6 @@ $(document).ready(function () {
                         validator.showErrors(errors);
                     }
                 });
-        }
-    });
-
-    $('.add-user-btn').on('click', function () {
-        if ($('#payment_user_name').valid() &&
-            $('#payment_user_surname').valid() &&
-            $('#payment_user_email').valid()) {
-            var e_slug = $('#pay-form').data('event');
-            $.post(Routing.generate('add_participant_to_payment',
-                {
-                    eventSlug: e_slug,
-                    name: $("input[name='user-name']").val(),
-                    surname: $("input[name='user-surname']").val(),
-                    email: $("input[name='user-email']").val()
-                }),
-                function (data) {
-                    if (data.result) {
-                        setPaymentHtmlbyData(data, e_slug);
-                    } else {
-                        var validator = $('#payment').validate();
-                        var errors = { "user-email": data.error };
-                        validator.showErrors(errors);
-                    }
-                });
-        }
-    });
-
-    $('#buy-ticket-btn').on('click', function () {
-        var user_phone_elem = $('#user_phone');
-        var use_phone = user_phone_elem.val();
-        if (use_phone !== '' && user_phone_elem.valid()) {
-            $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
         }
     });
 

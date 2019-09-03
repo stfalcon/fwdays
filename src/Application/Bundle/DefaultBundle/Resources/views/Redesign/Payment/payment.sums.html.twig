@@ -1,7 +1,57 @@
-{% if payment.fwdaysAmount > 0 %}
-    <div class="payment-info__total">{{ 'pay.sum.bold.title'|trans({'%sum%':(payment.amount+payment.fwdaysAmount)|number_format(0,',',' ')})|raw }}</div>
-    <div class="payment-info__total">{{ 'pay.bonus.bold.title'|trans({'%sum%':payment.fwdaysAmount|number_format(0,',',' ')})|raw }}</div>
-    <div class="payment-info__total">{{ 'pay.sum_for_pay.bold.title'|trans({'%sum%':payment.amount|number_format(0,',',' ')})|raw }}</div>
-{% else %}
-    <div class="payment-info__total">{{ 'pay.sum.bold.title'|trans({'%sum%':payment.amount|number_format(0,',',' ')})|raw }}</div>
-{% endif %}
+<div class="payment__right" id="payment-total-data">
+    <div class="payment-cart">
+        <div class="payment-cart__top">
+            <i class="payment-cart__icon icon-more"></i>
+            <div class="payment-cart__text payment-cart_title">{{ 'pay.sum_for_pay.title'|trans }}</div>
+            <div class="payment-cart__total">
+                <div class="payment-cart__text payment-cart__text--strike" {%- if payment_data.fwdays_amount == 0 -%}style="display: none"{%- endif -%}>{{ payment_data.base_amount }}</div>
+                <div class="payment-cart__text payment-cart__amount">{{ payment_data.amount }}</div>
+                <div class="payment-cart__hint" {%- if payment_data.fwdays_amount == 0 -%}style="display: none"{%- endif -%}>{{ payment_data.fwdays_amount_formatted|raw }}<i class="icon-close-sm delete-fwdays-bonus"></i>
+                </div>
+            </div>
+        </div>
+        {% set hide_your_bonus = payment_data.fwdays_amount > 0 or payment_data.user.balance <= 0 %}
+        <label class="form-label payment-user-bonus-label" {%- if hide_your_bonus -%}style="display: none"{% endif %}>{{ 'pay.bonus.label.title'|trans }}</label>
+        <div class="tooltip payment-user-bonus-tooltip" {%- if hide_your_bonus -%}style="display: none"{% endif %}>
+            <i class="icon-tooltip tooltip__icon"></i>
+            <div class="tooltip__content">{{ 'pay.card_description'|trans }}</div>
+        </div>
+        <div class="form-row payment-cart-hide-mob payment-use-fwdays-bonus" {%- if hide_your_bonus -%}style="display: none"{%- endif -%}>
+            <div class="form-col form-col--5">
+                <div class="form-group">
+                    <input id="user-bonus-input" class="input input--xs" min="0" max="{{ payment_data.user.balance }}" type="number" value="{{ payment_data.user.balance }}">
+                </div>
+            </div>
+            <div class="form-col form-col--7">
+                <button id="btn-apply-bonus" type="button" class="btn btn--xs btn--secondary form-col__btn">{{ 'pay.bonus.apply_btn'|trans }}</button>
+            </div>
+        </div>
+
+        <div class="form-row payment-cart-hide-mob">
+            <div class="form-col form-col--12">
+                <div class="form-group">
+                    <label for="user_phone" class="form-label">{{ 'user.phone.title_payment'|trans }}</label>
+                    <input class="input input--xs valid-phone mask-phone-input--js" placeholder="+380" id="user_phone"
+                           name="user_phone" type="tel" data-old-phone="{{ app.user.phone }}"
+                           value="{{ app.user.phone }}">
+                </div>
+            </div>
+        </div>
+        <div class="form-row payment-cart-btn">
+            <div class="form-col form-col--12">
+                <button id="buy-ticket-btn" type="button" class="btn btn--lg btn--primary form-col__btn">{{ 'ticket.status.pay'|trans }}</button>
+            </div>
+        </div>
+        <div class="form-row form-row--checkbox">
+            <div class="form-col">
+                <div class="checkbox checkbox--offer-contract">
+                    <input id="agree-check-payment" type="checkbox" name="_remember_me" class="checkbox__input" required
+                           data-msg="{{ 'check_box.agree_with_conditions_error' |trans }}">
+                    <label for="agree-check-payment" class="checkbox__label">{{ 'check_box.agree_with_conditions_1' |trans }}
+                        <a href="{{ path('page', {'slug' : 'public-offer'}) }}" target="_blank" class="btn-link">{{ 'check_box.agree_with_conditions_2' |trans }}</a>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -84,8 +84,8 @@ class WayForPayController extends Controller
         $paymentId = $this->get('session')->get(WayForPayService::WFP_PAYMENT_KEY);
         $this->get('session')->remove(WayForPayService::WFP_PAYMENT_KEY);
 
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
+        /** @var Payment|null $payment */
+        $payment = $paymentId ? $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId) : null;
 
         $eventName = '';
         $eventType = '';
@@ -217,7 +217,7 @@ class WayForPayController extends Controller
             $em->flush();
 
             try {
-                $referralService = $this->get('application.referral.service');
+                $referralService = $this->get('app.referral.service');
                 $referralService->chargingReferral($payment);
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {

@@ -52,7 +52,7 @@ services:
 
     sonata.block.event.ticket_status:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\TicketStatusEventBlockService
-        arguments: ['sonata.block.event.ticket_status', '@templating', '@application.ticket.service']
+        arguments: ['sonata.block.event.ticket_status', '@templating', '@app.ticket.service']
         tags: [name: 'sonata.block']
 
     sonata.block.footer:

@@ -17,25 +17,25 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TicketController extends Controller
 {
-    /**
-     * Show event ticket status (for current user).
-     *
-     * @param Event      $event
-     * @param string     $position
-     * @param TicketCost $ticketCost
-     *
-     * @return Response
-     */
-    public function statusAction(Event $event, $position = 'card', TicketCost $ticketCost = null)
-    {
-        $result = $this->get('application.ticket.service')->getTicketHtmlData(
-            $event,
-            $position,
-            $ticketCost
-        );
-
-        return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', $result);
-    }
+//    /**
+//     * Show event ticket status (for current user).
+//     *
+//     * @param Event      $event
+//     * @param string     $position
+//     * @param TicketCost $ticketCost
+//     *
+//     * @return Response
+//     */
+//    public function statusAction(Event $event, $position = 'card', TicketCost $ticketCost = null)
+//    {
+//        $result = $this->get('app.ticket.service')->getTicketHtmlData(
+//            $event,
+//            $position,
+//            $ticketCost
+//        );
+//
+//        return $this->render('@ApplicationDefault/Redesign/Event/event.ticket.status.html.twig', $result);
+//    }
 
     /**
      * Generating ticket with QR-code to event.

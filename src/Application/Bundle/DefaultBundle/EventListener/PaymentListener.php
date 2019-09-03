@@ -66,7 +66,7 @@ class PaymentListener
                 $this->pdfGeneratorHelper = $this->container->get('app.helper.new_pdf_generator');
 
                 /** @var PaymentService $paymentService */
-                $paymentService = $this->container->get('application.payment.service');
+                $paymentService = $this->container->get('app.payment.service');
                 $paymentService->setTicketsCostAsSold($entity);
                 $paymentService->calculateTicketsPromocode($entity);
                 /** @var EntityManager $em */

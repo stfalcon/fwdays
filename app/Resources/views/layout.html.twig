@@ -37,179 +37,6 @@
     <div class="layout-box__top">
         {% include '@ApplicationDefault/Redesign/header.html.twig' %}
 
-        {#BEGIN markup for payment#}
-
-        <section class="payment">
-            <div class="container payment__container">
-                <div class="payment__left">
-                    <h2 class="h2 payment__title">Оплата участі в конференції PHP fwdays'19</h2>
-                    <div class="payment__list">
-                        <div class="payer">
-                            <div class="payer__number">1</div>
-                            <div class="user-payment">
-                                <div class="user-payment__left">
-                                    <div class="user-payment__name">Марина Вамуш </div>
-                                    <div class="user-payment__email">marinavamush@gmail.com</div>
-                                </div>
-                                <div class="user-payment__right">
-                                    <div class="user-payment__price">2 480 грн</div>
-                                </div>
-                                <div class="user-payment__controls">
-                                    <button type="button" class="user-payment__btn">
-                                        <i class="icon-edit"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="payer">
-                            <div class="payer__number">2</div>
-                            <div class="user-payment">
-                                <div class="user-payment__left">
-                                    <div class="user-payment__name">Марина Вамуш </div>
-                                    <div class="user-payment__email">marinavamush@gmail.com</div>
-                                </div>
-                                <div class="user-payment__right">
-                                    <div class="user-payment__price">
-                                        <span class="user-payment__price-strike">3 100 грн </span>2 480 грн
-                                    </div>
-                                    <div class="user-payment__discount">
-                                        −50% для студентів денної форми навчання
-                                    </div>
-                                </div>
-                                <div class="user-payment__controls">
-                                    <button type="button" class="user-payment__btn">
-                                        <i class="icon-edit"></i>
-                                    </button>
-                                    <button type="button" class="user-payment__btn">
-                                        <i class="icon-closed"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="payer">
-                            <div class="payer__number">2</div>
-                            <div class="user-payment-form">
-                                <div class="form-row">
-                                    <div class="form-col form-col--12">
-                                        <div class="form-group form-group--flex">
-                                            <label class="form-label">Ім’я</label>
-                                            <input class="input" type="text" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col form-col--12">
-                                        <div class="form-group form-group--flex">
-                                            <label class="form-label">прізвище</label>
-                                            <input class="input" type="text" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col form-col--12">
-                                        <div class="form-group form-group--flex">
-                                            <label class="form-label">e-mail</label>
-                                            <input class="input" type="email" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col form-col--12">
-                                        <div class="form-group form-group--flex">
-                                            <label class="form-label">промокод</label>
-                                            <input class="input" type="number" value="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-col form-col--12">
-                                        <button type="button" class="btn btn--md btn--secondary">зберегти</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-icon">
-                        <i class="icon-add btn-icon__img"></i>
-                        <span class="btn-icon__text"> Додати ще одного учасника</span>
-                    </button>
-                </div>
-                <div class="payment__right">
-                    <div class="payment-cart">
-                        <div class="payment-cart__top">
-                            <i class="payment-cart__icon icon-more"></i>
-                            <div class="payment-cart__text">До оплати:</div>
-                            <div class="payment-cart__total">
-                                <div class="payment-cart__text payment-cart__text--strike">6 400 грн</div>
-                                <div class="payment-cart__text">4 400 грн</div>
-                                <div class="payment-cart__hint">
-                                    − 1 300 грн бонуси Fwdays
-                                    <i class="icon-close-sm"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <label class="form-label">ваші бонуси fwdays</label>
-                        <div class="tooltip">
-                            <i class="icon-tooltip tooltip__icon"></i>
-                            <div class="tooltip__content">
-                                У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.
-                            </div>
-                        </div>
-                        <div class="form-row payment-cart-hide-mob">
-                            <div class="form-col form-col--5">
-                                <div class="form-group">
-                                    <input class="input input--xs" type="text" value="">
-                                </div>
-                            </div>
-                            <div class="form-col form-col--7">
-                                <button type="button" class="btn btn--xs btn--secondary form-col__btn">застосувати</button>
-                            </div>
-                        </div>
-                        <div class="form-row payment-cart-hide-mob">
-                            <div class="form-col form-col--12">
-                                <div class="form-group">
-                                    <label class="form-label">телефон, не обов’язково</label>
-                                    <input class="input input--xs" type="text" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row payment-cart-btn">
-                            <div class="form-col form-col--12">
-                                <button type="button" class="btn btn--lg btn--primary form-col__btn">оплатити</button>
-                            </div>
-                        </div>
-                        <div class="form-row form-row--checkbox">
-                            <div class="form-col">
-                                <div class="checkbox checkbox--offer-contract">
-                                    <input id="agree-check-payment" type="checkbox" name="_remember_me" class="checkbox__input" required
-                                           data-msg="{{ 'check_box.agree_with_conditions_error' |trans }}">
-                                    <label for="agree-check-payment" class="checkbox__label">{{ 'check_box.agree_with_conditions_1' |trans }}
-                                        <a href="{{ path('page', {'slug' : 'public-offer'}) }}" target="_blank" class="btn-link">{{ 'check_box.agree_with_conditions_2' |trans }}</a>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {#END markup for payment#}
-
-        {#BEGIN markup for info page#}
-
-        <section class="info-page">
-            <div class="container container--sm">
-                <img src="{{ asset('assets/img/icons/ic_thankyou.svg') }}" class="info-page__img">
-                <h2 class="h2 info-page__title">Оплата пройшла успішно!</h2>
-                <p class="info-page__text">Квитки відправлені на ваш e-mail та на e-mail кожного учасника окремо.
-                     Також ви можете завантажити квитки на сторінці
-                    <a href="#" class="info-page__link">Мій кабінет</a>
-                </p>
-            </div>
-        </section>
-
-        {#END markup for info page#}
 
         {% block content %}{% endblock content %}
     </div>
@@ -225,9 +52,9 @@
     {% endif %}
 
     {% block payment_popup %}
-        {% if not is_mobile() and app.user %}
-            {% include '@ApplicationDefault/Redesign/Payment/_payment.popup.html.twig' %}
-        {% endif %}
+{#        {% if not is_mobile() and app.user %}#}
+{#            {% include '@ApplicationDefault/Redesign/Payment/_payment.popup.html.twig' %}#}
+{#        {% endif %}#}
     {% endblock %}
 </div>
 

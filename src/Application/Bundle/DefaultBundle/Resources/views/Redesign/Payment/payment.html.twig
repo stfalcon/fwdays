@@ -1,11 +1,55 @@
 {% extends '@ApplicationDefault/Redesign/layout.html.twig' %}
 
 {% block content %}
-    <!--BEGIN form-box-->
-    <div class="form-box">
-        <h2 class="h2 form-box__title change-title"></h2>
-        {% include '@ApplicationDefault/Redesign/Payment/payment_form.html.twig' %}
-    </div>
+    {#BEGIN markup for payment#}
+    {% include '@ApplicationDefault/Redesign/Payment/payment.payer_row.html.twig' %}
+    {% include '@ApplicationDefault/Redesign/Payment/payment.payer_edit.html.twig' %}
+
+    <section class="payment">
+        <div class="container payment__container">
+            <div class="payment__left">
+                <h2 class="h2 payment__title">{{ 'popup.header.title'|trans({'%event_name%':event.name}) }}</h2>
+                <div class="payment__list" id="payment-list" data-event="{{ event.slug }}">
+                    {%- for key, ticket in payment_data.tickets -%}
+                        <div class="payer" id="{{ ticket.id }}" {% if ticket.promo_code %} class="btn-icon"data-promocode="{{ ticket.promo_code.code }}"{% endif %}>
+                            <div class="payer__number">{{ key+1 }}</div>
+                            <div class="user-payment">
+                                <div class="user-payment__left">
+                                    <div class="user-payment__name" data-name="{{ ticket.user.name }}" data-surname="{{ ticket.user.surname }}">{{ ticket.user.name ~ ' ' ~ ticket.user.surname }} </div>
+                                    <div class="user-payment__email">{{ ticket.user.email }}</div>
+                                </div>
+                                <div class="user-payment__right">
+                                    <div class="user-payment__price">
+                                        {%- if ticket.has_discount -%}
+                                            <span class="user-payment__price-strike">{{ ticket.amount_without_discount }}</span>{{ ticket.amount }}
+                                            <div class="user-payment__discount">{{ ticket.discount_description|raw }}</div>
+                                        {%- else -%}
+                                            {{ ticket.amount }}
+                                        {%- endif -%}
+                                    </div>
+                                </div>
+                                <div class="user-payment__controls">
+                                    <button type="button" class="user-payment__btn ticket-edit-btn">
+                                        <i class="icon-edit"></i>
+                                    </button>
+                                    <button type="button" class="user-payment__btn ticket-delete-btn" {%- if payment_data.ticket_count < 2 -%}style="display: none" {% endif %}>
+                                        <i class="icon-closed"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {%- endfor -%}
+                </div>
+                <button id="add-user-form" type="button" class="btn-icon">
+                    <i class="icon-add btn-icon__img"></i>
+                    <span class="btn-icon__text">{{ 'pay.event.one_more_participants'|trans }}</span>
+                </button>
+            </div>
+
+            {% include '@ApplicationDefault/Redesign/Payment/payment.sums.html.twig' %}
+        </div>
+    </section>
+    {#END markup for payment#}
 {% endblock content %}
 
 {% block payment_popup %}{% endblock %}
@@ -13,7 +57,6 @@
 {% block scripts %}
     {{ parent() }}
     <script>
-        let e_slug = '{{ event.slug }}';
+        let ticket_count = '{{ payment_data.ticket_count }}';
     </script>
-    <script src="{{ asset('js/payment-after-login-static.js') }}" defer></script>
 {% endblock scripts %}

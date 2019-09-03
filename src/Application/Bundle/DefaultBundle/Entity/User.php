@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -138,7 +139,11 @@ class User extends BaseUser
     protected $userReferral;
 
     /**
+     * @var float|null
+     *
      * @ORM\Column(name="balance", type="decimal", precision=10, scale=2, nullable=true, options = {"default" : 0})
+     *
+     * @Groups("payment.view")
      */
     protected $balance = 0;
 
@@ -157,6 +162,8 @@ class User extends BaseUser
      *     min = 2,
      *     max = 32,
      * )
+     *
+     * @Groups("payment.view")
      */
     protected $name;
 
@@ -175,6 +182,8 @@ class User extends BaseUser
      *     min = 2,
      *     max = 32,
      * )
+     *
+     * @Groups("payment.view")
      */
     protected $surname;
 
@@ -194,6 +203,8 @@ class User extends BaseUser
     /**
      * @Assert\Email(message="error.email_bad_format", strict="true")
      * @Assert\NotBlank()
+     *
+     * @Groups("payment.view")
      */
     protected $email;
 
@@ -369,7 +380,7 @@ class User extends BaseUser
     public function getName()
     {
         if (empty($this->name) && !empty($this->fullname)) {
-            $name = explode(' ', $this->fullname, 2);
+            $name = \explode(' ', $this->fullname, 2);
             $firstName = isset($name[0]) ? trim($name[0]) : '';
             $this->name = $firstName;
         }
@@ -384,7 +395,7 @@ class User extends BaseUser
      */
     public function setName($name)
     {
-        $this->name = strip_tags($name);
+        $this->name = \strip_tags($name);
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
@@ -396,7 +407,7 @@ class User extends BaseUser
     public function getSurname()
     {
         if (empty($this->surname) && !empty($this->fullname)) {
-            $name = explode(' ', $this->fullname, 2);
+            $name = \explode(' ', $this->fullname, 2);
             $lastName = isset($name[1]) ? trim($name[1]) : '';
             $this->surname = $lastName;
         }
@@ -411,7 +422,7 @@ class User extends BaseUser
      */
     public function setSurname($surname)
     {
-        $this->surname = strip_tags($surname);
+        $this->surname = \strip_tags($surname);
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
@@ -679,15 +690,15 @@ class User extends BaseUser
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getBalance()
+    public function getBalance(): ?float
     {
-        return (int) $this->balance;
+        return $this->balance;
     }
 
     /**
-     * @param mixed $balance
+     * @param float $balance
      *
      * @return $this
      */

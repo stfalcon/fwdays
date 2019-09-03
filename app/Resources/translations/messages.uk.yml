@@ -63,7 +63,13 @@ pay.i_have_promo.title: У мене є промокод
 pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
 pay.bonus.bold.title: 'Ваші бонуси fwdays: <b>%sum% грн</b>'
+pay.bonus.label.title: 'ваші бонуси fwdays'
+pay.bonus.title: '&minus;%sum% бонуси Fwdays'
 pay.sum_for_pay.bold.title: 'До сплати: <b>%sum% грн</b>'
+pay.sum_for_pay.title: 'До оплати:'
+pay.card_description: 'У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.'
+pay.bonus.apply_btn: 'застосувати'
+pay.user.add_btn: 'зберегти'
 event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.hint: тільки через сайт

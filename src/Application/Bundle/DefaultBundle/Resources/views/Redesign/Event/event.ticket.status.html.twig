@@ -1,6 +1,6 @@
-{% if result['isDiv'] %}<div{% else %}<a href="#price-event" {% endif %}
+{% if result['isDiv'] %}<div{% else %}<a href="{% if result['href'] %}{{ result['href'] }}{% else %}#price-event{% endif %}" data-scroll="#price-event" {% endif %}
         {% if result['id'] %} id="{{ result['id'] }}"{% endif %}
-        {% if result['class'] %} class="go-to-block {{ result['class'] }}"{% endif %}
+        {% if result['class'] %} class="{{ result['class'] }}"{% endif %}
         {% if result['data'] %} data-event="{{ result['data'] }}"{% endif %}
 >{% if result['caption'] %}{{ result['caption']|raw }}{% endif %}{% if result['isDiv'] %}</div>{% else %}</a>{% endif %}
 

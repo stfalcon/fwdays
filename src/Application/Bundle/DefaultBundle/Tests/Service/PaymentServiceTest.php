@@ -84,7 +84,7 @@ class PaymentServiceTest extends WebTestCase
         $payment = $ticket->getPayment();
 
         $referralBalance = $user->getBalance();
-        $paymentService = $this->getContainer()->get('application.payment.service');
+        $paymentService = $this->getContainer()->get('app.payment.service');
 
         $paymentService->setPaidByBonusMoney($payment, $event);
 

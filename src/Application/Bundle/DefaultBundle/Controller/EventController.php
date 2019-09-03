@@ -58,7 +58,7 @@ class EventController extends Controller
      */
     public function showAction($eventSlug)
     {
-        $referralService = $this->get('application.referral.service');
+        $referralService = $this->get('app.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
         return $this->get('app.event.service')->getEventPagesArr($eventSlug);

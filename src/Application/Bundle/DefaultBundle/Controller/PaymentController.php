@@ -15,6 +15,7 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
@@ -22,33 +23,25 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
  */
 class PaymentController extends Controller
 {
+    private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
+
     /**
-     * Event pay.
+     * @Route("/event/{slug}/pay", name="event_pay")
      *
-     * @Route("/event/{eventSlug}/pay", name="event_pay",
-     *     options = {"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
-     *
-     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
      * @param Event $event
      *
      * @throws \Exception
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function payAction(Event $event)
+    public function payAction(Event $event): Response
     {
-        $html = '';
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
-            return new JsonResponse(
-                [
-                    'result' => false,
-                    'error_code' => 1,
-                    'error' => "Оплата за участие в {$event->getName()} не принимается.",
-                    'html' => $html,
-                ]
+            return $this->render(
+                '@ApplicationDefault/Page/index.html.twig',
+                ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
         /* @var  User $user */
@@ -59,14 +52,14 @@ class PaymentController extends Controller
             ->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
-        $paymentService = $this->get('application.payment.service');
+        $paymentService = $this->get('app.payment.service');
 
         /** @var Payment|null $payment */
         $payment = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Payment')
             ->findPaymentByUserAndEvent($user, $event);
         $em = $this->getDoctrine()->getManager();
         if (!$ticket && !$payment) {
-            $ticket = $this->get('application.ticket.service')->createTicket($event, $user);
+            $ticket = $this->get('app.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
             $em->flush();
         }
@@ -83,41 +76,21 @@ class PaymentController extends Controller
             $payment = $paymentService->createPaymentForCurrentUserWithTicket(null);
         }
 
-        if (!$payment) {
-            return new JsonResponse(
-                [
-                    'result' => false,
-                    'error_code' => 2,
-                    'error' => 'Payment not found!',
-                    'html' => $html,
-                ]
-            );
-        }
-
-        if ($payment->isPaid()) {
-            return new JsonResponse(
-                [
-                    'result' => false,
-                    'error_code' => 3,
-                    'error' => 'Payment is paid',
-                    'html' => $html,
-                ]
-            );
-        }
-
         if ($payment->isPending()) {
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         }
 
-        $this->get('session')->set('active_payment_id', $payment->getId());
+        $this->get('session')->set(self::ACTIVE_PAYMENT_ID_KEY, $payment->getId());
 
-        $promoCode = null;
-        $request = $this->get('request_stack')->getCurrentRequest();
-        if ($request && $code = $request->query->get('promoCode')) {
-            $promoCode = $this->getPromoCodeFromQuery($event, $payment, $code);
-        }
+//        $promoCode = null;
+//        $request = $this->get('request_stack')->getCurrentRequest();
+//        if ($request && $code = $request->query->get('promoCode')) {
+//            $promoCode = $this->getPromoCodeFromQuery($event, $payment, $code);
+//        }
 
-        return $this->getPaymentHtml($event, $payment, $promoCode);
+        $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        return $this->render('@ApplicationDefault/Redesign/Payment/payment.html.twig', ['event' => $event, 'payment_data' => $result]);
     }
 
     /**
@@ -162,7 +135,7 @@ class PaymentController extends Controller
         }
 
         if ($payment->isPending()) {
-            $paymentService = $this->get('application.payment.service');
+            $paymentService = $this->get('app.payment.service');
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         }
 
@@ -184,12 +157,78 @@ class PaymentController extends Controller
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
-                '@ApplicationDefault/Default/index.html.twig',
+                '@ApplicationDefault/Page/index.html.twig',
                 ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
 
         return $this->render('@ApplicationDefault/Redesign/Payment/payment.html.twig', ['event' => $event]);
+    }
+
+    /**
+     * Add user to payment.
+     *
+     * @Route("/event/{eventSlug}/payment/participant/edit/{id}/{name}/{surname}/{email}", name="edit_ticket_participant",
+     *     methods={"POST"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
+     *
+     * @param Event  $event
+     * @param Ticket $ticket
+     * @param string $name
+     * @param string $surname
+     * @param string $email
+     *
+     * @return JsonResponse
+     */
+    public function editTicketParticipantAction(Event $event, Ticket $ticket, $name, $surname, $email): JsonResponse
+    {
+        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()]),
+                ]
+            );
+        }
+
+        $payment = $this->getPaymentIfAccess();
+        if ($payment->isPaid()) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment paid!', 'html' => '']);
+        }
+
+        $ticketPayment = $ticket->getPayment();
+        if (!$ticketPayment instanceof Payment || $ticketPayment->getId() !== $payment->getId()) {
+            return new JsonResponse(['result' => false, 'error' => 'Bad ticket!']);
+        }
+
+        /** @var User|null $user */
+        $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
+        if (!$user) {
+            try {
+                $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+            } catch (BadCredentialsException $e) {
+                $this->get('logger')->addError('autoRegistration with bad params');
+
+                return new JsonResponse(['result' => false, 'error' => 'Bad credentials!']);
+            }
+        }
+
+        $oldUser = $ticket->getUser();
+        if ($user instanceof User && $user->getId() !== $oldUser->getId()) {
+            $oldUser->removeTicket($ticket);
+            $user->addTicket($ticket);
+            $this->get('app.payment.service')->checkTicketsPricesInPayment($payment, $event);
+        }
+
+        $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+        $ticketData = $this->get('serializer')->normalize($ticket, null, ['groups' => ['payment.view']]);
+
+        return new JsonResponse(['result' => true, 'payment_data' => $paymentData, 'ticket_data' => $ticketData]);
     }
 
     /**
@@ -211,14 +250,13 @@ class PaymentController extends Controller
      *
      * @return JsonResponse
      */
-    public function addParticipantToPaymentAction(Event $event, $name, $surname, $email)
+    public function addParticipantToPaymentAction(Event $event, $name, $surname, $email): JsonResponse
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => "Оплата за участие в {$event->getName()} не принимается.",
-                    'html' => '',
+                    'error' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()]),
                 ]
             );
         }
@@ -241,12 +279,8 @@ class PaymentController extends Controller
             } catch (BadCredentialsException $e) {
                 $this->get('logger')->addError('autoRegistration with bad params');
 
-                return new JsonResponse(['result' => false, 'error' => 'Bad credentials!', 'html' => '']);
+                return new JsonResponse(['result' => false, 'error' => 'Bad credentials!']);
             }
-        }
-
-        if (!$user) {
-            return new JsonResponse(['result' => false, 'error' => 'Cant create user!', 'html' => '']);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -256,13 +290,13 @@ class PaymentController extends Controller
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket) {
-            $ticket = $this->get('application.ticket.service')->createTicket($event, $user);
+            $ticket = $this->get('app.ticket.service')->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
             $em->flush();
         }
 
         if (!$ticket->isPaid()) {
-            $paymentService = $this->get('application.payment.service');
+            $paymentService = $this->get('app.payment.service');
             $paymentService->addTicketToPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
@@ -275,7 +309,9 @@ class PaymentController extends Controller
             );
         }
 
-        return $this->getPaymentHtml($event, $payment);
+        $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        return new JsonResponse(['result' => true, 'payment_data' => $paymentData]);
     }
 
     /**
@@ -303,14 +339,16 @@ class PaymentController extends Controller
         }
 
         if (!$ticket->isPaid() && $payment->getTickets()->count() > 1) {
-            $paymentService = $this->get('application.payment.service');
+            $paymentService = $this->get('app.payment.service');
             $paymentService->removeTicketFromPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
             return new JsonResponse(['result' => false, 'error' => 'Already paid ticket!', 'html' => '']);
         }
 
-        return $this->getPaymentHtml($event, $payment);
+        $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        return new JsonResponse(['result' => true, 'payment_data' => $result]);
     }
 
     /**
@@ -332,7 +370,7 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('application.payment.service');
+            $paymentService = $this->get('app.payment.service');
             $result = $paymentService->setPaidByBonusMoney($payment, $event);
         }
 
@@ -360,13 +398,62 @@ class PaymentController extends Controller
         $payment = $this->getPaymentIfAccess();
 
         if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('application.payment.service');
+            $paymentService = $this->get('app.payment.service');
             $result = $paymentService->setPaidByPromocode($payment, $event);
         }
 
         $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
 
         return $this->redirect($redirectUrl);
+    }
+
+    /**
+     * @Route("/payment-data", name="get_payment_data",
+     *     methods={"GET"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @return JsonResponse
+     */
+    public function getPaymentDataAction(): JsonResponse
+    {
+        $payment = $this->getPaymentIfAccess();
+        if (!$payment instanceof Payment) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
+        }
+
+        $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        return new JsonResponse(['result' => true, 'payment_data' => $result]);
+    }
+
+    /**
+     * @Route("/payment-apply-fwdays-bonus", name="payment_apply_fwdays_bonus",
+     *     methods={"POST"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function applyFwdaysBonusAction(Request $request): JsonResponse
+    {
+        $payment = $this->getPaymentIfAccess();
+        if (!$payment instanceof Payment) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
+        }
+
+        $amount = $request->query->getInt('amount');
+
+        $this->get('app.payment.service')->addFwdaysBonusToPayment($payment, $amount);
+        $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        return new JsonResponse(['result' => true, 'payment_data' => $result]);
     }
 
     /**
@@ -384,7 +471,7 @@ class PaymentController extends Controller
         $discountAmount = 100 * (float) $paymentsConfig['discount'];
 
         $notUsedPromoCode = [];
-        $paymentService = $this->get('application.payment.service');
+        $paymentService = $this->get('app.payment.service');
 
         if (!$promoCode) {
             $promoCode = $paymentService->getPromoCodeFromPaymentTickets($payment);
@@ -398,7 +485,6 @@ class PaymentController extends Controller
         $formAction = null;
         $payType = null;
 
-        $paymentSums = $this->renderView('@ApplicationDefault/Redesign/Payment/payment.sums.html.twig', ['payment' => $payment]);
         $byeBtnCaption = $this->get('translator')->trans('ticket.status.pay');
         /** @var User */
         $user = $this->getUser();
@@ -427,16 +513,12 @@ class PaymentController extends Controller
 
         return new JsonResponse([
             'result' => true,
-            'error' => '',
-            'html' => $html,
-            'paymentSums' => $paymentSums,
-            'notUsedPromoCode' => $notUsedPromoCode,
-            'phoneNumber' => $user->getPhone(),
+            'not_used_promo_code' => $notUsedPromoCode,
+            'phone_number' => $user->getPhone(),
             'is_user_create_payment' => $user === $payment->getUser(),
             'form_action' => $formAction,
             'pay_type' => $payType,
-            'tickets_count' => $payment->getTickets()->count(),
-            'byeBtnCaption' => $byeBtnCaption,
+            'bye_btn_caption' => $byeBtnCaption,
         ]);
     }
 
@@ -449,18 +531,18 @@ class PaymentController extends Controller
      */
     private function getPaymentIfAccess($removeTicket = null)
     {
-        $em = $this->getDoctrine()->getManager();
         $payment = null;
-        if ($this->get('session')->has('active_payment_id')) {
-            $paymentId = $this->get('session')->get('active_payment_id');
+        if ($this->get('session')->has(self::ACTIVE_PAYMENT_ID_KEY)) {
+            $paymentId = $this->get('session')->get(self::ACTIVE_PAYMENT_ID_KEY);
+            $em = $this->getDoctrine()->getManager();
             $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
         }
 
         if ($removeTicket instanceof Ticket) {
-            $payment = $payment && ($removeTicket->getUser() === $this->getUser() ||
-                $payment->getUser() === $this->getUser()) ? $payment : null;
+            $payment = $payment && ($removeTicket->getUser()->getId() === $this->getUser()->getId() ||
+                $payment->getUser()->getId() === $this->getUser()->getId()) ? $payment : null;
         } else {
-            $payment = $payment && $payment->getUser() === $this->getUser() ? $payment : null;
+            $payment = $payment && $payment->getUser()->getId() === $this->getUser()->getId() ? $payment : null;
         }
 
         return $payment;

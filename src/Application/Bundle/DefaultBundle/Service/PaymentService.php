@@ -5,32 +5,39 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\Container;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class PaymentService.
+ * PaymentService.
  */
 class PaymentService
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-    /** @var $em EntityManager */
-    protected $em;
+    private $em;
+    private $ticketService;
+    private $translator;
+    private $tokenStorage;
+    private $referralService;
 
     /**
-     * @param Container $container
+     * @param EntityManager       $em
+     * @param TicketService       $ticketService
+     * @param TranslatorInterface $translator
+     * @param TokenStorage        $tokenStorage
+     * @param ReferralService     $referralService
      */
-    public function __construct($container)
+    public function __construct(EntityManager $em, TicketService $ticketService, TranslatorInterface $translator, TokenStorage $tokenStorage, ReferralService $referralService)
     {
-        $this->container = $container;
-        $this->em = $container->get('doctrine.orm.default_entity_manager');
+        $this->em = $em;
+        $this->ticketService = $ticketService;
+        $this->translator = $translator;
+        $this->tokenStorage = $tokenStorage;
+        $this->referralService = $referralService;
     }
 
     /**
@@ -43,7 +50,7 @@ class PaymentService
     public function createPaymentForCurrentUserWithTicket($ticket)
     {
         /* @var  User $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $payment = new Payment();
         $payment->setUser($user);
 
@@ -96,11 +103,10 @@ class PaymentService
     }
 
     /**
-     * Recalculate amount of payment.
-     *
      * @param Payment $payment
+     * @param bool    $withFlush
      */
-    public function recalculatePaymentAmount($payment)
+    public function recalculatePaymentAmount(Payment $payment, bool $withFlush = true): void
     {
         $paymentAmount = 0;
         $paymentAmountWithoutDiscount = 0;
@@ -111,8 +117,10 @@ class PaymentService
         }
         $payment->setAmount($paymentAmount);
         $payment->setBaseAmount($paymentAmountWithoutDiscount);
-        $this->payByReferralMoney($payment);
-        $this->em->flush();
+        $this->recalculatePaymentFwdaysAmount($payment);
+        if ($withFlush) {
+            $this->em->flush();
+        }
     }
 
     /**
@@ -168,16 +176,15 @@ class PaymentService
     {
         $notUsedPromoCode = [];
 
-        $ticketService = $this->container->get('application.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
             if (!$promoCode->isCanBeTmpUsed()) {
                 break;
             }
-            if ($ticketService->isMustBeDiscount($ticket)) {
-                $ticketService->setTicketBestDiscount($ticket, $promoCode);
+            if ($this->ticketService->isMustBeDiscount($ticket)) {
+                $this->ticketService->setTicketBestDiscount($ticket, $promoCode);
             } else {
-                $ticketService->setTicketPromoCode($ticket, $promoCode);
+                $this->ticketService->setTicketPromoCode($ticket, $promoCode);
             }
             if (!$ticket->hasPromoCode()) {
                 $notUsedPromoCode[] = $ticket->getUser()->getFullname();
@@ -197,22 +204,21 @@ class PaymentService
      */
     public function checkTicketsPricesInPayment($payment, $event)
     {
-        $ticketService = $this->container->get('application.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $currentTicketCost = $this->container->get('app.ticket_cost.service')->getCurrentEventTicketCost($event);
+            $currentTicketCost = $this->ticketService->getCurrentEventTicketCost($event);
 
             if (null === $currentTicketCost) {
                 $currentTicketCost = $event->getBiggestTicketCost();
             }
 
             $eventCost = $currentTicketCost->getAmountByTemporaryCount();
-            $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
+            $isMustBeDiscount = $this->ticketService->isMustBeDiscount($ticket);
 
             if (($ticket->getTicketCost() !== $currentTicketCost) ||
                 ((int) $ticket->getAmountWithoutDiscount() !== (int) $eventCost) ||
                 ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode()))) {
-                $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
+                $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
         }
         $this->recalculatePaymentAmount($payment);
@@ -277,8 +283,7 @@ class PaymentService
         if ($payment->isPending() && 0 === (int) $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $payment->setPaidWithGate(Payment::BONUS_GATE);
 
-            $referralService = $this->container->get('application.referral.service');
-            $referralService->utilizeBalance($payment);
+            $this->referralService->utilizeBalance($payment);
 
             $this->em->flush();
 
@@ -311,25 +316,34 @@ class PaymentService
     }
 
     /**
-     * Correct pay amount by user referral money.
-     *
+     * @param Payment   $payment
+     * @param int|float $amount
+     */
+    public function addFwdaysBonusToPayment(Payment $payment, $amount): void
+    {
+        $payment->setFwdaysAmount($amount);
+        $this->recalculatePaymentAmount($payment);
+    }
+
+    /**
      * @param Payment $payment
      */
-    private function payByReferralMoney(Payment $payment)
+    private function recalculatePaymentFwdaysAmount(Payment $payment): void
     {
-        /* @var  User $user */
-        $user = $payment->getUser();
-        if ($user instanceof User && $user->getBalance() > 0) {
-            $amount = $user->getBalance() - $payment->getAmount();
-            if ($amount < 0) {
-                $payment->setAmount(-$amount);
-                $payment->setFwdaysAmount($user->getBalance());
-            } else {
-                $payment->setFwdaysAmount($payment->getAmount());
-                $payment->setAmount(0);
-            }
-        } else {
+        $amount = $payment->getFwdaysAmount();
+        if ($amount > 0) {
+            $user = $payment->getUser();
             $payment->setFwdaysAmount(0);
+            if ($user instanceof User) {
+                if ($amount > $user->getBalance()) {
+                    $amount = $user->getBalance();
+                }
+                if ($amount > $payment->getAmount()) {
+                    $amount = $payment->getAmount();
+                }
+                $payment->setAmount($payment->getAmount() - $amount);
+                $payment->setFwdaysAmount($amount);
+            }
         }
     }
 }
