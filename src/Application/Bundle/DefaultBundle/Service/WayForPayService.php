@@ -23,6 +23,7 @@ class WayForPayService
     public const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
     public const WFP_PAY_BY_WIDGET = 'wfp_pay_widget';
     public const WFP_PAY_BY_SECURE_PAGE = 'wfp_pay_secure_page';
+
     public const WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS = 'approved_and_set_paid';
     public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
     public const WFP_TRANSACTION_PENDING_STATUS = 'Pending';

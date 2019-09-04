@@ -68,4 +68,33 @@ class UserManager extends FosUserManager
 
         return $user;
     }
+
+    /**
+     * @param User   $user
+     * @param string $name
+     * @param string $surname
+     * @param string $email
+     */
+    public function updateUserData(User $user, string $name, string $surname, string $email): void
+    {
+        $oldEmail = $user->getEmail();
+
+        $user->setEmail($email);
+        $user->setName($name);
+        $user->setSurname($surname);
+        $user->setFullname($surname.' '.$name);
+
+        $errors = $this->validator->validate($user);
+        if ($errors->count() > 0) {
+            throw new BadCredentialsException('Bad credentials!');
+        }
+
+        if ($oldEmail !== $email) {
+            $plainPassword = \substr(md5(\uniqid(\mt_rand(), true).\time()), 0, 8);
+
+            $user->setPlainPassword($plainPassword);
+            $this->mailHelper->sendAutoRegistration($user, $plainPassword);
+        }
+        $this->updateUser($user);
+    }
 }

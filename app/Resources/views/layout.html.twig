@@ -50,12 +50,6 @@
     {% if not is_mobile() and not app.user %}
         {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
     {% endif %}
-
-    {% block payment_popup %}
-{#        {% if not is_mobile() and app.user %}#}
-{#            {% include '@ApplicationDefault/Redesign/Payment/_payment.popup.html.twig' %}#}
-{#        {% endif %}#}
-    {% endblock %}
 </div>
 
 <!--END layout-box-->

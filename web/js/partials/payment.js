@@ -2,17 +2,20 @@ function editTicketRow(index, ticketBlock, ticket, canBeDelete) {
     if (index) {
         ticketBlock.find('.payer__number').html(index);
     }
-    ticketBlock.find('.user-payment__name').attr('data-name', ticket.user.name).attr('data-surname', ticket.user.surname).html(ticket.user.name+' '+ticket.user.surname);
+    ticketBlock.find('.user-payment__name').html(ticket.user.name+' '+ticket.user.surname);
+    ticketBlock.find('.label-hidden-user-name').html(ticket.user.name);
+    ticketBlock.find('.label-hidden-user-surname').html(ticket.user.surname);
     ticketBlock.find('.user-payment__email').html(ticket.user.email);
     if (ticket.has_discount) {
         ticketBlock.find('.user-payment__price').html('<span class="user-payment__price-strike" style="display: none">'+ticket.amount_without_discount+'</span>'+ticket.amount);
         ticketBlock.find('.user-payment__price-strike').show();
         ticketBlock.find('.user-payment__discount').html(ticket.discount_description).show();
         if (ticket.promo_code) {
-            ticketBlock.attr('data-promocode', ticket.promo_code.code);
+            ticketBlock.find('.label-hidden-user-promocode').html(ticket.promo_code.code);
         }
     } else {
         ticketBlock.find('.user-payment__price').html(ticket.amount);
+        ticketBlock.find('.user-payment__discount').hide();
     }
     ticketBlock.data('ticket-id', ticket.id);
     if (canBeDelete) {
@@ -32,7 +35,6 @@ function addTicketRowBlock(index, ticket, canBeDelete, replaceId = null) {
         console.log('replace');
     } else {
         newTicketRow.appendTo('#payment-list');
-        console.log('add');
     }
 }
 
@@ -60,38 +62,6 @@ function editPaymentBlock(paymentData) {
     elem.find('.payment-cart__amount').html(paymentData.amount);
 }
 
-function getPaymentData() {
-    $.ajax({
-        type: 'GET',
-        url: Routing.generate('get_payment_data'),
-        success: function(data) {
-            if (data.result) {
-                console.log(data.payment_data);
-                $.each(data.payment_data.tickets, function( index, value ) {
-                    addTicketRowBlock(index+1, value, data.payment_data.ticket_count > 1);
-                });
-                editPaymentBlock(data.payment_data);
-            } else {
-                console.log('Error:'+data.error);
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            switch (jqXHR.status) {
-                case 401:
-                    if (detectmob()) {
-                        window.location.href = homePath+"login?exception_login=1";
-                    } else {
-                        var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
-                        inst.open();
-                    }
-                    break;
-                case 403:
-                    window.location.reload(true);
-            }
-        }
-    });
-}
-
 function applyFwdaysBonus(amount) {
     $.post(Routing.generate('payment_apply_fwdays_bonus',
         {
@@ -99,6 +69,7 @@ function applyFwdaysBonus(amount) {
         }),
         function (data) {
             if (data.result) {
+                saved_payment_amount = data.payment_data.amount;
                 editPaymentBlock(data.payment_data);
             } else {
                 console.log('Error:'+data.error);
@@ -138,8 +109,10 @@ $(document).on('click', '.ticket-delete-btn', function () {
         }),
         function (data) {
             if (data.result) {
+                saved_payment_amount = data.payment_data.amount;
                 elem.remove();
                 editPaymentBlock(data.payment_data);
+                refreshDeleteButtons();
                 recalculateTicketsCount();
             } else {
                 console.log('Error:'+data.error);
@@ -158,14 +131,15 @@ $(document).on('click', '.ticket-edit-btn', function () {
     editTicketBlock = $('#'+editTicketBlock.attr('id'));
 
     copyDataFromRowToBlock(ticketRow, editTicketBlock);
+    addValidator(editTicketBlock);
 });
 
-function copyDataFromRowToBlock(ticketRow, editTicketBlock)
-{
-    var user_name = ticketRow.find('.user-payment__name').data('name');
-    var user_sur_name = ticketRow.find('.user-payment__name').data('surname');
+function copyDataFromRowToBlock(ticketRow, editTicketBlock) {
+    var user_name = ticketRow.find('.label-hidden-user-name').html();
+    var user_sur_name = ticketRow.find('.label-hidden-user-surname').html();
     var user_email = ticketRow.find('.user-payment__email').html();
-    var promo_code = ticketRow.data('promocode');
+    var promo_code = ticketRow.find('.label-hidden-user-promocode').html();
+
     editTicketBlock.attr('data-ticket-id', ticketRow.attr('id'));
     editTicketBlock.find('.payer__number').html(ticketRow.find('.payer__number').html());
     editTicketBlock.find('.payment_user_name').val(user_name).attr('data-old-value', user_name);
@@ -181,15 +155,28 @@ $('#add-user-form').on('click', function () {
     newTicketBlock.attr('id', 'payer-block-edit-'+ticket_count);
     newTicketBlock.find('.payer__number').html(ticket_count);
     newTicketBlock.appendTo('#payment-list').show();
+    addValidator(newTicketBlock);
 });
 
-function recalculateTicketsCount()
-{
+function recalculateTicketsCount() {
     var numbers = $('.payer__number');
     $.each(numbers, function( index, value ) {
         $(value).html(index-1);
     });
     ticket_count = numbers.length-2;
+}
+
+function refreshDeleteButtons() {
+    var buttons = $('.ticket-delete-btn');
+    if (buttons.length > 2) {
+        $.each(buttons, function (index, value) {
+            $(value).show();
+        });
+    } else {
+        $.each(buttons, function (index, value) {
+            $(value).hide();
+        });
+    }
 }
 
 $(document).on('click', '.add-user-btn', function () {
@@ -210,6 +197,7 @@ $(document).on('click', '.add-user-btn', function () {
             }),
             function (data) {
                 if (data.result) {
+                    saved_payment_amount = data.payment_data.amount;
                     addTicketRowBlock(
                         data.payment_data.ticket_count,
                         data.payment_data.tickets[data.payment_data.ticket_count-1],
@@ -217,6 +205,7 @@ $(document).on('click', '.add-user-btn', function () {
                         ticketBlock.attr('id')
                     );
                     editPaymentBlock(data.payment_data);
+                    refreshDeleteButtons();
                     recalculateTicketsCount();
                 } else {
                     var validator = ticketBlock.validate();
@@ -259,6 +248,7 @@ $(document).on('click', '.edit-user-btn', function () {
             }),
             function (data) {
                 if (data.result) {
+                    saved_payment_amount = data.payment_data.amount;
                     editTicketRow(null, parent_row, data.ticket_data, data.payment_data.ticket_count > 1,);
                     editPaymentBlock(data.payment_data);
                     parent_row.show();
@@ -274,13 +264,54 @@ $(document).on('click', '.edit-user-btn', function () {
     }
 });
 
-$('#buy-ticket-btn').on('click', function () {
+$('#buy-ticket-btn').on('click', function (e) {
+    e.preventDefault();
+    var submit_btn = $(this);
+    submit_btn.prop("disabled", true);
     var user_phone_elem = $('#user_phone');
     var use_phone = user_phone_elem.val();
-    if (user_phone_elem.data('old-phone') === use_phone) {
+
+    if (!$('#payment-form').valid()) {
+        submit_btn.prop("disabled", false);
         return;
     }
-    if (use_phone !== '' && user_phone_elem.valid()) {
+
+    if (user_phone_elem.data('old-phone') !== use_phone) {
         $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
     }
+
+    var $payment_list = $('#payment-list');
+    var e_slug = $payment_list.data('event');
+
+    $.ajax({
+        url: Routing.generate('event_paying', {slug: e_slug}),
+        method: 'POST',
+        data: {'saved_data': saved_payment_amount},
+        success: function (data) {
+            if (data.result) {
+                if (data.amount_changed) {
+                    saved_payment_amount = data.payment_data.amount;
+                    $('#payment-list').empty();
+                    $.each(data.payment_data.tickets, function( index, value ) {
+                        addTicketRowBlock(index+1, value, data.payment_data.ticket_count > 1);
+                    });
+                    editPaymentBlock(data.payment_data);
+                    alert(data.payment_data.amount_changed_text);
+                } else {
+                    var $form = $(data.form);
+                    $payment_list.after($form);
+                    $form.submit();
+                }
+            } else {
+                alert(data.error);
+                console.log(data.error);
+            }
+        },
+        error: function () {
+            console.log('error');
+        },
+        always: function () {
+            submit_btn.prop("disabled", false);
+        }
+    });
 });

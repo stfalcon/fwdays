@@ -1,3 +1,22 @@
+var validate_data = {
+
+};
+
+function addValidator(form) {
+    form.validate({
+        debug: false,
+        errorClass: "text-error",
+        errorElement: "p",
+        onkeyup: false,
+        highlight: function(element) {
+            $(element).addClass('input--error');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('input--error');
+        }
+    });
+};
+
 $(document).ready(function () {
     $.validator.methods.email = function( value, element ) {
         return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
@@ -8,10 +27,23 @@ $(document).ready(function () {
         errorClass: "text-error",
         errorElement: "p",
         onkeyup: false,
-        highlight: function(element) {
+        highlight: function (element) {
             $(element).addClass('input--error');
         },
-        unhighlight: function(element) {
+        unhighlight: function (element) {
+            $(element).removeClass('input--error');
+        }
+    });
+
+    $('#payment-form').validate({
+        debug: false,
+        errorClass: "text-error",
+        errorElement: "p",
+        onkeyup: false,
+        highlight: function (element) {
+            $(element).addClass('input--error');
+        },
+        unhighlight: function (element) {
             $(element).removeClass('input--error');
         }
     });

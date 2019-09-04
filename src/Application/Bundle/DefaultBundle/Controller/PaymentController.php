@@ -15,7 +15,6 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
@@ -24,6 +23,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 class PaymentController extends Controller
 {
     private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
+    private const NEW_USERS_SESSION_KEY = 'new_users';
 
     /**
      * @Route("/event/{slug}/pay", name="event_pay")
@@ -166,8 +166,6 @@ class PaymentController extends Controller
     }
 
     /**
-     * Add user to payment.
-     *
      * @Route("/event/{eventSlug}/payment/participant/edit/{id}/{name}/{surname}/{email}", name="edit_ticket_participant",
      *     methods={"POST"},
      *     options={"expose"=true},
@@ -206,15 +204,36 @@ class PaymentController extends Controller
             return new JsonResponse(['result' => false, 'error' => 'Bad ticket!']);
         }
 
+        $session = $this->get('session');
+
         /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
+        $userManager = $this->get('fos_user.user_manager');
+        $newUsersList = $session->get(self::NEW_USERS_SESSION_KEY, []);
+
+        if (!$user && $ticket->getUser() instanceof User && \in_array($ticket->getUser()->getId(), $newUsersList, true)) {
+            $user = $ticket->getUser();
+        }
+
         if (!$user) {
             try {
-                $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+                $user = $userManager->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+                $newUsersList[] = $user->getId();
+                $session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
             } catch (BadCredentialsException $e) {
                 $this->get('logger')->addError('autoRegistration with bad params');
 
                 return new JsonResponse(['result' => false, 'error' => 'Bad credentials!']);
+            }
+        } else {
+            if (\in_array($user->getId(), $newUsersList, true)) {
+                try {
+                    $userManager->updateUserData($user, $name, $surname, $email);
+                } catch (BadCredentialsException $e) {
+                    $this->get('logger')->addError('autoRegistration with bad params');
+
+                    return new JsonResponse(['result' => false, 'error' => 'Bad credentials!']);
+                }
             }
         }
 
@@ -222,8 +241,8 @@ class PaymentController extends Controller
         if ($user instanceof User && $user->getId() !== $oldUser->getId()) {
             $oldUser->removeTicket($ticket);
             $user->addTicket($ticket);
-            $this->get('app.payment.service')->checkTicketsPricesInPayment($payment, $event);
         }
+        $this->get('app.payment.service')->checkTicketsPricesInPayment($payment, $event);
 
         $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
         $ticketData = $this->get('serializer')->normalize($ticket, null, ['groups' => ['payment.view']]);
@@ -272,10 +291,13 @@ class PaymentController extends Controller
         }
         /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
-
+        $session = $this->get('session');
         if (!$user) {
             try {
                 $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+                $newUsersList = $session->get(self::NEW_USERS_SESSION_KEY, []);
+                $newUsersList[] = $user->getId();
+                $session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
             } catch (BadCredentialsException $e) {
                 $this->get('logger')->addError('autoRegistration with bad params');
 
@@ -454,6 +476,63 @@ class PaymentController extends Controller
         $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
 
         return new JsonResponse(['result' => true, 'payment_data' => $result]);
+    }
+
+    /**
+     * @Route("/event/{slug}/paying", name="event_paying",
+     *     methods={"POST"},
+     *     options={"expose"=true},
+     *     condition="request.isXmlHttpRequest()")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param Event   $event
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function eventPayingAction(Event $event, Request $request): JsonResponse
+    {
+        $payment = $this->getPaymentIfAccess();
+        if (!$payment instanceof Payment) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
+        }
+
+        if ($payment->isPaid()) {
+            return new JsonResponse(['result' => false, 'error' => 'Payment paid!']);
+        }
+
+        $paymentService = $this->get('app.payment.service');
+        $paymentService->checkTicketsPricesInPayment($payment, $event);
+
+        $savedData = $request->request->get('saved_data');
+        $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+
+        $form = null;
+        $amountChanged = $savedData !== $paymentData['amount'];
+        if ($amountChanged) {
+            $paymentData['amount_changed_text'] = $this->get('translator')->trans('pay.amount_changed');
+        } else {
+            $formAction = null;
+            $payType = null;
+            $paySystemData = null;
+            if ($payment->getTickets()->count() > 0) {
+                if (0 === (int) $payment->getAmount()) {
+                    $formAction = $payment->getFwdaysAmount() > 0 ?
+                        $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
+                } else {
+                    $formAction = WayForPayService::WFP_SECURE_PAGE;
+                    $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
+                }
+            }
+
+            $form = $this->renderView('@ApplicationDefault/Redesign/Payment/pay_form.html.twig', [
+                'params' => $paySystemData,
+                'action' => $formAction,
+            ]);
+        }
+
+        return new JsonResponse(['result' => true, 'amount_changed' => $amountChanged, 'payment_data' => $paymentData, 'form' => $form]);
     }
 
     /**

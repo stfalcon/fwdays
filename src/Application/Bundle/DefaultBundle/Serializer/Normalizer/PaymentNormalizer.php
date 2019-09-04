@@ -14,7 +14,6 @@ class PaymentNormalizer implements NormalizerInterface
 {
     private $translator;
     private $normalizer;
-    private $params;
 
     /**
      * @param TranslatorInterface $translator
@@ -28,7 +27,7 @@ class PaymentNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -51,7 +50,7 @@ class PaymentNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
