@@ -1,4 +1,9 @@
-    <div class="payment__right" id="payment-total-data">
+    <div class="payment__right" id="payment-total-data"
+            {%- if (payment_data.ticket_count == 1 and app.session.get(constant('Application\\Bundle\\DefaultBundle\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY'))) or
+                payment_data.ticket_count == 0 -%}
+        style="display: none"
+            {% endif %}
+    >
         <div class="payment-cart">
             <form id="payment-form">
             <div class="payment-cart__top">

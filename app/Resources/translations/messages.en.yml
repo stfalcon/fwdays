@@ -89,6 +89,7 @@ pay.sum_for_pay.title: 'For payment:'
 pay.card_description: 'У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.'
 pay.bonus.apply_btn: 'apply'
 pay.user.add_btn: 'save'
+pay.user.continue: 'continue'
 pay.amount_changed: 'Payment Amount Changed! Check the data!'
 event.price.title: Event price
 tickets.count: '{0}%count% ticket|{1}%count% tickets|{2}%count% tickets'
@@ -194,7 +195,7 @@ error.user.already.paid: the %email% has already paid the ticket
 error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
 error.promocode.not_found: 'Promo code not found!'
 error.promocode.used: 'Promo code used!'
-
+error.ticket.already.added: 'A ticket for this user has already been added'
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays
 contacts.partners.title: Informational partnerships, meetups and master classes

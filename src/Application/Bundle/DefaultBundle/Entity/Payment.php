@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Payment.
@@ -24,6 +25,7 @@ class Payment
     const WAYFORPAY_GATE = 'wayforpay';
     const BONUS_GATE = 'bonus';
     const PROMOCODE_GATE = 'promocode';
+    const UNKNOWN_GATE = 'unknown';
 
     private $gates = [self::ADMIN_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
@@ -78,6 +80,8 @@ class Payment
      *
      * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
      *
+     * @Assert\GreaterThanOrEqual(0)
+     *
      * @Groups("payment.view")
      */
     private $fwdaysAmount = 0;
@@ -94,7 +98,7 @@ class Payment
      *
      * @ORM\Column()
      */
-    private $gate = Payment::WAYFORPAY_GATE;
+    private $gate = Payment::UNKNOWN_GATE;
 
     /**
      * @var \DateTime
@@ -420,7 +424,7 @@ class Payment
     public function setPaidWithGate($gate)
     {
         $this->setStatus(self::STATUS_PAID);
-        if (in_array($gate, $this->gates, true)) {
+        if (\in_array($gate, $this->gates, true)) {
             $this->setGate($gate);
         } else {
             $this->setGate(self::WAYFORPAY_GATE);

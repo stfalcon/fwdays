@@ -32,7 +32,6 @@ function addTicketRowBlock(index, ticket, canBeDelete, replaceId = null) {
     newTicketRow.show();
     if (replaceId) {
         $('#'+replaceId).replaceWith(newTicketRow[0].outerHTML);
-        console.log('replace');
     } else {
         newTicketRow.appendTo('#payment-list');
     }
@@ -60,6 +59,18 @@ function editPaymentBlock(paymentData) {
     }
 
     elem.find('.payment-cart__amount').html(paymentData.amount);
+    if (!elem.is(":visible")) {
+        elem.show();
+        $('#add-user-form').show();
+    }
+}
+
+function reloadingPage($this) {
+    if ($this.hasClass('reload_page')) {
+        window.location.reload();
+        return true;
+    }
+    return false;
 }
 
 function applyFwdaysBonus(amount) {
@@ -179,8 +190,16 @@ function refreshDeleteButtons() {
     }
 }
 
+$(document).ready(function () {
+   var $firstEditForm = $('#payer-block-edit-1');
+   if ($firstEditForm.length) {
+       addValidator($firstEditForm);
+   }
+});
+
 $(document).on('click', '.add-user-btn', function () {
-    var ticketBlock = $(this).closest('.payer-form');
+    var $this = $(this);
+    var ticketBlock = $this.closest('.payer-form');
     var input_name = ticketBlock.find('.payment_user_name');
     var input_surname = ticketBlock.find('.payment_user_surname');
     var input_email = ticketBlock.find('.payment_user_email');
@@ -188,15 +207,12 @@ $(document).on('click', '.add-user-btn', function () {
         input_surname.valid() &&
         input_email.valid()) {
         var e_slug = $('#payment-list').data('event');
-        $.post(Routing.generate('add_participant_to_payment',
-            {
-                eventSlug: e_slug,
-                name: input_name.val(),
-                surname: input_surname.val(),
-                email: input_email.val()
-            }),
-            function (data) {
-                if (data.result) {
+        $.ajax({
+            url: Routing.generate('add_ticket_participant', {eventSlug: e_slug}),
+            method: 'POST',
+            data: {name: input_name.val(), surname: input_surname.val(), email: input_email.val(), promocode: input_promocode.val()},
+            success: function (data) {
+                if (data.result && !reloadingPage($this)) {
                     saved_payment_amount = data.payment_data.amount;
                     addTicketRowBlock(
                         data.payment_data.ticket_count,
@@ -209,24 +225,27 @@ $(document).on('click', '.add-user-btn', function () {
                     recalculateTicketsCount();
                 } else {
                     var validator = ticketBlock.validate();
-                    var errors = { "user_email": data.error };
-                    validator.showErrors(errors);
+                    validator.showErrors(data.error );
                 }
-            });
+            }
+        })
     }
 });
 
 $(document).on('click', '.edit-user-btn', function () {
-    var ticketBlock = $(this).closest('.payer-form');
+    var $this = $(this);
+    var ticketBlock = $this.closest('.payer-form');
     var input_name = ticketBlock.find('.payment_user_name');
     var input_surname = ticketBlock.find('.payment_user_surname');
     var input_email = ticketBlock.find('.payment_user_email');
+    var input_promocode = ticketBlock.find('.user_promo_code');
     var ticket_id = ticketBlock.data('ticket-id');
     var parent_row = $('#'+ticket_id);
 
     if (input_name.val() === input_name.data('old-value') &&
         input_surname.val() === input_surname.data('old-value') &&
-        input_email.val() === input_email.data('old-value')
+        input_email.val() === input_email.data('old-value') &&
+        input_promocode.val() === input_promocode.data('old-value')
     ) {
         parent_row.show();
         ticketBlock.remove();
@@ -235,19 +254,16 @@ $(document).on('click', '.edit-user-btn', function () {
 
     if (input_name.valid() &&
         input_surname.valid() &&
-        input_email.valid()) {
+        input_email.valid() &&
+        input_promocode.valid()) {
 
         var e_slug = $('#payment-list').data('event');
-        $.post(Routing.generate('edit_ticket_participant',
-            {
-                eventSlug: e_slug,
-                id: ticket_id,
-                name: input_name.val(),
-                surname: input_surname.val(),
-                email: input_email.val()
-            }),
-            function (data) {
-                if (data.result) {
+        $.ajax({
+            url: Routing.generate('edit_ticket_participant', {eventSlug: e_slug, id: ticket_id}),
+            method: 'POST',
+            data: {name: input_name.val(), surname: input_surname.val(), email: input_email.val(), promocode: input_promocode.val()},
+            success: function (data) {
+                if (data.result && !reloadingPage($this)) {
                     saved_payment_amount = data.payment_data.amount;
                     editTicketRow(null, parent_row, data.ticket_data, data.payment_data.ticket_count > 1,);
                     editPaymentBlock(data.payment_data);
@@ -257,10 +273,10 @@ $(document).on('click', '.edit-user-btn', function () {
                     recalculateTicketsCount();
                 } else {
                     var validator = ticketBlock.validate();
-                    var errors = { "user_email": data.error };
-                    validator.showErrors(errors);
+                    validator.showErrors(data.error);
                 }
-            });
+            }
+        })
     }
 });
 
@@ -313,5 +329,5 @@ $('#buy-ticket-btn').on('click', function (e) {
         always: function () {
             submit_btn.prop("disabled", false);
         }
-    });
+    })
 });

@@ -122,6 +122,7 @@ services:
             - '@translator'
             - '@security.token_storage'
             - '@app.referral.service'
+            - '@session'
 
     app.referral.service:
         class: Application\Bundle\DefaultBundle\Service\ReferralService

@@ -226,7 +226,7 @@ class WayForPayController extends Controller
                     $this->getRequestDataToArr($response, $payment)
                 );
             }
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
+            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $response['orderNo']);
             $wayForPay->saveResponseLog($payment, $response, 'set paid');
 
             return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
