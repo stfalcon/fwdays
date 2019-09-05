@@ -106,26 +106,18 @@ class PaymentController extends Controller
             $user = $ticket->getUser();
         }
 
-        if (!$user) {
-            try {
+        try {
+            if (!$user) {
                 $user = $userManager->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
                 $newUsersList[] = $user->getId();
                 $session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
-            } catch (BadCredentialsException $e) {
-                $this->get('logger')->addError('autoRegistration with bad params');
-
-                return new JsonResponse(['result' => false, 'error' => ['user_email' => 'Bad credentials!']]);
+            } elseif (\in_array($user->getId(), $newUsersList, true)) {
+                $userManager->updateUserData($user, $name, $surname, $email);
             }
-        } else {
-            if (\in_array($user->getId(), $newUsersList, true)) {
-                try {
-                    $userManager->updateUserData($user, $name, $surname, $email);
-                } catch (BadCredentialsException $e) {
-                    $this->get('logger')->addError('autoRegistration with bad params');
+        } catch (BadCredentialsException $e) {
+            $this->get('logger')->addError('autoRegistration with bad params');
 
-                    return new JsonResponse(['result' => false, 'error' => ['user_email' => 'Bad credentials!']]);
-                }
-            }
+            return new JsonResponse(['result' => false, 'error' => ['user_email' => 'Bad credentials!']]);
         }
 
         $oldUser = $ticket->getUser();

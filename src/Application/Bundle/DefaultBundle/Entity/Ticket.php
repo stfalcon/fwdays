@@ -77,7 +77,7 @@ class Ticket
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\User", inversedBy="tickets")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      *
      * @Groups("payment.view")
      */
