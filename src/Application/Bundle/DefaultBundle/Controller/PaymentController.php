@@ -136,7 +136,7 @@ class PaymentController extends Controller
 
         $paymentService = $this->get('app.payment.service');
         try {
-            $addPromoCodeResult = $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
+            $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }
@@ -146,7 +146,7 @@ class PaymentController extends Controller
         $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
         $ticketData = $this->get('serializer')->normalize($ticket, null, ['groups' => ['payment.view']]);
 
-        return new JsonResponse(['result' => true, 'payment_data' => $paymentData, 'ticket_data' => $ticketData, 'add_promocode_result' => $addPromoCodeResult]);
+        return new JsonResponse(['result' => true, 'payment_data' => $paymentData, 'ticket_data' => $ticketData]);
     }
 
     /**
@@ -161,7 +161,7 @@ class PaymentController extends Controller
      *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
-     * @param Event  $event
+     * @param Event   $event
      * @param Request $request
      *
      * @return JsonResponse
@@ -241,7 +241,7 @@ class PaymentController extends Controller
 
         $paymentService = $this->get('app.payment.service');
         try {
-            $addPromoCodeResult = $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
+            $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }
@@ -464,29 +464,5 @@ class PaymentController extends Controller
         }
 
         return $payment;
-    }
-
-    /**
-     * @param Event   $event
-     * @param Payment $payment
-     * @param string  $code
-     *
-     * @throws \Exception
-     *
-     * @return PromoCode|null
-     */
-    private function getPromoCodeFromQuery(Event $event, Payment $payment, $code)
-    {
-        $promoCode = null;
-        if (!$payment->isPaid()) {
-            $em = $this->getDoctrine()->getManager();
-            $promoCode = $em->getRepository('ApplicationDefaultBundle:PromoCode')
-                ->findActivePromoCodeByCodeAndEvent($code, $event);
-            if (($promoCode && !$promoCode->isCanBeUsed()) || is_array($promoCode)) {
-                $promoCode = null;
-            }
-        }
-
-        return $promoCode;
     }
 }

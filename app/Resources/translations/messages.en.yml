@@ -195,6 +195,7 @@ error.user.already.paid: the %email% has already paid the ticket
 error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
 error.promocode.not_found: 'Promo code not found!'
 error.promocode.used: 'Promo code used!'
+error.promocode.low_than_discount: 'Promo code discount is lower than regular participant!'
 error.ticket.already.added: 'A ticket for this user has already been added'
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays

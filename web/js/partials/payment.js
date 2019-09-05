@@ -1,3 +1,5 @@
+var $buyPaymentButton = $('#buy-ticket-btn');
+
 function editTicketRow(index, ticketBlock, ticket, canBeDelete) {
     if (index) {
         ticketBlock.find('.payer__number').html(index);
@@ -12,10 +14,13 @@ function editTicketRow(index, ticketBlock, ticket, canBeDelete) {
         ticketBlock.find('.user-payment__discount').html(ticket.discount_description).show();
         if (ticket.promo_code) {
             ticketBlock.find('.label-hidden-user-promocode').html(ticket.promo_code.code);
+        } else {
+            ticketBlock.find('.label-hidden-user-promocode').html('');
         }
     } else {
         ticketBlock.find('.user-payment__price').html(ticket.amount);
         ticketBlock.find('.user-payment__discount').hide();
+        ticketBlock.find('.label-hidden-user-promocode').html('');
     }
     ticketBlock.data('ticket-id', ticket.id);
     if (canBeDelete) {
@@ -203,9 +208,13 @@ $(document).on('click', '.add-user-btn', function () {
     var input_name = ticketBlock.find('.payment_user_name');
     var input_surname = ticketBlock.find('.payment_user_surname');
     var input_email = ticketBlock.find('.payment_user_email');
+    var input_promocode = ticketBlock.find('.user_promo_code');
+
     if (input_name.valid() &&
         input_surname.valid() &&
-        input_email.valid()) {
+        input_email.valid() &&
+        input_promocode.valid()) {
+
         var e_slug = $('#payment-list').data('event');
         $.ajax({
             url: Routing.generate('add_ticket_participant', {eventSlug: e_slug}),
@@ -280,7 +289,7 @@ $(document).on('click', '.edit-user-btn', function () {
     }
 });
 
-$('#buy-ticket-btn').on('click', function (e) {
+$buyPaymentButton.on('click', function (e) {
     e.preventDefault();
     var submit_btn = $(this);
     submit_btn.prop("disabled", true);

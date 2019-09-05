@@ -29,12 +29,16 @@ class PaymentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p');
         $query = $qb->leftJoin('p.tickets', 't')
             ->leftJoin('t.event', 'e')
-            ->andWhere('e.useDiscounts = :useDiscounts')
-            ->andWhere('t.user = :user')
-            ->andWhere('p.status = :status')
-            ->setParameter('user', $user)
-            ->setParameter('useDiscounts', true)
-            ->setParameter('status', Payment::STATUS_PAID)
+            ->andWhere($qb->expr()->eq('e.useDiscounts', ':useDiscounts'))
+            ->andWhere($qb->expr()->eq('t.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PAID),
+                    new Parameter('useDiscounts', true),
+                ]
+            ))
             ->getQuery();
 
         return $query->getResult();
@@ -67,7 +71,7 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
-     * @param User  $user
+     * @param User $user
      *
      * @return Payment|null
      */

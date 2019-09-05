@@ -111,21 +111,24 @@ class TicketService
      * @param PromoCode $promoCode
      * @param float|int $discount
      *
-     * @return Ticket
+     * @return string
      */
-    public function setTicketBestDiscount($ticket, $promoCode, $discount = -1)
+    public function setTicketBestDiscount($ticket, $promoCode, $discount = -1): string
     {
         if (-1 === $discount) {
             $discount = (float) $this->paymentsConfig['discount'];
         }
+
         if ($promoCode instanceof PromoCode && $promoCode->getDiscountAmount() / 100 > $discount) {
             $this->setTicketPromoCode($ticket, $promoCode);
+            $result = PromoCode::PROMOCODE_APPLIED;
         } else {
             $ticket->setPromoCode(null);
             $this->setTicketDiscount($ticket, $discount);
+            $result = PromoCode::PROMOCODE_LOW_THAN_DISCOUNT;
         }
 
-        return $ticket;
+        return $result;
     }
 
     /**

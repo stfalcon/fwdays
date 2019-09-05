@@ -2,10 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Doctrine\ORM\Query\Parameter;
 
 /**
  * PromoCodeRepository.
@@ -26,9 +28,13 @@ class PromoCodeRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq('pc.event', ':event'))
             ->andWhere($qb->expr()->eq('pc.code', ':code'))
             ->andWhere($qb->expr()->gte('pc.endDate', ':now'))
-            ->setParameter('code', $code)
-            ->setParameter('event', $event)
-            ->setParameter('now', new \DateTime())
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('code', $code),
+                    new Parameter('event', $event),
+                    new Parameter('now', new \DateTime()),
+                ]
+            ))
             ->setMaxResults(1)
         ;
         try {

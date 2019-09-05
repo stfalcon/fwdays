@@ -11,7 +11,6 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -176,14 +175,11 @@ class PaymentService
      * @param Event  $event
      * @param Ticket $ticket
      *
-     * @return bool|JsonResponse
-     *
      * @throws \Exception
      * @throws BadRequestHttpException
      */
-    public function addPromoCodeForTicketByCode(string $promoCodeString, Event $event, Ticket $ticket)
+    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket): void
     {
-        $result = null;
         if ($promoCodeString) {
             /** @var PromoCode|null $promoCode */
             $promoCode = $this->em->getRepository('ApplicationDefaultBundle:PromoCode')
@@ -198,9 +194,14 @@ class PaymentService
             }
 
             $result = $this->addPromoCodeForTicket($ticket, $promoCode);
+        } else {
+            $result = PromoCode::PROMOCODE_APPLIED;
+            $ticket->setPromoCode(null);
         }
 
-        return $result;
+        if (PromoCode::PROMOCODE_APPLIED !== $result) {
+            throw new BadRequestHttpException($this->translator->trans($result));
+        }
     }
 
     /**
@@ -359,7 +360,7 @@ class PaymentService
         }
 
         if (!$ticket && !$payment) {
-            $ticket = $this->get('app.ticket.service')->createTicket($event, $user);
+            $ticket = $this->ticketService->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
             $this->em->flush();
         }
@@ -395,18 +396,28 @@ class PaymentService
      */
     private function addPromoCodeForTicket(Ticket $ticket, PromoCode $promoCode): string
     {
-        if (!$promoCode->isCanBeTmpUsed()) {
-            return false;
+        if (!$promoCode->isUnlimited()) {
+            $payment = $ticket->getPayment();
+            foreach ($payment->getTickets() as $paymentTicket) {
+                if ($promoCode->isEqualTo($paymentTicket->getPromoCode())) {
+                    $promoCode->incTmpUsedCount();
+                }
+            }
         }
+
+        if (!$promoCode->isCanBeTmpUsed()) {
+            return PromoCode::PROMOCODE_USED;
+        }
+
         if ($this->ticketService->isMustBeDiscount($ticket)) {
-            $this->ticketService->setTicketBestDiscount($ticket, $promoCode);
+            $result = $this->ticketService->setTicketBestDiscount($ticket, $promoCode);
         } else {
             $this->ticketService->setTicketPromoCode($ticket, $promoCode);
+            $result = PromoCode::PROMOCODE_APPLIED;
         }
 
-        return $ticket->hasPromoCode();
+        return $result;
     }
-
 
     /**
      * @param Payment $payment

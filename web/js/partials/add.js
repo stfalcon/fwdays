@@ -25,104 +25,6 @@ function popupwindow(url, title, w, h) {
     return window.open(url, title, 'width='+w+', height='+h+', top='+top+', left='+left);
 }
 
-// function setPaymentHtmlbyData(data, e_slug) {
-//     $('#payment').data('pay-type', data.pay_type).attr('action', data.form_action);
-//     $('#pay-form').html(data.html).data('event', e_slug);
-//     $('#payment-sums').html(data.payment_sums);
-//     $('#cancel-promo-code').click();
-//     $('#cancel-add-user').click();
-//     $('#user_phone').val(data.phone_number);
-//     var buy_btn = $('#buy-ticket-btn');
-//     if (data.form_action === '') {
-//         buy_btn.prop("disabled", true);
-//     } else {
-//         buy_btn.prop('disabled', false);
-//     }
-//     buy_btn.html(data.bye_btn_caption);
-//     var old_event = buy_btn.data('event');
-//     if (old_event) {
-//         buy_btn.removeClass('event-'+old_event);
-//     }
-//
-//     buy_btn.addClass('event-'+e_slug).data('event', e_slug);
-//     if (!data.is_user_create_payment) {
-//         $('#add-user-trigger').hide();
-//         $('#promo-code-trigger').hide();
-//     }
-// }
-
-// function getPlaceByElem(elem) {
-//     if (elem) {
-//         var place = 'social';
-//         if (elem.hasClass('cost__buy--mob')) {
-//             place = 'event_pay_mob';
-//         } else if (elem.hasClass('cost__buy')) {
-//             place = 'event_pay';
-//         } else if (elem.hasClass('event_fix_header_mob') || elem.hasClass('event-action-mob__btn')
-//             || elem.hasClass('fix-event-header__btn--mob')) {
-//             place = 'event_mob';
-//         } else if (elem.hasClass('fix-event-header__btn') || elem.hasClass('event-header__btn')) {
-//             place = 'event';
-//         } else if (elem.hasClass('event-card__btn') || elem.hasClass('event-row__btn')) {
-//             place = 'main';
-//         }
-//         return place;
-//     }
-// }
-
-// function setPaymentHtml(e_slug, mobForce) {
-//     var inst = $('[data-remodal-id=modal-payment]').remodal();
-//     var promocode = Cookies.get('promocode');
-//     var promoevent = Cookies.get('promoevent');
-//     var route = '';
-//     if (promocode && promoevent === e_slug) {
-//         route = Routing.generate('event_pay', {eventSlug: e_slug, promoCode: promocode});
-//     } else {
-//         route = Routing.generate('event_pay', {eventSlug: e_slug});
-//     }
-//     $.ajax({
-//         type: 'GET',
-//         url: route,
-//         success: function (data) {
-//             if (data.result) {
-//                 setPaymentHtmlbyData(data, e_slug);
-//                 if (data.tickets_count === 0) {
-//                     $('#add-user-trigger').click();
-//                 }
-//                 if (!detectmob() && !mobForce) {
-//                     inst.open();
-//                 }
-//                 return true;
-//             } else {
-//                 if (data.error_code === 1) {
-//                     window.location.pathname = homePath+"static-payment/"+e_slug;
-//                 }
-//                 console.log('Error:' + data.error);
-//                 if (!detectmob() && !mobForce) {
-//                     inst.close();
-//                 }
-//
-//                 return false;
-//             }
-//         },
-//         error: function(jqXHR, textStatus, errorThrown) {
-//             switch (jqXHR.status) {
-//                 case 401:
-//                     if (detectmob()) {
-//                         window.location.search = "?exception_login=1";
-//                         window.location.pathname = homePath+"login";
-//                     } else {
-//                         var inst = $('[data-remodal-id=modal-signin-payment]').remodal();
-//                         inst.open();
-//                     }
-//                     break;
-//                 case 403: window.location.reload(true);
-//             }
-//             return false;
-//         }
-//     });
-// }
-
 function setSpeakerHtml(e_slug, s_slug, with_review) {
     var inst = $('[data-remodal-id=modal-speaker]').remodal();
     $.get(Routing.generate('speaker_popup', { eventSlug: e_slug, speakerSlug:s_slug, withReview:with_review}),
@@ -182,19 +84,6 @@ function submitValidForm(rId, withCaptcha) {
         }
     }
 }
-
-// $(document).on('submit', '#payment', function (e) {
-//     var form = $(this);
-//     if (form.data('pay-type') === 'wfp_pay_widget') {
-//         e.preventDefault();
-//         if (!detectmob()) {
-//             var inst = $('[data-remodal-id=modal-payment]').remodal();
-//             inst.close();
-//         }
-//         paymentSystemPay();
-//     }
-// });
-
 
 $(document).on('click', '.social-login', function () {
     var elem = $(this);
@@ -350,39 +239,6 @@ $(document).ready(function () {
         }
         setModalHeader(e_slug, h_type);
     });
-
-    // $('.get-payment').on('click', function () {
-    //     var elem = $(this);
-    //     var e_slug = elem.data('event');
-    //     var promocode = Cookies.get('promocode');
-    //     var promoevent = Cookies.get('promoevent');
-    //     if (detectmob()) {
-    //         var queryParams = '';
-    //         if (promocode && promoevent === e_slug) {
-    //             queryParams = '?promocode='+promocode;
-    //         }
-    //         window.location.pathname = homePath + "static-payment/" + e_slug + queryParams;
-    //     } else {
-    //         setModalHeader(e_slug, 'buy');
-    //         setPaymentHtml(e_slug);
-    //     }
-    // });
-
-    // $('.add-promo-code-btn').on('click', function () {
-    //     if ($('#user_promo_code').valid()) {
-    //         var e_slug = $('#pay-form').data('event');
-    //         $.post(Routing.generate('add_promo_code', {code: $("input[name='user_promo_code']").val(), eventSlug: e_slug}),
-    //             function (data) {
-    //                 if (data.result) {
-    //                     setPaymentHtmlbyData(data, e_slug);
-    //                 } else {
-    //                     var validator = $('#payment').validate();
-    //                     var errors = { user_promo_code: data.error };
-    //                     validator.showErrors(errors);
-    //                 }
-    //             });
-    //     }
-    // });
 
     $(document).on('click', '.like-btn-js', function (e) {
         e.preventDefault();

@@ -278,7 +278,7 @@ services:
 
     app.serializer_normalizer.payment_normalizer:
         class: Application\Bundle\DefaultBundle\Serializer\Normalizer\PaymentNormalizer
-        arguments: ['@translator', '@serializer.normalizer.object', '%application_default.config%']
+        arguments: ['@translator', '@serializer.normalizer.object']
         tags:
             - { name: serializer.normalizer }
 

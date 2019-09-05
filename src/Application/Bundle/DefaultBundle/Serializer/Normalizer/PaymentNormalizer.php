@@ -18,9 +18,8 @@ class PaymentNormalizer implements NormalizerInterface
     /**
      * @param TranslatorInterface $translator
      * @param ObjectNormalizer    $normalizer
-     * @param array               $params
      */
-    public function __construct(TranslatorInterface $translator, ObjectNormalizer $normalizer, array $params)
+    public function __construct(TranslatorInterface $translator, ObjectNormalizer $normalizer)
     {
         $this->translator = $translator;
         $this->normalizer = $normalizer;

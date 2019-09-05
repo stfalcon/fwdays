@@ -26,6 +26,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PromoCode
 {
     use TranslateTrait;
+
+    public const PROMOCODE_APPLIED = 'promocode_applied';
+    public const PROMOCODE_LOW_THAN_DISCOUNT = 'error.promocode.low_than_discount';
+    public const PROMOCODE_USED = 'error.promocode.used';
+
     /**
      * @ORM\OneToMany(
      *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\PromoCodeTranslation",
@@ -133,7 +138,7 @@ class PromoCode
      *
      * @return $this
      */
-    public function setUsedCount($usedCount)
+    public function setUsedCount($usedCount): self
     {
         $this->usedCount = $usedCount;
 
@@ -143,7 +148,7 @@ class PromoCode
     /**
      * @return $this
      */
-    public function incUsedCount()
+    public function incUsedCount(): self
     {
         ++$this->usedCount;
 
@@ -155,7 +160,7 @@ class PromoCode
      *
      * @return $this
      */
-    public function setCode($code)
+    public function setCode(string $code): self
     {
         $this->code = $code;
 
@@ -165,7 +170,7 @@ class PromoCode
     /**
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -344,5 +349,23 @@ class PromoCode
     public function isCanBeTmpUsed()
     {
         return $this->isUnlimited() || ($this->getUsedCount() + $this->tmpUsedCount) < $this->getMaxUseCount();
+    }
+
+    /**
+     * @param PromoCode|null $promoCode
+     *
+     * @return bool
+     */
+    public function isEqualTo(?PromoCode $promoCode): bool
+    {
+        if (!$promoCode instanceof self) {
+            return false;
+        }
+
+        if ($promoCode->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

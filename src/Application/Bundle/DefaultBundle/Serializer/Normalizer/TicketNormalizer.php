@@ -45,7 +45,7 @@ class TicketNormalizer implements NormalizerInterface
         $data['discount_description'] = '';
         if ($data['has_discount']) {
             if ($data['promo_code']) {
-                $data['discount_description'] = $this->translator->trans('payment.discount.cupon', ['%summ%' => $data['promo_code']['discountAmount']]);
+                $data['discount_description'] = $this->translator->trans('payment.discount.cupon', ['%summ%' => $data['promo_code']['discount_amount']]);
             } else {
                 $data['discount_description'] = $this->translator->trans('payment.discount.member', ['%summ%' => $discountAmount]);
             }
