@@ -232,13 +232,11 @@ class TicketRepository extends EntityRepository
             ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->eq('t.user', ':user'))
             ->andWhere($qb->expr()->eq('p.status', ':status'))
-            ->setParameters(new ArrayCollection(
-                [
-                    new Parameter('event', $event),
-                    new Parameter('user', $user),
-                    new Parameter('status', Payment::STATUS_PENDING),
-                ])
-            )
+            ->setParameters(new ArrayCollection([
+                new Parameter('event', $event),
+                new Parameter('user', $user),
+                new Parameter('status', Payment::STATUS_PENDING),
+            ]))
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

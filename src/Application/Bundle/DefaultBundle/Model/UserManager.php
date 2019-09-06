@@ -34,6 +34,7 @@ class UserManager extends FosUserManager
      * @param string                   $class
      * @param ValidatorInterface       $validator
      * @param StfalconMailerHelper     $mailHelper
+     * @param Session                  $session
      */
     public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class, $validator, $mailHelper, Session $session)
     {
