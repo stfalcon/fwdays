@@ -466,7 +466,7 @@ class Payment
      *
      * @return $this
      */
-    public function setFwdaysAmount($fwdaysAmount)
+    public function setFwdaysAmount(float $fwdaysAmount): self
     {
         $this->fwdaysAmount = $fwdaysAmount;
 
@@ -484,6 +484,7 @@ class Payment
             Payment::ADMIN_GATE => Payment::ADMIN_GATE,
             Payment::BONUS_GATE => Payment::BONUS_GATE,
             Payment::PROMOCODE_GATE => Payment::PROMOCODE_GATE,
+            Payment::UNKNOWN_GATE => Payment::UNKNOWN_GATE,
         ];
     }
 
@@ -497,5 +498,23 @@ class Payment
             'ожидание' => Payment::STATUS_PENDING,
             'возращен' => Payment::STATUS_RETURNED,
         ];
+    }
+
+    /**
+     * @param Payment|null $payment
+     *
+     * @return bool
+     */
+    public function isEqualTo(?Payment $payment): bool
+    {
+        if (!$payment instanceof self) {
+            return false;
+        }
+
+        if ($payment->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

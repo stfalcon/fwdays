@@ -91,11 +91,12 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $container = $this->getConfigurationPool()->getContainer();
+        $environment = $container->getParameter('kernel.environment');
         $token = $container->get('security.token_storage')->getToken();
         $isSuperAdmin = false;
         if ($token) {
             $user = $token->getUser();
-            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+            $isSuperAdmin = $user instanceof User ? (\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment) : false;
         }
 
         $formMapper

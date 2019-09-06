@@ -1,6 +1,10 @@
 var $buyPaymentButton = $('#buy-ticket-btn');
+var $addTicketBtn = $('#add-user-form');
+var $userBonusInput = $('#user-bonus-input');
+var $applyBonusBtn = $('#btn-apply-bonus');
+var $paymentList = $('#payment-list');
 
-function editTicketRow(index, ticketBlock, ticket, canBeDelete) {
+function editTicketRow(index, ticketBlock, ticket) {
     if (index) {
         ticketBlock.find('.payer__number').html(index);
     }
@@ -22,18 +26,12 @@ function editTicketRow(index, ticketBlock, ticket, canBeDelete) {
         ticketBlock.find('.user-payment__discount').hide();
         ticketBlock.find('.label-hidden-user-promocode').html('');
     }
-    ticketBlock.data('ticket-id', ticket.id);
-    if (canBeDelete) {
-        ticketBlock.find('.ticket-delete-btn').show();
-    } else {
-        ticketBlock.find('.ticket-delete-btn').hide();
-    }
+    ticketBlock.attr('id', ticket.id);
 }
 
-function addTicketRowBlock(index, ticket, canBeDelete, replaceId = null) {
+function addTicketRowBlock(index, ticket, replaceId = null) {
     var newTicketRow = $('#payer-block').clone();
-    newTicketRow.attr('id', ticket.id);
-    editTicketRow(index, newTicketRow, ticket, canBeDelete);
+    editTicketRow(index, newTicketRow, ticket);
     newTicketRow.show();
     if (replaceId) {
         $('#'+replaceId).replaceWith(newTicketRow[0].outerHTML);
@@ -44,6 +42,7 @@ function addTicketRowBlock(index, ticket, canBeDelete, replaceId = null) {
 
 function editPaymentBlock(paymentData) {
     var elem = $('#payment-total-data');
+
     if (paymentData.fwdays_amount > 0) {
         elem.find('.payment-cart__text--strike').html(paymentData.base_amount).show();
         elem.find('.payment-cart__hint').html(paymentData.fwdays_amount_formatted+'<i class="icon-close-sm delete-fwdays-bonus"></i>').show();
@@ -53,7 +52,7 @@ function editPaymentBlock(paymentData) {
     }
 
     if (paymentData.fwdays_amount === 0 && paymentData.user.balance > 0) {
-        $('#user-bonus-input').val(paymentData.user.balance).attr('max', paymentData.user.balance);
+        $userBonusInput.val(paymentData.user.balance).attr('max', paymentData.user.balance);
         elem.find('.payment-use-fwdays-bonus').show();
         elem.find('.payment-user-bonus-label').show();
         elem.find('.payment-user-bonus-tooltip').show();
@@ -63,10 +62,16 @@ function editPaymentBlock(paymentData) {
         elem.find('.payment-user-bonus-tooltip').hide();
     }
 
-    elem.find('.payment-cart__amount').html(paymentData.amount);
+    elem.find('.payment-cart__amount').html(paymentData.amount_formatted);
+
     if (!elem.is(":visible")) {
         elem.show();
-        $('#add-user-form').show();
+        $addTicketBtn.show();
+    }
+
+    if (paymentData.ticket_count === 0) {
+        elem.hide();
+        $addTicketBtn.hide();
     }
 }
 
@@ -91,17 +96,17 @@ function applyFwdaysBonus(amount) {
                 console.log('Error:'+data.error);
             }
         }).always(function() {
-            $('#btn-apply-bonus').removeClass('disabled');
+            $applyBonusBtn.removeClass('disabled');
         });
 }
 
-$('#btn-apply-bonus').click(function (event) {
-    var amount = $('#user-bonus-input').val();
-    $('#btn-apply-bonus').addClass('disabled');
+$applyBonusBtn.click(function () {
+    var amount = $userBonusInput.val();
+    $applyBonusBtn.addClass('disabled');
     applyFwdaysBonus(amount);
 });
 
-$('#user-bonus-input').change(function (event) {
+$userBonusInput.change(function (event) {
     var max = $(this).attr('max');
     if ($(this).val() > max) {
         $(this).val(max);
@@ -117,7 +122,7 @@ $(document).on('click', '.delete-fwdays-bonus', function () {
 
 $(document).on('click', '.ticket-delete-btn', function () {
     var elem = $(this).closest('.payer');
-    var e_slug = $('#payment-list').data('event');
+    var e_slug = $paymentList.data('event');
     $.post(Routing.generate('remove_ticket_from_payment',
         {
             eventSlug: e_slug,
@@ -145,7 +150,6 @@ $(document).on('click', '.ticket-edit-btn', function () {
     editTicketBlock.insertAfter(ticketRow);
     ticketRow.hide();
     editTicketBlock = $('#'+editTicketBlock.attr('id'));
-
     copyDataFromRowToBlock(ticketRow, editTicketBlock);
     addValidator(editTicketBlock);
 });
@@ -165,7 +169,7 @@ function copyDataFromRowToBlock(ticketRow, editTicketBlock) {
     editTicketBlock.find('.add-user-btn').removeClass('add-user-btn').addClass('edit-user-btn');
 }
 
-$('#add-user-form').on('click', function () {
+$addTicketBtn.on('click', function () {
     var newTicketBlock = $('#payer-block-edit').clone();
     ++ticket_count;
     newTicketBlock.attr('id', 'payer-block-edit-'+ticket_count);
@@ -215,7 +219,7 @@ $(document).on('click', '.add-user-btn', function () {
         input_email.valid() &&
         input_promocode.valid()) {
 
-        var e_slug = $('#payment-list').data('event');
+        var e_slug = $paymentList.data('event');
         $.ajax({
             url: Routing.generate('add_ticket_participant', {eventSlug: e_slug}),
             method: 'POST',
@@ -225,8 +229,7 @@ $(document).on('click', '.add-user-btn', function () {
                     saved_payment_amount = data.payment_data.amount;
                     addTicketRowBlock(
                         data.payment_data.ticket_count,
-                        data.payment_data.tickets[data.payment_data.ticket_count-1],
-                        data.payment_data.ticket_count > 1,
+                        data.ticket_data,
                         ticketBlock.attr('id')
                     );
                     editPaymentBlock(data.payment_data);
@@ -266,7 +269,7 @@ $(document).on('click', '.edit-user-btn', function () {
         input_email.valid() &&
         input_promocode.valid()) {
 
-        var e_slug = $('#payment-list').data('event');
+        var e_slug = $paymentList.data('event');
         $.ajax({
             url: Routing.generate('edit_ticket_participant', {eventSlug: e_slug, id: ticket_id}),
             method: 'POST',
@@ -274,11 +277,11 @@ $(document).on('click', '.edit-user-btn', function () {
             success: function (data) {
                 if (data.result && !reloadingPage($this)) {
                     saved_payment_amount = data.payment_data.amount;
-                    editTicketRow(null, parent_row, data.ticket_data, data.payment_data.ticket_count > 1,);
+                    editTicketRow(null, parent_row, data.ticket_data);
                     editPaymentBlock(data.payment_data);
                     parent_row.show();
                     ticketBlock.remove();
-
+                    refreshDeleteButtons();
                     recalculateTicketsCount();
                 } else {
                     var validator = ticketBlock.validate();
@@ -305,26 +308,32 @@ $buyPaymentButton.on('click', function (e) {
         $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
     }
 
-    var $payment_list = $('#payment-list');
-    var e_slug = $payment_list.data('event');
+    var e_slug = $paymentList.data('event');
 
     $.ajax({
         url: Routing.generate('event_paying', {slug: e_slug}),
         method: 'POST',
         data: {'saved_data': saved_payment_amount},
         success: function (data) {
+            submit_btn.prop("disabled", false);
             if (data.result) {
                 if (data.amount_changed) {
                     saved_payment_amount = data.payment_data.amount;
-                    $('#payment-list').empty();
+                    $paymentList.empty();
                     $.each(data.payment_data.tickets, function( index, value ) {
-                        addTicketRowBlock(index+1, value, data.payment_data.ticket_count > 1);
+                        addTicketRowBlock(index+1, value);
                     });
                     editPaymentBlock(data.payment_data);
+
+                    if (data.payment_data.ticket_count === 0) {
+                        ticket_count = 0;
+                        $addTicketBtn.click();
+                    }
+
                     alert(data.payment_data.amount_changed_text);
                 } else {
                     var $form = $(data.form);
-                    $payment_list.after($form);
+                    $paymentList.after($form);
                     $form.submit();
                 }
             } else {
@@ -333,6 +342,7 @@ $buyPaymentButton.on('click', function (e) {
             }
         },
         error: function () {
+            submit_btn.prop("disabled", false);
             console.log('error');
         },
         always: function () {

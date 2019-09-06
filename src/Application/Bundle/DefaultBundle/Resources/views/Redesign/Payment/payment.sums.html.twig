@@ -11,7 +11,7 @@
                 <div class="payment-cart__text payment-cart_title">{{ 'pay.sum_for_pay.title'|trans }}</div>
                 <div class="payment-cart__total">
                     <div class="payment-cart__text payment-cart__text--strike" {%- if payment_data.fwdays_amount == 0 -%}style="display: none"{%- endif -%}>{{ payment_data.base_amount }}</div>
-                    <div class="payment-cart__text payment-cart__amount">{{ payment_data.amount }}</div>
+                    <div class="payment-cart__text payment-cart__amount">{{ payment_data.amount_formatted }}</div>
                     <div class="payment-cart__hint" {%- if payment_data.fwdays_amount == 0 -%}style="display: none"{%- endif -%}>{{ payment_data.fwdays_amount_formatted|raw }}<i class="icon-close-sm delete-fwdays-bonus"></i>
                     </div>
                 </div>

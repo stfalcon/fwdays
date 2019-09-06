@@ -65,6 +65,8 @@ class PromoCode
      *
      * @ORM\Column(type="integer")
      *
+     * @Assert\Range(min="0", max="100")
+     *
      * @Groups("payment.view")
      */
     protected $discountAmount;
@@ -99,6 +101,8 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer", options={"default":0})
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     protected $usedCount = 0;
 
@@ -106,6 +110,8 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer", options={"default":0})
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     protected $maxUseCount = 0;
 
@@ -339,6 +345,16 @@ class PromoCode
     public function incTmpUsedCount()
     {
         ++$this->tmpUsedCount;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearTmpUsedCount(): self
+    {
+        $this->tmpUsedCount = 0;
 
         return $this;
     }

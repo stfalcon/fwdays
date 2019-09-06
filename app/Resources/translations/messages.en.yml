@@ -197,6 +197,7 @@ error.promocode.not_found: 'Promo code not found!'
 error.promocode.used: 'Promo code used!'
 error.promocode.low_than_discount: 'Promo code discount is lower than regular participant!'
 error.ticket.already.added: 'A ticket for this user has already been added'
+error.user.cant_be_edit: 'You cannot edit this user'
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays
 contacts.partners.title: Informational partnerships, meetups and master classes

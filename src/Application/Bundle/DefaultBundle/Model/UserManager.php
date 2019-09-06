@@ -9,6 +9,8 @@ use FOS\UserBundle\Doctrine\UserManager as FosUserManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,8 +19,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserManager extends FosUserManager
 {
+    public const NEW_USERS_SESSION_KEY = 'new_users';
+
     private $validator;
     private $mailHelper;
+    private $session;
 
     /**
      * UserManager constructor.
@@ -30,12 +35,13 @@ class UserManager extends FosUserManager
      * @param ValidatorInterface       $validator
      * @param StfalconMailerHelper     $mailHelper
      */
-    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class, $validator, $mailHelper)
+    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class, $validator, $mailHelper, Session $session)
     {
         parent::__construct($passwordUpdater, $canonicalFieldsUpdater, $om, $class);
 
         $this->validator = $validator;
         $this->mailHelper = $mailHelper;
+        $this->session = $session;
     }
 
     /**
@@ -66,6 +72,10 @@ class UserManager extends FosUserManager
         $this->updateUser($user);
         $this->mailHelper->sendAutoRegistration($user, $plainPassword);
 
+        $newUsersList = $this->session->get(self::NEW_USERS_SESSION_KEY, []);
+        $newUsersList[] = $user->getId();
+        $this->session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
+
         return $user;
     }
 
@@ -77,6 +87,15 @@ class UserManager extends FosUserManager
      */
     public function updateUserData(User $user, string $name, string $surname, string $email): void
     {
+        if ($email === $user->getEmail() && $name === $user->getName() && $surname === $user->getSurname()) {
+            return;
+        }
+
+        $newUsersList = $this->session->get(self::NEW_USERS_SESSION_KEY, []);
+        if (!\in_array($user->getId(), $newUsersList, true)) {
+            throw new BadRequestHttpException();
+        }
+
         $oldEmail = $user->getEmail();
 
         $user->setEmail($email);

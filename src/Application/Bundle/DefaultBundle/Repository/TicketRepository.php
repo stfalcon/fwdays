@@ -2,11 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -198,9 +200,9 @@ class TicketRepository extends EntityRepository
      * @param User  $user  User
      * @param Event $event Event
      *
-     * @return array
+     * @return Ticket|null
      */
-    public function findOneByUserAndEvent($user, $event)
+    public function findOneByUserAndEventWithPayment($user, $event): Ticket
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -213,6 +215,34 @@ class TicketRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param User  $user  User
+     * @param Event $event Event
+     *
+     * @return Ticket|null
+     */
+    public function findOneByUserAndEventWithPendingPayment(User $user, Event $event): ?Ticket
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        return $qb
+            ->leftJoin('t.payment', 'p')
+            ->where($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->eq('t.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('event', $event),
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PENDING),
+                ])
+            )
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**

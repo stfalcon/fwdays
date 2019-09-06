@@ -47,8 +47,13 @@
         let ticket_count = '{{ payment_data.ticket_count }}';
         let saved_payment_amount = '{{ payment_data.amount }}';
 
-        if (performance.navigation.type === 2) {
-            location.reload(true);
+        if (performance.getEntriesByType === undefined) {
+            console.log("performance.getEntriesByType not supported");
+        } else {
+            let $navigation = performance.getEntriesByType("navigation");
+            if ($navigation.length && $navigation[0].type === 'back_forward') {
+                location.reload(true);
+            }
         }
     </script>
 {% endblock scripts %}

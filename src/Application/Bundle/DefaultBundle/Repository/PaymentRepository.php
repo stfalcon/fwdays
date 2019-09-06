@@ -27,7 +27,8 @@ class PaymentRepository extends EntityRepository
     public function findPaidPaymentsForUser(User $user)
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
+
+        return $qb->leftJoin('p.tickets', 't')
             ->leftJoin('t.event', 'e')
             ->andWhere($qb->expr()->eq('e.useDiscounts', ':useDiscounts'))
             ->andWhere($qb->expr()->eq('t.user', ':user'))
@@ -39,9 +40,9 @@ class PaymentRepository extends EntityRepository
                     new Parameter('useDiscounts', true),
                 ]
             ))
-            ->getQuery();
-
-        return $query->getResult();
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
@@ -53,7 +54,8 @@ class PaymentRepository extends EntityRepository
     public function findPaymentByUserAndEvent(User $user, Event $event): ?Payment
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
+
+        return $qb->leftJoin('p.tickets', 't')
             ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->eq('p.user', ':user'))
             ->andWhere($qb->expr()->eq('p.status', ':status'))
@@ -65,9 +67,9 @@ class PaymentRepository extends EntityRepository
                 ]
             ))
             ->setMaxResults(1)
-            ->getQuery();
-
-        return $query->getOneOrNullResult();
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**
@@ -78,7 +80,8 @@ class PaymentRepository extends EntityRepository
     public function findPaymentByUserWithoutEvent(User $user): ?Payment
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
+
+        return $qb->leftJoin('p.tickets', 't')
             ->where($qb->expr()->isNull('t.event'))
             ->andWhere($qb->expr()->eq('p.user', ':user'))
             ->andWhere($qb->expr()->eq('p.status', ':status'))
@@ -91,8 +94,34 @@ class PaymentRepository extends EntityRepository
                 ]
             ))
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
-        return $query->getOneOrNullResult();
+    /**
+     * @param int  $paymentId
+     * @param User $user
+     *
+     * @return Payment|null
+     */
+    public function findPendingPaymentByIdForUser(int $paymentId, User $user): ?Payment
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->where($qb->expr()->eq('p.id', ':id'))
+            ->andWhere($qb->expr()->eq('p.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PENDING),
+                    new Parameter('id', $paymentId),
+                ]
+            ))
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

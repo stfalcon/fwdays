@@ -175,7 +175,7 @@ class TicketService
      *
      * @return Ticket
      */
-    public function createTicket($event, $user)
+    public function createTicket(Event $event, User $user): Ticket
     {
         $ticket = (new Ticket())
             ->setEvent($event)
@@ -221,6 +221,7 @@ class TicketService
         $href = null;
         $caption = '';
         $ticketCaption = '';
+        $downloadUrl = false;
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
@@ -311,7 +312,7 @@ class TicketService
                 $ticketCaption = $this->translator->trans('ticket.status.download');
                 $ticketClass = $states[$position][$ticketState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
                 if (!empty($ticketClass)) {
-                    $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
+                    $downloadUrl = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
                 }
             }
 
@@ -376,7 +377,7 @@ class TicketService
             }
         }
 
-        $result =
+        return
             [
                 'class' => $class,
                 'caption' => $caption,
@@ -386,9 +387,8 @@ class TicketService
                 'isDiv' => $isDiv,
                 'data' => $data,
                 'id' => $position.'-'.$data,
+                'download_url' => $downloadUrl,
             ];
-
-        return $result;
     }
 
     /**
@@ -434,5 +434,35 @@ class TicketService
         }
 
         return $count;
+    }
+
+    /**
+     * @param User|null $user
+     * @param Event     $event
+     *
+     * @return bool
+     */
+    public function isUserHasPaidTicketForEvent(?User $user, Event $event): bool
+    {
+        if (!$user instanceof User) {
+            return false;
+        }
+        /** @var Ticket|null $ticket */
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
+            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+
+        return $ticket instanceof Ticket && $ticket->isPaid();
+    }
+
+    /**
+     * @param User|null $user
+     * @param Ticket    $ticket
+     */
+    public function setNewUserToTicket(?User $user, Ticket $ticket): void
+    {
+        $oldUser = $ticket->getUser();
+        if ($user instanceof User && !$user->isEqualTo($oldUser)) {
+            $user->addTicket($ticket);
+        }
     }
 }

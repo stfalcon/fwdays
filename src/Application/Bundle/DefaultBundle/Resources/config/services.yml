@@ -256,6 +256,7 @@ services:
             - "%fos_user.model.user.class%"
             - "@validator"
             - "@application.mailer_helper"
+            - "@session"
 
     user_mail_command_service:
         class: Application\Bundle\DefaultBundle\Command\StfalconMailerCommand

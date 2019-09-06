@@ -21,6 +21,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PaymentService
 {
+    private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
+
     private $em;
     private $ticketService;
     private $translator;
@@ -86,7 +88,6 @@ class PaymentService
         if (!$ticket->isPaid() && $payment->addTicket($ticket)) {
             $ticket->setPayment($payment);
             $this->em->persist($ticket);
-            //$this->recalculatePaymentAmount($payment);
         }
     }
 
@@ -224,9 +225,22 @@ class PaymentService
             $eventCost = $currentTicketCost->getAmountByTemporaryCount();
             $isMustBeDiscount = $this->ticketService->isMustBeDiscount($ticket);
 
+            $promoCodeCleared = false;
+            $promoCode = $ticket->getPromoCode();
+            if ($promoCode instanceof PromoCode) {
+                if (!$promoCode->isCanBeTmpUsed()) {
+                    $ticket->setPromoCode(null);
+                    $promoCodeCleared = true;
+                } else {
+                    $promoCode->incTmpUsedCount();
+                }
+            }
+
             if (($ticket->getTicketCost() !== $currentTicketCost) ||
                 ((int) $ticket->getAmountWithoutDiscount() !== (int) $eventCost) ||
-                ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode()))) {
+                ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode())) ||
+                $promoCodeCleared
+            ) {
                 $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
         }
@@ -325,10 +339,10 @@ class PaymentService
     }
 
     /**
-     * @param Payment   $payment
-     * @param int|float $amount
+     * @param Payment $payment
+     * @param float   $amount
      */
-    public function addFwdaysBonusToPayment(Payment $payment, $amount): void
+    public function addFwdaysBonusToPayment(Payment $payment, float $amount): void
     {
         $payment->setFwdaysAmount($amount);
         $this->recalculatePaymentAmount($payment);
@@ -383,7 +397,69 @@ class PaymentService
             $this->checkTicketsPricesInPayment($payment, $event);
         }
 
-        $this->session->set(PaymentController::ACTIVE_PAYMENT_ID_KEY, $payment->getId());
+        $this->session->set(self::ACTIVE_PAYMENT_ID_KEY, $payment->getId());
+
+        return $payment;
+    }
+
+    /**
+     * @param User|null $user
+     * @param Event     $event
+     * @param Ticket    $editTicket
+     *
+     * @return Ticket
+     */
+    public function replaceIfFindOtherUserTicketForEvent(?User $user, Event $event, Ticket $editTicket): Ticket
+    {
+        if (!$user instanceof User) {
+            return $editTicket;
+        }
+        /** @var Ticket|null $ticket */
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
+            ->findOneByUserAndEventWithPendingPayment($user, $event);
+
+        if (!$ticket instanceof Ticket || $editTicket->isEqualTo($ticket)) {
+            return $editTicket;
+        }
+        $payment = $editTicket->getPayment();
+
+        if (!$editTicket->isEqualTo($ticket) && $payment->isEqualTo($ticket->getPayment())) {
+            throw new BadRequestHttpException();
+        }
+
+        $this->addTicketToPayment($payment, $ticket);
+        $this->removeTicketFromPayment($payment, $editTicket);
+
+        return $ticket;
+    }
+
+    /**
+     * @param Ticket|null $ticket
+     *
+     * @return Payment|null $payment
+     */
+    public function getPendingPaymentIfAccess(?Ticket $ticket = null): ?Payment
+    {
+        $payment = null;
+        $currentUser = $this->tokenStorage->getToken()->getUser();
+
+        if (!$currentUser instanceof User) {
+            return null;
+        }
+
+        if ($this->session->has(self::ACTIVE_PAYMENT_ID_KEY)) {
+            $paymentId = $this->session->get(self::ACTIVE_PAYMENT_ID_KEY);
+            $payment = $this->em->getRepository('ApplicationDefaultBundle:Payment')
+                ->findPendingPaymentByIdForUser($paymentId, $currentUser);
+        }
+
+        if (!$payment instanceof Payment) {
+            return null;
+        }
+
+        if ($ticket instanceof Ticket) {
+            $payment = $payment->getTickets()->contains($ticket) ? $payment : null;
+        }
 
         return $payment;
     }
@@ -396,10 +472,11 @@ class PaymentService
      */
     private function addPromoCodeForTicket(Ticket $ticket, PromoCode $promoCode): string
     {
+        $promoCode->clearTmpUsedCount();
         if (!$promoCode->isUnlimited()) {
             $payment = $ticket->getPayment();
             foreach ($payment->getTickets() as $paymentTicket) {
-                if ($promoCode->isEqualTo($paymentTicket->getPromoCode())) {
+                if ($promoCode->isEqualTo($paymentTicket->getPromoCode()) && !$ticket->isEqualTo($paymentTicket)) {
                     $promoCode->incTmpUsedCount();
                 }
             }
@@ -415,6 +492,7 @@ class PaymentService
             $this->ticketService->setTicketPromoCode($ticket, $promoCode);
             $result = PromoCode::PROMOCODE_APPLIED;
         }
+        $promoCode->clearTmpUsedCount();
 
         return $result;
     }

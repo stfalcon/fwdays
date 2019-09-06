@@ -418,4 +418,22 @@ class Ticket
     {
         $this->hideConditions = $hideConditions;
     }
+
+    /**
+     * @param Ticket|null $ticket
+     *
+     * @return bool
+     */
+    public function isEqualTo(?Ticket $ticket): bool
+    {
+        if (!$ticket instanceof self) {
+            return false;
+        }
+
+        if ($ticket->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
+    }
 }

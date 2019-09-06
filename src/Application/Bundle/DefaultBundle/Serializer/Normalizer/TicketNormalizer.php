@@ -10,10 +10,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * TicketNormalizer.
  */
-class TicketNormalizer implements NormalizerInterface
+class TicketNormalizer extends BaseNormalizer implements NormalizerInterface
 {
-    private $translator;
-    private $normalizer;
     private $params;
 
     /**
@@ -23,8 +21,7 @@ class TicketNormalizer implements NormalizerInterface
      */
     public function __construct(TranslatorInterface $translator, ObjectNormalizer $normalizer, array $params)
     {
-        $this->translator = $translator;
-        $this->normalizer = $normalizer;
+        parent::__construct($translator, $normalizer);
         $this->params = $params;
     }
 
@@ -60,22 +57,5 @@ class TicketNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Ticket;
-    }
-
-    /**
-     * @param float|int $price
-     *
-     * @return string|null
-     */
-    private function formatPrice(&$price): ?string
-    {
-        if (!isset($price)) {
-            return null;
-        }
-
-        $formatted = \number_format($price, 0, ',', ' ');
-        $result = $this->translator->trans('payment.price', ['%summ%' => $formatted]);
-
-        return $result;
     }
 }

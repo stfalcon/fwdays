@@ -188,7 +188,7 @@ error.promocode.not_found: 'Промокод не знайдений!'
 error.promocode.used: 'Промокод використаний!'
 error.promocode.low_than_discount: 'Знижка по промокоду нижчя ніж постійного учасника!'
 error.ticket.already.added: 'Квиток для цього користувача вже додано'
-
+error.user.cant_be_edit: 'Ви не може редагувати цього користувача'
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
 contacts.partners.title: Питання інфопартнерства, мітапів, майстер-класів

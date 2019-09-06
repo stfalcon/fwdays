@@ -3,13 +3,13 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Model\UserManager;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,8 +23,6 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
  */
 class PaymentController extends Controller
 {
-    private const NEW_USERS_SESSION_KEY = 'new_users';
-    public const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
     public const NEW_PAYMENT_SESSION_KEY = 'new_payment';
 
     /**
@@ -80,53 +78,64 @@ class PaymentController extends Controller
                 ]
             );
         }
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess($ticket);
+        if (!$payment instanceof Payment) {
+            return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
+        }
+
         $name = $request->request->get('name');
         $surname = $request->request->get('surname');
         $email = $request->request->get('email');
         $promoCodeString = $request->request->get('promocode');
 
-        $payment = $this->getPaymentIfAccess($ticket);
-        if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
-        }
-
-        if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment paid!']]);
-        }
-
         $session = $this->get('session');
         $session->set(self::NEW_PAYMENT_SESSION_KEY, false);
 
-        /** @var User|null $user */
-        $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
         $userManager = $this->get('fos_user.user_manager');
-        $newUsersList = $session->get(self::NEW_USERS_SESSION_KEY, []);
+        /** @var User|null $user */
+        $user = $userManager->findUserBy(['email' => $email]);
 
-        if (!$user && $ticket->getUser() instanceof User && \in_array($ticket->getUser()->getId(), $newUsersList, true)) {
+        $ticketService = $this->get('app.ticket.service');
+        if ($ticketService->isUserHasPaidTicketForEvent($user, $event)) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => ['user_email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
+                ]
+            );
+        }
+
+        try {
+            $ticket = $paymentService->replaceIfFindOtherUserTicketForEvent($user, $event, $ticket);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => ['user_email' => $this->get('translator')->trans('error.ticket.already.added')],
+                ]
+            );
+        }
+
+        $newUsersList = $session->get(UserManager::NEW_USERS_SESSION_KEY, []);
+        if (!$user && \in_array($ticket->getUser()->getId(), $newUsersList, true)) {
             $user = $ticket->getUser();
         }
 
         try {
             if (!$user) {
                 $user = $userManager->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
-                $newUsersList[] = $user->getId();
-                $session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
-            } elseif (\in_array($user->getId(), $newUsersList, true)) {
+            } else {
                 $userManager->updateUserData($user, $name, $surname, $email);
             }
         } catch (BadCredentialsException $e) {
-            $this->get('logger')->addError('autoRegistration with bad params');
-
             return new JsonResponse(['result' => false, 'error' => ['user_email' => 'Bad credentials!']]);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(['result' => false, 'error' => ['user_email' => $this->get('translator')->trans('error.user.cant_be_edit')]]);
         }
 
-        $oldUser = $ticket->getUser();
-        if ($user instanceof User && !$user->isEqualTo($oldUser)) {
-            $oldUser->removeTicket($ticket);
-            $user->addTicket($ticket);
-        }
+        $ticketService->setNewUserToTicket($user, $ticket);
 
-        $paymentService = $this->get('app.payment.service');
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
@@ -170,14 +179,10 @@ class PaymentController extends Controller
             );
         }
 
-        $payment = $this->getPaymentIfAccess();
-
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess();
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
-        }
-
-        if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment paid!']]);
         }
 
         $name = $request->request->get('name');
@@ -187,13 +192,9 @@ class PaymentController extends Controller
 
         /** @var User|null $user */
         $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $email]);
-        $session = $this->get('session');
         if (!$user) {
             try {
                 $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
-                $newUsersList = $session->get(self::NEW_USERS_SESSION_KEY, []);
-                $newUsersList[] = $user->getId();
-                $session->set(self::NEW_USERS_SESSION_KEY, $newUsersList);
             } catch (BadCredentialsException $e) {
                 $this->get('logger')->addError('autoRegistration with bad params');
 
@@ -216,7 +217,7 @@ class PaymentController extends Controller
                 return new JsonResponse(
                     [
                         'result' => false,
-                        'error' => ['user_name' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
+                        'error' => ['user_email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
                     ]
                 );
             }
@@ -231,7 +232,6 @@ class PaymentController extends Controller
             }
         }
 
-        $paymentService = $this->get('app.payment.service');
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
@@ -242,8 +242,9 @@ class PaymentController extends Controller
         $paymentService->checkTicketsPricesInPayment($payment, $event);
 
         $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+        $ticketData = $this->get('serializer')->normalize($ticket, null, ['groups' => ['payment.view']]);
 
-        return new JsonResponse(['result' => true, 'payment_data' => $paymentData]);
+        return new JsonResponse(['result' => true, 'payment_data' => $paymentData, 'ticket_data' => $ticketData]);
     }
 
     /**
@@ -264,18 +265,17 @@ class PaymentController extends Controller
      */
     public function removeTicketFromPaymentAction(Event $event, Ticket $ticket)
     {
-        $payment = $this->getPaymentIfAccess($ticket);
-
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess($ticket);
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
         }
 
-        if (!$ticket->isPaid() && $payment->getTickets()->count() > 1) {
-            $paymentService = $this->get('app.payment.service');
+        if ($payment->getTickets()->count() > 1) {
             $paymentService->removeTicketFromPayment($payment, $ticket);
             $paymentService->checkTicketsPricesInPayment($payment, $event);
         } else {
-            return new JsonResponse(['result' => false, 'error' => 'Already paid ticket!', 'html' => '']);
+            return new JsonResponse(['result' => false, 'error' => 'Must be at least one ticket!', 'html' => '']);
         }
 
         $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
@@ -299,11 +299,11 @@ class PaymentController extends Controller
     public function setPaidByBonusMoneyAction(Event $event)
     {
         $result = false;
-        $payment = $this->getPaymentIfAccess();
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess();
 
-        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('app.payment.service');
-            $result = $paymentService->setPaidByBonusMoney($payment, $event);
+        if ($payment && 0.0 === $payment->getAmount()) {
+            $result = $this->get('app.payment.service')->setPaidByBonusMoney($payment, $event);
         }
 
         $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
@@ -327,11 +327,11 @@ class PaymentController extends Controller
     public function setPaidByPromocodeAction(Event $event)
     {
         $result = false;
-        $payment = $this->getPaymentIfAccess();
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess();
 
-        if ($payment && $payment->isPending() && 0 === (int) $payment->getAmount()) {
-            $paymentService = $this->get('app.payment.service');
-            $result = $paymentService->setPaidByPromocode($payment, $event);
+        if ($payment && 0.0 === $payment->getAmount()) {
+            $result = $this->get('app.payment.service')->setPaidByPromocode($payment, $event);
         }
 
         $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
@@ -353,12 +353,13 @@ class PaymentController extends Controller
      */
     public function applyFwdaysBonusAction(Request $request): JsonResponse
     {
-        $payment = $this->getPaymentIfAccess();
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess();
         if (!$payment instanceof Payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
         }
 
-        $amount = $request->query->getInt('amount');
+        $amount = (float) $request->query->get('amount', 0);
 
         $this->get('app.payment.service')->addFwdaysBonusToPayment($payment, $amount);
         $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
@@ -381,19 +382,15 @@ class PaymentController extends Controller
      */
     public function eventPayingAction(Event $event, Request $request): JsonResponse
     {
-        $payment = $this->getPaymentIfAccess();
+        $paymentService = $this->get('app.payment.service');
+        $payment = $paymentService->getPendingPaymentIfAccess();
         if (!$payment instanceof Payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
         }
 
-        if ($payment->isPaid()) {
-            return new JsonResponse(['result' => false, 'error' => 'Payment paid!']);
-        }
-
-        $paymentService = $this->get('app.payment.service');
         $paymentService->checkTicketsPricesInPayment($payment, $event);
 
-        $savedData = $request->request->get('saved_data');
+        $savedData = (float) $request->request->get('saved_data');
         $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
 
         $form = null;
@@ -405,7 +402,7 @@ class PaymentController extends Controller
             $payType = null;
             $paySystemData = null;
             if ($payment->getTickets()->count() > 0) {
-                if (0 === (int) $payment->getAmount()) {
+                if (0.0 === $payment->getAmount()) {
                     $formAction = $payment->getFwdaysAmount() > 0 ?
                         $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 } else {
@@ -422,39 +419,5 @@ class PaymentController extends Controller
         }
 
         return new JsonResponse(['result' => true, 'amount_changed' => $amountChanged, 'payment_data' => $paymentData, 'form' => $form]);
-    }
-
-    /**
-     * Check if payment correct and give it by id.
-     *
-     * @param Ticket $ticket
-     *
-     * @return Payment|null $payment
-     */
-    private function getPaymentIfAccess($ticket = null): ?Payment
-    {
-        $payment = null;
-        $session = $this->get('session');
-        if ($session->has(self::ACTIVE_PAYMENT_ID_KEY)) {
-            $paymentId = $session->get(self::ACTIVE_PAYMENT_ID_KEY);
-            $em = $this->getDoctrine()->getManager();
-            $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
-        }
-
-        if (!$payment instanceof Payment) {
-            return null;
-        }
-
-        $paymentUser = $payment->getUser();
-        $currentUser = $this->getUser();
-
-        if ($ticket instanceof Ticket) {
-            $ticketUser = $ticket->getUser();
-            $payment = $payment->getTickets()->contains($ticket) && ($ticketUser->isEqualTo($currentUser) || $paymentUser->isEqualTo($currentUser)) ? $payment : null;
-        } else {
-            $payment = $paymentUser->isEqualTo($currentUser) ? $payment : null;
-        }
-
-        return $payment;
     }
 }

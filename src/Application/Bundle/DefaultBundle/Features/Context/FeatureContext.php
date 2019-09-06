@@ -309,7 +309,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $mail));
         $event = $em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(array('slug' => $eventSlug));
 
-        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneByUserAndEvent($user, $event);
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneByUserAndEventWithPayment($user, $event);
 
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_registration',
             array(
