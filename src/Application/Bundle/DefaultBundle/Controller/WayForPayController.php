@@ -34,7 +34,7 @@ class WayForPayController extends Controller
         try {
             $transactionStatus = $this->processWayForPayResponse($response);
         } catch (BadRequestHttpException $e) {
-            return new Response(['error' => $e->getMessage()], 400);
+            return new Response($e->getMessage(), 400);
         }
 
         if (WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
@@ -229,6 +229,8 @@ class WayForPayController extends Controller
             $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
             $wayForPay->saveResponseLog($payment, $response, 'set paid');
 
+            return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
+        } elseif ($payment->isPaid() && WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $response['transactionStatus']) {
             return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
         }
 
