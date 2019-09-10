@@ -171,6 +171,7 @@ flash_you_unsubscribe.title: Ви скасували підписку на по�
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
 committee.speaker.title: Програмний комітет
+expert.speaker.title: Експерти дискусiй
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'

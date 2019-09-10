@@ -75,7 +75,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'label' => 'Фото',
                 ])
             ->end()
-            ->with('Участвует в событиях', ['class' => 'col-md-4'])
+            ->with('Участвует в событиях', ['class' => 'col-md-3'])
                 ->add('events', 'entity', [
                     'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
                     'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
@@ -89,7 +89,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'label' => 'События',
                 ])
             ->end()
-            ->with('Кандидат на события', ['class' => 'col-md-4'])
+            ->with('Кандидат на события', ['class' => 'col-md-3'])
                 ->add('candidateEvents', 'entity', [
                     'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
                     'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
@@ -103,7 +103,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'label' => 'События',
                 ])
             ->end()
-            ->with('Программный комитет', ['class' => 'col-md-4'])
+            ->with('Программный комитет', ['class' => 'col-md-3'])
                 ->add('committeeEvents', 'entity', [
                     'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
                     'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
@@ -116,6 +116,20 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'expanded' => true,
                     'label' => 'События',
                 ])
+            ->end()
+            ->with('Эксперт дискосий', ['class' => 'col-md-3'])
+            ->add('expertEvents', 'entity', [
+                'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
+                'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
+                    $qb = $repository->createQueryBuilder('e');
+                    $repository = $qb->orderBy('e.id', 'DESC');
+
+                    return  $repository;
+                },
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'События',
+            ])
             ->end()
         ;
     }
