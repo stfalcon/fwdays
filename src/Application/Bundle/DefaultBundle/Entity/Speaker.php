@@ -139,6 +139,14 @@ class Speaker implements Translatable
     private $committeeEvents;
 
     /**
+     * @var Event[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="discussionExperts")
+     * @ORM\JoinTable(name="event_speakers_expert")
+     */
+    private $expertEvents;
+
+    /**
      * @var Review[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Review", mappedBy="speakers")
@@ -169,6 +177,7 @@ class Speaker implements Translatable
         $this->events = new ArrayCollection();
         $this->candidateEvents = new ArrayCollection();
         $this->committeeEvents = new ArrayCollection();
+        $this->expertEvents = new ArrayCollection();
         $this->reviews = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
@@ -467,5 +476,25 @@ class Speaker implements Translatable
     public function __toString()
     {
         return (string) $this->getName() ?: '-';
+    }
+
+    /**
+     * @return Event[]|Collection
+     */
+    public function getExpertEvents()
+    {
+        return $this->expertEvents;
+    }
+
+    /**
+     * @param Event[]|Collection $expertEvents
+     *
+     * @return $this
+     */
+    public function setExpertEvents($expertEvents): self
+    {
+        $this->expertEvents = $expertEvents;
+
+        return $this;
     }
 }
