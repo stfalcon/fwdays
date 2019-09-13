@@ -1072,8 +1072,16 @@
       margin-bottom: 8px;
     }
 
+    .input {
+      width: 100%;
+    }
+
     .form-label {
-      margin-bottom: 0 0 8px 0;
+      margin-bottom: 8px;
+    }
+
+    .text-error {
+      margin-left: 0;
     }
 
     .btn {
