@@ -117,7 +117,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                     'label' => 'События',
                 ])
             ->end()
-            ->with('Эксперт дискосий', ['class' => 'col-md-3'])
+            ->with('Эксперт дискуссий', ['class' => 'col-md-3'])
             ->add('expertEvents', 'entity', [
                 'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
                 'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
