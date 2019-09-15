@@ -1021,7 +1021,7 @@
 
     &__right {
       position: sticky;
-      bottom: -340px;
+      bottom: -255px;
       margin: 0 -16px;
       transition: bottom 0.2s ease-in-out;
 
@@ -1095,8 +1095,6 @@
     padding: 0 16px 26px;
 
     &__icon {
-      display: block;
-
       &--open {
         transform: translateX(-50%) rotate(-180deg);
       }
