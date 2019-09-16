@@ -152,6 +152,8 @@ class Event implements Translatable
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\GreaterThan(propertyPath="date")
      */
     protected $dateEnd;
 
