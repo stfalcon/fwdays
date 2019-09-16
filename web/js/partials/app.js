@@ -356,10 +356,10 @@ $(document).ready(function () {
     }
 
     if ($('.payment__left').length) {
-        var paymentCartPosition = ($('.payment__left').offset().top + $('.payment__left').outerHeight(true)) - $(window).height() + $('.payment-cart__top').outerHeight(true);
 
         if ($(window).width() < 768) {
             $(document).bind('scroll load', function () {
+                var paymentCartPosition = ($('.payment__left').offset().top + $('.payment__left').outerHeight(true)) - $(window).height() + $('.payment-cart').outerHeight(true);
                 if ($(this).scrollTop() < paymentCartPosition) {
                     $('.payment-cart__icon').show();
                 } else {
