@@ -45,7 +45,15 @@ $(document).ready(function () {
         var event_date = event_header_date_element.attr('datetime');
 
         if ('scrollRestoration' in history) {
-            history.scrollRestoration = event_date === now_date ? 'manual' : 'auto';
+            try {
+                if (event_date === now_date) {
+                    history.scrollRestoration = 'manual';
+                } else {
+                    history.scrollRestoration = 'auto';
+                }
+            } catch (e) {
+                console.log('set history.scrollRestoration unsupported');
+            }
         }
         if (event_date === now_date) {
             scrollToNearReport();
