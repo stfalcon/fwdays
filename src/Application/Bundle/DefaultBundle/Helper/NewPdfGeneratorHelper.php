@@ -6,6 +6,7 @@ use Application\Bundle\DefaultBundle\Service\SvgToJpg;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig_Environment;
 use Symfony\Component\Routing\Router;
 use Endroid\QrCode\QrCode;
@@ -124,7 +125,7 @@ class NewPdfGeneratorHelper
                 'ticket' => $ticket->getId(),
                 'hash' => $ticket->getHash(),
             ],
-            true
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         $this->qrCode->setText($url);
