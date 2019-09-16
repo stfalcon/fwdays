@@ -34,6 +34,7 @@ class EventBlock implements Translatable
     const REVIEWS = 'reviews';
     const CANDIDATE_SPEAKERS = 'candidate_speakers';
     const COMMITTEE_SPEAKERS = 'committee_speakers';
+    const EXPERT_SPEAKERS = 'expert_speakers';
 
     /**
      * @var int
@@ -225,6 +226,7 @@ class EventBlock implements Translatable
             'доклады' => self::REVIEWS,
             'кандидаты' => self::CANDIDATE_SPEAKERS,
             'програмный комитет' => self::COMMITTEE_SPEAKERS,
+            'эксперты' => self::EXPERT_SPEAKERS,
         ];
     }
 }

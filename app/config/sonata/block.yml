@@ -17,6 +17,7 @@ sonata_block:
         sonata.block.event.reviews:
         sonata.block.event.candidate_speakers:
         sonata.block.event.committee_speakers:
+        sonata.block.event.expert_speakers:
         sonata.block.event.ticket_status:
         sonata.block.footer:
         sonata.block.language_switcher:
