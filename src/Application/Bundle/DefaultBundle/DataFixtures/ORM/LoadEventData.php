@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Application\Bundle\DefaultBundle\Entity\Event;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * LoadEventData Class.

@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Review;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Application\Bundle\DefaultBundle\Entity\Review;
 
 /**
  * LoadReviewData Class.
@@ -94,10 +94,10 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadSpeakerData',
-        );
+        ];
     }
 
     /**

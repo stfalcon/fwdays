@@ -37,8 +37,7 @@ class BaseNormalizer
         $decimal = $price > (int) $price ? 2 : 0;
 
         $formatted = \number_format($price, $decimal, ',', ' ');
-        $result = $this->translator->trans('payment.price', ['%summ%' => $formatted]);
 
-        return $result;
+        return $this->translator->trans('payment.price', ['%summ%' => $formatted]);
     }
 }

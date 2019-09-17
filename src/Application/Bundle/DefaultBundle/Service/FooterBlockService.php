@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Sonata\BlockBundle\Block\BlockContextInterface;
 use Application\Bundle\DefaultBundle\Repository\PageRepository;
+use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

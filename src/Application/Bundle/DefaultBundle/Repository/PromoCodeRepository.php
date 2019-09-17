@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Doctrine\ORM\Query\Parameter;
 
 /**

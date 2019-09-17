@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
-use Doctrine\Common\DataFixtures\Loader;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use PHPUnit_Framework_Assert as Assert;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Feature context for ApplicationDefaultBundle.
@@ -204,11 +204,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function thisIsPdfFile()
     {
-        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.uniqid().'.html';
+        $filename = rtrim($this->getMinkParameter('show_tmp_dir'), \DIRECTORY_SEPARATOR).\DIRECTORY_SEPARATOR.uniqid().'.html';
         file_put_contents($filename, $this->getSession()->getPage()->getContent());
 
         $pdfFileConstraint = new File();
-        $pdfFileConstraint->mimeTypes = array('application/pdf', 'application/x-pdf');
+        $pdfFileConstraint->mimeTypes = ['application/pdf', 'application/x-pdf'];
 
         /** @var \Symfony\Component\Validator\Validator $validator */
         $validator = $this->kernel->getContainer()->get('validator');
@@ -229,9 +229,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $user));
-        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['username' => $user]);
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(['user' => $user->getId()]);
+        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(['user' => $user->getId()]);
         $payment->setStatus('paid');
         $ticket->setPayment($payment);
 
@@ -248,9 +248,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $user));
-        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(array('user' => $user->getId()));
-        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(array('user' => $user->getId()));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['username' => $user]);
+        $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(['user' => $user->getId()]);
+        $payment = $em->getRepository('ApplicationDefaultBundle:Payment')->findOneBy(['user' => $user->getId()]);
         $payment->setStatus('pending');
         $ticket->setPayment($payment);
 
@@ -267,7 +267,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $mail));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['username' => $mail]);
         $this->assertPageContainsText($user->getFullname());
     }
 
@@ -306,16 +306,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->kernel->getContainer()->get('doctrine')->getManager();
 
-        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(array('username' => $mail));
-        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(array('slug' => $eventSlug));
+        $user = $em->getRepository('ApplicationDefaultBundle:User')->findOneBy(['username' => $mail]);
+        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
 
         $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')->findOneByUserAndEventWithPayment($user, $event);
 
         return $this->kernel->getContainer()->get('router')->generate('event_ticket_registration',
-            array(
+            [
                 'ticket' => $ticket->getId(),
                 'hash' => $ticket->getHash(),
-            ),
+            ],
             true
         );
     }
@@ -337,7 +337,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         if ($mailer->getMessageCount() > 0) {
             foreach ($mailer->getMessages() as $message) {
                 if (trim($subject) === trim($message->getSubject())) {
-                    if (array_key_exists($to, $message->getTo())) {
+                    if (\array_key_exists($to, $message->getTo())) {
                         throw new \RuntimeException(sprintf('Message with subject "%s" and receiver "%s" was sent, but should not', $subject, $to));
                     }
                 }
@@ -365,7 +365,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 throw new \RuntimeException('Debug-Token not found in response headers. Have you turned on the debug flag?');
             }
             $token = isset($headers['X-Debug-Token']) ? $headers['X-Debug-Token'] : $headers['x-debug-token'];
-            if (is_array($token)) {
+            if (\is_array($token)) {
                 $token = end($token);
             }
         }

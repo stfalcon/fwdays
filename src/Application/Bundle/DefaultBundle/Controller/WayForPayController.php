@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -91,7 +91,7 @@ class WayForPayController extends Controller
         $eventType = '';
         if ($payment) {
             $tickets = $payment->getTickets();
-            $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+            $eventName = \count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
             $eventType = $this->getItemVariant($eventName);
         }
 

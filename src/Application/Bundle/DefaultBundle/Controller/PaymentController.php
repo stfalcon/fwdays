@@ -2,16 +2,16 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Model\UserManager;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Application\Bundle\DefaultBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

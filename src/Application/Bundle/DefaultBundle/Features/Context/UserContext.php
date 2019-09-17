@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\BehatContext;
+use Behat\MinkExtension\Context\MinkContext;
 
 /**
  * Feature context for ApplicationDefaultBundle.

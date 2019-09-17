@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Class PromoCodeAdmin.

@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
 use Application\Bundle\DefaultBundle\Entity\AbstractClass\AbstractPage;
 use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Event.

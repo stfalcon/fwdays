@@ -5,8 +5,8 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\DefaultBundle\Entity\Page;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -126,7 +126,7 @@ class DefaultController extends Controller
 
         $errors = $validator->validate($user);
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             $errorsString = (string) $errors;
 
             return new JsonResponse(['result' => true, 'error' => $errorsString]);

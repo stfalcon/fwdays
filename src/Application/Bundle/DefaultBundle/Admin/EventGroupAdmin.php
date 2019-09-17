@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Class EventGroupAdmin.
@@ -77,8 +77,8 @@ final class EventGroupAdmin extends AbstractAdmin
                 'events',
                 null,
                 [
-                    'disabled' => is_null($group->getId()),
-                    'help' => is_null($group->getId()) ? 'добавление событий возможно только после создания группы' : 'добавьте событие в группу',
+                    'disabled' => null === $group->getId(),
+                    'help' => null === $group->getId() ? 'добавление событий возможно только после создания группы' : 'добавьте событие в группу',
                     'label' => 'События',
                 ]
             );

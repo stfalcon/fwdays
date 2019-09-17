@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Application\Bundle\DefaultBundle\Entity\Ticket;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
-use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
@@ -71,7 +71,7 @@ class TicketRepository extends EntityRepository
 
         $query = $query->getQuery();
 
-        $users = array();
+        $users = [];
         foreach ($query->execute() as $result) {
             $users[] = $result->getUser();
         }
@@ -192,29 +192,6 @@ class TicketRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Find ticket for some user and event with not null payment.
-     *
-     * @param User  $user  User
-     * @param Event $event Event
-     *
-     * @return Ticket|null
-     */
-    public function findOneByUserAndEventWithPayment($user, $event): Ticket
-    {
-        $qb = $this->createQueryBuilder('t');
-
-        return $qb->select('t')
-            ->where('t.event = :event')
-            ->andWhere('t.user = :user')
-            ->andWhere($qb->expr()->isNotNull('t.payment'))
-            ->setParameter('event', $event)
-            ->setParameter('user', $user)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 
     /**

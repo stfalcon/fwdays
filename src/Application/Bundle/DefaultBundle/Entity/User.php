@@ -3,8 +3,8 @@
 namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use FOS\UserBundle\Model\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -652,7 +652,7 @@ class User extends BaseUser
      */
     public function setTickets($tickets)
     {
-        if (count($tickets) > 0) {
+        if (\count($tickets) > 0) {
             foreach ($tickets as $item) {
                 $this->addTicket($item);
             }

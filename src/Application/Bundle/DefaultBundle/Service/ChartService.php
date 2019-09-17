@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\CalendarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 
 /**
  * Service for initialization and configuration charts.
@@ -24,7 +24,7 @@ class ChartService
 
         // рахуєм різницю в роках між першою датою графіка і останньою, щоб динамічно підлаштувати висоту канви
         $firstDate = array_keys($data)[1]; // в 0-му елементі заголовки графіка. перша дата в 1-му
-        $lastDate = array_keys($data)[count($data) - 1];
+        $lastDate = array_keys($data)[\count($data) - 1];
 
         $firstYear = (int) (new \DateTime($firstDate))->format('Y');
         $lastYear = (int) (new \DateTime($lastDate))->format('Y');

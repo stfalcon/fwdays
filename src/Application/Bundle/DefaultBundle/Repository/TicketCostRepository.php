@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class TicketCostRepository.
@@ -24,7 +24,7 @@ class TicketCostRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
 
         $result = $qb->getQuery()->getResult();
-        $result = is_array($result) ? array_shift($result) : null;
+        $result = \is_array($result) ? array_shift($result) : null;
 
         $currentCost = $result ? $result['amount'] : null;
 

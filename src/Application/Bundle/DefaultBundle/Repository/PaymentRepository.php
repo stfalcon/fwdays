@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
-use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Parameter;
 
 /**

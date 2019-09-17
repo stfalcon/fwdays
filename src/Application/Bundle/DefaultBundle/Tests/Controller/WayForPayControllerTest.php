@@ -3,8 +3,8 @@
 namespace Application\Bundle\DefaultBundle\Tests\Controller;
 
 use Application\Bundle\DefaultBundle\Controller\WayForPayController;
-use Prophecy\Argument;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class WayForPayControllerTest extends WebTestCase

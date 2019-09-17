@@ -2,16 +2,16 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Prophecy\Prophet;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\TicketRepository;
-use Symfony\Component\BrowserKit\Client;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Prophecy\Prophet;
+use Symfony\Component\BrowserKit\Client;
 
 /**
  * Class ReferralServiceTest.

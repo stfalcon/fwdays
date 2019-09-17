@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * Class PromoCodeRequestListener.
@@ -23,7 +23,7 @@ class PromoCodeRequestListener
         $request = $event->getRequest();
         $promocode = $request->query->get('promocode');
         if ($promocode && preg_match('/\/event\/.+/', $request->getPathInfo())) {
-            $eventSlugStartPos = strpos($request->getPathInfo(), '/event/') + strlen('/event/');
+            $eventSlugStartPos = strpos($request->getPathInfo(), '/event/') + \strlen('/event/');
             $eventSlugEndPos = strpos($request->getPathInfo(), '/', $eventSlugStartPos);
             $eventSlugLength = false !== $eventSlugEndPos ? $eventSlugEndPos - $eventSlugStartPos : null;
             if (null !== $eventSlugLength) {

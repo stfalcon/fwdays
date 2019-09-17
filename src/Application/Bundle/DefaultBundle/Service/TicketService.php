@@ -2,15 +2,15 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\DefaultBundle\Entity\User;
-use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
-use Doctrine\ORM\EntityManager;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\PaymentRepository;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -288,7 +288,7 @@ class TicketService
                     ],
             ];
 
-        if (in_array(
+        if (\in_array(
             $eventState,
             [
                 self::EVENT_DONE,
@@ -303,7 +303,7 @@ class TicketService
             $class = $states[$position][$eventState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
         }
 
-        $isMob = in_array($position, ['event_fix_header_mob', 'price_block_mob']);
+        $isMob = \in_array($position, ['event_fix_header_mob', 'price_block_mob']);
 
         if ($event->isActiveAndFuture()) {
             $data = $event->getSlug();
@@ -358,9 +358,6 @@ class TicketService
                     $caption = $this->translator->trans('ticket.status.pay');
                 }
                 $href = $this->router->generate('event_pay', ['slug' => $event->getSlug()]);
-//                if (!in_array($position, ['event_header', 'event_fix_header', 'event_fix_header_mob'])) {
-//                    $class .= ' get-payment';
-//                }
             } elseif (self::PAID_IS_RETURNED === $eventState) {
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.status.payment_returned_mob');

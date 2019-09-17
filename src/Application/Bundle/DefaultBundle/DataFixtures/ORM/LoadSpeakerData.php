@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Speaker;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Application\Bundle\DefaultBundle\Entity\Speaker;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * LoadSpeakerData Class.
@@ -56,9 +56,9 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
-        );
+        ];
     }
 
     /**
