@@ -230,6 +230,8 @@ class WayForPayController extends Controller
             $wayForPay->saveResponseLog($payment, $response, 'set paid');
 
             return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
+        } elseif ($payment->isPaid() && WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $response['transactionStatus']) {
+            return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
         }
 
         return $response['transactionStatus'];

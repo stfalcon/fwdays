@@ -187,6 +187,7 @@ flash_you_unsubscribe.title: You are unsubscribed for event
 contact_info.title: Contact info
 candidate.speaker.title: On consideration
 committee.speaker.title: Program Committee
+expert.speaker.title: Discussion experts
 error.phone_bad_format: Please enter a valid phone number
 error.email_bad_format: Please enter a valid email address
 error.surname.only_letters: Surname must contain only letters

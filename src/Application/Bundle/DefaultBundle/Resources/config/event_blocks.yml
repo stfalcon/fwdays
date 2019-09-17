@@ -50,6 +50,11 @@ services:
         arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator']
         tags: [name: 'sonata.block']
 
+    sonata.block.event.expert_speakers:
+        class: Application\Bundle\DefaultBundle\Service\EventBlock\DiscussionExpertsEventBlockService
+        arguments: ['sonata.block.event.expert_speakers', '@templating', '@translator']
+        tags: [name: 'sonata.block']
+
     sonata.block.event.ticket_status:
         class: Application\Bundle\DefaultBundle\Service\EventBlock\TicketStatusEventBlockService
         arguments: ['sonata.block.event.ticket_status', '@templating', '@app.ticket.service']

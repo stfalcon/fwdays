@@ -174,10 +174,11 @@ pay.event.cupon: 'Купон на знижку:'
 pay.amount_changed: 'Змінилась сума до оплати! Перевірьте дані!'
 flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
+
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
 committee.speaker.title: Програмний комітет
-
+expert.speaker.title: Експерти дискусiй
 error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'

@@ -152,6 +152,8 @@ class Event implements Translatable
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Assert\GreaterThan(propertyPath="date")
      */
     protected $dateEnd;
 
@@ -306,12 +308,22 @@ class Event implements Translatable
     /**
      * Speakers event .
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Speaker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="committeeEvents")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $committeeSpeakers;
+
+    /**
+     * Speakers event .
+     *
+     * @var Speaker[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="expertEvents")
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     */
+    protected $discussionExperts;
 
     /**
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
@@ -394,6 +406,7 @@ class Event implements Translatable
         $this->speakers = new ArrayCollection();
         $this->candidateSpeakers = new ArrayCollection();
         $this->committeeSpeakers = new ArrayCollection();
+        $this->discussionExperts = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->ticketsCost = new ArrayCollection();
         $this->blocks = new ArrayCollection();
@@ -1469,5 +1482,25 @@ class Event implements Translatable
         }
 
         return null;
+    }
+
+    /**
+     * @return Speaker[]|Collection
+     */
+    public function getDiscussionExperts()
+    {
+        return $this->discussionExperts;
+    }
+
+    /**
+     * @param Speaker[]|Collection $discussionExperts
+     *
+     * @return $this
+     */
+    public function setDiscussionExperts($discussionExperts): self
+    {
+        $this->discussionExperts = $discussionExperts;
+
+        return $this;
     }
 }
