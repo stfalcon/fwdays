@@ -287,6 +287,10 @@
     font-size: 16px;
     line-height: 22px;
   }
+
+  a {
+    color: $dark-color;
+  }
 }
 
 .event-video {
@@ -1378,6 +1382,10 @@ a.fix-event-header__title {   //for review-page, venue-page
   &__btn {
     width: 264px;
   }
+
+  a {
+    color: $dark-color;
+  }
 }
 
 .audience {
@@ -1424,6 +1432,10 @@ a.fix-event-header__title {   //for review-page, venue-page
   &__img {
     display: block;
     width: 100%;
+  }
+
+  a {
+    color: $dark-color;
   }
 }
 
