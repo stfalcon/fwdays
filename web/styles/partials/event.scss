@@ -286,6 +286,10 @@
   &__text {
     font-size: 16px;
     line-height: 22px;
+
+    a {
+      color: $dark-color;
+    }
   }
 
   a {
@@ -1344,6 +1348,10 @@ a.fix-event-header__title {   //for review-page, venue-page
   &__text {
     line-height: 26px;
     margin-bottom: 20px;
+
+    a {
+      color: $dark-color;
+    }
   }
 
   &__text-sm {
@@ -1400,6 +1408,10 @@ a.fix-event-header__title {   //for review-page, venue-page
     opacity: 0.8;
     line-height: 26px;
     margin-bottom: 24px;
+
+    a {
+      color: $dark-color;
+    }
   }
 
   &__check-list {
