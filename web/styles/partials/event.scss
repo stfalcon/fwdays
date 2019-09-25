@@ -214,6 +214,11 @@
 
     p {
       margin-bottom: 26px;
+
+      a {
+        color: $dark-color;
+        border-bottom: 1px solid $dark-color;
+      }
     }
   }
 }
