@@ -19,10 +19,10 @@ class PromoCodeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', 'text', array(
+            ->add('code', 'text', [
                 'label' => 'У меня есть промокод',
                 'required' => true,
-            ));
+            ]);
     }
 
     /**

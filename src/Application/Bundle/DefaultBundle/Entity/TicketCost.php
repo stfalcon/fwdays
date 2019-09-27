@@ -120,7 +120,7 @@ class TicketCost
     /**
      * @return float
      */
-    public function getAmountByTemporaryCount()
+    public function getAmountByTemporaryCount(): float
     {
         ++$this->temporaryCount;
 
@@ -252,7 +252,7 @@ class TicketCost
     /**
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }

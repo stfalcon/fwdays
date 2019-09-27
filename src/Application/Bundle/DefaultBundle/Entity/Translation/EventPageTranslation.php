@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Entity\Translation;
 
-use Doctrine\ORM\Mapping as ORM;
 use Application\Bundle\DefaultBundle\Entity\AbstractClass\AbstractTranslation;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EventPageTranslation entity.

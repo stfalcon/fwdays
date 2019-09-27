@@ -4,9 +4,9 @@ namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -91,11 +91,12 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $container = $this->getConfigurationPool()->getContainer();
+        $environment = $container->getParameter('kernel.environment');
         $token = $container->get('security.token_storage')->getToken();
         $isSuperAdmin = false;
         if ($token) {
             $user = $token->getUser();
-            $isSuperAdmin = $user instanceof User ? in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
+            $isSuperAdmin = $user instanceof User ? (\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment) : false;
         }
 
         $formMapper
@@ -172,7 +173,7 @@ final class UserAdmin extends AbstractAdmin
      */
     private function getAvailableRoles()
     {
-        $roles = array();
+        $roles = [];
         $rolesHierarhy = $this->getConfigurationPool()->getContainer()
             ->getParameter('security.role_hierarchy.roles');
         foreach (array_keys($rolesHierarhy) as $role) {

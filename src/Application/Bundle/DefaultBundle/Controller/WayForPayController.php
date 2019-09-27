@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -84,14 +84,14 @@ class WayForPayController extends Controller
         $paymentId = $this->get('session')->get(WayForPayService::WFP_PAYMENT_KEY);
         $this->get('session')->remove(WayForPayService::WFP_PAYMENT_KEY);
 
-        /** @var Payment $payment */
-        $payment = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
+        /** @var Payment|null $payment */
+        $payment = $paymentId ? $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId) : null;
 
         $eventName = '';
         $eventType = '';
         if ($payment) {
             $tickets = $payment->getTickets();
-            $eventName = count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
+            $eventName = \count($tickets) > 0 ? $tickets[0]->getEvent()->getName() : '';
             $eventType = $this->getItemVariant($eventName);
         }
 
@@ -217,7 +217,7 @@ class WayForPayController extends Controller
             $em->flush();
 
             try {
-                $referralService = $this->get('application.referral.service');
+                $referralService = $this->get('app.referral.service');
                 $referralService->chargingReferral($payment);
                 $referralService->utilizeBalance($payment);
             } catch (\Exception $e) {
@@ -226,7 +226,7 @@ class WayForPayController extends Controller
                     $this->getRequestDataToArr($response, $payment)
                 );
             }
-            $this->get('session')->set('way_for_pay_payment', $response['orderNo']);
+            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $response['orderNo']);
             $wayForPay->saveResponseLog($payment, $response, 'set paid');
 
             return WayForPayService::WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS;

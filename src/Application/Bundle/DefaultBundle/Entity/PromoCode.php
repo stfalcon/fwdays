@@ -2,12 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
-use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\PromoCode.
@@ -25,6 +26,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class PromoCode
 {
     use TranslateTrait;
+
+    public const PROMOCODE_APPLIED = 'promocode_applied';
+    public const PROMOCODE_LOW_THAN_DISCOUNT = 'error.promocode.low_than_discount';
+    public const PROMOCODE_USED = 'error.promocode.used';
+
     /**
      * @ORM\OneToMany(
      *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\PromoCodeTranslation",
@@ -58,6 +64,10 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
+     * @Assert\Range(min="0", max="100")
+     *
+     * @Groups("payment.view")
      */
     protected $discountAmount;
 
@@ -67,6 +77,8 @@ class PromoCode
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     *
+     * @Groups("payment.view")
      */
     protected $code;
 
@@ -89,6 +101,8 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer", options={"default":0})
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     protected $usedCount = 0;
 
@@ -96,6 +110,8 @@ class PromoCode
      * @var int
      *
      * @ORM\Column(type="integer", options={"default":0})
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     protected $maxUseCount = 0;
 
@@ -128,7 +144,7 @@ class PromoCode
      *
      * @return $this
      */
-    public function setUsedCount($usedCount)
+    public function setUsedCount($usedCount): self
     {
         $this->usedCount = $usedCount;
 
@@ -138,7 +154,7 @@ class PromoCode
     /**
      * @return $this
      */
-    public function incUsedCount()
+    public function incUsedCount(): self
     {
         ++$this->usedCount;
 
@@ -150,7 +166,7 @@ class PromoCode
      *
      * @return $this
      */
-    public function setCode($code)
+    public function setCode(string $code): self
     {
         $this->code = $code;
 
@@ -160,7 +176,7 @@ class PromoCode
     /**
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -334,10 +350,38 @@ class PromoCode
     }
 
     /**
+     * @return $this
+     */
+    public function clearTmpUsedCount(): self
+    {
+        $this->tmpUsedCount = 0;
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isCanBeTmpUsed()
     {
         return $this->isUnlimited() || ($this->getUsedCount() + $this->tmpUsedCount) < $this->getMaxUseCount();
+    }
+
+    /**
+     * @param PromoCode|null $promoCode
+     *
+     * @return bool
+     */
+    public function isEqualTo(?PromoCode $promoCode): bool
+    {
+        if (!$promoCode instanceof self) {
+            return false;
+        }
+
+        if ($promoCode->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

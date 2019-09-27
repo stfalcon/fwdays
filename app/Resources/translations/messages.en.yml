@@ -82,7 +82,15 @@ pay.i_have_promo.title: I have promo code
 pay.enter_promo.title: Add promo code to get discount
 pay.sum.bold.title: 'Sum: <b>%sum% UAH</b>'
 pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% UAH</b>'
+pay.bonus.label.title: 'your fwdays bonus'
+pay.bonus.title: '&minus;%sum% fwdays bonus'
 pay.sum_for_pay.bold.title: 'For payment: <b>%sum% UAH</b>'
+pay.sum_for_pay.title: 'For payment:'
+pay.card_description: 'У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.'
+pay.bonus.apply_btn: 'apply'
+pay.user.add_btn: 'save'
+pay.user.continue: 'continue'
+pay.amount_changed: 'Payment Amount Changed! Check the data!'
 event.price.title: Event price
 tickets.count: '{0}%count% ticket|{1}%count% tickets|{2}%count% tickets'
 tickets.hint: available only via website
@@ -188,7 +196,9 @@ error.user.already.paid: the %email% has already paid the ticket
 error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
 error.promocode.not_found: 'Promo code not found!'
 error.promocode.used: 'Promo code used!'
-
+error.promocode.low_than_discount: 'Promo code discount is lower than regular participant!'
+error.ticket.already.added: 'A ticket for this user has already been added'
+error.user.cant_be_edit: 'You cannot edit this user'
 contacts.registration.title: Registration and payments for participation in conferences
 contacts.cooperation.title: Cooperation and partnership with FWDays
 contacts.partners.title: Informational partnerships, meetups and master classes

@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Application\Bundle\DefaultBundle\Entity\Mail;
-use Application\Bundle\DefaultBundle\Entity\MailQueue;
 
 /**
  * Class LoadMailQueueData.
@@ -20,11 +20,11 @@ class LoadMailQueueData extends AbstractFixture implements DependentFixtureInter
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
-        );
+        ];
     }
 
     /**

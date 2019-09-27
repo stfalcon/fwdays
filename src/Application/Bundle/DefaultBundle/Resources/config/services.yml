@@ -11,18 +11,13 @@ services:
         class: Application\Bundle\DefaultBundle\Service\UrlForRedirect
         arguments: ["@router", "%locales%"]
 
-    app.ticket_cost.service:
-        class: Application\Bundle\DefaultBundle\Service\TicketCostService
-        arguments: ["@doctrine.orm.entity_manager"]
-
-    application.ticket.service:
+    app.ticket.service:
         class: Application\Bundle\DefaultBundle\Service\TicketService
         arguments:
             - "@doctrine.orm.entity_manager"
             - "%application_default.config%"
             - "@translator"
             - "@router"
-            - "@app.ticket_cost.service"
             - "@security.token_storage"
 
     app.datetime.twig.extension:
@@ -108,7 +103,7 @@ services:
         class: Application\Bundle\DefaultBundle\Handler\LoginHandler
         arguments:
             - "@router"
-            - "@application.referral.service"
+            - "@app.referral.service"
             - "@fos_user.user_manager"
             - "@app.url_for_redirect"
 
@@ -119,11 +114,17 @@ services:
             - {facebook: facebookID, google: googleID}
             - "@service_container"
 
-    application.payment.service:
+    app.payment.service:
         class: Application\Bundle\DefaultBundle\Service\PaymentService
-        arguments: ['@service_container']
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@app.ticket.service'
+            - '@translator'
+            - '@security.token_storage'
+            - '@app.referral.service'
+            - '@session'
 
-    application.referral.service:
+    app.referral.service:
         class: Application\Bundle\DefaultBundle\Service\ReferralService
         arguments: ['@service_container']
 
@@ -255,6 +256,7 @@ services:
             - "%fos_user.model.user.class%"
             - "@validator"
             - "@application.mailer_helper"
+            - "@session"
 
     user_mail_command_service:
         class: Application\Bundle\DefaultBundle\Command\StfalconMailerCommand
@@ -274,3 +276,15 @@ services:
             - "%fos_user.model.user.class%"
         tags:
             - { name: form.type, alias: application_registration }
+
+    app.serializer_normalizer.payment_normalizer:
+        class: Application\Bundle\DefaultBundle\Serializer\Normalizer\PaymentNormalizer
+        arguments: ['@translator', '@serializer.normalizer.object']
+        tags:
+            - { name: serializer.normalizer }
+
+    app.serializer_normalizer.ticket_normalizer:
+        class: Application\Bundle\DefaultBundle\Serializer\Normalizer\TicketNormalizer
+        arguments: ['@translator', '@serializer.normalizer.object', '%application_default.config%']
+        tags:
+            - { name: serializer.normalizer }

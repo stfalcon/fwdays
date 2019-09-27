@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Form\Type;
 
+use A2lix\TranslationFormBundle\Form\DataMapper\GedmoTranslationMapper;
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsLocalesType;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsFieldsType;
 use Symfony\Component\Form\FormBuilderInterface;
-use A2lix\TranslationFormBundle\Form\DataMapper\GedmoTranslationMapper;
 
 /**
  * fix for symfony 3.4.
@@ -27,11 +27,11 @@ class MyGedmoTranslationsLocalesType extends GedmoTranslationsLocalesType
 
         foreach ($options['locales'] as $locale) {
             if (isset($options['fields_options'][$locale])) {
-                $builder->add($locale, TranslationsFieldsType::class, array(
+                $builder->add($locale, TranslationsFieldsType::class, [
                     'fields' => $options['fields_options'][$locale],
                     'translation_class' => $options['translation_class'],
                     'inherit_data' => $isDefaultTranslation,
-                ));
+                ]);
             }
         }
     }

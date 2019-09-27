@@ -2,16 +2,16 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Application\Bundle\DefaultBundle\Entity\WayForPayLog;
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Entity\WayForPayLog;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -23,6 +23,7 @@ class WayForPayService
     public const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
     public const WFP_PAY_BY_WIDGET = 'wfp_pay_widget';
     public const WFP_PAY_BY_SECURE_PAGE = 'wfp_pay_secure_page';
+
     public const WFP_TRANSACTION_APPROVED_AND_SET_PAID_STATUS = 'approved_and_set_paid';
     public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
     public const WFP_TRANSACTION_PENDING_STATUS = 'Pending';

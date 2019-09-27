@@ -1,0 +1,44 @@
+<form class="payer-form" id="payer-block-edit" style="display: none">
+    <div class="payer">
+        <div class="payer__number"></div>
+        <div class="user-payment-form">
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.name.title'|trans }}</label>
+                        <input name="user_name" class="input valid-name payment_user_name" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.surname.title'|trans }}</label>
+                        <input name="user_surname" class="input valid-name payment_user_surname" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.email.title'|trans }}</label>
+                        <input name="user_email" class="input valid-email payment_user_email" type="email">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'pay.event.cupon'|trans }}</label>
+                        <input name="user_promo_code" class="input user_promo_code" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <button type="button" class="btn btn--md btn--secondary add-validator add-user-btn">{{ 'pay.user.add_btn'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

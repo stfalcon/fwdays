@@ -2,17 +2,17 @@
 
 namespace Application\Bundle\DefaultBundle\Handler;
 
-use Application\Bundle\DefaultBundle\Service\UrlForRedirect;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Model\UserManager;
-use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
+use Application\Bundle\DefaultBundle\Service\UrlForRedirect;
+use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
 /**
  * Class LoginHandler.

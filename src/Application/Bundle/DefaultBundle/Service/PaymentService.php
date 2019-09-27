@@ -2,35 +2,50 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Application\Bundle\DefaultBundle\Controller\PaymentController;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\Container;
-use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
-use Application\Bundle\DefaultBundle\Entity\PromoCode;
-use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class PaymentService.
+ * PaymentService.
  */
 class PaymentService
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-    /** @var $em EntityManager */
-    protected $em;
+    private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
+
+    private $em;
+    private $ticketService;
+    private $translator;
+    private $tokenStorage;
+    private $referralService;
+    private $session;
 
     /**
-     * @param Container $container
+     * @param EntityManager       $em
+     * @param TicketService       $ticketService
+     * @param TranslatorInterface $translator
+     * @param TokenStorage        $tokenStorage
+     * @param ReferralService     $referralService
+     * @param Session             $session
      */
-    public function __construct($container)
+    public function __construct(EntityManager $em, TicketService $ticketService, TranslatorInterface $translator, TokenStorage $tokenStorage, ReferralService $referralService, Session $session)
     {
-        $this->container = $container;
-        $this->em = $container->get('doctrine.orm.default_entity_manager');
+        $this->em = $em;
+        $this->ticketService = $ticketService;
+        $this->translator = $translator;
+        $this->tokenStorage = $tokenStorage;
+        $this->referralService = $referralService;
+        $this->session = $session;
     }
 
     /**
@@ -43,7 +58,7 @@ class PaymentService
     public function createPaymentForCurrentUserWithTicket($ticket)
     {
         /* @var  User $user */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $payment = new Payment();
         $payment->setUser($user);
 
@@ -56,6 +71,8 @@ class PaymentService
         }
 
         $this->em->flush();
+
+        $this->session->set(PaymentController::NEW_PAYMENT_SESSION_KEY, true);
 
         return $payment;
     }
@@ -71,7 +88,6 @@ class PaymentService
         if (!$ticket->isPaid() && $payment->addTicket($ticket)) {
             $ticket->setPayment($payment);
             $this->em->persist($ticket);
-            //$this->recalculatePaymentAmount($payment);
         }
     }
 
@@ -96,11 +112,10 @@ class PaymentService
     }
 
     /**
-     * Recalculate amount of payment.
-     *
      * @param Payment $payment
+     * @param bool    $withFlush
      */
-    public function recalculatePaymentAmount($payment)
+    public function recalculatePaymentAmount(Payment $payment, bool $withFlush = true): void
     {
         $paymentAmount = 0;
         $paymentAmountWithoutDiscount = 0;
@@ -111,8 +126,10 @@ class PaymentService
         }
         $payment->setAmount($paymentAmount);
         $payment->setBaseAmount($paymentAmountWithoutDiscount);
-        $this->payByReferralMoney($payment);
-        $this->em->flush();
+        $this->recalculatePaymentFwdaysAmount($payment);
+        if ($withFlush) {
+            $this->em->flush();
+        }
     }
 
     /**
@@ -155,37 +172,37 @@ class PaymentService
     }
 
     /**
-     * Add promo code for all tickets in payment
-     * if ticket already not have discount and
-     * recalculate payment amount.
+     * @param string $promoCodeString
+     * @param Event  $event
+     * @param Ticket $ticket
      *
-     * @param Payment   $payment
-     * @param PromoCode $promoCode
-     *
-     * @return array
+     * @throws \Exception
+     * @throws BadRequestHttpException
      */
-    public function addPromoCodeForTicketsInPayment($payment, $promoCode)
+    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket): void
     {
-        $notUsedPromoCode = [];
+        if ($promoCodeString) {
+            /** @var PromoCode|null $promoCode */
+            $promoCode = $this->em->getRepository('ApplicationDefaultBundle:PromoCode')
+                ->findActivePromoCodeByCodeAndEvent($promoCodeString, $event);
 
-        $ticketService = $this->container->get('application.ticket.service');
-        /** @var Ticket $ticket */
-        foreach ($payment->getTickets() as $ticket) {
-            if (!$promoCode->isCanBeTmpUsed()) {
-                break;
+            if (!$promoCode) {
+                throw new BadRequestHttpException($this->translator->trans('error.promocode.not_found'));
             }
-            if ($ticketService->isMustBeDiscount($ticket)) {
-                $ticketService->setTicketBestDiscount($ticket, $promoCode);
-            } else {
-                $ticketService->setTicketPromoCode($ticket, $promoCode);
+
+            if (!$promoCode->isCanBeUsed()) {
+                throw new BadRequestHttpException($this->translator->trans('error.promocode.used'));
             }
-            if (!$ticket->hasPromoCode()) {
-                $notUsedPromoCode[] = $ticket->getUser()->getFullname();
-            }
+
+            $result = $this->addPromoCodeForTicket($ticket, $promoCode);
+        } else {
+            $result = PromoCode::PROMOCODE_APPLIED;
+            $ticket->setPromoCode(null);
         }
-        $this->recalculatePaymentAmount($payment);
 
-        return $notUsedPromoCode;
+        if (PromoCode::PROMOCODE_APPLIED !== $result) {
+            throw new BadRequestHttpException($this->translator->trans($result));
+        }
     }
 
     /**
@@ -197,22 +214,34 @@ class PaymentService
      */
     public function checkTicketsPricesInPayment($payment, $event)
     {
-        $ticketService = $this->container->get('application.ticket.service');
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $currentTicketCost = $this->container->get('app.ticket_cost.service')->getCurrentEventTicketCost($event);
+            $currentTicketCost = $this->ticketService->getCurrentEventTicketCost($event);
 
             if (null === $currentTicketCost) {
                 $currentTicketCost = $event->getBiggestTicketCost();
             }
 
             $eventCost = $currentTicketCost->getAmountByTemporaryCount();
-            $isMustBeDiscount = $ticketService->isMustBeDiscount($ticket);
+            $isMustBeDiscount = $this->ticketService->isMustBeDiscount($ticket);
+
+            $promoCodeCleared = false;
+            $promoCode = $ticket->getPromoCode();
+            if ($promoCode instanceof PromoCode) {
+                if (!$promoCode->isCanBeTmpUsed()) {
+                    $ticket->setPromoCode(null);
+                    $promoCodeCleared = true;
+                } else {
+                    $promoCode->incTmpUsedCount();
+                }
+            }
 
             if (($ticket->getTicketCost() !== $currentTicketCost) ||
                 ((int) $ticket->getAmountWithoutDiscount() !== (int) $eventCost) ||
-                ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode()))) {
-                $ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
+                ($ticket->getHasDiscount() !== ($isMustBeDiscount || $ticket->hasPromoCode())) ||
+                $promoCodeCleared
+            ) {
+                $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
         }
         $this->recalculatePaymentAmount($payment);
@@ -277,8 +306,7 @@ class PaymentService
         if ($payment->isPending() && 0 === (int) $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $payment->setPaidWithGate(Payment::BONUS_GATE);
 
-            $referralService = $this->container->get('application.referral.service');
-            $referralService->utilizeBalance($payment);
+            $this->referralService->utilizeBalance($payment);
 
             $this->em->flush();
 
@@ -311,25 +339,183 @@ class PaymentService
     }
 
     /**
-     * Correct pay amount by user referral money.
+     * @param Payment $payment
+     * @param float   $amount
+     */
+    public function addFwdaysBonusToPayment(Payment $payment, float $amount): void
+    {
+        $payment->setFwdaysAmount($amount);
+        $this->recalculatePaymentAmount($payment);
+    }
+
+    /**
+     * @param Event $event
      *
+     * @return Payment
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function getPaymentForCurrentUser(Event $event): Payment
+    {
+        $this->session->set(PaymentController::NEW_PAYMENT_SESSION_KEY, false);
+
+        /** @var User $user */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        /* @var Ticket|null $ticket  */
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
+
+        $paymentRepository = $this->em->getRepository('ApplicationDefaultBundle:Payment');
+        /** @var Payment|null $payment */
+        $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
+        if (!$payment) {
+            $payment = $paymentRepository->findPaymentByUserWithoutEvent($user);
+        }
+
+        if (!$ticket && !$payment) {
+            $ticket = $this->ticketService->createTicket($event, $user);
+            $user->addWantsToVisitEvents($event);
+            $this->em->flush();
+        }
+
+        if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
+            $payment = $ticket->getPayment();
+            $payment->setUser($ticket->getUser());
+            $this->em->flush();
+        }
+
+        if ($ticket && !$payment) {
+            $payment = $this->createPaymentForCurrentUserWithTicket($ticket);
+        }
+
+        if ($ticket && $payment->isPaid()) {
+            $payment = $this->createPaymentForCurrentUserWithTicket(null);
+        }
+
+        if ($payment->isPending()) {
+            $this->checkTicketsPricesInPayment($payment, $event);
+        }
+
+        $this->session->set(self::ACTIVE_PAYMENT_ID_KEY, $payment->getId());
+
+        return $payment;
+    }
+
+    /**
+     * @param User|null $user
+     * @param Event     $event
+     * @param Ticket    $editTicket
+     *
+     * @return Ticket
+     */
+    public function replaceIfFindOtherUserTicketForEvent(?User $user, Event $event, Ticket $editTicket): Ticket
+    {
+        if (!$user instanceof User) {
+            return $editTicket;
+        }
+        /** @var Ticket|null $ticket */
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
+            ->findOneByUserAndEventWithPendingPayment($user, $event);
+
+        if (!$ticket instanceof Ticket || $editTicket->isEqualTo($ticket)) {
+            return $editTicket;
+        }
+        $payment = $editTicket->getPayment();
+
+        if (!$editTicket->isEqualTo($ticket) && $payment->isEqualTo($ticket->getPayment())) {
+            throw new BadRequestHttpException();
+        }
+
+        $this->addTicketToPayment($payment, $ticket);
+        $this->removeTicketFromPayment($payment, $editTicket);
+
+        return $ticket;
+    }
+
+    /**
+     * @param Ticket|null $ticket
+     *
+     * @return Payment|null $payment
+     */
+    public function getPendingPaymentIfAccess(?Ticket $ticket = null): ?Payment
+    {
+        $payment = null;
+        $currentUser = $this->tokenStorage->getToken()->getUser();
+
+        if (!$currentUser instanceof User) {
+            return null;
+        }
+
+        if ($this->session->has(self::ACTIVE_PAYMENT_ID_KEY)) {
+            $paymentId = $this->session->get(self::ACTIVE_PAYMENT_ID_KEY);
+            $payment = $this->em->getRepository('ApplicationDefaultBundle:Payment')
+                ->findPendingPaymentByIdForUser($paymentId, $currentUser);
+        }
+
+        if (!$payment instanceof Payment) {
+            return null;
+        }
+
+        if ($ticket instanceof Ticket) {
+            $payment = $payment->getTickets()->contains($ticket) ? $payment : null;
+        }
+
+        return $payment;
+    }
+
+    /**
+     * @param Ticket    $ticket
+     * @param PromoCode $promoCode
+     *
+     * @return string
+     */
+    private function addPromoCodeForTicket(Ticket $ticket, PromoCode $promoCode): string
+    {
+        $promoCode->clearTmpUsedCount();
+        if (!$promoCode->isUnlimited()) {
+            $payment = $ticket->getPayment();
+            foreach ($payment->getTickets() as $paymentTicket) {
+                if ($promoCode->isEqualTo($paymentTicket->getPromoCode()) && !$ticket->isEqualTo($paymentTicket)) {
+                    $promoCode->incTmpUsedCount();
+                }
+            }
+        }
+
+        if (!$promoCode->isCanBeTmpUsed()) {
+            return PromoCode::PROMOCODE_USED;
+        }
+
+        if ($this->ticketService->isMustBeDiscount($ticket)) {
+            $result = $this->ticketService->setTicketBestDiscount($ticket, $promoCode);
+        } else {
+            $this->ticketService->setTicketPromoCode($ticket, $promoCode);
+            $result = PromoCode::PROMOCODE_APPLIED;
+        }
+        $promoCode->clearTmpUsedCount();
+
+        return $result;
+    }
+
+    /**
      * @param Payment $payment
      */
-    private function payByReferralMoney(Payment $payment)
+    private function recalculatePaymentFwdaysAmount(Payment $payment): void
     {
-        /* @var  User $user */
-        $user = $payment->getUser();
-        if ($user instanceof User && $user->getBalance() > 0) {
-            $amount = $user->getBalance() - $payment->getAmount();
-            if ($amount < 0) {
-                $payment->setAmount(-$amount);
-                $payment->setFwdaysAmount($user->getBalance());
-            } else {
-                $payment->setFwdaysAmount($payment->getAmount());
-                $payment->setAmount(0);
-            }
-        } else {
+        $amount = $payment->getFwdaysAmount();
+        if ($amount > 0) {
+            $user = $payment->getUser();
             $payment->setFwdaysAmount(0);
+            if ($user instanceof User) {
+                if ($amount > $user->getBalance()) {
+                    $amount = $user->getBalance();
+                }
+                if ($amount > $payment->getAmount()) {
+                    $amount = $payment->getAmount();
+                }
+                $payment->setAmount($payment->getAmount() - $amount);
+                $payment->setFwdaysAmount($amount);
+            }
         }
     }
 }

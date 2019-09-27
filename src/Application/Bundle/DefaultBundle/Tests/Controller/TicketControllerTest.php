@@ -3,9 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Tests;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Class TicketControllerTest.

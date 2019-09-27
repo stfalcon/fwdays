@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * SponsorRepository.
