@@ -20,6 +20,9 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/styles/main.css'|app_asset_version) }}">
+    {%- if app.environment == 'prod' -%}
+        <!--PROOF PIXEL--><script src="https://cdn.useproof.com/proof.js?acc=QG6riDQ1y2OoXxtbfLYy1HqlCYq1" async defer></script><!--END PROOF PIXEL-->
+    {% endif %}
 </head>
 
 {% block body_class %}
