@@ -79,7 +79,7 @@ class PaymentServiceTest extends WebTestCase
         /** @var TicketRepository $ticketRepository */
         $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */
-        $ticket = $ticketRepository->findOneByUserAndEventWithPayment($user, $event);
+        $ticket = $ticketRepository->findOneByUserAndEventWithPendingPayment($user, $event);
         /** @var Payment $payment */
         $payment = $ticket->getPayment();
 
