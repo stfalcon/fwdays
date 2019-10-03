@@ -321,7 +321,7 @@ buyPaymentButton.on('click', function (e) {
                     saved_payment_amount = data.payment_data.amount;
                     paymentList.empty();
                     $.each(data.payment_data.tickets, function( index, value ) {
-                        addTicketRowBlock(index+1, value, null);
+                        addTicketRowBlock(index+1, value);
                     });
                     editPaymentBlock(data.payment_data);
 
