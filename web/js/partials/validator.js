@@ -1,7 +1,3 @@
-var validate_data = {
-
-};
-
 function addValidator(form) {
     form.validate({
         debug: false,

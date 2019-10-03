@@ -1,8 +1,8 @@
-var $buyPaymentButton = $('#buy-ticket-btn');
-var $addTicketBtn = $('#add-user-form');
-var $userBonusInput = $('#user-bonus-input');
-var $applyBonusBtn = $('#btn-apply-bonus');
-var $paymentList = $('#payment-list');
+var buyPaymentButton = $('#buy-ticket-btn');
+var addTicketBtn = $('#add-user-form');
+var userBonusInput = $('#user-bonus-input');
+var applyBonusBtn = $('#btn-apply-bonus');
+var paymentList = $('#payment-list');
 
 function editTicketRow(index, ticketBlock, ticket) {
     if (index) {
@@ -29,7 +29,7 @@ function editTicketRow(index, ticketBlock, ticket) {
     ticketBlock.attr('id', ticket.id);
 }
 
-function addTicketRowBlock(index, ticket, replaceId = null) {
+function addTicketRowBlock(index, ticket, replaceId) {
     var newTicketRow = $('#payer-block').clone();
     editTicketRow(index, newTicketRow, ticket);
     newTicketRow.show();
@@ -52,7 +52,7 @@ function editPaymentBlock(paymentData) {
     }
 
     if (paymentData.fwdays_amount === 0 && paymentData.user.balance > 0) {
-        $userBonusInput.val(paymentData.user.balance).attr('max', paymentData.user.balance);
+        userBonusInput.val(paymentData.user.balance).attr('max', paymentData.user.balance);
         elem.find('.payment-use-fwdays-bonus').show();
         elem.find('.payment-user-bonus-label').show();
         elem.find('.payment-user-bonus-tooltip').show();
@@ -66,12 +66,12 @@ function editPaymentBlock(paymentData) {
 
     if (!elem.is(":visible")) {
         elem.show();
-        $addTicketBtn.show();
+        addTicketBtn.show();
     }
 
     if (paymentData.ticket_count === 0) {
         elem.hide();
-        $addTicketBtn.hide();
+        addTicketBtn.hide();
     }
 }
 
@@ -96,17 +96,17 @@ function applyFwdaysBonus(amount) {
                 console.log('Error:'+data.error);
             }
         }).always(function() {
-            $applyBonusBtn.removeClass('disabled');
+            applyBonusBtn.removeClass('disabled');
         });
 }
 
-$applyBonusBtn.click(function () {
-    var amount = $userBonusInput.val();
-    $applyBonusBtn.addClass('disabled');
+applyBonusBtn.click(function () {
+    var amount = userBonusInput.val();
+    applyBonusBtn.addClass('disabled');
     applyFwdaysBonus(amount);
 });
 
-$userBonusInput.change(function (event) {
+userBonusInput.change(function (event) {
     var max = $(this).attr('max');
     if ($(this).val() > max) {
         $(this).val(max);
@@ -122,7 +122,7 @@ $(document).on('click', '.delete-fwdays-bonus', function () {
 
 $(document).on('click', '.ticket-delete-btn', function () {
     var elem = $(this).closest('.payer');
-    var e_slug = $paymentList.data('event');
+    var e_slug = paymentList.data('event');
     $.post(Routing.generate('remove_ticket_from_payment',
         {
             eventSlug: e_slug,
@@ -169,7 +169,7 @@ function copyDataFromRowToBlock(ticketRow, editTicketBlock) {
     editTicketBlock.find('.add-user-btn').removeClass('add-user-btn').addClass('edit-user-btn');
 }
 
-$addTicketBtn.on('click', function () {
+addTicketBtn.on('click', function () {
     var newTicketBlock = $('#payer-block-edit').clone();
     ++ticket_count;
     newTicketBlock.attr('id', 'payer-block-edit-'+ticket_count);
@@ -219,7 +219,7 @@ $(document).on('click', '.add-user-btn', function () {
         input_email.valid() &&
         input_promocode.valid()) {
 
-        var e_slug = $paymentList.data('event');
+        var e_slug = paymentList.data('event');
         $.ajax({
             url: Routing.generate('add_ticket_participant', {eventSlug: e_slug}),
             method: 'POST',
@@ -269,7 +269,7 @@ $(document).on('click', '.edit-user-btn', function () {
         input_email.valid() &&
         input_promocode.valid()) {
 
-        var e_slug = $paymentList.data('event');
+        var e_slug = paymentList.data('event');
         $.ajax({
             url: Routing.generate('edit_ticket_participant', {eventSlug: e_slug, id: ticket_id}),
             method: 'POST',
@@ -292,7 +292,7 @@ $(document).on('click', '.edit-user-btn', function () {
     }
 });
 
-$buyPaymentButton.on('click', function (e) {
+buyPaymentButton.on('click', function (e) {
     e.preventDefault();
     var submit_btn = $(this);
     submit_btn.prop("disabled", true);
@@ -308,7 +308,7 @@ $buyPaymentButton.on('click', function (e) {
         $.post(Routing.generate('update_user_phone', {phoneNumber: use_phone}), function (data) {});
     }
 
-    var e_slug = $paymentList.data('event');
+    var e_slug = paymentList.data('event');
 
     $.ajax({
         url: Routing.generate('event_paying', {slug: e_slug}),
@@ -319,21 +319,21 @@ $buyPaymentButton.on('click', function (e) {
             if (data.result) {
                 if (data.amount_changed) {
                     saved_payment_amount = data.payment_data.amount;
-                    $paymentList.empty();
+                    paymentList.empty();
                     $.each(data.payment_data.tickets, function( index, value ) {
-                        addTicketRowBlock(index+1, value);
+                        addTicketRowBlock(index+1, value, null);
                     });
                     editPaymentBlock(data.payment_data);
 
                     if (data.payment_data.ticket_count === 0) {
                         ticket_count = 0;
-                        $addTicketBtn.click();
+                        addTicketBtn.click();
                     }
 
                     alert(data.payment_data.amount_changed_text);
                 } else {
                     var $form = $(data.form);
-                    $paymentList.after($form);
+                    paymentList.after($form);
                     $form.submit();
                 }
             } else {
