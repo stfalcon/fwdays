@@ -102,6 +102,7 @@
         </script>
         <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
     {% endif -%}
+    <script src="{{ asset('js/partials/xregexp-all.js') }}" defer></script>
     {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
     <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
 
