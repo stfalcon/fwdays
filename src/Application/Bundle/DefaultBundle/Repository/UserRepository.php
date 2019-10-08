@@ -73,18 +73,6 @@ class UserRepository extends EntityRepository
 
         $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
         $users = $qb->getQuery()->getResult();
-        /** @var User $user */
-        foreach ($users as $user) {
-            $userEvents = $user->getWantsToVisitEvents();
-            foreach ($events as $event) {
-                if (!$userEvents->contains($event)) {
-                    break;
-                }
-            }
-            if ($userEvents->count() === 0) {
-                break;
-            }
-        }
 
         return $users;
     }
