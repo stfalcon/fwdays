@@ -2,11 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -85,28 +87,18 @@ class TicketRepository extends EntityRepository
      */
     public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, ?string $status = null): QueryBuilder
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = $this->createQueryBuilder('t');
 
-        $qb->select('u')
-            ->addSelect('t')
-            ->from('ApplicationDefaultBundle:Ticket', 't')
+        $qb->addSelect('u')
             ->join('t.user', 'u')
-            ->join('t.event', 'e')
-            ->groupBy('u');
+            ->groupBy('u')
+        ;
 
-        if (null !== $events) {
-            $qb->andWhere($qb->expr()->in('t.event', ':events'))
-                ->setParameter(':events', $events->toArray());
-        }
-        if (null !== $status) {
-            $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
-            if ('pending' === $status) {
-                $statusOr->add($qb->expr()->isNull('p.status'));
-            }
-            $qb->leftJoin('t.payment', 'p')
-                ->andWhere($statusOr)
-                ->setParameter(':status', $status);
-        }
+        $andX = $qb->expr()->andX();
+        $this->addEventsFilter($qb, $andX, $events);
+        $this->addPaymentStatusFilter($qb, $andX, $status);
+
+        $qb->andWhere($andX);
 
         return $qb;
     }
@@ -131,9 +123,11 @@ class TicketRepository extends EntityRepository
         }
 
         $users = [];
+        $result = $qb->getQuery()->getResult();
 
-        foreach ($qb->getQuery()->execute() as $result) {
-            $users[] = $result->getUser();
+        /** @var Ticket $ticket */
+        foreach ($result as $ticket) {
+            $users[] = $ticket->getUser();
         }
 
         return $users;
@@ -331,5 +325,36 @@ class TicketRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param Andx         $andX
+     * @param string|null  $status
+     */
+    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    {
+        if (null !== $status) {
+            $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
+            if (Payment::STATUS_PENDING === $status) {
+                $statusOr->add($qb->expr()->isNull('p.status'));
+            }
+            $andX->add($statusOr);
+            $qb->leftJoin('t.payment', 'p')
+                ->setParameter(':status', $status);
+        }
+    }
+
+    /**
+     * @param QueryBuilder    $qb
+     * @param Andx            $andX
+     * @param ArrayCollection $events
+     */
+    private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
+    {
+        if ($events->count() > 0) {
+            $andX->add($qb->expr()->in('t.event', ':events'));
+            $qb->setParameter(':events', $events->toArray());
+        }
     }
 }
