@@ -1,4 +1,4 @@
-var buyPaymentButton = $('#buy-ticket-btn');
+var buyTicketButton = $('#buy-ticket-btn');
 var addTicketBtn = $('#add-user-form');
 var userBonusInput = $('#user-bonus-input');
 var applyBonusBtn = $('#btn-apply-bonus');
@@ -152,6 +152,7 @@ $(document).on('click', '.ticket-edit-btn', function () {
     editTicketBlock = $('#'+editTicketBlock.attr('id'));
     copyDataFromRowToBlock(ticketRow, editTicketBlock);
     addValidator(editTicketBlock);
+    buyTicketButton.prop("disabled", true);
 });
 
 function copyDataFromRowToBlock(ticketRow, editTicketBlock) {
@@ -176,7 +177,13 @@ addTicketBtn.on('click', function () {
     newTicketBlock.find('.payer__number').html(ticket_count);
     newTicketBlock.appendTo('#payment-list').show();
     addValidator(newTicketBlock);
+    buyTicketButton.prop("disabled", true);
 });
+
+function refreshBuyTicketBtn() {
+    var forms = $('.payer-form');
+    buyTicketButton.prop("disabled", forms.length > 1);
+}
 
 function recalculateTicketsCount() {
     var numbers = $('.payer__number');
@@ -240,7 +247,8 @@ $(document).on('click', '.add-user-btn', function () {
                     validator.showErrors(data.error );
                 }
             }
-        })
+        });
+        refreshBuyTicketBtn();
     }
 });
 
@@ -261,6 +269,7 @@ $(document).on('click', '.edit-user-btn', function () {
     ) {
         parent_row.show();
         ticketBlock.remove();
+        refreshBuyTicketBtn();
         return;
     }
 
@@ -288,11 +297,12 @@ $(document).on('click', '.edit-user-btn', function () {
                     validator.showErrors(data.error);
                 }
             }
-        })
+        });
+        refreshBuyTicketBtn();
     }
 });
 
-buyPaymentButton.on('click', function (e) {
+buyTicketButton.on('click', function (e) {
     e.preventDefault();
     var submit_btn = $(this);
     submit_btn.prop("disabled", true);
@@ -321,7 +331,7 @@ buyPaymentButton.on('click', function (e) {
                     saved_payment_amount = data.payment_data.amount;
                     paymentList.empty();
                     $.each(data.payment_data.tickets, function( index, value ) {
-                        addTicketRowBlock(index+1, value, null);
+                        addTicketRowBlock(index+1, value);
                     });
                     editPaymentBlock(data.payment_data);
 

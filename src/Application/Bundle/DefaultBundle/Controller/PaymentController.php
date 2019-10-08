@@ -232,13 +232,13 @@ class PaymentController extends Controller
             }
         }
 
+        $paymentService->addTicketToPayment($payment, $ticket);
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }
 
-        $paymentService->addTicketToPayment($payment, $ticket);
         $paymentService->checkTicketsPricesInPayment($payment, $event);
 
         $paymentData = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);

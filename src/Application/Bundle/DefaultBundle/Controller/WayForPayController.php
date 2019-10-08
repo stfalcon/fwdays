@@ -84,6 +84,9 @@ class WayForPayController extends Controller
         $paymentId = $this->get('session')->get(WayForPayService::WFP_PAYMENT_KEY);
         $this->get('session')->remove(WayForPayService::WFP_PAYMENT_KEY);
 
+        if (null === $paymentId) {
+            throw new BadRequestHttpException();
+        }
         /** @var Payment|null $payment */
         $payment = $paymentId ? $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId) : null;
 

@@ -475,9 +475,11 @@ class PaymentService
         $promoCode->clearTmpUsedCount();
         if (!$promoCode->isUnlimited()) {
             $payment = $ticket->getPayment();
-            foreach ($payment->getTickets() as $paymentTicket) {
-                if ($promoCode->isEqualTo($paymentTicket->getPromoCode()) && !$ticket->isEqualTo($paymentTicket)) {
-                    $promoCode->incTmpUsedCount();
+            if ($payment instanceof Payment) {
+                foreach ($payment->getTickets() as $paymentTicket) {
+                    if ($promoCode->isEqualTo($paymentTicket->getPromoCode()) && !$ticket->isEqualTo($paymentTicket)) {
+                        $promoCode->incTmpUsedCount();
+                    }
                 }
             }
         }
