@@ -242,13 +242,13 @@ $(document).on('click', '.add-user-btn', function () {
                     editPaymentBlock(data.payment_data);
                     refreshDeleteButtons();
                     recalculateTicketsCount();
+                    refreshBuyTicketBtn();
                 } else {
                     var validator = ticketBlock.validate();
                     validator.showErrors(data.error );
                 }
             }
         });
-        refreshBuyTicketBtn();
     }
 });
 
@@ -292,13 +292,13 @@ $(document).on('click', '.edit-user-btn', function () {
                     ticketBlock.remove();
                     refreshDeleteButtons();
                     recalculateTicketsCount();
+                    refreshBuyTicketBtn();
                 } else {
                     var validator = ticketBlock.validate();
                     validator.showErrors(data.error);
                 }
             }
         });
-        refreshBuyTicketBtn();
     }
 });
 
