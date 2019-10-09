@@ -3,6 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Model;
 
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager as FosUserManager;
@@ -11,7 +12,8 @@ use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -46,8 +48,6 @@ class UserManager extends FosUserManager
     }
 
     /**
-     * Automatic user registration.
-     *
      * @param array $participant
      *
      * @return UserInterface
@@ -68,7 +68,7 @@ class UserManager extends FosUserManager
 
         $errors = $this->validator->validate($user);
         if ($errors->count() > 0) {
-            throw new BadCredentialsException('Bad credentials!');
+            throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
         $this->updateUser($user);
         $this->mailHelper->sendAutoRegistration($user, $plainPassword);
@@ -106,7 +106,7 @@ class UserManager extends FosUserManager
 
         $errors = $this->validator->validate($user);
         if ($errors->count() > 0) {
-            throw new BadCredentialsException('Bad credentials!');
+            throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
 
         if ($oldEmail !== $email) {
@@ -116,5 +116,20 @@ class UserManager extends FosUserManager
             $this->mailHelper->sendAutoRegistration($user, $plainPassword);
         }
         $this->updateUser($user);
+    }
+
+    /**
+     * @param ConstraintViolationList $errors
+     *
+     * @return array
+     */
+    private function getErrorMap(ConstraintViolationListInterface $errors): array
+    {
+        $errorsMap = [];
+        foreach ($errors as $error) {
+            $errorsMap[$error->getPropertyPath()] = $error->getMessage();
+        }
+
+        return $errorsMap;
     }
 }

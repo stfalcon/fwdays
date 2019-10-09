@@ -84,8 +84,10 @@ function reloadingPage($this) {
 }
 
 function applyFwdaysBonus(amount) {
+    var e_slug = paymentList.data('event');
     $.post(Routing.generate('payment_apply_fwdays_bonus',
         {
+            'slug': e_slug,
             'amount': amount
         }),
         function (data) {
