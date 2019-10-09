@@ -396,7 +396,7 @@ class User extends BaseUser
      */
     public function setName($name)
     {
-        $this->name = \strip_tags($name);
+        $this->name = \strip_tags(\trim($name));
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;
@@ -423,7 +423,7 @@ class User extends BaseUser
      */
     public function setSurname($surname)
     {
-        $this->surname = \strip_tags($surname);
+        $this->surname = \strip_tags(\trim($surname));
         $this->setFullname($this->name.' '.$this->surname);
 
         return $this;

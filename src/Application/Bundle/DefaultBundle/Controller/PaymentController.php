@@ -6,6 +6,7 @@ use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Model\UserManager;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -16,10 +17,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
- * Class PaymentController.
+ * PaymentController.
  */
 class PaymentController extends Controller
 {
@@ -101,7 +101,7 @@ class PaymentController extends Controller
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => ['user_email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
+                    'error' => ['email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
                 ]
             );
         }
@@ -112,7 +112,7 @@ class PaymentController extends Controller
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => ['user_email' => $this->get('translator')->trans('error.ticket.already.added')],
+                    'error' => ['email' => $this->get('translator')->trans('error.ticket.already.added')],
                 ]
             );
         }
@@ -128,10 +128,10 @@ class PaymentController extends Controller
             } else {
                 $userManager->updateUserData($user, $name, $surname, $email);
             }
-        } catch (BadCredentialsException $e) {
-            return new JsonResponse(['result' => false, 'error' => ['user_email' => 'Bad credentials!']]);
+        } catch (BadAutoRegistrationDataException $e) {
+            return new JsonResponse(['result' => false, 'error' => $e->getErrorMap()]);
         } catch (BadRequestHttpException $e) {
-            return new JsonResponse(['result' => false, 'error' => ['user_email' => $this->get('translator')->trans('error.user.cant_be_edit')]]);
+            return new JsonResponse(['result' => false, 'error' => ['email' => $this->get('translator')->trans('error.user.cant_be_edit')]]);
         }
 
         $ticketService->setNewUserToTicket($user, $ticket);
@@ -195,10 +195,10 @@ class PaymentController extends Controller
         if (!$user) {
             try {
                 $user = $this->get('fos_user.user_manager')->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
-            } catch (BadCredentialsException $e) {
+            } catch (BadAutoRegistrationDataException $e) {
                 $this->get('logger')->addError('autoRegistration with bad params');
 
-                return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Bad credentials!']]);
+                return new JsonResponse(['result' => false, 'error' => $e->getErrorMap()]);
             }
         }
 
@@ -217,7 +217,7 @@ class PaymentController extends Controller
                 return new JsonResponse(
                     [
                         'result' => false,
-                        'error' => ['user_email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
+                        'error' => ['email' => $this->get('translator')->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
                     ]
                 );
             }
@@ -226,7 +226,7 @@ class PaymentController extends Controller
                 return new JsonResponse(
                     [
                         'result' => false,
-                        'error' => ['user_email' => $this->get('translator')->trans('error.ticket.already.added')],
+                        'error' => ['email' => $this->get('translator')->trans('error.ticket.already.added')],
                     ]
                 );
             }
