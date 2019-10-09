@@ -164,6 +164,10 @@ production deploy:
         - kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"'
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$CI_COMMIT_SHORT_SHA/ docker-configs/k8s/prod/cron/*
         - kubectl apply -f docker-configs/k8s/prod/cron/
+        - curl -sL https://sentry.io/get-cli/ | bash
+        - VERSION=$(sentry-cli releases propose-version)
+        - sentry-cli releases new -p fwdays $VERSION
+        - sentry-cli releases set-commits --auto $VERSION
     environment:
         name: production
         url: https://fwdays.com
