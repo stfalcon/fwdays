@@ -21,7 +21,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PaymentService
 {
-    private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id';
+    private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id_%s';
 
     private $em;
     private $ticketService;
@@ -396,8 +396,8 @@ class PaymentService
         if ($payment->isPending()) {
             $this->checkTicketsPricesInPayment($payment, $event);
         }
-
-        $this->session->set(self::ACTIVE_PAYMENT_ID_KEY, $payment->getId());
+        $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
+        $this->session->set($sessionKey, $payment->getId());
 
         return $payment;
     }
@@ -434,11 +434,12 @@ class PaymentService
     }
 
     /**
+     * @param Event       $event
      * @param Ticket|null $ticket
      *
      * @return Payment|null $payment
      */
-    public function getPendingPaymentIfAccess(?Ticket $ticket = null): ?Payment
+    public function getPendingPaymentIfAccess(Event $event, ?Ticket $ticket = null): ?Payment
     {
         $payment = null;
         $currentUser = $this->tokenStorage->getToken()->getUser();
@@ -446,9 +447,9 @@ class PaymentService
         if (!$currentUser instanceof User) {
             return null;
         }
-
-        if ($this->session->has(self::ACTIVE_PAYMENT_ID_KEY)) {
-            $paymentId = $this->session->get(self::ACTIVE_PAYMENT_ID_KEY);
+        $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
+        if ($this->session->has($sessionKey)) {
+            $paymentId = $this->session->get($sessionKey);
             $payment = $this->em->getRepository('ApplicationDefaultBundle:Payment')
                 ->findPendingPaymentByIdForUser($paymentId, $currentUser);
         }
