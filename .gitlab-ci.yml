@@ -169,6 +169,7 @@ production deploy:
         - VERSION=$(sentry-cli releases propose-version)
         - sentry-cli releases new -p fwdays $VERSION
         - sentry-cli releases set-commits --auto $VERSION
+        - sentry-cli releases deploys $VERSION new -e prod
     environment:
         name: production
         url: https://fwdays.com
