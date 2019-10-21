@@ -3,8 +3,8 @@
 namespace Application\Bundle\DefaultBundle\Tests\Controller;
 
 use Application\Bundle\DefaultBundle\Controller\WayForPayController;
-use Prophecy\Argument;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class WayForPayControllerTest extends WebTestCase
@@ -64,8 +64,8 @@ class WayForPayControllerTest extends WebTestCase
         $paymentRepository->findOneBy(Argument::any())->willReturn($payment);
 
         $container->get('app.way_for_pay.service')->willReturn($wayforpayService);
-        $container->get('application.referral.service')->willReturn($referralService);
-        $container->get('application.payment.service')->willReturn($paymentService);
+        $container->get('app.referral.service')->willReturn($referralService);
+        $container->get('app.payment.service')->willReturn($paymentService);
         $container->get('logger')->willReturn($logger);
         $container->get('session')->willReturn($session);
 

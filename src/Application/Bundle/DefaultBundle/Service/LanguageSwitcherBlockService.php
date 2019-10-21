@@ -94,7 +94,7 @@ class LanguageSwitcherBlockService extends AbstractBlockService
     {
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
-        if (in_array($currentLocal, $this->locales)) {
+        if (\in_array($currentLocal, $this->locales)) {
             $path = preg_replace('/^\/'.$currentLocal.'\//', '/', $path);
         }
         $params = $request->query->all();

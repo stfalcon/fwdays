@@ -2,14 +2,15 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Application\Bundle\DefaultBundle\Entity\TicketCost;
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\TicketCost;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\PaymentRepository;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -31,22 +32,19 @@ class TicketService
     const EVENT_DEFAULT_STATE = 'event default state';
 
     /** @var EntityManager */
-    protected $em;
+    private $em;
 
     /** @var array */
-    protected $paymentsConfig;
+    private $paymentsConfig;
 
     /** @var TranslatorInterface */
-    protected $translator;
+    private $translator;
 
     /** @var RouterInterface */
-    protected $router;
-
-    /** @var TicketCostService */
-    protected $ticketCostService;
+    private $router;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /**
      * TicketService constructor.
@@ -55,16 +53,14 @@ class TicketService
      * @param array                 $paymentsConfig
      * @param TranslatorInterface   $translator
      * @param RouterInterface       $router
-     * @param TicketCostService     $ticketCostService
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct($em, $paymentsConfig, $translator, $router, $ticketCostService, TokenStorageInterface $tokenStorage)
+    public function __construct($em, $paymentsConfig, $translator, $router, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
         $this->paymentsConfig = $paymentsConfig;
         $this->translator = $translator;
         $this->router = $router;
-        $this->ticketCostService = $ticketCostService;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -115,21 +111,24 @@ class TicketService
      * @param PromoCode $promoCode
      * @param float|int $discount
      *
-     * @return Ticket
+     * @return string
      */
-    public function setTicketBestDiscount($ticket, $promoCode, $discount = -1)
+    public function setTicketBestDiscount($ticket, $promoCode, $discount = -1): string
     {
         if (-1 === $discount) {
             $discount = (float) $this->paymentsConfig['discount'];
         }
+
         if ($promoCode instanceof PromoCode && $promoCode->getDiscountAmount() / 100 > $discount) {
             $this->setTicketPromoCode($ticket, $promoCode);
+            $result = PromoCode::PROMOCODE_APPLIED;
         } else {
             $ticket->setPromoCode(null);
             $this->setTicketDiscount($ticket, $discount);
+            $result = PromoCode::PROMOCODE_LOW_THAN_DISCOUNT;
         }
 
-        return $ticket;
+        return $result;
     }
 
     /**
@@ -176,7 +175,7 @@ class TicketService
      *
      * @return Ticket
      */
-    public function createTicket($event, $user)
+    public function createTicket(Event $event, User $user): Ticket
     {
         $ticket = (new Ticket())
             ->setEvent($event)
@@ -222,6 +221,7 @@ class TicketService
         $href = null;
         $caption = '';
         $ticketCaption = '';
+        $downloadUrl = false;
 
         if ($event->isActiveAndFuture()) {
             if ($ticket && $ticket->isPaid()) {
@@ -261,22 +261,22 @@ class TicketService
                 'event_header' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-card__download',
                         self::EVENT_DONE => 'event-header__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-header__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_fix_header' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_fix_header_mob' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'event_action_mob' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
                         self::EVENT_DONE => 'event-action-mob__status',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-action-mob__btn',
+                        self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' => [
                         self::CAN_DOWNLOAD_TICKET => '',
@@ -288,7 +288,7 @@ class TicketService
                     ],
             ];
 
-        if (in_array(
+        if (\in_array(
             $eventState,
             [
                 self::EVENT_DONE,
@@ -303,7 +303,7 @@ class TicketService
             $class = $states[$position][$eventState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
         }
 
-        $isMob = in_array($position, ['event_fix_header_mob', 'price_block_mob']);
+        $isMob = \in_array($position, ['event_fix_header_mob', 'price_block_mob']);
 
         if ($event->isActiveAndFuture()) {
             $data = $event->getSlug();
@@ -312,7 +312,7 @@ class TicketService
                 $ticketCaption = $this->translator->trans('ticket.status.download');
                 $ticketClass = $states[$position][$ticketState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
                 if (!empty($ticketClass)) {
-                    $href = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
+                    $downloadUrl = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
                 }
             }
 
@@ -357,9 +357,7 @@ class TicketService
                 } else {
                     $caption = $this->translator->trans('ticket.status.pay');
                 }
-                if (!in_array($position, ['event_header', 'event_fix_header', 'event_fix_header_mob'])) {
-                    $class .= ' get-payment';
-                }
+                $href = $this->router->generate('event_pay', ['slug' => $event->getSlug()]);
             } elseif (self::PAID_IS_RETURNED === $eventState) {
                 if ($isMob) {
                     $caption = $this->translator->trans('ticket.status.payment_returned_mob');
@@ -376,7 +374,7 @@ class TicketService
             }
         }
 
-        $result =
+        return
             [
                 'class' => $class,
                 'caption' => $caption,
@@ -386,8 +384,82 @@ class TicketService
                 'isDiv' => $isDiv,
                 'data' => $data,
                 'id' => $position.'-'.$data,
+                'download_url' => $downloadUrl,
             ];
+    }
 
-        return $result;
+    /**
+     * @param Event $event
+     *
+     * @return TicketCost|null
+     */
+    public function getCurrentEventTicketCost($event)
+    {
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+
+        $currentTicketCost = null;
+
+        /** @var TicketCost $cost */
+        foreach ($eventCosts as $cost) {
+            if ($cost->isHaveTemporaryCount()) {
+                $currentTicketCost = $cost;
+                break;
+            }
+        }
+
+        return $currentTicketCost;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return int
+     */
+    public function getEventFreeTicketCount($event)
+    {
+        /** @var TicketCostRepository $ticketCostRepository */
+        $ticketCostRepository = $this->em->getRepository('ApplicationDefaultBundle:TicketCost');
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+        $count = 0;
+        /** @var TicketCost $cost */
+        foreach ($eventCosts as $cost) {
+            if (!$cost->isUnlimited()) {
+                $count += $cost->getCount() - $cost->getSoldCount();
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param User|null $user
+     * @param Event     $event
+     *
+     * @return bool
+     */
+    public function isUserHasPaidTicketForEvent(?User $user, Event $event): bool
+    {
+        if (!$user instanceof User) {
+            return false;
+        }
+        /** @var Ticket|null $ticket */
+        $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
+            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+
+        return $ticket instanceof Ticket && $ticket->isPaid();
+    }
+
+    /**
+     * @param User|null $user
+     * @param Ticket    $ticket
+     */
+    public function setNewUserToTicket(?User $user, Ticket $ticket): void
+    {
+        $oldUser = $ticket->getUser();
+        if ($user instanceof User && !$user->isEqualTo($oldUser)) {
+            $user->addTicket($ticket);
+        }
     }
 }

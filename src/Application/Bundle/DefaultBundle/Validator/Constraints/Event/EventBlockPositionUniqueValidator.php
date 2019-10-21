@@ -28,7 +28,7 @@ class EventBlockPositionUniqueValidator extends ConstraintValidator
         if ($value instanceof Event) {
             $blockPositions = [];
             foreach ($value->getBlocks() as $index => $block) {
-                if (in_array($block->getPosition(), $blockPositions)) {
+                if (\in_array($block->getPosition(), $blockPositions)) {
                     $this->context
                         ->buildViolation($constraint->message)
                         ->atPath("blocks[$index].position")

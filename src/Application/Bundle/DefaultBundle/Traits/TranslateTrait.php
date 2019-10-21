@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Traits;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Application\Bundle\DefaultBundle\Entity\Translation\TranslatableEntityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Trait Translate.

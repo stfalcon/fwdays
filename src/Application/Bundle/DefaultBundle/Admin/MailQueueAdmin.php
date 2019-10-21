@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Application\Bundle\DefaultBundle\Entity\MailQueue;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Class MailQueueAdmin.

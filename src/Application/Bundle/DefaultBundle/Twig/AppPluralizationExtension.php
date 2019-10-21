@@ -12,9 +12,9 @@ class AppPluralizationExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('pluralization', array($this, 'pluralization')),
-        );
+        return [
+            new \Twig_SimpleFilter('pluralization', [$this, 'pluralization']),
+        ];
     }
 
     /**

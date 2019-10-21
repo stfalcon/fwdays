@@ -3,10 +3,10 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class WayForPayLogAdmin.
@@ -31,7 +31,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         // remove all route except named ones
-        $collection->clearExcept(array('list', 'show'));
+        $collection->clearExcept(['list', 'show']);
     }
 
     /**

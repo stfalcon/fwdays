@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Ticket.
@@ -19,15 +20,17 @@ class Ticket
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Groups("payment.view")
      */
     private $id;
 
     /**
-     * Сумма для оплаты.
-     *
      * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
+     *
+     * @Groups("payment.view")
      */
     private $amount;
 
@@ -37,6 +40,8 @@ class Ticket
      * @var float
      *
      * @ORM\Column(name="amount_without_discount", type="decimal", precision=10, scale=2)
+     *
+     * @Groups("payment.view")
      */
     private $amountWithoutDiscount;
 
@@ -45,6 +50,8 @@ class Ticket
      *
      * @ORM\ManyToOne(targetEntity="PromoCode", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="promo_code_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @Groups("payment.view")
      */
     private $promoCode;
 
@@ -71,6 +78,8 @@ class Ticket
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\User", inversedBy="tickets")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Groups("payment.view")
      */
     private $user;
 
@@ -111,6 +120,8 @@ class Ticket
      * @var bool
      *
      * @ORM\Column(name="has_discount", type="boolean")
+     *
+     * @Groups("payment.view")
      */
     private $hasDiscount = false;
 
@@ -406,5 +417,23 @@ class Ticket
     public function setHideConditions($hideConditions)
     {
         $this->hideConditions = $hideConditions;
+    }
+
+    /**
+     * @param Ticket|null $ticket
+     *
+     * @return bool
+     */
+    public function isEqualTo(?Ticket $ticket): bool
+    {
+        if (!$ticket instanceof self) {
+            return false;
+        }
+
+        if ($ticket->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

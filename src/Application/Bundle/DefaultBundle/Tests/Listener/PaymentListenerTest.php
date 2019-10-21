@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\EventListener\PaymentListener;
-use Symfony\Component\BrowserKit\Client;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\Translator;
@@ -157,7 +157,7 @@ class PaymentListenerTest extends WebTestCase
     {
         $finder = $this->getFilesFromSpoolFolder();
 
-        $this->assertGreaterThan(0, count($finder), 'no emails in spool folder');
+        $this->assertGreaterThan(0, \count($finder), 'no emails in spool folder');
         $found = false;
         $hashFile = '';
         foreach ($finder as $file) {

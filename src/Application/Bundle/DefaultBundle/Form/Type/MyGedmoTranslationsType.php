@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Form\Type;
 
-use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\EventListener\GedmoTranslationsListener;
-use A2lix\TranslationFormBundle\TranslationForm\GedmoTranslationForm;
 use A2lix\TranslationFormBundle\Form\DataMapper\GedmoTranslationMapper;
+use A2lix\TranslationFormBundle\Form\EventListener\GedmoTranslationsListener;
+use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
+use A2lix\TranslationFormBundle\TranslationForm\GedmoTranslationForm;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -62,18 +62,18 @@ class MyGedmoTranslationsType extends GedmoTranslationsType
             }
             $defaultLocale = (array) $this->translationForm->getGedmoTranslatableListener()->getDefaultLocale();
 
-            $builder->add('defaultLocale', MyGedmoTranslationsLocalesType::class, array(
+            $builder->add('defaultLocale', MyGedmoTranslationsLocalesType::class, [
                 'locales' => $defaultLocale,
                 'fields_options' => $childrenOptions,
                 'inherit_data' => true,
-            ));
+            ]);
 
-            $builder->add($builder->getName(), MyGedmoTranslationsLocalesType::class, array(
+            $builder->add($builder->getName(), MyGedmoTranslationsLocalesType::class, [
                 'locales' => array_diff($options['locales'], $defaultLocale),
                 'fields_options' => $childrenOptions,
                 'inherit_data' => false,
                 'translation_class' => $this->translationForm->getTranslationClass($options['translatable_class']),
-            ));
+            ]);
         }
     }
 }

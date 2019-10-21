@@ -2,20 +2,20 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
@@ -109,7 +109,7 @@ class AdminController extends Controller
                 // проверяем или у него нет билетов на этот ивент
                 /** @var Ticket $ticket */
                 $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')
-                    ->findOneBy(array('event' => $event->getId(), 'user' => $user->getId()));
+                    ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
                 if (!$ticket) {
                     $ticket = new Ticket();

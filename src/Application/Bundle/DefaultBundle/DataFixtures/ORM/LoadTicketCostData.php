@@ -19,9 +19,9 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
-        );
+        ];
     }
 
     /**

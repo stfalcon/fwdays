@@ -1,0 +1,45 @@
+<form class="payer-form" id="payer-block-edit-1" data-ticket-id="{{ ticket.id }}">
+    <div class="payer">
+        <div class="payer__number">1</div>
+        <div class="user-payment-form">
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.name.title'|trans }}</label>
+                        <input name="name" data-old-value="" class="input valid-name payment_user_name" type="text" value="{{ ticket.user.name }}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.surname.title'|trans }}</label>
+                        <input name="surname" data-old-value="" class="input valid-name payment_user_surname" type="text" value="{{ ticket.user.surname }}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'user.email.title'|trans }}</label>
+                        <input name="email" data-old-value="" class="input valid-email payment_user_email" type="email" value="{{ ticket.user.email }}">
+                    </div>
+                </div>
+            </div>
+            {% set promocode = ticket.promo_code ? ticket.promo_code.code : '' %}
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <div class="form-group form-group--flex">
+                        <label class="form-label">{{ 'pay.event.cupon'|trans }}</label>
+                        <input name="user_promo_code" data-old-value="" class="input user_promo_code" type="text" value="{{ promocode }}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-col form-col--12">
+                    <button type="button" class="btn btn--md btn--secondary add-validator {% if ticket.id == 0 %}add-user-btn{% else %}edit-user-btn{% endif %} reload_page">{{ 'pay.user.continue'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

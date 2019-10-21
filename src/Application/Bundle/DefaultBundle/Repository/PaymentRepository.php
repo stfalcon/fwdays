@@ -2,10 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Parameter;
 
 /**
  * PaymentsRepository.
@@ -25,17 +27,22 @@ class PaymentRepository extends EntityRepository
     public function findPaidPaymentsForUser(User $user)
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
-            ->leftJoin('t.event', 'e')
-            ->andWhere('e.useDiscounts = :useDiscounts')
-            ->andWhere('t.user = :user')
-            ->andWhere('p.status = :status')
-            ->setParameter('user', $user)
-            ->setParameter('useDiscounts', true)
-            ->setParameter('status', Payment::STATUS_PAID)
-            ->getQuery();
 
-        return $query->getResult();
+        return $qb->leftJoin('p.tickets', 't')
+            ->leftJoin('t.event', 'e')
+            ->andWhere($qb->expr()->eq('e.useDiscounts', ':useDiscounts'))
+            ->andWhere($qb->expr()->eq('t.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PAID),
+                    new Parameter('useDiscounts', true),
+                ]
+            ))
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     /**
@@ -44,19 +51,77 @@ class PaymentRepository extends EntityRepository
      *
      * @return Payment|null
      */
-    public function findPaymentByUserAndEvent(User $user, Event $event)
+    public function findPaymentByUserAndEvent(User $user, Event $event): ?Payment
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->leftJoin('p.tickets', 't')
-            ->where('t.event = :event')
+
+        return $qb->leftJoin('p.tickets', 't')
+            ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->eq('p.user', ':user'))
             ->andWhere($qb->expr()->eq('p.status', ':status'))
-            ->setParameter('user', $user)
-            ->setParameter('event', $event)
-            ->setParameter('status', Payment::STATUS_PENDING)
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PENDING),
+                    new Parameter('event', $event),
+                ]
+            ))
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
-        return $query->getOneOrNullResult();
+    /**
+     * @param User $user
+     *
+     * @return Payment|null
+     */
+    public function findPaymentByUserWithoutEvent(User $user): ?Payment
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb->leftJoin('p.tickets', 't')
+            ->where($qb->expr()->isNull('t.event'))
+            ->andWhere($qb->expr()->eq('p.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->andWhere($qb->expr()->eq('p.gate', ':gate'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PENDING),
+                    new Parameter('gate', Payment::UNKNOWN_GATE),
+                ]
+            ))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param int  $paymentId
+     * @param User $user
+     *
+     * @return Payment|null
+     */
+    public function findPendingPaymentByIdForUser(int $paymentId, User $user): ?Payment
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb
+            ->where($qb->expr()->eq('p.id', ':id'))
+            ->andWhere($qb->expr()->eq('p.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('user', $user),
+                    new Parameter('status', Payment::STATUS_PENDING),
+                    new Parameter('id', $paymentId),
+                ]
+            ))
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

@@ -17,3 +17,5 @@
 //= ../additional-methods.min.js
 //= ../validator_localization_uk.js
 //= ../partials/add.js
+//= ../partials/payment.js
+//= ../partials/validator.js

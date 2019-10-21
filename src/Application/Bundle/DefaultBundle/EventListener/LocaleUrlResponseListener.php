@@ -86,7 +86,7 @@ class LocaleUrlResponseListener
             $request->setLocale($this->defaultLocale);
             $response = $this->createResponseWithCheckCookie($request->getBaseUrl().$path.($params ? '?'.http_build_query($params) : '/'));
             $event->setResponse($response);
-        } elseif (!in_array($pathLocal, $this->locales, true)) {
+        } elseif (!\in_array($pathLocal, $this->locales, true)) {
             try {
                 $matched = $this->routerService->match('/'.$locale.$path);
             } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
@@ -119,7 +119,7 @@ class LocaleUrlResponseListener
         $path = $request->getPathInfo();
         $currentLocal = $this->getInnerSubstring($path, '/');
 
-        if (in_array($currentLocal, $this->locales, true)) {
+        if (\in_array($currentLocal, $this->locales, true)) {
             $request->setLocale($currentLocal);
         }
 
