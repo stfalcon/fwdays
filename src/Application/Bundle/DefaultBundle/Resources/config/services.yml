@@ -274,3 +274,9 @@ services:
             - "%fos_user.model.user.class%"
         tags:
             - { name: form.type, alias: application_registration }
+
+    fos_user.util.password_updater:
+        class: Application\Bundle\DefaultBundle\Security\PasswordUpdater
+        public: false
+        arguments:
+            - "@security.encoder_factory"
