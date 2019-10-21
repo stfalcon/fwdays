@@ -29,7 +29,32 @@ class EmailController extends Controller
      */
     public function unsubscribeAction($hash, $userId, ?int $mailId = null): Response
     {
-        return $this->redirectToRoute('new-unsubscribe', ['hash' => $hash, 'id' => $userId, 'mailId' => $mailId]);
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $subscriber */
+        $subscriber = $em->getRepository('ApplicationDefaultBundle:User')
+            ->findOneBy(['id' => $userId, 'salt' => $hash]);
+
+        if (!$subscriber) {
+            throw $this->createNotFoundException('Unable to find Subscriber.');
+        }
+
+        if ($mailId) {
+            $mail = $em->getRepository('ApplicationDefaultBundle:Mail')->find($mailId);
+            if ($mail) {
+                $mail->addUnsubscribeMessagesCount();
+            }
+            /** @var MailQueue $mailQueue */
+            $mailQueue = $em->getRepository('ApplicationDefaultBundle:MailQueue')
+                ->findOneBy(['user' => $userId, 'mail' => $mailId]);
+            if ($mailQueue && $subscriber->isSubscribe()) {
+                $mailQueue->setIsUnsubscribe();
+            }
+        }
+
+        $subscriber->setSubscribe(false);
+        $em->flush();
+
+        return $this->render('@ApplicationDefault/Email/unsubscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
     }
 
     /**
@@ -80,7 +105,19 @@ class EmailController extends Controller
      */
     public function subscribeAction($userId, $hash): Response
     {
-        return $this->redirectToRoute('new-subscribe', ['hash' => $hash, 'id' => $userId]);
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $em->getRepository('ApplicationDefaultBundle:User')
+            ->findOneBy(['id' => $userId, 'salt' => $hash]);
+
+        if (!$user) {
+            throw $this->createNotFoundException("Unable to find User #{$user->getId()}.");
+        }
+
+        $user->setSubscribe(true);
+        $em->flush();
+
+        return $this->render('@ApplicationDefault/Email/subscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
     }
 
     /**
@@ -116,7 +153,28 @@ class EmailController extends Controller
      */
     public function actionTrackOpenMail($userId, $hash, $mailId = null): RedirectResponse
     {
-        return $this->redirectToRoute('new-trackopenmail', ['hash' => $hash, 'id' => $userId, 'mailId' => $mailId]);
+        if ($mailId) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var User $user */
+            $user = $em->getRepository('ApplicationDefaultBundle:User')
+                ->findOneBy(['id' => $userId, 'salt' => $hash]);
+
+            if ($user) {
+                /** @var MailQueue $mailQueue */
+                $mailQueue = $em->getRepository('ApplicationDefaultBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
+                if ($mailQueue && !$mailQueue->getIsOpen()) {
+                    /** @var Mail $mail */
+                    $mail = $em->getRepository('ApplicationDefaultBundle:Mail')->find($mailId);
+                    if ($mail) {
+                        $mail->addOpenMessagesCount();
+                    }
+                    $mailQueue->setIsOpen();
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
     /**
