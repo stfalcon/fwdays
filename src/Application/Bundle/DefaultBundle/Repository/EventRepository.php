@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * EventRepository.

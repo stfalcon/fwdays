@@ -3,15 +3,15 @@
 namespace Application\Bundle\DefaultBundle\Tests\Listener;
 
 use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Prophecy\Prophet;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\TicketRepository;
-use Symfony\Component\BrowserKit\Client;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Prophecy\Prophet;
+use Symfony\Component\BrowserKit\Client;
 
 /**
  * Class ReferralServiceTest.
@@ -81,7 +81,7 @@ class ReferralServiceTest extends WebTestCase
         /** @var TicketRepository $ticketRepository */
         $ticketRepository = $this->em->getRepository('ApplicationDefaultBundle:Ticket');
         /** @var Ticket $ticket */
-        $ticket = $ticketRepository->findOneByUserAndEvent($user, $event);
+        $ticket = $ticketRepository->findOneByUserAndEventWithPendingPayment($user, $event);
         /** @var Payment $payment */
         $payment = $ticket->getPayment();
         $payment->setAmount($ticket->getAmount() - $fwdaysAmount);
@@ -90,7 +90,7 @@ class ReferralServiceTest extends WebTestCase
         $payment->markedAsPaid();
         $this->em->flush();
         $referralBalance = $userReferral->getBalance();
-        $referralService = $this->getContainer()->get('application.referral.service');
+        $referralService = $this->getContainer()->get('app.referral.service');
         $referralService->chargingReferral($payment);
         $referralService->utilizeBalance($payment);
 

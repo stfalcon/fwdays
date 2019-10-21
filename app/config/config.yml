@@ -37,6 +37,10 @@ framework:
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    serializer:
+        enabled: true
+        enable_annotations: true
+        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
     session:
         handler_id: snc_redis.session.handler
 #        handler_id: session.handler.native_file

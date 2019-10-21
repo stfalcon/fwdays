@@ -2,14 +2,14 @@
 
 namespace Application\Bundle\DefaultBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\PaymentService;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -66,7 +66,7 @@ class PaymentListener
                 $this->pdfGeneratorHelper = $this->container->get('app.helper.new_pdf_generator');
 
                 /** @var PaymentService $paymentService */
-                $paymentService = $this->container->get('application.payment.service');
+                $paymentService = $this->container->get('app.payment.service');
                 $paymentService->setTicketsCostAsSold($entity);
                 $paymentService->calculateTicketsPromocode($entity);
                 /** @var EntityManager $em */

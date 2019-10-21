@@ -16,3 +16,5 @@
 //= ../additional-methods.min.js
 //= ../partials/localization.js
 //= ../partials/add.js
+//= ../partials/payment.js
+//= ../partials/validator.js

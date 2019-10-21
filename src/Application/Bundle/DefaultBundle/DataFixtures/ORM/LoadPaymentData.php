@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 
 /**
  * LoadPaymentData Class.
@@ -20,9 +20,9 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
-        );
+        ];
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Application\Bundle\DefaultBundle\Entity\Page;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
