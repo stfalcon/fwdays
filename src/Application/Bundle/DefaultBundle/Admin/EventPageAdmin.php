@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Class EventPageAdmin.

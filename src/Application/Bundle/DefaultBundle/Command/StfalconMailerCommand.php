@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Command;
 
+use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Service\MyMailer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Application\Bundle\DefaultBundle\Entity\Mail;
 
 /**
  * Class StfalconMailerCommand.

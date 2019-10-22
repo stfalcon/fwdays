@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Category;
+use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\EventSponsor;
+use Application\Bundle\DefaultBundle\Entity\Sponsor;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\Category;
-use Application\Bundle\DefaultBundle\Entity\EventSponsor;
-use Application\Bundle\DefaultBundle\Entity\Sponsor;
 
 /**
  * LoadEventSponsorData class.
@@ -22,11 +22,11 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
      */
     public function getDependencies()
     {
-        return array(
+        return [
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadCategoryData',
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadSponsorData',
             'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
-        );
+        ];
     }
 
     /**

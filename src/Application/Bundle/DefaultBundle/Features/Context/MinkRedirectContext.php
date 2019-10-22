@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\MinkExtension\Context\RawMinkContext;
 
 /**
  * Context class for managing redirects within an application.

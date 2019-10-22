@@ -63,7 +63,15 @@ pay.i_have_promo.title: У мене є промокод
 pay.enter_promo.title: Введіть промокод для отримання знижки
 pay.sum.bold.title: 'Сума: <b>%sum% грн</b>'
 pay.bonus.bold.title: 'Ваші бонуси fwdays: <b>%sum% грн</b>'
+pay.bonus.label.title: 'ваші бонуси fwdays'
+pay.bonus.title: '&minus;%sum% бонуси Fwdays'
 pay.sum_for_pay.bold.title: 'До сплати: <b>%sum% грн</b>'
+pay.sum_for_pay.title: 'До оплати:'
+pay.card_description: 'У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.'
+pay.bonus.apply_btn: 'застосувати'
+pay.user.add_btn: 'зберегти'
+pay.user.continue: 'продовжити'
+
 event.price.title: Вартість участі
 tickets.count: '{0}%count% квиток|{1}%count% квитка|{2}%count% квитків'
 tickets.hint: тільки через сайт
@@ -163,10 +171,9 @@ pay.event.pay_for_other: Оплатити інших учасників
 pay.event.one_more_participants: Ще учасники
 pay.tickets_by_email.description: Квитки будуть відправлені на вказані електронні адреси учасників
 pay.event.cupon: 'Купон на знижку:'
-
+pay.amount_changed: 'Змінилась сума до оплати! Перевірьте дані!'
 flash_you_registrated.title: Ви зареєструвались на подію
 flash_you_unsubscribe.title: Ви скасували підписку на подію
-
 
 contact_info.title: Контактна інформація
 candidate.speaker.title: На розгляді
@@ -176,12 +183,13 @@ error.phone_bad_format: Невірний формат номеру
 error.email_bad_format: Невірний формат пошти
 error.surname.only_letters: 'Прізвище може містити лише літери'
 error.name.only_letters: "Ім'я може містити лише літери"
-
 error.user.already.paid: '%email% вже оплатив квиток'
 error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
 error.promocode.not_found: 'Промокод не знайдений!'
 error.promocode.used: 'Промокод використаний!'
-
+error.promocode.low_than_discount: 'Знижка по промокоду нижчя ніж постійного учасника!'
+error.ticket.already.added: 'Квиток для цього користувача вже додано'
+error.user.cant_be_edit: 'Ви не може редагувати цього користувача'
 contacts.registration.title: Питання з реєстрації та оплати участі у конференціях
 contacts.cooperation.title: Питання співпраці та партнерства з Fwdays
 contacts.partners.title: Питання інфопартнерства, мітапів, майстер-класів

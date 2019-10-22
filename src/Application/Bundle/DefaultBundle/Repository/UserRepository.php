@@ -2,10 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
 /**

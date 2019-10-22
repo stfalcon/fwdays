@@ -24,14 +24,14 @@ class MailAdminController extends CRUDController
      */
     public function userSendAction()
     {
-        if (!in_array($this->get('kernel')->getEnvironment(), array('test'))) {
+        if (!\in_array($this->get('kernel')->getEnvironment(), ['test'])) {
             throw new NotFoundHttpException('Page not found');
         }
         $command = $this->get('user_mail_command_service');
         $output = new ConsoleOutput();
-        $arguments = array(
+        $arguments = [
             '--amount' => '5',
-        );
+        ];
         $input = new ArrayInput($arguments);
         $command->run($input, $output);
 

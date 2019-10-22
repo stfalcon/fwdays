@@ -49,7 +49,7 @@ class StfalconChangeTranslationCommand extends ContainerAwareCommand
                         $field = $translation->getField();
                         $action = 'set'.ucfirst($field);
                         $content = $translation->getContent();
-                        if (null !== $content && is_callable([$entity, $action])) {
+                        if (null !== $content && \is_callable([$entity, $action])) {
                             $entity->$action($content);
                         }
                     }

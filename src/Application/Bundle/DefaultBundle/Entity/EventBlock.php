@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
+use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Translatable;
-use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Application\Bundle\DefaultBundle\Validator\Constraints as AppAssert;
+use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * EventBlock.

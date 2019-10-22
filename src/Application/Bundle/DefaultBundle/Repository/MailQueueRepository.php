@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\MailQueue;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class MailQueueRepository.
