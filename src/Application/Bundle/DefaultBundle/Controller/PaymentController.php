@@ -8,6 +8,8 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Model\UserManager;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -407,9 +409,10 @@ class PaymentController extends Controller
                     $formAction = $payment->getFwdaysAmount() > 0 ?
                         $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 } else {
-                    $formAction = WayForPayService::WFP_SECURE_PAGE;
-                    $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
-                    $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
+                    /** @var PaymentProcessInterface $paymentSystem */
+                    $paymentSystem = $this->get('app.payment_system.service');
+                    $formAction = $paymentSystem->getFormAction();
+                    $paySystemData = $paymentSystem->getData($payment, $event);
                 }
             }
 

@@ -71,14 +71,28 @@ services:
         arguments: ['%google_api_key%', '@buzz']
 
     app.way_for_pay.service:
-        class: Application\Bundle\DefaultBundle\Service\WayForPayService
+        class: Application\Bundle\DefaultBundle\Service\PaymentProcess\WayForPayService
+        arguments:
+            - '%application_default.config%'
+            - '@translator'
+            - '@request_stack'
+            - '@router'
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@logger'
+            - '@app.referral.service'
+            - '@session'
+
+    app.interkassa.service:
+        class: Application\Bundle\DefaultBundle\Service\PaymentProcess\InterkassaService
         arguments:
             - "%application_default.config%"
             - "@translator"
             - "@request_stack"
-            - "@router"
-            - "@security.token_storage"
-            - "@doctrine.orm.entity_manager"
+            - '@doctrine.orm.entity_manager'
+            - '@logger'
+            - '@app.referral.service'
+            - '@session'
 
     app.event.service:
        class: Application\Bundle\DefaultBundle\Service\EventService

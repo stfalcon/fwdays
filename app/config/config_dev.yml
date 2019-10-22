@@ -19,6 +19,10 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+application_default:
+    interkassa:
+        shop_id: "%interkassa_shop_id%"
+
 monolog:
     handlers:
         main:
