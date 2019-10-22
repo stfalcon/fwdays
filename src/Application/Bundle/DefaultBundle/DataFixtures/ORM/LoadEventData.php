@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Application\Bundle\DefaultBundle\Entity\Event;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * LoadEventData Class.
@@ -407,7 +407,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     private function generateUploadedFile($filename): ?UploadedFile
     {
-        $fullPath = realpath($this->getKernelDir().'/../web/assets/img/events/'.$filename);
+        $fullPath = realpath($this->getKernelDir().'/../web/img/events/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'event');
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);

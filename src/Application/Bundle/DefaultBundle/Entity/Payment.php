@@ -5,6 +5,8 @@ namespace Application\Bundle\DefaultBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Payment.
@@ -23,6 +25,7 @@ class Payment
     const WAYFORPAY_GATE = 'wayforpay';
     const BONUS_GATE = 'bonus';
     const PROMOCODE_GATE = 'promocode';
+    const UNKNOWN_GATE = 'unknown';
 
     private $gates = [self::ADMIN_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
@@ -42,6 +45,8 @@ class Payment
      *
      * @ORM\ManyToOne(targetEntity="Application\Bundle\DefaultBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Groups("payment.view")
      */
     private $user;
 
@@ -51,6 +56,8 @@ class Payment
      * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
+     *
+     * @Groups("payment.view")
      */
     private $amount = 0;
 
@@ -60,6 +67,8 @@ class Payment
      * @var float
      *
      * @ORM\Column(name="base_amount", type="decimal", precision=10, scale=2)
+     *
+     * @Groups("payment.view")
      */
     private $baseAmount = 0;
 
@@ -67,9 +76,13 @@ class Payment
      * Використанно валюти з балансу користувача,
      * яку він отримує за рефералів або за повернення коштів при відсутності євента.
      *
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="fwdays_amount", type="decimal", precision=10, scale=2, nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Groups("payment.view")
      */
     private $fwdaysAmount = 0;
 
@@ -85,7 +98,7 @@ class Payment
      *
      * @ORM\Column()
      */
-    private $gate = Payment::WAYFORPAY_GATE;
+    private $gate = Payment::UNKNOWN_GATE;
 
     /**
      * @var \DateTime
@@ -110,11 +123,13 @@ class Payment
      *
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Ticket", mappedBy="payment")
      * @ORM\OrderBy({"createdAt" = "ASC"})
+     *
+     * @Groups("payment.view")
      */
     private $tickets;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(name="refunded_amount", type="decimal", precision=10, scale=2, nullable=true)
      */
@@ -129,7 +144,7 @@ class Payment
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Ticket[]
      */
     public function getTickets()
     {
@@ -142,6 +157,16 @@ class Payment
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+    }
+
+    /**
+     * @Groups("payment.view")
+     *
+     * @return int
+     */
+    public function getTicketCount(): int
+    {
+        return $this->tickets->count();
     }
 
     /**
@@ -194,9 +219,9 @@ class Payment
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getRefundedAmount()
+    public function getRefundedAmount(): ?float
     {
         return $this->refundedAmount;
     }
@@ -282,7 +307,7 @@ class Payment
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -399,7 +424,7 @@ class Payment
     public function setPaidWithGate($gate)
     {
         $this->setStatus(self::STATUS_PAID);
-        if (in_array($gate, $this->gates, true)) {
+        if (\in_array($gate, $this->gates, true)) {
             $this->setGate($gate);
         } else {
             $this->setGate(self::WAYFORPAY_GATE);
@@ -411,7 +436,7 @@ class Payment
     /**
      * @return float
      */
-    public function getBaseAmount()
+    public function getBaseAmount(): float
     {
         return $this->baseAmount;
     }
@@ -429,9 +454,9 @@ class Payment
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getFwdaysAmount()
+    public function getFwdaysAmount(): ?float
     {
         return $this->fwdaysAmount;
     }
@@ -441,7 +466,7 @@ class Payment
      *
      * @return $this
      */
-    public function setFwdaysAmount($fwdaysAmount)
+    public function setFwdaysAmount(float $fwdaysAmount): self
     {
         $this->fwdaysAmount = $fwdaysAmount;
 
@@ -459,6 +484,7 @@ class Payment
             Payment::ADMIN_GATE => Payment::ADMIN_GATE,
             Payment::BONUS_GATE => Payment::BONUS_GATE,
             Payment::PROMOCODE_GATE => Payment::PROMOCODE_GATE,
+            Payment::UNKNOWN_GATE => Payment::UNKNOWN_GATE,
         ];
     }
 
@@ -472,5 +498,23 @@ class Payment
             'ожидание' => Payment::STATUS_PENDING,
             'возращен' => Payment::STATUS_RETURNED,
         ];
+    }
+
+    /**
+     * @param Payment|null $payment
+     *
+     * @return bool
+     */
+    public function isEqualTo(?Payment $payment): bool
+    {
+        if (!$payment instanceof self) {
+            return false;
+        }
+
+        if ($payment->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

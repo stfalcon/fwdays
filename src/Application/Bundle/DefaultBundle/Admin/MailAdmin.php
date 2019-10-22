@@ -3,21 +3,21 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\EventAudience;
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\MailQueueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Knp\Menu\ItemInterface as MenuItemInterface;
-use Application\Bundle\DefaultBundle\Entity\EventAudience;
-use Application\Bundle\DefaultBundle\Entity\MailQueue;
-use Application\Bundle\DefaultBundle\Entity\Mail;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -32,17 +32,17 @@ final class MailAdmin extends AbstractAdmin
      *
      * @var array
      */
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_sort_by' => 'id',
         '_sort_order' => 'DESC',
-    );
+    ];
 
     /**
      * @return array
      */
     public function getBatchActions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -67,8 +67,8 @@ final class MailAdmin extends AbstractAdmin
         $uow = $em->getUnitOfWork();
         $originalObject = $uow->getOriginalEntityData($object);
 
-        $eventsChange = count($this->savedEvents) !== $object->getEvents()->count();
-        $audiencesChange = count($this->savedAudiences) !== $object->getAudiences()->count();
+        $eventsChange = \count($this->savedEvents) !== $object->getEvents()->count();
+        $audiencesChange = \count($this->savedAudiences) !== $object->getAudiences()->count();
 
         if (!$eventsChange) {
             foreach ($this->savedEvents as $savedEvent) {
@@ -212,15 +212,15 @@ final class MailAdmin extends AbstractAdmin
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
-        if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
+        if (!$childAdmin && !\in_array($action, ['edit', 'show'])) {
             return;
         }
 
         $admin = $this->isChild() ? $this->getParent() : $this;
         $id = $admin->getRequest()->get('id');
 
-        $menu->addChild('Mail', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
-        $menu->addChild('Line items', array('uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', array('id' => $id))));
+        $menu->addChild('Mail', ['uri' => $admin->generateUrl('edit', ['id' => $id])]);
+        $menu->addChild('Line items', ['uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', ['id' => $id])]);
     }
 
     /**

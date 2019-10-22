@@ -5,8 +5,8 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\DefaultBundle\Entity\Page;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +44,10 @@ class DefaultController extends Controller
             return $this->render('@ApplicationDefault/Redesign/static_contacts.page.html.twig', ['page' => $page]);
         }
 
+        if ('about' === $page->getSlug()) {
+            return $this->render('@ApplicationDefault/Page/about.html.twig', ['page' => $page]);
+        }
+
         return $this->render('@ApplicationDefault/Default/page.html.twig', ['page' => $page]);
     }
 
@@ -78,7 +82,7 @@ class DefaultController extends Controller
             'user_active_events' => $userActiveEvents,
             'user_past_events' => $userPastEvents,
             'events' => $allActiveEvents,
-            'code' => $this->get('application.referral.service')->getReferralCode(),
+            'code' => $this->get('app.referral.service')->getReferralCode(),
         ]);
     }
 
@@ -126,7 +130,7 @@ class DefaultController extends Controller
 
         $errors = $validator->validate($user);
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             $errorsString = (string) $errors;
 
             return new JsonResponse(['result' => true, 'error' => $errorsString]);

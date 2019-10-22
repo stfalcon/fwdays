@@ -19,14 +19,14 @@ class ParticipantFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', 'text', [
                 'label' => 'Имя участника',
                 'required' => true,
-            ))
-            ->add('email', 'email', array(
+            ])
+            ->add('email', 'email', [
                 'label' => 'E-mail участника',
                 'required' => true,
-            ));
+            ]);
     }
 
     /**

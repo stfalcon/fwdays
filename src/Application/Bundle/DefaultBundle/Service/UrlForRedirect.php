@@ -58,7 +58,7 @@ class UrlForRedirect
     {
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
 
-        if (in_array($clearReferrer, $this->authorizationUrls)) {
+        if (\in_array($clearReferrer, $this->authorizationUrls)) {
             return $this->router->generate('homepage');
         }
 

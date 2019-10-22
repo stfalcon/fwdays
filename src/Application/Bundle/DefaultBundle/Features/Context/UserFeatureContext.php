@@ -2,15 +2,15 @@
 
 namespace Application\Bundle\DefaultBundle\Features\Context;
 
-use Symfony\Component\HttpKernel\KernelInterface;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\CommonContexts\SymfonyMailerContext;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Application\Bundle\DefaultBundle\Features\Context\UserContext as ApplicationDefaultBundleUserContext;
+use Behat\CommonContexts\SymfonyMailerContext;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use PHPUnit_Framework_Assert as Assert;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Feature context for ApplicationDefaultBundle.
@@ -64,13 +64,13 @@ class UserFeatureContext extends MinkContext implements KernelAwareInterface
     {
         $activeEvents = $this->kernel->getContainer()->get('doctrine')->getManager()
             ->getRepository('ApplicationDefaultBundle:Event')
-            ->findBy(array('active' => true));
+            ->findBy(['active' => true]);
 
         $user = $this->kernel->getContainer()->get('fos_user.user_manager')->findUserByEmail('test@fwdays.com');
         $tickets = $this->kernel->getContainer()->get('doctrine')->getManager()
-            ->getRepository('ApplicationDefaultBundle:Ticket')->findBy(array('user' => $user->getId()));
+            ->getRepository('ApplicationDefaultBundle:Ticket')->findBy(['user' => $user->getId()]);
 
-        Assert::assertEquals(count($tickets), count($activeEvents));
+        Assert::assertEquals(\count($tickets), \count($activeEvents));
     }
 
     /**

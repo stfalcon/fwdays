@@ -4,11 +4,11 @@ namespace Application\Bundle\DefaultBundle\Service;
 
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
-use Symfony\Component\DependencyInjection\Container;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * Сервис для работы с реферальной программой.
@@ -48,7 +48,7 @@ class ReferralService
      */
     public function getReferralCode($user = null)
     {
-        if (is_null($user)) {
+        if (null === $user) {
             $user = $this->container->get('security.token_storage')->getToken()->getUser();
         }
 
@@ -152,7 +152,7 @@ class ReferralService
                 $user = $this->getUser();
 
                 //user authorize
-                if (!is_null($user)) {
+                if (null !== $user) {
                     if ($user->getReferralCode() == $code) {
                         return false;
                     }
@@ -191,7 +191,7 @@ class ReferralService
             return null;
         }
 
-        if (!is_object($user = $token->getUser())) {
+        if (!\is_object($user = $token->getUser())) {
             return null;
         }
 

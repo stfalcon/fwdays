@@ -2,15 +2,15 @@
 
 namespace Application\Bundle\DefaultBundle\Helper;
 
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Service\SvgToJpg;
+use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig_Environment;
-use Symfony\Component\Routing\Router;
-use Endroid\QrCode\QrCode;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
+use Twig_Environment;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**

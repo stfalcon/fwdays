@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
-use Application\Bundle\DefaultBundle\Entity\User;
-use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -112,7 +112,7 @@ class EventAdmin extends AbstractTranslateAdmin
     {
         /** @var Event $subject */
         $subject = $this->getSubject();
-        if (!is_null($subject->getId())) {
+        if (null !== $subject->getId()) {
             $this->saveCity = $subject->getCity();
             $this->savePlace = $subject->getPlace();
         }
@@ -186,8 +186,8 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => 'Цены события',
                             'by_reference' => false,
                             'type_options' => ['delete' => true],
-                            'btn_add' => is_null($subject->getId()) ? false : 'Добавить цену',
-                            'help' => is_null($subject->getId()) ? 'добавление цен возможно только после создания события'
+                            'btn_add' => null === $subject->getId() ? false : 'Добавить цену',
+                            'help' => null === $subject->getId() ? 'добавление цен возможно только после создания события'
                                 : 'добавьте блоки с ценами на билеты',
                         ],
                         [
@@ -220,7 +220,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         FileType::class,
                         [
                             'label' => $subject->getLogo() ? 'Логотип | '.$subject->getLogo() : 'Логотип',
-                            'required' => is_null($subject->getLogo()),
+                            'required' => null === $subject->getLogo(),
                             'help' => 'Основной логотип.',
                         ]
                     )
@@ -264,8 +264,8 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => 'Блоки отображения события',
                             'by_reference' => false,
                             'type_options' => ['delete' => true],
-                            'btn_add' => is_null($subject->getId()) ? false : 'Добавить блок',
-                            'help' => is_null($subject->getId()) ? 'добавление блоков возможно только после создания события'
+                            'btn_add' => null === $subject->getId() ? false : 'Добавить блок',
+                            'help' => null === $subject->getId() ? 'добавление блоков возможно только после создания события'
                                 : 'добавьте блоки отображения',
                         ],
                         [

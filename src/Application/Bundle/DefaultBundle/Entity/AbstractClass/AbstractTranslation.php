@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Entity\AbstractClass;
 
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 use Application\Bundle\DefaultBundle\Entity\Translation\TranslatableEntityInterface;
+use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
  * Class AbstractTranslation.

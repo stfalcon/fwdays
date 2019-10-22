@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Sonata\AdminBundle\Controller\CoreController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sonata\AdminBundle\Controller\CoreController;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TicketAdminController.
@@ -34,7 +34,7 @@ class TicketAdminController extends CoreController
         $ticket = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['id' => $ticketId]);
 
-        if (!is_null($ticket)) {
+        if (null !== $ticket) {
             $url = $this->generateUrl(
                 'event_ticket_registration',
                 [

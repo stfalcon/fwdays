@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
