@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
 use Application\Bundle\DefaultBundle\Entity\EventPage;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
 use Application\Bundle\DefaultBundle\Repository\ReviewRepository;
+use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 

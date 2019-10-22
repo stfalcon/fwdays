@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Entity\AbstractClass\AbstractPage;
+use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
-use Application\Bundle\DefaultBundle\Entity\AbstractClass\AbstractPage;
-use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
-use Buzz\Browser;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Buzz\Browser;
 
 /**
  * Class GoogleMapService.

@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Application\Bundle\DefaultBundle\Entity\User;
 
 /**
  * LoadUserData class.
@@ -24,7 +24,7 @@ class LoadUserData extends AbstractFixture
             ->setSurname('Super')
             ->setEmail('admin@fwdays.com')
             ->setPlainPassword('qwerty')
-            ->setRoles(array('ROLE_SUPER_ADMIN'))
+            ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setEnabled(true);
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
@@ -35,7 +35,7 @@ class LoadUserData extends AbstractFixture
             ->setSurname('Volunteer')
             ->setEmail('volunteer@fwdays.com')
             ->setPlainPassword('qwerty')
-            ->setRoles(array('ROLE_VOLUNTEER'))
+            ->setRoles(['ROLE_VOLUNTEER'])
             ->setEnabled(true);
         $manager->persist($userVolunteer);
         $this->addReference('user-volunteer', $userVolunteer);

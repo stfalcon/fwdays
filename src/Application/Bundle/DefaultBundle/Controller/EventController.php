@@ -2,13 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\EventPage;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Application\Bundle\DefaultBundle\Entity\EventPage;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +58,7 @@ class EventController extends Controller
      */
     public function showAction($eventSlug)
     {
-        $referralService = $this->get('application.referral.service');
+        $referralService = $this->get('app.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
         return $this->get('app.event.service')->getEventPagesArr($eventSlug);

@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 
 /**
  * Class PageAdmin.

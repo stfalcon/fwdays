@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Form\Type;
 
+use FOS\UserBundle\Form\Type\ProfileFormType as FosProfileFormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use FOS\UserBundle\Form\Type\ProfileFormType as FosProfileFormType;
 
 /**
  * ProfileFormType.

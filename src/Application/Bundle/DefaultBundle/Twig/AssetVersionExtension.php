@@ -34,9 +34,9 @@ class AssetVersionExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('app_asset_version', array($this, 'getAssetVersion')),
-        );
+        return [
+            new \Twig_SimpleFilter('app_asset_version', [$this, 'getAssetVersion']),
+        ];
     }
 
     /**
@@ -52,8 +52,8 @@ class AssetVersionExtension extends \Twig_Extension
             return $asset;
         }
 
-        $path = pathinfo($this->webRoot.DIRECTORY_SEPARATOR.$asset);
-        $manifestFile = $path['dirname'].DIRECTORY_SEPARATOR.self::REV_MANIFEST_FILE;
+        $path = pathinfo($this->webRoot.\DIRECTORY_SEPARATOR.$asset);
+        $manifestFile = $path['dirname'].\DIRECTORY_SEPARATOR.self::REV_MANIFEST_FILE;
 
         if (!file_exists($manifestFile)) {
             throw new \Exception(sprintf('Cannot find manifest file: "%s"', $manifestFile));
@@ -65,7 +65,7 @@ class AssetVersionExtension extends \Twig_Extension
             throw new \Exception(sprintf('There is no file "%s" in the version manifest!', $path['basename']));
         }
 
-        return pathinfo($asset)['dirname'].DIRECTORY_SEPARATOR.$manifestPaths[$path['basename']];
+        return pathinfo($asset)['dirname'].\DIRECTORY_SEPARATOR.$manifestPaths[$path['basename']];
     }
 
     /**

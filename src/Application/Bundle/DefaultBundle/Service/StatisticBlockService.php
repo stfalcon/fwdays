@@ -2,9 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Service;
 
+use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
-use Sonata\BlockBundle\Block\BlockContextInterface;
 
 /**
  * StatisticBlockService.

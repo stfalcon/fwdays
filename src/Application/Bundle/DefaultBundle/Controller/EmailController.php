@@ -2,12 +2,12 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Application\Bundle\DefaultBundle\Entity\Mail;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Application\Bundle\DefaultBundle\Entity\MailQueue;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
