@@ -17,6 +17,14 @@ class InterkassaService extends AbstractPaymentProcessService
     private const PAYMENT_SYSTEM_NAME = 'Interkassa';
 
     /**
+     * @return bool
+     */
+    public function isUseRedirectByStatus(): bool
+    {
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getFormAction(): string

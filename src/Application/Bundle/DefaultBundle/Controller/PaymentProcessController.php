@@ -37,14 +37,18 @@ class PaymentProcessController extends Controller
             return new Response($e->getMessage(), 400);
         }
 
-        if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
-            return $this->redirectToRoute('payment_success');
-        }
-        if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
-            return $this->redirectToRoute('payment_pending');
-        }
-        if (AbstractPaymentProcessService::TRANSACTION_STATUS_FAIL === $transactionStatus) {
-            return $this->redirectToRoute('payment_fail');
+        if ($paymentSystem->isUseRedirectByStatus()) {
+            if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
+                return $this->redirectToRoute('payment_success');
+            }
+            if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
+                return $this->redirectToRoute('payment_pending');
+            }
+            if (AbstractPaymentProcessService::TRANSACTION_STATUS_FAIL === $transactionStatus) {
+                return $this->redirectToRoute('payment_fail');
+            }
+        } elseif (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
+            return new Response('SUCCESS', 200);
         }
 
         return new Response('FAIL transaction status:'.$transactionStatus, 400);

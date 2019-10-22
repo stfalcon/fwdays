@@ -104,11 +104,13 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
             return self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
         }
 
+        $transactionStatus = $this->getTransactionStatus();
+
         switch ($this->getStatusFromResponse($response)) {
-            case self::TRANSACTION_STATUS[self::TRANSACTION_STATUS_PENDING]:
+            case $transactionStatus[self::TRANSACTION_STATUS_PENDING]:
                 $status = self::TRANSACTION_STATUS_PENDING;
                 break;
-            case self::TRANSACTION_STATUS[self::TRANSACTION_STATUS_FAIL]:
+            case $transactionStatus[self::TRANSACTION_STATUS_FAIL]:
                 $status = self::TRANSACTION_STATUS_FAIL;
                 $this->logger->addCritical(\sprintf('%s interaction Fail!', $this->getSystemName()), $this->getRequestDataToArr($response, $payment));
                 $this->saveResponseLog(null, $response, \sprintf('%s interaction Fail!', $this->getSystemName()));

@@ -60,6 +60,14 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
+     * @return bool
+     */
+    public function isUseRedirectByStatus(): bool
+    {
+        return true;
+    }
+
+    /**
      * @return string
      */
     public function getFormAction(): string

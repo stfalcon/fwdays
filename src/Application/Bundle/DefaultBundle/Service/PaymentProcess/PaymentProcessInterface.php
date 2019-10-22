@@ -38,4 +38,9 @@ interface PaymentProcessInterface
      * @return string
      */
     public function processResponse(?array $response): string;
+
+    /**
+     * @return bool
+     */
+    public function isUseRedirectByStatus(): bool;
 }
