@@ -288,3 +288,7 @@ services:
         arguments: ['@translator', '@serializer.normalizer.object', '%application_default.config%']
         tags:
             - { name: serializer.normalizer }
+
+    app.email_hash_validation.service:
+        class: Application\Bundle\DefaultBundle\Service\EmailHashValidationService
+        arguments: ['%email_subscribe_salt%']
