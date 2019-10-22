@@ -43,4 +43,9 @@ interface PaymentProcessInterface
      * @return bool
      */
     public function isUseRedirectByStatus(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isAgreeWithConditionsRequired(): bool;
 }

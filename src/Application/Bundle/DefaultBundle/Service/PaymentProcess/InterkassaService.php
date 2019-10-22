@@ -25,6 +25,14 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
+     * @return bool
+     */
+    public function isAgreeWithConditionsRequired(): bool
+    {
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getFormAction(): string

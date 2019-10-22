@@ -48,8 +48,17 @@ class PaymentController extends Controller
         $payment = $this->get('app.payment.service')->getPaymentForCurrentUser($event);
 
         $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+        /** @var PaymentProcessInterface $paymentSystem */
+        $paymentSystem = $this->get('app.payment_system.service');
 
-        return $this->render('@ApplicationDefault/Redesign/Payment/payment.html.twig', ['event' => $event, 'payment_data' => $result]);
+        return $this->render(
+            '@ApplicationDefault/Redesign/Payment/payment.html.twig',
+            [
+                'event' => $event,
+                'payment_data' => $result,
+                'with_conditions' => $paymentSystem->isAgreeWithConditionsRequired(),
+            ]
+        );
     }
 
     /**

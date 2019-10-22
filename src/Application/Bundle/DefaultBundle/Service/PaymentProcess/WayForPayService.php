@@ -68,6 +68,14 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
+     * @return bool
+     */
+    public function isAgreeWithConditionsRequired(): bool
+    {
+        return true;
+    }
+
+    /**
      * @return string
      */
     public function getFormAction(): string
