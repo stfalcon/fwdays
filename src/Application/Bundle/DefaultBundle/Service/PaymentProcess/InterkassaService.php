@@ -85,10 +85,6 @@ class InterkassaService extends AbstractPaymentProcessService
             'ik_cur' => 'uah',
             'ik_desc' => $description,
             'ik_loc' => $this->locale,
-            'ik_ia_u' => 'http://127.0.0.1:8000/payment/interaction',
-            'ik_suc_u' => 'http://127.0.0.1:8000/payment/success',
-            'ik_fal_u' => 'http://127.0.0.1:8000/payment/fail',
-            'ik_pnd_u' => 'http://127.0.0.1:8000/payment/pending',
         ];
 
         $params['ik_sign'] = $this->getSignHash($params);
