@@ -2,7 +2,6 @@
 
 namespace Application\Bundle\DefaultBundle\DependencyInjection;
 
-use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

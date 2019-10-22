@@ -3,10 +3,7 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\Payment;
-use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
-use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
-use Application\Bundle\DefaultBundle\Service\WayForPayService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;

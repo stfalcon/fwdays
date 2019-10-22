@@ -208,11 +208,11 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     }
 
     /**
-     * @param Payment     $payment
-     * @param array|null  $response
-     * @param string|null $fwdaysResponse
+     * @param Payment|null $payment
+     * @param array|null   $response
+     * @param string|null  $fwdaysResponse
      */
-    protected function saveResponseLog(Payment $payment, ?array $response, ?string $fwdaysResponse = null): void
+    protected function saveResponseLog(?Payment $payment, ?array $response, ?string $fwdaysResponse = null): void
     {
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
