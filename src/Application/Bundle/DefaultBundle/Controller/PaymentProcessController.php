@@ -34,7 +34,7 @@ class PaymentProcessController extends Controller
         try {
             $transactionStatus = $paymentSystem->processResponse($response);
         } catch (BadRequestHttpException $e) {
-            return new Response($e->getMessage(), 400);
+            return $this->redirectToRoute('homepage');
         }
 
         if ($paymentSystem->isUseRedirectByStatus()) {
