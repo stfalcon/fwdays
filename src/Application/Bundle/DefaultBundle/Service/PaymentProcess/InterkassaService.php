@@ -5,6 +5,14 @@ namespace Application\Bundle\DefaultBundle\Service\PaymentProcess;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Service\ReferralService;
+use Doctrine\ORM\EntityManager;
+use Monolog\Logger;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * InterkassaService.
@@ -15,6 +23,27 @@ class InterkassaService extends AbstractPaymentProcessService
     private const IK_TRANSACTION_APPROVED_STATUS = 'success';
 
     private const PAYMENT_SYSTEM_NAME = 'Interkassa';
+
+    protected $isOverrideCallbacks;
+
+    /**
+     * @param array               $appConfig
+     * @param TranslatorInterface $translator
+     * @param RequestStack        $requestStack
+     * @param Router              $router
+     * @param EntityManager       $em
+     * @param Logger              $logger
+     * @param ReferralService     $referralService
+     * @param Session             $session
+     * @param bool                $isOverrideCallbacks
+     */
+    public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session, bool $isOverrideCallbacks)
+    {
+        parent::__construct($appConfig, $translator, $requestStack, $router, $em, $logger, $referralService, $session);
+
+        $this->isOverrideCallbacks = $isOverrideCallbacks;
+    }
+
 
     /**
      * @return bool
@@ -94,6 +123,13 @@ class InterkassaService extends AbstractPaymentProcessService
             'ik_desc' => $description,
             'ik_loc' => $this->locale,
         ];
+
+        if ($this->isOverrideCallbacks) {
+            $params['ik_ia_u'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $params['ik_suc_u'] = $this->router->generate('payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $params['ik_fal_u'] = $this->router->generate('payment_fail', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $params['ik_pnd_u'] = $this->router->generate('payment_pending', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        }
 
         $params['ik_sign'] = $this->getSignHash($params);
 

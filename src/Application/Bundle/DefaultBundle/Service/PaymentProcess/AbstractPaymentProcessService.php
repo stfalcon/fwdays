@@ -12,6 +12,7 @@ use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -38,17 +39,19 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     protected $referralService;
     protected $em;
     protected $session;
+    protected $router;
 
     /**
      * @param array               $appConfig
      * @param TranslatorInterface $translator
      * @param RequestStack        $requestStack
+     * @param Router              $router
      * @param EntityManager       $em
      * @param Logger              $logger
      * @param ReferralService     $referralService
      * @param Session             $session
      */
-    public function __construct($appConfig, TranslatorInterface $translator, RequestStack $requestStack, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
+    public function __construct($appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
     {
         $this->appConfig = $appConfig;
         $this->request = $requestStack->getCurrentRequest();
@@ -58,6 +61,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         $this->referralService = $referralService;
         $this->em = $em;
         $this->session = $session;
+        $this->router = $router;
     }
 
     /**

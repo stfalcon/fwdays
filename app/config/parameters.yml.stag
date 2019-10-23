@@ -34,8 +34,10 @@ parameters:
 
   merchantAccount: freelance_user_5d483a5295f14
   merchantSecretKey: '4b870b76c9acdfd3b1dac4ee6391909eec6f2b72'
+
   interkassa_secret: your_interkassa_secret_key
   interkassa_shop_id: your_interkassa_shop_key
+  interkassa_override_callbacks: true
 
   sentry_dsn_stag: 'https://77c8377f656a416394b62de4876f38dc:c39d527c3297441fa771883ea03f116a@sentry.stfalcon.com/60'
   sentry_dsn_prod: 'https://77c8377f656a416394b62de4876f38dc:c39d527c3297441fa771883ea03f116a@sentry.stfalcon.com/60'

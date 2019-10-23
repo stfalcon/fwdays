@@ -89,10 +89,12 @@ services:
             - "%application_default.config%"
             - "@translator"
             - "@request_stack"
+            - '@router'
             - '@doctrine.orm.entity_manager'
             - '@logger'
             - '@app.referral.service'
             - '@session'
+            - '%interkassa_override_callbacks%'
 
     app.event.service:
        class: Application\Bundle\DefaultBundle\Service\EventService
