@@ -38,7 +38,9 @@
             <div class="form-row">
                 <div class="form-col form-col--12">
                     <button type="button" class="btn btn--md btn--secondary add-validator {% if ticket.id == 0 %}add-user-btn{% else %}edit-user-btn{% endif %} reload_page">{{ 'pay.user.continue'|trans }}</button>
-                    <a href="#" class="btn-link cancel-edit-user">{{ 'cancel.title'|trans }}</a>
+                    {%- if is_first_ticket == false -%}
+                        <a href="#" class="btn-link cancel-edit-user">{{ 'cancel.title'|trans }}</a>
+                    {%- endif -%}
                 </div>
             </div>
         </div>
