@@ -93,6 +93,10 @@ class InterkassaService extends AbstractPaymentProcessService
             'ik_cur' => 'uah',
             'ik_desc' => $description,
             'ik_loc' => $this->locale,
+            'ik_ia_u' => 'https://fwdays-stag.k8s.stfalcon.com/payment/interaction',
+            'ik_suc_u' => 'https://fwdays-stag.k8s.stfalcon.com/payment/success',
+            'ik_fal_u' => 'https://fwdays-stag.k8s.stfalcon.com/payment/fail',
+            'ik_pnd_u' => 'https://fwdays-stag.k8s.stfalcon.com/payment/pending',
         ];
 
         $params['ik_sign'] = $this->getSignHash($params);
