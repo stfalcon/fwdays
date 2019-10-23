@@ -23,6 +23,7 @@ class ApplicationDefaultExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('application_default.config', $config);
+        $container->setAlias('app.payment_system.service', $config['payment_system']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('event_blocks.yml');

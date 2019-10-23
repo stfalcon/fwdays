@@ -22,7 +22,17 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('application_default');
         $rootNode
             ->children()
+                ->scalarNode('payment_system')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
                 ->arrayNode('wayforpay')
+                    ->children()
+                        ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('interkassa')
                     ->children()
                         ->scalarNode('shop_id')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('secret')->isRequired()->cannotBeEmpty()->end()

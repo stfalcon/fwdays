@@ -143,9 +143,14 @@ fos_user:
         user_manager: application.user_manager
 
 application_default:
+#    payment_system: 'app.way_for_pay.service'
+    payment_system: 'app.interkassa.service'
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
+    interkassa:
+        shop_id: "%interkassa_shop_id%"
+        secret: "%interkassa_secret%"
     discount: 0.2
 
 accord_mandrill_swift_mailer:

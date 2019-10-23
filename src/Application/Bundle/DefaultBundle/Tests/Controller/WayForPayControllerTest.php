@@ -2,7 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Tests\Controller;
 
-use Application\Bundle\DefaultBundle\Controller\WayForPayController;
+use Application\Bundle\DefaultBundle\Controller\PaymentProcessController;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -78,7 +78,7 @@ class WayForPayControllerTest extends WebTestCase
             ->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
-        $wayforpayController = new WayForPayController();
+        $wayforpayController = new PaymentProcessController();
         $wayforpayController->setContainer($container->reveal());
         $result = $wayforpayController->serviceInteractionAction($request->reveal());
 
@@ -115,7 +115,7 @@ class WayForPayControllerTest extends WebTestCase
 
         $paymentRepository->findOneBy(Argument::any())->willReturn(null);
 
-        $wayforpayController = new WayForPayController();
+        $wayforpayController = new PaymentProcessController();
         $wayforpayController->setContainer($container->reveal());
         $result = $wayforpayController->serviceInteractionAction($request->reveal());
 

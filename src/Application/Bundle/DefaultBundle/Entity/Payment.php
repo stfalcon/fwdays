@@ -27,7 +27,7 @@ class Payment
     const PROMOCODE_GATE = 'promocode';
     const UNKNOWN_GATE = 'unknown';
 
-    private $gates = [self::ADMIN_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
+    private $gates = [self::ADMIN_GATE, self::INTERKASSA_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
     /**
      * @var int
