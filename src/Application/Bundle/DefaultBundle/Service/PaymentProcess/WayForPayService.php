@@ -37,7 +37,6 @@ class WayForPayService extends AbstractPaymentProcessService
 
     private const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
 
-    protected $router;
     protected $securityToken;
 
     /**
@@ -53,9 +52,8 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
     {
-        parent::__construct($appConfig, $translator, $requestStack, $em, $logger, $referralService, $session);
+        parent::__construct($appConfig, $translator, $requestStack, $router, $em, $logger, $referralService, $session);
 
-        $this->router = $router;
         $this->securityToken = $securityToken;
     }
 
