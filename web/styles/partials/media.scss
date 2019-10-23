@@ -1086,8 +1086,8 @@
     }
 
     .btn {
-      width: 100%;
-      margin: 0;
+      width: 75%;
+      margin: 0 8px 0 0;
     }
   }
 
@@ -2280,6 +2280,13 @@
     &__status {
       width: auto;
       text-align: left;
+    }
+  }
+
+  .user-payment-form {
+    .btn {
+      width: 70%;
+      min-width: 200px
     }
   }
 }
