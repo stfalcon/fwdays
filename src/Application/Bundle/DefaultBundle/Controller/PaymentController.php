@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Model\UserManager;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
 use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -316,7 +317,7 @@ class PaymentController extends Controller
         }
 
         if ($result) {
-            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
             return $this->redirect($this->generateUrl('payment_success'));
         }
@@ -348,7 +349,7 @@ class PaymentController extends Controller
         }
 
         if ($result) {
-            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
             return $this->redirect($this->generateUrl('payment_success'));
         }
