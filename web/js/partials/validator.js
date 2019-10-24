@@ -14,10 +14,6 @@ function addValidator(form) {
 };
 
 $(document).ready(function () {
-    $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
-    };
-
     $('.payer-form').validate({
         debug: false,
         errorClass: "text-error",
