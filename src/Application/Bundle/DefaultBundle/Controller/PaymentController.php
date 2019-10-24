@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Model\UserManager;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
 use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -315,9 +316,13 @@ class PaymentController extends Controller
             $result = $this->get('app.payment.service')->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        if ($result) {
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
-        return $this->redirect($redirectUrl);
+            return $this->redirect($this->generateUrl('payment_success'));
+        }
+
+        return $this->redirect($this->generateUrl('payment_fail'));
     }
 
     /**
@@ -343,9 +348,13 @@ class PaymentController extends Controller
             $result = $this->get('app.payment.service')->setPaidByPromocode($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        if ($result) {
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
-        return $this->redirect($redirectUrl);
+            return $this->redirect($this->generateUrl('payment_success'));
+        }
+
+        return $this->redirect($this->generateUrl('payment_fail'));
     }
 
     /**
