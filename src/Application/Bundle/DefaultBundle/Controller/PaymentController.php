@@ -315,9 +315,13 @@ class PaymentController extends Controller
             $result = $this->get('app.payment.service')->setPaidByBonusMoney($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        if ($result) {
+            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
 
-        return $this->redirect($redirectUrl);
+            return $this->redirect($this->generateUrl('payment_success'));
+        }
+
+        return $this->redirect($this->generateUrl('payment_fail'));
     }
 
     /**
@@ -343,9 +347,13 @@ class PaymentController extends Controller
             $result = $this->get('app.payment.service')->setPaidByPromocode($payment, $event);
         }
 
-        $redirectUrl = $result ? $this->generateUrl('payment_success') : $this->generateUrl('payment_fail');
+        if ($result) {
+            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
 
-        return $this->redirect($redirectUrl);
+            return $this->redirect($this->generateUrl('payment_success'));
+        }
+
+        return $this->redirect($this->generateUrl('payment_fail'));
     }
 
     /**
