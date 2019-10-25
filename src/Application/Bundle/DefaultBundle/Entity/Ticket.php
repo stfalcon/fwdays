@@ -201,10 +201,14 @@ class Ticket
 
     /**
      * @param Payment|null $payment
+     *
+     * @return $this
      */
-    public function setPayment($payment)
+    public function setPayment($payment): self
     {
         $this->payment = $payment;
+
+        return $this;
     }
 
     /**
@@ -237,10 +241,14 @@ class Ticket
 
     /**
      * @param \DateTime $createdAt
+     *
+     * @return $this
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -273,10 +281,14 @@ class Ticket
      * Mark ticket as "used".
      *
      * @param bool $used
+     *
+     * @return $this
      */
-    public function setUsed($used)
+    public function setUsed($used): self
     {
         $this->used = $used;
+
+        return $this;
     }
 
     /**

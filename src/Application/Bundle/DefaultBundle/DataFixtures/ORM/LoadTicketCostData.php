@@ -37,7 +37,7 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
         $ticketCost->setName('early')
             ->setAmount(1000)
             ->setAltAmount(40)
-            ->setCount(2)
+            ->setCount(50)
             ->setEnabled(true)
             ->setEvent($eventJsDay);
         $manager->persist($ticketCost);
@@ -55,7 +55,7 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
         $ticketCost2->setName('next')
             ->setAmount(2000)
             ->setAltAmount(80)
-            ->setCount(1)
+            ->setCount(50)
             ->setEnabled(true)
             ->setEvent($eventJsDay);
         $manager->persist($ticketCost2);
@@ -73,7 +73,7 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
         $ticketCost4->setName('next')
             ->setAmount(2000)
             ->setAltAmount(80)
-            ->setCount(1)
+            ->setCount(50)
             ->setEnabled(true)
             ->setEvent($eventPHPDay2017);
         $manager->persist($ticketCost4);

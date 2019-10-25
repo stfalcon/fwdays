@@ -276,10 +276,14 @@ class Payment
      * Set status.
      *
      * @param string $status
+     *
+     * @return $this
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
