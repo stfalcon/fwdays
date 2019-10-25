@@ -210,7 +210,7 @@ class InterkassaService extends AbstractPaymentProcessService
     protected function checkPayment(Payment $payment, array $response): bool
     {
         if ($this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'] &&
-            $response['ik_am'] === $payment->getAmount() &&
+            (float) $response['ik_am'] === $payment->getAmount() &&
             self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response) &&
             $response['ik_sign'] === $this->getSignHash($response)
         ) {
