@@ -83,17 +83,24 @@ class PaymentProcessController extends Controller
     /**
      * @Route("/payment/success", name="payment_success")
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function showSuccessAction()
+    public function showSuccessAction(Request $request)
     {
         $session = $this->get('session');
         $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
         $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
-            throw new BadRequestHttpException();
+            $response = $request->query->all();
+            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromResponse($response);
+            if (null === $paymentId) {
+                throw new BadRequestHttpException();
+            }
         }
+
         /** @var Payment|null $payment */
         $payment = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Payment')->find($paymentId);
 

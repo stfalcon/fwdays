@@ -44,6 +44,17 @@ class InterkassaService extends AbstractPaymentProcessService
         $this->isOverrideCallbacks = $isOverrideCallbacks;
     }
 
+    /**
+     * @param array $response
+     *
+     * @return string|null
+     */
+    public function getPaymentIdFromResponse(array $response): ?string
+    {
+        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_inv_st'], $response);
+
+        return $this->isValidShop($response) && $this->isApproved($response) ? $response['ik_pm_no'] : null;
+    }
 
     /**
      * @return bool
@@ -151,6 +162,26 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
+     * @param array $response
+     *
+     * @return bool
+     */
+    private function isApproved(array $response): bool
+    {
+        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response);
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return bool
+     */
+    private function isValidShop(array $response): bool
+    {
+        return $this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'];
+    }
+
+    /**
      * @return string
      */
     protected function getSystemName(): string
@@ -209,9 +240,9 @@ class InterkassaService extends AbstractPaymentProcessService
      */
     protected function checkPayment(Payment $payment, array $response): bool
     {
-        if ($this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'] &&
+        if ($this->isValidShop($response) &&
             (float) $response['ik_am'] === $payment->getAmount() &&
-            self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response) &&
+            $this->isApproved($response) &&
             $response['ik_sign'] === $this->getSignHash($response)
         ) {
             return true;

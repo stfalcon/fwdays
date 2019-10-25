@@ -58,6 +58,16 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
+     * @param array $response
+     *
+     * @return string|null
+     */
+    public function getPaymentIdFromResponse(array $response): ?string
+    {
+        return null;
+    }
+
+    /**
      * @return bool
      */
     public function isUseRedirectByStatus(): bool

@@ -48,4 +48,11 @@ interface PaymentProcessInterface
      * @return bool
      */
     public function isAgreeWithConditionsRequired(): bool;
+
+    /**
+     * @param array $response
+     *
+     * @return string|null
+     */
+    public function getPaymentIdFromResponse(array $response): ?string;
 }
