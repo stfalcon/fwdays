@@ -93,7 +93,7 @@ class NewPdfGeneratorHelper
         $mPDF = new Mpdf($constructorArgs);
         $mPDF->AddFontDirectory(realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
 
-        $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysFont-Medium.ttf'];
+        $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysTicket-Font.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';
         $mPDF->available_unifonts[] = 'fwdays';
