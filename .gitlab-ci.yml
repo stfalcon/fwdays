@@ -69,7 +69,7 @@ static analysis:
         - composer.phar ci:static-analysis
 
 phpunit:
-    stage: 'CI'
+    stage: 'CI jobs'
     <<: *build_ci
     artifacts:
         paths:
