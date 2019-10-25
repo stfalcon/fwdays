@@ -162,26 +162,6 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
-     *
-     * @return bool
-     */
-    private function isApproved(array $response): bool
-    {
-        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response);
-    }
-
-    /**
-     * @param array $response
-     *
-     * @return bool
-     */
-    private function isValidShop(array $response): bool
-    {
-        return $this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'];
-    }
-
-    /**
      * @return string
      */
     protected function getSystemName(): string
@@ -249,5 +229,25 @@ class InterkassaService extends AbstractPaymentProcessService
         }
 
         return false;
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return bool
+     */
+    private function isApproved(array $response): bool
+    {
+        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response);
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return bool
+     */
+    private function isValidShop(array $response): bool
+    {
+        return $this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'];
     }
 }
