@@ -1,6 +1,6 @@
 {%- if email_type == 'unsubscribe' -%}
-    <img src="{{ url('new-trackopenmail', {'hash': hash, 'id': user.id, 'mailId': mailId}) }}" style="display: none">
-    <a href="{{ url('new-unsubscribe', {'hash': hash, 'id': user.id, 'mailId': mailId}) }}" target="_blank" style="color: #747A88;">{{ 'ticket.email.unsubscribe'|trans }}</a>
+    <img src="{{ url('trackopenmail', {'hash': hash, 'id': user.id, 'mailId': mailId}) }}" style="display: none">
+    <a href="{{ url('unsubscribe', {'hash': hash, 'id': user.id, 'mailId': mailId}) }}" target="_blank" style="color: #747A88;">{{ 'ticket.email.unsubscribe'|trans }}</a>
 {%- else -%}
-    <a href="{{ path('new-subscribe',{'hash':hash,'id':user.id}) }}">{{ 'mail.unsubscribe.you_can_suscribe2'|trans }}</a></p>
+    <a href="{{ path('subscribe',{'hash':hash,'id':user.id}) }}">{{ 'mail.unsubscribe.you_can_suscribe2'|trans }}</a></p>
 {%- endif -%}
