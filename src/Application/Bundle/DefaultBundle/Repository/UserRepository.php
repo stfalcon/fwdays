@@ -63,8 +63,10 @@ class UserRepository extends EntityRepository
         $qb = $this->createQueryBuilder('u');
         $andX = $qb->expr()->andX();
 
-        $this->addEventsFilter($qb, $andX, $events);
-        $this->addPaymentStatusFilter($qb, $andX, $status);
+        if ($events->count() > 0) {
+            $this->addEventsFilter($qb, $andX, $events);
+            $this->addPaymentStatusFilter($qb, $andX, $events, $status);
+        }
 
         $qb->andWhere($andX)
             ->groupBy('u')
@@ -159,19 +161,18 @@ class UserRepository extends EntityRepository
      */
     private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
     {
-        if ($events->count() > 0) {
-            $qb->join('u.wantsToVisitEvents', 'wtv');
-            $andX->add($qb->expr()->in('wtv.id', ':events'));
-            $qb->setParameter(':events', $events->toArray());
-        }
+        $qb->join('u.wantsToVisitEvents', 'wtv');
+        $andX->add($qb->expr()->in('wtv.id', ':events'));
+        $qb->setParameter(':events', $events->toArray());
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param Andx         $andX
-     * @param string|null  $status
+     * @param QueryBuilder    $qb
+     * @param Andx            $andX
+     * @param ArrayCollection $events
+     * @param string|null     $status
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events, ?string $status = null): void
     {
         if (null !== $status) {
             if (Payment::STATUS_PENDING === $status) {
@@ -195,6 +196,7 @@ class UserRepository extends EntityRepository
                 $statusQuery = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
                 $statusQuery->add($qb->expr()->in('t.event', ':events'));
             }
+            $qb->setParameter(':events', $events->toArray());
             $andX->add($statusQuery);
             $qb->setParameter(':status', $status);
         }
