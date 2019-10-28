@@ -175,17 +175,24 @@ class UserRepository extends EntityRepository
     {
         if (null !== $status) {
             if (Payment::STATUS_PENDING === $status) {
-                $statusQuery = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
-                $statusQuery->add($qb->expr()->isNull('t.user'));
-                $statusQuery->add($qb->expr()->isNull('p.status'));
                 $qb
                     ->leftJoin(Ticket::class, 't', 'WITH', 't.user = u.id')
                     ->leftJoin('t.payment', 'p');
+
+                $paymentAnd = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
+                $paymentAnd->add($qb->expr()->in('t.event', ':events'));
+
+                $orQuery = $qb->expr()->orX($paymentAnd);
+                $orQuery->add($qb->expr()->isNull('t.user'));
+                $orQuery->add($qb->expr()->isNull('p.status'));
+
+                $statusQuery = $qb->expr()->andX()->add($orQuery);
             } else {
-                $statusQuery = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
                 $qb
                     ->join(Ticket::class, 't', 'WITH', 't.user = u.id')
                     ->join('t.payment', 'p');
+
+                $statusQuery = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
                 $statusQuery->add($qb->expr()->in('t.event', ':events'));
             }
             $andX->add($statusQuery);

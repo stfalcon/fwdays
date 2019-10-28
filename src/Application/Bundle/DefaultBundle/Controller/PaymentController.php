@@ -135,7 +135,7 @@ class PaymentController extends Controller
         }
 
         $ticketService->setNewUserToTicket($user, $ticket);
-
+        $user->addWantsToVisitEvents($event);
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
