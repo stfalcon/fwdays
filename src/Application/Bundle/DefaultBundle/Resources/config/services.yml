@@ -307,4 +307,3 @@ services:
 
     app.email_hash_validation.service:
         class: Application\Bundle\DefaultBundle\Service\EmailHashValidationService
-        arguments: ['%email_subscribe_salt%']

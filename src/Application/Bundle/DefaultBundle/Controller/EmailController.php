@@ -19,46 +19,7 @@ class EmailController extends Controller
     /**
      * Unsubscribe action.
      *
-     * @Route("/unsubscribe/{hash}/{userId}/{mailId}", name="unsubscribe")
-     *
-     * @param string   $hash
-     * @param int      $userId
-     * @param int|null $mailId
-     *
-     * @return Response
-     */
-    public function unsubscribeAction($hash, $userId, ?int $mailId = null): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        /** @var User $subscriber */
-        $subscriber = $em->getRepository('ApplicationDefaultBundle:User')
-            ->findOneBy(['id' => $userId, 'salt' => $hash]);
-
-        if (!$subscriber) {
-            throw $this->createNotFoundException('Unable to find Subscriber.');
-        }
-
-        if ($mailId) {
-            $mail = $em->getRepository('ApplicationDefaultBundle:Mail')->find($mailId);
-            if ($mail) {
-                $mail->addUnsubscribeMessagesCount();
-            }
-            /** @var MailQueue $mailQueue */
-            $mailQueue = $em->getRepository('ApplicationDefaultBundle:MailQueue')
-                ->findOneBy(['user' => $userId, 'mail' => $mailId]);
-            if ($mailQueue && $subscriber->isSubscribe()) {
-                $mailQueue->setIsUnsubscribe();
-            }
-        }
-
-        $subscriber->setSubscribe(false);
-        $em->flush();
-
-        return $this->render('@ApplicationDefault/Email/unsubscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
-    }
-
-    /**
-     * @Route("/new-unsubscribe/{hash}/{id}/{mailId}", name="new-unsubscribe")
+     * @Route("/unsubscribe/{hash}/{id}/{mailId}", name="unsubscribe")
      *
      * @param string $hash
      * @param User   $subscriber
@@ -66,7 +27,7 @@ class EmailController extends Controller
      *
      * @return Response
      */
-    public function newUnsubscribeAction(string $hash, User $subscriber, ?int $mailId = null): Response
+    public function unsubscribeAction(string $hash, User $subscriber, ?int $mailId = null): Response
     {
         $emailHashValidService = $this->get('app.email_hash_validation.service');
 
@@ -96,39 +57,14 @@ class EmailController extends Controller
     }
 
     /**
-     * @Route("/subscribe/{hash}/{userId}", name="subscribe")
-     *
-     * @param int    $userId
-     * @param string $hash
-     *
-     * @return Response
-     */
-    public function subscribeAction($userId, $hash): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        /** @var User $user */
-        $user = $em->getRepository('ApplicationDefaultBundle:User')
-            ->findOneBy(['id' => $userId, 'salt' => $hash]);
-
-        if (!$user) {
-            throw $this->createNotFoundException("Unable to find User #{$user->getId()}.");
-        }
-
-        $user->setSubscribe(true);
-        $em->flush();
-
-        return $this->render('@ApplicationDefault/Email/subscribe.html.twig', ['hash' => $hash, 'userId' => $userId]);
-    }
-
-    /**
-     * @Route("/new-subscribe/{hash}/{id}", name="new-subscribe")
+     * @Route("/subscribe/{hash}/{id}", name="subscribe")
      *
      * @param string $hash
      * @param User   $subscriber
      *
      * @return Response
      */
-    public function newSubscribeAction(string $hash, User $subscriber): Response
+    public function subscribeAction(string $hash, User $subscriber): Response
     {
         $emailHashValidService = $this->get('app.email_hash_validation.service');
 
@@ -143,42 +79,7 @@ class EmailController extends Controller
     }
 
     /**
-     * @Route("/trackopenmail/{hash}/{userId}/{mailId}", name="trackopenmail")
-     *
-     * @param int    $userId
-     * @param string $hash
-     * @param int    $mailId
-     *
-     * @return RedirectResponse
-     */
-    public function actionTrackOpenMail($userId, $hash, $mailId = null): RedirectResponse
-    {
-        if ($mailId) {
-            $em = $this->getDoctrine()->getManager();
-            /** @var User $user */
-            $user = $em->getRepository('ApplicationDefaultBundle:User')
-                ->findOneBy(['id' => $userId, 'salt' => $hash]);
-
-            if ($user) {
-                /** @var MailQueue $mailQueue */
-                $mailQueue = $em->getRepository('ApplicationDefaultBundle:MailQueue')->findOneBy(['user' => $userId, 'mail' => $mailId]);
-                if ($mailQueue && !$mailQueue->getIsOpen()) {
-                    /** @var Mail $mail */
-                    $mail = $em->getRepository('ApplicationDefaultBundle:Mail')->find($mailId);
-                    if ($mail) {
-                        $mail->addOpenMessagesCount();
-                    }
-                    $mailQueue->setIsOpen();
-                    $em->flush();
-                }
-            }
-        }
-
-        return $this->redirect($this->generateUrl('homepage'));
-    }
-
-    /**
-     * @Route("/new-trackopenmail/{hash}/{id}/{mailId}", name="new-trackopenmail")
+     * @Route("/trackopenmail/{hash}/{id}/{mailId}", name="trackopenmail")
      *
      * @param string $hash
      * @param User   $subscriber
@@ -186,7 +87,7 @@ class EmailController extends Controller
      *
      * @return RedirectResponse
      */
-    public function newTrackOpenMailAction(string $hash, User $subscriber, int $mailId): RedirectResponse
+    public function actionTrackOpenMail(string $hash, User $subscriber, int $mailId): RedirectResponse
     {
         $emailHashValidService = $this->get('app.email_hash_validation.service');
 
