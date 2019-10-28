@@ -11,16 +11,6 @@ use Application\Bundle\DefaultBundle\Entity\User;
  */
 class EmailHashValidationService
 {
-    private $paramEmailSalt;
-
-    /**
-     * @param string $paramEmailSalt
-     */
-    public function __construct(string $paramEmailSalt)
-    {
-        $this->paramEmailSalt = $paramEmailSalt;
-    }
-
     /**
      * @param User     $user
      * @param int|null $mailId
@@ -29,7 +19,7 @@ class EmailHashValidationService
      */
     public function generateHash(User $user, ?int $mailId = null): string
     {
-        return \md5($this->paramEmailSalt.$user->getId().$mailId.$this->paramEmailSalt);
+        return \md5($user->getSalt().$mailId);
     }
 
     /**
