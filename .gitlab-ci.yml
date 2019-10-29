@@ -68,19 +68,19 @@ static analysis:
     script:
         - composer.phar ci:static-analysis
 
-phpunit:
-    stage: 'CI jobs'
-    <<: *build_ci
-    artifacts:
-        paths:
-            - './phpunit-coverage.xml'
-            - './clover-coverage.xml'
-            - './junit.xml'
-        reports:
-            junit: './junit.xml'
-    script:
-        - composer.phar app:recreate-test-database
-        - sudo composer.phar ci:phpunit-with-coverage
+#phpunit:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    artifacts:
+#        paths:
+#            - './phpunit-coverage.xml'
+#            - './clover-coverage.xml'
+#            - './junit.xml'
+#        reports:
+#            junit: './junit.xml'
+#    script:
+#        - composer.phar app:recreate-test-database
+#        - sudo composer.phar ci:phpunit-with-coverage
 
 sonar-scanner:
     stage: 'SonarQube'
