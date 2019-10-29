@@ -22,7 +22,7 @@
 # Application
 /web/assets
 /web/bundles/*
-/web/tmp/*
+/web/cache/*
 /web/uploads/*
 
 # Geo Data
