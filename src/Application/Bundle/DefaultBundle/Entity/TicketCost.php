@@ -102,6 +102,13 @@ class TicketCost
     private $ticketsRunOut = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="coming_soon", type="boolean", options={"default":false})
+     */
+    private $comingSoon = false;
+
+    /**
      * TicketCost constructor.
      */
     public function __construct()
@@ -384,6 +391,26 @@ class TicketCost
     public function setTicketsRunOut(bool $ticketsRunOut): self
     {
         $this->ticketsRunOut = $ticketsRunOut;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isComingSoon(): bool
+    {
+        return $this->comingSoon;
+    }
+
+    /**
+     * @param bool $comingSoon
+     *
+     * @return $this
+     */
+    public function setComingSoon(bool $comingSoon): self
+    {
+        $this->comingSoon = $comingSoon;
 
         return $this;
     }
