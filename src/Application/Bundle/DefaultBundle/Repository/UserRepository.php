@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -63,8 +64,10 @@ class UserRepository extends EntityRepository
         $qb = $this->createQueryBuilder('u');
         $andX = $qb->expr()->andX();
 
-        $this->addEventsFilter($qb, $andX, $events);
-        $this->addPaymentStatusFilter($qb, $andX, $status);
+        if ($events->count() > 0) {
+            $this->addEventsFilter($qb, $andX, $events);
+            $this->addPaymentStatusFilter($qb, $andX, $status);
+        }
 
         $qb->andWhere($andX)
             ->groupBy('u')
@@ -159,11 +162,9 @@ class UserRepository extends EntityRepository
      */
     private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
     {
-        if ($events->count() > 0) {
-            $qb->join('u.wantsToVisitEvents', 'wtv');
-            $andX->add($qb->expr()->in('wtv.id', ':events'));
-            $qb->setParameter(':events', $events->toArray());
-        }
+        $qb->join('u.wantsToVisitEvents', 'wtv');
+        $andX->add($qb->expr()->in('wtv.id', ':events'));
+        $qb->setParameter(':events', $events->toArray());
     }
 
     /**
@@ -174,27 +175,27 @@ class UserRepository extends EntityRepository
     private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
     {
         if (null !== $status) {
+            $onExp = 't.user = u AND t.event = :events';
+
             if (Payment::STATUS_PENDING === $status) {
                 $qb
-                    ->leftJoin(Ticket::class, 't', 'WITH', 't.user = u.id')
+                    ->leftJoin(Ticket::class, 't', Join::WITH, $onExp)
                     ->leftJoin('t.payment', 'p');
 
-                $paymentAnd = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
-                $paymentAnd->add($qb->expr()->in('t.event', ':events'));
-
-                $orQuery = $qb->expr()->orX($paymentAnd);
-                $orQuery->add($qb->expr()->isNull('t.user'));
-                $orQuery->add($qb->expr()->isNull('p.status'));
-
-                $statusQuery = $qb->expr()->andX()->add($orQuery);
+                $statusQuery = $qb->expr()->orX(
+                    $qb->expr()->eq('p.status', ':status'),
+                    $qb->expr()->isNull('p.status'),
+                    $qb->expr()->isNull('t.user')
+                );
             } else {
                 $qb
-                    ->join(Ticket::class, 't', 'WITH', 't.user = u.id')
-                    ->join('t.payment', 'p');
+                    ->join(Ticket::class, 't', Join::WITH, $onExp)
+                    ->join('t.payment', 'p')
+                ;
 
-                $statusQuery = $qb->expr()->andX($qb->expr()->eq('p.status', ':status'));
-                $statusQuery->add($qb->expr()->in('t.event', ':events'));
+                $statusQuery = $qb->expr()->eq('p.status', ':status');
             }
+
             $andX->add($statusQuery);
             $qb->setParameter(':status', $status);
         }
