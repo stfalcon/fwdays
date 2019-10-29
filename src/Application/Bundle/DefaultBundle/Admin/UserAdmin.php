@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -14,6 +15,13 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 final class UserAdmin extends AbstractAdmin
 {
+    private const VIEW_ROLES = [
+        'ROLE_SONATA_',
+        'ROLE_VOLUNTEER',
+        'ROLE_ADMIN',
+        'ROLE_SUPER_ADMIN',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -169,6 +177,38 @@ final class UserAdmin extends AbstractAdmin
     }
 
     /**
+     * @param ShowMapper $show
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->tab('Общие')
+                ->with('Общие')
+                    ->add('name', null, ['required' => true, 'label' => 'Имя'])
+                    ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
+                    ->add('email', 'email', ['label' => 'Почта'])
+                    ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
+                    ->add('company', null, ['required' => false, 'label' => 'Компания'])
+                    ->add('post', null, ['required' => false, 'label' => 'Должность'])
+                    ->add('balance', null, ['required' => false, 'label' => 'Баланс'])
+                    ->add('subscribe', null, ['required' => false, 'label' => 'Подписан на рассылку'])
+                ->end()
+            ->end()
+            ->tab('Билеты')
+                ->with('Билеты')
+                    ->add('tickets', 'sonata_type_collection', ['by_reference' => false])
+                ->end()
+            ->end()
+            ->tab('Management')
+                ->with('Management')
+                    ->add('plainPassword', 'text', ['label' => 'Пароль'])
+                    ->add('enabled', null, ['label' => 'Активирован'])
+                    ->add('roles')
+                ->end()
+            ->end();
+    }
+
+    /**
      * @return array
      */
     private function getAvailableRoles()
@@ -177,7 +217,11 @@ final class UserAdmin extends AbstractAdmin
         $rolesHierarhy = $this->getConfigurationPool()->getContainer()
             ->getParameter('security.role_hierarchy.roles');
         foreach (array_keys($rolesHierarhy) as $role) {
-            $roles[$role] = $role;
+            foreach (self::VIEW_ROLES as $viewRole) {
+                if (false !== strpos($role, $viewRole)) {
+                    $roles[$role] = $role;
+                }
+            }
         }
 
         return $roles;

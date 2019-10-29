@@ -1,28 +1,30 @@
 {% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
 
 {% block block %}
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">Статистика</h3>
+    {% if is_granted('ROLE_SONATA_SHOW_STATISTIC') %}
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Статистика</h3>
+            </div>
+            <div class="box-body">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td class="sonata-ba-list-label" width="40%">
+                                Статистика
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-flat btn-link" href="{{ path('admin_show_statistic') }}">
+                                        <i class="glyphicon glyphicon-list"></i>
+                                        Список
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="box-body">
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <td class="sonata-ba-list-label" width="40%">
-                            Статистика
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-flat btn-link" href="{{ path('admin_show_statistic') }}">
-                                    <i class="glyphicon glyphicon-list"></i>
-                                    Список
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}

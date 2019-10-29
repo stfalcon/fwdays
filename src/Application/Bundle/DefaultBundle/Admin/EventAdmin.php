@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -306,6 +307,92 @@ class EventAdmin extends AbstractTranslateAdmin
                             $datetimePickerOptions
                         )
                     )
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->tab('Переводы')
+                ->with('Переводы')
+                    ->add('name')
+                    ->add('seoTitle')
+                    ->add('city')
+                    ->add('place')
+                    ->add('description')
+                    ->add('about')
+                    ->add('metaDescription')
+                ->end()
+            ->end()
+            ->tab('Настройки')
+                ->with('Slug', ['class' => 'col-md-4'])
+                    ->add('slug')
+                ->end()
+                ->with('Группа', ['class' => 'col-md-4'])
+                    ->add('group', null, ['label' => 'Группа'])
+                ->end()
+                ->with('Аудитории', ['class' => 'col-md-4'])
+                    ->add('audiences', null, ['label' => 'Аудитории'])
+                ->end()
+                ->with('Цены')
+                    ->add(
+                        'ticketsCost',
+                        CollectionType::class,
+                        [
+                            'label' => 'Цены события',
+                            'by_reference' => false,
+                        ]
+                    )
+                ->end()
+                ->with('Переключатели', ['class' => 'col-md-4'])
+                    ->add('active', null, ['required' => false, 'label' => 'Активно'])
+                    ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                    ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
+                    ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
+                    ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
+                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Показать фон'])
+                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Показать логотип на фоне'])
+                ->end()
+                ->with('Логотип и цвет', ['class' => 'col-md-4'])
+                    ->add(
+                        'backgroundColor',
+                        'text',
+                        [
+                            'label' => 'Цвет',
+                            'required' => true,
+                            'help' => 'цвет в формате #1F2B3C',
+                        ]
+                    )
+                    ->add('logo')
+                    ->add('smallLogo')
+                ->end()
+                ->with('Фон', ['class' => 'col-md-4'])
+                    ->add('background')
+                    ->add('headerVideo')
+                ->end()
+            ->end()
+            ->tab('Блоки')
+                ->with('Блоки')
+                    ->add(
+                        'blocks',
+                        CollectionType::class,
+                        [
+                            'label' => 'Блоки отображения события',
+                            'by_reference' => false,
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab('Даты')
+                ->with('Даты')
+                    ->add('dateFormat', null, ['label' => 'Формат даты'])
+                    ->add('date')
+                    ->add('dateEnd')
                 ->end()
             ->end()
         ;

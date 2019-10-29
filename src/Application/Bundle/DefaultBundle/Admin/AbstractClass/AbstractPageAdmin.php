@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Admin\AbstractClass;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class AbstractPageAdmin.
@@ -65,5 +66,25 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
         ;
 
         return $formMapper;
+    }
+
+    /**
+     * @param ShowMapper $show
+     *
+     * @return mixed|void
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Переводы')
+                ->add('title')
+                ->add('text')
+                ->add('metaKeywords')
+                ->add('metaDescription')
+            ->end()
+            ->with('Общие')
+                ->add('slug')
+            ->end()
+        ;
     }
 }

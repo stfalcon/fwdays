@@ -7,6 +7,7 @@ use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * SponsorAdmin Class.
@@ -81,5 +82,17 @@ class CategoryAdmin extends AbstractTranslateAdmin
                 ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
             ->end();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->add('name')
+            ->add('isWideContainer', null, ['required' => false, 'label' => 'Главная категория (широкий контейнер)'])
+            ->add('sortOrder', null, ['label' => 'Номер сортировки'])
+        ;
     }
 }

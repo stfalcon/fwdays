@@ -7,6 +7,7 @@ use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class EventPageAdmin.
@@ -83,5 +84,28 @@ final class EventPageAdmin extends AbstractPageAdmin
     {
         $datagridMapper
             ->add('event');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Переводы')
+                ->add('title')
+                ->add('text')
+                ->add('textNew')
+                ->add('textNew')
+                ->add('metaKeywords')
+                ->add('metaDescription')
+            ->end()
+            ->with('Общие')
+                ->add('slug')
+                ->add('event')
+                ->add('showInMenu', null, ['label' => 'Показывать страницу'])
+                ->add('sortOrder', null, ['label' => 'Номер сортировки'])
+            ->end()
+        ;
     }
 }

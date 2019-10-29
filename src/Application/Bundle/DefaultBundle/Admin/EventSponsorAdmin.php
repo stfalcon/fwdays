@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * SponsorAdmin Class.
@@ -17,6 +18,18 @@ final class EventSponsorAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('event', null, ['label' => 'Событие'])
-            ->add('category', null, ['label' => 'Категория']);
+            ->add('category', null, ['label' => 'Категория'])
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('category', null, ['label' => 'Категория'])
+        ;
     }
 }

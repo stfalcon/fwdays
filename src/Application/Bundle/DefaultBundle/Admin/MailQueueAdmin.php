@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class MailQueueAdmin.
@@ -102,6 +103,21 @@ final class MailQueueAdmin extends AbstractAdmin
                 ->add('user', null, ['label' => 'Пользователь'])
                 ->add('mail', null, ['label' => 'Почта'])
                 ->add('isSent', null, ['required' => false, 'label' => 'Отправлено'])
-            ->end();
+            ->end()
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Общие')
+                ->add('user', null, ['label' => 'Пользователь'])
+                ->add('mail', null, ['label' => 'Почта'])
+                ->add('isSent', null, ['required' => false, 'label' => 'Отправлено'])
+            ->end()
+        ;
     }
 }

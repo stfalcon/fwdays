@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class AdminController.
@@ -34,6 +35,10 @@ class AdminController extends Controller
      */
     public function addUsersAction(Event $event)
     {
+        if (!$this->isGranted('ROLE_SONATA_MANUAL_TICKET_SELL')) {
+            throw new AccessDeniedHttpException();
+        }
+
         // @todo удалить этот метод. одноразовый харкод
         $em = $this->getDoctrine()->getManager();
 
@@ -215,6 +220,10 @@ class AdminController extends Controller
 //            ->getDataForDailyStatisticsOfTicketsSold($dateFrom, $dateTo, $event);
 //        array_unshift($dataForDailyStatistics, ['Date', 'Number of tickets sold']);
 
+        if (!$this->isGranted('ROLE_SONATA_SHOW_STATISTIC')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $repo = $this->getDoctrine()
             ->getManager()
             ->getRepository('ApplicationDefaultBundle:User');
@@ -370,6 +379,10 @@ class AdminController extends Controller
      */
     public function showEventStatisticAction(Event $event)
     {
+        if (!$this->isGranted('ROLE_SONATA_SHOW_STATISTIC')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $events = $this
             ->getDoctrine()
             ->getRepository('ApplicationDefaultBundle:Event')
@@ -398,6 +411,10 @@ class AdminController extends Controller
      */
     public function showEventsStatisticAction($checkedEvents = '')
     {
+        if (!$this->isGranted('ROLE_SONATA_SHOW_STATISTIC')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $ticketRepository = $this->getDoctrine()->getRepository('ApplicationDefaultBundle:Ticket');
 
         $events = $ticketRepository->getEventWithTicketsCount();
@@ -437,6 +454,10 @@ class AdminController extends Controller
      */
     public function usersNotBuyTicketAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_SONATA_SHOW_STATISTIC')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $checkEventId = $request->request->getInt('check_event');
         $checkType = $request->request->get('check_type', 'event');
         $hasTicketObjectId = 'event' === $checkType ? $request->request->getInt('has_ticket_event')

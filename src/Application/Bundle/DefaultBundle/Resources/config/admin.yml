@@ -36,7 +36,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: События, label: Групы }
         arguments: ['', Application\Bundle\DefaultBundle\Entity\EventGroup, '']
 
-    app.admin.reviews:
+    app.admin.review:
         class: Application\Bundle\DefaultBundle\Admin\ReviewAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
@@ -53,7 +53,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: События, label: Страницы }
         arguments: ['', 'Application\Bundle\DefaultBundle\Entity\EventPage', ~]
 
-    app.admin.mails:
+    app.admin.mail:
         class: Application\Bundle\DefaultBundle\Admin\MailAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Рассылки }
@@ -67,7 +67,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Очередь }
         arguments: ['', 'Application\Bundle\DefaultBundle\Entity\MailQueue', ~]
 
-    app.admin.tickets:
+    app.admin.ticket:
         class: Application\Bundle\DefaultBundle\Admin\TicketAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Билеты }
@@ -97,26 +97,20 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Страницы, label: Страницы }
         arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Page', ~]
 
-    app.ticket_cost.admin:
+    app.admin.ticket_cost:
         class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\TicketCost', ~]
 
-    app.event_block.admin:
+    app.admin.event_block:
         class: Application\Bundle\DefaultBundle\Admin\EventBlockAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, Application\Bundle\DefaultBundle\Entity\EventBlock, ~]
 
-    app.wayforpay_log.admin:
+    app.admin.wayforpay_log:
         class: Application\Bundle\DefaultBundle\Admin\WayForPayLogAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Логи, label: Логи wayforpay}
         arguments: [~, 'Application\Bundle\DefaultBundle\Entity\WayForPayLog', ~]
-
-    application.admin.mail_admin:
-        class: Application\Bundle\DefaultBundle\Admin\MailAdmin
-        tags:
-            - { name: mail_admin, manager_type: orm }
-        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Mail', 'ApplicationDefaultBundle:MailAdmin']

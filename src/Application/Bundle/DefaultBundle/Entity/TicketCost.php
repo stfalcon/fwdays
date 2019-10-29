@@ -365,7 +365,7 @@ class TicketCost
      */
     public function __toString()
     {
-        return $this->event->getName().'-'.$this->getName();
+        return \sprintf('%s - %s', $this->name, $this->amount);
     }
 
     /**

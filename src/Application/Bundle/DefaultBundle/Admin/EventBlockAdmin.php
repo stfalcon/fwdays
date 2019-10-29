@@ -7,6 +7,7 @@ use Application\Bundle\DefaultBundle\Entity\EventBlock;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -56,6 +57,20 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 ],
                 'label' => 'Перевод',
             ])
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->add('type')
+            ->add('event', 'text', ['label' => 'событие'])
+            ->add('visible', null, ['label' => 'включен'])
+            ->add('position', null, ['label' => 'позиция'])
+            ->add('text')
         ;
     }
 }

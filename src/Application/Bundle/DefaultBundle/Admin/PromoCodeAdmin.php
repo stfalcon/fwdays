@@ -7,6 +7,7 @@ use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class PromoCodeAdmin.
@@ -90,5 +91,23 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('event');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Переводы')
+                ->add('title')
+            ->end()
+            ->with('Общие')
+                ->add('discountAmount', null, ['required' => true, 'label' => 'Скидка (%)'])
+                ->add('code', null, ['label' => 'Код'])
+                ->add('event', null, ['label' => 'Событие'])
+                ->add('maxUseCount', null, ['label' => 'Максимальное количество использований'])
+                ->add('endDate')
+            ->end();
     }
 }

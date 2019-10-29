@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Admin;
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class PageAdmin.
@@ -33,6 +34,7 @@ final class PageAdmin extends AbstractPageAdmin
         $formMapper
             ->with('Общие')
                 ->add('showInFooter', null, ['label' => 'Показывать в футере'])
-            ->end();
+            ->end()
+        ;
     }
 }

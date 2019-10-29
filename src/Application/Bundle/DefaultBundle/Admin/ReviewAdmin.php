@@ -6,6 +6,7 @@ use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractPageAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class ReviewAdmin.

@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * Class TicketCostAdmin.
@@ -50,6 +51,23 @@ final class TicketCostAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('name', null, ['label' => 'название'])
+            ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
+            ->add('amount', null, ['label' => 'цена'])
+            ->add('altAmount', null, ['label' => 'цена в валюте'])
+            ->add('count', null, ['label' => 'количество'])
+            ->add('soldCount', null, ['disabled' => true, 'label' => 'продано'])
+            ->add('enabled', null, ['label' => 'активный'])
+            ->add('unlimited', null, ['label' => 'безлимитный'])
+            ->add('ticketsRunOut', null, ['label' => 'заканчиваются']);
+    }
+
+    /**
+     * @param ShowMapper $show
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
             ->add('name', null, ['label' => 'название'])
             ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
             ->add('amount', null, ['label' => 'цена'])

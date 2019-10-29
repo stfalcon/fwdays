@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Class TicketAdminController.
@@ -22,6 +23,10 @@ class TicketAdminController extends CoreController
      */
     public function checkAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_SONATA_CHECK_TICKET')) {
+            throw new AccessDeniedHttpException();
+        }
+
         if (!($ticketId = $request->get('id'))) {
             return [
                 'base_template' => $this->getBaseTemplate(),

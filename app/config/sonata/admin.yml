@@ -1,5 +1,7 @@
 sonata_admin:
   title: framework days
+  security:
+    handler: sonata.admin.security.handler.role
   templates:
     layout: "::admin.html.twig"
     user_block: '::user_block.html.twig'

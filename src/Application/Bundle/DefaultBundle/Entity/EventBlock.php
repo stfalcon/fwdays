@@ -229,4 +229,12 @@ class EventBlock implements Translatable
             'эксперты' => self::EXPERT_SPEAKERS,
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return \sprintf('%s - %s', $this->id, $this->getType());
+    }
 }

@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -191,5 +192,28 @@ final class PaymentAdmin extends AbstractAdmin
                     ]
                 )
             ->end();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Общие')
+                ->add('amount', 'money', [
+                    'currency' => 'UAH',
+                    'label' => 'Сума оплаты',
+                ])
+                ->add('fwdaysAmount', 'money', [
+                    'currency' => 'UAH',
+                    'label' => 'Сума реферальных',
+                ])
+                ->add('status', null, ['label' => 'статус оплаты'])
+                ->add('gate', null, ['label' => 'способ оплаты'])
+                ->add('user', 'text', ['label' => 'Пользователь'])
+                ->add('tickets', 'sonata_type_collection', ['by_reference' => false])
+            ->end()
+        ;
     }
 }

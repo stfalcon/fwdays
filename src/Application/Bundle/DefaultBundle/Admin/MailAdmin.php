@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -206,6 +207,25 @@ final class MailAdmin extends AbstractAdmin
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Общие')
+                ->add('title', null, ['label' => 'Название'])
+                ->add('text', null, ['label' => 'Текст'])
+                ->add('audiences', null, ['label' => 'Аудитории'])
+                ->add('events', 'entity', ['label' => 'События'])
+                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
+                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события'])
+                ->add('paymentStatus', null, ['label' => 'Статус оплаты'])
+                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки'])
+            ->end()
+        ;
+    }
+
+    /**
      * @param MenuItemInterface $menu       Menu
      * @param string            $action     Action
      * @param AdminInterface    $childAdmin Child admin
@@ -220,7 +240,7 @@ final class MailAdmin extends AbstractAdmin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', ['uri' => $admin->generateUrl('edit', ['id' => $id])]);
-        $menu->addChild('Line items', ['uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', ['id' => $id])]);
+        $menu->addChild('Line items', ['uri' => $admin->generateUrl('app.admin.mail|app.admin.mail_queue.list', ['id' => $id])]);
     }
 
     /**

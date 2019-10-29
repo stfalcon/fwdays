@@ -3,11 +3,13 @@
 {% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock%}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
-    <div class="row-fluid">
-        <div class="span6">
-            <a href="{{ url('sonata_admin_ticket_check') }}" class="btn">Проверить билет</a>
+    {%- if is_granted('ROLE_SONATA_CHECK_TICKET') -%}
+        <div class="row-fluid">
+            <div class="span6">
+                <a href="{{ url('sonata_admin_ticket_check') }}" class="btn">Проверить билет</a>
+            </div>
         </div>
-    </div>
+    {%- endif -%}
 
     {{ sonata_block_render_event('sonata.admin.dashboard.top', { 'admin_pool': admin_pool }) }}
 

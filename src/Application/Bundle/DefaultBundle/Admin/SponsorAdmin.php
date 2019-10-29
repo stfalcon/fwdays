@@ -7,6 +7,7 @@ use Application\Bundle\DefaultBundle\Entity\Sponsor;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
  * SponsorAdmin Class.
@@ -108,6 +109,43 @@ class SponsorAdmin extends AbstractTranslateAdmin
                     ]
                 )
             ->end();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show)
+    {
+        $show
+            ->with('Переводы')
+                ->add('about')
+            ->end()
+            ->with('Общие')
+                ->add('name')
+                ->add('site', null, ['label' => 'Сайт'])
+                ->add(
+                    'file',
+                    'file',
+                    [
+                        'label' => 'Логотип',
+                        'required' => false,
+                        'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                        'property_path' => 'file',
+                    ]
+                )
+                ->add('sortOrder', null, ['attr' => ['min' => 1], 'label' => 'Номер сортировки'])
+            ->end()
+            ->with('События')
+                ->add(
+                    'sponsorEvents',
+                    'sonata_type_collection',
+                    [
+                        'label' => 'Спонсируемые события',
+                        'by_reference' => false,
+                    ]
+                )
+            ->end()
+        ;
     }
 
     /**
