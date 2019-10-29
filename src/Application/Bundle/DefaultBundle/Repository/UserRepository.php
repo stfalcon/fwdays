@@ -175,10 +175,7 @@ class UserRepository extends EntityRepository
     private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
     {
         if (null !== $status) {
-            $onExp = $qb->expr()->andX(
-                $qb->expr()->eq('t.user', 'u'),
-                $qb->expr()->in('t.event', ':events')
-            );
+            $onExp = 't.user = u AND t.event = :events';
 
             if (Payment::STATUS_PENDING === $status) {
                 $qb
