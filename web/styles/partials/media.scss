@@ -2045,6 +2045,16 @@
 
   //about
 
+  .about-text {
+    padding-top: 40px;
+
+    &__title {
+      font-size: 26px;
+      line-height: 30px;
+      margin-top: 40px;
+    }
+  }
+
   .about-numbers {
     padding-top: 40px;
 
