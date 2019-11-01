@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39245d1c4fcd5819f46a0cf42eb343bd",
+    "content-hash": "f15adbfccf856645d780d83ef20734cc",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2518,16 +2518,16 @@
         },
         {
             "name": "ibrows/sonata-translation-bundle",
-            "version": "dev-master",
+            "version": "dev-stfalcon",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ibrows/IbrowsSonataTranslationBundle.git",
-                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8"
+                "url": "https://github.com/stfalcon-studio/SonataTranslationBundle.git",
+                "reference": "e885a6e6a384a25750908ec7025214f90723bca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ibrows/IbrowsSonataTranslationBundle/zipball/9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
-                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
+                "url": "https://api.github.com/repos/stfalcon-studio/SonataTranslationBundle/zipball/e885a6e6a384a25750908ec7025214f90723bca6",
+                "reference": "e885a6e6a384a25750908ec7025214f90723bca6",
                 "shasum": ""
             },
             "require": {
@@ -2542,7 +2542,6 @@
                     "Ibrows\\SonataTranslationBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2553,7 +2552,11 @@
                 "sonata",
                 "translation"
             ],
-            "time": "2018-09-24T12:41:45+00:00"
+            "support": {
+                "source": "https://github.com/stfalcon-studio/SonataTranslationBundle/tree/master",
+                "issues": "https://github.com/stfalcon-studio/SonataTranslationBundle/issues"
+            },
+            "time": "2019-11-01T12:26:22+00:00"
         },
         {
             "name": "imagine/imagine",
