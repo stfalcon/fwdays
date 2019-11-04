@@ -3,17 +3,22 @@
 namespace Application\Bundle\DefaultBundle\Command;
 
 use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Service\EmailHashValidationService;
 use Application\Bundle\DefaultBundle\Service\MyMailer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class StfalconMailerCommand.
  */
 class StfalconMailerCommand extends ContainerAwareCommand
 {
+    /** @var EmailHashValidationService */
+    private $emailHashValidationService;
+
     /**
      * Set options.
      */
@@ -62,6 +67,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         $mailsQueue = $queueRepository->getMessages($limit);
         $logger = $this->getContainer()->get('logger');
+        $this->emailHashValidationService = $this->getContainer()->get('app.email_hash_validation.service');
         /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
             $user = $item->getUser();
@@ -91,16 +97,18 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $em->flush();
                 continue;
             }
+            $mailId = $mail->getId();
+            $hash = $this->emailHashValidationService->generateHash($user, $mailId);
 
             $headers = $message->getHeaders();
             $http = $this->getContainer()->get('router')->generate(
                 'unsubscribe',
                 [
-                    'hash' => $user->getSalt(),
-                    'userId' => $user->getId(),
-                    'mailId' => $mail->getId(),
+                    'hash' => $hash,
+                    'id' => $user->getId(),
+                    'mailId' => $mailId,
                 ],
-                true
+                UrlGeneratorInterface::ABSOLUTE_URL
             );
 
             $headers->removeAll('List-Unsubscribe');
