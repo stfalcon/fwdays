@@ -89,8 +89,8 @@
         var lang = '{{ lang }}';
     </script>
     <div id="fb-root"></div>
-    <script src="{{ asset('js/facebook-sdk.js') }}" async defer></script>
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" defer></script>
+    <script src="{{ asset('js/facebook-sdk.js') }}" async></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" async defer></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}" defer></script>
 
     {% if app.environment in ['prod', 'stag'] -%}
