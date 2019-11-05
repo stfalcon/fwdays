@@ -97,10 +97,10 @@
         <script>
             var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';
         </script>
-        <script src="{{ asset('js/raven.min.js')}}" async defer crossorigin="anonymous"></script>
+        <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
     {% endif -%}
     {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
-    <script src="{{ asset(main_script|app_asset_version) }}" async defer></script>
+    <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
 
     {% if app.request.cookies.has('event') -%}
         <script src="{{ asset('js/payment-after-login.js') }}" defer></script>
