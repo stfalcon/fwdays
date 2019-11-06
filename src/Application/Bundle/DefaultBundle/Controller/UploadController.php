@@ -48,7 +48,8 @@ class UploadController extends Controller
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }
         list($width, $height) = \getimagesize($file);
-        $newFileName = \uniqid('', false).'.'.$file->guessExtension();
+        $extension = $file->guessExtension() ? $file->guessExtension() : $file->getClientOriginalExtension();
+        $newFileName = \md5_file($file->getRealPath()).'.'.$extension;
 
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
 
