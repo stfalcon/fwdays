@@ -371,14 +371,14 @@ class Event implements Translatable
     protected $adminOnly = false;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
      */
     private $lat = null;
 
     /**
-     * @var float
+     * @var float|null
      *
      * @ORM\Column(type="decimal", precision=12, scale=6, nullable=true)
      */
@@ -1198,11 +1198,11 @@ class Event implements Translatable
     }
 
     /**
-     * @param float $lat
+     * @param float|null $lat
      *
      * @return $this
      */
-    public function setLat(float $lat): self
+    public function setLat(?float $lat): self
     {
         $this->lat = $lat;
 
@@ -1218,11 +1218,11 @@ class Event implements Translatable
     }
 
     /**
-     * @param float $lng
+     * @param float|null $lng
      *
      * @return $this
      */
-    public function setLng(float $lng): self
+    public function setLng(?float $lng): self
     {
         $this->lng = $lng;
 

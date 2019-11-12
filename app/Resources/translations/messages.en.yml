@@ -93,6 +93,7 @@ pay.user.continue: 'continue'
 pay.amount_changed: 'Payment Amount Changed! Check the data!'
 event.price.title: Event price
 tickets.count: '{0}%count% ticket|{1}%count% tickets|{2}%count% tickets'
+tickets.coming_soon: 'coming soon'
 tickets.hint: available only via website
 tickets.tickets_run_out: Only few left
 tickets.other.title: other tickets

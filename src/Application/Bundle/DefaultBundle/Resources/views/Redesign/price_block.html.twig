@@ -26,8 +26,13 @@
         {%- else -%}
             <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
         {% endif %}
-        <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
-            {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+        <div class="cost__price">
+            {%- if ticket.comingSoon -%}
+                {{ 'tickets.coming_soon'|trans }}
+            {%- else -%}
+                {{ 'payment.price'|trans({'%summ%':ticket_amount}) }}
+                {%- if ticket_altAmount -%}<span class="cost__dollars">{{ ticket_altAmount }}</span>{% endif %}
+            {%- endif -%}
         </div>
     </div>
 {%- else -%}

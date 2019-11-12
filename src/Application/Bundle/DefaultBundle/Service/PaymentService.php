@@ -374,15 +374,15 @@ class PaymentService
         }
 
         if (!$ticket && !$payment) {
-            $ticket = $this->ticketService->createTicket($event, $user);
             $user->addWantsToVisitEvents($event);
-            $this->em->flush();
+            $ticket = $this->ticketService->createTicket($event, $user);
         }
 
         if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
             $payment = $ticket->getPayment();
-            $payment->setUser($ticket->getUser());
-            $this->em->flush();
+            if ($payment->isPending()) {
+                $payment->setUser($ticket->getUser());
+            }
         }
 
         if ($ticket && !$payment) {

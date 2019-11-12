@@ -246,7 +246,7 @@ final class MailAdmin extends AbstractAdmin
         /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();
         if ($events->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users = $em->getRepository('ApplicationDefaultBundle:User')->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe());
+            $users = $em->getRepository('ApplicationDefaultBundle:User')->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe(), $mail->getPaymentStatus());
         } elseif ($events->count() > 0 || $mail->getPaymentStatus()) {
             $users = $em->getRepository('ApplicationDefaultBundle:Ticket')
                 ->

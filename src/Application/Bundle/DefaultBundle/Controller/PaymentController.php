@@ -8,7 +8,8 @@ use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Exception\BadAutoRegistrationDataException;
 use Application\Bundle\DefaultBundle\Model\UserManager;
-use Application\Bundle\DefaultBundle\Service\WayForPayService;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
+use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -48,8 +49,17 @@ class PaymentController extends Controller
         $payment = $this->get('app.payment.service')->getPaymentForCurrentUser($event);
 
         $result = $this->get('serializer')->normalize($payment, null, ['groups' => ['payment.view']]);
+        /** @var PaymentProcessInterface $paymentSystem */
+        $paymentSystem = $this->get('app.payment_system.service');
 
-        return $this->render('@ApplicationDefault/Redesign/Payment/payment.html.twig', ['event' => $event, 'payment_data' => $result]);
+        return $this->render(
+            '@ApplicationDefault/Redesign/Payment/payment.html.twig',
+            [
+                'event' => $event,
+                'payment_data' => $result,
+                'with_conditions' => $paymentSystem->isAgreeWithConditionsRequired(),
+            ]
+        );
     }
 
     /**
@@ -135,7 +145,7 @@ class PaymentController extends Controller
         }
 
         $ticketService->setNewUserToTicket($user, $ticket);
-
+        $user->addWantsToVisitEvents($event);
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
@@ -307,7 +317,7 @@ class PaymentController extends Controller
         }
 
         if ($result) {
-            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
             return $this->redirect($this->generateUrl('payment_success'));
         }
@@ -339,7 +349,7 @@ class PaymentController extends Controller
         }
 
         if ($result) {
-            $this->get('session')->set(WayForPayService::WFP_PAYMENT_KEY, $payment->getId());
+            $this->get('session')->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $payment->getId());
 
             return $this->redirect($this->generateUrl('payment_success'));
         }
@@ -415,8 +425,10 @@ class PaymentController extends Controller
                     $formAction = $payment->getFwdaysAmount() > 0 ?
                         $this->generateUrl('event_pay_by_bonus', ['eventSlug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['eventSlug' => $event->getSlug()]);
                 } else {
-                    $formAction = WayForPayService::WFP_SECURE_PAGE;
-                    $paySystemData = $this->get('app.way_for_pay.service')->getData($payment, $event);
+                    /** @var PaymentProcessInterface $paymentSystem */
+                    $paymentSystem = $this->get('app.payment_system.service');
+                    $formAction = $paymentSystem->getFormAction();
+                    $paySystemData = $paymentSystem->getData($payment, $event);
                 }
             }
 

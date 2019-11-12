@@ -171,7 +171,7 @@
                     </div>
                 </td>
             </tr>
-            {% if not ticket.hideConditions %}
+            {% if not ticket.hideConditions and ticket.payment.gate != constant('Application\\Bundle\\DefaultBundle\\Entity\\Payment::INTERKASSA_GATE') %}
                 <tr>
                     <td colspan="2">
                         <div class="label-td">{{ 'ticket.email.conditions.title'|trans }}</div>

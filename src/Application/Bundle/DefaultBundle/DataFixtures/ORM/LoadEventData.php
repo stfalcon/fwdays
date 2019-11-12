@@ -315,8 +315,8 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         $manager->flush();
 
         $event = (new Event())
-            ->setName('Zend Day')
-            ->setSlug('zend-day-2017')
+            ->setName('PHP Day')
+            ->setSlug('php-day-2017')
             ->setBackgroundColor('#7586D2')
             ->setDescription('test description')
             ->setLogoFile($this->generateUploadedFile('zend_big.svg'))
