@@ -165,9 +165,7 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:code-style-fixer",
-            "@ci:static-analysis",
-            "@app:recreate-test-database",
-            "@ci:phpunit"
+            "@ci:static-analysis"
         ]
     },
     "extra": {

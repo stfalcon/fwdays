@@ -45,15 +45,15 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return string|null
      */
-    public function getPaymentIdFromResponse(array $response): ?string
+    public function getPaymentIdFromData(array $data): ?string
     {
-        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_inv_st'], $response);
+        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_inv_st'], $data);
 
-        return $this->isValidShop($response) && $this->isApproved($response) ? $response['ik_pm_no'] : null;
+        return $this->isValidShop($data) && $this->isApproved($data) ? $data['ik_pm_no'] : null;
     }
 
     /**
@@ -105,20 +105,18 @@ class InterkassaService extends AbstractPaymentProcessService
      */
     public function getData(Payment $payment, Event $event): array
     {
-        $usersId = '';
+        $userIds = [];
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $usersId .= ','.$ticket->getUser()->getId();
+            $userIds[] = $ticket->getUser()->getId();
         }
-        $usersId = \mb_substr($usersId, 1);
-
         $description = $this->translator->trans(
             'interkassa.payment.description',
             [
                 '%event_name%' => $event->getName(),
                 '%user_name%' => $payment->getUser()->getFullname(),
                 '%user_id%' => $payment->getUser()->getId(),
-                '%ids_array%' => $usersId,
+                '%ids_array%' => \implode(',', $userIds),
             ]
         );
 
@@ -150,15 +148,15 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array|null $response
+     * @param array|null $data
      *
      * @return string
      */
-    public function processResponse(?array $response): string
+    public function processData(?array $data): string
     {
-        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_am', 'ik_sign', 'ik_inv_st'], $response);
+        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_am', 'ik_sign', 'ik_inv_st'], $data);
 
-        return $this->processSystemResponse($response, 'ik_pm_no', Payment::INTERKASSA_GATE);
+        return $this->processSystemData($data, 'ik_pm_no', Payment::INTERKASSA_GATE);
     }
 
     /**
@@ -170,27 +168,27 @@ class InterkassaService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
+     * @param array $data
      * @param bool  $isUnprocessedTransaction
      *
      * @return string
      */
-    protected function getStatusFromResponse(array $response, bool $isUnprocessedTransaction = false): string
+    protected function getStatusFromData(array $data, bool $isUnprocessedTransaction = false): string
     {
-        if (!isset($response['ik_inv_st']) || $isUnprocessedTransaction) {
+        if (!isset($data['ik_inv_st']) || $isUnprocessedTransaction) {
             return self::TRANSACTION_STATUS_FAIL;
         }
 
-        return $response['ik_inv_st'];
+        return $data['ik_inv_st'];
     }
 
     /**
-     * @param array        $response
+     * @param array        $data
      * @param Payment|null $payment
      *
      * @return array
      */
-    protected function getRequestDataToArr(array $response, ?Payment $payment): array
+    protected function getRequestDataToArr(array $data, ?Payment $payment): array
     {
         $paymentId = '-';
         $paymentStatus = '-';
@@ -206,48 +204,42 @@ class InterkassaService extends AbstractPaymentProcessService
             'payment_id' => $paymentId,
             'payment_status' => $paymentStatus,
             'payment_amount' => $paymentAmount,
-            'request_amount' => $response['ik_am'],
-            'request_status' => $this->getStatusFromResponse($response),
-            'is_hash_valid' => ($response['ik_sign'] === $this->getSignHash($response)),
+            'request_amount' => $data['ik_am'],
+            'request_status' => $this->getStatusFromData($data),
+            'is_hash_valid' => ($data['ik_sign'] === $this->getSignHash($data)),
         ];
     }
 
     /**
      * @param Payment $payment
-     * @param array   $response
+     * @param array   $data
      *
      * @return bool
      */
-    protected function checkPayment(Payment $payment, array $response): bool
+    protected function checkPayment(Payment $payment, array $data): bool
     {
-        if ($this->isValidShop($response) &&
-            (float) $response['ik_am'] === $payment->getAmount() &&
-            $this->isApproved($response) &&
-            $response['ik_sign'] === $this->getSignHash($response)
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->isValidShop($data) && (float) $data['ik_am'] === $payment->getAmount() &&
+            $this->isApproved($data) && $data['ik_sign'] === $this->getSignHash($data)
+        ;
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return bool
      */
-    private function isApproved(array $response): bool
+    private function isApproved(array $data): bool
     {
-        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromResponse($response);
+        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromData($data);
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return bool
      */
-    private function isValidShop(array $response): bool
+    private function isValidShop(array $data): bool
     {
-        return $this->appConfig['interkassa']['shop_id'] === $response['ik_co_id'];
+        return $this->appConfig['interkassa']['shop_id'] === $data['ik_co_id'];
     }
 }

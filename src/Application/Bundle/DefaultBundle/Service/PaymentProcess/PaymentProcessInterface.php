@@ -13,11 +13,11 @@ use Application\Bundle\DefaultBundle\Entity\Payment;
 interface PaymentProcessInterface
 {
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return array|null
      */
-    public function getResponseOnServiceUrl(array $response): ?array;
+    public function getResponseOnServiceUrl(array $data): ?array;
 
     /**
      * @param Payment $payment
@@ -33,11 +33,11 @@ interface PaymentProcessInterface
     public function getFormAction(): string;
 
     /**
-     * @param array|null $response
+     * @param array|null $data
      *
      * @return string
      */
-    public function processResponse(?array $response): string;
+    public function processData(?array $data): string;
 
     /**
      * @return bool
@@ -50,9 +50,9 @@ interface PaymentProcessInterface
     public function isAgreeWithConditionsRequired(): bool;
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return string|null
      */
-    public function getPaymentIdFromResponse(array $response): ?string;
+    public function getPaymentIdFromData(array $data): ?string;
 }

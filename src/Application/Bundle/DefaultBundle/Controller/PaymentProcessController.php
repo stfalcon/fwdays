@@ -28,11 +28,11 @@ class PaymentProcessController extends Controller
      */
     public function interactionAction(Request $request)
     {
-        $response = $request->request->all();
+        $data = $request->request->all();
         $paymentSystem = $this->get('app.payment_system.service');
 
         try {
-            $transactionStatus = $paymentSystem->processResponse($response);
+            $transactionStatus = $paymentSystem->processData($data);
         } catch (BadRequestHttpException $e) {
             return $this->redirectToRoute('homepage');
         }
@@ -71,7 +71,7 @@ class PaymentProcessController extends Controller
         $paymentSystem = $this->get('app.payment_system.service');
 
         try {
-            $paymentSystem->processResponse($response);
+            $paymentSystem->processData($response);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }
@@ -94,8 +94,8 @@ class PaymentProcessController extends Controller
         $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
-            $response = $request->query->all();
-            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromResponse($response);
+            $data = $request->query->all();
+            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
             if (null === $paymentId) {
                 throw new BadRequestHttpException();
             }
