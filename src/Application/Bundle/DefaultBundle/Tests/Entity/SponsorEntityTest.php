@@ -41,7 +41,7 @@ class SponsorEntityTest extends WebTestCase
      */
     public function testSetAndGetSponsorSite()
     {
-        $slug = 'htp://site.com';
+        $slug = 'http://site.com';
 
         $sponsor = new Sponsor();
         $sponsor->setSite($slug);

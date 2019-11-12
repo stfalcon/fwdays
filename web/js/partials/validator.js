@@ -14,10 +14,6 @@ function addValidator(form) {
 };
 
 $(document).ready(function () {
-    $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /^\w([\-\.]{0,1}\w)*\@\w+([\-\.]{0,1}\w)*\.\w{2,4}$/.test( value );
-    };
-
     $('.payer-form').validate({
         debug: false,
         errorClass: "text-error",
@@ -47,7 +43,7 @@ $(document).ready(function () {
     $.validator.addClassRules({
         'valid-name': {
             required: true,
-            pattern: /^[A-Za-zА-Яа-яЁёІіЇїЄє\-\s']+$/,
+            pattern: XRegExp("^[\\pL\-\s']+$"),
             minlength: 2,
             maxlength: 32,
         },
@@ -64,7 +60,7 @@ $(document).ready(function () {
             required: false,
             minlength: 12,
             maxlength: 16,
-            pattern: /\+[1-9]{1}[0-9]{10,14}$/i,
+            pattern: /\+[1-9][0-9]{10,14}$/i,
         }
     });
 

@@ -2,10 +2,13 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
-use Application\Bundle\DefaultBundle\Entity\Mail;
-use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Payment;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -52,22 +55,28 @@ class UserRepository extends EntityRepository
      *
      * @param ArrayCollection $events
      * @param bool            $ignoreUnsubscribe
+     * @param string|null     $status
      *
      * @return array
      */
-    public function getRegisteredUsers($events, bool $ignoreUnsubscribe = false)
+    public function getRegisteredUsers(ArrayCollection $events, bool $ignoreUnsubscribe = false, ?string $status = null)
     {
         $qb = $this->createQueryBuilder('u');
+        $andX = $qb->expr()->andX();
 
-        $qb->join('u.wantsToVisitEvents', 'wve')
-            ->where($qb->expr()->in('wve.id', ':events'))
-            ->setParameter(':events', $events->toArray())
+        if ($events->count() > 0) {
+            $this->addEventsFilter($qb, $andX, $events);
+            $this->addPaymentStatusFilter($qb, $andX, $status);
+        }
+
+        $qb->andWhere($andX)
             ->groupBy('u')
         ;
 
         $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
+        $users = $qb->getQuery()->getResult();
 
-        return $qb->getQuery()->execute();
+        return $users;
     }
 
     /**
@@ -143,6 +152,52 @@ class UserRepository extends EntityRepository
             $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
                 ->setParameter('subscribe', true)
             ;
+        }
+    }
+
+    /**
+     * @param QueryBuilder    $qb
+     * @param Andx            $andX
+     * @param ArrayCollection $events
+     */
+    private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
+    {
+        $qb->join('u.wantsToVisitEvents', 'wtv');
+        $andX->add($qb->expr()->in('wtv.id', ':events'));
+        $qb->setParameter(':events', $events->toArray());
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param Andx         $andX
+     * @param string|null  $status
+     */
+    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    {
+        if (null !== $status) {
+            $onExp = 't.user = u AND t.event = :events';
+
+            if (Payment::STATUS_PENDING === $status) {
+                $qb
+                    ->leftJoin(Ticket::class, 't', Join::WITH, $onExp)
+                    ->leftJoin('t.payment', 'p');
+
+                $statusQuery = $qb->expr()->orX(
+                    $qb->expr()->eq('p.status', ':status'),
+                    $qb->expr()->isNull('p.status'),
+                    $qb->expr()->isNull('t.user')
+                );
+            } else {
+                $qb
+                    ->join(Ticket::class, 't', Join::WITH, $onExp)
+                    ->join('t.payment', 'p')
+                ;
+
+                $statusQuery = $qb->expr()->eq('p.status', ':status');
+            }
+
+            $andX->add($statusQuery);
+            $qb->setParameter(':status', $status);
         }
     }
 }

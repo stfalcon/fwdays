@@ -79,7 +79,7 @@
 
 {% block scripts %}
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" defer></script>
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" async></script>
     {{ parent() }}
     <script src="{{ asset('js/scroll-near-event-date.js') }}" defer></script>
 {% endblock scripts %}

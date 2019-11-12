@@ -58,6 +58,8 @@ final class TicketCostAdmin extends AbstractAdmin
             ->add('soldCount', null, ['disabled' => true, 'label' => 'продано'])
             ->add('enabled', null, ['label' => 'активный'])
             ->add('unlimited', null, ['label' => 'безлимитный'])
-            ->add('ticketsRunOut', null, ['label' => 'заканчиваются']);
+            ->add('ticketsRunOut', null, ['label' => 'заканчиваются'])
+            ->add('comingSoon', null, ['label' => 'вскоре'])
+        ;
     }
 }

@@ -5,61 +5,25 @@ namespace Application\Bundle\DefaultBundle\Tests\Listener;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\EventListener\PaymentListener;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManager;
+use Application\Bundle\DefaultBundle\Tests\BaseFunctionalTest\AbstractBaseFunctionalTest;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Translation\Translator;
 
-class PaymentListenerTest extends WebTestCase
+class PaymentListenerTest extends AbstractBaseFunctionalTest
 {
-    const INTERKASSA_MAIL_MSG_HELLO_UK = 'У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.';
-    const INTERKASSA_MAIL_MSG_THANKS_UK = 'З нетерпінням чекаємо вас на конференції у Києві.';
-
-    const INTERKASSA_MAIL_MSG_HELLO_EN = 'Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.';
-    const INTERKASSA_MAIL_MSG_THANKS_EN = 'We are looking forward to seeing you in Kyiv at the conference.';
-
-    /** @var Client */
-    protected $client;
-    /** @var EntityManager */
-    protected $em;
-    /** @var Translator */
-    protected $translator;
-
     /** set up fixtures */
-    public function setUp()
+    protected function setUp(): void
     {
-        $connection = $this->getContainer()->get('doctrine')->getConnection();
-
-        $connection->exec('SET FOREIGN_KEY_CHECKS=0;');
-        $connection->exec('DELETE FROM users;');
-        $connection->exec('SET FOREIGN_KEY_CHECKS=1;');
-        $connection->exec('DELETE FROM event__tickets;');
-        $connection->exec('ALTER TABLE event__tickets AUTO_INCREMENT = 1;');
-
-        $this->loadFixtures(
-            [
-                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadEventData',
-                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadUserData',
-                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadPaymentData',
-                'Application\Bundle\DefaultBundle\DataFixtures\ORM\LoadTicketData',
-            ],
-            null,
-            'doctrine',
-            ORMPurger::PURGE_MODE_DELETE
-        );
-        $this->client = $this->createClient();
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
-        $this->translator = $this->getContainer()->get('translator');
+        parent::setUp();
+        $this->clearSpoolFolder();
     }
 
     /** destroy */
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
+
         $this->clearSpoolFolder();
     }
 
@@ -70,19 +34,9 @@ class PaymentListenerTest extends WebTestCase
     {
         $this->getEmailWithLocal('uk');
         /* check email with ticket pdf file */
-        $this->findEmailWithText('ticket-zend-day-2017.pdf');
+        $this->findEmailWithText('ticket-php-frameworks-day-2018.pdf');
         /* check email with string */
         $this->findEmailWithText('У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.');
-    }
-
-    /**
-     * Test uk translate in email.
-     */
-    public function testEmailUkTranslate()
-    {
-        $this->getEmailWithLocal('uk');
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_HELLO_UK);
-        $this->findEmailWithText(self::INTERKASSA_MAIL_MSG_THANKS_UK);
     }
 
     /**
@@ -94,9 +48,9 @@ class PaymentListenerTest extends WebTestCase
     {
         $this->client->followRedirects();
         $user = $this->loginUser('jack.sparrow@fwdays.com', 'qwerty', $lang);
-        $this->client->request('GET', '/'.$lang, ['_locale' => $lang]);
+        $this->requestGet('/'.$lang, ['_locale' => $lang]);
 
-        $eventPHPDay = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'zend-day-2017']);
+        $eventPHPDay = $this->em->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => 'php-frameworks-day-2018']);
         $ticket = $this->em->getRepository('ApplicationDefaultBundle:Ticket')
             ->findOneBy(['user' => $user->getId(), 'event' => $eventPHPDay->getId()]);
         /** @var Payment $payment */
@@ -105,7 +59,7 @@ class PaymentListenerTest extends WebTestCase
 
         $event = new LifecycleEventArgs($payment, $this->em);
 
-        $listener = new PaymentListener($this->getContainer());
+        $listener = new PaymentListener($this->container);
         $listener->postUpdate($event);
     }
 
@@ -140,7 +94,7 @@ class PaymentListenerTest extends WebTestCase
 
         $this->client->submit($form);
         /** end Login */
-        $crawler = $this->client->request('GET', $lang.'/');
+        $crawler = $this->requestGet($lang.'/');
         $this->assertGreaterThan(0, $crawler->filter('a:contains("'.$accountLinkCaption.'")')->count());
 
         return $user;
@@ -162,14 +116,14 @@ class PaymentListenerTest extends WebTestCase
         $hashFile = '';
         foreach ($finder as $file) {
             $message = quoted_printable_decode(unserialize(file_get_contents($file)));
-            if (strpos($message, $text)) {
+            if (\strpos($message, $text)) {
                 $found = true;
-                $hashFile = md5($file);
+                $hashFile = \md5($file);
                 break;
             }
         }
 
-        $this->assertTrue($found, sprintf('In spool folder not found email with text "%s"', $text));
+        $this->assertTrue($found, \sprintf('In spool folder not found email with text "%s"', $text));
 
         return $hashFile;
     }

@@ -8,8 +8,16 @@ services:
   - name: jekakm/mysql-core:201902201
     alias: fwdays-php73-mysql
 
+  - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
+  
+  - name: minio/minio:latest
+    alias: minio
+
 variables:
   MYSQL_ROOT_PASSWORD: qwerty
+  MINIO_ACCESS_KEY: minio
+  MINIO_SECRET_KEY: qwe12345
+
 
 .before_script_template: &build_ci
     before_script:
@@ -70,6 +78,7 @@ static analysis:
 
 #phpunit:
 #    stage: 'CI jobs'
+#    <<: *build_ci
 #    artifacts:
 #        paths:
 #            - './phpunit-coverage.xml'
@@ -77,10 +86,10 @@ static analysis:
 #            - './junit.xml'
 #        reports:
 #            junit: './junit.xml'
-#    <<: *build_ci
 #    script:
-#        - composer.phar ci:phpunit-with-coverage
-#
+#        - composer.phar app:recreate-test-database
+#        - sudo composer.phar ci:phpunit-with-coverage
+
 sonar-scanner:
     stage: 'SonarQube'
     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0

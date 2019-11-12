@@ -69,3 +69,10 @@ services:
         class: Application\Bundle\DefaultBundle\Service\LanguageSwitcherBlockService
         arguments: ['sonata.block.language_switcher', '@templating', '@request_stack', '%locales%']
         tags: [name: 'sonata.block']
+
+    sonata.block.email_user_subscribe:
+        class: Application\Bundle\DefaultBundle\Service\EmailSubscribeBlockService
+        arguments: ['sonata.block.language_switcher', '@templating']
+        calls:
+            - [setEmailHashValidationService, ['@app.email_hash_validation.service']]
+        tags: [name: 'sonata.block']

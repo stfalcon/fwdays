@@ -27,7 +27,7 @@ class Payment
     const PROMOCODE_GATE = 'promocode';
     const UNKNOWN_GATE = 'unknown';
 
-    private $gates = [self::ADMIN_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
+    private $gates = [self::ADMIN_GATE, self::INTERKASSA_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
     /**
      * @var int
@@ -276,10 +276,14 @@ class Payment
      * Set status.
      *
      * @param string $status
+     *
+     * @return $this
      */
-    public function setStatus($status)
+    public function setStatus($status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -427,7 +431,7 @@ class Payment
         if (\in_array($gate, $this->gates, true)) {
             $this->setGate($gate);
         } else {
-            $this->setGate(self::WAYFORPAY_GATE);
+            $this->setGate(self::UNKNOWN_GATE);
         }
 
         return $this;

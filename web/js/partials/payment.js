@@ -254,6 +254,16 @@ $(document).on('click', '.add-user-btn', function () {
     }
 });
 
+$(document).on('click', '.cancel-edit-user', function () {
+    var $this = $(this);
+    var ticketBlock = $this.closest('.payer-form');
+    var ticket_id = ticketBlock.data('ticket-id');
+    var parent_row = $('#'+ticket_id);
+    parent_row.show();
+    ticketBlock.remove();
+    refreshBuyTicketBtn();
+});
+
 $(document).on('click', '.edit-user-btn', function () {
     var $this = $(this);
     var ticketBlock = $this.closest('.payer-form');

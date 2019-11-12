@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39245d1c4fcd5819f46a0cf42eb343bd",
+    "content-hash": "f73b35008ceb6d73138d41165e412779",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2518,16 +2518,16 @@
         },
         {
             "name": "ibrows/sonata-translation-bundle",
-            "version": "dev-master",
+            "version": "dev-stfalcon",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ibrows/IbrowsSonataTranslationBundle.git",
-                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8"
+                "url": "https://github.com/stfalcon-studio/SonataTranslationBundle.git",
+                "reference": "e885a6e6a384a25750908ec7025214f90723bca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ibrows/IbrowsSonataTranslationBundle/zipball/9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
-                "reference": "9d479a8d21ec8cf2c4179df0deb1c72af03739e8",
+                "url": "https://api.github.com/repos/stfalcon-studio/SonataTranslationBundle/zipball/e885a6e6a384a25750908ec7025214f90723bca6",
+                "reference": "e885a6e6a384a25750908ec7025214f90723bca6",
                 "shasum": ""
             },
             "require": {
@@ -2542,7 +2542,6 @@
                     "Ibrows\\SonataTranslationBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2553,7 +2552,11 @@
                 "sonata",
                 "translation"
             ],
-            "time": "2018-09-24T12:41:45+00:00"
+            "support": {
+                "source": "https://github.com/stfalcon-studio/SonataTranslationBundle/tree/master",
+                "issues": "https://github.com/stfalcon-studio/SonataTranslationBundle/issues"
+            },
+            "time": "2019-11-01T12:26:22+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -6294,7 +6297,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -8394,61 +8397,49 @@
         },
         {
             "name": "liip/functional-test-bundle",
-            "version": "1.11.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipFunctionalTestBundle.git",
-                "reference": "45cac28b3fafeb75aebc58c4a2cf74dd1e093569"
+                "reference": "d3f7238feea43fa2bffa76a6c5b189b550c074da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/45cac28b3fafeb75aebc58c4a2cf74dd1e093569",
-                "reference": "45cac28b3fafeb75aebc58c4a2cf74dd1e093569",
+                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/d3f7238feea43fa2bffa76a6c5b189b550c074da",
+                "reference": "d3f7238feea43fa2bffa76a6c5b189b550c074da",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "~2.0",
+                "doctrine/annotations": "^1.3",
                 "php": "^7.1",
-                "symfony/browser-kit": "^2.8.39|^3.4",
-                "symfony/framework-bundle": "^2.8.39|^3.4"
+                "phpunit/phpunit": "^7.5.0 || ^8.0",
+                "symfony/browser-kit": "^3.4 || ^4.1",
+                "symfony/framework-bundle": "^3.4 || ^4.1"
             },
             "conflict": {
-                "phpunit/phpunit": ">=8"
+                "symfony/framework-bundle": "4.3.0"
             },
             "require-dev": {
-                "brianium/paratest": "~0.12.0|~0.13.2",
-                "doctrine/data-fixtures": "1.2.2",
-                "doctrine/doctrine-fixtures-bundle": "~2.3",
-                "doctrine/orm": "~2.5",
-                "doctrine/phpcr-bundle": "~1.3",
-                "doctrine/phpcr-odm": "~1.3",
-                "hautelook/alice-bundle": "~0.2|~1.2",
-                "jackalope/jackalope-doctrine-dbal": "1.1.*|1.2.*",
-                "nelmio/alice": "~1.7|~2.0",
-                "phpunit/phpunit": "^6.1|^7.0",
-                "symfony/console": "^2.8.39|^3.4",
+                "doctrine/doctrine-bundle": "^1.8",
+                "doctrine/orm": "^2.6",
                 "symfony/monolog-bundle": "^3.2",
-                "symfony/phpunit-bridge": "^2.8.39|^3.4",
-                "symfony/symfony": "^2.8.39|^3.4",
-                "twig/twig": "~1.12|~2.0"
+                "symfony/phpunit-bridge": "^3.4 || ^4.1",
+                "symfony/symfony": "^3.4 || ^4.1",
+                "twig/twig": "^2.0"
             },
             "suggest": {
                 "brianium/paratest": "Required when using paratest to parallelize tests",
-                "doctrine/dbal": "Required when using the fixture loading functionality with an ORM and SQLite",
-                "doctrine/doctrine-fixtures-bundle": "Required when using the fixture loading functionality",
-                "doctrine/orm": "Required when using the fixture loading functionality with an ORM and SQLite",
-                "hautelook/alice-bundle": "Required when using loadFixtureFiles functionality with custom providers",
-                "nelmio/alice": "Required when using loadFixtureFiles functionality"
+                "liip/test-fixtures-bundle": "Efficient loading of Doctrine fixtures in functional test-cases for Symfony applications"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Liip\\FunctionalTestBundle\\": ""
+                    "Liip\\FunctionalTestBundle\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8465,11 +8456,12 @@
                     "homepage": "https://github.com/liip/LiipFunctionalTestBundle/contributors"
                 }
             ],
-            "description": "This bundles provides additional functional test-cases for Symfony2 applications",
+            "description": "This bundles provides additional functional test-cases for Symfony applications",
             "keywords": [
-                "Symfony2"
+                "symfony",
+                "testing"
             ],
-            "time": "2019-05-13T20:55:38+00:00"
+            "time": "2019-11-03T19:05:31+00:00"
         },
         {
             "name": "mockery/mockery",

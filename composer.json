@@ -14,6 +14,12 @@
         "psr-4": { "Tests\\": "tests/" },
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/stfalcon-studio/SonataTranslationBundle.git"
+        }
+    ],
     "require": {
         "php": "^7.1.3",
         "ext-imagick": "*",
@@ -47,7 +53,7 @@
         "endroid/qrcode": "^1.6.6",
         "vich/uploader-bundle": "^1.9.2",
         "a2lix/translation-form-bundle": "1.x-dev",
-        "ibrows/sonata-translation-bundle": "dev-master",
+        "ibrows/sonata-translation-bundle": "dev-stfalcon",
 
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "jms/i18n-routing-bundle": "^2.0",
@@ -81,7 +87,7 @@
         "escapestudios/symfony2-coding-standard": "^3.8",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hirak/prestissimo": "*",
-        "liip/functional-test-bundle": "^1.11.0",
+        "liip/functional-test-bundle": "^3.2",
         "phpmd/phpmd": "^2.6",
         "phpspec/prophecy": "^1.7",
         "phpstan/phpstan": "^0.8",
@@ -129,23 +135,13 @@
         ],
         "ci:code-style-fixer": "bin/php-cs-fixer fix -q --dry-run --rules=@Symfony ./src",
         "ci:phpunit": [
-            "bin/console doctrine:database:drop --env=test --force --if-exists",
-            "bin/console do:da:cr --env=test",
-            "bin/console do:mi:mi --env=test --no-interaction",
-            "bin/console do:fi:lo --env=test --no-interaction",
-            "bin/phpunit -c phpunit.xml.dist",
-            "bin/console do:da:dr --force --env=test"
+            "bin/phpunit -c phpunit.xml.dist"
         ],
         "ci:static-analysis": [
             "bin/phpstan analyse -l 6 --no-progress  -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
-            "bin/console doctrine:database:drop --env=test --force --if-exists",
-            "bin/console do:da:cr --env=test",
-            "bin/console do:mi:mi --env=test --no-interaction",
-            "bin/console do:fi:lo --env=test --no-interaction",
-            "bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml",
-            "bin/console do:da:dr --force --env=test"
+            "bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml"
         ],
         "app:recreate-database": [
             "bin/console doctrine:database:drop --force --if-exists",
@@ -153,6 +149,13 @@
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
             "bin/console doctrine:schema:validate",
             "bin/console doctrine:fixtures:load --no-interaction"
+        ],
+        "app:recreate-test-database": [
+            "bin/console doctrine:database:drop --force --if-exists --env=test",
+            "bin/console doctrine:database:create --if-not-exists --env=test",
+            "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env=test",
+            "bin/console doctrine:schema:validate --env=test",
+            "bin/console doctrine:fixtures:load --no-interaction --env=test"
         ],
         "ci:pack": [
             "@ci:composer-validate",
@@ -162,8 +165,7 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:code-style-fixer",
-            "@ci:static-analysis",
-            "@ci:phpunit"
+            "@ci:static-analysis"
         ]
     },
     "extra": {

@@ -5,6 +5,7 @@
     {% include '@ApplicationDefault/Redesign/Payment/payment.frontend.payer_row.html.twig' %}
     {% include '@ApplicationDefault/Redesign/Payment/payment.frontend.payer_edit.html.twig' %}
 
+    {% set is_first_ticket = (payment_data.ticket_count == 1 and app.session.get(constant('Application\\Bundle\\DefaultBundle\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY'))) or payment_data.ticket_count == 0 %}
     <section class="payment">
         <div class="container payment__container">
             <div class="payment__left">
@@ -14,16 +15,14 @@
                         {% include '@ApplicationDefault/Redesign/Payment/payment.back_end.payer_row.html.twig' %}
                     {%- endfor -%}
                     {% set ticket = {'id': 0, 'user': {'name': '', 'surname': '', 'email': ''}, 'promo_code': ''} %}
-                    {% if (payment_data.ticket_count == 1 and app.session.get(constant('Application\\Bundle\\DefaultBundle\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY'))) or
-                        payment_data.ticket_count == 0 %}
+                    {% if is_first_ticket %}
                         {% set payment_ticket = payment_data.ticket_count == 1 ? payment_data.tickets[0] : ticket %}
                         {% include '@ApplicationDefault/Redesign/Payment/payment.back_end.payer_edit.html.twig' with {'ticket': payment_ticket} %}
                     {% endif %}
                 </div>
 
                 <button id="add-user-form" type="button" class="btn-icon"
-                        {%- if (payment_data.ticket_count == 1 and app.session.get(constant('Application\\Bundle\\DefaultBundle\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY'))) or
-                            payment_data.ticket_count == 0 -%}
+                        {%- if is_first_ticket -%}
                         style="display: none"
                     {% endif %}
                 >

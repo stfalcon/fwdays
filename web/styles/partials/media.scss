@@ -1086,8 +1086,8 @@
     }
 
     .btn {
-      width: 100%;
-      margin: 0;
+      width: 75%;
+      margin: 0 8px 0 0;
     }
   }
 
@@ -2045,6 +2045,16 @@
 
   //about
 
+  .about-text {
+    padding-top: 40px;
+
+    &__title {
+      font-size: 26px;
+      line-height: 30px;
+      margin-top: 40px;
+    }
+  }
+
   .about-numbers {
     padding-top: 40px;
 
@@ -2280,6 +2290,13 @@
     &__status {
       width: auto;
       text-align: left;
+    }
+  }
+
+  .user-payment-form {
+    .btn {
+      width: 70%;
+      min-width: 200px
     }
   }
 }
