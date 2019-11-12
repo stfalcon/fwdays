@@ -82,35 +82,6 @@ class EventController extends Controller
     }
 
     /**
-     * Get event header.
-     *
-     * @Route(path="/get_modal_header/{slug}/{headerType}", name="get_modal_header",
-     *     options = {"expose"=true},
-     *     condition="request.isXmlHttpRequest()")
-     *
-     * @param string $slug
-     * @param string $headerType
-     *
-     * @return JsonResponse
-     */
-    public function getModalHeaderAction($slug, $headerType)
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
-        if (!$event) {
-            return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
-        }
-        $html = '';
-        if ('buy' === $headerType) {
-            $html = $this->get('translator')->trans('popup.header.title', ['%event_name%' => $event->getName()]);
-        } elseif ('reg' === $headerType) {
-            $html = $this->get('translator')->trans('popup.header_reg.title', ['%event_name%' => $event->getName()]);
-        }
-
-        return new JsonResponse(['result' => true, 'error' => '', 'html' => $html]);
-    }
-
-    /**
      * Get event map position.
      *
      * @Route(path="/get_map_pos/{slug}", name="get_event_map_position",
