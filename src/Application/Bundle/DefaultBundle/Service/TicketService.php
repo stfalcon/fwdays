@@ -333,10 +333,10 @@ class TicketService
                     $caption = $this->translator->trans('ticket.status.sold');
                 }
             } elseif (self::CAN_WANNA_VISIT === $eventState && (!$user || !$user->isEventInWants($event))) {
-                $class .= ' set-modal-header add-wants-visit-event';
+                $class .= ' add-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.take_apart');
             } elseif (self::CAN_WANNA_VISIT === $eventState && ($user && $user->isEventInWants($event))) {
-                $class .= ' set-modal-header sub-wants-visit-event';
+                $class .= ' sub-wants-visit-event';
                 $caption = $this->translator->trans('ticket.status.not_take_apart');
             } elseif (self::CAN_BUY_TICKET === $eventState) {
                 if ($isMob) {

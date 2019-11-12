@@ -9,16 +9,6 @@ function detectmob() {
         || navigator.userAgent.match(/Windows Phone/i);
 }
 
-function setModalHeader(e_slug, h_type) {
-    $.post(Routing.generate('get_modal_header', {slug: e_slug, headerType:h_type}), function (data) {
-        if (data.result) {
-            $('.change-title').html(data.html);
-        } else {
-            console.log('Error:'+data.error);
-        }
-    });
-}
-
 function popupwindow(url, title, w, h) {
     var left = (screen.width/2)-(w/2);
     var top = (screen.height/2)-(h/2);
@@ -227,17 +217,6 @@ $(document).ready(function () {
         var s_slug = $(this).data('speaker');
         var with_review = $(this).data('review');
         setSpeakerHtml(e_slug, s_slug, with_review);
-    });
-
-    $('.set-modal-header').on('click', function () {
-        var e_slug = $(this).data('event');
-        var h_type = '';
-        if ($(this).hasClass('get-payment')) {
-            h_type = 'buy';
-        } else {
-            h_type = 'reg';
-        }
-        setModalHeader(e_slug, h_type);
     });
 
     $(document).on('click', '.like-btn-js', function (e) {
