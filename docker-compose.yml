@@ -42,10 +42,17 @@ services:
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
+            - "./docker-configs/fwdays-dev/configs/php-fpm.ini:/etc/php/7.3/fpm/php.ini"
             - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.3/cli/php.ini"
             - "./docker-configs/fwdays-dev/configs/xdebug.ini:/etc/php/7.3/mods-available/xdebug.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
+            - "bash-history-user:/var/www/history/"
+            - "bash-history-root:/root/history/"
+        depends_on:
+            - "mysql"
+            - "mailcatcher"
+            - "sessions"
 
     mysql:
         image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3

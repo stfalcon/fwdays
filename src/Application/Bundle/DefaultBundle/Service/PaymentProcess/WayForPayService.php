@@ -58,11 +58,11 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return string|null
      */
-    public function getPaymentIdFromResponse(array $response): ?string
+    public function getPaymentIdFromData(array $data): ?string
     {
         return null;
     }
@@ -92,17 +92,17 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
      * @return array|null
      */
-    public function getResponseOnServiceUrl(array $response): ?array
+    public function getResponseOnServiceUrl(array $data): ?array
     {
         $result = null;
 
-        if (isset($response['orderReference'])) {
+        if (isset($data['orderReference'])) {
             $result = [
-                'orderReference' => $response['orderReference'],
+                'orderReference' => $data['orderReference'],
                 'status' => 'accept',
                 'time' => (int) (new \DateTime())->getTimestamp(),
             ];
@@ -121,12 +121,11 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function getData(Payment $payment, Event $event): array
     {
-        $usersId = '';
+        $userIds = [];
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $usersId .= ','.$ticket->getUser()->getId();
+            $userIds[] = $ticket->getUser()->getId();
         }
-        $usersId = \mb_substr($usersId, 1);
 
         $description = $this->translator->trans(
             'interkassa.payment.description',
@@ -134,7 +133,7 @@ class WayForPayService extends AbstractPaymentProcessService
                 '%event_name%' => $event->getName(),
                 '%user_name%' => $payment->getUser()->getFullname(),
                 '%user_id%' => $payment->getUser()->getId(),
-                '%ids_array%' => $usersId,
+                '%ids_array%' => \implode(',', $userIds),
             ]
         );
 
@@ -182,15 +181,15 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array|null $response
+     * @param array|null $data
      *
      * @return string
      */
-    public function processResponse(?array $response): string
+    public function processData(?array $data): string
     {
-        $this->assertArrayKeysExists(['transactionStatus', 'orderNo', 'merchantSignature'], $response);
+        $this->assertArrayKeysExists(['transactionStatus', 'orderNo', 'merchantSignature'], $data);
 
-        return $this->processSystemResponse($response, 'orderNo', Payment::WAYFORPAY_GATE);
+        return $this->processSystemData($data, 'orderNo', Payment::WAYFORPAY_GATE);
     }
 
     /**
@@ -210,23 +209,23 @@ class WayForPayService extends AbstractPaymentProcessService
     }
 
     /**
-     * @param array $response
+     * @param array $data
      * @param bool  $isUnprocessedTransaction
      *
      * @return string
      */
-    protected function getStatusFromResponse(array $response, bool $isUnprocessedTransaction = false): string
+    protected function getStatusFromData(array $data, bool $isUnprocessedTransaction = false): string
     {
-        return $response['transactionStatus'] ?? self::TRANSACTION_STATUS_FAIL;
+        return $data['transactionStatus'] ?? self::TRANSACTION_STATUS_FAIL;
     }
 
     /**
-     * @param array        $response
+     * @param array        $data
      * @param Payment|null $payment
      *
      * @return array
      */
-    protected function getRequestDataToArr(array $response, ?Payment $payment): array
+    protected function getRequestDataToArr(array $data, ?Payment $payment): array
     {
         $paymentId = '-';
         $paymentStatus = '-';
@@ -242,35 +241,35 @@ class WayForPayService extends AbstractPaymentProcessService
             'payment_id' => $paymentId,
             'payment_status' => $paymentStatus,
             'payment_amount' => $paymentAmount,
-            'request_amount' => $this->getArrMean($response['amount']),
-            'request_status' => $this->getArrMean($response['reasonCode']).' '.$this->getArrMean($response['reason']),
+            'request_amount' => $this->getArrMean($data['amount']),
+            'request_status' => $this->getArrMean($data['reasonCode']).' '.$this->getArrMean($data['reason']),
         ];
     }
 
     /**
      * @param Payment $payment
-     * @param array   $response
+     * @param array   $data
      *
      * @return bool
      */
-    protected function checkPayment(Payment $payment, array $response): bool
+    protected function checkPayment(Payment $payment, array $data): bool
     {
-        if ($this->appConfig['wayforpay']['shop_id'] === $this->getArrMean($response['merchantAccount']) &&
-            (float) $this->getArrMean($response['amount']) === $payment->getAmount() &&
-            self::WFP_TRANSACTION_APPROVED_STATUS === $this->getArrMean($response['transactionStatus'])
+        if ($this->appConfig['wayforpay']['shop_id'] === $this->getArrMean($data['merchantAccount']) &&
+            (float) $this->getArrMean($data['amount']) === $payment->getAmount() &&
+            self::WFP_TRANSACTION_APPROVED_STATUS === $this->getArrMean($data['transactionStatus'])
         ) {
             $params = [
-                'merchantAccount' => $this->getArrMean($response['merchantAccount']),
-                'orderReference' => $this->getArrMean($response['orderReference']),
-                'amount' => $this->getArrMean($response['amount']),
-                'currency' => $this->getArrMean($response['currency']),
-                'authCode' => $this->getArrMean($response['authCode']),
-                'cardPan' => $this->getArrMean($response['cardPan']),
-                'transactionStatus' => $this->getArrMean($response['transactionStatus']),
-                'reasonCode' => $this->getArrMean($response['reasonCode']),
+                'merchantAccount' => $this->getArrMean($data['merchantAccount']),
+                'orderReference' => $this->getArrMean($data['orderReference']),
+                'amount' => $this->getArrMean($data['amount']),
+                'currency' => $this->getArrMean($data['currency']),
+                'authCode' => $this->getArrMean($data['authCode']),
+                'cardPan' => $this->getArrMean($data['cardPan']),
+                'transactionStatus' => $this->getArrMean($data['transactionStatus']),
+                'reasonCode' => $this->getArrMean($data['reasonCode']),
             ];
 
-            return $response['merchantSignature'] === $this->getSignHash($params);
+            return $data['merchantSignature'] === $this->getSignHash($params);
         }
 
         return false;
