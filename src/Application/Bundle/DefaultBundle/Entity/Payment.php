@@ -431,7 +431,7 @@ class Payment
         if (\in_array($gate, $this->gates, true)) {
             $this->setGate($gate);
         } else {
-            $this->setGate(self::WAYFORPAY_GATE);
+            $this->setGate(self::UNKNOWN_GATE);
         }
 
         return $this;
