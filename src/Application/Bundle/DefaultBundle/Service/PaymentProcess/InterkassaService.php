@@ -2,8 +2,8 @@
 
 namespace Application\Bundle\DefaultBundle\Service\PaymentProcess;
 
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Event;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
 use Doctrine\ORM\EntityManager;

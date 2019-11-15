@@ -17,7 +17,6 @@ class MinkRedirectContext extends RawMinkContext
     /**
      * Prevent following redirects.
      *
-     *
      * @When /^I do not follow redirects$/
      */
     public function iDoNotFollowRedirects()
@@ -27,7 +26,6 @@ class MinkRedirectContext extends RawMinkContext
 
     /**
      * @param \Behat\Behat\Event\ScenarioEvent|\Behat\Behat\Event\OutlineExampleEvent $event
-     *
      *
      * @AfterScenario
      */
@@ -42,7 +40,6 @@ class MinkRedirectContext extends RawMinkContext
      * Follow redirect instructions.
      *
      * @param string $page
-     *
      *
      * @Then /^I (?:am|should be) redirected(?: to "([^"]*)")?$/
      */

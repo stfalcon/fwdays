@@ -18,11 +18,7 @@ class EventBlockTypeTextValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint)
     {
         if (!$constraint instanceof EventBlockTypeText) {
-            throw new \RuntimeException(\sprintf(
-                'Object of class %s is not instance of %s',
-                \get_class($constraint),
-                'EventBlockTypeText'
-            ));
+            throw new \RuntimeException(\sprintf('Object of class %s is not instance of %s', \get_class($constraint), 'EventBlockTypeText'));
         }
 
         if ($entity instanceof EventBlock) {

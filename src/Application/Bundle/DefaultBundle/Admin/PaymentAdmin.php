@@ -93,7 +93,7 @@ final class PaymentAdmin extends AbstractAdmin
             ->add(
                 'status',
                 'doctrine_orm_choice',
-                ['label' => 'Стутус оплаты'],
+                ['label' => 'Статус оплаты'],
                 'choice',
                 [
                     'choices' => Payment::getPaymentStatusChoice(),
