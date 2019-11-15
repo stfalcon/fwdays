@@ -246,7 +246,8 @@ $(document).ready(function () {
 
     goToBlock.click(function (e) {
         e.preventDefault();
-        animateScroll($(this).data('scroll'));
+        var data_scroll = $(this).data('scroll') ? $(this).data('scroll') : $(this).attr('href');
+        animateScroll(data_scroll);
 
         if (eventMenu.length) {
             closeMenu();

@@ -18,11 +18,7 @@ class EventBlockPositionUniqueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof EventBlockPositionUnique) {
-            throw new \RuntimeException(\sprintf(
-                'Object of class %s is not instance of %s',
-                \get_class($constraint),
-                'EventBlockTypeText'
-            ));
+            throw new \RuntimeException(\sprintf('Object of class %s is not instance of %s', \get_class($constraint), 'EventBlockTypeText'));
         }
 
         if ($value instanceof Event) {
