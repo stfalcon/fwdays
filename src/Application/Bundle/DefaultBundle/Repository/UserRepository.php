@@ -2,11 +2,11 @@
 
 namespace Application\Bundle\DefaultBundle\Repository;
 
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
-use Application\Bundle\DefaultBundle\Entity\Mail;
-use Application\Bundle\DefaultBundle\Entity\Payment;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
