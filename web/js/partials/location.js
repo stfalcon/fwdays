@@ -42,9 +42,7 @@ $(document).ready(function () {
         }
     }
 
-    $(window).load(function() {
-        if ($('#map').length > 0) {
-            initMap();
-        }
-    })
+    if ($('#map').length > 0) {
+        initMap();
+    }
 });
