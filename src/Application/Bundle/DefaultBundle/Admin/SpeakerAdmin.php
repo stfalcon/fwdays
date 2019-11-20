@@ -103,7 +103,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
