@@ -106,7 +106,7 @@ class Speaker implements Translatable
     /**
      * @var Collection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="speakers")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
      *   joinColumns={
      *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
@@ -115,6 +115,7 @@ class Speaker implements Translatable
      *     @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      *   }
      * )
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $events;
 
@@ -123,8 +124,9 @@ class Speaker implements Translatable
      *
      * @var Event[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="candidateSpeakers")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="candidateSpeakers")
      * @ORM\JoinTable(name="event_speakers_candidate")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $candidateEvents;
 
@@ -133,7 +135,7 @@ class Speaker implements Translatable
      *
      * @var Event[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="committeeSpeakers")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="committeeSpeakers")
      * @ORM\JoinTable(name="event_speakers_committee")
      */
     private $committeeEvents;
@@ -141,8 +143,9 @@ class Speaker implements Translatable
     /**
      * @var Event[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="discussionExperts")
+     * @ORM\ManyToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\Event", inversedBy="discussionExperts")
      * @ORM\JoinTable(name="event_speakers_expert")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $expertEvents;
 
