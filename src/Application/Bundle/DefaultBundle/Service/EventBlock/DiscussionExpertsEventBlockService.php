@@ -40,7 +40,7 @@ class DiscussionExpertsEventBlockService extends AbstractBlockService
         $event = $blockContext->getSetting('event');
 
         if (!$event instanceof Event) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $speakers = $event->getDiscussionExperts();
