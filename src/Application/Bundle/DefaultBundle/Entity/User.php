@@ -128,6 +128,7 @@ class User extends BaseUser
      * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $wantsToVisitEvents;
+
     /**
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
      */
