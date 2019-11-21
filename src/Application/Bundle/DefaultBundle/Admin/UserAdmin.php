@@ -72,7 +72,7 @@ final class UserAdmin extends AbstractAdmin
             ->add(
                 'wantsToVisitEvents',
                 null,
-                ['label' => 'Зарегестрировались на событие'],
+                ['label' => 'Зарегистрировались на событие'],
                 EntityType::class,
                 ['choices' => $this->getEvents()]
             )
