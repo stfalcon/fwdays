@@ -115,7 +115,7 @@ class Event implements Translatable
     protected $slug;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      *
@@ -124,7 +124,7 @@ class Event implements Translatable
     protected $city;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      *
@@ -661,13 +661,11 @@ class Event implements Translatable
     }
 
     /**
-     * Set city in which the conference takes place.
-     *
      * @param string|null $city
      *
      * @return $this
      */
-    public function setCity($city)
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -675,23 +673,19 @@ class Event implements Translatable
     }
 
     /**
-     * Get city in which the conference takes place.
-     *
-     * @return string
+     * @return string|null
      */
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
-     * Set place.
-     *
      * @param string|null $place
      *
      * @return $this
      */
-    public function setPlace($place)
+    public function setPlace(?string $place): self
     {
         $this->place = $place;
 
@@ -699,11 +693,9 @@ class Event implements Translatable
     }
 
     /**
-     * Get place.
-     *
-     * @return string
+     * @return string|null
      */
-    public function getPlace()
+    public function getPlace(): ?string
     {
         return $this->place;
     }

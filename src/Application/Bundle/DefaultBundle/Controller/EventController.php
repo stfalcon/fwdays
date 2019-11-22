@@ -3,9 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\EventPage;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Application event controller.
@@ -88,18 +89,12 @@ class EventController extends Controller
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param string $slug
+     * @param Event $event
      *
      * @return JsonResponse
      */
-    public function getEventMapPosition($slug)
+    public function getEventMapPosition(Event $event): JsonResponse
     {
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
-        if (!$event) {
-            return new JsonResponse(['result' => false, 'error' => 'Unable to find Event by slug: '.$slug]);
-        }
-
         if ($this->get('app.service.google_map_service')->setEventMapPosition($event)) {
             $this->getDoctrine()->getManager()->flush($event);
 
