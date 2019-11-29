@@ -63,6 +63,7 @@ user.country.title: Country
 user.city.title: City
 user.company.title: Company
 user.company_post.title: Post
+user.email.language: Email subscription language
 user.subscribe.title: I agree to receive important news via email
 user.refresh.title: Update
 user.password.title: Password
@@ -232,6 +233,7 @@ mail.news.site_link: 'https://fwdays.com/en/'
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news
 ticket.email.team: 'Best regards, <br/> Team Fwdays <br/>'
+ticket.email.change_language: Щоб змінити мову листів, перейдіть у налаштування Профілю на сайті
 ticket.email.event_date.title: 'Date'
 ticket.email.event_reg.title: 'Registration'
 ticket.email.event_member.title: 'Participant'

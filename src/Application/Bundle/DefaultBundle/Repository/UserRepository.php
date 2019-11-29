@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Repository;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
+use Application\Bundle\DefaultBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
@@ -19,9 +20,9 @@ class UserRepository extends EntityRepository
     /**
      * Get users admin.
      *
-     * @return array()
+     * @return User[]
      */
-    public function getAdmins()
+    public function getAdmins(): array
     {
         return $this->createQueryBuilder('u')
             ->where("u.roles LIKE '%_ADMIN%'")

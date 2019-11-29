@@ -38,6 +38,7 @@ user.fullname.title: Ваше ім'я та прізвище
 user.name.title: Ім'я
 user.surname.title: Прізвище
 user.email.title: Електронна пошта
+user.email.language: Мова Email розсилки
 user.phone.title: Телефон
 user.phone.title_payment: Телефон (не обов'язково)
 user.country.title: Країна
@@ -222,6 +223,7 @@ mail.news.site_link: 'https://fwdays.com/'
 ticket.email.waitfornews: 'Слідкуйте за новинами:'
 ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Fwdays <br/>'
+ticket.email.change_language: To change e-mail language, go to Profile settings on site
 ticket.email.event_date.title: 'Дата'
 ticket.email.event_reg.title: 'Реєстрація'
 ticket.email.event_member.title: 'Учасник'

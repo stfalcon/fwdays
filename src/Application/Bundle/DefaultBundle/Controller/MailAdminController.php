@@ -2,6 +2,9 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Mail;
+use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Service\TranslatedMailService;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -48,37 +51,41 @@ class MailAdminController extends CRUDController
     public function adminSendAction(Request $request)
     {
         $id = $request->get($this->admin->getIdParameter());
+        /** @var Mail $mail */
         $mail = $this->admin->getObject($id);
         /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->get('session');
-        if (!$mail) {
+        if (!$mail instanceof Mail) {
             $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
 
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
-        if ($mail->getId()) {
-            /**
-             * @var \Doctrine\ORM\EntityManager
-             * @var \Swift_Mailer                                                 $mailer
-             * @var \Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper $mailerHelper
-             */
-            $em = $this->get('doctrine')->getEntityManager('default');
-            $mailer = $this->get('mailer');
-            $mailerHelper = $this->get('application.mailer_helper');
-            $users = $em->getRepository('ApplicationDefaultBundle:User')->getAdmins();
-            $isTestMessage = true;
-            $error = false;
-            foreach ($users as $user) {
-                if (!$mailer->send($mailerHelper->formatMessage($user, $mail, $isTestMessage))) {
-                    $error = true;
-                }
-            }
-            if ($error) {
-                $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
 
-                return new RedirectResponse($this->admin->generateUrl('list'));
+        /**
+         * @var \Doctrine\ORM\EntityManager
+         * @var \Swift_Mailer                                                 $mailer
+         * @var \Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper $mailerHelper
+         */
+        $em = $this->getDoctrine()->getManager();
+        $mailer = $this->get('mailer');
+        $mailerHelper = $this->get('application.mailer_helper');
+        $users = $em->getRepository(User::class)->getAdmins();
+        $isTestMessage = true;
+        $error = false;
+        $translatedMailService = $this->get(TranslatedMailService::class);
+        $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+        foreach ($users as $user) {
+            if (!isset($translatedMails[$user->getEmailLanguage()]) ||
+                !$mailer->send($mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()], $isTestMessage))) {
+                $error = true;
             }
         }
+        if ($error) {
+            $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
         $this->get('session')->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));

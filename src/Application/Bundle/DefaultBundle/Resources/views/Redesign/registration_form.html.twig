@@ -51,6 +51,18 @@
                 {% if regForm is defined and regForm.phone.vars.errors|length %}<p class="text-error">{{ regForm.phone.vars.errors[0].message|trans }}</p>{% endif %}
             </div>
         </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="fos_user_registration_form_emailLanguage">{{ 'user.email.language'|trans }}</label>
+                <select class="input" id="fos_user_registration_form_emailLanguage" name="fos_user_registration_form[emailLanguage]">
+                    {% for name, local in locales %}
+                        <option {% if local == app.request.locale %}selected{% endif %}
+                                value="{{ local }}">{{ name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
     </div>
     <div class="form-row form-row--checkbox">
         <div class="form-col">
