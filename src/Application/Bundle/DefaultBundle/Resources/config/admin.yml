@@ -28,7 +28,7 @@ services:
         class: Application\Bundle\DefaultBundle\Admin\EventAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: События }
-        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Event', ~]
+        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Event', Application\Bundle\DefaultBundle\Admin\Controller\SonataCRUDWithLogController]
 
     app.admin.event_group:
         class: Application\Bundle\DefaultBundle\Admin\EventGroupAdmin
@@ -41,11 +41,12 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
         arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Review', ~]
+
     app.admin.speaker:
         class: Application\Bundle\DefaultBundle\Admin\SpeakerAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Докладчики }
-        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Speaker', ~]
+        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Speaker', Application\Bundle\DefaultBundle\Admin\Controller\SonataCRUDWithLogController]
 
     app.admin.event_page:
         class: Application\Bundle\DefaultBundle\Admin\EventPageAdmin
@@ -95,7 +96,7 @@ services:
         class: Application\Bundle\DefaultBundle\Admin\PageAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Страницы, label: Страницы }
-        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Page', ~]
+        arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Page', Application\Bundle\DefaultBundle\Admin\Controller\SonataCRUDWithLogController]
 
     app.ticket_cost.admin:
         class: Application\Bundle\DefaultBundle\Admin\TicketCostAdmin
