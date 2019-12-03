@@ -2,15 +2,32 @@
 
 namespace Application\Bundle\DefaultBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Cookie;
+use Application\Bundle\DefaultBundle\Service\PaymentService;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
- * Class PromoCodeRequestListener.
+ * PromoCodeRequestListener.
  */
 class PromoCodeRequestListener
 {
+    private const PROMO_CODE_QUERY_KEY = 'promocode';
+
+    private $router;
+    private $session;
+
+    /**
+     * @param Router  $router
+     * @param Session $session
+     */
+    public function __construct(Router $router, Session $session)
+    {
+        $this->router = $router;
+        $this->session = $session;
+    }
+
     /**
      * @param GetResponseEvent $event
      */
@@ -21,23 +38,22 @@ class PromoCodeRequestListener
         }
 
         $request = $event->getRequest();
-        $promocode = $request->query->get('promocode');
-        if ($promocode && preg_match('/\/event\/.+/', $request->getPathInfo())) {
-            $eventSlugStartPos = strpos($request->getPathInfo(), '/event/') + \strlen('/event/');
-            $eventSlugEndPos = strpos($request->getPathInfo(), '/', $eventSlugStartPos);
+        $promocode = $request->query->get(self::PROMO_CODE_QUERY_KEY);
+        if ($promocode && \preg_match('/\/event\/.+/', $request->getPathInfo())) {
+            $eventSlugStartPos = \strpos($request->getPathInfo(), '/event/') + \strlen('/event/');
+            $eventSlugEndPos = \strpos($request->getPathInfo(), '/', $eventSlugStartPos);
             $eventSlugLength = false !== $eventSlugEndPos ? $eventSlugEndPos - $eventSlugStartPos : null;
             if (null !== $eventSlugLength) {
-                $eventSlug = substr($request->getPathInfo(), $eventSlugStartPos, $eventSlugLength);
+                $eventSlug = \substr($request->getPathInfo(), $eventSlugStartPos, $eventSlugLength);
             } else {
-                $eventSlug = substr($request->getPathInfo(), $eventSlugStartPos);
+                $eventSlug = \substr($request->getPathInfo(), $eventSlugStartPos);
             }
-            $url = $request->getBaseUrl().$request->getPathInfo();
-            $response = new RedirectResponse($url);
-            $cookie = new Cookie('promocode', $promocode, time() + 3600, '/', null, false, false);
-            $response->headers->setCookie($cookie);
-            $cookie = new Cookie('promoevent', $eventSlug, time() + 3600, '/', null, false, false);
-            $response->headers->setCookie($cookie);
-            $event->setResponse($response);
+            $currentPromoCodes = $this->session->get(PaymentService::PROMO_CODE_SESSION_KEY, []);
+            $currentPromoCodes[$eventSlug] = $promocode;
+            $this->session->set(PaymentService::PROMO_CODE_SESSION_KEY, $currentPromoCodes);
+
+            $url = $this->router->generate('event_show_redesign', ['eventSlug' => $eventSlug]);
+            $event->setResponse(new RedirectResponse($url));
         }
     }
 }
