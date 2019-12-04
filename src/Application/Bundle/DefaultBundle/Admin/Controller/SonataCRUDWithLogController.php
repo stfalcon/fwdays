@@ -21,20 +21,23 @@ class SonataCRUDWithLogController extends CRUDController
     {
         $result = parent::editAction($id);
 
-        $request = $this->getRequest();
-
-        if (Request::METHOD_GET !== $request->getMethod()) {
-            $this->postEdit();
-        }
+        $this->postEdit($this->getRequest());
 
         return $result;
     }
 
     /**
+     * @param Request $request
+     *
      * @throws \Exception
      */
-    protected function postEdit(): void
+    protected function postEdit(Request $request): void
     {
+        if (Request::METHOD_GET === $request->getMethod()) {
+            return;
+        }
+        $object = $this->savedObject;
+
         $logDir = $this->getParameter('kernel.logs_dir');
         $now = new \DateTime('now');
         $filename = \sprintf('%s.txt', $now->format('Y-m-d-H-i'));
@@ -43,24 +46,13 @@ class SonataCRUDWithLogController extends CRUDController
             \mkdir($dir, 0777, true);
         }
         $fileNameWithPath = \sprintf('%s/Sonata/%s/%s', $logDir, $now->format('Y-m-d'), $filename);
-
         $timeString = \sprintf('[%s]:', $now->format('Y-m-d H:i:s'));
-
-        $object = $this->savedObject;
 
         $content = \sprintf('%s POST EDIT %s', $timeString, $object->getId()).PHP_EOL;
         $content .= \sprintf('CLASS %s', \get_class($object)).PHP_EOL;
         $content .= \sprintf('USER %s', $this->getUser()->getEmail()).PHP_EOL;
 
-        $content .= 'OBJECT'.PHP_EOL;
-
-        $translations = $object->getTranslations();
-        foreach ($translations as $translation) {
-            $content .= \sprintf('[%s][%s]', $translation->getLocale(), $translation->getField()).PHP_EOL;
-            $content .= '[CONTENT]'.PHP_EOL;
-            $content .= $translation->getContent().PHP_EOL;
-            $content .= '[END CONTENT]'.PHP_EOL.PHP_EOL;
-        }
+        $content = $this->addContentFromTranslations($content, $object);
 
         \file_put_contents($fileNameWithPath, $content, FILE_APPEND);
     }
@@ -82,7 +74,6 @@ class SonataCRUDWithLogController extends CRUDController
             \mkdir($dir, 0777, true);
         }
         $fileNameWithPath = \sprintf('%s/Sonata/%s/%s', $logDir, $now->format('Y-m-d'), $filename);
-
         $timeString = \sprintf('[%s]:', $now->format('Y-m-d H:i:s'));
 
         $uniqid = $request->query->get('uniqid');
@@ -116,6 +107,21 @@ class SonataCRUDWithLogController extends CRUDController
             }
         }
 
+        $content = $this->addContentFromTranslations($content, $object);
+
+        \file_put_contents($fileNameWithPath, $content, FILE_APPEND);
+
+        return null;
+    }
+
+    /**
+     * @param string $content
+     * @param $object
+     *
+     * @return string
+     */
+    private function addContentFromTranslations(string $content, $object): string
+    {
         $content .= 'OBJECT'.PHP_EOL;
 
         $translations = $object->getTranslations();
@@ -126,8 +132,6 @@ class SonataCRUDWithLogController extends CRUDController
             $content .= '[END CONTENT]'.PHP_EOL.PHP_EOL;
         }
 
-        \file_put_contents($fileNameWithPath, $content, FILE_APPEND);
-
-        return null;
+        return $content;
     }
 }
