@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            {% set promocode = ticket.promo_code ? ticket.promo_code.code : '' %}
+            {% set promocode = ticket.promo_code ? ticket.promo_code.code : default_promocode %}
             <div class="form-row">
                 <div class="form-col form-col--12">
                     <div class="form-group form-group--flex">
