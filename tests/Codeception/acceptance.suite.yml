@@ -1,0 +1,21 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - PhpBrowser:
+            url: http://nginx/
+#        - WebDriver:
+#            url: http://localhost/
+#            window_size: false # disabled in ChromeDriver
+#            port: 9515
+#            browser: chrome
+        - \Helper\Acceptance
+#extensions:
+#    enabled:
+#        - Codeception\Extension\RunProcess:
+#              - chromedriver --whitelisted-ips= --url-base=/wd/hub

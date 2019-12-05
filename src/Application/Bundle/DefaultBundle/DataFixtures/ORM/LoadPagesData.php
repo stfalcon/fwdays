@@ -7,21 +7,16 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Fixtures for the pages.
+ * LoadPagesData.
  */
 class LoadPagesData extends AbstractFixture
 {
-    /**
-     * Load data fixtures with the passed EntityManager.
-     *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
-    {
-        $page = new Page();
-        $page->setTitle('О Frameworks Days');
-        $page->setSlug('about');
-        $page->setText('<p><h3>Наша цель:</h3>
+    private const PAGE_DATA = [
+        [
+            'title' => 'О Frameworks Days',
+            'slug' => 'about',
+            'text' => <<<EOF
+<p><h3>Наша цель:</h3>
  проводить качественные мероприятия для разработчиков, менеджеров проектов и всех, кто связан с IT.</p>
  
 <p>Под брендом Frameworks Days начиная с 2011 года мы организовываем мероприятия различного масштаба и формата.
@@ -71,9 +66,79 @@ class LoadPagesData extends AbstractFixture
 <h3>Смотрите, как проходят наши конференции:</h3> 
 <p>Больше видео на нашем канале в <a href="https://www.youtube.com/user/fwdays/videos">YouTube</a>.</p>
 
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/fZZbCXutR6k" frameborder="0" allowfullscreen></iframe></center><br />');
+<center><iframe width="560" height="315" src="https://www.youtube.com/embed/fZZbCXutR6k" frameborder="0" allowfullscreen></iframe></center><br />
+EOF
+        ],
+        [
+            'title' => 'Контактна інформація',
+            'slug' => 'contacts',
+            'text' => <<<EOF
+<h2 class="h2 contacts__title">Контактна інформація</h2>
+            <div class="contact-info">
+                <div class="contact-info__item">
+                    <div class="contact-info__label">Електронна пошта</div>
+                    <a href="mailto:orgs@fwdays.com" class="contact-info__link contact-info__link--blue-light">orgs@fwdays.com</a>
+                </div>
+                <div class="contact-info__item">
+                    <div class="contact-info__label">Адреса</div>
+                    <a href="https://maps.google.com/?q=Київ,вул.Виборзька,42а" target="_blank" class="contact-info__link">Київ, вул. Виборзька, 42а</a>
+                </div>
+                <div class="contact-info__item">
+                    <div class="contact-info__label">Facebook</div>
+                    <a href="https://www.facebook.com/fwdays/" target="_blank"
+                       class="contact-info__link contact-info__link--blue-dark">fwdays</a>
+                </div>
+            </div>
+             <div class="organizers">
+            <div class="organizers__label">Організатори:</div>
+            <ul class="organizers__items">
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання з безготівкової оплати</div>
+                    <img class="organizer-card__photo" src="https://storage.fwdays.com/uploads/images/5c9e3599bfe0c.jpeg" width="160" height="160">
+                    <div class="organizer-card__name">Тетяна Буханова</div>
+                    <a class="organizer-card__tel" href="tel:tel:+380992159622">+380 99 21-596-22</a>
+                    <a class="organizer-card__mail" href="mailto:tanyabukhanova@fwdays.com">tanyabukhanova@fwdays.com </a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання співпраці та партнерства з Fwdays</div>
+                   <img class="organizer-card__photo" src="https://fwdays.com/assets/img/organizers/bojik.png" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Ірина Божик</div>
+                    <a class="organizer-card__tel" href="tel:380679995888">+380 67 999-5-888</a>
+                    <a class="organizer-card__mail" href="mailto:iryna.bozhyk@fwdays.com">iryna.bozhyk@fwdays.com</a>
+                </li>
+                <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання інфопартнерства, мітапів, майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://storage.fwdays.com/uploads/images/5a82b54782e06.jpeg" alt="" width="160" height="160">
+                    <div class="organizer-card__name">Ксенія Грабевник</div>
+                    <a class="organizer-card__tel" href="tel:380985265606">+380 63 208-03-22</a>
+                    <a class="organizer-card__mail" href="mailto:ksenya.grabevnyk@fwdays.com">ksenya.grabevnyk@fwdays.com </a>
+                </li>
+               <li class="organizer-card organizers__item">
+                    <div class="organizer-card__caption">Питання щодо інформації на сайті та майстер-класів</div>
+                    <img class="organizer-card__photo" src="https://storage.fwdays.com/uploads/images/5c9e33c11fb6e.jpeg" width="160" height="160" alt=""/>
+                    <div class="organizer-card__name">Яна Борисова</div>
+                    <a class="organizer-card__tel" href="tel:380953299947">+380 95 329-99-47</a>
+                    <a class="organizer-card__mail" href="mailto:yana.borysova@fwdays.com">yana.borysova@fwdays.com</a>
+                </li>                 
+            </ul>
+        </div>
+EOF
+        ],
+    ];
 
-        $manager->persist($page);
+    /**
+     * @param ObjectManager $manager
+     */
+    public function load(ObjectManager $manager)
+    {
+        foreach (self::PAGE_DATA as $pageData) {
+            $page = (new Page())
+                ->setTitle($pageData['title'])
+                ->setSlug($pageData['slug'])
+                ->setText($pageData['text'])
+            ;
+            $manager->persist($page);
+        }
         $manager->flush();
     }
 }
