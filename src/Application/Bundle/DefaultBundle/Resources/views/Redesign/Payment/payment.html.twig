@@ -2,6 +2,10 @@
 
 {% block content %}
     {#BEGIN markup for payment#}
+
+    {% set promocode_data = app.session.get(constant('Application\\Bundle\\DefaultBundle\\Service\\PaymentService::PROMO_CODE_SESSION_KEY')) %}
+    {% set default_promocode = promocode_data[event.slug] is defined ? promocode_data[event.slug] : '' %}
+
     {% include '@ApplicationDefault/Redesign/Payment/payment.frontend.payer_row.html.twig' %}
     {% include '@ApplicationDefault/Redesign/Payment/payment.frontend.payer_edit.html.twig' %}
 
