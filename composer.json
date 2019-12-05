@@ -130,6 +130,9 @@
         "ci:phpunit": [
             "bin/phpunit -c phpunit.xml.dist"
         ],
+        "ci:codeception-acceptance": [
+            "./bin/codecept run acceptance"
+        ],
         "ci:static-analysis": [
             "bin/phpstan analyse -l 6 --no-progress  -c phpstan.neon src/"
         ],
@@ -158,7 +161,8 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:code-style-fixer",
-            "@ci:static-analysis"
+            "@ci:static-analysis",
+            "@ci:codeception-acceptance"
         ]
     },
     "extra": {

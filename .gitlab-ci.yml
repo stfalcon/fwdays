@@ -76,6 +76,12 @@ static analysis:
     script:
         - composer.phar ci:static-analysis
 
+codeception:
+    stage: 'CI jobs'
+    <<: *build_ci
+    script:
+        - composer.phar ci:codeception-acceptance
+
 #phpunit:
 #    stage: 'CI jobs'
 #    <<: *build_ci
