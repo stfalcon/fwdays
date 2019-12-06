@@ -1,4 +1,4 @@
-image: debian:stretch
+image: docker:stable
 services:
   - docker:dind
 
@@ -39,9 +39,11 @@ stages:
 
 
 functional-test:
+    tags:
+        - heavy
     stage: 'dind'
     script:
-        - sudo apt update
+        - apt update
 
 # # CI jobs
 # composer checks:
