@@ -42,7 +42,6 @@ functional-test:
     stage: 'dind'
     script:
         - sudo apt-update
-        - echo test
 
 # # CI jobs
 # composer checks:
