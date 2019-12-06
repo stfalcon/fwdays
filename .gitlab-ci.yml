@@ -44,14 +44,15 @@ functional-test:
     tags:
         - heavy
     stage: 'dind'
-    image: docker:latest
+    image: tiangolo/docker-with-compose
+    before_script:
+        - docker info
+        - docker-compose --version
     only:
         - add-codception
-    before_script:
-        - apk add --no-cache py-pip
-        - pip install docker-compose
     script:
-        - docker-compose -f docker-compose.yml up -d
+        - docker-compose up -d
+        - sleep 30
 
 # # CI jobs
 # composer checks:
