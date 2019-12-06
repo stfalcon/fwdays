@@ -1,6 +1,6 @@
-image: docker:dind
+image: docker:latest
 services:
-  - docker:dind
+  - docker:stable
 
 # image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
 # cache:
@@ -42,11 +42,10 @@ functional-test:
     tags:
         - heavy
     stage: 'dind'
-    before_script:
-        - docker info
-        - docker-compose --version
     script:
-        - docker-compose up -d
+        - sudo apt-get install -y python-pip
+        - sudo pip install docker-compose
+        - sudo docker-compose -f docker-compose.yml up -d
 
 # # CI jobs
 # composer checks:
