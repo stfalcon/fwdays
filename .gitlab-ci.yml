@@ -32,7 +32,7 @@ services:
 
 stages:
     - 'dind'
-    - 'SonarQube'
+    # - 'SonarQube'
     - 'Build'
     - 'Deploy to staging'
     - 'Deploy to production'
@@ -41,7 +41,7 @@ stages:
 functional-test:
     stage: 'dind'
     script:
-        - sudo apt-update
+        - sudo apt update
 
 # # CI jobs
 # composer checks:
@@ -92,14 +92,14 @@ functional-test:
 #     script:
 #         - sudo composer.phar ci:codeception-acceptance
 
-sonar-scanner:
-    stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
-    only:
-        - master
-    <<: *build_ci
-    script:
-        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+# sonar-scanner:
+#     stage: 'SonarQube'
+#     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
+#     only:
+#         - master
+#     <<: *build_ci
+#     script:
+#         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
         
 build image:
     stage: 'Build'
