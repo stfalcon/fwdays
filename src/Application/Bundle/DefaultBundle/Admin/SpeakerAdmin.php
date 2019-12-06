@@ -114,7 +114,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             ->add('events', null, ['label' => 'Участвует в событиях'])
             ->add('candidateEvents', null, ['label' => 'Кандидат на события'])
             ->add('committeeEvents', null, ['label' => 'Программный комитет'])
-            ->add('expertEvents', null, ['label' => 'Программный комитет'])
+            ->add('expertEvents', null, ['label' => 'Эксперт дискуссий'])
         ;
     }
 
