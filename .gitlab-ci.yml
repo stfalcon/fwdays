@@ -1,6 +1,9 @@
 services:
   - docker:dind
 
+variables:
+    DOCKER_DRIVER: overlay2
+
 # image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
 # cache:
     # paths:
@@ -42,9 +45,12 @@ functional-test:
         - heavy
     stage: 'dind'
     image: docker:latest
-    script:
-        - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    only:
+        - add-codception
+    before_script:
+        - apk add --no-cache py-pip
         - pip install docker-compose
+    script:
         - docker-compose -f docker-compose.yml up -d
 
 # # CI jobs
