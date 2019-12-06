@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
 cache:
     paths:
         - vendor/
@@ -21,10 +21,10 @@ variables:
 
 .before_script_template: &build_ci
     before_script:
-        - cp app/config/parameters.yml.stag app/config/parameters.yml
-        - unxz geodata/GeoLiteCity.dat.xz
-        - composer.phar install --optimize-autoloader
-        - npm install
+        - sudo cp app/config/parameters.yml.stag app/config/parameters.yml
+        - sudo unxz geodata/GeoLiteCity.dat.xz
+        - sudo composer.phar install --optimize-autoloader
+        - sudo npm install
 
 stages:
     - 'CI jobs'
@@ -38,49 +38,49 @@ composer checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:composer-validate
+        - sudo composer.phar ci:composer-validate
 
 security checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:security-check
+        - sudo composer.phar ci:security-check
 
 doctrine checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:doctrine-schema-validate
+        - sudo composer.phar ci:doctrine-schema-validate
 
 twig checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:twig-lint
+        - sudo composer.phar ci:twig-lint
 
 yaml checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:yaml-lint
+        - sudo composer.phar ci:yaml-lint
 
 code style checks:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:code-style
+        - sudo composer.phar ci:code-style
 
 static analysis:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:static-analysis
+        - sudo composer.phar ci:static-analysis
 
 codeception:
     stage: 'CI jobs'
     <<: *build_ci
     script:
-        - composer.phar ci:codeception-acceptance
+        - sudo composer.phar ci:codeception-acceptance
 
 #phpunit:
 #    stage: 'CI jobs'
