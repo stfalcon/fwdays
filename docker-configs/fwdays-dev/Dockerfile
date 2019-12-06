@@ -1,5 +1,5 @@
 FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
-RUN apt-get update && apt-get install -y sudo php7.3-xdebug php7.3-zip
+RUN apt-get update && apt-get install -y sudo php7.3-xdebug php7.3-zip libnss3
 RUN echo 'www-data ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/10_www_data
 ADD configs/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 ADD configs/xdebug.ini /etc/php/7.3/mods-available/xdebug.ini
