@@ -2,18 +2,35 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Mail.
  *
  * @ORM\Table(name="event__mails")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\MailRepository")
+ *
+ * @Gedmo\TranslationEntity(class="Application\Bundle\DefaultBundle\Entity\Translation\EmailTranslation")
  */
-class Mail
+class Mail implements Translatable
 {
+    use TranslateTrait;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="Application\Bundle\DefaultBundle\Entity\Translation\EmailTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
+
     /**
      * @var int
      *
@@ -26,14 +43,23 @@ class Mail
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     *
+     * @Assert\NotNull()
      */
     protected $title = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text")
+     * @ORM\Column(name="text", type="text", nullable=false)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     protected $text;
 
@@ -125,6 +151,7 @@ class Mail
         $this->events = new ArrayCollection();
         $this->audiences = new ArrayCollection();
         $this->mailQueues = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -413,21 +440,6 @@ class Mail
     public function setStart($start)
     {
         $this->start = $start;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return mixed|string
-     */
-    public function replace($data)
-    {
-        $text = $this->getText();
-        foreach ($data as $key => $value) {
-            $text = str_replace($key, $value, $text);
-        }
-
-        return $text;
     }
 
     /**

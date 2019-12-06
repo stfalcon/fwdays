@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Entity;
 
+use Application\Bundle\DefaultBundle\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
@@ -247,6 +248,17 @@ class User extends BaseUser
      * @ORM\Column(type="string", nullable=true)
      */
     protected $recToken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", name="email_language", nullable=false, options={"default":"uk"})
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(min="2")
+     */
+    private $emailLanguage = LocalsRequiredService::DEFAULT_EMAIL_LANGUAGE;
 
     /**
      * User constructor.
@@ -807,5 +819,25 @@ class User extends BaseUser
         }
 
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailLanguage(): string
+    {
+        return $this->emailLanguage;
+    }
+
+    /**
+     * @param string $emailLanguage
+     *
+     * @return $this
+     */
+    public function setEmailLanguage(string $emailLanguage): self
+    {
+        $this->emailLanguage = $emailLanguage;
+
+        return $this;
     }
 }

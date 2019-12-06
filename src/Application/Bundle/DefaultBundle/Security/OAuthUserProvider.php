@@ -8,6 +8,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -53,6 +54,10 @@ class OAuthUserProvider extends BaseClass
                     $user->setEmail($email);
                     $user->setPlainPassword(md5(uniqid()));
                     $user->setEnabled(true);
+                    $request = $this->container->get('request_stack')->getCurrentRequest();
+                    if ($request instanceof Request) {
+                        $user->setEmailLanguage($request->getLocale());
+                    }
                     $errors = $this->container->get('validator')->validate($user);
                     if ($errors->count() > 0) {
                         throw new \Exception('need_data');
