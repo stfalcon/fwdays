@@ -47,6 +47,7 @@ functional-test:
     stage: 'dind'
     image: tiangolo/docker-with-compose
     before_script:
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker info
         - docker-compose --version
     only:
