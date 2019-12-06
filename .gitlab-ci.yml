@@ -1,100 +1,97 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
-cache:
-    paths:
-        - vendor/
-        - node_modules/
-
+image: debian:stretch
 services:
-  - name: jekakm/mysql-core:201902201
-    alias: fwdays-php73-mysql
+  - docker:dind
 
-  - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
+# image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
+# cache:
+    # paths:
+    #     - vendor/
+    #     - node_modules/
+
+# services:
+#   - name: jekakm/mysql-core:201902201
+#     alias: fwdays-php73-mysql
+
+#   - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
   
-  - name: minio/minio:latest
-    alias: minio
+#   - name: minio/minio:latest
+#     alias: minio
 
-variables:
-  MYSQL_ROOT_PASSWORD: qwerty
-  MINIO_ACCESS_KEY: minio
-  MINIO_SECRET_KEY: qwe12345
+# variables:
+#   MYSQL_ROOT_PASSWORD: qwerty
+#   MINIO_ACCESS_KEY: minio
+#   MINIO_SECRET_KEY: qwe12345
 
 
-.before_script_template: &build_ci
-    before_script:
-        - sudo cp app/config/parameters.yml.stag app/config/parameters.yml
-        - sudo unxz geodata/GeoLiteCity.dat.xz
-        - sudo composer.phar install --optimize-autoloader
-        - sudo npm install
+# .before_script_template: &build_ci
+#     before_script:
+#         - sudo cp app/config/parameters.yml.stag app/config/parameters.yml
+#         - sudo unxz geodata/GeoLiteCity.dat.xz
+#         - sudo composer.phar install --optimize-autoloader
+#         - sudo npm install
 
 stages:
-    - 'CI jobs'
+    - 'dind'
     - 'SonarQube'
     - 'Build'
     - 'Deploy to staging'
     - 'Deploy to production'
 
-# CI jobs
-composer checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:composer-validate
 
-security checks:
-    stage: 'CI jobs'
-    <<: *build_ci
+functional-test:
+    stage: 'dind'
     script:
-        - sudo composer.phar ci:security-check
+        - sudo apt-update
+        - echo test
 
-doctrine checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:doctrine-schema-validate
+# # CI jobs
+# composer checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:composer-validate
 
-twig checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:twig-lint
+# security checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:security-check
 
-yaml checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:yaml-lint
+# doctrine checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:doctrine-schema-validate
 
-code style checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:code-style
+# twig checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:twig-lint
 
-static analysis:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:static-analysis
+# yaml checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:yaml-lint
 
-codeception:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - sudo composer.phar ci:codeception-acceptance
+# code style checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:code-style
 
-#phpunit:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    artifacts:
-#        paths:
-#            - './phpunit-coverage.xml'
-#            - './clover-coverage.xml'
-#            - './junit.xml'
-#        reports:
-#            junit: './junit.xml'
-#    script:
-#        - composer.phar app:recreate-test-database
-#        - sudo composer.phar ci:phpunit-with-coverage
+# static analysis:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:static-analysis
+
+# codeception:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:codeception-acceptance
 
 sonar-scanner:
     stage: 'SonarQube'
