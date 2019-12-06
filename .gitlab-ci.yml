@@ -42,8 +42,11 @@ functional-test:
     tags:
         - heavy
     stage: 'dind'
+    before_script:
+        - docker info
+        - docker-compose --version
     script:
-        - apt update
+        - docker-compose up -d
 
 # # CI jobs
 # composer checks:
@@ -95,13 +98,15 @@ functional-test:
 #         - sudo composer.phar ci:codeception-acceptance
 
 # sonar-scanner:
-#     stage: 'SonarQube'
-#     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
-#     only:
-#         - master
-#     <<: *build_ci
-#     script:
-#         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+    stage: 'SonarQube'
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
+    only:
+        # - master
+        - add-codception
+    # <<: *build_ci
+    script:
+        # - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+        - echo test
         
 build image:
     stage: 'Build'
