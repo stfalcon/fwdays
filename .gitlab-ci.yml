@@ -32,7 +32,7 @@ services:
 
 stages:
     - 'dind'
-    # - 'SonarQube'
+    - 'SonarQube'
     - 'Build'
     - 'Deploy to staging'
     - 'Deploy to production'
@@ -97,7 +97,7 @@ functional-test:
 #     script:
 #         - sudo composer.phar ci:codeception-acceptance
 
-# sonar-scanner:
+sonar-scanner:
     stage: 'SonarQube'
     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
     only:
@@ -212,4 +212,3 @@ production rollback:
         name: production
         url: https://fwdays.com
     when: manual
-
