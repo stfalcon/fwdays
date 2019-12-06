@@ -3,7 +3,7 @@ services:
 
 variables:
     DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
 
 # image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
 # cache:
@@ -47,6 +47,7 @@ functional-test:
     stage: 'dind'
     image: tiangolo/docker-with-compose
     before_script:
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker info
         - docker-compose --version
     only:
