@@ -39,7 +39,9 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
         $promoCode
             ->setTitle('Promo code for JsDays')
             ->setCode('Promo code for JsDays')
-            ->setEvent($eventJsDays);
+            ->setEvent($eventJsDays)
+            ->setEndDate($eventJsDays->getDate());
+        ;
         $manager->persist($promoCode);
         $this->addReference('promoCode-1', $promoCode);
 
@@ -49,7 +51,9 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
             ->setTitle('Promo code for JsDays 5%')
             ->setCode('Promo code for JsDays 5%')
             ->setDiscountAmount(5)
-            ->setEvent($eventJsDays);
+            ->setEvent($eventJsDays)
+            ->setEndDate($eventJsDays->getDate());
+        ;
         $manager->persist($promoCode);
         $this->addReference('promoCode-2', $promoCode);
 

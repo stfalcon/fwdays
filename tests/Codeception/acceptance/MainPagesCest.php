@@ -21,11 +21,6 @@ class MainPagesCest
         ],
     ];
 
-    public function _before(AcceptanceTester $I)
-    {
-    }
-
-    // tests
     public function openMainPages(AcceptanceTester $I)
     {
         $I->wantTo('Check Main Pages open.');

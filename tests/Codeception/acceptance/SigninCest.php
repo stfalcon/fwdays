@@ -2,50 +2,46 @@
 
 class SigninCest
 {
-    public function _before(AcceptanceTester $I)
+    public function loginFromPage(AcceptanceTester $I): void
     {
-    }
+        $I->amOnPage('/');
+        static::iAmNotSigned($I);
 
-    public function loginFromPage(AcceptanceTester $I)
-    {
         $I->amOnPage('/login');
-        $I->dontSeeLink('Кабінет');
-
         $I->seeElement('#user_email_');
-        $I->fillField('_username', 'admin@fwdays.com');
         $I->seeElement('#user_password_');
-        $I->fillField('_password', 'qwerty');
+
+        self::fillLoginFieldsAdmin($I);
+
         $I->click('#login-form- button[type=submit]');
 
         $I->seeCurrentUrlEquals('/');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
-        $I->seeLink('Кабінет');
-        $I->dontSeeLink('Увійти');
+        static::iAmSigned($I);
     }
 
-    public function loginFromModal(AcceptanceTester $I)
+    public function loginFromModal(AcceptanceTester $I): void
     {
         $I->amOnPage('/');
-        $I->dontSeeLink('Кабінет');
-        $I->seeLink('Увійти');
+        static::iAmNotSigned($I);
 
         $I->click('Увійти', '.header__auth--sign-in');
 
         $I->seeElement('#user_email_modal-signup');
-        $I->fillField('_username', 'admin@fwdays.com');
         $I->seeElement('#user_password_modal-signup');
-        $I->fillField('_password', 'qwerty');
+
+        static::fillLoginFieldsAdmin($I);
+
         $I->click('#login-form-modal-signup button[type=submit]');
 
         $I->seeCurrentUrlEquals('/');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
-        $I->seeLink('Кабінет');
-        $I->dontSeeLink('Увійти');
+        static::iAmSigned($I);
     }
 
-    public function unauthenticatedRedirectToLoginAndThanBack(AcceptanceTester $I)
+    public function unauthenticatedRedirectToLoginAndThanBack(AcceptanceTester $I): void
     {
         $I->amOnPage('/event/javaScript-framework-day-2018');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
@@ -55,11 +51,41 @@ class SigninCest
 
         $I->seeCurrentUrlEquals('/login');
 
-        $I->fillField('_username', 'admin@fwdays.com');
-        $I->fillField('_password', 'qwerty');
+        static::fillLoginFieldsAdmin($I);
+
         $I->click('#login-form- button[type=submit]');
 
         $I->seeCurrentUrlEquals('/event/javaScript-framework-day-2018/pay');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    }
+
+    /**
+     * For sing in.
+     *
+     * @skip
+     */
+    public static function signIn(AcceptanceTester $I): void
+    {
+        $I->amOnPage('/login');
+        static::fillLoginFieldsAdmin($I);
+        $I->click('#login-form- button[type=submit]');
+    }
+
+    private static function fillLoginFieldsAdmin(AcceptanceTester $I): void
+    {
+        $I->fillField('_username', 'admin@fwdays.com');
+        $I->fillField('_password', 'qwerty');
+    }
+
+    private static function iAmSigned(AcceptanceTester $I): void
+    {
+        $I->seeLink('Кабінет');
+        $I->dontSeeLink('Увійти');
+    }
+
+    private static function iAmNotSigned(AcceptanceTester $I): void
+    {
+        $I->dontSeeLink('Кабінет');
+        $I->seeLink('Увійти');
     }
 }
