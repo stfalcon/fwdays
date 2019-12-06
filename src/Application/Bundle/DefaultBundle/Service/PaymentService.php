@@ -21,6 +21,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PaymentService
 {
+    public const PROMO_CODE_SESSION_KEY = 'events_promocode';
+
     private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id_%s';
 
     private $em;

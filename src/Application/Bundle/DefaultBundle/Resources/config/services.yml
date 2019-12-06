@@ -61,8 +61,10 @@ services:
         class: Application\Bundle\DefaultBundle\Service\MyMailer
         arguments: ['@swiftmailer.transport']
 
-    app.promocode_request.listener:
-        class: Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener
+    Application\Bundle\DefaultBundle\EventListener\PromoCodeRequestListener:
+        arguments:
+            - '@router'
+            - '@session'
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
