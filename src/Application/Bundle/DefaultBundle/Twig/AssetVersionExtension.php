@@ -48,10 +48,6 @@ class AssetVersionExtension extends \Twig_Extension
      */
     public function getAssetVersion($asset)
     {
-        if ('test' === $this->environment) {
-            return $asset;
-        }
-
         $path = pathinfo($this->webRoot.\DIRECTORY_SEPARATOR.$asset);
         $manifestFile = $path['dirname'].\DIRECTORY_SEPARATOR.self::REV_MANIFEST_FILE;
 

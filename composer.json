@@ -131,6 +131,8 @@
             "bin/phpunit -c phpunit.xml.dist"
         ],
         "ci:codeception-acceptance": [
+            "./bin/codecept build",
+            "./bin/codecept run acceptancePhpWeb",
             "./bin/codecept run acceptance"
         ],
         "ci:static-analysis": [

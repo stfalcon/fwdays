@@ -2,7 +2,7 @@
 
 class SigninCest
 {
-    public function loginFromPage(AcceptanceTester $I): void
+    public function loginFromPage(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/');
         static::iAmNotSigned($I);
@@ -21,7 +21,7 @@ class SigninCest
         static::iAmSigned($I);
     }
 
-    public function loginFromModal(AcceptanceTester $I): void
+    public function loginFromModal(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/');
         static::iAmNotSigned($I);
@@ -41,7 +41,7 @@ class SigninCest
         static::iAmSigned($I);
     }
 
-    public function unauthenticatedRedirectToLoginAndThanBack(AcceptanceTester $I): void
+    public function unauthenticatedRedirectToLoginAndThanBack(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/event/javaScript-framework-day-2018');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
@@ -64,26 +64,26 @@ class SigninCest
      *
      * @skip
      */
-    public static function signIn(AcceptanceTester $I): void
+    public static function signIn(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/login');
         static::fillLoginFieldsAdmin($I);
         $I->click('#login-form- button[type=submit]');
     }
 
-    private static function fillLoginFieldsAdmin(AcceptanceTester $I): void
+    private static function fillLoginFieldsAdmin(AcceptancePhpWebTester $I): void
     {
         $I->fillField('_username', 'admin@fwdays.com');
         $I->fillField('_password', 'qwerty');
     }
 
-    private static function iAmSigned(AcceptanceTester $I): void
+    private static function iAmSigned(AcceptancePhpWebTester $I): void
     {
         $I->seeLink('Кабінет');
         $I->dontSeeLink('Увійти');
     }
 
-    private static function iAmNotSigned(AcceptanceTester $I): void
+    private static function iAmNotSigned(AcceptancePhpWebTester $I): void
     {
         $I->dontSeeLink('Кабінет');
         $I->seeLink('Увійти');

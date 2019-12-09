@@ -1,44 +1,19 @@
-<?php
+<?php 
 
 class InterkassaCest
 {
-    public function openInterkassaPage(AcceptanceTester $I): void
-    {
-        static::signIn($I);
-
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
-        $I->click('#buy-ticket-btn');
-
-        $I->seeCurrentUrlEquals('sci.interkassa.com');
-    }
-
     /**
-     * For sing in.
+     * @param AcceptanceTester $I
+     *
+     * @depends PromoCodeCest:promocodeFromQueryFirst
      *
      * @skip
      */
-    public static function signIn(AcceptanceTester $I): void
+    public function interkassaPage(AcceptanceTester $I)
     {
-        $I->amOnPage('/login');
-        static::fillLoginFieldsAdmin($I);
-        $I->click('#login-form- button[type=submit]');
-    }
-
-    private static function fillLoginFieldsAdmin(AcceptanceTester $I): void
-    {
-        $I->fillField('_username', 'admin@fwdays.com');
-        $I->fillField('_password', 'qwerty');
-    }
-
-    private static function iAmSigned(AcceptanceTester $I): void
-    {
-        $I->seeLink('Кабінет');
-        $I->dontSeeLink('Увійти');
-    }
-
-    private static function iAmNotSigned(AcceptanceTester $I): void
-    {
-        $I->dontSeeLink('Кабінет');
-        $I->seeLink('Увійти');
+        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->click('#buy-ticket-btn');
+        $I->waitForText('Checkout [your_interkassa_shop_key] is not found');
+        $I->seeCurrentUrlEquals('https://sci.interkassa.com/');
     }
 }

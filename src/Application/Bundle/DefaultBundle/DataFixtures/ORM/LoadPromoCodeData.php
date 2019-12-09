@@ -2,17 +2,59 @@
 
 namespace Application\Bundle\DefaultBundle\DataFixtures\ORM;
 
-use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\PromoCode;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * LoadPromoCodeData Class.
+ * LoadPromoCodeData.
  */
 class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInterface
 {
+    private const PROMO_DATA = [
+        [
+            'title' => 'Promo code for JsDays',
+            'code' => 'Promo code for JsDays',
+            'event' => 'event-jsday2018',
+            'discount' => 10,
+            'date_end' => 'event',
+            'max' => 0,
+        ],
+        [
+            'title' => 'Promo code for JsDays 5%',
+            'code' => 'Promo code for JsDays 5%',
+            'event' => 'event-jsday2018',
+            'discount' => 5,
+            'date_end' => 'event',
+            'max' => 0,
+        ],
+        [
+            'title' => 'Promo code for JsDays overdue',
+            'code' => 'Promo code for JsDays overdue',
+            'event' => 'event-jsday2018',
+            'discount' => 10,
+            'date_end' => '-11 Days',
+            'max' => 0,
+        ],
+        [
+            'title' => 'Promo code for PHPDay',
+            'code' => 'Promo code for PHPDay',
+            'event' => 'event-phpday2017',
+            'discount' => 5,
+            'date_end' => null,
+            'max' => 0,
+        ],
+        [
+            'title' => 'LimitedJsDays_100',
+            'code' => 'JsDays_100',
+            'event' => 'event-jsday2018',
+            'discount' => 100,
+            'date_end' => 'event',
+            'max' => 1,
+        ],
+    ];
+
     /**
      * Return fixture classes fixture is dependent on.
      *
@@ -26,55 +68,29 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
-        /** @var Event $eventZFDays, $eventPHPDay */
-        $eventJsDays = $manager->merge($this->getReference('event-jsday2018'));
-        $eventPHPDay = $manager->merge($this->getReference('event-phpday2017'));
-
-        // Promo code 1
-        $promoCode = new PromoCode();
-        $promoCode
-            ->setTitle('Promo code for JsDays')
-            ->setCode('Promo code for JsDays')
-            ->setEvent($eventJsDays)
-            ->setEndDate($eventJsDays->getDate());
-        ;
-        $manager->persist($promoCode);
-        $this->addReference('promoCode-1', $promoCode);
-
-        // Promo code 2
-        $promoCode = new PromoCode();
-        $promoCode
-            ->setTitle('Promo code for JsDays 5%')
-            ->setCode('Promo code for JsDays 5%')
-            ->setDiscountAmount(5)
-            ->setEvent($eventJsDays)
-            ->setEndDate($eventJsDays->getDate());
-        ;
-        $manager->persist($promoCode);
-        $this->addReference('promoCode-2', $promoCode);
-
-        // Promo code 3
-        $promoCode = new PromoCode();
-        $promoCode
-            ->setTitle('Promo code for JsDays overdue')
-            ->setCode('Promo code for JsDays overdue')
-            ->setEvent($eventJsDays)
-            ->setEndDate(new \DateTime('-11 Days'));
-        $manager->persist($promoCode);
-        $this->addReference('promoCode-3', $promoCode);
-
-        // Promo code 4
-        $promoCode = new PromoCode();
-        $promoCode
-            ->setTitle('Promo code for PHPDay')
-            ->setCode('Promo code for PHPDay')
-            ->setEvent($eventPHPDay);
-        $manager->persist($promoCode);
-        $this->addReference('promoCode-4', $promoCode);
+        foreach (self::PROMO_DATA as $key => $promoData) {
+            $event = $this->getReference($promoData['event']);
+            $promoCode = (new PromoCode())
+                ->setTitle($promoData['title'])
+                ->setCode($promoData['code'])
+                ->setEvent($event)
+                ->setDiscountAmount($promoData['discount'])
+                ->setMaxUseCount($promoData['max'])
+            ;
+            if ($promoData['date_end']) {
+                if ('event' === $promoData['date_end']) {
+                    $promoCode->setEndDate($event->getDate());
+                } else {
+                    $promoCode->setEndDate(new \DateTime($promoData['date_end']));
+                }
+            }
+            $manager->persist($promoCode);
+            $this->addReference(\sprintf('promoCode-%s', $key), $promoCode);
+        }
 
         $manager->flush();
     }

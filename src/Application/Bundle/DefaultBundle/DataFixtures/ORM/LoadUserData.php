@@ -25,7 +25,9 @@ class LoadUserData extends AbstractFixture
             ->setEmail('admin@fwdays.com')
             ->setPlainPassword('qwerty')
             ->setRoles(['ROLE_SUPER_ADMIN'])
-            ->setEnabled(true);
+            ->setEnabled(true)
+            ->setBalance(5000);
+        ;
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
 

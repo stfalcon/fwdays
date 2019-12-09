@@ -21,7 +21,7 @@ class MainPagesCest
         ],
     ];
 
-    public function openMainPages(AcceptanceTester $I)
+    public function openMainPages(AcceptancePhpWebTester $I)
     {
         $I->wantTo('Check Main Pages open.');
         foreach (self::PAGES as $page) {

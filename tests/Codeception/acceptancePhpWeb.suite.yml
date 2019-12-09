@@ -1,0 +1,6 @@
+actor: AcceptancePhpWebTester
+modules:
+    enabled:
+        - PhpBrowser:
+              url: http://nginx/app_test.php/
+        - \Helper\Acceptance
