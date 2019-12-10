@@ -7,6 +7,8 @@ class SigninCest
      */
     public function loginFromPage(AcceptancePhpWebTester $I): void
     {
+        $I->wantTo('Check Login from static page.');
+
         $I->amOnPage('/');
         static::iAmNotSigned($I);
 
@@ -29,6 +31,8 @@ class SigninCest
      */
     public function unauthenticatedRedirectToLoginAndThanBack(AcceptancePhpWebTester $I): void
     {
+        $I->wantTo('Check redirect to login if pressed buy button and back to pay page.');
+
         $I->amOnPage('/event/javaScript-framework-day-2018');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 

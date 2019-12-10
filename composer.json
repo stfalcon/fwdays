@@ -149,7 +149,6 @@
             "bin/console doctrine:fixtures:load --no-interaction"
         ],
         "app:recreate-test-database": [
-            "bin/console doctrine:database:drop --force --if-exists --env=test",
             "bin/console doctrine:database:create --if-not-exists --env=test",
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env=test",
             "bin/console doctrine:fixtures:load --no-interaction --env=test"

@@ -5,13 +5,22 @@
  */
 class PromoCodeCest
 {
+    private const PAY_USER_DATA = [
+        '#payer-block-edit-1 input[name=name].payment_user_name' => 'TesterName',
+        '#payer-block-edit-1 input[name=surname].payment_user_surname' => 'TesterSurname',
+        '#payer-block-edit-1 input[name=email].payment_user_email' => 'tester-email@gmail.com',
+        '#payer-block-edit-1 input[name=user_promo_code]' => 'JsDays_100',
+    ];
+
     /**
      * @param AcceptanceTester $I
      *
-     * @depends SignInModalCest:loginFromModal
+     * @depends UserCest:loginModal
      */
     public function promocodeFromQueryFirst(AcceptanceTester $I)
     {
+        $I->wantTo('Check if got promocode from query url.');
+
         $I->amOnPage('/event/javaScript-framework-day-2018?promocode=AnyCode');
         $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018');
 
@@ -29,15 +38,17 @@ class PromoCodeCest
      */
     public function promocodeNotFoundedAndFounded(AcceptanceTester $I)
     {
+        $I->wantTo('Check error message if not found promocode and dicount message on found.');
+
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
 
         $this->clickEditUser($I);
 
-        $I->fillField("#payer-block-edit-1 input[name=user_promo_code]", 'AnyCode');
+        $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'AnyCode');
         $I->click('#payer-block-edit-1 .edit-user-btn');
         $I->waitForText('Promo code not found!');
 
-        $I->fillField("#payer-block-edit-1 input[name=user_promo_code]", 'Promo code for JsDays');
+        $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'Promo code for JsDays');
         $I->click('#payer-block-edit-1 .edit-user-btn');
         $I->waitForText('(coupon discount 10%)');
         $I->dontSee('Promo code not found!');
@@ -50,6 +61,8 @@ class PromoCodeCest
      */
     public function payByPromocode(AcceptanceTester $I)
     {
+        $I->wantTo('Check buy ticket for 100% promocode and see download link.');
+
         $I->amOnPage('/');
         $I->see('Buy ticket', '#card-javaScript-framework-day-2018');
         $I->dontSee('Download ticket');
@@ -58,7 +71,7 @@ class PromoCodeCest
 
         $this->clickEditUser($I);
 
-        $I->fillField("#payer-block-edit-1 input[name=user_promo_code]", 'JsDays_100');
+        $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'JsDays_100');
         $I->click('#payer-block-edit-1 .edit-user-btn');
         $I->waitForText('(coupon discount 100%)');
         $I->dontSee('Promo code not found!');
@@ -80,36 +93,22 @@ class PromoCodeCest
      */
     public function checkPromocodeLimit(AcceptanceTester $I)
     {
+        $I->wantTo('Check using limited promocode and see error text.');
+
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
 
         $I->dontSeeElement('#buy-ticket-btn');
 
-        $I->seeElement('#payer-block-edit-1 input[name=name].payment_user_name');
-        $I->seeElement('#payer-block-edit-1 input[name=surname].payment_user_surname');
-        $I->seeElement('#payer-block-edit-1 input[name=email].payment_user_email');
-        $I->seeElement('#payer-block-edit-1 input[name=user_promo_code].user_promo_code');
-
-        $I->fillField("#payer-block-edit-1 input[name=name].payment_user_name", 'TesterName');
-        $I->fillField("#payer-block-edit-1 input[name=surname].payment_user_surname", 'TesterSurname');
-        $I->fillField("#payer-block-edit-1 input[name=email].payment_user_email", 'tester-email@gmail.com');
-        $I->fillField("#payer-block-edit-1 input[name=user_promo_code]", 'JsDays_100');
+        foreach (self::PAY_USER_DATA as $field => $value) {
+            $I->seeElement($field);
+            $I->fillField($field, $value);
+        }
 
         $I->dontSee('Promo code used!');
         $I->click('#payer-block-edit-1 .add-user-btn');
 
         $I->waitForText('Promo code used!');
     }
-
-//    /**
-//     * @param AcceptanceTester $I
-//     */
-//    public function signIn(AcceptanceTester $I): void
-//    {
-//        $I->amOnPage('/login');
-//        $I->fillField('_username', 'admin@fwdays.com');
-//        $I->fillField('_password', 'qwerty');
-//        $I->click('#login-form- button[type=submit]');
-//    }
 
     private function clickEditUser(AcceptanceTester $I)
     {

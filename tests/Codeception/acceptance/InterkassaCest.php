@@ -11,6 +11,8 @@ class InterkassaCest
      */
     public function interkassaPage(AcceptanceTester $I)
     {
+        $I->wantTo('Check redirect interkassa page.');
+
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
         $I->click('#buy-ticket-btn');
         $I->waitForText('Checkout [your_interkassa_shop_key] is not found');
