@@ -2,6 +2,9 @@
 
 class SigninCest
 {
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     public function loginFromPage(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/');
@@ -15,32 +18,15 @@ class SigninCest
 
         $I->click('#login-form- button[type=submit]');
 
-        $I->seeCurrentUrlEquals('/');
+        $I->seeCurrentUrlEquals('/app_test.php');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
         static::iAmSigned($I);
     }
 
-    public function loginFromModal(AcceptancePhpWebTester $I): void
-    {
-        $I->amOnPage('/');
-        static::iAmNotSigned($I);
-
-        $I->click('Увійти', '.header__auth--sign-in');
-
-        $I->seeElement('#user_email_modal-signup');
-        $I->seeElement('#user_password_modal-signup');
-
-        static::fillLoginFieldsAdmin($I);
-
-        $I->click('#login-form-modal-signup button[type=submit]');
-
-        $I->seeCurrentUrlEquals('/');
-        $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-
-        static::iAmSigned($I);
-    }
-
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     public function unauthenticatedRedirectToLoginAndThanBack(AcceptancePhpWebTester $I): void
     {
         $I->amOnPage('/event/javaScript-framework-day-2018');
@@ -49,40 +35,37 @@ class SigninCest
         $I->seeLink('Купити за');
         $I->click('Купити за');
 
-        $I->seeCurrentUrlEquals('/login');
+        $I->seeCurrentUrlEquals('/app_test.php/login');
 
         static::fillLoginFieldsAdmin($I);
 
         $I->click('#login-form- button[type=submit]');
 
-        $I->seeCurrentUrlEquals('/event/javaScript-framework-day-2018/pay');
+        $I->seeCurrentUrlEquals('/app_test.php/event/javaScript-framework-day-2018/pay');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 
     /**
-     * For sing in.
-     *
-     * @skip
+     * @param AcceptancePhpWebTester $I
      */
-    public static function signIn(AcceptancePhpWebTester $I): void
-    {
-        $I->amOnPage('/login');
-        static::fillLoginFieldsAdmin($I);
-        $I->click('#login-form- button[type=submit]');
-    }
-
     private static function fillLoginFieldsAdmin(AcceptancePhpWebTester $I): void
     {
         $I->fillField('_username', 'admin@fwdays.com');
         $I->fillField('_password', 'qwerty');
     }
 
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     private static function iAmSigned(AcceptancePhpWebTester $I): void
     {
         $I->seeLink('Кабінет');
         $I->dontSeeLink('Увійти');
     }
 
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     private static function iAmNotSigned(AcceptancePhpWebTester $I): void
     {
         $I->dontSeeLink('Кабінет');

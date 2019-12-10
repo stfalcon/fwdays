@@ -1,5 +1,8 @@
-<?php 
+<?php
 
+/**
+ * MainPagesCest.
+ */
 class MainPagesCest
 {
     private const PAGES = [
@@ -21,6 +24,9 @@ class MainPagesCest
         ],
     ];
 
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     public function openMainPages(AcceptancePhpWebTester $I)
     {
         $I->wantTo('Check Main Pages open.');

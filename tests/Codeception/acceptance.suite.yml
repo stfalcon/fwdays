@@ -11,6 +11,6 @@ modules:
 extensions:
     enabled:
         - Codeception\Extension\RunBefore:
-#            - composer.phar app:recreate-test-database
-            - ./bin/console doctrine:fixtures:load --no-interaction --env=test
-            - ./phantomjs --webdriver=4444 &
+            - composer.phar app:recreate-test-database
+#            - ./bin/console doctrine:fixtures:load --no-interaction --env=test
+            - /opt/phantomjs/bin/phantomjs --webdriver=4444 &

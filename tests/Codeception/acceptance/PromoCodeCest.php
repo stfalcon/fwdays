@@ -1,11 +1,14 @@
-<?php 
+<?php
 
+/**
+ * PromoCodeCest.
+ */
 class PromoCodeCest
 {
     /**
      * @param AcceptanceTester $I
      *
-     * @depends signIn
+     * @depends SignInModalCest:loginFromModal
      */
     public function promocodeFromQueryFirst(AcceptanceTester $I)
     {
@@ -97,16 +100,16 @@ class PromoCodeCest
         $I->waitForText('Promo code used!');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     */
-    public function signIn(AcceptanceTester $I): void
-    {
-        $I->amOnPage('/login');
-        $I->fillField('_username', 'admin@fwdays.com');
-        $I->fillField('_password', 'qwerty');
-        $I->click('#login-form- button[type=submit]');
-    }
+//    /**
+//     * @param AcceptanceTester $I
+//     */
+//    public function signIn(AcceptanceTester $I): void
+//    {
+//        $I->amOnPage('/login');
+//        $I->fillField('_username', 'admin@fwdays.com');
+//        $I->fillField('_password', 'qwerty');
+//        $I->click('#login-form- button[type=submit]');
+//    }
 
     private function clickEditUser(AcceptanceTester $I)
     {
