@@ -42,6 +42,71 @@ class UserCest
     /**
      * @param AcceptanceTester $I
      */
+    public function langSwitch(AcceptanceTester $I): void
+    {
+        $I->wantTo('Check language switcher');
+
+        $I->amOnPage('/');
+        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        static::iAmNotSigned($I);
+
+        static::seeAndClick($I, '.language_switcher');
+
+        $I->seeCurrentUrlEquals('/app_test.php/');
+        static::iAmNotSigned($I, 'uk');
+
+        static::seeAndClick($I, '.language_switcher');
+        static::iAmNotSigned($I);
+        $I->seeCurrentUrlEquals('/app_test.php/en/');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @throws Exception
+     *
+     * @depends langSwitch
+     */
+    public function facebook(AcceptanceTester $I): void
+    {
+        $I->wantTo('Check click on login by facebook');
+
+        $I->amOnPage('/');
+        static::iAmNotSigned($I);
+
+        static::seeAndClick($I, '.header__auth--sign-in');
+        $I->waitForText('Sign in');
+        static::seeAndClick($I, '.btn--facebook');
+        $I->waitForText('Log Into Facebook');
+        $I->seeCurrentHostEquals('https://www.facebook.com');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @throws Exception
+     *
+     * @depends facebook
+     */
+    public function google(AcceptanceTester $I): void
+    {
+        $I->wantTo('Check click on login by google');
+
+        $I->amOnPage('/');
+        static::iAmNotSigned($I);
+
+        static::seeAndClick($I, '.header__auth--sign-in');
+        $I->waitForText('Sign in');
+        static::seeAndClick($I, '.btn--google');
+
+        $I->seeCurrentHostEquals('https://accounts.google.com');
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @depends google
+     */
     public function loginModal(AcceptanceTester $I): void
     {
         $I->wantTo('Check sing in user from modal');
@@ -50,6 +115,7 @@ class UserCest
         static::iAmNotSigned($I);
 
         static::seeAndClick($I, '.header__auth--sign-in');
+        $I->waitForText('Sign in');
 
         foreach (self::SIGN_IN_FIELDS as $field => $value) {
             $I->seeElement($field);
@@ -231,18 +297,28 @@ class UserCest
     /**
      * @param AcceptanceTester $I
      */
-    private static function iAmSigned(AcceptanceTester $I): void
+    private static function iAmSigned(AcceptanceTester $I, string $lang = 'en'): void
     {
-        $I->seeLink('ACCOUNT');
-        $I->dontSeeLink('SIGN IN');
+        if ('en' === $lang) {
+            $I->seeLink('ACCOUNT');
+            $I->dontSeeLink('SIGN IN');
+        } else {
+            $I->seeLink('КАБІНЕТ');
+            $I->dontSeeLink('УВІЙТИ');
+        }
     }
 
     /**
      * @param AcceptanceTester $I
      */
-    private static function iAmNotSigned(AcceptanceTester $I): void
+    private static function iAmNotSigned(AcceptanceTester $I, string $lang = 'en'): void
     {
-        $I->dontSeeLink('ACCOUNT');
-        $I->seeLink('SIGN IN');
+        if ('en' === $lang) {
+            $I->dontSeeLink('ACCOUNT');
+            $I->seeLink('SIGN IN');
+        } else {
+            $I->dontSeeLink('КАБІНЕТ');
+            $I->seeLink('УВІЙТИ');
+        }
     }
 }
