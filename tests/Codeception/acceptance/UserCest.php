@@ -44,6 +44,8 @@ class UserCest
      */
     public function loginModal(AcceptanceTester $I): void
     {
+        $I->wantTo('Check sing in user from modal');
+
         $I->amOnPage('/');
         static::iAmNotSigned($I);
 
@@ -74,6 +76,8 @@ class UserCest
      */
     public function changeProfile(AcceptanceTester $I): void
     {
+        $I->wantTo('Check change user profiler');
+
         $I->amOnPage('/');
         static::iAmSigned($I);
         $I->amOnPage('/cabinet');
@@ -116,6 +120,8 @@ class UserCest
      */
     public function changePassword(AcceptanceTester $I): void
     {
+        $I->wantTo('Check change user password');
+
         $I->amOnPage('/cabinet');
 
         static::seeAndClick($I, '.cabinet-head__link');
@@ -151,6 +157,8 @@ class UserCest
      */
     public function checkNewPassword(AcceptanceTester $I)
     {
+        $I->wantTo('Check login user with new password');
+
         $I->amOnPage('/logout');
         $this->newLogin = true;
         $this->loginModal($I);
@@ -163,6 +171,8 @@ class UserCest
      */
     public function forgotPassword(AcceptanceTester $I)
     {
+        $I->wantTo('Check user forgot password');
+
         $I->amOnPage('/change-password');
 
         static::seeAndClick($I, 'a[href="/app_test.php/en/resetting/check-email"]');
@@ -184,6 +194,8 @@ class UserCest
      */
     public function cabinetPage(AcceptanceTester $I)
     {
+        $I->wantTo('Check user cabinet page');
+
         $I->wantTo('Check User Cabinet Page.');
         $I->amOnPage('/');
         static::iAmSigned($I);
