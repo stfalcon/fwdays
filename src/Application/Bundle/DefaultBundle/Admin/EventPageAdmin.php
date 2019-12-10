@@ -7,12 +7,23 @@ use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class EventPageAdmin.
  */
 final class EventPageAdmin extends AbstractPageAdmin
 {
+    /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
      *
@@ -63,7 +74,9 @@ final class EventPageAdmin extends AbstractPageAdmin
                 ])
             ->end()
             ->with('Общие')
-                ->add('slug')
+                ->add('slug', ChoiceType::class, [
+                    'choices' => $this->getSlugChoice(),
+                ])
                 ->add('event', 'entity', [
                     'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
                 ])
@@ -83,5 +96,10 @@ final class EventPageAdmin extends AbstractPageAdmin
     {
         $datagridMapper
             ->add('event');
+    }
+
+    private function getSlugChoice(): array
+    {
+        return ['program' => 'program', 'venue' => 'venue'];
     }
 }
