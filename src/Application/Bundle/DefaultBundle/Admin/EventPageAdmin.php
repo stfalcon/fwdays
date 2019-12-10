@@ -98,6 +98,9 @@ final class EventPageAdmin extends AbstractPageAdmin
             ->add('event');
     }
 
+    /**
+     * @return array
+     */
     private function getSlugChoice(): array
     {
         return ['program' => 'program', 'venue' => 'venue'];
