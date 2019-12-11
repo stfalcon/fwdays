@@ -55,8 +55,8 @@ functional-test:
     script:
         - docker-compose up -d
         - sleep 10
-        - docker-compose exec -tty php ./init "test"
-        - docker-compose exec -tty php composer.phar ci:codeception-acceptance
+        - docker exec --tty fwdays_php_1 ./init "test"
+        - docker exec --tty fwdays_php_1 composer.phar ci:codeception-acceptance
 
 # # CI jobs
 # composer checks:
