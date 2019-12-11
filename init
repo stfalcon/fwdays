@@ -1,20 +1,19 @@
 #!/bin/bash
 
 if [[ -z "$1" ]]; then
-    # env=test
+    env=test
     echo "dev environment"
 else
     echo "test environment"
 fi
 
-# cd /app
-# cp app/config/parameters.yml.docker app/config/parameters.yml
-# composer.phar install
-# php bin/console do:da:cr --no-interaction --env=$env --if-not-exists
-# php bin/console do:mi:mi --no-interaction --env=$env
-# php bin/console do:fi:lo --no-interaction --env=$env
-# php bin/console assets:installs web --symlink
-# php bin/console assetic:dump
-# php bin/console lexik:translations:import
-# npm install
-# npm run gulp-dev
+cp app/config/parameters.yml.docker app/config/parameters.yml
+composer.phar install
+php bin/console do:da:cr --no-interaction --env=$env --if-not-exists
+php bin/console do:mi:mi --no-interaction --env=$env
+php bin/console do:fi:lo --no-interaction --env=$env
+php bin/console assets:installs web --symlink
+php bin/console assetic:dump
+php bin/console lexik:translations:import
+npm install
+npm run gulp-dev
