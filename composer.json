@@ -133,6 +133,7 @@
         "ci:codeception-acceptance": [
             "./bin/codecept build",
             "./bin/codecept run acceptancePhpWeb",
+            "./bin/codecept run acceptanceUser",
             "./bin/codecept run acceptance"
         ],
         "ci:static-analysis": [
