@@ -54,6 +54,7 @@ functional-test:
         - add-codception
     script:
         - docker-compose up -d
+        - ./init test
         - composer.phar ci:codeception-acceptance
 
 # # CI jobs
