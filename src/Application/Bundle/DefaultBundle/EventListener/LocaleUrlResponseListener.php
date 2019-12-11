@@ -80,12 +80,6 @@ class LocaleUrlResponseListener
             $params = $request->query->all();
             $response = $this->createResponseWithCheckCookie($request->getBaseUrl().'/'.$locale.($params ? '?'.http_build_query($params) : '/'));
             $event->setResponse($response);
-        } elseif ('admin' === $pathLocal && $locale !== $this->defaultLocale) {
-            $params = $request->query->all();
-            unset($params[$this->cookieName]);
-            $request->setLocale($this->defaultLocale);
-            $response = $this->createResponseWithCheckCookie($request->getBaseUrl().$path.($params ? '?'.http_build_query($params) : '/'));
-            $event->setResponse($response);
         } elseif (!\in_array($pathLocal, $this->locales, true)) {
             try {
                 $matched = $this->routerService->match('/'.$locale.$path);
