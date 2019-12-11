@@ -5,7 +5,7 @@
             {{ event.city }}, {{ event.place }}
         </div>
         {%- if venue_page -%}
-            <a href="{{ path('show_event_venue_page', {'eventSlug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
+            <a href="{{ path('show_event_venue_page', {'slug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
         {%- endif -%}
     </div>
     <div class="container">

@@ -1,7 +1,7 @@
 {% extends 'ApplicationDefaultBundle:Redesign:layout.html.twig' %}
 
 {% set firstEvent = events|first %}
-{% set fistLink = url('event_show_redesign', {'eventSlug' : firstEvent.slug, 'ref': code}) %}
+{% set fistLink = url('event_show', {'slug' : firstEvent.slug, 'ref': code}) %}
 
 {% block content %}
     <!--BEGIN cabinet-head-->
@@ -71,7 +71,7 @@
                                             {% set image = '' %}
                                         {% endif %}
                                         <option value="{{ loop.index }}"
-                                            data-ref="{{ url('event_show_redesign', {'eventSlug' : event.slug, 'ref': code}) }}"
+                                            data-ref="{{ url('event_show', {'slug' : event.slug, 'ref': code}) }}"
                                             data-bonus="{% if special_bonus_event == event.slug %}{{ special_bonus }}{% else %}{{ bonus }}{% endif %}"
                                             data-image="{{ image }}">
                                         {{ event.name }}
@@ -84,7 +84,7 @@
                     <div class="share-ref__bottom">
                         <div class="share-ref__field">
                             <input id="ref-input" class="input share-ref__input" type="text"
-                                   value="{{ url('event_show_redesign', {'eventSlug' : firstEvent.slug, 'ref': code}) }}"
+                                   value="{{ url('event_show', {'slug' : firstEvent.slug, 'ref': code}) }}"
                                    readonly>
                             <button id="ref-copy" class="share-ref__copy tooltip-copy" type="button"
                                     data-copy="{{ 'referral.link.copied'|trans }}">

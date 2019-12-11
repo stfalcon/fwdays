@@ -393,16 +393,20 @@ class Ticket
 
     /**
      * @param bool $hasDiscount
+     *
+     * @return $this
      */
     public function setHasDiscount($hasDiscount)
     {
         $this->hasDiscount = $hasDiscount;
+
+        return $this;
     }
 
     /**
      * @return bool
      */
-    public function getHasDiscount()
+    public function getHasDiscount(): bool
     {
         return $this->hasDiscount;
     }
@@ -418,17 +422,21 @@ class Ticket
     /**
      * @return bool
      */
-    public function isHideConditions()
+    public function isHideConditions(): bool
     {
         return $this->hideConditions;
     }
 
     /**
      * @param bool $hideConditions
+     *
+     * @return $this
      */
-    public function setHideConditions($hideConditions)
+    public function setHideConditions($hideConditions): self
     {
         $this->hideConditions = $hideConditions;
+
+        return $this;
     }
 
     /**

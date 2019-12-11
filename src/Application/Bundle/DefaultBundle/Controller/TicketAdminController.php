@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class TicketAdminController.
+ * TicketAdminController.
  */
 class TicketAdminController extends CoreController
 {

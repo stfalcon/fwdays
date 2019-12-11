@@ -312,7 +312,7 @@ class TicketService
                 $ticketCaption = $this->translator->trans('ticket.status.download');
                 $ticketClass = $states[$position][$ticketState] ?? $states[$position][self::EVENT_DEFAULT_STATE];
                 if (!empty($ticketClass)) {
-                    $downloadUrl = $this->router->generate('event_ticket_download', ['eventSlug' => $event->getSlug()]);
+                    $downloadUrl = $this->router->generate('event_ticket_download', ['slug' => $event->getSlug()]);
                 }
             }
 

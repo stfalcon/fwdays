@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Service;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
 use Application\Bundle\DefaultBundle\Entity\EventPage;
+use Application\Bundle\DefaultBundle\Entity\Review;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
 use Application\Bundle\DefaultBundle\Repository\ReviewRepository;
 use Application\Bundle\DefaultBundle\Repository\TicketCostRepository;
@@ -38,22 +39,14 @@ class EventService
 
     /**
      * @param Event       $event
-     * @param string|null $reviewSlug
+     * @param Review|null $review
      *
      * @return array
      */
-    public function getEventPages(Event $event, ?string $reviewSlug = null)
+    public function getEventPages(Event $event, Review $review = null)
     {
         if ($event->isAdminOnly() && !$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             throw new NotFoundHttpException(sprintf('Unable to find event by slug: %s', $event->getSlug()));
-        }
-        $review = null;
-        if ($reviewSlug) {
-            $review = $this->reviewRepository->findOneBy(['slug' => $reviewSlug]);
-
-            if (!$review) {
-                throw new NotFoundHttpException('Unable to find Review entity.');
-            }
         }
 
         /** @var ArrayCollection $pages */
@@ -85,25 +78,6 @@ class EventService
             'eventCurrentAmount' => $eventCurrentAmount,
             'futureEvent' => $futureEvent,
         ];
-    }
-
-    /**
-     * Return array of event with pages.
-     *
-     * @param string      $eventSlug
-     * @param string|null $reviewSlug
-     *
-     * @return array
-     */
-    public function getEventPagesArr($eventSlug, ?string $reviewSlug = null): array
-    {
-        /** @var Event $event */
-        $event = $this->eventRepository->findOneBy(['slug' => $eventSlug]);
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException(sprintf('Unable to find event by slug: %s', $eventSlug));
-        }
-
-        return $this->getEventPages($event, $reviewSlug);
     }
 
     /**

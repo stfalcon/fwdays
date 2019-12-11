@@ -8,15 +8,14 @@ use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\TicketCost;
 use Application\Bundle\DefaultBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class AdminController.
@@ -34,7 +33,6 @@ class AdminController extends Controller
      */
     public function addUsersAction(Event $event)
     {
-        // @todo удалить этот метод. одноразовый харкод
         $em = $this->getDoctrine()->getManager();
 
         if (isset($_POST['users'])) {
@@ -83,12 +81,10 @@ class AdminController extends Controller
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация на сайте Frameworks Days')
-                        // @todo refact
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
                         ->setBody($body, 'text/html');
 
-                    // @todo каждый вызов отнимает память
                     $this->get('mailer')->send($message);
 
                     $this->addFlash('sonata_flash_info', $user->getFullname().' — Create a new user');
@@ -108,14 +104,15 @@ class AdminController extends Controller
 
                 // проверяем или у него нет билетов на этот ивент
                 /** @var Ticket $ticket */
-                $ticket = $em->getRepository('ApplicationDefaultBundle:Ticket')
+                $ticket = $em->getRepository(Ticket::class)
                     ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
                 if (!$ticket) {
-                    $ticket = new Ticket();
-                    $ticket->setEvent($event);
-                    $ticket->setUser($user);
-                    $ticket->setHideConditions(isset($_POST['hide_conditions']));
+                    $ticket = (new Ticket())
+                        ->setEvent($event)
+                        ->setUser($user)
+                        ->setHideConditions(isset($_POST['hide_conditions']))
+                    ;
                     $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
                 }
@@ -135,9 +132,11 @@ class AdminController extends Controller
                     }
 
                     $amount = $data['discount'] ? $amountWithOutDiscount * 0.8 : $amountWithOutDiscount;
-                    $ticket->setAmount($amount);
-                    $ticket->setHasDiscount($data['discount']);
-                    $ticket->setAmountWithoutDiscount($amountWithOutDiscount);
+                    $ticket
+                        ->setAmount($amount)
+                        ->setHasDiscount($data['discount'])
+                        ->setAmountWithoutDiscount($amountWithOutDiscount)
+                    ;
 
                     $oldPayment = $ticket->getPayment();
 
@@ -180,25 +179,9 @@ class AdminController extends Controller
     }
 
     /**
-     * Widget share contacts.
-     *
-     * @return Response
-     */
-    public function widgetShareContactsAction()
-    {
-        if (null !== ($user = $this->getUser()) && (null === $user->isAllowShareContacts()) && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-            return $this->render('ApplicationDefaultBundle:Default:shareContacts.html.twig');
-        }
-
-        return new Response();
-    }
-
-    /**
      * Show Statistic.
      *
      * @Route("/admin/statistic", name="admin_statistic_all")
-     *
-     * @Method({"GET", "POST"})
      *
      * @throws \Doctrine\ORM\Query\QueryException
      *
@@ -242,7 +225,7 @@ class AdminController extends Controller
         $usersTicketsCount = [];
 
         $ticketRepository = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Ticket');
+            ->getRepository(Ticket::class);
 
         $paidTickets = $ticketRepository->getPaidTicketsCount();
 

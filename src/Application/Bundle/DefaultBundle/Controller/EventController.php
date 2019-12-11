@@ -3,9 +3,9 @@
 namespace Application\Bundle\DefaultBundle\Controller;
 
 use Application\Bundle\DefaultBundle\Entity\Event;
-use Application\Bundle\DefaultBundle\Entity\EventPage;
+use Application\Bundle\DefaultBundle\Entity\Review;
 use Application\Bundle\DefaultBundle\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,70 +16,63 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Application event controller.
+ * EventController.
  */
 class EventController extends Controller
 {
     /**
-     * Show all events.
-     *
      * @Route("/events", name="events")
      *
-     * @Template("@ApplicationDefault/Redesign/Event/events.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function eventsAction()
+    public function eventsAction(): Response
     {
         $activeEvents = $this->getDoctrine()->getManager()
-            ->getRepository('ApplicationDefaultBundle:Event')
+            ->getRepository(Event::class)
             ->findBy(['active' => true], ['date' => 'ASC']);
 
         $pastEvents = $this->getDoctrine()->getManager()
-            ->getRepository('ApplicationDefaultBundle:Event')
+            ->getRepository(Event::class)
             ->findBy(['active' => false], ['date' => 'DESC']);
 
-        return [
+        return $this->render('@ApplicationDefault/Redesign/Event/events.html.twig', [
             'activeEvents' => $activeEvents,
             'pastEvents' => $pastEvents,
-        ];
+        ]);
     }
 
     /**
      * Show event.
      *
-     * @Route("/event/{eventSlug}", name="event_show_redesign")
-     * @Route("/event/{eventSlug}", name="event_show")
+     * @Route("/event/{slug}", name="event_show")
      *
-     * @param string $eventSlug
+     * @param Event $event
      *
-     * @Template("@ApplicationDefault/Redesign/Event/event.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function showAction($eventSlug)
+    public function showAction(Event $event): Response
     {
         $referralService = $this->get('app.referral.service');
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->get('app.event.service')->getEventPagesArr($eventSlug);
+        return $this->render('@ApplicationDefault/Redesign/Event/event.html.twig', $this->get('app.event.service')->getEventPages($event));
     }
 
     /**
-     * Finds and displays a event review.
+     * @Route("/event/{slug}/review/{reviewSlug}", name="event_review_show")
      *
-     * @Route("/event/{eventSlug}/review/{reviewSlug}", name="event_review_show_redesign")
+     * @ParamConverter("review", class="ApplicationDefaultBundle:Review", options={"slug" = "reviewSlug"})
      *
-     * @param string $eventSlug
-     * @param string $reviewSlug
+     * @param Event  $event
+     * @param Review $review
      *
-     * @Template("ApplicationDefaultBundle:Redesign/Speaker:report_review.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function showEventReviewAction($eventSlug, $reviewSlug)
+    public function showEventReviewAction(Event $event, Review $review): Response
     {
-        return $this->get('app.event.service')->getEventPagesArr($eventSlug, $reviewSlug);
+        $pages = $this->get('app.event.service')->getEventPages($event, $review);
+
+        return $this->render('ApplicationDefaultBundle:Redesign/Speaker:report_review.html.twig', $pages);
     }
 
     /**
@@ -105,20 +98,18 @@ class EventController extends Controller
     }
 
     /**
-     * User wanna visit an event.
-     *
      * @Route(path="/addwantstovisitevent/{slug}", name="add_wants_to_visit_event",
      *     options = {"expose"=true})
      * @Security("has_role('ROLE_USER')")
      *
-     * @param string  $slug
+     * @param Event   $event
      * @param Request $request
      *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse|Response|NotFoundHttpException
      */
-    public function userAddWantsToVisitEventAction($slug, Request $request)
+    public function userAddWantsToVisitEventAction(Event $event, Request $request)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -126,26 +117,18 @@ class EventController extends Controller
         $html = '';
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
-
-        if (!$event) {
-            if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
-            }
-            throw $this->createNotFoundException(sprintf('Unable to find Event by slug: %s', $slug));
-        }
 
         if ($event->isActiveAndFuture()) {
             $result = $user->addWantsToVisitEvents($event);
-            $error = $result ? '' : 'cant remove event '.$slug;
+            $error = $result ? '' : \sprintf('cant remove event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
         }
 
         if ($result) {
-            $flashContent = $this->get('translator')->trans('flash_you_registrated.title');
-            $html = $this->get('translator')->trans('ticket.status.not_take_apart');
+            $translator = $this->get('translator');
+            $flashContent = $translator->trans('flash_you_registrated.title');
+            $html = $translator->trans('ticket.status.not_take_apart');
             $em->persist($user);
             $em->flush();
         }
@@ -166,11 +149,11 @@ class EventController extends Controller
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
      *
-     * @param string $slug
+     * @param Event $event
      *
      * @return JsonResponse
      */
-    public function userSubWantsToVisitEventAction($slug)
+    public function userSubWantsToVisitEventAction(Event $event)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -178,23 +161,18 @@ class EventController extends Controller
         $html = '';
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $slug]);
-
-        if (!$event) {
-            return new JsonResponse(['result' => $result, 'error' => 'Unable to find Event by slug: '.$slug]);
-        }
 
         if ($event->isActiveAndFuture()) {
             $result = $user->subtractWantsToVisitEvents($event);
-            $error = $result ? '' : 'cant remove event '.$slug;
+            $error = $result ? '' : \sprintf('cant remove event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
         }
 
         if ($result) {
-            $flashContent = $this->get('translator')->trans('flash_you_unsubscribe.title');
-            $html = $this->get('translator')->trans('ticket.status.take_apart');
+            $translator = $this->get('translator');
+            $flashContent = $translator->trans('flash_you_unsubscribe.title');
+            $html = $translator->trans('ticket.status.take_apart');
             $em->flush();
         }
 
@@ -202,17 +180,15 @@ class EventController extends Controller
     }
 
     /**
-     * @Route(path="/event/{eventSlug}/page/venue", name="show_event_venue_page")
+     * @Route(path="/event/{slug}/page/venue", name="show_event_venue_page")
      *
-     * @param string $eventSlug
+     * @param Event $event
      *
-     * @Template("ApplicationDefaultBundle:Redesign:venue_review.html.twig")
-     *
-     * @return array
+     * @return Response
      */
-    public function showEventVenuePageAction($eventSlug)
+    public function showEventVenuePageAction(Event $event): Response
     {
-        $resultArray = $this->get('app.event.service')->getEventPagesArr($eventSlug);
+        $resultArray = $this->get('app.event.service')->getEventPages($event);
         if (null === $resultArray['venuePage']) {
             throw $this->createNotFoundException(sprintf('Unable to find page by slug: venue'));
         }
@@ -220,41 +196,6 @@ class EventController extends Controller
         $newText = $resultArray['venuePage']->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $resultArray['venuePage']->getText();
 
-        return array_merge($resultArray, ['text' => $text]);
-    }
-
-    /**
-     * @Route(path="/event/{eventSlug}/page/{pageSlug}", name="show_event_page")
-     *
-     * @param string $eventSlug
-     * @param string $pageSlug
-     *
-     * @return Response
-     */
-    public function showEventPageInStaticAction($eventSlug, $pageSlug): Response
-    {
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
-        if (!$event) {
-            throw $this->createNotFoundException(sprintf('Unable to find event by slug: %s', $eventSlug));
-        }
-        /** @var ArrayCollection $pages */
-        $pages = $this->get('app.event.service')->getEventMenuPages($event);
-        $myPage = null;
-        /** @var EventPage $page */
-        foreach ($pages as $page) {
-            if ($pageSlug === $page->getSlug()) {
-                $myPage = $page;
-                break;
-            }
-        }
-
-        if (!$myPage) {
-            throw $this->createNotFoundException(sprintf('Unable to find event page by slug: %s', $pageSlug));
-        }
-        $newText = $myPage->getTextNew();
-        $text = isset($newText) && !empty($newText) ? $newText : $myPage->getText();
-
-        return $this->render('@ApplicationDefault/Page/index.html.twig', ['text' => $text]);
+        return $this->render('ApplicationDefaultBundle:Redesign:venue_review.html.twig', \array_merge($resultArray, ['text' => $text]));
     }
 }

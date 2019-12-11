@@ -3,60 +3,31 @@
 namespace Application\Bundle\DefaultBundle\Twig;
 
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Class AppDateTimeExtension for replace months name to nominative or season.
  */
-class AppDateTimeExtension extends \Twig_Extension
+class AppDateTimeExtension extends AbstractExtension
 {
-    private $months =
-        [
-            'uk' => [
-                    'січня' => ['січень', 'зима'],
-                    'лютого' => ['лютий', 'зима'],
-                    'березня' => ['березень', 'весна'],
-                    'квітня' => ['квітень', 'весна'],
-                    'травня' => ['травень', 'весна'],
-                    'червня' => ['червень', 'літо'],
-                    'липня' => ['липень', 'літо'],
-                    'серпня' => ['серпень', 'літо'],
-                    'вересня' => ['вересень', 'осінь'],
-                    'жовтня' => ['жовтень', 'осінь'],
-                    'листопада' => ['листопад', 'осінь'],
-                    'грудня' => ['грудень', 'зима'],
-                ],
-             'en' => [
-                    'January' => ['January', 'Winter'],
-                    'February' => ['February', 'Winter'],
-                    'March' => ['March', 'Spring'],
-                    'April' => ['April', 'Spring'],
-                    'May' => ['May', 'Spring'],
-                    'June' => ['June', 'Summer'],
-                    'July' => ['July', 'Summer'],
-                    'August' => ['August', 'Summer'],
-                    'September' => ['September', 'Autumn'],
-                    'October' => ['October', 'Autumn'],
-                    'November' => ['November', 'Autumn'],
-                    'December' => ['December', 'Winter'],
-                ],
-        ];
-
     const YEAR_SEASON_FORMAT = 'S';
 
-    /** @var DateTimeExtension */
     private $intlTwigDateTimeService;
-
-    /** @var bool */
     private $convertToSeason = false;
+    private $translator;
 
     /**
      * AppDateTimeExtension constructor.
      *
-     * @param DateTimeExtension $intlTwigDateTimeService
+     * @param DateTimeExtension   $intlTwigDateTimeService
+     * @param TranslatorInterface $translator
      */
-    public function __construct($intlTwigDateTimeService)
+    public function __construct(DateTimeExtension $intlTwigDateTimeService, TranslatorInterface $translator)
     {
         $this->intlTwigDateTimeService = $intlTwigDateTimeService;
+        $this->translator = $translator;
     }
 
     /**
@@ -65,12 +36,12 @@ class AppDateTimeExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('app_format_date', [$this, 'formatDate'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('app_format_date_day_month', [$this, 'formatDateDayMonth'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('app_format_date_only', [$this, 'formatDateOnly'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('app_format_time', [$this, 'formatTime'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('app_format_time_only', [$this, 'formatTimeOnly'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('app_format_datetime', [$this, 'formatDatetime'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_date', [$this, 'formatDate'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_date_day_month', [$this, 'formatDateDayMonth'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_date_only', [$this, 'formatDateOnly'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_time', [$this, 'formatTime'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_time_only', [$this, 'formatTimeOnly'], ['is_safe' => ['html']]),
+            new TwigFilter('app_format_datetime', [$this, 'formatDatetime'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -215,16 +186,14 @@ class AppDateTimeExtension extends \Twig_Extension
         $result = $formattedDate;
 
         if (null !== $pattern &&
-            isset($this->months[$locale]) &&
             false === strpos($pattern, 'd') &&
             false === strpos($pattern, 'j')
         ) {
-            foreach ($this->months[$locale] as $key => $month) {
-                if (false !== strpos($formattedDate, $key)) {
-                    $result = str_replace($key, $month[(int) $this->convertToSeason], $formattedDate);
-                    break;
-                }
+            $words = \explode(' ', $formattedDate);
+            foreach ($words as $key => $word) {
+                $words[$key] = $this->translator->transChoice($word, (int) $this->convertToSeason + 1, [], 'year_season');
             }
+            $result = \implode(' ', $words);
         }
 
         return $result;

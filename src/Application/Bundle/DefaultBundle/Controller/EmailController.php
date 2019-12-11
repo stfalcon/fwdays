@@ -5,20 +5,18 @@ namespace Application\Bundle\DefaultBundle\Controller;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Application\Bundle\DefaultBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * EmailSubscribe controller.
+ * EmailSubscribe.
  */
 class EmailController extends Controller
 {
     /**
-     * Unsubscribe action.
-     *
      * @Route("/unsubscribe/{hash}/{id}/{mailId}", name="unsubscribe")
      *
      * @param string $hash

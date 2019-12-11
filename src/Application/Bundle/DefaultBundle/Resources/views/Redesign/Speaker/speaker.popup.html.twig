@@ -16,7 +16,7 @@
     {% if speaker.reviews %}
         {% for review in speaker.reviews %}
             <div class="report-popup">
-                <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
+                <a href="{{ path('event_review_show', {'slug':event.slug, 'reviewSlug':review.slug }) }}"
                    class="report-popup__title">{{ review.title }}</a>
                 {% if review.event.isActiveAndFuture %}
                     <div class="report-popup__likes">

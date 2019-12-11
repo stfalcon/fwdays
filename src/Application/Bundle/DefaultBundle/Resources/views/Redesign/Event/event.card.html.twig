@@ -2,7 +2,7 @@
     <div class="event-card__box" style="background-color: {{ event.backgroundColor }};">
         <div class="event-card__info">
             <h2 class="h2 h2--white event-card__title">
-                <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } )}}">{{ event.name }}</a>
+                <a href="{{ path('event_show', {'slug': event.slug } )}}">{{ event.name }}</a>
             </h2>
             <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-card__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
             <div class="event-card__action">
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="event-card__photo">
-            <a href="{{ path('event_show_redesign', {'eventSlug': event.slug } )}}">
+            <a href="{{ path('event_show', {'slug': event.slug } )}}">
                 {% if event.logo is not empty %}
                     <img class="event-card__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
                 {% endif %}

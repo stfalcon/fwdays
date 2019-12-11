@@ -2,6 +2,7 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Page;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Repository\EventRepository;
@@ -25,7 +26,7 @@ class DefaultController extends Controller
     public function indexAction(): Response
     {
         $events = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')
+            ->getRepository(Event::class)
             ->findBy(['active' => true], ['date' => 'ASC']);
 
         return $this->render('@ApplicationDefault/Default/index.html.twig', ['events' => $events]);
@@ -65,7 +66,7 @@ class DefaultController extends Controller
 
         /** @var EventRepository $eventRepository */
         $eventRepository = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event');
+            ->getRepository(Event::class);
 
         $userActiveEvents = $eventRepository
             ->getSortedUserWannaVisitEventsByActive($user);
@@ -147,7 +148,7 @@ class DefaultController extends Controller
     public function renderMicrolayoutAction()
     {
         $events = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')
+            ->getRepository(Event::class)
             ->findClosesActiveEvents(3);
 
         return $this->render('ApplicationDefaultBundle::microlayout.html.twig', ['events' => $events]);

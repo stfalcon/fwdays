@@ -6,44 +6,42 @@ use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Application\Bundle\DefaultBundle\Helper\NewPdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class TicketController.
+ * TicketController.
  */
 class TicketController extends Controller
 {
     /**
      * Generating ticket with QR-code to event.
      *
-     * @Route("/event/{eventSlug}/ticket", name="event_ticket_download")
-     * @Route("/event/{eventSlug}/ticket/{asHtml}", name="event_ticket_download_html")
+     * @Route("/event/{slug}/ticket/{asHtml}", name="event_ticket_download", defaults={"asHtml":null})
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @param string $eventSlug
-     * @param string $asHtml
+     * @param Event       $event
+     * @param string|null $asHtml
      *
      * @return array|Response
      */
-    public function downloadAction($eventSlug, $asHtml = null)
+    public function downloadAction(Event $event, $asHtml = null): Response
     {
-        $event = $this->getDoctrine()
-            ->getRepository('ApplicationDefaultBundle:Event')->findOneBy(['slug' => $eventSlug]);
         /** @var User $user */
         $user = $this->getUser();
         /** @var Ticket $ticket */
-        $ticket = $this->getDoctrine()->getManager()->getRepository('ApplicationDefaultBundle:Ticket')
+        $ticket = $this->getDoctrine()->getRepository(Ticket::class)
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
         if (!$ticket || !$ticket->isPaid()) {
-            return new Response('Вы не оплачивали участие в "'.$event->getName().'"', 402);
+            return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), 402);
         }
 
-        /** @var $pdfGen \Application\Bundle\DefaultBundle\Helper\NewPdfGeneratorHelper */
+        /** @var NewPdfGeneratorHelper $pdfGen */
         $pdfGen = $this->get('app.helper.new_pdf_generator');
 
         $html = $pdfGen->generateHTML($ticket);
@@ -54,7 +52,7 @@ class TicketController extends Controller
                 200,
                 [
                     'Content-Type' => 'application/txt',
-                    'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
+                    'Content-Disposition' => \sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
                 ]
             );
         }
@@ -64,7 +62,7 @@ class TicketController extends Controller
             200,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
+                'Content-Disposition' => \sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
             ]
         );
     }
@@ -90,7 +88,7 @@ class TicketController extends Controller
         //bag fix test ticket.feature:33
         // любопытных пользователей перенаправляем на страницу события
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_VOLUNTEER')) {
-            return $this->redirect($this->generateUrl('event_show', ['eventSlug' => $ticket->getEvent()->getSlug()]));
+            return $this->redirect($this->generateUrl('event_show', ['slug' => $ticket->getEvent()->getSlug()]));
         }
 
         // проверяем существует ли оплата

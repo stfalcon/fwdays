@@ -7,7 +7,7 @@
             {%- for review in reviews -%}
                 <div class="talks__item">
                     <div class="talks__content" style="border-top: 6px solid {{ event.backgroundColor }}">
-                        <a href="{{ path('event_review_show_redesign', {'eventSlug':event.slug, 'reviewSlug':review.slug }) }}"
+                        <a href="{{ path('event_review_show', {'slug':event.slug, 'reviewSlug':review.slug }) }}"
                            class="talks__name">{{ review.title }}</a>
                         {%- for speaker in review.speakers -%}
                             <div class="talks__bottom">

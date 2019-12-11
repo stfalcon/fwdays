@@ -1,7 +1,7 @@
 {% set link = '' %}
 {% set scrollClass = '' %}
 {% if position == 'report' %}
-    {% set link = url('event_show_redesign', {'eventSlug': event.slug }) %}
+    {% set link = url('event_show', {'slug': event.slug }) %}
 {% elseif position == 'event' %}
     {% set scrollClass = ' go-to-block' %}
 {% endif %}

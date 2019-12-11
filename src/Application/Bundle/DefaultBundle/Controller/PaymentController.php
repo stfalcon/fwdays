@@ -11,16 +11,18 @@ use Application\Bundle\DefaultBundle\Model\UserManager;
 use Application\Bundle\DefaultBundle\Service\PaymentProcess\AbstractPaymentProcessService;
 use Application\Bundle\DefaultBundle\Service\PaymentProcess\PaymentProcessInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * PaymentController.
+ *
+ * @Security("has_role('ROLE_USER')")
  */
 class PaymentController extends Controller
 {
@@ -28,8 +30,6 @@ class PaymentController extends Controller
 
     /**
      * @Route("/event/{slug}/pay", name="event_pay")
-     *
-     * @Security("has_role('ROLE_USER')")
      *
      * @param Event $event
      *
@@ -67,8 +67,6 @@ class PaymentController extends Controller
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     *
-     * @Security("has_role('ROLE_USER')")
      *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
@@ -163,14 +161,10 @@ class PaymentController extends Controller
     /**
      * Add user to payment.
      *
-     * @Route("/event/{eventSlug}/payment/participant/add", name="add_ticket_participant",
+     * @Route("/event/{slug}/payment/participant/add", name="add_ticket_participant",
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     *
-     * @Security("has_role('ROLE_USER')")
-     *
-     * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
      * @param Event   $event
      * @param Request $request
@@ -264,7 +258,6 @@ class PaymentController extends Controller
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     * @Security("has_role('ROLE_USER')")
      *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
@@ -298,8 +291,6 @@ class PaymentController extends Controller
      *
      * @Route("/event/{eventSlug}/pay-by-bonus", name="event_pay_by_bonus")
      *
-     * @Security("has_role('ROLE_USER')")
-     *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
      * @param Event $event
@@ -329,8 +320,6 @@ class PaymentController extends Controller
      * Pay for payment by promocode (100% discount).
      *
      * @Route("/event/{eventSlug}/pay-by-promocode", name="event_pay_by_promocode")
-     *
-     * @Security("has_role('ROLE_USER')")
      *
      * @ParamConverter("event", options={"mapping": {"eventSlug": "slug"}})
      *
@@ -363,8 +352,6 @@ class PaymentController extends Controller
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @Security("has_role('ROLE_USER')")
-     *
      * @param Event   $event
      * @param Request $request
      *
@@ -391,8 +378,6 @@ class PaymentController extends Controller
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
-     *
-     * @Security("has_role('ROLE_USER')")
      *
      * @param Event   $event
      * @param Request $request

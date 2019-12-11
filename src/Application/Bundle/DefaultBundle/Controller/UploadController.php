@@ -2,34 +2,31 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * Class UploadController.
+ * UploadController.
  */
 class UploadController extends Controller
 {
     /**
-     * Upload image (for markitup plugin).
+     * @Route("/admin/text-area/uploadImage", name="text_area_upload_image", methods={"POST"})
      *
      * @param Request $request
      *
      * @return JsonResponse
-     *
-     * @Route("/admin/text-area/uploadImage", name="text_area_upload_image")
-     *
-     * @Method({"POST"})
      */
-    public function uploadImageAction(Request $request)
+    public function uploadImageAction(Request $request): JsonResponse
     {
-        /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile|null */
+        /** @var UploadedFile|null $file */
         $file = $request->files->get('upload_file');
 
         $fileConstraint = new Collection(
@@ -42,7 +39,7 @@ class UploadController extends Controller
         );
 
         // Validate
-        /** @var $errors \Symfony\Component\Validator\ConstraintViolationList */
+        /** @var ConstraintViolationList $errors  */
         $errors = $this->get('validator')->validate(['file' => $file], $fileConstraint);
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
@@ -54,7 +51,7 @@ class UploadController extends Controller
         $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
 
         try {
-            $tmpFile = $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
+            $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
             $newFile = $this->getParameter('aws_s3_public_endpoint').'/'.$adapter->getPathPrefix().$newFileName;
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);

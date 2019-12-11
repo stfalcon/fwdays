@@ -2,7 +2,7 @@
 {% set static_style = '' %}
 
 {% if position == 'report' %}
-    {% set link = url('event_show_redesign', {'eventSlug': event.slug }) %}
+    {% set link = url('event_show', {'slug': event.slug }) %}
     {% set static_style = ' fix-event-header--static' %}
 {% endif %}
 

@@ -52,7 +52,7 @@ class PromoCodeRequestListener
             $currentPromoCodes[$eventSlug] = $promocode;
             $this->session->set(PaymentService::PROMO_CODE_SESSION_KEY, $currentPromoCodes);
 
-            $url = $this->router->generate('event_show_redesign', ['eventSlug' => $eventSlug]);
+            $url = $this->router->generate('event_show', ['slug' => $eventSlug]);
             $event->setResponse(new RedirectResponse($url));
         }
     }

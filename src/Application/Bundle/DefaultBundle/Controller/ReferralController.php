@@ -2,32 +2,31 @@
 
 namespace Application\Bundle\DefaultBundle\Controller;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\ReferralService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Referral controller.
+ * Referral.
  */
 class ReferralController extends Controller
 {
     /**
-     * @param string $code      Code
-     * @param string $eventSlug Event
+     * @Route("/ref/{code}/event/{slug}", name="referral_link")
      *
-     * @Route("/ref/{code}/event/{eventSlug}", name="referral_link")
+     * @param string $code
+     * @param Event  $event
      *
      * @return RedirectResponse
      */
-    public function referralAction($code, $eventSlug)
+    public function referralAction(string $code, Event $event): RedirectResponse
     {
-        /**
-         * @var User
-         */
+        /** @var User */
         $user = $this->getUser();
 
         $referralService = $this->get('app.referral.service');
@@ -40,14 +39,7 @@ class ReferralController extends Controller
             $response->send();
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('ApplicationDefaultBundle:Event')->findBy(['slug' => $eventSlug]);
-
-        if ($event) {
-            $url = $this->generateUrl('event_show', ['eventSlug' => $eventSlug]);
-        } else {
-            $url = $this->generateUrl('homepage');
-        }
+        $url = $this->generateUrl('event_show', ['slug' => $event->getSlug()]);
 
         return $this->redirect($url);
     }

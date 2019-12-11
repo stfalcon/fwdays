@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -53,7 +54,6 @@ class MailAdminController extends CRUDController
         $id = $request->get($this->admin->getIdParameter());
         /** @var Mail $mail */
         $mail = $this->admin->getObject($id);
-        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->get('session');
         if (!$mail instanceof Mail) {
             $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');

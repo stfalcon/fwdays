@@ -23,7 +23,8 @@ services:
     app.datetime.twig.extension:
         class: Application\Bundle\DefaultBundle\Twig\AppDateTimeExtension
         arguments:
-            - "@sonata.intl.twig.extension.datetime"
+            - '@sonata.intl.twig.extension.datetime'
+            - '@translator'
         tags:
             - { name: twig.extension}
 
