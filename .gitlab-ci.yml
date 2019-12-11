@@ -56,6 +56,8 @@ functional-test:
         - docker-compose up -d
         - sleep 10
         - docker exec --tty fwdays_php_1 ./init "test"
+        - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+        - unxz geodata/GeoLiteCity.dat.xz
         - docker exec --tty fwdays_php_1 composer.phar ci:codeception-acceptance
 
 # # CI jobs
