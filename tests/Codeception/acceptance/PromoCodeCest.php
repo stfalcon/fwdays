@@ -12,42 +12,10 @@ class PromoCodeCest
         '#payer-block-edit-1 input[name=user_promo_code]' => 'JsDays_100',
     ];
 
-    private const SIGN_IN_FIELDS = [
-        '#user_email_modal-signup' => 'user@gmail.com',
-        '#user_password_modal-signup' => 'new_password',
-    ];
-
     /**
      * @param AcceptanceTester $I
      *
-     * @throws Exception
-     */
-    public function loginModal(AcceptanceTester $I): void
-    {
-        $I->wantTo('Check sing in user from modal');
-
-        $I->amOnPage('/');
-        static::iAmNotSigned($I);
-
-        static::seeAndClick($I, '.header__auth--sign-in');
-        $I->waitForText('Sign in');
-
-        foreach (self::SIGN_IN_FIELDS as $field => $value) {
-            $I->seeElement($field);
-            $I->fillField($field, $value);
-        }
-
-        static::seeAndClick($I, '#login-form-modal-signup button[type=submit]');
-
-        $I->waitForText('ACCOUNT');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
-        static::iAmSigned($I);
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @depends loginModal
+     * @depends UserCest:loginModal
      */
     public function promocodeFromQueryFirst(AcceptanceTester $I)
     {
@@ -132,7 +100,6 @@ class PromoCodeCest
         $I->dontSeeElement('#buy-ticket-btn');
 
         foreach (self::PAY_USER_DATA as $field => $value) {
-            $I->seeElement($field);
             $I->fillField($field, $value);
         }
 

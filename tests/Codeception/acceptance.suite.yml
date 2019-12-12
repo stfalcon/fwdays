@@ -6,10 +6,12 @@ modules:
               window_size: 1280x768
               browser: phantomjs
               clear_cookies: false
-
+              capabilities:
+                    webStorageEnabled: true
         - \Helper\Acceptance
 extensions:
     enabled:
         - Codeception\Extension\RunBefore:
+            - composer.phar app:recreate-test-database
 #            - ./bin/console doctrine:fixtures:load --no-interaction --env=test
             - /opt/phantomjs-2.1.1-linux-x86_64/bin/phantomjs --webdriver=4444 &
