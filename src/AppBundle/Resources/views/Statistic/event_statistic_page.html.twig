@@ -1,0 +1,69 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        th, td {
+            padding: 3px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block title %} - {{ 'Статистика событий' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    <h1>Статистика событий</h1>
+
+    <select id="select-event-statistic" style="width: 36%" title="List of events">
+        {% for event in events -%}
+            {% if current_event_slug is not empty and current_event_slug == event.slug%}
+                <option value="{{ event.slug }}" selected>{{ event.name }}</option>
+            {% else %}
+                <option value="{{ event.slug }}">{{ event.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <p></p>
+    <div id="event-data">{{ event_statistic_html|raw }}</div>
+
+    {{ render(controller('AppBundle:Analytics:showDailyDynamics', { 'event': event })) }}
+
+    {{ render(controller('AppBundle:Analytics:showComparisonWithPreviousEvents', { 'event': event })) }}
+
+    {#<h2>Графік продажів + графік розсилок по базі</h2>#}
+    {#<h2>Графік розподілу цін (як точки)</h2>#}
+    {#<h2>Повторна участь (мейбі теж як точки)</h2>#}
+    {#<h2>Час від початку до завершення продажу</h2>#}
+
+    {#<div id="div_chart"></div>#}
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>#}
+    {#<script type="text/javascript">#}
+        {#{{ gc_draw(chart, 'div_chart') }}#}
+    {#</script>#}
+
+    <script>
+        $(document).on('change', '#select-event-statistic', function () {
+            let event_slag = $('#select-event-statistic option:selected').val();
+            window.location.href = "{{ path('admin_event_without_slug_statistic') }}" +'/'+ event_slag;
+        });
+    </script>
+{% endblock javascripts %}

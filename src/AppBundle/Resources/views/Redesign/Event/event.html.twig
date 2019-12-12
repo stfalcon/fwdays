@@ -1,0 +1,85 @@
+{% extends 'AppBundle:Redesign:layout.html.twig' %}
+
+{% block title %}
+    {% if event.seoTitle is not null %}
+        {{ event.seoTitle }}
+    {% elseif event.name is not null %}
+        {{ event.name }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock title %}
+
+{% block meta_description %}
+    {% if event.metaDescription is not null %}
+    <meta name="description" content="{{ event.metaDescription }}">
+    {% else %}
+    {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block body_class %}
+{% if event.smallEvent %}
+<body class="short-event">
+{% else %}
+{{ parent() }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include 'AppBundle:Redesign/Event:event.header.html.twig' with {
+        'event':event,
+        'programPage':programPage,
+        'venuePage':venuePage,
+        'pages':pages,
+        'position':'event',
+        'eventCurrentAmount':eventCurrentAmount
+    } %}
+
+    {% if futureEvent is not null %}
+        {% if (futureEvent.adminOnly and is_granted('ROLE_ADMIN')) or (futureEvent.adminOnly != true) %}
+            <div class="event-alert event-alert--mrt-50">
+                <div class="container container--sm">
+                    {% if futureEvent.receivePayments %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% else %}
+                        <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
+                    {% endif %}
+                    {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% set event_blocks_rendered = 0 %}
+    {%- for block in event.blocks if block.visible -%}
+        {% set event_blocks_rendered = event_blocks_rendered + 1 %}
+        {% set block_type = 'sonata.block.event.' ~ block.type %}
+        {{ sonata_block_render({ 'type': block_type }, {'event': event, 'event_block': block}) }}
+    {%- endfor -%}
+    {%- if event_blocks_rendered == 0 -%}
+        {% include '@App/Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
+    {%- endif -%}
+
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+{% endblock content %}
+
+{% block popups %}
+{{ parent() }}
+<!--BEGIN speaker-popup-->
+<div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
+    <button data-remodal-action="close"
+            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+    <div id="speaker-popup-content" class="remodal__body static-styles">
+    <!-- popup content  -->
+    </div>
+</div>
+<!--END speaker-popup-->
+{% endblock popups %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/scroll-near-event-date.js') }}" defer></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" defer></script>
+    <script src="{{ asset('js/partials/location.js') }}" defer></script>
+{% endblock scripts %}

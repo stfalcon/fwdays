@@ -6,7 +6,7 @@
     "homepage": "http://fwdays.com/",
     "autoload": {
         "psr-4": {
-            "Application\\Bundle\\DefaultBundle\\": "src/Application/Bundle/DefaultBundle"
+            "App\\": "src/AppBundle"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
@@ -122,7 +122,7 @@
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
             "bin/console doctrine:schema:validate"
         ],
-        "ci:twig-lint": "bin/console lint:twig src/Application/Bundle/DefaultBundle/Resources/views/ app/Resources/",
+        "ci:twig-lint": "bin/console lint:twig src/AppBundle/Resources/views/ app/Resources/",
         "ci:yaml-lint": "bin/console lint:yaml app/config/",
         "ci:code-style": [
             "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
@@ -163,7 +163,8 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:code-style-fixer",
-            "@ci:static-analysis"
+            "@ci:static-analysis",
+            "@ci:codeception-acceptance"
         ]
     },
     "extra": {

@@ -40,9 +40,9 @@ class UserCest
     private $newLogin = false;
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      */
-    public function langSwitch(AcceptanceTester $I): void
+    public function langSwitch(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check language switcher');
 
@@ -61,13 +61,13 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @throws Exception
      *
      * @depends langSwitch
      */
-    public function facebook(AcceptanceTester $I): void
+    public function facebook(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check click on login by facebook');
 
@@ -82,13 +82,13 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @throws Exception
      *
      * @depends facebook
      */
-    public function google(AcceptanceTester $I): void
+    public function google(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check click on login by google');
 
@@ -103,11 +103,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends google
      */
-    public function loginModal(AcceptanceTester $I): void
+    public function loginModal(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check sing in user from modal');
 
@@ -136,11 +136,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends loginModal
      */
-    public function changeProfile(AcceptanceTester $I): void
+    public function changeProfile(AcceptanceUserTester $I): void
     {
         $I->wantTo('Change user profiler');
 
@@ -163,11 +163,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends changeProfile
      */
-    public function checkProfile(AcceptanceTester $I): void
+    public function checkProfile(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check user profiler');
 
@@ -186,11 +186,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends checkProfile
      */
-    public function changePassword(AcceptanceTester $I): void
+    public function changePassword(AcceptanceUserTester $I): void
     {
         $I->wantTo('Check change user password');
 
@@ -223,11 +223,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends changePassword
      */
-    public function checkNewPassword(AcceptanceTester $I)
+    public function checkNewPassword(AcceptanceUserTester $I)
     {
         $I->wantTo('Check login user with new password');
 
@@ -237,11 +237,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends checkNewPassword
      */
-    public function forgotPassword(AcceptanceTester $I)
+    public function forgotPassword(AcceptanceUserTester $I)
     {
         $I->wantTo('Check user forgot password');
 
@@ -260,11 +260,11 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      *
      * @depends loginModal
      */
-    public function cabinetPage(AcceptanceTester $I)
+    public function cabinetPage(AcceptanceUserTester $I)
     {
         $I->wantTo('Check user cabinet page');
 
@@ -282,28 +282,28 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      * @param string           $element
      */
-    private static function seeAndClick(AcceptanceTester $I, string $element): void
+    private static function seeAndClick(AcceptanceUserTester $I, string $element): void
     {
         $I->seeElement($element);
         $I->click($element);
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      */
-    private static function fillLoginFieldsAdmin(AcceptanceTester $I): void
+    private static function fillLoginFieldsAdmin(AcceptanceUserTester $I): void
     {
         $I->fillField('_username', 'admin@fwdays.com');
         $I->fillField('_password', 'qwerty');
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      */
-    private static function iAmSigned(AcceptanceTester $I, string $lang = 'en'): void
+    private static function iAmSigned(AcceptanceUserTester $I, string $lang = 'en'): void
     {
         if ('en' === $lang) {
             $I->seeLink('ACCOUNT');
@@ -315,9 +315,9 @@ class UserCest
     }
 
     /**
-     * @param AcceptanceTester $I
+     * @param AcceptanceUserTester $I
      */
-    private static function iAmNotSigned(AcceptanceTester $I, string $lang = 'en'): void
+    private static function iAmNotSigned(AcceptanceUserTester $I, string $lang = 'en'): void
     {
         if ('en' === $lang) {
             $I->dontSeeLink('ACCOUNT');

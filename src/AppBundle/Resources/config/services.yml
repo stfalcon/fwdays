@@ -1,0 +1,309 @@
+services:
+    app.validator.event_block.text:
+        class: App\Validator\Constraints\EventBlock\EventBlockTypeText
+
+    app.pluralization.twig.extension:
+        class: App\Twig\AppPluralizationExtension
+        tags:
+            - { name: twig.extension}
+
+    app.url_for_redirect:
+        class: App\Service\UrlForRedirect
+        arguments: ["@router", "%locales%"]
+
+    app.ticket.service:
+        class: App\Service\TicketService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%application_default.config%"
+            - "@translator"
+            - "@router"
+            - "@security.token_storage"
+
+    app.datetime.twig.extension:
+        class: App\Twig\AppDateTimeExtension
+        arguments:
+            - '@sonata.intl.twig.extension.datetime'
+            - '@translator'
+        tags:
+            - { name: twig.extension}
+
+    twig_asset_version_extension:
+        class: App\Twig\AssetVersionExtension
+        arguments: ["%kernel.root_dir%", "%kernel.environment%"]
+        tags:
+            - { name: twig.extension }
+
+    app.need_user_data.exception:
+        class: App\EventListener\ExceptionListener
+        arguments: ["@session"]
+        calls:
+            - [setRouter, ['@router']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.helper.new_pdf_generator:
+        class: App\Helper\NewPdfGeneratorHelper
+        arguments:
+            - "@twig"
+            - "@router"
+            - "@application.qr_code"
+            - "@kernel"
+            - "@app.svg_to_jpg.service"
+            - "@oneup_flysystem.event_image_filesystem"
+            - "@vich_uploader.property_mapping_factory"
+
+    app.svg_to_jpg.service:
+        class: App\Service\SvgToJpg
+        arguments:
+            - "@monolog.logger"
+
+    app.my_mailer.service:
+        class: App\Service\MyMailer
+        arguments: ['@swiftmailer.transport']
+
+    App\EventListener\PromoCodeRequestListener:
+        arguments:
+            - '@router'
+            - '@session'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    app.service.google_map_service:
+        class: App\Service\GoogleMapService
+        arguments: ['%google_api_key%', '@buzz']
+
+    app.way_for_pay.service:
+        class: App\Service\PaymentProcess\WayForPayService
+        arguments:
+            - '%application_default.config%'
+            - '@translator'
+            - '@request_stack'
+            - '@router'
+            - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@logger'
+            - '@app.referral.service'
+            - '@session'
+
+    app.interkassa.service:
+        class: App\Service\PaymentProcess\InterkassaService
+        arguments:
+            - "%application_default.config%"
+            - "@translator"
+            - "@request_stack"
+            - '@router'
+            - '@doctrine.orm.entity_manager'
+            - '@logger'
+            - '@app.referral.service'
+            - '@session'
+            - '%interkassa_override_callbacks%'
+
+    app.event.service:
+       class: App\Service\EventService
+       arguments:
+            - '@app.event.repository.service'
+            - '@app.ticket_cost_repository.service'
+            - '@app.event_review.repository.service'
+            - '@security.authorization_checker'
+
+    app.chart.service:
+       class: App\Service\ChartService
+
+    app.analytics.service:
+        class: App\Service\AnalyticsService
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    user.login_entry_point:
+        class: App\EventListener\LoginEntryPoint
+        arguments: ["@jms_i18n_routing.router"]
+
+    user.handler.login_handler:
+        class: App\Handler\LoginHandler
+        arguments:
+            - "@router"
+            - "@app.referral.service"
+            - "@fos_user.user_manager"
+            - "@app.url_for_redirect"
+
+    app.provider.oauth:
+        class: App\Security\OAuthUserProvider
+        arguments:
+            - "@fos_user.user_manager"
+            - {facebook: facebookID, google: googleID}
+            - "@service_container"
+
+    app.payment.service:
+        class: App\Service\PaymentService
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@app.ticket.service'
+            - '@translator'
+            - '@security.token_storage'
+            - '@app.referral.service'
+            - '@session'
+
+    app.referral.service:
+        class: App\Service\ReferralService
+        arguments: ['@service_container']
+
+    sonata.block.service.statistic:
+        class: App\Service\SonataBlock\StatisticBlockService
+        tags:
+            - { name: sonata.block }
+        arguments: ['sonata.block.service.statistic', '@templating']
+
+    application.menu_builder:
+        class: App\Menu\MenuBuilder
+        arguments: ['@knp_menu.factory', '@translator', '%jms_i18n_routing.locales%', '@security.token_storage', '@mobile_detect.mobile_detector']
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+    application.locale_url.listener:
+        class: App\EventListener\LocaleUrlResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 128 }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 128 }
+        arguments:
+            - '%jms_i18n_routing.default_locale%'
+            - '%jms_i18n_routing.locales%'
+            - '%jms_i18n_routing.cookie.name%'
+            - '@router'
+            - '@maxmind.geoip'
+
+    application.sonata.locales.required:
+        class: App\Service\LocalsRequiredService
+        arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
+
+    app_liip_cache_resolve_command:
+        class: App\Command\AppResolveLiipCacheCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+#    sonata.admin.menu.matcher.voter.children:
+#        class: Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter
+#        arguments: ['@knp_menu.matcher']
+
+    vich_uploader.my_storage.flysystem:
+        class: App\Service\MyFlySystemStorage
+        arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
+
+    liip_imagine.cache.resolver.prototype.flysystem:
+        class: App\Service\MyFlySystemResolver
+        arguments: ['', '@router.request_context', '', '', '']
+
+    trans_command_service:
+        class: App\Command\StfalconChangeTranslationCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    recalculate_ticket_sold_command_service:
+        class: App\Command\StfalconRecalculateTicketSoldCountCommand
+        calls:
+            - [setContainer, ['@service_container']]
+
+    application.qr_code:
+        class: Endroid\QrCode\QrCode
+
+    application.mailer_helper:
+        class: App\Helper\StfalconMailerHelper
+        arguments:
+            - '@twig'
+            - '@doctrine.orm.entity_manager'
+            - '@router'
+            - '@mailer'
+            - "@translator"
+
+    application.promo_code.form.type:
+        class: App\Form\Type\PromoCodeFormType
+        tags:
+            - { name: form.type, alias: application_promo_code }
+
+    application.ticket.form.type:
+        class: App\Form\Type\TicketFormType
+        tags:
+            - { name: form.type, alias: application_ticket }
+
+    application.listener.payment:
+        class: App\EventListener\PaymentListener
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
+        arguments: ['@service_container']
+
+#    application.current_event:
+#        class: App\Entity\Event
+#
+#    application.menu.main:
+#        class: Knp\Menu\MenuItem
+#        tags:
+#            - { name: knp_menu.menu, alias: main }
+#        factory: ['@application.menu_builder', createMainMenu]
+#        arguments: ['@request_stack']
+#        scope: request
+#        application.menu.event_sub:
+#            class: Knp\Menu\MenuItem
+#            tags:
+#                - { name: knp_menu.menu, alias: event_sub }
+#            factory: ['@application.menu_builder', createEventSubMenu]
+#            arguments: ['@request_stack', '@application.current_event']
+#            scope: request
+
+    app.menu.main.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: main_redesign }
+        factory: ['@application.menu_builder', createMainMenuRedesign]
+        arguments: ['@request_stack']
+
+    app.menu.main.login.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: login_redesign }
+        factory: ['@application.menu_builder', createLoginMenu]
+        arguments: ['@request_stack']
+
+    app.user_manager:
+        class: App\Model\UserManager
+        arguments:
+            - "@fos_user.util.password_updater"
+            - "@fos_user.util.canonical_fields_updater"
+            - "@fos_user.object_manager"
+            - "%fos_user.model.user.class%"
+            - "@validator"
+            - "@application.mailer_helper"
+            - "@session"
+
+    App\Command\StfalconMailerCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+
+    App\Form\Type\ProfileFormType:
+        arguments:
+            - "%fos_user.model.user.class%"
+            - "%locales%"
+        tags:
+            - { name: form.type, alias: application_profile }
+
+    App\Form\Type\RegistrationFormType:
+        arguments:
+            - "%fos_user.model.user.class%"
+            - "%locales%"
+        tags:
+            - { name: form.type, alias: application_registration }
+
+    App\Serializer\Normalizer\PaymentNormalizer:
+        arguments: ['@translator', '@serializer.normalizer.object']
+        tags:
+            - { name: serializer.normalizer }
+
+    App\Serializer\Normalizer\TicketNormalizer:
+        arguments: ['@translator', '@serializer.normalizer.object', '%application_default.config%']
+        tags:
+            - { name: serializer.normalizer }
+
+    App\Service\EmailHashValidationService: ~
+
+    App\Service\TranslatedMailService:
+        arguments: ['%locale%']
