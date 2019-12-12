@@ -96,7 +96,8 @@
         "platform": {
             "php": "7.3"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 0
     },
     "scripts": {
         "scripts": {
