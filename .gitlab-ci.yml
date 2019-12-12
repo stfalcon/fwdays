@@ -1,103 +1,124 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
-cache:
-    paths:
-        - vendor/
-        - node_modules/
-
 services:
-  - name: jekakm/mysql-core:201902201
-    alias: fwdays-php73-mysql
-
-  - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
-  
-  - name: minio/minio:latest
-    alias: minio
+  - docker:dind
 
 variables:
-  MYSQL_ROOT_PASSWORD: qwerty
-  MINIO_ACCESS_KEY: minio
-  MINIO_SECRET_KEY: qwe12345
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+
+# image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.2
+# cache:
+    # paths:
+    #     - vendor/
+    #     - node_modules/
+
+# services:
+#   - name: jekakm/mysql-core:201902201
+#     alias: fwdays-php73-mysql
+
+#   - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
+  
+#   - name: minio/minio:latest
+#     alias: minio
+
+# variables:
+#   MYSQL_ROOT_PASSWORD: qwerty
+#   MINIO_ACCESS_KEY: minio
+#   MINIO_SECRET_KEY: qwe12345
 
 
-.before_script_template: &build_ci
-    before_script:
-        - cp app/config/parameters.yml.stag app/config/parameters.yml
-        - unxz geodata/GeoLiteCity.dat.xz
-        - composer.phar install --optimize-autoloader
-        - npm install
+# .before_script_template: &build_ci
+#     before_script:
+#         - sudo cp app/config/parameters.yml.stag app/config/parameters.yml
+#         - sudo unxz geodata/GeoLiteCity.dat.xz
+#         - sudo composer.phar install --optimize-autoloader
+#         - sudo npm install
 
 stages:
-    - 'CI jobs'
+    - 'dind'
     - 'SonarQube'
     - 'Build'
     - 'Deploy to staging'
     - 'Deploy to production'
 
-# CI jobs
-composer checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:composer-validate
 
-security checks:
-    stage: 'CI jobs'
-    <<: *build_ci
+functional-test:
+    tags:
+        - heavy
+    stage: 'dind'
+    image: tiangolo/docker-with-compose
+    before_script:
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+        - docker info
+        - docker-compose --version
+    only:
+        - add-codception
     script:
-        - composer.phar ci:security-check
+        - docker-compose up -d
+        - sleep 10
+        - docker exec --tty fwdays_php_1 ./init "test"
+        - wget https://files-cdn.liferay.com/mirrors/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz -O geodata/GeoLiteCity.dat.xz
+        - unxz geodata/GeoLiteCity.dat.xz
+        - docker exec --tty fwdays_php_1 composer.phar ci:codeception-acceptance
 
-doctrine checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:doctrine-schema-validate
+# # CI jobs
+# composer checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:composer-validate
 
-twig checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:twig-lint
+# security checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:security-check
 
-yaml checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:yaml-lint
+# doctrine checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:doctrine-schema-validate
 
-code style checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:code-style
+# twig checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:twig-lint
 
-static analysis:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:static-analysis
+# yaml checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:yaml-lint
 
-#phpunit:
-#    stage: 'CI jobs'
-#    <<: *build_ci
-#    artifacts:
-#        paths:
-#            - './phpunit-coverage.xml'
-#            - './clover-coverage.xml'
-#            - './junit.xml'
-#        reports:
-#            junit: './junit.xml'
-#    script:
-#        - composer.phar app:recreate-test-database
-#        - sudo composer.phar ci:phpunit-with-coverage
+# code style checks:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:code-style
+
+# static analysis:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:static-analysis
+
+# codeception:
+#     stage: 'CI jobs'
+#     <<: *build_ci
+#     script:
+#         - sudo composer.phar ci:codeception-acceptance
 
 sonar-scanner:
     stage: 'SonarQube'
     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
     only:
-        - master
-    <<: *build_ci
+        # - master
+        - add-codception
+    # <<: *build_ci
     script:
-        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+        # - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
+        - echo test
         
 build image:
     stage: 'Build'
@@ -203,4 +224,3 @@ production rollback:
         name: production
         url: https://fwdays.com
     when: manual
-

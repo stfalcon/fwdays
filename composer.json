@@ -25,6 +25,7 @@
         "ext-imagick": "*",
         "ext-json": "*",
         "ext-redis": "*",
+        "ext-zip": "*",
         "a2lix/translation-form-bundle": "1.x-dev",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "aws/aws-sdk-php": "^3.92.5",
@@ -75,13 +76,7 @@
         "vich/uploader-bundle": "^1.9.2"
     },
     "require-dev": {
-        "behat/behat": "*",
-        "behat/common-contexts": "*",
-        "behat/mink": "*",
-        "behat/mink-browserkit-driver": "*",
-        "behat/mink-extension": "*",
-        "behat/mink-selenium2-driver": "*",
-        "behat/symfony2-extension": "*",
+        "codeception/codeception": "^3.1",
         "escapestudios/symfony2-coding-standard": "^3.8",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hirak/prestissimo": "*",
@@ -101,7 +96,8 @@
         "platform": {
             "php": "7.3"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 0
     },
     "scripts": {
         "scripts": {
@@ -135,6 +131,12 @@
         "ci:phpunit": [
             "bin/phpunit -c phpunit.xml.dist"
         ],
+        "ci:codeception-acceptance": [
+            "./bin/codecept build",
+            "./bin/codecept run acceptancePhpWeb",
+            "./bin/codecept run acceptanceUser",
+            "./bin/codecept run acceptance"
+        ],
         "ci:static-analysis": [
             "bin/phpstan analyse -l 6 --no-progress  -c phpstan.neon src/"
         ],
@@ -149,10 +151,8 @@
             "bin/console doctrine:fixtures:load --no-interaction"
         ],
         "app:recreate-test-database": [
-            "bin/console doctrine:database:drop --force --if-exists --env=test",
             "bin/console doctrine:database:create --if-not-exists --env=test",
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env=test",
-            "bin/console doctrine:schema:validate --env=test",
             "bin/console doctrine:fixtures:load --no-interaction --env=test"
         ],
         "ci:pack": [

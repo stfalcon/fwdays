@@ -107,8 +107,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
 <br />
 <br />
 <br />')
-            ->setDate(new \DateTime('2028-04-19 11:10', new \DateTimeZone('Europe/Kiev')))
-            ->setDateEnd(new \DateTime('2028-04-19 20:15', new \DateTimeZone('Europe/Kiev')))
+            ->setDate(new \DateTime('+1 year', new \DateTimeZone('Europe/Kiev')))
             ->setReceivePayments(true)
             ->setCost(100);
         $manager->persist($event);
@@ -407,6 +406,10 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
      */
     private function generateUploadedFile($filename): ?UploadedFile
     {
+        if ('test' === $this->container->getParameter('kernel.environment')) {
+            return null;
+        }
+
         $fullPath = realpath($this->getKernelDir().'/../web/img/events/'.$filename);
         $tmpFile = tempnam(sys_get_temp_dir(), 'event');
         if (file_exists($fullPath)) {
