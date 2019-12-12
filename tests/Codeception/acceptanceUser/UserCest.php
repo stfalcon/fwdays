@@ -142,7 +142,7 @@ class UserCest
      */
     public function changeProfile(AcceptanceTester $I): void
     {
-        $I->wantTo('Check change user profiler');
+        $I->wantTo('Change user profiler');
 
         $I->amOnPage('/');
         static::iAmSigned($I);
@@ -152,7 +152,6 @@ class UserCest
 
         $I->waitForText('User info');
         foreach (self::PROFILE_FIELDS as $field => $value) {
-            $I->seeElement($field);
             $I->fillField($field, $value);
         }
         $I->seeElement('#profile-check', ['checked' => true]);
@@ -161,28 +160,35 @@ class UserCest
         static::seeAndClick($I, 'form button[type=submit]');
 
         $I->waitForText('Your profile updated');
-
-        // check update
-
-        $I->amOnPage('/cabinet');
-
-        static::seeAndClick($I, '.cabinet-head__link');
-
-        $I->waitForText('User info');
-        foreach (self::PROFILE_FIELDS as $field => $value) {
-            $I->seeElement($field);
-        }
-        $I->seeElement('#profile-check', ['checked' => false]);
-
-        foreach (self::PROFILE_FIELDS as $field => $value) {
-            $I->seeInField($field, $value);
-        }
     }
 
     /**
      * @param AcceptanceTester $I
      *
      * @depends changeProfile
+     */
+    public function checkProfile(AcceptanceTester $I): void
+    {
+        $I->wantTo('Check user profiler');
+
+        $I->amOnPage('/');
+        static::iAmSigned($I);
+        $I->amOnPage('/cabinet');
+
+        static::seeAndClick($I, '.cabinet-head__link');
+
+        $I->waitForText('User info');
+
+        foreach (self::PROFILE_FIELDS as $field => $value) {
+            $I->seeInField($field, $value);
+        }
+        $I->seeElement('#profile-check', ['checked' => false]);
+    }
+
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @depends checkProfile
      */
     public function changePassword(AcceptanceTester $I): void
     {
