@@ -491,6 +491,56 @@
     <br>
     <br>
 
+    <h2 class="h2">Картинки з ссилкою</h2>
+    <div class="container-email">
+        <a href="#" style="display: inline-block;
+                           max-width: 275px;
+                           width: 50%;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;"
+        >
+            <img src="https://dv8s0uqbdk63y.cloudfront.net/uploads/images/3a8882a443cb84395c89020ce02b1a85.png"
+                 height="106" width="216"
+            >
+        </a>
+        <a href="#" style="display: inline-block;
+                           max-width: 275px;
+                           width: 50%;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;"
+        >
+            <img src="https://dv8s0uqbdk63y.cloudfront.net/uploads/images/3a8882a443cb84395c89020ce02b1a85.png"
+                 height="106" width="216"
+            >
+        </a>
+    </div>
+    <br>
+    <textarea id="code-9-2" class="input-code" readonly hidden>
+        <a href="#" style="display: inline-block;
+                           max-width: 275px;
+                           width: 50%;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;">
+            <img src="https://dv8s0uqbdk63y.cloudfront.net/uploads/images/3a8882a443cb84395c89020ce02b1a85.png"
+                 height="106" width="216">
+        </a>
+        <a href="#" style="display: inline-block;
+                           max-width: 275px;
+                           width: 50%;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;">
+            <img src="https://dv8s0uqbdk63y.cloudfront.net/uploads/images/3a8882a443cb84395c89020ce02b1a85.png"
+                 height="106" width="216">
+        </a>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-9-2" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
     <h2 class="h2">Інформація про спікера</h2>
     <div class="container-email">
         <p style="margin: 10px 0;">
@@ -819,6 +869,10 @@
       CodeMirror.runMode(document.getElementById("code-9-1").value, "application/xml",
         document.getElementById("output-9-1"));
     }
+    function doHighlight9_2() {
+        CodeMirror.runMode(document.getElementById("code-9-2").value, "application/xml",
+            document.getElementById("output-9-2"));
+    }
     function doHighlight10() {
         CodeMirror.runMode(document.getElementById("code-10").value, "application/xml",
             document.getElementById("output-10"));
@@ -846,6 +900,7 @@
     doHighlight8();
     doHighlight9();
     doHighlight9_1();
+    doHighlight9_2();
     doHighlight10();
     doHighlight11();
     doHighlight12();
