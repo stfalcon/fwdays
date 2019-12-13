@@ -29,7 +29,7 @@ class ReferralController extends Controller
         /** @var User */
         $user = $this->getUser();
 
-        $referralService = $this->get('app.referral.service');
+        $referralService = $this->get(ReferralService::class);
 
         if ($referralService->getReferralCode($user) !== $code) {
             $response = new Response();

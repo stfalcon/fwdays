@@ -1,18 +1,12 @@
 services:
-    app.validator.event_block.text:
-        class: App\Validator\Constraints\EventBlock\EventBlockTypeText
-
-    app.pluralization.twig.extension:
-        class: App\Twig\AppPluralizationExtension
+    App\Twig\AppPluralizationExtension:
         tags:
             - { name: twig.extension}
 
-    app.url_for_redirect:
-        class: App\Service\UrlForRedirect
+    App\Service\UrlForRedirect:
         arguments: ["@router", "%locales%"]
 
-    app.ticket.service:
-        class: App\Service\TicketService
+    App\Service\TicketService:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "%application_default.config%"
@@ -20,46 +14,40 @@ services:
             - "@router"
             - "@security.token_storage"
 
-    app.datetime.twig.extension:
-        class: App\Twig\AppDateTimeExtension
+    App\Twig\AppDateTimeExtension:
         arguments:
             - '@sonata.intl.twig.extension.datetime'
             - '@translator'
         tags:
             - { name: twig.extension}
 
-    twig_asset_version_extension:
-        class: App\Twig\AssetVersionExtension
+    App\Twig\AssetVersionExtension:
         arguments: ["%kernel.root_dir%", "%kernel.environment%"]
         tags:
             - { name: twig.extension }
 
-    app.need_user_data.exception:
-        class: App\EventListener\ExceptionListener
+    App\EventListener\ExceptionListener:
         arguments: ["@session"]
         calls:
             - [setRouter, ['@router']]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
-    app.helper.new_pdf_generator:
-        class: App\Helper\NewPdfGeneratorHelper
+    App\Helper\NewPdfGeneratorHelper:
         arguments:
-            - "@twig"
-            - "@router"
-            - "@application.qr_code"
-            - "@kernel"
-            - "@app.svg_to_jpg.service"
-            - "@oneup_flysystem.event_image_filesystem"
-            - "@vich_uploader.property_mapping_factory"
+            - '@twig'
+            - '@router'
+            - '@Endroid\QrCode\QrCode'
+            - '@kernel'
+            - '@App\Service\SvgToJpg'
+            - '@oneup_flysystem.event_image_filesystem'
+            - '@vich_uploader.property_mapping_factory'
 
-    app.svg_to_jpg.service:
-        class: App\Service\SvgToJpg
+    App\Service\SvgToJpg:
         arguments:
             - "@monolog.logger"
 
-    app.my_mailer.service:
-        class: App\Service\MyMailer
+    App\Service\MyMailer:
         arguments: ['@swiftmailer.transport']
 
     App\EventListener\PromoCodeRequestListener:
@@ -69,12 +57,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
-    app.service.google_map_service:
-        class: App\Service\GoogleMapService
+    App\Service\GoogleMapService:
         arguments: ['%google_api_key%', '@buzz']
 
-    app.way_for_pay.service:
-        class: App\Service\PaymentProcess\WayForPayService
+    App\Service\PaymentProcess\WayForPayService:
         arguments:
             - '%application_default.config%'
             - '@translator'
@@ -83,11 +69,10 @@ services:
             - '@security.token_storage'
             - '@doctrine.orm.entity_manager'
             - '@logger'
-            - '@app.referral.service'
+            - '@App\Service\ReferralService'
             - '@session'
 
-    app.interkassa.service:
-        class: App\Service\PaymentProcess\InterkassaService
+    App\Service\PaymentProcess\InterkassaService:
         arguments:
             - "%application_default.config%"
             - "@translator"
@@ -95,23 +80,20 @@ services:
             - '@router'
             - '@doctrine.orm.entity_manager'
             - '@logger'
-            - '@app.referral.service'
+            - '@App\Service\ReferralService'
             - '@session'
             - '%interkassa_override_callbacks%'
 
-    app.event.service:
-       class: App\Service\EventService
+    App\Service\EventService:
        arguments:
             - '@app.event.repository.service'
             - '@app.ticket_cost_repository.service'
             - '@app.event_review.repository.service'
             - '@security.authorization_checker'
 
-    app.chart.service:
-       class: App\Service\ChartService
+    App\Service\ChartService: ~
 
-    app.analytics.service:
-        class: App\Service\AnalyticsService
+    App\Service\AnalyticsService:
         arguments: ["@doctrine.orm.entity_manager"]
 
     user.login_entry_point:
@@ -121,10 +103,10 @@ services:
     user.handler.login_handler:
         class: App\Handler\LoginHandler
         arguments:
-            - "@router"
-            - "@app.referral.service"
-            - "@fos_user.user_manager"
-            - "@app.url_for_redirect"
+            - '@router'
+            - '@App\Service\ReferralService'
+            - '@fos_user.user_manager'
+            - '@App\Service\UrlForRedirect'
 
     app.provider.oauth:
         class: App\Security\OAuthUserProvider
@@ -133,18 +115,16 @@ services:
             - {facebook: facebookID, google: googleID}
             - "@service_container"
 
-    app.payment.service:
-        class: App\Service\PaymentService
+    App\Service\PaymentService:
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@app.ticket.service'
+            - '@App\Service\TicketService'
             - '@translator'
             - '@security.token_storage'
-            - '@app.referral.service'
+            - '@App\Service\ReferralService'
             - '@session'
 
-    app.referral.service:
-        class: App\Service\ReferralService
+    App\Service\ReferralService:
         arguments: ['@service_container']
 
     sonata.block.service.statistic:
@@ -161,8 +141,8 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-    application.locale_url.listener:
-        class: App\EventListener\LocaleUrlResponseListener
+
+    App\EventListener\LocaleUrlResponseListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 128 }
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 128 }
@@ -173,8 +153,7 @@ services:
             - '@router'
             - '@maxmind.geoip'
 
-    application.sonata.locales.required:
-        class: App\Service\LocalsRequiredService
+    App\Service\LocalsRequiredService:
         arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
 
     app_liip_cache_resolve_command:
@@ -194,21 +173,17 @@ services:
         class: App\Service\MyFlySystemResolver
         arguments: ['', '@router.request_context', '', '', '']
 
-    trans_command_service:
-        class: App\Command\StfalconChangeTranslationCommand
+    App\Command\StfalconChangeTranslationCommand:
         calls:
             - [setContainer, ['@service_container']]
 
-    recalculate_ticket_sold_command_service:
-        class: App\Command\StfalconRecalculateTicketSoldCountCommand
+    App\Command\StfalconRecalculateTicketSoldCountCommand:
         calls:
             - [setContainer, ['@service_container']]
 
-    application.qr_code:
-        class: Endroid\QrCode\QrCode
+    Endroid\QrCode\QrCode: ~
 
-    application.mailer_helper:
-        class: App\Helper\StfalconMailerHelper
+    App\Helper\StfalconMailerHelper:
         arguments:
             - '@twig'
             - '@doctrine.orm.entity_manager'
@@ -216,39 +191,10 @@ services:
             - '@mailer'
             - "@translator"
 
-    application.promo_code.form.type:
-        class: App\Form\Type\PromoCodeFormType
-        tags:
-            - { name: form.type, alias: application_promo_code }
-
-    application.ticket.form.type:
-        class: App\Form\Type\TicketFormType
-        tags:
-            - { name: form.type, alias: application_ticket }
-
-    application.listener.payment:
-        class: App\EventListener\PaymentListener
+    App\EventListener\PaymentListener:
         tags:
             - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
         arguments: ['@service_container']
-
-#    application.current_event:
-#        class: App\Entity\Event
-#
-#    application.menu.main:
-#        class: Knp\Menu\MenuItem
-#        tags:
-#            - { name: knp_menu.menu, alias: main }
-#        factory: ['@application.menu_builder', createMainMenu]
-#        arguments: ['@request_stack']
-#        scope: request
-#        application.menu.event_sub:
-#            class: Knp\Menu\MenuItem
-#            tags:
-#                - { name: knp_menu.menu, alias: event_sub }
-#            factory: ['@application.menu_builder', createEventSubMenu]
-#            arguments: ['@request_stack', '@application.current_event']
-#            scope: request
 
     app.menu.main.redesign:
         class: Knp\Menu\MenuItem
@@ -264,16 +210,15 @@ services:
         factory: ['@application.menu_builder', createLoginMenu]
         arguments: ['@request_stack']
 
-    app.user_manager:
-        class: App\Model\UserManager
+    App\Model\UserManager:
         arguments:
-            - "@fos_user.util.password_updater"
-            - "@fos_user.util.canonical_fields_updater"
-            - "@fos_user.object_manager"
-            - "%fos_user.model.user.class%"
-            - "@validator"
-            - "@application.mailer_helper"
-            - "@session"
+            - '@fos_user.util.password_updater'
+            - '@fos_user.util.canonical_fields_updater'
+            - '@fos_user.object_manager'
+            - '%fos_user.model.user.class%'
+            - '@validator'
+            - '@App\Helper\StfalconMailerHelper'
+            - '@session'
 
     App\Command\StfalconMailerCommand:
         calls:

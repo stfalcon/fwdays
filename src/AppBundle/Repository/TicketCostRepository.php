@@ -6,7 +6,7 @@ use App\Entity\Event;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Class TicketCostRepository.
+ * TicketCostRepository.
  */
 class TicketCostRepository extends EntityRepository
 {
@@ -24,7 +24,7 @@ class TicketCostRepository extends EntityRepository
         $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
 
         $result = $qb->getQuery()->getResult();
-        $result = \is_array($result) ? array_shift($result) : null;
+        $result = \is_array($result) ? \array_shift($result) : null;
 
         $currentCost = $result ? $result['amount'] : null;
 

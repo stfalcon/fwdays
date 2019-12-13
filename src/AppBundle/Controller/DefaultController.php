@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Page;
 use App\Entity\User;
+use App\Model\UserManager;
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -72,7 +74,7 @@ class DefaultController extends Controller
             ->getSortedUserWannaVisitEventsByActive($user);
 
         $userPastEvents = $eventRepository
-            ->getSortedUserWannaVisitEventsByActive($user, false, 'DESC');
+            ->getSortedUserWannaVisitEventsByActive($user, false, Criteria::DESC);
 
         // list of events for refferal url
         $allActiveEvents = $eventRepository
@@ -83,7 +85,7 @@ class DefaultController extends Controller
             'user_active_events' => $userActiveEvents,
             'user_past_events' => $userPastEvents,
             'events' => $allActiveEvents,
-            'code' => $this->get('app.referral.service')->getReferralCode(),
+            'code' => $this->get(ReferralService::class)->getReferralCode(),
         ]);
     }
 
@@ -116,7 +118,7 @@ class DefaultController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        $userManager = $this->get('app.user_manager');
+        $userManager = $this->get(UserManager::class);
         $validator = $this->get('validator');
         $user->setPhone($phoneNumber);
         $errors = $validator->validate($user);

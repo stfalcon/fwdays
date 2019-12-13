@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Service\AnalyticsService;
+use App\Service\ChartService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,7 +24,7 @@ class AnalyticsController extends Controller
      */
     public function showDailyDynamicsAction(Event $event)
     {
-        $analyticsService = $this->get('app.analytics.service');
+        $analyticsService = $this->get(AnalyticsService::class);
         // summary statistics
         $summary = $analyticsService
             ->getSummaryTicketsSoldData($event);
@@ -35,7 +37,7 @@ class AnalyticsController extends Controller
                 ['label' => 'Tickets sold number', 'type' => 'number'],
             ]);
 
-            $chart = $this->container->get('app.chart.service')->calendarChart($dailyData);
+            $chart = $this->container->get(ChartService::class)->calendarChart($dailyData);
         }
 
         return $this->render('AppBundle:Analytics:daily_dynamics.html.twig', [
@@ -54,7 +56,7 @@ class AnalyticsController extends Controller
      */
     public function showComparisonWithPreviousEventsAction(Event $event)
     {
-        $analyticsService = $this->get('app.analytics.service');
+        $analyticsService = $this->get(AnalyticsService::class);
         $data = $analyticsService->getDataForCompareTicketSales($event);
 
         return $this->render('AppBundle:Analytics:comparison_with_previous_events.html.twig', [

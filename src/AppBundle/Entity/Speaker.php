@@ -19,7 +19,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @Vich\Uploadable
  *
  * @ORM\Table(name="event__speakers")
- * @ORM\Entity(repositoryClass="App\Repository\SpeakerRepository")
+ * @ORM\Entity()
  *
  * @UniqueEntity(
  *     "slug",

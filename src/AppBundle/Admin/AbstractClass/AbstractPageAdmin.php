@@ -32,7 +32,7 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper

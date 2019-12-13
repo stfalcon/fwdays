@@ -35,7 +35,7 @@ class PaymentServiceTest extends AbstractBaseFunctionalTest
         self::assertInstanceOf(Payment::class, $payment);
 
         $referralBalance = $user->getBalance();
-        $paymentService = $this->getContainer()->get('app.payment.service');
+        $paymentService = $this->getContainer()->get(PaymentService::class);
         $paymentService->checkTicketsPricesInPayment($payment, $event);
         $paymentService->addFwdaysBonusToPayment($payment, $payment->getAmount());
         $paymentService->setPaidByBonusMoney($payment, $event);

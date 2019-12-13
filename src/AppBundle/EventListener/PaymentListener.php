@@ -65,11 +65,11 @@ class PaymentListener
         if ($entity instanceof Payment) {
             if (Payment::STATUS_PAID === $entity->getStatus() && $this->runPaymentPostUpdate) {
                 $this->mailer = $this->container->get('mailer');
-                $this->mailerHelper = $this->container->get('application.mailer_helper');
-                $this->pdfGeneratorHelper = $this->container->get('app.helper.new_pdf_generator');
+                $this->mailerHelper = $this->container->get(StfalconMailerHelper::class);
+                $this->pdfGeneratorHelper = $this->container->get(NewPdfGeneratorHelper::class);
 
                 /** @var PaymentService $paymentService */
-                $paymentService = $this->container->get('app.payment.service');
+                $paymentService = $this->container->get(PaymentService::class);
                 $paymentService->setTicketsCostAsSold($entity);
                 $paymentService->calculateTicketsPromocode($entity);
                 /** @var EntityManager $em */

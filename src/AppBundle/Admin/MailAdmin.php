@@ -174,7 +174,7 @@ final class MailAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray(true);
 
         /** @var Mail $object */

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -135,11 +136,11 @@ class UserRepository extends EntityRepository
             $qb->andWhere($qb->expr()->eq('e.group', ':object_id'));
         }
 
-        $qb->setParameters([
-            'check_event' => $checkEventId,
-            'status' => Payment::STATUS_PAID,
-            'object_id' => $hasTicketObjectId,
-        ]);
+        $qb->setParameters(new ArrayCollection([
+            new Parameter('check_event', $checkEventId),
+            new Parameter('status', Payment::STATUS_PAID),
+            new Parameter('object_id', $hasTicketObjectId),
+        ]));
 
         return $qb->getQuery()->getResult();
     }

@@ -140,11 +140,11 @@ fos_user:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
     service:
-        user_manager: app.user_manager
+        user_manager: App\Model\UserManager
 
 app:
-#    payment_system: 'app.way_for_pay.service'
-    payment_system: 'app.interkassa.service'
+#    payment_system: 'App\Service\PaymentProcess\WayForPayService'
+    payment_system: 'App\Service\PaymentProcess\InterkassaService'
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"

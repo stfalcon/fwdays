@@ -4,10 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Mail;
 use App\Entity\MailQueue;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Parameter;
 
 /**
- * Class MailQueueRepository.
+ * MailQueueRepository.
  */
 class MailQueueRepository extends EntityRepository
 {
@@ -16,29 +18,21 @@ class MailQueueRepository extends EntityRepository
      *
      * @return MailQueue[]
      */
-    public function getMessages($limit)
-    {
-        return $this->createQueryBuilder('mq')
-                ->join('mq.mail', 'm')
-                ->where('m.start = 1')
-                    ->andWhere('mq.isSent = 0')
-                ->setMaxResults($limit)
-                ->getQuery()
-                ->getResult();
-    }
-
-    /**
-     * @param bool $sent
-     *
-     * @return array
-     */
-    public function getAllMessages($sent)
+    public function getMessages($limit): array
     {
         $qb = $this->createQueryBuilder('mq');
-        $qb->join('mq.mail', 'm')
-            ->where($qb->expr()->eq('mq.isSent', ':sent'))
-            ->setParameter('sent', $sent)
-        ;
+        $qb
+             ->join('mq.mail', 'm')
+             ->where($qb->expr()->eq('m.start', ':start'))
+             ->andWhere($qb->expr()->eq('mq.isSent', ':sent'))
+             ->setParameters(
+                 new ArrayCollection([
+                         new Parameter('start', true),
+                         new Parameter('sent', false),
+                 ])
+             )
+             ->setMaxResults($limit)
+         ;
 
         return $qb->getQuery()->getResult();
     }

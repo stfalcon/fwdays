@@ -9,6 +9,7 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
+use App\Helper\StfalconMailerHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,7 +72,7 @@ class AdminController extends Controller
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $body = $this->container->get('application.mailer_helper')->renderTwigTemplate(
+                    $body = $this->container->get(StfalconMailerHelper::class)->renderTwigTemplate(
                         'AppBundle:Registration:automatically.html.twig',
                         [
                             'user' => $user,

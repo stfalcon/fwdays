@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Mail;
 use App\Entity\MailQueue;
+use App\Helper\StfalconMailerHelper;
 use App\Service\EmailHashValidationService;
 use App\Service\MyMailer;
 use App\Service\TranslatedMailService;
@@ -62,9 +63,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         /** @var $em \Doctrine\ORM\EntityManager */
         $em = $container->get('doctrine.orm.entity_manager');
-        /** @var $mailer MyMailer */
-        $mailer = $container->get('app.my_mailer.service');
-        $mailerHelper = $container->get('application.mailer_helper');
+        $mailer = $container->get(MyMailer::class);
+        $mailerHelper = $container->get(StfalconMailerHelper::class);
         $queueRepository = $em->getRepository(MailQueue::class);
 
         $mailsQueue = $queueRepository->getMessages($limit);

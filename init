@@ -16,5 +16,6 @@ php bin/console do:fi:lo --no-interaction --env=$env
 php bin/console assets:install web --symlink
 php bin/console assetic:dump
 php bin/console lexik:translations:import --env=$env
+php bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard
 npm install
 npm run gulp-dev

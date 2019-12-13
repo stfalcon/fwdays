@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Helper\StfalconMailerHelper;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
@@ -105,7 +106,7 @@ class RegistrationController extends BaseController
                 $user = $form->getData();
                 $this->userManager->updateUser($user);
 
-                $this->container->get('application.mailer_helper')->sendEasyEmail(
+                $this->container->get(StfalconMailerHelper::class)->sendEasyEmail(
                     $this->container->get('translator')->trans('registration.email.subject'),
                     '@FOSUser/Registration/email.on_registration.html.twig',
                     ['user' => $user],

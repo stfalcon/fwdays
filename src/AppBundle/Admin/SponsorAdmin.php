@@ -63,7 +63,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     {
         /** @var Sponsor $subject */
         $subject = $this->getSubject();
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')

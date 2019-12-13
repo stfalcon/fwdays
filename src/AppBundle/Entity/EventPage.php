@@ -13,7 +13,7 @@ use Gedmo\Translatable\Translatable;
  * App\Entity\Event.
  *
  * @ORM\Table(name="event__pages")
- * @ORM\Entity(repositoryClass="App\Repository\EventPageRepository")
+ * @ORM\Entity()
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\EventPageTranslation")
  */

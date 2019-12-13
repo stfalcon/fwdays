@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Command\StfalconMailerCommand;
 use App\Entity\Mail;
 use App\Entity\User;
+use App\Helper\StfalconMailerHelper;
 use App\Service\TranslatedMailService;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -63,7 +64,7 @@ class MailAdminController extends CRUDController
 
         $em = $this->getDoctrine()->getManager();
         $mailer = $this->get('mailer');
-        $mailerHelper = $this->get('application.mailer_helper');
+        $mailerHelper = $this->get(StfalconMailerHelper::class);
         $users = $em->getRepository(User::class)->getAdmins();
         $isTestMessage = true;
         $error = false;

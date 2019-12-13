@@ -22,12 +22,12 @@ services:
 
     sonata.block.event.venue:
         class: App\Service\SonataBlock\EventBlock\VenueEventBlockService
-        arguments: ['sonata.block.event.venue', '@templating', '@app.event.service']
+        arguments: ['sonata.block.event.venue', '@templating', '@App\Service\EventService']
         tags: [name: 'sonata.block']
 
     sonata.block.event.program:
         class: App\Service\SonataBlock\EventBlock\ProgramEventBlockService
-        arguments: ['sonata.block.event.program', '@templating', '@app.event.service']
+        arguments: ['sonata.block.event.program', '@templating', '@App\Service\EventService']
         tags: [name: 'sonata.block']
 
     sonata.block.event.speakers:
@@ -57,7 +57,7 @@ services:
 
     sonata.block.event.ticket_status:
         class: App\Service\SonataBlock\EventBlock\TicketStatusEventBlockService
-        arguments: ['sonata.block.event.ticket_status', '@templating', '@app.ticket.service']
+        arguments: ['sonata.block.event.ticket_status', '@templating', '@App\Service\TicketService']
         tags: [name: 'sonata.block']
 
     sonata.block.footer:

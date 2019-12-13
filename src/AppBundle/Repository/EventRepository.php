@@ -5,7 +5,10 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\EventGroup;
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Parameter;
 
 /**
  * EventRepository.
@@ -22,14 +25,19 @@ class EventRepository extends EntityRepository
      *
      * @return array
      */
-    public function getSortedUserWannaVisitEventsByActive(User $user, $active = true, $sort = 'ASC'): array
+    public function getSortedUserWannaVisitEventsByActive(User $user, $active = true, $sort = Criteria::ASC): array
     {
         $qb = $this->createQueryBuilder('e');
         $qb
             ->join(User::class, 'u', 'WITH', 'u.id = :user_id')
             ->join('u.wantsToVisitEvents', 'wve', 'WITH', 'e.id = wve.id')
             ->where($qb->expr()->eq('e.active', ':active'))
-            ->setParameters(['user_id' => $user, 'active' => $active])
+            ->setParameters(
+                new ArrayCollection([
+                    new Parameter('user_id', $user),
+                    new Parameter('active', $active),
+                ])
+            )
             ->orderBy('e.date', $sort);
 
         return $qb->getQuery()->getResult();
@@ -40,19 +48,21 @@ class EventRepository extends EntityRepository
      *
      * @return Event|null
      */
-    public function findFutureEventFromSameGroup(EventGroup $eventGroup)
+    public function findFutureEventFromSameGroup(EventGroup $eventGroup): ?Event
     {
         $qb = $this->createQueryBuilder('e');
         $qb
             ->where($qb->expr()->eq('e.active', ':active'))
             ->andWhere($qb->expr()->gte('e.date', ':date'))
             ->andWhere($qb->expr()->eq('e.group', ':group'))
-            ->setParameters([
-                'active' => true,
-                'group' => $eventGroup,
-                'date' => new \DateTime(),
-            ])
-            ->orderBy('e.date', 'ASC')
+            ->setParameters(
+                new ArrayCollection([
+                    new Parameter('active', true),
+                    new Parameter('group', $eventGroup),
+                    new Parameter('date', new \DateTime()),
+                ])
+            )
+            ->orderBy('e.date', Criteria::ASC)
             ->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
@@ -63,17 +73,17 @@ class EventRepository extends EntityRepository
      *
      * @return Event[]
      */
-    public function findClosesActiveEvents($count)
+    public function findClosesActiveEvents(int $count): array
     {
         $qb = $this->createQueryBuilder('e');
         $qb
             ->where($qb->expr()->eq('e.active', ':active'))
             ->andWhere($qb->expr()->gte('e.date', ':date'))
-            ->setParameters([
-                'active' => true,
-                'date' => new \DateTime(),
-            ])
-            ->orderBy('e.date', 'ASC')
+            ->setParameters(new ArrayCollection([
+                new Parameter('active', true),
+                new Parameter('date', new \DateTime()),
+            ]))
+            ->orderBy('e.date', Criteria::ASC)
             ->setMaxResults($count);
 
         return $qb->getQuery()->getResult();

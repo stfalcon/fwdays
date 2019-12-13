@@ -13,7 +13,7 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="sponsors_category")
  *
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Entity()
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\CategoryTranslation")
  */

@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\User;
 use App\Exception\NeedUserDataException;
+use App\Helper\StfalconMailerHelper;
 use FOS\UserBundle\Model\UserManagerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
@@ -80,7 +81,7 @@ class OAuthUserProvider extends BaseClass
                     throw $needUserData;
                 }
 
-                $this->container->get('application.mailer_helper')->sendEasyEmail(
+                $this->container->get(StfalconMailerHelper::class)->sendEasyEmail(
                     $this->container->get('translator')->trans('registration.email.subject'),
                     '@FOSUser/Registration/email.on_registration.html.twig',
                     ['user' => $user],

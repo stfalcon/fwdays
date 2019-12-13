@@ -3,8 +3,8 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
-use App\Repository\CategoryRepository;
 use App\Repository\SponsorRepository;
+use Doctrine\ORM\EntityRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -17,21 +17,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PartnersEventBlockService extends AbstractBlockService
 {
-    /** @var SponsorRepository */
     private $partnerRepository;
-
-    /** @var CategoryRepository */
     private $partnerCategoryRepository;
 
     /**
      * PartnersEventBlockService constructor.
      *
-     * @param string             $name
-     * @param EngineInterface    $templating
-     * @param SponsorRepository  $partnerRepository
-     * @param CategoryRepository $partnerCategoryRepository
+     * @param string            $name
+     * @param EngineInterface   $templating
+     * @param SponsorRepository $partnerRepository
+     * @param EntityRepository  $partnerCategoryRepository
      */
-    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, CategoryRepository $partnerCategoryRepository)
+    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, EntityRepository $partnerCategoryRepository)
     {
         parent::__construct($name, $templating);
 

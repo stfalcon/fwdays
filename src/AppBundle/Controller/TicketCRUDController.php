@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
+use App\EventListener\PaymentListener;
 use App\Helper\NewPdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -33,9 +34,7 @@ class TicketCRUDController extends CRUDController
             throw new NotFoundHttpException(sprintf('unable to find the ticket with id : %s', $id));
         }
 
-        /** @var NewPdfGeneratorHelper $pdfGen */
-        $pdfGen = $this->get('app.helper.new_pdf_generator');
-
+        $pdfGen = $this->get(NewPdfGeneratorHelper::class);
         $html = $pdfGen->generateHTML($ticket);
 
         return new Response(
@@ -80,7 +79,7 @@ class TicketCRUDController extends CRUDController
                         $ticketCost->recalculateSoldCount();
                     }
                 }
-                $paymentListener = $this->get('application.listener.payment');
+                $paymentListener = $this->get(PaymentListener::class);
 
                 $paymentListener->setRunPaymentPostUpdate(false);
                 $em->flush();

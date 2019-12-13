@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Event;
-use App\Entity\Payment;
 use App\Entity\Ticket;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -34,37 +34,17 @@ class AnalyticsService
      */
     public function getDailyTicketsSoldData(Event $event)
     {
-        $dateFrom = $this->getFirstDayOfTicketSales($event);
-        $dateTo = $this->getLastDayOfTicketSales($event);
+        $ticketRepository = $this->em->getRepository(Ticket::class);
 
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('DATE(p.updatedAt) as date_of_sale, COUNT(t.id) as tickets_sold_number')
-            ->from(Ticket::class, 't')
-            ->join('t.payment', 'p')
-            ->where($qb->expr()->eq('t.event', ':event'))
-            ->andWhere($qb->expr()->gte('p.updatedAt', ':date_from'))
-            ->andWhere($qb->expr()->lte('p.updatedAt', ':date_to'))
-            ->andWhere($qb->expr()->eq('p.status', ':status'))
-            ->andWhere('p.amount > 0') // тільки реально продані квитки
-            ->setParameters([
-                'event' => $event,
-                'date_from' => $dateFrom,
-                'date_to' => $dateTo,
-                'status' => Payment::STATUS_PAID,
-            ])
-            ->addGroupBy('date_of_sale')
-        ;
-
-        $results = $qb
-            ->getQuery()
-            ->getResult()
-        ;
+        $since = $ticketRepository->getFirstDayOfTicketSales($event);
+        $till = $this->getLastDayOfTicketSales($event);
 
         $formattedResult = [];
 
-        if ($dateFrom instanceof \DateTime && $dateTo instanceof \DateTime) {
+        if ($since instanceof \DateTime && $till instanceof \DateTime) {
+            $results = $ticketRepository->findSoldTicketsCountBetweenDatesForEvent($since, $till, $event);
             // fill the possible gap in sequence of dates
-            $dateRange = new \DatePeriod($dateFrom, new \DateInterval('P1D'), $dateTo->modify('+1 day'));
+            $dateRange = new \DatePeriod($since, new \DateInterval('P1D'), $till->modify('+1 day'));
 
             foreach ($dateRange as $date) {
                 /* @var $date \DateTime */
@@ -93,25 +73,10 @@ class AnalyticsService
      */
     public function getSummaryTicketsSoldData(Event $event)
     {
-        $qbTicketsSold = $this->em->createQueryBuilder();
-        $qbTicketsSold->select('COUNT(t.id) as tickets_sold_number, SUM(t.amount) as tickets_amount')
-            ->from(Ticket::class, 't')
-            ->join('t.payment', 'p')
-            ->andWhere($qbTicketsSold->expr()->eq('t.event', ':event'))
-            ->andWhere($qbTicketsSold->expr()->eq('p.status', ':status'))
-            ->setParameters([
-                'event' => $event,
-                'status' => Payment::STATUS_PAID,
-            ])
-        ;
+        $ticketRepository = $this->em->getRepository(Ticket::class);
 
-        $qbFreeTickets = clone $qbTicketsSold;
-
-        $qbTicketsSold->andWhere('p.amount > 0');
-        $results = $qbTicketsSold->getQuery()->getSingleResult();
-
-        $qbFreeTickets->andWhere('p.amount = 0'); //free_tickets_number
-        $resultsFreeTickets = $qbFreeTickets->getQuery()->getSingleResult();
+        $results = $ticketRepository->getSoldTicketsCountForEvent($event);
+        $resultsFreeTickets = $ticketRepository->getSoldTicketsCountForEvent($event, true);
 
         $results['free_tickets_number'] = $resultsFreeTickets['tickets_sold_number'];
         $results['total_tickets_number'] = $results['free_tickets_number'] + $results['tickets_sold_number'];
@@ -134,28 +99,28 @@ class AnalyticsService
 
         // витягнути івенти з цієї групи
         $events = $this->em->getRepository(Event::class)
-            ->findBy(['group' => $event->getGroup()], ['date' => 'DESC'], 4);
+            ->findBy(['group' => $event->getGroup()], ['date' => Criteria::DESC], 4);
 
         // формуєм масив ключів з айдшок івентів, щоб використати його в формуванні заготовки масиву результатів
         $resultsKeys = [$event->getId()];
         foreach ($events as $e) {
-            /* @var $e Event */
+            /* @var Event $e */
             $resultsKeys[] = $e->getId();
         }
-        $resultsValueTemplate = array_fill_keys($resultsKeys, null);
+        $resultsValueTemplate = \array_fill_keys($resultsKeys, null);
         // заповнюєм заготовку масиву результатів
-        $results = array_fill(0, $weeksMaxNumber, $resultsValueTemplate);
+        $results = \array_fill(0, $weeksMaxNumber, $resultsValueTemplate);
 
         // витягуєм статистику продажів для івентів з цієї групи
         foreach ($events as $e) {
-            /* @var $e Event */
+            /* @var Event $e  */
             $dataForDailyStatistics = $this->getDailyTicketsSoldData($e);
-            $reverseDataForDailyStatistics = array_reverse($dataForDailyStatistics);
+            $reverseDataForDailyStatistics = \array_reverse($dataForDailyStatistics);
 
             // групуєм статистику продажів для івенту по тижнях
             $oneEventResults = [];
             foreach ($reverseDataForDailyStatistics as $oneDateData) {
-                /* @var $date \DateTime */
+                /** @var \DateTime $date */
                 $date = $oneDateData[0];
                 $number = $oneDateData[1];
 
@@ -164,7 +129,7 @@ class AnalyticsService
             }
 
             // мержим отриману статистику івента в загальний масив результатів
-            foreach (array_values($oneEventResults) as $week => $number) {
+            foreach (\array_values($oneEventResults) as $week => $number) {
                 if ($week == $weeksMaxNumber) {
                     break;
                 }
@@ -172,34 +137,7 @@ class AnalyticsService
             }
         }
 
-        return array_reverse($results);
-    }
-
-    /**
-     * Get the first day of ticket sales (get createdAt of the first event ticket).
-     *
-     * @param Event $event
-     *
-     * @throws \Doctrine\ORM\Query\QueryException
-     *
-     * @return \DateTime|null
-     */
-    private function getFirstDayOfTicketSales(Event $event): ?\DateTime
-    {
-        $qb = $this->em->createQueryBuilder();
-        $qb->select('t.createdAt')
-            ->from(Ticket::class, 't')
-            ->where($qb->expr()->eq('t.event', ':event'))
-            ->andWhere($qb->expr()->eq('t.event', ':event'))
-            ->setParameters([
-                'event' => $event,
-            ])
-            ->orderBy('t.createdAt', 'ASC')
-            ->setMaxResults(1);
-
-        $date = $qb->getQuery()->getOneOrNullResult();
-
-        return $date['createdAt'] ?? null;
+        return \array_reverse($results);
     }
 
     /**

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="pages")
- * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
+ * @ORM\Entity()
  *
  * @UniqueEntity(
  *     "slug",

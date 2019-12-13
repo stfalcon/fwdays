@@ -24,7 +24,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function findPaidPaymentsForUser(User $user)
+    public function findPaidPaymentsForUser(User $user): array
     {
         $qb = $this->createQueryBuilder('p');
 

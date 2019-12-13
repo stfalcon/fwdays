@@ -41,8 +41,7 @@ class TicketController extends Controller
             return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), 402);
         }
 
-        /** @var NewPdfGeneratorHelper $pdfGen */
-        $pdfGen = $this->get('app.helper.new_pdf_generator');
+        $pdfGen = $this->get(NewPdfGeneratorHelper::class);
 
         $html = $pdfGen->generateHTML($ticket);
 

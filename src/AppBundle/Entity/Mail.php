@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * App\Entity\Mail.
  *
  * @ORM\Table(name="event__mails")
- * @ORM\Entity(repositoryClass="App\Repository\MailRepository")
+ * @ORM\Entity()
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\EmailTranslation")
  */

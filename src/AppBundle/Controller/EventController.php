@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Review;
 use App\Entity\User;
+use App\Service\EventService;
+use App\Service\GoogleMapService;
+use App\Service\UrlForRedirect;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -51,10 +54,10 @@ class EventController extends Controller
      */
     public function showAction(Event $event): Response
     {
-        $referralService = $this->get('app.referral.service');
+        $referralService = $this->get(ReferralService::class);
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->render('@App/Redesign/Event/event.html.twig', $this->get('app.event.service')->getEventPages($event));
+        return $this->render('@App/Redesign/Event/event.html.twig', $this->get(EventService::class)->getEventPages($event));
     }
 
     /**
@@ -69,7 +72,7 @@ class EventController extends Controller
      */
     public function showEventReviewAction(Event $event, Review $review): Response
     {
-        $pages = $this->get('app.event.service')->getEventPages($event, $review);
+        $pages = $this->get(EventService::class)->getEventPages($event, $review);
 
         return $this->render('AppBundle:Redesign/Speaker:report_review.html.twig', $pages);
     }
@@ -87,7 +90,7 @@ class EventController extends Controller
      */
     public function getEventMapPosition(Event $event): JsonResponse
     {
-        if ($this->get('app.service.google_map_service')->setEventMapPosition($event)) {
+        if ($this->get(GoogleMapService::class)->setEventMapPosition($event)) {
             $this->getDoctrine()->getManager()->flush($event);
 
             return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getLng()]);
@@ -136,7 +139,7 @@ class EventController extends Controller
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
         }
 
-        return $this->redirect($this->get('app.url_for_redirect')->getRedirectUrl($request->headers->get('referer')));
+        return $this->redirect($this->get(UrlForRedirect::class)->getRedirectUrl($request->headers->get('referer')));
     }
 
     /**
@@ -187,7 +190,7 @@ class EventController extends Controller
      */
     public function showEventVenuePageAction(Event $event): Response
     {
-        $resultArray = $this->get('app.event.service')->getEventPages($event);
+        $resultArray = $this->get(EventService::class)->getEventPages($event);
         if (null === $resultArray['venuePage']) {
             throw $this->createNotFoundException(sprintf('Unable to find page by slug: venue'));
         }

@@ -22,7 +22,7 @@ class PromoCodeRepository extends EntityRepository
      *
      * @throws \Exception
      */
-    public function findActivePromoCodeByCodeAndEvent($code, $event)
+    public function findActivePromoCodeByCodeAndEvent($code, $event): ?PromoCode
     {
         $qb = $this->createQueryBuilder('pc');
         $qb->andWhere($qb->expr()->eq('pc.event', ':event'))

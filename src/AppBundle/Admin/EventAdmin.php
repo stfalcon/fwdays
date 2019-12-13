@@ -6,6 +6,7 @@ use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Form\Type\MyGedmoTranslationsType;
+use App\Service\GoogleMapService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -42,7 +43,7 @@ class EventAdmin extends AbstractTranslateAdmin
             $this->removeNullTranslate($block);
         }
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
-            $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+            $this->getConfigurationPool()->getContainer()->get(GoogleMapService::class)
                 ->setEventMapPosition($object);
         }
     }
@@ -56,7 +57,7 @@ class EventAdmin extends AbstractTranslateAdmin
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
-        $this->getConfigurationPool()->getContainer()->get('app.service.google_map_service')
+        $this->getConfigurationPool()->getContainer()->get(GoogleMapService::class)
             ->setEventMapPosition($object);
     }
 
@@ -116,7 +117,7 @@ class EventAdmin extends AbstractTranslateAdmin
             $this->saveCity = $subject->getCity();
             $this->savePlace = $subject->getPlace();
         }
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
         $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $datetimePickerOptions =

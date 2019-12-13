@@ -2,7 +2,7 @@
 
 namespace App\Service\SonataBlock;
 
-use App\Repository\PageRepository;
+use Doctrine\ORM\EntityRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -14,17 +14,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FooterBlockService extends AbstractBlockService
 {
-    /** @var PageRepository */
     private $pageRepository;
 
     /**
      * ProgramEventBlockService constructor.
      *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param PageRepository  $pageRepository
+     * @param string           $name
+     * @param EngineInterface  $templating
+     * @param EntityRepository $pageRepository
      */
-    public function __construct($name, EngineInterface $templating, PageRepository $pageRepository)
+    public function __construct($name, EngineInterface $templating, EntityRepository $pageRepository)
     {
         parent::__construct($name, $templating);
 
