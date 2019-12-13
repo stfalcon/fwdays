@@ -9,7 +9,7 @@ class UserCest
         '#fos_user_profile_form_name' => 'userName',
         '#fos_user_profile_form_surname' => 'userSurname',
         '#fos_user_profile_form_email' => 'user@gmail.com',
-        '#fos_user_profile_form_phone' => '+380681234567',
+        '#fos_user_profile_form_phone' => '681234567',
         '#fos_user_profile_form_country' => 'Ukraine',
         '#fos_user_profile_form_city' => 'City',
         '#fos_user_profile_form_company' => 'Company',
@@ -47,17 +47,13 @@ class UserCest
         $I->wantTo('Check language switcher');
 
         $I->amOnPage('/');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
-        static::iAmNotSigned($I);
-
-        static::seeAndClick($I, '.language_switcher');
-
         $I->seeCurrentUrlEquals('/app_test.php/');
         static::iAmNotSigned($I, 'uk');
 
         static::seeAndClick($I, '.language_switcher');
-        static::iAmNotSigned($I);
+
         $I->seeCurrentUrlEquals('/app_test.php/en/');
+        static::iAmNotSigned($I);
     }
 
     /**
@@ -77,7 +73,7 @@ class UserCest
         static::seeAndClick($I, '.header__auth--sign-in');
         $I->waitForText('Sign in');
         static::seeAndClick($I, '.btn--facebook');
-        $I->waitForText('Log Into Facebook');
+
         $I->seeCurrentHostEquals('https://www.facebook.com');
     }
 
@@ -180,7 +176,11 @@ class UserCest
         $I->waitForText('User info');
 
         foreach (self::PROFILE_FIELDS as $field => $value) {
-            $I->seeInField($field, $value);
+            if ('#fos_user_profile_form_phone' === $field) {
+                $I->seeInField($field, '+380'.$value);
+            } else {
+                $I->seeInField($field, $value);
+            }
         }
         $I->seeElement('#profile-check', ['checked' => false]);
     }
