@@ -50,6 +50,8 @@ class PromoCodeCest
 
         $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'Promo code for JsDays');
         $I->click('#payer-block-edit-1 .edit-user-btn');
+        $I->wait(1); //if validation error before - need second click
+        $I->click('#payer-block-edit-1 .edit-user-btn');
         $I->waitForText('(coupon discount 10%)');
         $I->dontSee('Promo code not found!');
     }
