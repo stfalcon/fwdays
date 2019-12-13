@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Traits\TranslateTrait;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="event_block")
  * @ORM\Entity()
- *
- * @AppAssert\EventBlock\EventBlockTypeText()
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\BlockTranslation")
  */
@@ -78,6 +75,11 @@ class EventBlock implements Translatable
      * @ORM\Column(type="text", nullable=true)
      *
      * @Gedmo\Translatable(fallback=true)
+     *
+     * @Assert\Expression(
+     *     "(value !== null and value !== '') or this.getType() !== 'text'",
+     *     message="введите текст."
+     * )
      */
     private $text;
 
