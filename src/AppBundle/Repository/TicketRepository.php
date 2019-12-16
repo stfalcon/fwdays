@@ -39,7 +39,8 @@ class TicketRepository extends EntityRepository
             $qb->andWhere($qb->expr()->gt('t.amount', ':zero'));
         }
 
-        $qb->setParameters(new ArrayCollection([
+        $qb->setParameters(
+            new ArrayCollection([
                 new Parameter('event', $event),
                 new Parameter('status', Payment::STATUS_PAID),
                 new Parameter('zero', 0),

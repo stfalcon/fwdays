@@ -7,6 +7,7 @@ use App\Entity\Event;
 use App\Entity\User;
 use App\Form\Type\MyGedmoTranslationsType;
 use App\Service\GoogleMapService;
+use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;

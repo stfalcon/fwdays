@@ -3,6 +3,7 @@
 namespace App\Admin\AbstractClass;
 
 use App\Form\Type\MyGedmoTranslationsType;
+use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 

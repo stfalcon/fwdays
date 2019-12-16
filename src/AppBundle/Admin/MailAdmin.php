@@ -12,6 +12,7 @@ use App\Entity\Translation\EmailTranslation;
 use App\Entity\User;
 use App\Form\Type\MyGedmoTranslationsType;
 use App\Repository\MailQueueRepository;
+use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;

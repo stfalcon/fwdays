@@ -22,16 +22,16 @@ class MailQueueRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('mq');
         $qb
-             ->join('mq.mail', 'm')
-             ->where($qb->expr()->eq('m.start', ':start'))
-             ->andWhere($qb->expr()->eq('mq.isSent', ':sent'))
-             ->setParameters(
-                 new ArrayCollection([
-                         new Parameter('start', true),
-                         new Parameter('sent', false),
-                 ])
-             )
-             ->setMaxResults($limit)
+            ->join('mq.mail', 'm')
+            ->where($qb->expr()->eq('m.start', ':start'))
+            ->andWhere($qb->expr()->eq('mq.isSent', ':sent'))
+            ->setParameters(
+                new ArrayCollection([
+                    new Parameter('start', true),
+                    new Parameter('sent', false),
+                ])
+            )
+            ->setMaxResults($limit)
          ;
 
         return $qb->getQuery()->getResult();

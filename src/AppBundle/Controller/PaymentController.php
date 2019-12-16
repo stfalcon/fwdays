@@ -10,6 +10,7 @@ use App\Exception\BadAutoRegistrationDataException;
 use App\Model\UserManager;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
+use App\Service\PaymentService;
 use App\Service\TicketService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

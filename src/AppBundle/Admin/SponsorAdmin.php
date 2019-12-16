@@ -5,6 +5,7 @@ namespace App\Admin;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Sponsor;
 use App\Form\Type\MyGedmoTranslationsType;
+use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 

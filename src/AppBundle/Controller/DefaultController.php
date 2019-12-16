@@ -7,6 +7,7 @@ use App\Entity\Page;
 use App\Entity\User;
 use App\Model\UserManager;
 use App\Repository\EventRepository;
+use App\Service\ReferralService;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -100,7 +101,7 @@ class DefaultController extends Controller
      */
     public function passwordAlreadyRequestedAction(): Response
     {
-        return $this->render('FOSUserBundle:Resetting:password_already_requested.html.twig');
+        return $this->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig');
     }
 
     /**
