@@ -42,7 +42,10 @@ class LocaleUrlResponseListener
     public function __construct(string $defaultLocale, array $locales, string $cookieName, I18nRouter $routerService, GeoipManager $geoIpService)
     {
         $this->defaultLocale = $defaultLocale;
-        $this->locales = $locales;
+        $this->locales = [];
+        foreach ($locales as $locale) {
+            $this->locales[] = $locale;
+        }
         $this->cookieName = $cookieName;
         $this->routerService = $routerService;
         $this->geoIpService = $geoIpService;
