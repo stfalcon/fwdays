@@ -21,4 +21,4 @@ extensions:
             - composer.phar app:recreate-test-database
 #            - ./bin/console doctrine:fixtures:load --no-interaction --env=test
 #            - /opt/phantomjs-2.1.1-linux-x86_64/bin/phantomjs --webdriver=4444 &
-            - ./chromedriver --url-base=/wd/hub &
+            - /opt/chromedriver --url-base=/wd/hub &
