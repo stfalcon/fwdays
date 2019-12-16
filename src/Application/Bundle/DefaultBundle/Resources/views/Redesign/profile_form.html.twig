@@ -64,8 +64,9 @@
             <div class="form-group">
                 <label class="form-label" for="fos_user_profile_form_emailLanguage">{{ 'user.email.language'|trans }}</label>
                 <select class="input" id="fos_user_profile_form_emailLanguage" name="fos_user_profile_form[emailLanguage]">
-                    {% for name, local in locales %}
-                        <option {% if user and user.emailLanguage == local %}selected{% endif %} value="{{ local }}">{{ name }}</option>
+                    {% for local in locales %}
+                        {% set trans_lang = 'user.lang_' ~ local %}
+                        <option {% if user and user.emailLanguage == local %}selected{% endif %} value="{{ local }}">{{ trans_lang|trans }}</option>
                     {% endfor %}
                 </select>
             </div>

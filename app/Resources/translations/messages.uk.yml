@@ -58,6 +58,9 @@ user.by_user.title: Як користувач соцмереж
 user.by_email.title: Або поштою
 user.create.title: Створити аккаунт
 user.already_have_account.title: У мене вже є обліковий запис
+user.lang_uk: Українська
+user.lang_en: English
+
 speaker.about: Про доповідача
 speaker.no_review.text: Тема доповіді уточнюється
 pay.i_have_promo.title: У мене є промокод
