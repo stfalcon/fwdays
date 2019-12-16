@@ -3,6 +3,7 @@ RUN sudo wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedri
     sudo unzip /tmp/chromedriver.zip -d /opt/ && sudo rm /tmp/chromedriver.zip
 RUN sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb && \
     sudo dpkg -i /tmp/chrome.deb; exit 0
+RUN sudo rm /tmp/chrome.deb && sudo chown -R www-data:www-data /tmp
 RUN sudo apt-get install -fy && sudo apt-get update && sudo apt-get install -y php7.3-zip --option=Dpkg::Options::=--force-confdef
 
 #FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
