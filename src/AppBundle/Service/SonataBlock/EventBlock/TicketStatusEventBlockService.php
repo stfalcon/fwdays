@@ -3,7 +3,7 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
-use App\Service\TicketService;
+use App\Service\Ticket\TicketService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

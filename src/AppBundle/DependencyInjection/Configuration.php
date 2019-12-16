@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        $rootNode = $treeBuilder->root('application_default');
+        $rootNode = $treeBuilder->root('app');
         $rootNode
             ->children()
                 ->scalarNode('payment_system')

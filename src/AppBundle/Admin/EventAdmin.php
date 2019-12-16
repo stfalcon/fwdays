@@ -4,10 +4,10 @@ namespace App\Admin;
 
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
-use App\Entity\User;
 use App\Form\Type\MyGedmoTranslationsType;
 use App\Service\GoogleMapService;
 use App\Service\LocalsRequiredService;
+use App\Service\User\UserService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -68,12 +68,10 @@ class EventAdmin extends AbstractTranslateAdmin
     public function getBatchActions()
     {
         $container = $this->getConfigurationPool()->getContainer();
-        $token = $container->get('security.token_storage')->getToken();
-        $isSuperAdmin = false;
-        if ($token) {
-            $user = $token->getUser();
-            $isSuperAdmin = $user instanceof User ? \in_array('ROLE_SUPER_ADMIN', $user->getRoles()) : false;
-        }
+
+        $userService = $container->get(UserService::class);
+        $user = $userService->getCurrentUser();
+        $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true);
 
         if (!$isSuperAdmin) {
             return [];

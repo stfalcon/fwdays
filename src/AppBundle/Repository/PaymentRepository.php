@@ -51,7 +51,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return Payment|null
      */
-    public function findPaymentByUserAndEvent(User $user, Event $event): ?Payment
+    public function findPendingPaymentByUserAndEvent(User $user, Event $event): ?Payment
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -77,7 +77,7 @@ class PaymentRepository extends EntityRepository
      *
      * @return Payment|null
      */
-    public function findPaymentByUserWithoutEvent(User $user): ?Payment
+    public function findPendingPaymentByUserWithoutEvent(User $user): ?Payment
     {
         $qb = $this->createQueryBuilder('p');
 

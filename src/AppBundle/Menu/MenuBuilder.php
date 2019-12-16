@@ -2,11 +2,10 @@
 
 namespace App\Menu;
 
-use App\Entity\User;
+use App\Service\User\UserService;
 use Knp\Menu\FactoryInterface;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Translation\Translator;
 
 /**
@@ -23,7 +22,7 @@ class MenuBuilder
 
     private $locales;
 
-    private $tokenService;
+    private $userService;
 
     private $mobileDetector;
 
@@ -31,15 +30,15 @@ class MenuBuilder
      * @param \Knp\Menu\FactoryInterface $factory
      * @param Translator                 $translator
      * @param array                      $locales
-     * @param TokenStorageInterface      $tokenService
+     * @param UserService                $userService
      * @param MobileDetector             $mobileDetector
      */
-    public function __construct(FactoryInterface $factory, $translator, $locales, $tokenService, $mobileDetector)
+    public function __construct(FactoryInterface $factory, $translator, $locales, UserService $userService, $mobileDetector)
     {
         $this->factory = $factory;
         $this->translator = $translator;
         $this->locales = $locales;
-        $this->tokenService = $tokenService;
+        $this->userService = $userService;
         $this->mobileDetector = $mobileDetector;
     }
 
@@ -62,9 +61,8 @@ class MenuBuilder
             ->setAttribute('class', 'header-nav__item');
         $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'page', 'routeParameters' => ['slug' => 'about']])
             ->setAttribute('class', 'header-nav__item');
-        $token = $this->tokenService->getToken();
-        $user = $token ? $token->getUser() : null;
-        if ($user instanceof User) {
+
+        if ($this->userService->isUserAccess()) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet'])
                 ->setAttribute('class', 'header-nav__item header-nav__item--mob');
         } else {
@@ -103,9 +101,7 @@ class MenuBuilder
         $request = $requestStack->getCurrentRequest();
         $menu->setUri($request->getRequestUri());
 
-        $token = $this->tokenService->getToken();
-        $user = $token ? $token->getUser() : null;
-        if ($user instanceof User) {
+        if ($this->userService->isUserAccess()) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet']);
         } else {
             $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])

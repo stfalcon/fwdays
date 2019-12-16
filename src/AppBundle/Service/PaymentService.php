@@ -9,11 +9,12 @@ use App\Entity\PromoCode;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
+use App\Service\Ticket\TicketService;
+use App\Service\User\UserService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -28,7 +29,7 @@ class PaymentService
     private $em;
     private $ticketService;
     private $translator;
-    private $tokenStorage;
+    private $userService;
     private $referralService;
     private $session;
 
@@ -36,16 +37,16 @@ class PaymentService
      * @param EntityManager       $em
      * @param TicketService       $ticketService
      * @param TranslatorInterface $translator
-     * @param TokenStorage        $tokenStorage
+     * @param UserService         $userService
      * @param ReferralService     $referralService
      * @param Session             $session
      */
-    public function __construct(EntityManager $em, TicketService $ticketService, TranslatorInterface $translator, TokenStorage $tokenStorage, ReferralService $referralService, Session $session)
+    public function __construct(EntityManager $em, TicketService $ticketService, TranslatorInterface $translator, UserService $userService, ReferralService $referralService, Session $session)
     {
         $this->em = $em;
         $this->ticketService = $ticketService;
         $this->translator = $translator;
-        $this->tokenStorage = $tokenStorage;
+        $this->userService = $userService;
         $this->referralService = $referralService;
         $this->session = $session;
     }
@@ -57,10 +58,9 @@ class PaymentService
      *
      * @return Payment
      */
-    public function createPaymentForCurrentUserWithTicket($ticket)
+    public function createPaymentForCurrentUserWithTicket(?Ticket $ticket)
     {
-        /* @var  User $user */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->userService->getCurrentUser();
         $payment = new Payment();
         $payment->setUser($user);
 
@@ -362,17 +362,16 @@ class PaymentService
     {
         $this->session->set(PaymentController::NEW_PAYMENT_SESSION_KEY, false);
 
-        /** @var User $user */
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->userService->getCurrentUser();
 
         /* @var Ticket|null $ticket  */
         $ticket = $this->em->getRepository(Ticket::class)->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
         $paymentRepository = $this->em->getRepository(Payment::class);
         /** @var Payment|null $payment */
-        $payment = $paymentRepository->findPaymentByUserAndEvent($user, $event);
+        $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
         if (!$payment) {
-            $payment = $paymentRepository->findPaymentByUserWithoutEvent($user);
+            $payment = $paymentRepository->findPendingPaymentByUserWithoutEvent($user);
         }
 
         if (!$ticket && !$payment) {
@@ -389,9 +388,7 @@ class PaymentService
 
         if ($ticket && !$payment) {
             $payment = $this->createPaymentForCurrentUserWithTicket($ticket);
-        }
-
-        if ($ticket && $payment->isPaid()) {
+        } elseif ($ticket && $payment->isPaid()) {
             $payment = $this->createPaymentForCurrentUserWithTicket(null);
         }
 
@@ -444,11 +441,8 @@ class PaymentService
     public function getPendingPaymentIfAccess(Event $event, ?Ticket $ticket = null): ?Payment
     {
         $payment = null;
-        $currentUser = $this->tokenStorage->getToken()->getUser();
+        $currentUser = $this->userService->getCurrentUser();
 
-        if (!$currentUser instanceof User) {
-            return null;
-        }
         $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
         if ($this->session->has($sessionKey)) {
             $paymentId = $this->session->get($sessionKey);

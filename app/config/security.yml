@@ -20,8 +20,8 @@ security:
                     facebook: "/login/check-facebook"
                     google: "/login/check-google"
                 oauth_user_provider:
-                    service: app.provider.oauth
-                success_handler: user.handler.login_handler
+                    service: App\Security\OAuthUserProvider
+                success_handler: App\Handler\LoginHandler
 
             form_login:
                 login_path: fos_user_security_login
@@ -30,8 +30,8 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 remember_me: true
                 use_referer: true
-                success_handler: user.handler.login_handler
-            entry_point: user.login_entry_point
+                success_handler: App\Handler\LoginHandler
+            entry_point: App\EventListener\LoginEntryPoint
             remember_me:
                 secret: "%secret%"
                 lifetime: 31536000 # 365 days in seconds

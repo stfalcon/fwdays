@@ -57,7 +57,7 @@ services:
 
     sonata.block.event.ticket_status:
         class: App\Service\SonataBlock\EventBlock\TicketStatusEventBlockService
-        arguments: ['sonata.block.event.ticket_status', '@templating', '@App\Service\TicketService']
+        arguments: ['sonata.block.event.ticket_status', '@templating', '@App\Service\Ticket\TicketService']
         tags: [name: 'sonata.block']
 
     sonata.block.footer:

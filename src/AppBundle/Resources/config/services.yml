@@ -6,13 +6,30 @@ services:
     App\Service\UrlForRedirect:
         arguments: ["@router", "%locales%"]
 
-    App\Service\TicketService:
+    App\Service\Ticket\WaitPaymentReceiveEventState:
+        calls: [[setTranslator, ['@translator']]]
+    App\Service\Ticket\DoneEventState:
+        calls: [[setTranslator, ['@translator']]]
+    App\Service\Ticket\SaleOpenEventState:
+        arguments: ['@router']
+        calls: [[setTranslator, ['@translator']]]
+    App\Service\Ticket\SoldOutEventState:
+        calls: [[setTranslator, ['@translator']]]
+    App\Service\Ticket\WannaVisitEventState:
+        calls: [[setTranslator, ['@translator']]]
+
+    App\Service\Ticket\TicketService:
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "%application_default.config%"
-            - "@translator"
-            - "@router"
-            - "@security.token_storage"
+            - '@doctrine.orm.entity_manager'
+            - '%app.config%'
+            - '@translator'
+            - '@router'
+            - '@App\Service\User\UserService'
+        calls:
+            - [addEventState, ['@App\Service\Ticket\DoneEventState']]
+            - [addEventState, ['@App\Service\Ticket\WannaVisitEventState']]
+            - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
+            - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
     App\Twig\AppDateTimeExtension:
         arguments:
@@ -62,7 +79,7 @@ services:
 
     App\Service\PaymentProcess\WayForPayService:
         arguments:
-            - '%application_default.config%'
+            - '%app.config%'
             - '@translator'
             - '@request_stack'
             - '@router'
@@ -74,7 +91,7 @@ services:
 
     App\Service\PaymentProcess\InterkassaService:
         arguments:
-            - "%application_default.config%"
+            - "%app.config%"
             - "@translator"
             - "@request_stack"
             - '@router'
@@ -96,19 +113,17 @@ services:
     App\Service\AnalyticsService:
         arguments: ["@doctrine.orm.entity_manager"]
 
-    user.login_entry_point:
-        class: App\EventListener\LoginEntryPoint
+    App\EventListener\LoginEntryPoint:
         arguments: ["@jms_i18n_routing.router"]
 
-    user.handler.login_handler:
-        class: App\Handler\LoginHandler
+    App\Handler\LoginHandler:
         arguments:
             - '@router'
             - '@App\Service\ReferralService'
             - '@fos_user.user_manager'
             - '@App\Service\UrlForRedirect'
 
-    app.provider.oauth:
+    App\Security\OAuthUserProvider:
         class: App\Security\OAuthUserProvider
         arguments:
             - "@fos_user.user_manager"
@@ -118,9 +133,9 @@ services:
     App\Service\PaymentService:
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@App\Service\TicketService'
+            - '@App\Service\Ticket\TicketService'
             - '@translator'
-            - '@security.token_storage'
+            - '@App\Service\User\UserService'
             - '@App\Service\ReferralService'
             - '@session'
 
@@ -133,9 +148,8 @@ services:
             - { name: sonata.block }
         arguments: ['sonata.block.service.statistic', '@templating']
 
-    application.menu_builder:
-        class: App\Menu\MenuBuilder
-        arguments: ['@knp_menu.factory', '@translator', '%jms_i18n_routing.locales%', '@security.token_storage', '@mobile_detect.mobile_detector']
+    App\Menu\MenuBuilder:
+        arguments: ['@knp_menu.factory', '@translator', '%jms_i18n_routing.locales%', '@App\Service\User\UserService', '@mobile_detect.mobile_detector']
 
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
@@ -156,8 +170,7 @@ services:
     App\Service\LocalsRequiredService:
         arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
 
-    app_liip_cache_resolve_command:
-        class: App\Command\AppResolveLiipCacheCommand
+    App\Command\AppResolveLiipCacheCommand:
         calls:
             - [setContainer, ['@service_container']]
 
@@ -200,14 +213,14 @@ services:
         class: Knp\Menu\MenuItem
         tags:
             - { name: knp_menu.menu, alias: main_redesign }
-        factory: ['@application.menu_builder', createMainMenuRedesign]
+        factory: ['@App\Menu\MenuBuilder', createMainMenuRedesign]
         arguments: ['@request_stack']
 
     app.menu.main.login.redesign:
         class: Knp\Menu\MenuItem
         tags:
             - { name: knp_menu.menu, alias: login_redesign }
-        factory: ['@application.menu_builder', createLoginMenu]
+        factory: ['@App\Menu\MenuBuilder', createLoginMenu]
         arguments: ['@request_stack']
 
     App\Model\UserManager:
@@ -244,7 +257,7 @@ services:
             - { name: serializer.normalizer }
 
     App\Serializer\Normalizer\TicketNormalizer:
-        arguments: ['@translator', '@serializer.normalizer.object', '%application_default.config%']
+        arguments: ['@translator', '@serializer.normalizer.object', '%app.config%']
         tags:
             - { name: serializer.normalizer }
 
@@ -252,3 +265,7 @@ services:
 
     App\Service\TranslatedMailService:
         arguments: ['%locale%']
+
+    App\Service\User\UserService:
+        calls:
+            - [setTokenStorage, ['@security.token_storage']]

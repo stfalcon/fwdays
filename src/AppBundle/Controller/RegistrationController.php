@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Handler\LoginHandler;
 use App\Helper\StfalconMailerHelper;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
@@ -162,7 +163,7 @@ class RegistrationController extends BaseController
         $response = new RedirectResponse($this->container->get('router')->generate('events'));
         $this->authenticateUser($user, $response);
 
-        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get(LoginHandler::class)->processAuthSuccess($request, $user);
     }
 
     /**
@@ -179,7 +180,7 @@ class RegistrationController extends BaseController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->get('user.handler.login_handler')->processAuthSuccess($request, $user);
+        return $this->get(LoginHandler::class)->processAuthSuccess($request, $user);
     }
 
     /**

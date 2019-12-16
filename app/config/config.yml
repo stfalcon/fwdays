@@ -159,7 +159,7 @@ accord_mandrill_swift_mailer:
 hwi_oauth:
     firewall_names: [main]
     connect:
-        account_connector: app.provider.oauth
+        account_connector: App\Security\OAuthUserProvider
     resource_owners:
         facebook:
             type:                facebook

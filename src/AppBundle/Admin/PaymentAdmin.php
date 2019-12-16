@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Payment;
-use App\Entity\User;
+use App\Service\User\UserService;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -140,13 +140,10 @@ final class PaymentAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $container = $this->getConfigurationPool()->getContainer();
+        $userService = $container->get(UserService::class);
+        $user = $userService->getCurrentUser();
         $environment = $container->getParameter('kernel.environment');
-        $token = $container->get('security.token_storage')->getToken();
-        $isSuperAdmin = false;
-        if ($token) {
-            $user = $token->getUser();
-            $isSuperAdmin = $user instanceof User ? (\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment) : false;
-        }
+        $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
 
         $subject = $this->getSubject();
 

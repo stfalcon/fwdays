@@ -5,16 +5,7 @@ namespace App\Service\PaymentProcess;
 use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
-use App\Entity\User;
-use App\Service\ReferralService;
-use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * WayForPayService.
@@ -36,26 +27,6 @@ class WayForPayService extends AbstractPaymentProcessService
     private const PAYMENT_SYSTEM_NAME = 'WayForPay';
 
     private const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
-
-    protected $securityToken;
-
-    /**
-     * @param array                 $appConfig
-     * @param TranslatorInterface   $translator
-     * @param RequestStack          $requestStack
-     * @param Router                $router
-     * @param TokenStorageInterface $securityToken
-     * @param EntityManager         $em
-     * @param Logger                $logger
-     * @param ReferralService       $referralService
-     * @param Session               $session
-     */
-    public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, TokenStorageInterface $securityToken, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
-    {
-        parent::__construct($appConfig, $translator, $requestStack, $router, $em, $logger, $referralService, $session);
-
-        $this->securityToken = $securityToken;
-    }
 
     /**
      * @param array $data
@@ -157,9 +128,9 @@ class WayForPayService extends AbstractPaymentProcessService
 
         $params['merchantSignature'] = $this->getSignHash($params);
 
-        $user = $this->securityToken->getToken()->getUser();
+        $user = $payment->getUser();
 
-        if ($user instanceof User && null !== $user->getRecToken()) {
+        if (null !== $user->getRecToken()) {
             $params['recToken'] = $user->getRecToken();
         }
 
@@ -167,10 +138,10 @@ class WayForPayService extends AbstractPaymentProcessService
         $params['merchantTransactionSecureType'] = 'AUTO';
         $params['merchantTransactionType'] = 'SALE';
         $params['orderNo'] = $payment->getId();
-        $params['clientFirstName'] = $payment->getUser()->getName();
-        $params['clientLastName'] = $payment->getUser()->getSurname();
-        $params['clientEmail'] = $payment->getUser()->getEmail();
-        $params['clientPhone'] = $payment->getUser()->getPhone();
+        $params['clientFirstName'] = $user->getName();
+        $params['clientLastName'] = $user->getSurname();
+        $params['clientEmail'] = $user->getEmail();
+        $params['clientPhone'] = $user->getPhone();
         $params['language'] = 'uk' === $this->locale ? 'ua' : $this->locale;
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';

@@ -1,15 +1,13 @@
 services:
 
-    app.fos_use.profile_update.subscriper:
-        class: App\EventListener\FOSUserEvents\UserProfileUpdateSubscriber
+    App\EventListener\FOSUserEvents\UserProfileUpdateSubscriber:
         arguments:
             - "@session"
             - "@router"
         tags:
             - { name: kernel.event_subscriber }
 
-    app.fos_use.registration.subscriper:
-        class: App\EventListener\FOSUserEvents\UserRegistrationSubscriber
+    App\EventListener\FOSUserEvents\UserRegistrationSubscriber:
         arguments:
             - "@session"
             - "@router"
@@ -17,16 +15,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    app.fos_use.resetting.subscriper:
-        class: App\EventListener\FOSUserEvents\UserResettingSubscriber
+    App\EventListener\FOSUserEvents\UserResettingSubscriber:
         arguments:
             - "@session"
             - "@router"
         tags:
             - { name: kernel.event_subscriber }
 
-    app.fos_use.change_password.subscriper:
-        class: App\EventListener\FOSUserEvents\UserChangePasswordSubscriber
+    App\EventListener\FOSUserEvents\UserChangePasswordSubscriber:
         arguments:
             - "@session"
             - "@router"

@@ -8,8 +8,7 @@ services:
         tags:
             - { name: monolog.processor, method: __invoke }
 
-    app.prepare_file_storage:
-        class: App\DataFixtures\PrepareFileStorage
+    App\DataFixtures\PrepareFileStorage:
         arguments:
             - '%kernel.environment%'
             -
