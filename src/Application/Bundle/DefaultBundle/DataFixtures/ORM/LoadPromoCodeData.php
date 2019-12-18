@@ -73,13 +73,13 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
     public function load(ObjectManager $manager)
     {
         foreach (self::PROMO_DATA as $key => $promoData) {
-            $event = $this->getReference($promoData['event']);
+            $event = $this->getReference((string) $promoData['event']);
             $promoCode = (new PromoCode())
-                ->setTitle($promoData['title'])
-                ->setCode($promoData['code'])
+                ->setTitle((string) $promoData['title'])
+                ->setCode((string) $promoData['code'])
                 ->setEvent($event)
-                ->setDiscountAmount($promoData['discount'])
-                ->setMaxUseCount($promoData['max'])
+                ->setDiscountAmount((int) $promoData['discount'])
+                ->setMaxUseCount((int) $promoData['max'])
             ;
             if ($promoData['date_end']) {
                 if ('event' === $promoData['date_end']) {

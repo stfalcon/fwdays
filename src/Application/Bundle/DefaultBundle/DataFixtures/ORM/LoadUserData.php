@@ -27,7 +27,7 @@ class LoadUserData extends AbstractFixture
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setEnabled(true)
             ->setBalance(5000);
-        ;
+
         $manager->persist($userAdmin);
         $this->addReference('user-admin', $userAdmin);
 
