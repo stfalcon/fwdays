@@ -37,13 +37,18 @@ stages:
 
 functional-test:
     tags:
-        - k8s-deploy
+        - heavy
     stage: 'Codeception'
     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/docker-compose:v1.0
     only:
         - add-codception
     variables:
         COMPOSE_INTERACTIVE_NO_CLI: 1
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_TLS_CERTDIR: ""
+        DOCKER_DRIVER: overlay2
+    services:
+        - docker:19.03.1-dind
     script:
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker-compose up -d
