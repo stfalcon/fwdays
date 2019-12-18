@@ -55,7 +55,7 @@ functional-test:
         - sleep 10
         - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
         - docker-compose exec -T php ./init "test"
-        - docker-compose exec -T php composer.phar ci:codeception-acceptance
+        - docker-compose exec -T php bin/run-codeception
 
 # CI jobs
 composer checks:
