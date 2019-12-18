@@ -39,7 +39,7 @@ functional-test:
     tags:
         - heavy
     stage: 'Codeception'
-    image: docker/compose
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/docker-compose:v1.0
     only:
         - add-codception
     variables:
