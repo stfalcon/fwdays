@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.2
 cache:
     paths:
         - vendor/
@@ -23,7 +23,7 @@ variables:
     before_script:
         - cp app/config/parameters.yml.stag app/config/parameters.yml
         - unxz geodata/GeoLiteCity.dat.xz
-        - composer.phar install --no-dev --optimize-autoloader
+        - composer.phar install --optimize-autoloader
         - npm install
 
 stages:
@@ -110,7 +110,7 @@ static analysis:
 
 sonar-scanner:
     stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.1
     only:
         - master
     <<: *build_ci
