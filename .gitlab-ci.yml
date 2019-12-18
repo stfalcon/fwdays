@@ -53,7 +53,7 @@ functional-test:
         - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
         - docker-compose up -d
         - sleep 10
-        - docker-compose exec -T php unxz geodata/GeoLiteCity.dat.xz
+        - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
         - docker-compose exec -T php ./init "test"
         - docker-compose exec -T php composer.phar ci:codeception-acceptance
 
