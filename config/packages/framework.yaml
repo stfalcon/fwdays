@@ -1,0 +1,31 @@
+parameters:
+    rss.title: "Frameworks Days"
+    rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
+    app.sponsor_image: "uploads/sponsors"
+    app.speaker_image: "uploads/speakers"
+    app.event_image: "uploads/events"
+    app.event_header_video: "uploads/video"
+    app.upload_image: "uploads/images"
+    app.media_cache: '/media/cache/'
+
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+#    router:
+#        resource: "%kernel.root_dir%/config/routing.yml"
+#        strict_requirements: "%kernel.debug%"
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    serializer:
+        enabled: true
+        enable_annotations: true
+        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+    session:
+        handler_id: snc_redis.session.handler
+#        handler_id: session.handler.native_file
+#        save_path: "%kernel.root_dir%/sessions/"

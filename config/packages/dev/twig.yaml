@@ -1,0 +1,3 @@
+twig:
+    globals:
+        fb_page_id: "%env(FACEBOOK_PAGE_ID)%"

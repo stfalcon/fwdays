@@ -1,0 +1,15 @@
+doctrine:
+    dbal:
+        url: 'pdo_mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%?charset=utf8mb4'
+    orm:
+        auto_generate_proxy_classes: '%env(APP_DEBUG)%'
+        auto_mapping: true
+        mappings:
+            StofDoctrineExtensionsBundle: false
+        dql:
+            datetime_functions:
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                WEEK: DoctrineExtensions\Query\Mysql\Week
+                DAY: DoctrineExtensions\Query\Mysql\Day
+                DATE: DoctrineExtensions\Query\Mysql\Date

@@ -1,0 +1,14 @@
+#assetic:
+#    debug: "%env(APP_DEBUG)%"
+#    use_controller: false
+#    filters:
+#        yui_css:
+#            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
+#        yui_js:
+#            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.6.jar"
+#    workers:
+#        cache_busting: ~
+
+webpack_encore:
+    # The path where Encore is building the assets - i.e. Encore.setOutputPath()
+    output_path: '%kernel.project_dir%/public/build'

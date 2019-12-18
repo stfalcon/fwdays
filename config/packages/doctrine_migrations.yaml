@@ -1,0 +1,10 @@
+doctrine_migrations:
+    dir_name: '%kernel.project_dir%/src/Migrations'
+    # namespace is arbitrary but should be different from App\Migrations
+    # as migrations classes should NOT be autoloaded
+    namespace: DoctrineMigrations
+
+ruvents_doctrine_fixes:
+    default:
+        schema_namespace_fix:
+            namespace: 'public'

@@ -1,0 +1,3 @@
+doctrine:
+    dbal:
+        dbname: fwdays_com_testing

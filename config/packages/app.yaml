@@ -1,0 +1,10 @@
+app:
+    #    payment_system: 'App\Service\PaymentProcess\WayForPayService'
+    payment_system: App\Service\PaymentProcess\InterkassaService
+    wayforpay:
+        shop_id: '%env(WAYFORPAY_SHOP_ID)%'
+        secret: '%env(WAYFORPAY_SECRET)%'
+    interkassa:
+        shop_id: '%env(INTERKASSA_SHOP_ID)%'
+        secret: '%env(INTERKASSA_SECRET)%'
+    discount: 0.2

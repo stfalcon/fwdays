@@ -1,0 +1,28 @@
+parameters:
+    locale: uk
+    locales:
+        - uk
+        - en
+
+imports:
+    - { resource: "@AppBundle/Resources/config/admin.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
+
+services:
+    monolog.processor.added_host:
+        class: Monolog\Processor\WebProcessor
+        tags:
+            - { name: monolog.processor, method: __invoke }
+
+    App\DataFixtures\PrepareFileStorage:
+        arguments:
+            - '%kernel.environment%'
+            -
+                - '@oneup_flysystem.sponsor_image_filesystem'
+                - '@oneup_flysystem.speaker_photo_filesystem'
+                - '@oneup_flysystem.event_image_filesystem'
+                - '@oneup_flysystem.upload_image_filesystem'
+
+    App\DataFixtures\ORM\:
+        resource: '../../src/AppBundle/DataFixtures/ORM/*'
+        tags: ['doctrine.fixture.orm']

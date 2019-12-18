@@ -3,25 +3,14 @@
 /composer.phar
 
 # Symfony
-/app/config/parameters.yml
+.env.local
+/.env.local.php
+/public/bundles/
+/var/
 /vendor/
-/bin/
-
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
 
 # Application
 /web/assets
-/web/bundles/*
 /web/cache/*
 /web/uploads/*
 
