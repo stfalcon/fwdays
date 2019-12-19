@@ -31,7 +31,7 @@ class SaleOpenEventState extends AbstractBaseEventState
         if ('price_block' === $eventStateData->getPosition()) {
             $ticketCost = $eventStateData->getTicketCost();
             $amount = $ticketCost ? $ticketCost->getAmount() : $eventStateData->getEvent()->getBiggestTicketCost()->getAmount();
-            $altAmount = $ticketCost ? '≈$'.\number_format((float) $ticketCost->getAltAmount(), 0, ',', ' ') : '';
+            $altAmount = $ticketCost ? '≈$'.\number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
             $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
                     ->trans(
                         'payment.price',
