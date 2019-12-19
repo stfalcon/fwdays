@@ -6,6 +6,7 @@ if [[ -z "$1" ]]; then
 else
     echo "test environment"
     env=test
+    sudo chown -R www-data /app/vendor /app/node_modules
 fi
 
 cp app/config/parameters.yml.docker app/config/parameters.yml

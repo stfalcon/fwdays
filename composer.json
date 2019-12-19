@@ -25,7 +25,6 @@
         "ext-imagick": "*",
         "ext-json": "*",
         "ext-redis": "*",
-        "ext-zip": "*",
         "a2lix/translation-form-bundle": "1.x-dev",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "aws/aws-sdk-php": "^3.92.5",
