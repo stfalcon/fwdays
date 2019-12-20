@@ -1,6 +1,13 @@
 doctrine:
     dbal:
-        url: 'pdo_mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%?charset=utf8mb4'
+        dbname: '%env(APP_DBNAME)%'
+        host: '%env(APP_DBHOST)%'
+        port: '%env(APP_DBPORT)%'
+        user: '%env(APP_DBUSER)%'
+        password: '%env(APP_DBPASS)%'
+        driver: 'pdo_mysql'
+        charset: 'utf8mb4'
+#        url: 'pdo_mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%?charset=utf8mb4&serverVersion=5.6'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore

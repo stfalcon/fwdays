@@ -5,6 +5,10 @@ namespace App\Service;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
+use App\Repository\UserRepository;
+use App\Service\User\UserService;
+use App\Traits\EntityManagerTrait;
+use App\Traits\RequestStackTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,28 +19,24 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReferralService
 {
+    use EntityManagerTrait;
+
     const REFERRAL_CODE = 'REFERRALCODE';
     const REFERRAL_BONUS = 100;
     const SPECIAL_REFERRAL_BONUS = 500;
     const SPECIAL_BONUS_EVENT = 'js-fwdays-2019';
 
-    /**
-     * @var Container
-     */
-    protected $container;
+    private $userService;
+    private $userRepository;
 
     /**
-     * @var Request
+     * @param UserService $userService
+     * @param UserRepository $userRepository
      */
-    protected $request;
-
-    /**
-     * @param Container $container
-     */
-    public function __construct($container)
+    public function __construct(UserService $userService, UserRepository $userRepository)
     {
-        $this->container = $container;
-        $this->request = $this->container->get('request_stack')->getCurrentRequest();
+        $this->userService = $userService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -49,152 +49,99 @@ class ReferralService
     public function getReferralCode($user = null)
     {
         if (null === $user) {
-            $user = $this->container->get('security.token_storage')->getToken()->getUser();
+            $user = $this->userService->getCurrentUser();
         }
 
         $referralCode = $user->getReferralCode();
 
         if (true === empty($referralCode)) {
-            $user->setReferralCode(md5($user->getEmail().time()));
-            $em = $this->container->get('doctrine.orm.default_entity_manager');
+            $user->setReferralCode(\md5($user->getEmail().time()));
 
-            $em->persist($user);
-            $em->flush();
+            $this->persistAndFlush($user);
         }
 
         return $user->getReferralCode();
     }
 
     /**
-     * Начисляет рефералы.
-     *
      * @param Payment $payment
-     *
-     * @return bool
      *
      * @throws \Exception
      */
-    public function chargingReferral(Payment $payment)
+    public function chargingReferral(Payment $payment): void
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
         $userReferral = $payment->getUser()->getUserReferral();
 
-        $tickets = $payment->getTickets();
-        /** @var Ticket $firstTicket */
-        $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
-        $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
+        if ($userReferral instanceof User) {
+            $tickets = $payment->getTickets();
+            /** @var Ticket $firstTicket */
+            $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
+            $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
 
-        if ($userReferral) {
             $balance = $userReferral->getBalance() + $bonus;
             $userReferral->setBalance($balance);
-
-            $em->flush();
-
-            return true;
+            $this->em->flush();
         }
-
-        return false;
     }
 
     /**
      * @param Payment $payment
-     *
-     * @return bool
      */
-    public function utilizeBalance(Payment $payment)
+    public function utilizeBalance(Payment $payment): void
     {
         if ($payment->getFwdaysAmount() > 0) {
-            $em = $this->container->get('doctrine.orm.default_entity_manager');
             $user = $payment->getUser();
             $userBalance = $payment->getUser()->getBalance();
             $balance = $userBalance - $payment->getFwdaysAmount();
             $user->setBalance($balance);
 
-            $em->flush();
-
-            return true;
+            $this->em->flush();
         }
-
-        return false;
     }
 
     /**
      * @param string $referralCode
      *
      * @return User|null
-     *
-     * @throws \Exception
      */
-    public function getUserByReferralCode($referralCode)
+    public function getUserByReferralCode(string $referralCode): ?User
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-
-        $referralUser = $em->getRepository(User::class)
-            ->findOneBy(['referralCode' => $referralCode]);
-
-        return $referralUser;
+        return $this->userRepository->findOneBy(['referralCode' => $referralCode]);
     }
 
     /**
      * Save ref code in cookies.
      *
      * @param Request $request
-     *
-     * @return bool
      */
-    public function handleRequest($request)
+    public function handleRequest(Request $request): void
     {
         if ($request->query->has('ref')) {
             $code = $request->query->get('ref');
 
-            //уже используется реф. код
-            if (false == $request->cookies->has(self::REFERRAL_CODE)) {
-                $user = $this->getUser();
+            if (false === $request->cookies->has(self::REFERRAL_CODE)) {
+                $user = $this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL);
 
-                //user authorize
-                if (null !== $user) {
+                if ($user instanceof User) {
                     if ($user->getReferralCode() == $code) {
-                        return false;
+                        return;
                     }
 
                     $userReferral = $this->getUserByReferralCode($code);
 
                     if ($userReferral) {
-                        $em = $this->container->get('doctrine.orm.default_entity_manager');
-
                         $user->setUserReferral($userReferral);
 
-                        $em->persist($user);
-                        $em->flush();
+                        $this->persistAndFlush($user);
                     }
                 }
 
                 $response = new Response();
                 $expire = time() + (10 * 365 * 24 * 3600);
-
+                //@todo check this
                 $response->headers->setCookie(new Cookie(self::REFERRAL_CODE, $code, $expire));
                 $response->send();
             }
         }
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User|null
-     *
-     * @throws \Exception
-     */
-    private function getUser()
-    {
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
-            return null;
-        }
-
-        if (!\is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return $user;
     }
 }

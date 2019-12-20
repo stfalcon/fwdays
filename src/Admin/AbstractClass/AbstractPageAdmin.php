@@ -2,7 +2,7 @@
 
 namespace App\Admin\AbstractClass;
 
-use App\Form\Type\MyGedmoTranslationsType;
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -13,9 +13,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 abstract class AbstractPageAdmin extends AbstractTranslateAdmin
 {
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
-     *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper
+     * {@inheritdoc}
      */
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -27,9 +25,7 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
-     *
-     * @return \Sonata\AdminBundle\Form\FormMapper
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -38,7 +34,7 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-                ->add('translations', MyGedmoTranslationsType::class, [
+                ->add('translations', TranslationsType::class, [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [

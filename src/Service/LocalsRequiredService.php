@@ -13,15 +13,13 @@ class LocalsRequiredService
     private $locales;
 
     /**
-     * GetSonataLocalsRequiredService constructor.
-     *
-     * @param string $defaultLocale
+     * @param string $locale
      * @param array  $locales
      */
-    public function __construct($defaultLocale, array $locales)
+    public function __construct(string $locale, array $locales)
     {
         $this->locales = $locales;
-        $this->defaultLocale = $defaultLocale;
+        $this->defaultLocale = $locale;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Event;
 use App\Entity\Ticket;
+use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 
@@ -12,15 +13,17 @@ use Doctrine\ORM\EntityManager;
  */
 class AnalyticsService
 {
-    /** @var EntityManager */
-    protected $em;
+    private $em;
+    private $ticketRepository;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager    $em
+     * @param TicketRepository $ticketRepository
      */
-    public function __construct($em)
+    public function __construct(EntityManager $em, TicketRepository $ticketRepository)
     {
         $this->em = $em;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
@@ -34,15 +37,13 @@ class AnalyticsService
      */
     public function getDailyTicketsSoldData(Event $event)
     {
-        $ticketRepository = $this->em->getRepository(Ticket::class);
-
-        $since = $ticketRepository->getFirstDayOfTicketSales($event);
+        $since = $this->ticketRepository->getFirstDayOfTicketSales($event);
         $till = $this->getLastDayOfTicketSales($event);
 
         $formattedResult = [];
 
         if ($since instanceof \DateTime && $till instanceof \DateTime) {
-            $results = $ticketRepository->findSoldTicketsCountBetweenDatesForEvent($since, $till, $event);
+            $results = $this->ticketRepository->findSoldTicketsCountBetweenDatesForEvent($since, $till, $event);
             // fill the possible gap in sequence of dates
             $dateRange = new \DatePeriod($since, new \DateInterval('P1D'), $till->modify('+1 day'));
 
@@ -73,10 +74,8 @@ class AnalyticsService
      */
     public function getSummaryTicketsSoldData(Event $event)
     {
-        $ticketRepository = $this->em->getRepository(Ticket::class);
-
-        $results = $ticketRepository->getSoldTicketsCountForEvent($event);
-        $resultsFreeTickets = $ticketRepository->getSoldTicketsCountForEvent($event, true);
+        $results = $this->ticketRepository->getSoldTicketsCountForEvent($event);
+        $resultsFreeTickets = $this->ticketRepository->getSoldTicketsCountForEvent($event, true);
 
         $results['free_tickets_number'] = $resultsFreeTickets['tickets_sold_number'];
         $results['total_tickets_number'] = $results['free_tickets_number'] + $results['tickets_sold_number'];

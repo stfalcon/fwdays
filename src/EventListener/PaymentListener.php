@@ -7,49 +7,53 @@ use App\Entity\Mail;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Helper\NewPdfGeneratorHelper;
-use App\Helper\StfalconMailerHelper;
+use App\Helper\PdfGeneratorHelper;
+use App\Helper\MailerHelper;
+use App\Repository\TicketRepository;
 use App\Service\PaymentService;
 use App\Service\TranslatedMailService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Class PaymentListener.
+ * PaymentListener.
  */
 class PaymentListener
 {
-    /** @var StfalconMailerHelper $mailerHelper */
     private $mailerHelper;
-
-    /** @var NewPdfGeneratorHelper $pdfGeneratorHelper */
     private $pdfGeneratorHelper;
-
-    /** @var \Swift_Mailer $mailer */
     private $mailer;
-    /**
-     * @var Container
-     */
-    private $container;
+    private $paymentService;
+    private $translatedMailService;
+    private $ticketRepository;
+    private $locale;
 
     /** @var bool */
     private $runPaymentPostUpdate = true;
 
     /**
-     * PaymentListener constructor.
-     *
-     * @param Container $container
+     * @param string                $locale
+     * @param MailerHelper  $mailerHelper
+     * @param PdfGeneratorHelper    $pdfGeneratorHelper
+     * @param \Swift_Mailer         $mailer
+     * @param PaymentService        $paymentService
+     * @param TranslatedMailService $translatedMailService
+     * @param TicketRepository      $ticketRepository
      */
-    public function __construct($container)
+    public function __construct(string $locale, MailerHelper $mailerHelper, PdfGeneratorHelper $pdfGeneratorHelper, \Swift_Mailer $mailer, PaymentService $paymentService, TranslatedMailService $translatedMailService, TicketRepository $ticketRepository)
     {
-        $this->container = $container;
+        $this->locale = $locale;
+        $this->mailerHelper = $mailerHelper;
+        $this->pdfGeneratorHelper = $pdfGeneratorHelper;
+        $this->mailer = $mailer;
+        $this->paymentService = $paymentService;
+        $this->translatedMailService = $translatedMailService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
      * @param bool $runPaymentPostUpdate
      */
-    public function setRunPaymentPostUpdate($runPaymentPostUpdate)
+    public function setRunPaymentPostUpdate(bool $runPaymentPostUpdate): void
     {
         $this->runPaymentPostUpdate = $runPaymentPostUpdate;
     }
@@ -61,50 +65,38 @@ class PaymentListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        if ($entity instanceof Payment) {
-            if (Payment::STATUS_PAID === $entity->getStatus() && $this->runPaymentPostUpdate) {
-                $this->mailer = $this->container->get('mailer');
-                $this->mailerHelper = $this->container->get(StfalconMailerHelper::class);
-                $this->pdfGeneratorHelper = $this->container->get(NewPdfGeneratorHelper::class);
+        $payment = $args->getEntity();
+        if ($payment instanceof Payment && Payment::STATUS_PAID === $payment->getStatus() && $this->runPaymentPostUpdate) {
+            $this->paymentService->setTicketsCostAsSold($payment);
+            $this->paymentService->calculateTicketsPromocode($payment);
 
-                /** @var PaymentService $paymentService */
-                $paymentService = $this->container->get(PaymentService::class);
-                $paymentService->setTicketsCostAsSold($entity);
-                $paymentService->calculateTicketsPromocode($entity);
-                /** @var EntityManager $em */
-                $em = $this->container->get('doctrine.orm.entity_manager');
-                $tickets = $em->getRepository(Ticket::class)
-                    ->getAllTicketsByPayment($entity);
+            $tickets = $this->ticketRepository->getAllTicketsByPayment($payment);
 
-                /** @var Ticket $ticket */
-                foreach ($tickets as $ticket) {
-                    /** @var $user User */
-                    $user = $ticket->getUser();
+            /** @var Ticket $ticket */
+            foreach ($tickets as $ticket) {
+                /** @var $user User */
+                $user = $ticket->getUser();
 
-                    /** @var Event $event */
-                    $event = $ticket->getEvent();
+                /** @var Event $event */
+                $event = $ticket->getEvent();
 
-                    $mail = new Mail();
-                    $mail->addEvent($event);
+                $mail = new Mail();
+                $mail->addEvent($event);
 
-                    $translatedMailService = $this->container->get(TranslatedMailService::class);
-                    $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+                $translatedMails = $this->translatedMailService->getTranslatedMailArray($mail);
 
-                    $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-                    $defaultLocal = $this->container->getParameter('locale');
-                    $message = $this->mailerHelper->formatMessage($user, $translatedMails[$defaultLocal], false, true);
+                $html = $this->pdfGeneratorHelper->generateHTML($ticket);
+                $message = $this->mailerHelper->formatMessage($user, $translatedMails[$this->locale], false, true);
 
-                    $message->setSubject($event->getName());
-                    $message->attach(
-                        \Swift_Attachment::newInstance(
-                            $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
-                            $ticket->generatePdfFilename()
-                        )
-                    );
+                $message->setSubject($event->getName());
+                $message->attach(
+                    new \Swift_Attachment(
+                        $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
+                        $ticket->generatePdfFilename()
+                    )
+                );
 
-                    $this->mailer->send($message);
-                }
+                $this->mailer->send($message);
             }
         }
     }

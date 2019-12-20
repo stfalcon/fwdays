@@ -4,15 +4,24 @@ namespace App\Repository;
 
 use App\Entity\Mail;
 use App\Entity\MailQueue;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Parameter;
 
 /**
  * MailQueueRepository.
  */
-class MailQueueRepository extends EntityRepository
+class MailQueueRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, MailQueue::class);
+    }
+
     /**
      * @param int $limit
      *

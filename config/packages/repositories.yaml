@@ -1,31 +1,31 @@
-services:
-
-    app.partners_repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:Sponsor']
-
-    app.partners_category_repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:Category']
-
-    app.ticket_cost_repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:TicketCost']
-
-    app.event_review.repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:Review']
-
-    app.event.repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:Event']
-
-    app.page.repository.service:
-        class: Doctrine\ORM\EntityRepository
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
-        arguments: ['AppBundle:Page']
+#services:
+#
+#    app.partners_repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:Sponsor']
+#
+#    app.partners_category_repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:Category']
+#
+#    app.ticket_cost_repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:TicketCost']
+#
+#    app.event_review.repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:Review']
+#
+#    app.event.repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:Event']
+#
+#    app.page.repository.service:
+#        class: Doctrine\ORM\EntityRepository
+#        factory: 'doctrine.orm.default_entity_manager:getRepository'
+#        arguments: ['AppBundle:Page']

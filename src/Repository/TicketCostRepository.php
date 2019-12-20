@@ -3,13 +3,23 @@
 namespace App\Repository;
 
 use App\Entity\Event;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\TicketCost;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * TicketCostRepository.
  */
-class TicketCostRepository extends EntityRepository
+class TicketCostRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, TicketCost::class);
+    }
+
     /**
      * Get event current cost.
      *

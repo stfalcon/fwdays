@@ -3,35 +3,34 @@
 namespace App\EventListener;
 
 use App\Service\PaymentService;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use App\Traits;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * PromoCodeRequestListener.
  */
-class PromoCodeRequestListener
+class PromoCodeRequestListener implements EventSubscriberInterface
 {
+    use Traits\SessionTrait;
+    use Traits\RouterTrait;
+
     private const PROMO_CODE_QUERY_KEY = 'promocode';
 
-    private $router;
-    private $session;
-
     /**
-     * @param Router  $router
-     * @param Session $session
+     * {@inheritdoc}
      */
-    public function __construct(Router $router, Session $session)
+    public static function getSubscribedEvents(): \Generator
     {
-        $this->router = $router;
-        $this->session = $session;
+        yield KernelEvents::REQUEST => 'onKernelRequest';
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;

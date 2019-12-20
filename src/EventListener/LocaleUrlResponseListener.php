@@ -2,56 +2,65 @@
 
 namespace App\EventListener;
 
-use JMS\I18nRoutingBundle\Router\I18nRouter;
+use App\Traits\RouterTrait;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
- * Class LocaleUrlRequestListener.
+ * LocaleUrlRequestListener.
  */
-class LocaleUrlResponseListener
+class LocaleUrlResponseListener implements EventSubscriberInterface
 {
+    use RouterTrait;
+
     private const UKRAINE_COUNTRY_CODE = 'UA';
     private const LANG_FROM_COOKIE = 'lang_from_cookie';
     private const LANG_FROM_IP = 'lang_from_ip';
     private const LANG_FROM_PREFERRED = 'lang_from_preferred';
     private const LANG_FROM_NULL = 'lang_from_null';
-    private const CHECK_COOKIE_LANG_NAME = 'check-lang2';
     private const REDIRECT_NUMBER = 302;
 
     private $defaultLocale;
     private $locales;
     private $cookieName;
-    private $routerService;
     private $geoIpService;
     private $pathArray = [];
 
     /**
-     * @param string       $defaultLocale
+     * @param string       $locale
      * @param array        $locales
-     * @param string       $cookieName
-     * @param I18nRouter   $routerService
+     * @param string       $localeCookieName
      * @param GeoipManager $geoIpService
      */
-    public function __construct(string $defaultLocale, array $locales, string $cookieName, I18nRouter $routerService, GeoipManager $geoIpService)
+    public function __construct(string $locale, array $locales, string $localeCookieName, GeoipManager $geoIpService)
     {
-        $this->defaultLocale = $defaultLocale;
+        $this->defaultLocale = $locale;
         $this->locales = $locales;
-        $this->cookieName = $cookieName;
-        $this->routerService = $routerService;
+        $this->cookieName = $localeCookieName;
         $this->geoIpService = $geoIpService;
     }
 
     /**
-     * @param GetResponseEvent $event
+     * {@inheritdoc}
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public static function getSubscribedEvents(): \Generator
+    {
+        yield KernelEvents::REQUEST => 'onKernelRequest';
+        yield KernelEvents::EXCEPTION => 'onKernelException';
+    }
+
+    /**
+     * @param ResponseEvent $event
+     */
+    public function onKernelRequest(ResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -82,7 +91,7 @@ class LocaleUrlResponseListener
             $event->setResponse($response);
         } elseif (!\in_array($pathLocal, $this->locales, true)) {
             try {
-                $matched = $this->routerService->match('/'.$locale.$path);
+                $matched = $this->router->match('/'.$locale.$path);
             } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
                 $matched = false;
             }
@@ -95,15 +104,15 @@ class LocaleUrlResponseListener
     }
 
     /**
-     * @param GetResponseForExceptionEvent $event
+     * @param ExceptionEvent $event
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
         }
 
-        $ex = $event->getException();
+        $ex = $event->getThrowable();
         if (!$ex instanceof NotFoundHttpException || !$ex->getPrevious() instanceof ResourceNotFoundException) {
             return;
         }
@@ -131,17 +140,14 @@ class LocaleUrlResponseListener
      *
      * @return mixed
      */
-    private function getCurrentLocale($request, string &$langSource)
+    private function getCurrentLocale(Request $request, string &$langSource)
     {
         $local = null;
 
-        // get local from cookie
-        if ($request instanceof Request) {
-            if ($request->cookies->has($this->cookieName) &&
-                \in_array($request->cookies->get($this->cookieName), $this->locales, true)) {
-                $local = $request->cookies->get($this->cookieName);
-                $langSource = self::LANG_FROM_COOKIE;
-            }
+        if ($request->cookies->has($this->cookieName) &&
+            \in_array($request->cookies->get($this->cookieName), $this->locales, true)) {
+            $local = $request->cookies->get($this->cookieName);
+            $langSource = self::LANG_FROM_COOKIE;
         }
 
         if (!$local) {
@@ -169,7 +175,7 @@ class LocaleUrlResponseListener
      *
      * @return string
      */
-    private function getInnerSubstring($string, $delim, $keyNumber = 1)
+    private function getInnerSubstring(string $string, string $delim, int $keyNumber = 1): string
     {
         $this->pathArray = explode($delim, $string, 3);
 
@@ -225,8 +231,6 @@ class LocaleUrlResponseListener
      */
     private function createResponseWithCheckCookie(string $url): RedirectResponse
     {
-        $response = new RedirectResponse($url, self::REDIRECT_NUMBER);
-
-        return $response;
+        return new RedirectResponse($url, self::REDIRECT_NUMBER);
     }
 }

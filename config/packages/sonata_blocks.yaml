@@ -76,3 +76,9 @@ services:
         calls:
             - [setEmailHashValidationService, ['@App\Service\EmailHashValidationService']]
         tags: [name: 'sonata.block']
+
+    sonata.block.service.statistic:
+        class: App\Service\SonataBlock\StatisticBlockService
+        arguments: ['sonata.block.service.statistic', '@templating']
+        tags:
+            - { name: sonata.block }

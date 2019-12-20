@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Model\UserManager;
 use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
+use App\Traits\RouterTrait;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,35 +16,23 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
 /**
- * Class LoginHandler.
+ * LoginHandler.
  */
 class LoginHandler implements AuthenticationSuccessHandlerInterface
 {
-    /**
-     * @var UserManager User manager
-     */
-    protected $userManager;
+    use RouterTrait;
 
-    /** @var I18nRouter $router */
-    protected $router;
-
-    /** @var ReferralService */
-    protected $referralService;
-
-    /** @var UrlForRedirect */
-    protected $urlForRedirectService;
+    private $userManager;
+    private $referralService;
+    private $urlForRedirectService;
 
     /**
-     * LoginHandler constructor.
-     *
-     * @param I18nRouter      $router
      * @param ReferralService $referralService
      * @param UserManager     $userManager
      * @param UrlForRedirect  $urlForRedirectService
      */
-    public function __construct(I18nRouter $router, $referralService, $userManager, $urlForRedirectService)
+    public function __construct(ReferralService $referralService, UserManager $userManager, UrlForRedirect $urlForRedirectService)
     {
-        $this->router = $router;
         $this->referralService = $referralService;
         $this->urlForRedirectService = $urlForRedirectService;
         $this->userManager = $userManager;

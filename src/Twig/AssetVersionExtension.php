@@ -2,12 +2,15 @@
 
 namespace App\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * Class AssetVersionExtension.
  *
  * @author Timur Bolotiukh <timur.bolotyuh@gmail.com>
  */
-class AssetVersionExtension extends \Twig_Extension
+class AssetVersionExtension extends AbstractExtension
 {
     /** @var string */
     private $webRoot;
@@ -20,12 +23,12 @@ class AssetVersionExtension extends \Twig_Extension
     /**
      * AssetVersionExtension constructor.
      *
-     * @param string $rootDir
+     * @param string $projectDir
      * @param string $environment
      */
-    public function __construct($rootDir, $environment)
+    public function __construct(string $projectDir, string $environment)
     {
-        $this->webRoot = realpath($rootDir.'/../web');
+        $this->webRoot = \realpath($projectDir.'/../web');
         $this->environment = $environment;
     }
 
@@ -35,7 +38,7 @@ class AssetVersionExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('app_asset_version', [$this, 'getAssetVersion']),
+            new TwigFilter('app_asset_version', [$this, 'getAssetVersion']),
         ];
     }
 

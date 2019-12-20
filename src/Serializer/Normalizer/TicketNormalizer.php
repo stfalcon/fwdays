@@ -5,24 +5,22 @@ namespace App\Serializer\Normalizer;
 use App\Entity\Ticket;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * TicketNormalizer.
  */
 class TicketNormalizer extends BaseNormalizer implements NormalizerInterface
 {
-    private $params;
+    private $appConfig;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param ObjectNormalizer    $normalizer
-     * @param array               $params
+     * @param ObjectNormalizer $normalizer
+     * @param array            $appConfig
      */
-    public function __construct(TranslatorInterface $translator, ObjectNormalizer $normalizer, array $params)
+    public function __construct(ObjectNormalizer $normalizer, array $appConfig)
     {
-        parent::__construct($translator, $normalizer);
-        $this->params = $params;
+        parent::__construct($normalizer);
+        $this->appConfig = $appConfig;
     }
 
     /**
@@ -36,7 +34,7 @@ class TicketNormalizer extends BaseNormalizer implements NormalizerInterface
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $discountAmount = 100 * (float) $this->params['discount'];
+        $discountAmount = 100 * (float) $this->appConfig['discount'];
         $data['amount'] = $this->formatPrice($data['amount']);
         $data['amount_without_discount'] = $this->formatPrice($data['amount_without_discount']);
         $data['discount_description'] = '';

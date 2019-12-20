@@ -21,12 +21,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('vendor/markitup/jquery.markitup.js') }}"></script>
-    {% javascripts  output='cache/js/*.js'
-            'js/InlineUpload.js'
-            'vendor/markitup/InsCode/InsCode.js'
-            'js/markItUpSettings.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('js/InlineUpload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/markitup/InsCode/InsCode.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/markItUpSettings.js') }}"></script>
     <script type="text/javascript" >
         $(document).ready(function() {
             $("textarea").markItUp(mySettings);

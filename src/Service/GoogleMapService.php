@@ -3,29 +3,26 @@
 namespace App\Service;
 
 use App\Entity\Event;
-use Buzz\Browser;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Class GoogleMapService.
+ * GoogleMapService.
  */
 class GoogleMapService
 {
     /** @var string */
     private $googleApiKey;
-
-    /** @var Browser */
-    private $buzzService;
+    private $httpClient;
 
     /**
-     * GoogleMapService constructor.
-     *
-     * @param string  $googleApiKey
-     * @param Browser $buzzService
+     * @param string              $googleApiKey
+     * @param HttpClientInterface $httpClient
      */
-    public function __construct($googleApiKey, Browser $buzzService)
+    public function __construct(string $googleApiKey, HttpClientInterface $httpClient)
     {
         $this->googleApiKey = $googleApiKey;
-        $this->buzzService = $buzzService;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -49,7 +46,7 @@ class GoogleMapService
             $place = $event->getPlace();
             $address = \is_string($place) ? \sprintf('%s,%s', $city, $place) : $city;
             $googlePath = \sprintf('https://maps.google.com/maps/api/geocode/json?key=%s&address=%s', $this->googleApiKey, \urlencode($address));
-            $json = $this->buzzService->get($googlePath);
+            $json = $this->httpClient->request(Request::METHOD_GET, $googlePath);
 
             $response = \json_decode(
                 $json->getContent(),

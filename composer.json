@@ -34,6 +34,7 @@
         "aws/aws-sdk-php": "^3.92.5",
         "beberlei/doctrineextensions": "^1.2",
         "cmen/google-charts-bundle": "^3.2",
+        "doctrine/dbal": "^2.10",
         "doctrine/doctrine-fixtures-bundle": "^3.1.0",
         "doctrine/doctrine-migrations-bundle": "^2.1",
         "egulias/email-validator": "^2.1",
@@ -45,7 +46,6 @@
         "ibrows/sonata-translation-bundle": "dev-stfalcon",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/i18n-routing-bundle": "^3.0",
-        "kriswallsmith/buzz": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0.22",
         "liip/imagine-bundle": "^2.2",
         "maxmind/geoip": "^1.1.5",
@@ -55,7 +55,7 @@
         "php-http/httplug": "2.0.0",
         "php-http/httplug-bundle": "^1.16",
         "predis/predis": "^1.1.1",
-        "sensio/framework-extra-bundle": "^5.0.0",
+        "sensio/framework-extra-bundle": "^5.5",
         "sensiolabs/security-checker": "^6.0",
         "sentry/sentry-symfony": "^3.2",
         "snc/redis-bundle": "^3.2",
@@ -72,6 +72,7 @@
         "symfony/flex": "^1.2",
         "symfony/form": "4.4.*",
         "symfony/framework-bundle": "4.4.*",
+        "symfony/http-client": "4.4.*",
         "symfony/intl": "4.4.*",
         "symfony/monolog-bundle": "^3.5",
         "symfony/orm-pack": "^1.0",
@@ -93,18 +94,22 @@
         "vich/uploader-bundle": "^1.9.2"
     },
     "require-dev": {
-        "symfony/debug-bundle": "4.4.*",
+        "codeception/codeception": "^3.1",
         "escapestudios/symfony2-coding-standard": "^3.8",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hirak/prestissimo": "0.3.*",
         "liip/functional-test-bundle": "^3.2",
         "phpspec/prophecy": "^1.7",
-        "phpunit/phpunit": "^8.0",
-        "codeception/codeception": "^3.1",
         "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-deprecation-rules": "^0.12.0",
+        "phpstan/phpstan-doctrine": "^0.12.5",
+        "phpstan/phpstan-symfony": "^0.12.1",
+        "phpunit/phpunit": "^8.0",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.4",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/debug-bundle": "4.4.*",
+        "symfony/phpunit-bridge": "^3.0",
+        "thecodingmachine/phpstan-strict-rules": "^0.12.0"
     },
     "config": {
         "bin-dir": "bin",
@@ -140,7 +145,7 @@
             "bin/console lint:yaml --parse-tags translations/"
         ],
         "ci:code-style": [
-            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Features -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
+            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Migrations -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
             "bin/php-cs-fixer fix -q --dry-run --config=.php_cs -v"
         ],
         "ci:phpunit": [
@@ -152,7 +157,7 @@
             "./bin/codecept run acceptance"
         ],
         "ci:static-analysis": [
-            "bin/phpstan analyse -l 6 --no-progress  -c phpstan.neon src/"
+            "bin/phpstan analyse -l 6 --no-progress -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
             "bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml"
@@ -172,11 +177,10 @@
         "ci:pack": [
             "@ci:composer-validate",
             "@ci:security-check",
-
+            "@ci:doctrine-schema-validate",
             "@ci:twig-lint",
             "@ci:yaml-lint",
             "@ci:code-style",
-            "@ci:code-style-fixer",
             "@ci:static-analysis",
             "@ci:codeception-acceptance"
         ]

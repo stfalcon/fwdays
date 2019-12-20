@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * AbstractPaymentProcessService.
@@ -51,7 +51,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
      * @param ReferralService     $referralService
      * @param Session             $session
      */
-    public function __construct($appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
+    public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
     {
         $this->appConfig = $appConfig;
         $this->request = $requestStack->getCurrentRequest();

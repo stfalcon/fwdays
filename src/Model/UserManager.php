@@ -4,47 +4,40 @@ namespace App\Model;
 
 use App\Entity\User;
 use App\Exception\BadAutoRegistrationDataException;
-use App\Helper\StfalconMailerHelper;
+use App\Helper\MailerHelper;
+use App\Traits;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager as FosUserManager;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class UserManager.
+ * UserManager.
  */
 class UserManager extends FosUserManager
 {
+    use Traits\ValidatorTrait;
+    use Traits\SessionTrait;
+
     public const NEW_USERS_SESSION_KEY = 'new_users';
 
-    private $validator;
     private $mailHelper;
-    private $session;
 
     /**
-     * UserManager constructor.
-     *
      * @param PasswordUpdaterInterface $passwordUpdater
      * @param CanonicalFieldsUpdater   $canonicalFieldsUpdater
      * @param ObjectManager            $om
-     * @param string                   $class
-     * @param ValidatorInterface       $validator
-     * @param StfalconMailerHelper     $mailHelper
-     * @param Session                  $session
+     * @param MailerHelper             $mailHelper
      */
-    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class, $validator, $mailHelper, Session $session)
+    public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, MailerHelper $mailHelper)
     {
-        parent::__construct($passwordUpdater, $canonicalFieldsUpdater, $om, $class);
+        parent::__construct($passwordUpdater, $canonicalFieldsUpdater, $om, User::class);
 
-        $this->validator = $validator;
         $this->mailHelper = $mailHelper;
-        $this->session = $session;
     }
 
     /**

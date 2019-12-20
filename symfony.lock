@@ -280,18 +280,6 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
     },
-    "kriswallsmith/buzz": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "1da7c9584a9face8cc2a9ee42a04ae33c284bea8"
-        },
-        "files": [
-            "config/packages/buzz.yaml"
-        ]
-    },
     "league/flysystem": {
         "version": "1.0.61"
     },
@@ -424,6 +412,12 @@
     },
     "phpstan/phpstan-deprecation-rules": {
         "version": "0.12.0"
+    },
+    "phpstan/phpstan-doctrine": {
+        "version": "0.12.5"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "0.12.1"
     },
     "phpunit/php-code-coverage": {
         "version": "7.0.10"
@@ -1025,6 +1019,9 @@
     },
     "symfony/yaml": {
         "version": "v4.4.1"
+    },
+    "thecodingmachine/phpstan-strict-rules": {
+        "version": "v0.12.0"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"

@@ -5,13 +5,11 @@ namespace App\Service;
 use Swift_Transport;
 
 /**
- * Class MyMailer.
+ * MyMailer.
  */
 class MyMailer extends \Swift_Mailer
 {
     /**
-     * MyMailer constructor.
-     *
      * @param Swift_Transport $transport
      */
     public function __construct(Swift_Transport $transport)
@@ -20,12 +18,12 @@ class MyMailer extends \Swift_Mailer
     }
 
     /**
-     * @param \Swift_Mime_Message $message
+     * @param \Swift_Mime_SimpleMessage $message
      * @param array               $failedRecipients An array of failures by-reference
      *
      * @return int The number of successful recipients. Can be 0 which indicates failure
      */
-    public function send(\Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(\Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
         $failedRecipients = (array) $failedRecipients;
 

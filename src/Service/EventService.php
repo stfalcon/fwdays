@@ -51,8 +51,6 @@ class EventService
 
         /** @var ArrayCollection $pages */
         $pages = $this->getEventMenuPages($event);
-
-        /** @var EventPage $page */
         $programPage = null;
         $venuePage = null;
         foreach ($pages as $key => $page) {

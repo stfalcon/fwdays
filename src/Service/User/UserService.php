@@ -16,12 +16,17 @@ class UserService
 {
     use TokenStorageTrait;
 
+    public const RESULT_THROW_ON_NULL = 'throw_on_null';
+    public const RESULT_RETURN_IF_NULL = 'result_return_null';
+
     /**
+     * @param string $throw
+     *
      * @return User
      *
      * @throws AccessDeniedException
      */
-    public function getCurrentUser(): User
+    public function getCurrentUser(string $throw = self::RESULT_THROW_ON_NULL): User
     {
         $user = null;
 
@@ -30,7 +35,7 @@ class UserService
             $user = $token->getUser();
         }
 
-        if (!$user instanceof User) {
+        if (!$user instanceof User && self::RESULT_THROW_ON_NULL === $throw) {
             throw new AccessDeniedException();
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\User;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseRegistrationFormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,12 +20,11 @@ class RegistrationFormType extends BaseRegistrationFormType
     private $locales;
 
     /**
-     * @param string $class
      * @param array  $locales
      */
-    public function __construct(string $class, array $locales)
+    public function __construct(array $locales)
     {
-        parent::__construct($class);
+        parent::__construct(User::class);
         $this->locales = $locales;
     }
 

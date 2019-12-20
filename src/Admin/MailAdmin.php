@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Entity\Event;
 use App\Entity\EventAudience;
 use App\Entity\Mail;
@@ -10,11 +11,11 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\Translation\EmailTranslation;
 use App\Entity\User;
-use App\Form\Type\MyGedmoTranslationsType;
 use App\Repository\MailQueueRepository;
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\UnitOfWork;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -191,7 +192,7 @@ final class MailAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Переводы')
-                ->add('translations', MyGedmoTranslationsType::class, [
+                ->add('translations', TranslationsType::class, [
                     'translatable_class' => $this->getClass(),
                     'data_class' => EmailTranslation::class,
                     'fields' => [
@@ -283,32 +284,30 @@ final class MailAdmin extends AbstractAdmin
      * @param Mail  $mail
      * @param array $users
      *
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
     private function addUsersToEmail($mail, $users)
     {
         $container = $this->getConfigurationPool()->getContainer();
-        /** @var \Doctrine\ORM\EntityManager $em */
+        /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();
 
-        if (isset($users)) {
-            $countSubscribers = $mail->getTotalMessages();
-            /** @var User $user */
-            foreach ($users as $user) {
-                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
-                    $user->isEnabled() &&
-                    $user->isEmailExists()
-                ) {
-                    $mailQueue = new MailQueue();
-                    $mailQueue->setUser($user);
-                    $mailQueue->setMail($mail);
-                    $em->persist($mailQueue);
-                    ++$countSubscribers;
-                }
+        $countSubscribers = $mail->getTotalMessages();
+        /** @var User $user */
+        foreach ($users as $user) {
+            if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
+                $user->isEnabled() &&
+                $user->isEmailExists()
+            ) {
+                $mailQueue = new MailQueue();
+                $mailQueue->setUser($user);
+                $mailQueue->setMail($mail);
+                $em->persist($mailQueue);
+                ++$countSubscribers;
             }
-            $mail->setTotalMessages($countSubscribers);
-            $em->persist($mail);
-            $em->flush();
         }
+        $mail->setTotalMessages($countSubscribers);
+        $em->persist($mail);
+        $em->flush();
     }
 }

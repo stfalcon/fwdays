@@ -16,11 +16,11 @@ class TranslatedMailService
     private $defaultLocale;
 
     /**
-     * @param string $defaultLocale
+     * @param string $locale
      */
-    public function __construct(string $defaultLocale)
+    public function __construct(string $locale)
     {
-        $this->defaultLocale = $defaultLocale;
+        $this->defaultLocale = $locale;
     }
 
     /**

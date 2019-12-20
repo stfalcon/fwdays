@@ -11,44 +11,37 @@ use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
+use App\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * PaymentService.
  */
 class PaymentService
 {
+    use Traits\SessionTrait;
+    use Traits\TranslatorTrait;
+    use Traits\EntityManagerTrait;
+
     public const PROMO_CODE_SESSION_KEY = 'events_promocode';
 
     private const ACTIVE_PAYMENT_ID_KEY = 'active_payment_id_%s';
 
-    private $em;
     private $ticketService;
-    private $translator;
     private $userService;
     private $referralService;
-    private $session;
 
     /**
-     * @param EntityManager       $em
-     * @param TicketService       $ticketService
-     * @param TranslatorInterface $translator
-     * @param UserService         $userService
-     * @param ReferralService     $referralService
-     * @param Session             $session
+     * @param TicketService   $ticketService
+     * @param UserService     $userService
+     * @param ReferralService $referralService
      */
-    public function __construct(EntityManager $em, TicketService $ticketService, TranslatorInterface $translator, UserService $userService, ReferralService $referralService, Session $session)
+    public function __construct(TicketService $ticketService, UserService $userService, ReferralService $referralService)
     {
-        $this->em = $em;
         $this->ticketService = $ticketService;
-        $this->translator = $translator;
         $this->userService = $userService;
         $this->referralService = $referralService;
-        $this->session = $session;
     }
 
     /**
@@ -254,7 +247,7 @@ class PaymentService
      *
      * @param Payment $payment
      */
-    public function setTicketsCostAsSold($payment)
+    public function setTicketsCostAsSold(Payment $payment)
     {
         $ticketCostsRecalculate = [];
         if ($payment->isPaid()) {
@@ -278,7 +271,7 @@ class PaymentService
      *
      * @param Payment $payment
      */
-    public function calculateTicketsPromocode($payment)
+    public function calculateTicketsPromocode(Payment $payment)
     {
         if ($payment->isPaid()) {
             /** @var Ticket $ticket */

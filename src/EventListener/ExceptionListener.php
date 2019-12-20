@@ -3,56 +3,34 @@
 namespace App\EventListener;
 
 use App\Exception\NeedUserDataException;
+use App\Traits;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class ExceptionListener.
+ * ExceptionListener.
  */
-class ExceptionListener
+class ExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /** @var Session */
-    protected $session;
+    use Traits\SessionTrait;
+    use Traits\RouterTrait;
 
     /**
-     * ExceptionListener constructor.
-     *
-     * @param Session $session
+     * {@inheritdoc}
      */
-    public function __construct($session)
+    public static function getSubscribedEvents(): \Generator
     {
-        $this->session = $session;
+        yield KernelEvents::EXCEPTION => 'onKernelException';
     }
 
     /**
-     * @return Router
+     * @param ExceptionEvent $event
      */
-    public function getRouter()
+    public function onKernelException(ExceptionEvent $event)
     {
-        return $this->router;
-    }
-
-    /**
-     * @param Router $router
-     */
-    public function setRouter($router)
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * @param GetResponseForExceptionEvent $event
-     */
-    public function onKernelException(GetResponseForExceptionEvent $event)
-    {
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
 
         if ($exception instanceof NeedUserDataException) {
             $oAuthResponse = $exception->getResponse();

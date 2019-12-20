@@ -43,7 +43,7 @@ class PaymentController extends AbstractController
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
-            'Page/index.html.twig',
+                'Page/index.html.twig',
                 ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }

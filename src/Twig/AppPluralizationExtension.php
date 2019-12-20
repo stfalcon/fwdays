@@ -2,10 +2,13 @@
 
 namespace App\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * Class AppPluralizationExtension.
  */
-class AppPluralizationExtension extends \Twig_Extension
+class AppPluralizationExtension extends AbstractExtension
 {
     /**
      * @return array|\Twig_SimpleFilter[]
@@ -13,7 +16,7 @@ class AppPluralizationExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('pluralization', [$this, 'pluralization']),
+            new TwigFilter('pluralization', [$this, 'pluralization']),
         ];
     }
 

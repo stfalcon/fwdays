@@ -3,16 +3,28 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\PromoCode;
+use App\Entity\Review;
 use App\Entity\Speaker;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Parameter;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * ReviewRepository.
  */
-class ReviewRepository extends EntityRepository
+class ReviewRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Review::class);
+    }
+
     /**
      * Find reviews of speaker for event.
      *

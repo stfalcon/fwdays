@@ -49,14 +49,15 @@ class EventController extends AbstractController
      *
      * @Route("/event/{slug}", name="event_show")
      *
-     * @param Event $event
+     * @param Event   $event
+     * @param Request $request
      *
      * @return Response
      */
-    public function showAction(Event $event): Response
+    public function showAction(Event $event, Request $request): Response
     {
         $referralService = $this->get(ReferralService::class);
-        $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
+        $referralService->handleRequest($request);
 
         return $this->render('Redesign/Event/event.html.twig', $this->get(EventService::class)->getEventPages($event));
     }
@@ -75,7 +76,7 @@ class EventController extends AbstractController
     {
         $pages = $this->get(EventService::class)->getEventPages($event, $review);
 
-        return $this->render('AppBundle:Redesign/Speaker:report_review.html.twig', $pages);
+        return $this->render('Redesign/Speaker:report_review.html.twig', $pages);
     }
 
     /**

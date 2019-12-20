@@ -2,6 +2,10 @@ parameters:
     excludes_analyse:
         - '%rootDir%/../../../src/Tests/*'
         - '%rootDir%/../../../src/Service/SvgToJpg.php'
+        - '%rootDir%/../../../src/Migrations/*'
+        - '/app/src/Migrations/*'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon

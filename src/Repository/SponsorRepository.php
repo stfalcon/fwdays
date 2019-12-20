@@ -3,14 +3,26 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\Review;
+use App\Entity\Sponsor;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * SponsorRepository.
  */
-class SponsorRepository extends EntityRepository
+class SponsorRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Sponsor::class);
+    }
+
     /**
      * @param Event $event
      *

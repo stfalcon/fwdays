@@ -10,20 +10,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UrlForRedirect
 {
-    /** @var I18nRouter $router */
-    protected $router;
-
-    /** @var $homePages */
+    private $router;
     private $homePages = [];
     private $authorizationUrls = [];
 
     /**
-     * GetUrlForRedirect constructor.
-     *
      * @param I18nRouter $router
      * @param array      $locales
      */
-    public function __construct($router, $locales)
+    public function __construct(I18nRouter $router, array $locales)
     {
         $this->router = $router;
 

@@ -2,50 +2,42 @@
 
 namespace App\Menu;
 
-use App\Service\User\UserService;
+use App\Entity\User;
+use App\Traits\TokenStorageTrait;
+use App\Traits\TranslatorTrait;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use SunCat\MobileDetectBundle\DeviceDetector\MobileDetector;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Translation\Translator;
 
 /**
- * MenuBuilder Class.
+ * MenuBuilder.
  */
 class MenuBuilder
 {
-    /**
-     * @var \Knp\Menu\FactoryInterface
-     */
+    use TranslatorTrait;
+    use TokenStorageTrait;
+
     private $factory;
-
-    private $translator;
-
     private $locales;
-
-    private $userService;
-
     private $mobileDetector;
 
     /**
-     * @param \Knp\Menu\FactoryInterface $factory
-     * @param Translator                 $translator
-     * @param array                      $locales
-     * @param UserService                $userService
-     * @param MobileDetector             $mobileDetector
+     * @param FactoryInterface $factory
+     * @param array            $locales
+     * @param MobileDetector   $mobileDetector
      */
-    public function __construct(FactoryInterface $factory, $translator, $locales, UserService $userService, $mobileDetector)
+    public function __construct(FactoryInterface $factory, array $locales, MobileDetector $mobileDetector)
     {
         $this->factory = $factory;
-        $this->translator = $translator;
         $this->locales = $locales;
-        $this->userService = $userService;
         $this->mobileDetector = $mobileDetector;
     }
 
     /**
      * @param RequestStack $requestStack
      *
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      */
     public function createMainMenuRedesign(RequestStack $requestStack)
     {
@@ -62,7 +54,7 @@ class MenuBuilder
         $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'page', 'routeParameters' => ['slug' => 'about']])
             ->setAttribute('class', 'header-nav__item');
 
-        if ($this->userService->isUserAccess()) {
+        if ($this->tokenStorage->getToken()->getUser() instanceof User) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet'])
                 ->setAttribute('class', 'header-nav__item header-nav__item--mob');
         } else {
@@ -92,7 +84,7 @@ class MenuBuilder
      *
      * @param RequestStack $requestStack
      *
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      */
     public function createLoginMenu(RequestStack $requestStack)
     {
@@ -101,7 +93,7 @@ class MenuBuilder
         $request = $requestStack->getCurrentRequest();
         $menu->setUri($request->getRequestUri());
 
-        if ($this->userService->isUserAccess()) {
+        if ($this->tokenStorage->getToken()->getUser() instanceof User) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet']);
         } else {
             $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])

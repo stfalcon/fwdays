@@ -349,11 +349,8 @@ class TicketService
     {
         $ticket = null;
         $payment = null;
-        $user = null;
-
-        if ($this->userService->isUserAccess()) {
-            $user = $this->userService->getCurrentUser();
-
+        $user = $this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL);
+        if ($user instanceof User) {
             $paymentRepository = $this->em->getRepository(Payment::class);
             $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
 

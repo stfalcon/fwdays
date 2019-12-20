@@ -2,39 +2,28 @@
 
 namespace App\Helper;
 
-use App\Entity\Mail;
 use App\Entity\User;
 use App\Model\TranslatedMail;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Translation\TranslatorInterface;
-use Twig\Environment;
+use App\Traits;
 
 /**
- * Class StfalconMailerHelper.
+ * MailerHelper.
  */
-class StfalconMailerHelper
+class MailerHelper
 {
-    protected $twig;
-    protected $em;
-    protected $router;
-    protected $mailer;
-    private $translator;
+    use Traits\TranslatorTrait;
+    use Traits\EntityManagerTrait;
+    use Traits\RouterTrait;
+    use Traits\TwigTrait;
+
+    private $mailer;
 
     /**
-     * @param Environment         $twig
-     * @param EntityManager       $em
-     * @param Router              $router
-     * @param \Swift_Mailer       $mailer
-     * @param TranslatorInterface $translator
+     * @param \Swift_Mailer $mailer
      */
-    public function __construct(Environment $twig, EntityManager $em, Router $router, \Swift_Mailer $mailer, TranslatorInterface $translator)
+    public function __construct(\Swift_Mailer $mailer)
     {
-        $this->twig = $twig;
-        $this->em = $em;
-        $this->router = $router;
         $this->mailer = $mailer;
-        $this->translator = $translator;
     }
 
     /**
@@ -92,11 +81,12 @@ class StfalconMailerHelper
      */
     public function createMessage($subject, $to, $body): \Swift_Message
     {
-        return \Swift_Message::newInstance()
+        return (new \Swift_Message())
             ->setSubject($subject)
             ->setFrom('orgs@fwdays.com', 'Fwdays')
             ->setTo($to)
-            ->setBody($body, 'text/html');
+            ->setBody($body, 'text/html')
+        ;
     }
 
     /**

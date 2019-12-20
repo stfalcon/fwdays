@@ -2,34 +2,20 @@
 
 namespace App\EventListener\FOSUserEvents;
 
+use App\Traits;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * UserRegistrationSubscriber.
  */
 class UserRegistrationSubscriber implements EventSubscriberInterface
 {
-    private $session;
-    private $router;
-    private $request;
-
-    /**
-     * @param Session      $session
-     * @param Router       $router
-     * @param RequestStack $requestStack
-     */
-    public function __construct(Session $session, Router $router, RequestStack $requestStack)
-    {
-        $this->session = $session;
-        $this->router = $router;
-        $this->request = $requestStack->getCurrentRequest();
-    }
+    use Traits\SessionTrait;
+    use Traits\RouterTrait;
+    use Traits\RequestStackTrait;
 
     /**
      * {@inheritdoc}
@@ -47,7 +33,7 @@ class UserRegistrationSubscriber implements EventSubscriberInterface
      */
     public function onRegistrationSuccess(FormEvent $event): void
     {
-        $query = $this->request->getQueryString();
+        $query = $this->requestStack->getCurrentRequest()->getQueryString();
         $url = $this->router->generate('fos_user_registration_confirmed');
         if ($query) {
             $url .= '?'.$query;

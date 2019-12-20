@@ -2,24 +2,23 @@
 
 namespace App\Serializer\Normalizer;
 
+use App\Traits\TranslatorTrait;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * BaseNormalizer.
  */
 class BaseNormalizer
 {
-    protected $translator;
+    use TranslatorTrait;
+
     protected $normalizer;
 
     /**
-     * @param TranslatorInterface $translator
      * @param ObjectNormalizer    $normalizer
      */
-    public function __construct(TranslatorInterface $translator, ObjectNormalizer $normalizer)
+    public function __construct(ObjectNormalizer $normalizer)
     {
-        $this->translator = $translator;
         $this->normalizer = $normalizer;
     }
 
@@ -30,10 +29,6 @@ class BaseNormalizer
      */
     public function formatPrice(&$price): ?string
     {
-        if (!isset($price)) {
-            return null;
-        }
-
         $decimal = $price > (int) $price ? 2 : 0;
 
         $formatted = \number_format($price, $decimal, ',', ' ');

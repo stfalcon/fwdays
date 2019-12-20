@@ -9,7 +9,7 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
-use App\Helper\StfalconMailerHelper;
+use App\Helper\MailerHelper;
 use App\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -73,7 +73,7 @@ class AdminController extends AbstractController
                     $this->get('fos_user.user_manager')->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $body = $this->container->get(StfalconMailerHelper::class)->renderTwigTemplate(
+                    $body = $this->container->get(MailerHelper::class)->renderTwigTemplate(
                         'AppBundle:Registration:automatically.html.twig',
                         [
                             'user' => $user,
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
                         ]
                     );
 
-                    $message = \Swift_Message::newInstance()
+                    $message = (new \Swift_Message())
                         ->setSubject('Регистрация на сайте Frameworks Days')
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())

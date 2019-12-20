@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Traits\RouterTrait;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,22 +12,11 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
 /**
- * Class LoginEntryPoint.
+ * LoginEntryPoint.
  */
 class LoginEntryPoint implements AuthenticationEntryPointInterface
 {
-    /** @var I18nRouter */
-    protected $router;
-
-    /**
-     * LoginEntryPoint constructor.
-     *
-     * @param I18nRouter $router
-     */
-    public function __construct($router)
-    {
-        $this->router = $router;
-    }
+    use RouterTrait;
 
     /**
      * @param Request                      $request

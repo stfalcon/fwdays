@@ -4,65 +4,44 @@ namespace App\Helper;
 
 use App\Entity\Ticket;
 use App\Service\SvgToJpg;
+use Endroid\QrCode\Exceptions\ImageFunctionFailedException;
+use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
 use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
-use Twig_Environment;
+use Twig\Environment;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
 /**
- * Class PdfGeneratorHelper.
+ * PdfGeneratorHelper.
  */
-class NewPdfGeneratorHelper
+class PdfGeneratorHelper
 {
-    /**
-     * @var Twig_Environment
-     */
-    protected $templating;
-
-    /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     * @var QrCode
-     */
-    protected $qrCode;
-
-    /**
-     * @var Kernel
-     */
-    protected $kernel;
-
-    /**
-     * @var SvgToJpg
-     */
-    protected $svgToJpgService;
-
+    private $templating;
+    private $router;
+    private $qrCode;
+    private $projectDir;
+    private $svgToJpgService;
     private $filesystem;
     private $vichUploader;
 
     /**
-     * Constructor.
-     *
-     * @param Twig_Environment       $templating      Twig
+     * @param Environment            $templating      Twig
      * @param Router                 $router          Router
      * @param QrCode                 $qrCode          QrCode generator
-     * @param Kernel                 $kernel          Kernel
+     * @param string                 $projectDir
      * @param SvgToJpg               $svgToJpgService
      * @param Filesystem             $filesystem
      * @param PropertyMappingFactory $vichUploader
      */
-    public function __construct($templating, $router, $qrCode, $kernel, $svgToJpgService, $filesystem, $vichUploader)
+    public function __construct(Environment $templating, Router $router, QrCode $qrCode, string $projectDir, SvgToJpg $svgToJpgService, Filesystem $filesystem, PropertyMappingFactory $vichUploader)
     {
         $this->templating = $templating;
         $this->router = $router;
         $this->qrCode = $qrCode;
-        $this->kernel = $kernel;
+        $this->projectDir = $projectDir;
         $this->svgToJpgService = $svgToJpgService;
         $this->filesystem = $filesystem;
         $this->vichUploader = $vichUploader;
@@ -91,7 +70,7 @@ class NewPdfGeneratorHelper
         ];
 
         $mPDF = new Mpdf($constructorArgs);
-        $mPDF->AddFontDirectory(realpath($this->kernel->getRootDir().'/../web/fonts/').'/');
+        $mPDF->AddFontDirectory(\realpath($this->projectDir.'/../public/fonts/').'/');
 
         $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysTicket-Font.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
@@ -102,9 +81,8 @@ class NewPdfGeneratorHelper
 
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
-        $pdfFile = $mPDF->Output($ticket->generatePdfFilename(), 'S');
 
-        return $pdfFile;
+        return $mPDF->Output($ticket->generatePdfFilename(), 'S');
     }
 
     /**
@@ -112,8 +90,8 @@ class NewPdfGeneratorHelper
      *
      * @return string
      *
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws ImageFunctionFailedException
+     * @throws ImageFunctionUnknownException
      */
     public function generateHTML(Ticket $ticket)
     {
@@ -162,7 +140,7 @@ class NewPdfGeneratorHelper
             $base64CircleRightImg = '';
         }
 
-        $body = $templateContent->render(
+        return $templateContent->render(
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
@@ -171,7 +149,5 @@ class NewPdfGeneratorHelper
                 'circle_right' => $base64CircleRightImg,
             ]
         );
-
-        return $body;
     }
 }

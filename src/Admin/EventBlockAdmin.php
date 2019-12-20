@@ -2,9 +2,9 @@
 
 namespace App\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\EventBlock;
-use App\Form\Type\MyGedmoTranslationsType;
 use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -47,7 +47,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
             ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
             ->add('visible', null, ['label' => 'включен'])
             ->add('position', null, ['label' => 'позиция'])
-            ->add('translations', MyGedmoTranslationsType::class, [
+            ->add('translations', TranslationsType::class, [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
                     'text' => [

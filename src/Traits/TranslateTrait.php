@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Entity\Translation\TranslatableEntityInterface;
+use App\Entity\AbstractClass\AbstractTranslation;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 trait TranslateTrait
 {
     /**
-     * @param TranslatableEntityInterface $translation
+     * @param AbstractTranslation $translation
      */
     public function addTranslation($translation)
     {
@@ -21,19 +21,19 @@ trait TranslateTrait
         }
     }
 
-    /**
-     * @param TranslatableEntityInterface $translation
-     */
-    public function addTranslations($translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-            $translation->setObject($this);
-        }
-    }
+//    /**
+//     * @param AbstractTranslation $translation
+//     */
+//    public function addTranslations($translation)
+//    {
+//        if (!$this->translations->contains($translation)) {
+//            $this->translations->add($translation);
+//            $translation->setObject($this);
+//        }
+//    }
 
     /**
-     * @param TranslatableEntity $translation
+     * @param AbstractTranslation $translation
      */
     public function removeTranslation($translation)
     {

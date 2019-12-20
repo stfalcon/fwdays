@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20121112163948 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 
@@ -18,7 +18,7 @@ class Version20121112163948 extends AbstractMigration
         $this->addSql("UPDATE event__speakers SET photo = TRIM(LEADING '/uploads/speakers/' FROM photo)");
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 

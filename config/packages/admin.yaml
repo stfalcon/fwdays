@@ -1,5 +1,4 @@
 services:
-
     app.admin.event_audience:
         class: App\Admin\EventAudienceAdmin
         arguments: [~, 'App\Entity\EventAudience', ~]

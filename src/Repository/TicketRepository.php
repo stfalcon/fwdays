@@ -6,18 +6,27 @@ use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * TicketRepository.
  */
-class TicketRepository extends EntityRepository
+class TicketRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Ticket::class);
+    }
+
     /**
      * @param Event $event
      * @param bool  $freeTickets

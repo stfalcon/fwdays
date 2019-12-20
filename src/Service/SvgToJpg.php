@@ -9,18 +9,14 @@ use Symfony\Bridge\Monolog\Logger;
  */
 class SvgToJpg
 {
-    /** @var Logger */
     private $logger;
-
     private $xResolution = 500;
     private $yResolution = 500;
 
     /**
-     * SvgToJpg constructor.
-     *
      * @param Logger $logger
      */
-    public function __construct($logger)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
     }

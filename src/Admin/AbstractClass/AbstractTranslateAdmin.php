@@ -2,7 +2,6 @@
 
 namespace App\Admin\AbstractClass;
 
-use A2lix\TranslationFormBundle\Util\GedmoTranslatable;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
@@ -27,7 +26,7 @@ class AbstractTranslateAdmin extends AbstractAdmin
     }
 
     /**
-     * @param GedmoTranslatable $object
+     * @param $object
      */
     public function removeNullTranslate($object)
     {

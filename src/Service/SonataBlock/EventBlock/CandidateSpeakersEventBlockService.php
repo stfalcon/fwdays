@@ -50,7 +50,6 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
 
         $speakers = $event->getCandidateSpeakers();
 
-        /** @var $speaker Speaker */
         foreach ($speakers as &$speaker) {
             $speaker->setReviews(
                 $this->reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)
