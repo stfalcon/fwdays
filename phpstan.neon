@@ -3,7 +3,6 @@ parameters:
         - '%rootDir%/../../../src/Tests/*'
         - '%rootDir%/../../../src/Service/SvgToJpg.php'
         - '%rootDir%/../../../src/Migrations/*'
-        - '/app/src/Migrations/*'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false
