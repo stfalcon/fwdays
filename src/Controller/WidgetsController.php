@@ -5,14 +5,14 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * WidgetsController.
  */
-class WidgetsController extends Controller
+class WidgetsController extends AbstractController
 {
     /**
      * Like review.

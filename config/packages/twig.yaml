@@ -1,6 +1,6 @@
 twig:
-    debug: '%env(APP_DEBUG)%'
-    strict_variables: '%env(APP_DEBUG)%'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
     form_themes:
         - 'SonataCoreBundle:Form:colorpicker.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'

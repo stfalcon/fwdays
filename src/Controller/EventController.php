@@ -11,7 +11,7 @@ use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * EventController.
  */
-class EventController extends Controller
+class EventController extends AbstractController
 {
     /**
      * @Route("/events", name="events")
@@ -38,7 +38,7 @@ class EventController extends Controller
             ->getRepository(Event::class)
             ->findBy(['active' => false], ['date' => 'DESC']);
 
-        return $this->render('@App/Redesign/Event/events.html.twig', [
+        return $this->render('Redesign/Event/events.html.twig', [
             'activeEvents' => $activeEvents,
             'pastEvents' => $pastEvents,
         ]);
@@ -58,7 +58,7 @@ class EventController extends Controller
         $referralService = $this->get(ReferralService::class);
         $referralService->handleRequest($this->container->get('request_stack')->getCurrentRequest());
 
-        return $this->render('@App/Redesign/Event/event.html.twig', $this->get(EventService::class)->getEventPages($event));
+        return $this->render('Redesign/Event/event.html.twig', $this->get(EventService::class)->getEventPages($event));
     }
 
     /**

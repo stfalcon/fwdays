@@ -7,25 +7,58 @@ parameters:
     app.event_header_video: "uploads/video"
     app.upload_image: "uploads/images"
     app.media_cache: '/media/cache/'
+    app.config:
+        #    payment_system: 'App\Service\PaymentProcess\WayForPayService'
+        payment_system: App\Service\PaymentProcess\InterkassaService
+        wayforpay:
+            shop_id: '%env(WAYFORPAY_SHOP_ID)%'
+            secret: '%env(WAYFORPAY_SECRET)%'
+        interkassa:
+            shop_id: '%env(INTERKASSA_SHOP_ID)%'
+            secret: '%env(INTERKASSA_SECRET)%'
+        discount: 0.2
 
 framework:
+    router:
+        utf8: true
+    assets:
+        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     #esi:             ~
-    translator:      { fallback: "%locale%" }
-    secret:          "%secret%"
-#    router:
-#        resource: "%kernel.root_dir%/config/routing.yml"
-#        strict_requirements: "%kernel.debug%"
-    form:            true
-    csrf_protection: true
-    validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trusted_proxies: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallback: "%locale%"
+    secret: '%env(APP_SECRET)%'
+    form: true
+    csrf_protection: true
+    validation:
+        enable_annotations: true
+        email_validation_mode: html5
+    templating:      { engines: ['twig'] }
     serializer:
         enabled: true
         enable_annotations: true
         name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+    workflows: null
     session:
         handler_id: snc_redis.session.handler
 #        handler_id: session.handler.native_file
 #        save_path: "%kernel.root_dir%/sessions/"
+    cache:
+    # Unique name of your app: used to compute stable namespaces for cache keys.
+    #prefix_seed: your_vendor_name/app_name
+
+    # The "app" cache stores to the filesystem by default.
+    # The data in this cache should persist between deploys.
+    # Other options include:
+
+    # Redis
+    #app: cache.adapter.redis
+    #default_redis_provider: redis://localhost
+
+    # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
+    #app: cache.adapter.apcu
+
+    # Namespaced pools use the above "app" backend by default
+    #pools:
+    #my.dedicated.cache: null

@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * ServiceStatusController.
  */
-class ServiceStatusController extends Controller
+class ServiceStatusController extends AbstractController
 {
     /**
      * @Route("/service/status", name="service_status")

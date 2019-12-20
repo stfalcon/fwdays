@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * PaymentProcessController.
  */
-class PaymentProcessController extends Controller
+class PaymentProcessController extends AbstractController
 {
     /** @var array */
     protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
@@ -112,7 +112,7 @@ class PaymentProcessController extends Controller
             $eventType = $this->getItemVariant($eventName);
         }
 
-        return $this->render('@App/PaymentResult/success.html.twig', [
+        return $this->render('PaymentResult/success.html.twig', [
             'payment' => $payment,
             'event_name' => $eventName,
             'event_type' => $eventType,
@@ -126,7 +126,7 @@ class PaymentProcessController extends Controller
      */
     public function failAction(): Response
     {
-        return $this->render('@App/PaymentResult/fail.html.twig');
+        return $this->render('PaymentResult/fail.html.twig');
     }
 
     /**
@@ -136,7 +136,7 @@ class PaymentProcessController extends Controller
      */
     public function pendingAction(): Response
     {
-        return $this->render('@App/PaymentResult/pending.html.twig');
+        return $this->render('PaymentResult/pending.html.twig');
     }
 
     /**

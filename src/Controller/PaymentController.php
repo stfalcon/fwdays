@@ -14,7 +14,7 @@ use App\Service\PaymentService;
 use App\Service\Ticket\TicketService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("has_role('ROLE_USER')")
  */
-class PaymentController extends Controller
+class PaymentController extends AbstractController
 {
     public const NEW_PAYMENT_SESSION_KEY = 'new_payment';
 
@@ -43,7 +43,7 @@ class PaymentController extends Controller
     {
         if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
             return $this->render(
-                '@App/Page/index.html.twig',
+            'Page/index.html.twig',
                 ['text' => $this->get('translator')->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
@@ -55,7 +55,7 @@ class PaymentController extends Controller
         $paymentSystem = $this->get('app.payment_system.service');
 
         return $this->render(
-            '@App/Redesign/Payment/payment.html.twig',
+            'Redesign/Payment/payment.html.twig',
             [
                 'event' => $event,
                 'payment_data' => $result,

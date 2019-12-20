@@ -8,10 +8,10 @@
     {% endif -%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
-    <meta property="og:image" content="{{ absolute_url(asset('assets/img/gallery/og_image/gallery_image_9.jpg')) }}" />
-    <meta property="og:image" content="{{ absolute_url(asset('assets/img/gallery/og_image/gallery_image_4.jpg')) }}" />
-    <meta property="og:image" content="{{ absolute_url(asset('assets/img/gallery/og_image/gallery_image_6.jpg')) }}" />
-    <meta property="og:image" content="{{ absolute_url(asset('assets/img/gallery/og_image/gallery_image_8.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_9.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_4.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_6.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_8.jpg')) }}" />
     {% endblock metatags %}
     {% block meta_description %}
     <meta name="description" content="Frameworks Days - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
@@ -46,11 +46,11 @@
 
     <!--BEGIN layout-box__bottom-->
     <div class="layout-box__bottom">
-        {% include '@App/Redesign/footer.html.twig' %}
+        {% include 'Redesign/footer.html.twig' %}
     </div>
     <!--END layout-box__bottom-->
     {% if not is_mobile() and not app.user %}
-        {% include '@App/Redesign/signin_popups.html.twig' %}
+        {% include 'Redesign/signin_popups.html.twig' %}
     {% endif %}
 </div>
 
@@ -67,7 +67,7 @@
 {% endblock popups %}
 
 {% block facebook %}
-    {% include '@App/Redesign/_fb_init.html.twig' %}
+    {% include 'Redesign/_fb_init.html.twig' %}
 {% endblock %}
 
 {% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}

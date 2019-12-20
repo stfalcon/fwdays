@@ -6,14 +6,14 @@ use App\Entity\Event;
 use App\Entity\Review;
 use App\Entity\Speaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * SpeakerController.
  */
-class SpeakerController extends Controller
+class SpeakerController extends AbstractController
 {
     /**
      * @Route(path="/speaker_popup/{slug}/{speakerSlug}/{withReview}", name="speaker_popup",

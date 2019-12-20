@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 /**
  * UploadController.
  */
-class UploadController extends Controller
+class UploadController extends AbstractController
 {
     /**
      * @Route("/admin/text-area/uploadImage", name="text_area_upload_image", methods={"POST"})

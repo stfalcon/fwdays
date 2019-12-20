@@ -1,0 +1,59 @@
+sonata_core:
+    form:
+        mapping:
+            enabled: false
+
+sonata_admin:
+    title: framework days
+    templates:
+        layout: "::admin.html.twig"
+        user_block: '::user_block.html.twig'
+    dashboard:
+        blocks:
+            # display two dashboard blocks
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups:
+                        - "Пользователи"
+                        - "События"
+                        - "group.translation"
+            -
+                position: right
+                type: sonata.admin.block.admin_list
+                settings:
+                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки", "Логи"]
+            -
+                position: left
+                type: sonata.block.service.statistic
+
+sonata_exporter:
+    writers:
+        csv:
+            delimiter: ";"
+
+sonata_block:
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+        sonata.block.service.statistic: ~
+        sonata.block.event.text:
+        sonata.block.event.program:
+        sonata.block.event.partners:
+        sonata.block.event.prices:
+        sonata.block.event.description:
+        sonata.block.event.venue:
+        sonata.block.event.speakers:
+        sonata.block.event.reviews:
+        sonata.block.event.candidate_speakers:
+        sonata.block.event.committee_speakers:
+        sonata.block.event.expert_speakers:
+        sonata.block.event.ticket_status:
+        sonata.block.footer:
+        sonata.block.language_switcher:
+        sonata.block.email_user_subscribe:

@@ -142,7 +142,7 @@ check_box.agree_with_conditions_error: "You must accept public offer contract"
 
 ticket.dear_user: Dear participant <b>%user_name%</b>,
 ticket.wait_for_you: 'We are waiting for you:'
-ticket.city: %city_name%,
+ticket.city: '%city_name%,'
 ticket.registration.begin: Registration starts at
 ticket.event.programm: 'Agenda:'
 new_ticket.event.programm: 'Agenda'

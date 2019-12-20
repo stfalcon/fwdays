@@ -10,7 +10,7 @@ use App\Repository\EventRepository;
 use App\Service\ReferralService;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 /**
  * Class DefaultController.
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="homepage", options = {"expose"=true})
@@ -32,7 +32,7 @@ class DefaultController extends Controller
             ->getRepository(Event::class)
             ->findBy(['active' => true], ['date' => 'ASC']);
 
-        return $this->render('@App/Default/index.html.twig', ['events' => $events]);
+        return $this->render('Default/index.html.twig', ['events' => $events]);
     }
 
     /**
@@ -45,14 +45,14 @@ class DefaultController extends Controller
     public function pageAction(Page $page): Response
     {
         if ('contacts' === $page->getSlug()) {
-            return $this->render('@App/Redesign/static_contacts.page.html.twig', ['page' => $page]);
+            return $this->render('Redesign/static_contacts.page.html.twig', ['page' => $page]);
         }
 
         if ('about' === $page->getSlug()) {
-            return $this->render('@App/Page/about.html.twig', ['page' => $page]);
+            return $this->render('Page/about.html.twig', ['page' => $page]);
         }
 
-        return $this->render('@App/Default/page.html.twig', ['page' => $page]);
+        return $this->render('Default/page.html.twig', ['page' => $page]);
     }
 
     /**
@@ -81,7 +81,7 @@ class DefaultController extends Controller
         $allActiveEvents = $eventRepository
             ->findBy(['active' => true, 'adminOnly' => false]);
 
-        return $this->render('@App/Default/cabinet.html.twig', [
+        return $this->render('Default/cabinet.html.twig', [
             'user' => $user,
             'user_active_events' => $userActiveEvents,
             'user_past_events' => $userPastEvents,
@@ -101,7 +101,7 @@ class DefaultController extends Controller
      */
     public function passwordAlreadyRequestedAction(): Response
     {
-        return $this->render('FOSUserBundle:Resetting:passwordAlreadyRequested.html.twig');
+        return $this->render(':FOSUserBundle/views/Resetting:passwordAlreadyRequested.html.twig');
     }
 
     /**
@@ -154,6 +154,6 @@ class DefaultController extends Controller
             ->getRepository(Event::class)
             ->findClosesActiveEvents(3);
 
-        return $this->render('AppBundle::microlayout.html.twig', ['events' => $events]);
+        return $this->render('microlayout.html.twig', ['events' => $events]);
     }
 }

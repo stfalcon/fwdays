@@ -6,7 +6,7 @@ use App\Entity\Mail;
 use App\Entity\MailQueue;
 use App\Entity\User;
 use App\Service\EmailHashValidationService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * EmailSubscribe.
  */
-class EmailController extends Controller
+class EmailController extends AbstractController
 {
     /**
      * @Route("/unsubscribe/{hash}/{id}/{mailId}", name="unsubscribe")
@@ -52,7 +52,7 @@ class EmailController extends Controller
         $subscriber->setSubscribe(false);
         $em->flush();
 
-        return $this->render('@App/Email/unsubscribe.html.twig', ['user' => $subscriber]);
+        return $this->render('Email/unsubscribe.html.twig', ['user' => $subscriber]);
     }
 
     /**
@@ -74,7 +74,7 @@ class EmailController extends Controller
         $subscriber->setSubscribe(true);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->render('@App/Email/subscribe.html.twig');
+        return $this->render('Email/subscribe.html.twig');
     }
 
     /**

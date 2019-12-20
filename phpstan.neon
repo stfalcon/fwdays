@@ -1,7 +1,7 @@
 parameters:
     excludes_analyse:
-        - '%rootDir%/../../../src/AppBundle/Tests/*'
-        - '%rootDir%/../../../src/AppBundle/Service/SvgToJpg.php'
+        - '%rootDir%/../../../src/Tests/*'
+        - '%rootDir%/../../../src/Service/SvgToJpg.php'
     fileExtensions:
         - 'php'
     reportUnmatchedIgnoredErrors: false

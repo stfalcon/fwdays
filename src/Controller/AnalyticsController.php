@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Service\AnalyticsService;
 use App\Service\ChartService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * AnalyticsController.
  */
-class AnalyticsController extends Controller
+class AnalyticsController extends AbstractController
 {
     /**
      * Shows the dynamics of daily ticket sales.
@@ -40,7 +40,7 @@ class AnalyticsController extends Controller
             $chart = $this->container->get(ChartService::class)->calendarChart($dailyData);
         }
 
-        return $this->render('AppBundle:Analytics:daily_dynamics.html.twig', [
+        return $this->render(':Analytics:daily_dynamics.html.twig', [
             'event' => $event, 'chart' => $chart, 'summary' => $summary,
         ]);
     }
@@ -59,7 +59,7 @@ class AnalyticsController extends Controller
         $analyticsService = $this->get(AnalyticsService::class);
         $data = $analyticsService->getDataForCompareTicketSales($event);
 
-        return $this->render('AppBundle:Analytics:comparison_with_previous_events.html.twig', [
+        return $this->render(':Analytics:comparison_with_previous_events.html.twig', [
             'event' => $event, 'data' => $data,
         ]);
     }

@@ -1,0 +1,37 @@
+admin_area:
+#    resource: '@App/Resources/config/sonata_admin.xml'
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+    defaults: { _locale: uk}
+    options:
+        i18n: false
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+    defaults: { _locale: uk}
+    options:
+        i18n: false
+
+sonata_admin_ticket_check:
+    path:  /admin/ticket/check
+    defaults: { _controller: AppBundle:TicketAdmin:check }
+    options:
+        i18n: false
+
+admin_show_statistic:
+    path:  /admin/statistic
+    defaults:
+        _controller: AppBundle:Admin:showStatistic
+        _locale: uk
+    options:
+        i18n: false
+
+admin_show_event_statistic:
+    path:  /admin/event_statistic
+    defaults:
+        _controller: AppBundle:Admin:showEventStatistic
+        _locale: uk
+    options:
+        i18n: false

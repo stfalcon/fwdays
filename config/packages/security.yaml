@@ -33,7 +33,7 @@ security:
                 success_handler: App\Handler\LoginHandler
             entry_point: App\EventListener\LoginEntryPoint
             remember_me:
-                secret: "%secret%"
+                secret: '%env(APP_SECRET)%'
                 lifetime: 31536000 # 365 days in seconds
                 path: ~
                 domain: ~

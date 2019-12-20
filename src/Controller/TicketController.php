@@ -8,14 +8,14 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helper\NewPdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * TicketController.
  */
-class TicketController extends Controller
+class TicketController extends AbstractController
 {
     /**
      * Generating ticket with QR-code to event.

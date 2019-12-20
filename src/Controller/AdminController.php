@@ -10,8 +10,9 @@ use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Helper\StfalconMailerHelper;
+use App\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AdminController.
  */
-class AdminController extends Controller
+class AdminController extends AbstractController
 {
     /**
      * @Route("/admin/event/{slug}/users/add", name="adminusersadd")
@@ -48,12 +49,12 @@ class AdminController extends Controller
                 $data['email'] = $dt[2];
                 $data['discount'] = isset($dt[3]) && 'D' === strtoupper($dt[3]);
 
-                $user = $this->get('fos_user.user_manager')->findUserBy(['email' => $data['email']]);
+                $user = $this->get(UserManager::class)->findUserBy(['email' => $data['email']]);
 
                 // создаем нового пользователя
                 if (!$user) {
                     /** @var User $user */
-                    $user = $this->get('fos_user.user_manager')->createUser();
+                    $user = $this->get(UserManager::class)->createUser();
                     $user->setEmail($data['email'])
                         ->setName($data['name'])
                         ->setSurname($data['surname']);
@@ -169,7 +170,7 @@ class AdminController extends Controller
         $priceBlocks = $event->getTicketsCost();
 
         return $this->render(
-            '@App/Admin/addUsers.html.twig',
+            'Admin/addUsers.html.twig',
             [
                 'admin_pool' => $this->get('sonata.admin.pool'),
                 'event' => $event,
@@ -283,7 +284,7 @@ class AdminController extends Controller
             $eventStatisticSlug = $event->getSlug();
         }
 
-        return $this->render('@App/Statistic/statistic.html.twig', [
+        return $this->render('Statistic/statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
@@ -350,7 +351,7 @@ class AdminController extends Controller
 
         $eventStatisticHtml = $this->getEventStatistic($event);
 
-        return $this->render('@App/Statistic/event_statistic_page.html.twig', [
+        return $this->render('Statistic/event_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
             'event' => $event,
@@ -392,7 +393,7 @@ class AdminController extends Controller
 
         $tableHtml = $this->getEventsTable($events);
 
-        return $this->render('@App/Statistic/events_statistic_page.html.twig', [
+        return $this->render('Statistic/events_statistic_page.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
             'table_html' => $tableHtml,
@@ -428,7 +429,7 @@ class AdminController extends Controller
             }
         }
 
-        return $this->render('@App/Statistic/user_ticket_statistic.html.twig', [
+        return $this->render('Statistic/user_ticket_statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'events' => $events,
             'groups' => $groups,
