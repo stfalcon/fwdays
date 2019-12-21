@@ -19,7 +19,7 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('assets/styles/main.css'|app_asset_version) }}">
+    <link rel="stylesheet" href="{{ asset('build/styles/main.css'|app_asset_version) }}">
     {%- if app.environment == 'prod' -%}
         <!--PROOF PIXEL--><script src="https://cdn.useproof.com/proof.js?acc=QG6riDQ1y2OoXxtbfLYy1HqlCYq1" async defer></script><!--END PROOF PIXEL-->
     {% endif %}
@@ -38,7 +38,7 @@
 <div class="layout-box">
     <!--BEGIN layout-box__top-->
     <div class="layout-box__top">
-        {% include '@App/Redesign/header.html.twig' %}
+        {% include 'Redesign/header.html.twig' %}
 
         {% block content %}{% endblock content %}
     </div>
@@ -100,7 +100,7 @@
         <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
     {% endif -%}
     <script src="{{ asset('js/partials/xregexp-all.js') }}" defer></script>
-    {% set main_script = 'assets/js/'~ app.request.locale ~'/main.js' %}
+    {% set main_script = 'build/js/'~ app.request.locale ~'/main.js' %}
     <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
 
     {% if app.request.cookies.has('event') -%}

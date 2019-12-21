@@ -7,6 +7,7 @@ use App\Entity\Mail;
 use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Service\TranslatedMailService;
+use App\Traits\SessionTrait;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -20,6 +21,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class MailAdminController extends CRUDController
 {
+    use SessionTrait;
+
+    private $mailer;
+    private $mailerHelper;
+    private $translatedMailService;
+
+    public function __construct(\Swift_Mailer $mailer, MailerHelper $mailerHelper, TranslatedMailService $translatedMailService)
+    {
+        $this->mailer = $mailer;
+        $this->mailerHelper = $mailerHelper;
+        $this->translatedMailService = $translatedMailService;
+    }
+
     /**
      * Send messages for all users in mail queue (using console command).
      *
@@ -29,18 +43,15 @@ class MailAdminController extends CRUDController
      */
     public function userSendAction()
     {
-        if (!\in_array($this->get('kernel')->getEnvironment(), ['test'])) {
-            throw new NotFoundHttpException('Page not found');
-        }
-        $command = $this->get(StfalconMailerCommand::class);
-        $output = new ConsoleOutput();
-        $arguments = [
-            '--amount' => '5',
-        ];
-        $input = new ArrayInput($arguments);
-        $command->run($input, $output);
-
-        return new Response('complete');
+//        $command = $this->get(StfalconMailerCommand::class);
+//        $output = new ConsoleOutput();
+//        $arguments = [
+//            '--amount' => '5',
+//        ];
+//        $input = new ArrayInput($arguments);
+//        $command->run($input, $output);
+//
+//        return new Response('complete');
     }
 
     /**
@@ -55,34 +66,34 @@ class MailAdminController extends CRUDController
         $id = $request->get($this->admin->getIdParameter());
         /** @var Mail $mail */
         $mail = $this->admin->getObject($id);
-        $session = $this->get('session');
+
         if (!$mail instanceof Mail) {
-            $session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
+            $this->session->getFlashBag()->add('sonata_flash_error', 'Почтовая рассылка не найдена');
 
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
 
         $em = $this->getDoctrine()->getManager();
-        $mailer = $this->get('mailer');
-        $mailerHelper = $this->get(MailerHelper::class);
+
+
         $users = $em->getRepository(User::class)->getAdmins();
         $isTestMessage = true;
         $error = false;
-        $translatedMailService = $this->get(TranslatedMailService::class);
-        $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+        $translatedMails = $this->translatedMailService->getTranslatedMailArray($mail);
+        /** @var User $user */
         foreach ($users as $user) {
             if (!isset($translatedMails[$user->getEmailLanguage()]) ||
-                !$mailer->send($mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()], $isTestMessage))) {
+                !$this->mailer->send($this->mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()], $isTestMessage))) {
                 $error = true;
             }
         }
         if ($error) {
-            $session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
+            $this->session->getFlashBag()->add('sonata_flash_error', 'При отправлении почтовой рассылки администраторам случилась ошибка');
 
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
 
-        $this->get('session')->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
+        $this->session->getFlashBag()->add('sonata_flash_success', 'Почтовая рассылка администраторам успешно выполнена');
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }

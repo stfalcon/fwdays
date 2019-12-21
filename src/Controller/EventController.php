@@ -9,6 +9,7 @@ use App\Service\EventService;
 use App\Service\GoogleMapService;
 use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
+use App\Traits\TranslatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,27 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EventController extends AbstractController
 {
+    use TranslatorTrait;
+
+    private $urlForRedirect;
+    private $referralService;
+    private $eventService;
+    private $googleMapService;
+
+    /**
+     * @param UrlForRedirect   $urlForRedirect
+     * @param ReferralService  $referralService
+     * @param EventService     $eventService
+     * @param GoogleMapService $googleMapService
+     */
+    public function __construct(UrlForRedirect $urlForRedirect, ReferralService $referralService, EventService $eventService, GoogleMapService $googleMapService)
+    {
+        $this->urlForRedirect = $urlForRedirect;
+        $this->referralService = $referralService;
+        $this->eventService = $eventService;
+        $this->googleMapService = $googleMapService;
+    }
+
     /**
      * @Route("/events", name="events")
      *
@@ -56,10 +78,9 @@ class EventController extends AbstractController
      */
     public function showAction(Event $event, Request $request): Response
     {
-        $referralService = $this->get(ReferralService::class);
-        $referralService->handleRequest($request);
+        $this->referralService->handleRequest($request);
 
-        return $this->render('Redesign/Event/event.html.twig', $this->get(EventService::class)->getEventPages($event));
+        return $this->render('Redesign/Event/event.html.twig', $this->eventService->getEventPages($event));
     }
 
     /**
@@ -74,9 +95,9 @@ class EventController extends AbstractController
      */
     public function showEventReviewAction(Event $event, Review $review): Response
     {
-        $pages = $this->get(EventService::class)->getEventPages($event, $review);
+        $pages = $this->eventService->getEventPages($event, $review);
 
-        return $this->render('Redesign/Speaker:report_review.html.twig', $pages);
+        return $this->render('Redesign/Speaker/report_review.html.twig', $pages);
     }
 
     /**
@@ -92,7 +113,7 @@ class EventController extends AbstractController
      */
     public function getEventMapPosition(Event $event): JsonResponse
     {
-        if ($this->get(GoogleMapService::class)->setEventMapPosition($event)) {
+        if ($this->googleMapService->setEventMapPosition($event)) {
             $this->getDoctrine()->getManager()->flush($event);
 
             return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getLng()]);
@@ -130,9 +151,8 @@ class EventController extends AbstractController
         }
 
         if ($result) {
-            $translator = $this->get('translator');
-            $flashContent = $translator->trans('flash_you_registrated.title');
-            $html = $translator->trans('ticket.status.not_take_apart');
+            $flashContent = $this->translator->trans('flash_you_registrated.title');
+            $html = $this->translator->trans('ticket.status.not_take_apart');
             $em->persist($user);
             $em->flush();
         }
@@ -141,7 +161,7 @@ class EventController extends AbstractController
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
         }
 
-        return $this->redirect($this->get(UrlForRedirect::class)->getRedirectUrl($request->headers->get('referer')));
+        return $this->redirect($this->urlForRedirect->getRedirectUrl($request->headers->get('referer')));
     }
 
     /**
@@ -174,9 +194,8 @@ class EventController extends AbstractController
         }
 
         if ($result) {
-            $translator = $this->get('translator');
-            $flashContent = $translator->trans('flash_you_unsubscribe.title');
-            $html = $translator->trans('ticket.status.take_apart');
+            $flashContent = $this->translator->trans('flash_you_unsubscribe.title');
+            $html = $this->translator->trans('ticket.status.take_apart');
             $em->flush();
         }
 
@@ -192,7 +211,7 @@ class EventController extends AbstractController
      */
     public function showEventVenuePageAction(Event $event): Response
     {
-        $resultArray = $this->get(EventService::class)->getEventPages($event);
+        $resultArray = $this->eventService->getEventPages($event);
         if (null === $resultArray['venuePage']) {
             throw $this->createNotFoundException(sprintf('Unable to find page by slug: venue'));
         }
@@ -200,6 +219,6 @@ class EventController extends AbstractController
         $newText = $resultArray['venuePage']->getTextNew();
         $text = isset($newText) && !empty($newText) ? $newText : $resultArray['venuePage']->getText();
 
-        return $this->render('AppBundle:Redesign:venue_review.html.twig', \array_merge($resultArray, ['text' => $text]));
+        return $this->render('Redesign/venue_review.html.twig', \array_merge($resultArray, ['text' => $text]));
     }
 }

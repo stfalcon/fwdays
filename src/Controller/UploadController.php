@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Traits\ValidatorTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,6 +18,8 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class UploadController extends AbstractController
 {
+    use ValidatorTrait;
+
     /**
      * @Route("/admin/text-area/uploadImage", name="text_area_upload_image", methods={"POST"})
      *
@@ -40,7 +43,7 @@ class UploadController extends AbstractController
 
         // Validate
         /** @var ConstraintViolationList $errors */
-        $errors = $this->get('validator')->validate(['file' => $file], $fileConstraint);
+        $errors = $this->validator->validate(['file' => $file], $fileConstraint);
         if ($errors->count() > 0) {
             return new JsonResponse(['msg' => 'Your file is not valid!'], 400);
         }

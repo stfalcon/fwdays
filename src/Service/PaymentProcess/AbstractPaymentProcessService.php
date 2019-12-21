@@ -7,6 +7,7 @@ namespace App\Service\PaymentProcess;
 use App\Entity\Payment;
 use App\Entity\WayForPayLog;
 use App\Service\ReferralService;
+use App\Traits;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +21,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 abstract class AbstractPaymentProcessService implements PaymentProcessInterface
 {
+    use Traits\RouterTrait;
+    use Traits\TranslatorTrait;
+    use Traits\EntityManagerTrait;
+    use Traits\LoggerTrait;
+    use Traits\SessionTrait;
+    use Traits\RequestStackTrait;
+
     public const SESSION_PAYMENT_KEY = 'session_payment';
 
     public const TRANSACTION_APPROVED_AND_SET_PAID_STATUS = 'approved_and_set_paid';
@@ -31,37 +39,34 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
     ];
 
+    private $locale;
+
     protected $appConfig;
-    protected $translator;
-    protected $request;
-    protected $locale;
-    protected $logger;
     protected $referralService;
-    protected $em;
-    protected $session;
-    protected $router;
 
     /**
      * @param array               $appConfig
-     * @param TranslatorInterface $translator
-     * @param RequestStack        $requestStack
-     * @param Router              $router
-     * @param EntityManager       $em
-     * @param Logger              $logger
      * @param ReferralService     $referralService
-     * @param Session             $session
      */
-    public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session)
+    public function __construct(array $appConfig, ReferralService $referralService)
     {
         $this->appConfig = $appConfig;
-        $this->request = $requestStack->getCurrentRequest();
-        $this->translator = $translator;
-        $this->locale = null !== $this->request ? $this->request->getLocale() : 'uk';
-        $this->logger = $logger;
         $this->referralService = $referralService;
-        $this->em = $em;
-        $this->session = $session;
-        $this->router = $router;
+    }
+
+    public function getRequest(): void
+    {
+        $this->requestStack->getCurrentRequest();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentLocale(): string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        return null !== $request ? $request->getLocale() : 'uk';
     }
 
     /**

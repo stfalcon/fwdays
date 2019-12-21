@@ -9,7 +9,7 @@
                 <div class="partners__title">{{ ctgname }}</div>
                 <ul class="partners__items">
                 {% for partner in partners %}
-                    {% include '@App/Redesign/Partner/partner.html.twig' with {'partner': partner} %}
+                    {% include 'Redesign/Partner/partner.html.twig' with {'partner': partner} %}
                 {% endfor %}
                 </ul>
             </div>
@@ -31,7 +31,7 @@
                         <div class="partners__title">{{ ctgname }}</div>
                         <ul class="partners__items">
                         {% for partner in partners %}
-                            {% include '@App/Redesign/Partner/partner.html.twig' with {'partner': partner} %}
+                            {% include 'Redesign/Partner/partner.html.twig' with {'partner': partner} %}
                         {% endfor %}
                         </ul>
                     </div>

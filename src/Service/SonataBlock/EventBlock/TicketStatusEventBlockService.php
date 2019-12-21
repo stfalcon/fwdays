@@ -66,7 +66,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.ticket.status.html.twig',
+            'template' => 'Redesign/Event/event.ticket.status.html.twig',
             'event' => null,
             'position' => 'price_block',
             'ticket_cost' => null,

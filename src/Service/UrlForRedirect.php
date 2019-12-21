@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use JMS\I18nRoutingBundle\Router\I18nRouter;
+use App\Traits\RouterTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -10,17 +10,23 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UrlForRedirect
 {
-    private $router;
+    use RouterTrait;
+
     private $homePages = [];
     private $authorizationUrls = [];
-
+    private $locales;
     /**
-     * @param I18nRouter $router
-     * @param array      $locales
+     * @param array $locales
      */
-    public function __construct(I18nRouter $router, array $locales)
+    public function __construct(array $locales)
     {
-        $this->router = $router;
+        $this->locales = $locales;
+    }
+
+    private function prepare()
+    {
+        $this->homePages = [];
+        $this->authorizationUrls = [];
 
         $this->authorizationUrls[] = $this->router->generate('fos_user_security_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
@@ -28,11 +34,11 @@ class UrlForRedirect
         $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->authorizationUrls[] = $this->router->generate('password_already_requested', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $this->homePages[] = trim($router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
-        $this->homePages[] = trim($router->generate('cabinet', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
-        foreach ($locales as $locale) {
-            $this->homePages[] = $router->generate('homepage', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
-            $this->homePages[] = $router->generate('cabinet', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->homePages[] = trim($this->router->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
+        $this->homePages[] = trim($this->router->generate('cabinet', [], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
+        foreach ($this->locales as $locale) {
+            $this->homePages[] = $this->router->generate('homepage', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
+            $this->homePages[] = $this->router->generate('cabinet', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $this->authorizationUrls[] = trim($this->router->generate('fos_user_registration_register', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL), '\/');
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_check_email', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -51,6 +57,7 @@ class UrlForRedirect
      */
     public function getRedirectUrl($referralUrl, $host = '')
     {
+        $this->prepare();
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
 
         if (\in_array($clearReferrer, $this->authorizationUrls)) {

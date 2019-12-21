@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Model\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    private $userManager;
+    private $mailerHelper;
+    private $pool;
+    private $mailer;
+
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer)
+    {
+        $this->userManager = $userManager;
+        $this->mailerHelper = $mailerHelper;
+        $this->pool = $pool;
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/admin/event/{slug}/users/add", name="adminusersadd")
      *
@@ -49,12 +63,12 @@ class AdminController extends AbstractController
                 $data['email'] = $dt[2];
                 $data['discount'] = isset($dt[3]) && 'D' === strtoupper($dt[3]);
 
-                $user = $this->get(UserManager::class)->findUserBy(['email' => $data['email']]);
+                $user = $this->userManager->findUserBy(['email' => $data['email']]);
 
                 // создаем нового пользователя
                 if (!$user) {
                     /** @var User $user */
-                    $user = $this->get(UserManager::class)->createUser();
+                    $user = $this->userManager->createUser();
                     $user->setEmail($data['email'])
                         ->setName($data['name'])
                         ->setSurname($data['surname']);
@@ -70,10 +84,10 @@ class AdminController extends AbstractController
                         break;
                     }
 
-                    $this->get('fos_user.user_manager')->updateUser($user);
+                    $this->userManager->updateUser($user);
 
                     // отправляем сообщение о регистрации
-                    $body = $this->container->get(MailerHelper::class)->renderTwigTemplate(
+                    $body = $this->mailerHelper->renderTwigTemplate(
                         'AppBundle:Registration:automatically.html.twig',
                         [
                             'user' => $user,
@@ -87,7 +101,7 @@ class AdminController extends AbstractController
                         ->setTo($user->getEmail())
                         ->setBody($body, 'text/html');
 
-                    $this->get('mailer')->send($message);
+                    $this->mailer->send($message);
 
                     $this->addFlash('sonata_flash_info', $user->getFullname().' — Create a new user');
                 } else {
@@ -172,7 +186,7 @@ class AdminController extends AbstractController
         return $this->render(
             'Admin/addUsers.html.twig',
             [
-                'admin_pool' => $this->get('sonata.admin.pool'),
+                'admin_pool' => $this->pool,
                 'event' => $event,
                 'price_blocks' => $priceBlocks,
                 'event_slug' => $event->getSlug(),
@@ -285,7 +299,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('Statistic/statistic.html.twig', [
-            'admin_pool' => $this->get('sonata.admin.pool'),
+            'admin_pool' => $this->pool,
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
                 'countAgreedProvideData' => $countAgreedProvideData,
@@ -352,7 +366,7 @@ class AdminController extends AbstractController
         $eventStatisticHtml = $this->getEventStatistic($event);
 
         return $this->render('Statistic/event_statistic_page.html.twig', [
-            'admin_pool' => $this->get('sonata.admin.pool'),
+            'admin_pool' => $this->pool,
             'events' => $events,
             'event' => $event,
             'event_statistic_html' => $eventStatisticHtml,
@@ -394,7 +408,7 @@ class AdminController extends AbstractController
         $tableHtml = $this->getEventsTable($events);
 
         return $this->render('Statistic/events_statistic_page.html.twig', [
-            'admin_pool' => $this->get('sonata.admin.pool'),
+            'admin_pool' => $this->pool,
             'events' => $events,
             'table_html' => $tableHtml,
         ]);
@@ -430,7 +444,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('Statistic/user_ticket_statistic.html.twig', [
-            'admin_pool' => $this->get('sonata.admin.pool'),
+            'admin_pool' => $this->pool,
             'events' => $events,
             'groups' => $groups,
         ]);

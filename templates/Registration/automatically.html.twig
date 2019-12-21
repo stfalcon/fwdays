@@ -1,4 +1,4 @@
-{% include '@App/Email/_email_header.html.twig' %}
+{% include 'Email/_email_header.html.twig' %}
 <p style="margin: 10px 0;">
 {{ 'interkassa.mail.msg.hello'|trans({'%user_fullname%':user.fullname})|raw }}
 <p></p>
@@ -8,8 +8,8 @@
 {% set url = '<a href="'~url('fos_user_change_password', [], false)~'">change password</a>' %}
 {{ 'autoreg.mail.text3'|trans({'%url%':url})|raw }}
 </p>
-{% include '@App/Email/_email_end_table.html.twig' %}
+{% include 'Email/_email_end_table.html.twig' %}
 
-{% include '@App/Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
+{% include 'Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
 </center>
 </body>

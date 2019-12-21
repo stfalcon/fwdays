@@ -6,13 +6,7 @@ use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Service\ReferralService;
-use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * InterkassaService.
@@ -28,18 +22,12 @@ class InterkassaService extends AbstractPaymentProcessService
 
     /**
      * @param array               $appConfig
-     * @param TranslatorInterface $translator
-     * @param RequestStack        $requestStack
-     * @param Router              $router
-     * @param EntityManager       $em
-     * @param Logger              $logger
      * @param ReferralService     $referralService
-     * @param Session             $session
      * @param bool                $isOverrideCallbacks
      */
-    public function __construct(array $appConfig, TranslatorInterface $translator, RequestStack $requestStack, Router $router, EntityManager $em, Logger $logger, ReferralService $referralService, Session $session, bool $isOverrideCallbacks)
+    public function __construct(array $appConfig, ReferralService $referralService, bool $isOverrideCallbacks)
     {
-        parent::__construct($appConfig, $translator, $requestStack, $router, $em, $logger, $referralService, $session);
+        parent::__construct($appConfig, $referralService);
 
         $this->isOverrideCallbacks = $isOverrideCallbacks;
     }
@@ -132,7 +120,7 @@ class InterkassaService extends AbstractPaymentProcessService
             'ik_am' => $payment->getAmount(),
             'ik_cur' => 'uah',
             'ik_desc' => $description,
-            'ik_loc' => $this->locale,
+            'ik_loc' => $this-> getCurrentLocale(),
         ];
 
         if ($this->isOverrideCallbacks) {

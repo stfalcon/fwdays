@@ -33,7 +33,7 @@ class StatisticBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         return $this->renderResponse(
-            '@App/Statistic/block_admin_list.html.twig',
+            'Statistic/block_admin_list.html.twig',
             [
                 'block' => $blockContext->getBlock(),
                 'block_context' => $blockContext,

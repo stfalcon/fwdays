@@ -59,7 +59,7 @@ class ReviewsEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.reviews.html.twig',
+            'template' => 'Redesign/Event/event.reviews.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

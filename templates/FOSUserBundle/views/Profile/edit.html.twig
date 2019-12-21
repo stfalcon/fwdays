@@ -1,8 +1,8 @@
-{% extends '@App/Redesign/layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block content %}
     <div class="form-box">
         <h2 class="h2 form-box__title">{{ 'menu.profile.my'|trans }}</h2>
-        {% include '@App/Redesign/profile_form.html.twig' %}
+        {% include 'Redesign/profile_form.html.twig' %}
     </div>
 {% endblock content %}

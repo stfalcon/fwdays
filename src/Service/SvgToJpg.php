@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Traits\LoggerTrait;
 use Symfony\Bridge\Monolog\Logger;
 
 /**
@@ -9,17 +10,10 @@ use Symfony\Bridge\Monolog\Logger;
  */
 class SvgToJpg
 {
-    private $logger;
+    use LoggerTrait;
+
     private $xResolution = 500;
     private $yResolution = 500;
-
-    /**
-     * @param Logger $logger
-     */
-    public function __construct(Logger $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * @param int $x

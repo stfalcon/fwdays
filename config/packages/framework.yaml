@@ -7,9 +7,9 @@ parameters:
     app.event_header_video: "uploads/video"
     app.upload_image: "uploads/images"
     app.media_cache: '/media/cache/'
+#    app.payment_system: '@App\Service\PaymentProcess\InterkassaService'
+#    app.payment_system: 'App\Service\PaymentProcess\WayForPayService'
     app.config:
-        #    payment_system: 'App\Service\PaymentProcess\WayForPayService'
-        payment_system: App\Service\PaymentProcess\InterkassaService
         wayforpay:
             shop_id: '%env(WAYFORPAY_SHOP_ID)%'
             secret: '%env(WAYFORPAY_SECRET)%'
@@ -21,8 +21,8 @@ parameters:
 framework:
     router:
         utf8: true
-    assets:
-        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+#    assets:
+#        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     #esi:             ~
     default_locale:  "%locale%"
     translator:

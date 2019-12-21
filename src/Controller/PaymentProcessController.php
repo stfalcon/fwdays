@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
+use App\Service\PaymentProcess\PaymentProcessInterface;
+use App\Traits\SessionTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +18,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PaymentProcessController extends AbstractController
 {
+    use SessionTrait;
+
     /** @var array */
-    protected $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
+    private $itemVariants = ['javascript', 'php', 'frontend', 'highload', 'net.'];
+    private $paymentSystem;
+
+    /**
+     * @param PaymentProcessInterface $paymentSystem
+     */
+    public function __construct(PaymentProcessInterface $paymentSystem)
+    {
+        $this->paymentSystem = $paymentSystem;
+    }
 
     /**
      * @Route("/payment/interaction", name="payment_interaction", methods={"POST"})
@@ -29,15 +42,14 @@ class PaymentProcessController extends AbstractController
     public function interactionAction(Request $request)
     {
         $data = $request->request->all();
-        $paymentSystem = $this->get('app.payment_system.service');
 
         try {
-            $transactionStatus = $paymentSystem->processData($data);
+            $transactionStatus = $this->paymentSystem->processData($data);
         } catch (BadRequestHttpException $e) {
             return $this->redirectToRoute('homepage');
         }
 
-        if ($paymentSystem->isUseRedirectByStatus()) {
+        if ($this->paymentSystem->isUseRedirectByStatus()) {
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
                 return $this->redirectToRoute('payment_success');
             }
@@ -68,14 +80,12 @@ class PaymentProcessController extends AbstractController
         $json = $request->getContent();
         $response = \json_decode($json, true);
 
-        $paymentSystem = $this->get('app.payment_system.service');
-
         try {
-            $paymentSystem->processData($response);
+            $this->paymentSystem->processData($response);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }
-        $result = $paymentSystem->getResponseOnServiceUrl($response);
+        $result = $this->paymentSystem->getResponseOnServiceUrl($response);
 
         return new JsonResponse($result);
     }
@@ -89,13 +99,12 @@ class PaymentProcessController extends AbstractController
      */
     public function showSuccessAction(Request $request)
     {
-        $session = $this->get('session');
-        $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
-        $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
+        $paymentId = $this->session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
+        $this->session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
             $data = $request->query->all();
-            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
+            $paymentId = $this->paymentSystem->getPaymentIdFromData($data);
             if (null === $paymentId) {
                 throw new BadRequestHttpException();
             }

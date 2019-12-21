@@ -37,7 +37,7 @@ class TextEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.text_block.html.twig',
+            'template' => 'Redesign/Event/event.text_block.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

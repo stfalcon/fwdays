@@ -5,7 +5,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title">{{ 'menu.login'|trans }}</div>
         </div>
-        {% include '@App/Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':'', 'error':null} %}
+        {% include 'Redesign/login_form.html.twig' with{'remodal':'modal-signup', 'queryLink':'', 'error':null} %}
     </div>
 </div>
 <!--END signin-popup-->
@@ -17,7 +17,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title change-title">{{ 'menu.login'|trans }}</div>
         </div>
-        {% include '@App/Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1', 'error':null} %}
+        {% include 'Redesign/login_form.html.twig' with{'remodal':'modal-signup-payment', 'queryLink':'?exception_login=1', 'error':null} %}
     </div>
 </div>
 <!--END signin-payment-popup-->
@@ -29,7 +29,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</div>
         </div>
-        {% include '@App/Redesign/registration_form.html.twig' with {'remodal':'modal-signin', 'queryLink':''} %}
+        {% include 'Redesign/registration_form.html.twig' with {'remodal':'modal-signin', 'queryLink':''} %}
     </div>
 </div>
 <!--END signup-popup-->
@@ -41,7 +41,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title">{{ 'menu.user.registration'|trans }}</div>
         </div>
-        {% include '@App/Redesign/registration_form.html.twig' with {'remodal':'modal-signin-payment', 'queryLink':'?exception_login=1'} %}
+        {% include 'Redesign/registration_form.html.twig' with {'remodal':'modal-signin-payment', 'queryLink':'?exception_login=1'} %}
     </div>
 </div>
 <!--END signup-payment-popup-->
@@ -53,7 +53,7 @@
         <div class="remodal__head">
             <div class="h2 remodal__title">{{ 'user.forgot_password.title'|trans }}</div>
         </div>
-        {% include '@App/Redesign/forgot_password_form.html.twig' with {'show_error': null} %}
+        {% include 'Redesign/forgot_password_form.html.twig' with {'show_error': null} %}
     </div>
 </div>
 <!--END forgot-password-popup-->

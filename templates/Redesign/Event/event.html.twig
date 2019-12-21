@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Redesign:layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block title %}
     {% if event.seoTitle is not null %}
@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'AppBundle:Redesign/Event:event.header.html.twig' with {
+    {% include 'Redesign/Event/event.header.html.twig' with {
         'event':event,
         'programPage':programPage,
         'venuePage':venuePage,
@@ -45,7 +45,7 @@
                     {% else %}
                         <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
                     {% endif %}
-                    {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
+                    {% include 'Redesign/Event/event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
                 </div>
             </div>
         {% endif %}
@@ -58,7 +58,7 @@
         {{ sonata_block_render({ 'type': block_type }, {'event': event, 'event_block': block}) }}
     {%- endfor -%}
     {%- if event_blocks_rendered == 0 -%}
-        {% include '@App/Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
+        {% include 'Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
     {%- endif -%}
 
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>

@@ -13,6 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AnalyticsController extends AbstractController
 {
+    private $analyticsService;
+
+    public function __construct(AnalyticsService $analyticsService)
+    {
+        $this->analyticsService = $analyticsService;
+    }
+
     /**
      * Shows the dynamics of daily ticket sales.
      *
@@ -24,13 +31,12 @@ class AnalyticsController extends AbstractController
      */
     public function showDailyDynamicsAction(Event $event)
     {
-        $analyticsService = $this->get(AnalyticsService::class);
         // summary statistics
-        $summary = $analyticsService
+        $summary = $this->analyticsService
             ->getSummaryTicketsSoldData($event);
         $chart = null;
         // daily statistics
-        $dailyData = $analyticsService->getDailyTicketsSoldData($event);
+        $dailyData = $this->analyticsService->getDailyTicketsSoldData($event);
         if (!empty($dailyData)) {
             array_unshift($dailyData, [
                 ['label' => 'Date', 'type' => 'date'],
@@ -56,8 +62,7 @@ class AnalyticsController extends AbstractController
      */
     public function showComparisonWithPreviousEventsAction(Event $event)
     {
-        $analyticsService = $this->get(AnalyticsService::class);
-        $data = $analyticsService->getDataForCompareTicketSales($event);
+        $data = $this->analyticsService->getDataForCompareTicketSales($event);
 
         return $this->render(':Analytics:comparison_with_previous_events.html.twig', [
             'event' => $event, 'data' => $data,

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Handler\LoginHandler;
 use App\Helper\MailerHelper;
+use App\Traits;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
@@ -31,15 +32,15 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
  */
 class RegistrationController extends BaseController
 {
+    use Traits\SessionTrait;
+    use Traits\ValidatorTrait;
+    use Traits\EventDispatcherTrait;
+    use Traits\LoggerTrait;
+
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
-    private $eventDispatcher;
     private $formFactory;
     private $userManager;
-    private $session;
-    private $validator;
-    private $buzz;
-    private $logger;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
@@ -50,7 +51,7 @@ class RegistrationController extends BaseController
     public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage)
     {
         parent::__construct($eventDispatcher, $formFactory, $userManager, $tokenStorage);
-        $this->eventDispatcher = $eventDispatcher;
+
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
     }
@@ -62,11 +63,6 @@ class RegistrationController extends BaseController
      */
     public function registerAction(Request $request)
     {
-        $this->session = $this->get('session');
-        $this->validator = $this->get('validator');
-        $this->buzz = $this->get('buzz');
-        $this->logger = $this->get('logger');
-
         $user = $this->userManager->createUser();
         $user->setEnabled(true);
 
@@ -144,11 +140,6 @@ class RegistrationController extends BaseController
      */
     public function confirmAction(Request $request, $token): RedirectResponse
     {
-        $this->session = $this->get('session');
-        $this->validator = $this->get('validator');
-        $this->buzz = $this->get('buzz');
-        $this->logger = $this->get('logger');
-
         $user = $this->userManager->findUserByConfirmationToken($token);
 
         if (null === $user) {

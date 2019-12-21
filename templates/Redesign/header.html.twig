@@ -3,16 +3,16 @@
     <div class="container">
         <div class="header__left">
             <a href="{{ path('homepage') }}" class="logo header__logo">
-                <img class="logo__img" src="{{ asset('assets/img/logo_header.svg') }}" alt="">
+                <img class="logo__img" src="{{ asset('build/img/logo_header.svg') }}" alt="">
             </a>
-            {{ knp_menu_render('main_redesign', {'template': 'AppBundle:Menu:knp_menu.html.twig'}) }}
+            {{ knp_menu_render('main_redesign', {'template': 'Menu/knp_menu.html.twig'}) }}
         </div>
         <div class="header__right">
             {{ sonata_block_render({ 'type': 'sonata.block.language_switcher' }, {'position' : 'header'}) }}
             <div class="social header__social">
-                {% include '@App/Redesign/social.html.twig' %}
+                {% include 'Redesign/social.html.twig' %}
             </div>
-            {{ knp_menu_render('login_redesign', {'template': 'AppBundle:Menu:knp_menu_login.html.twig'}) }}
+            {{ knp_menu_render('login_redesign', {'template': 'Menu/knp_menu_login.html.twig'}) }}
         </div>
     </div>
 </header>

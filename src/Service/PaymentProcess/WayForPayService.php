@@ -116,7 +116,7 @@ class WayForPayService extends AbstractPaymentProcessService
 
         $params = [
             'merchantAccount' => $this->appConfig['wayforpay']['shop_id'],
-            'merchantDomainName' => $this->request->getSchemeAndHttpHost(),
+            'merchantDomainName' => $this->getRequest()->getSchemeAndHttpHost(),
             'orderReference' => $payment->getId().'-'.(new \DateTime())->getTimestamp(),
             'orderDate' => $payment->getCreatedAt()->getTimestamp(),
             'amount' => $payment->getAmount(),
@@ -142,7 +142,7 @@ class WayForPayService extends AbstractPaymentProcessService
         $params['clientLastName'] = $user->getSurname();
         $params['clientEmail'] = $user->getEmail();
         $params['clientPhone'] = $user->getPhone();
-        $params['language'] = 'uk' === $this->locale ? 'ua' : $this->locale;
+        $params['language'] = 'uk' === $this->getCurrentLocale() ? 'ua' : $this->getCurrentLocale();
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
         $params['returnUrl'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -255,8 +255,7 @@ class WayForPayService extends AbstractPaymentProcessService
     {
         $signString = \implode(';', $params);
         $signString = \htmlspecialchars($signString, ENT_QUOTES);
-        $sign = \hash_hmac('md5', $signString, $this->appConfig['wayforpay']['secret']);
 
-        return $sign;
+        return \hash_hmac('md5', $signString, $this->appConfig['wayforpay']['secret']);
     }
 }

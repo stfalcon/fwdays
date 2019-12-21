@@ -16,6 +16,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferralController extends AbstractController
 {
+    private $referralService;
+
+    /**
+     * @param ReferralService $referralService
+     */
+    public function __construct(ReferralService $referralService)
+    {
+        $this->referralService = $referralService;
+    }
+
+
     /**
      * @Route("/ref/{code}/event/{slug}", name="referral_link")
      *
@@ -29,9 +40,7 @@ class ReferralController extends AbstractController
         /** @var User */
         $user = $this->getUser();
 
-        $referralService = $this->get(ReferralService::class);
-
-        if ($referralService->getReferralCode($user) !== $code) {
+        if ($this->referralService->getReferralCode($user) !== $code) {
             $response = new Response();
             $expire = time() + (10 * 365 * 24 * 3600);
 

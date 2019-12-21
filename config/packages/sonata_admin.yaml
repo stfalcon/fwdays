@@ -6,8 +6,8 @@ sonata_core:
 sonata_admin:
     title: framework days
     templates:
-        layout: "::admin.html.twig"
-        user_block: '::user_block.html.twig'
+        layout: "admin.html.twig"
+        user_block: 'user_block.html.twig'
     dashboard:
         blocks:
             # display two dashboard blocks

@@ -10,9 +10,10 @@
 /vendor/
 
 # Application
-/web/assets
-/web/cache/*
-/web/uploads/*
+/public/assets
+/public/cache/*
+/public/uploads/*
+/public/build/*
 
 # Geo Data
 !/geodata/.gitkeep
@@ -29,19 +30,10 @@
 /app/spool
 ###< symfony/phpunit-bridge ###
 
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
-
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
+
 ###> squizlabs/php_codesniffer ###
 /.phpcs-cache
 /phpcs.xml

@@ -7,6 +7,7 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helper\NewPdfGeneratorHelper;
+use App\Helper\PdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TicketController extends AbstractController
 {
+    private $pdfGeneratorHelper;
+
+    /**
+     * @param PdfGeneratorHelper $pdfGeneratorHelper
+     */
+    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper)
+    {
+        $this->pdfGeneratorHelper = $pdfGeneratorHelper;
+    }
+
     /**
      * Generating ticket with QR-code to event.
      *
@@ -41,11 +52,9 @@ class TicketController extends AbstractController
             return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), 402);
         }
 
-        $pdfGen = $this->get(NewPdfGeneratorHelper::class);
+        $html = $this->pdfGeneratorHelper->generateHTML($ticket);
 
-        $html = $pdfGen->generateHTML($ticket);
-
-        if ('html' === $asHtml && 'test' === $this->getParameter('kernel.environment')) {
+        if ('html' === $asHtml) {
             return new Response(
                 $html,
                 200,
@@ -57,7 +66,7 @@ class TicketController extends AbstractController
         }
 
         return new Response(
-            $pdfGen->generatePdfFile($ticket, $html),
+            $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
             200,
             [
                 'Content-Type' => 'application/pdf',

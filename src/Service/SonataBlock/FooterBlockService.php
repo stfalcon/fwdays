@@ -49,7 +49,7 @@ class FooterBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign:_footer_pages.html.twig',
+            'template' => 'Redesign/_footer_pages.html.twig',
             'pages' => null,
         ]);
     }

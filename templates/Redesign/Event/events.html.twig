@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Redesign:layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block content %}
     <!--BEGIN event-list-->
@@ -9,7 +9,7 @@
                 <div class="event-list__items">
                     {% for event in activeEvents %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
+                            {% include 'Redesign/Event/event.row.html.twig' with {'event': event, 'listItem': true} %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -19,7 +19,7 @@
                 <div class="event-list__items">
                     {% for event in pastEvents %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
+                            {% include 'Redesign/Event/event.row.html.twig' with {'event': event, 'listItem': true} %}
                         {% endif %}
                     {% endfor %}
                 </div>

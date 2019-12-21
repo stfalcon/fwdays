@@ -62,7 +62,7 @@ class LanguageSwitcherBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign:language_switcher.html.twig',
+            'template' => 'Redesign/language_switcher.html.twig',
             'position' => 'header',
         ]);
     }

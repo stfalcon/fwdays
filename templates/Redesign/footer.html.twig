@@ -3,7 +3,7 @@
     <div class="container">
         <div class="footer__start">
             <div class="social social--contrast footer__social">
-                {% include '@App/Redesign/social.html.twig' with {'position':'footer'} %}
+                {% include 'Redesign/social.html.twig' with {'position':'footer'} %}
             </div>
             <div class="footer__copyright">© 2010–{{ "now"|date("Y") }} fwdays.com</div>
         </div>
@@ -24,7 +24,7 @@
             </nav>
         </div>
         <div class="footer__end">
-            {% include '@App/Redesign/menu.login.html.twig' with {'position' : 'footer'} %}
+            {% include 'Redesign/menu.login.html.twig' with {'position' : 'footer'} %}
             {{ sonata_block_render({ 'type': 'sonata.block.language_switcher' }, {'position' : 'footer'}) }}
             <a href="https://stfalcon.com" target="_blank" class="made-by footer__made-by">{{ 'madeby'|trans }} <i class="made-by__icon icon-stfalcon"></i>
                 stfalcon.com</a>

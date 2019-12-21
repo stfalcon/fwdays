@@ -1,9 +1,9 @@
-{% extends 'AppBundle::layout.html.twig' %}
+{% extends '/layout.html.twig' %}
 
 {% block content %}
     <section class="info-page">
         <div class="container container--sm">
-            <img src="{{ asset('assets/img/icons/ic_thankyou.svg') }}" class="info-page__img" alt="">
+            <img src="{{ asset('build/img/icons/ic_thankyou.svg') }}" class="info-page__img" alt="">
             <h2 class="h2 info-page__title">{{ 'interkassa.payment.success'|trans }}</h2>
             <p class="info-page__text">{{ 'interkassa.payment.success.emailsend'|trans|raw }}
                 <a href="{{ path("cabinet") }}" class="info-page__link">{{ 'main.menu.cabinet'|trans }}</a>

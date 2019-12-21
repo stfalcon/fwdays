@@ -7,6 +7,7 @@ use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\EventListener\PaymentListener;
 use App\Helper\NewPdfGeneratorHelper;
+use App\Helper\PdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,6 +19,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class TicketCRUDController extends CRUDController
 {
+    private $pdfGeneratorHelper;
+    private $paymentListener;
+
+    /**
+     * @param PdfGeneratorHelper $pdfGeneratorHelper
+     * @param PaymentListener    $paymentListener
+     */
+    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper, PaymentListener $paymentListener)
+    {
+        $this->pdfGeneratorHelper = $pdfGeneratorHelper;
+        $this->paymentListener = $paymentListener;
+    }
+
     /**
      * @param int $id
      *
@@ -34,11 +48,10 @@ class TicketCRUDController extends CRUDController
             throw new NotFoundHttpException(sprintf('unable to find the ticket with id : %s', $id));
         }
 
-        $pdfGen = $this->get(NewPdfGeneratorHelper::class);
-        $html = $pdfGen->generateHTML($ticket);
+        $html = $this->pdfGeneratorHelper->generateHTML($ticket);
 
         return new Response(
-            $pdfGen->generatePdfFile($ticket, $html),
+            $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
             200,
             [
                 'Content-Type' => 'application/pdf',
@@ -79,11 +92,9 @@ class TicketCRUDController extends CRUDController
                         $ticketCost->recalculateSoldCount();
                     }
                 }
-                $paymentListener = $this->get(PaymentListener::class);
-
-                $paymentListener->setRunPaymentPostUpdate(false);
+                $this->paymentListener->setRunPaymentPostUpdate(false);
                 $em->flush();
-                $paymentListener->setRunPaymentPostUpdate(true);
+                $this->paymentListener->setRunPaymentPostUpdate(true);
 
                 $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
             }

@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Redesign:layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block title %}{% if event.name is not null %}{{ event.name }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
 
@@ -11,7 +11,7 @@
 {% endblock meta_description %}
 
 {% block content %}
-    {% include '@App/Redesign/Event/event.fix_header.html.twig' with
+    {% include 'Redesign/Event/event.fix_header.html.twig' with
         {
             'event':event,
             'programPage':programPage,

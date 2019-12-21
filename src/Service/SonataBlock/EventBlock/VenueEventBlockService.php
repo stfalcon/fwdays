@@ -60,7 +60,7 @@ class VenueEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.venue.html.twig',
+            'template' => 'Redesign/Event/event.venue.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

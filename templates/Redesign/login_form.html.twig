@@ -5,7 +5,7 @@
         {% set add_class = ' bye-after-login' %}
     {% endif %}
 
-    {% include '@App/Redesign/login_social_btn.html.twig' with{'add_class':add_class} %}
+    {% include 'Redesign/login_social_btn.html.twig' with{'add_class':add_class} %}
     <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">

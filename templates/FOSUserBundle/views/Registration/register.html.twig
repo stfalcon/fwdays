@@ -1,11 +1,11 @@
-{% extends '@App/Redesign/layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block content %}
 
     <!--BEGIN signup-payment-popup РЕГИСТРАЦИЯ-->
     <div class="form-box">
         <h2 class="h2 form-box__title">{{ 'menu.user.registration'|trans }}</h2>
-        {% include '@App/Redesign/registration_form.html.twig' with {'remodal':'', 'queryLink':'?'~app.request.queryString} %}
+        {% include 'Redesign/registration_form.html.twig' with {'remodal':'', 'queryLink':'?'~app.request.queryString} %}
     </div>
     <!--END signup-payment-popup-->
 {% endblock content %}

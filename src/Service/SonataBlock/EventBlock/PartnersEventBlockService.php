@@ -78,7 +78,7 @@ class PartnersEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Partner:partners.html.twig',
+            'template' => 'Redesign/Partner/partners.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

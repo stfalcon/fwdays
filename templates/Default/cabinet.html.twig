@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Redesign:layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% set firstEvent = events|first %}
 {% set fistLink = url('event_show', {'slug' : firstEvent.slug, 'ref': code}) %}
@@ -31,7 +31,7 @@
                 <div class="events__box">
                     {% for event in user_active_events %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                            {% include 'Redesign/Event/event.card.html.twig' with {'event': event} %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -117,7 +117,7 @@
                 <div class="events__box">
                     {% for event in user_past_events %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                            {% include 'Redesign/Event/event.card.html.twig' with {'event': event} %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -136,7 +136,7 @@
             <div class="remodal__head">
                 <div class="h2 remodal__title">{{ 'menu.user.info'|trans }}</div>
             </div>
-            {% include '@App/Redesign/profile_form.html.twig' %}
+            {% include 'Redesign/profile_form.html.twig' %}
         </div>
     </div>
     <!--END profile-popup-->

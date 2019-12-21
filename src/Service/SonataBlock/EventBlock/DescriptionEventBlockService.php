@@ -49,7 +49,7 @@ class DescriptionEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.description.html.twig',
+            'template' => 'Redesign/Event/event.description.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

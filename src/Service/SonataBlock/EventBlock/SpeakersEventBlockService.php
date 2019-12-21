@@ -71,7 +71,7 @@ class SpeakersEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.speakers.html.twig',
+            'template' => 'Redesign/Event/event.speakers.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

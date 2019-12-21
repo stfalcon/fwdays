@@ -1,4 +1,4 @@
-{% extends '@App/Redesign/layout.html.twig' %}
+{% extends 'Redesign/layout.html.twig' %}
 
 {% block content %}
     {#BEGIN markup for payment#}
@@ -6,8 +6,8 @@
     {% set promocode_data = app.session.get(constant('App\\Service\\PaymentService::PROMO_CODE_SESSION_KEY')) %}
     {% set default_promocode = promocode_data[event.slug] is defined ? promocode_data[event.slug] : '' %}
 
-    {% include '@App/Redesign/Payment/payment.frontend.payer_row.html.twig' %}
-    {% include '@App/Redesign/Payment/payment.frontend.payer_edit.html.twig' %}
+    {% include 'Redesign/Payment/payment.frontend.payer_row.html.twig' %}
+    {% include 'Redesign/Payment/payment.frontend.payer_edit.html.twig' %}
 
     {% set is_first_ticket = (payment_data.ticket_count == 1 and app.session.get(constant('App\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY'))) or payment_data.ticket_count == 0 %}
     <section class="payment">
@@ -16,12 +16,12 @@
                 <h2 class="h2 payment__title">{{ 'popup.header.title'|trans({'%event_name%':event.name}) }}</h2>
                 <div class="payment__list" id="payment-list" data-event="{{ event.slug }}">
                     {%- for key, ticket in payment_data.tickets -%}
-                        {% include '@App/Redesign/Payment/payment.back_end.payer_row.html.twig' %}
+                        {% include 'Redesign/Payment/payment.back_end.payer_row.html.twig' %}
                     {%- endfor -%}
                     {% set ticket = {'id': 0, 'user': {'name': '', 'surname': '', 'email': ''}, 'promo_code': ''} %}
                     {% if is_first_ticket %}
                         {% set payment_ticket = payment_data.ticket_count == 1 ? payment_data.tickets[0] : ticket %}
-                        {% include '@App/Redesign/Payment/payment.back_end.payer_edit.html.twig' with {'ticket': payment_ticket} %}
+                        {% include 'Redesign/Payment/payment.back_end.payer_edit.html.twig' with {'ticket': payment_ticket} %}
                     {% endif %}
                 </div>
 
@@ -36,7 +36,7 @@
 
             </div>
 
-            {% include '@App/Redesign/Payment/payment.sums.html.twig' %}
+            {% include 'Redesign/Payment/payment.sums.html.twig' %}
         </div>
     </section>
     {#END markup for payment#}

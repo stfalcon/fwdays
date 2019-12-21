@@ -17,6 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EmailController extends AbstractController
 {
+    private $emailHashValidation;
+
+    /**
+     * @param EmailHashValidationService $emailHashValidation
+     */
+    public function __construct(EmailHashValidationService $emailHashValidation)
+    {
+        $this->emailHashValidation = $emailHashValidation;
+    }
+
     /**
      * @Route("/unsubscribe/{hash}/{id}/{mailId}", name="unsubscribe")
      *
@@ -28,9 +38,7 @@ class EmailController extends AbstractController
      */
     public function unsubscribeAction(string $hash, User $subscriber, ?int $mailId = null): Response
     {
-        $emailHashValidService = $this->get(EmailHashValidationService::class);
-
-        if (!$emailHashValidService->isHashValid($hash, $subscriber, $mailId)) {
+        if (!$this->emailHashValidation->isHashValid($hash, $subscriber, $mailId)) {
             throw new BadRequestHttpException();
         }
 
@@ -65,9 +73,7 @@ class EmailController extends AbstractController
      */
     public function subscribeAction(string $hash, User $subscriber): Response
     {
-        $emailHashValidService = $this->get(EmailHashValidationService::class);
-
-        if (!$emailHashValidService->isHashValid($hash, $subscriber)) {
+        if (!$this->emailHashValidation->isHashValid($hash, $subscriber)) {
             throw new BadRequestHttpException();
         }
 
@@ -88,9 +94,7 @@ class EmailController extends AbstractController
      */
     public function actionTrackOpenMail(string $hash, User $subscriber, int $mailId): RedirectResponse
     {
-        $emailHashValidService = $this->get(EmailHashValidationService::class);
-
-        if (!$emailHashValidService->isHashValid($hash, $subscriber, $mailId)) {
+        if (!$this->emailHashValidation->isHashValid($hash, $subscriber, $mailId)) {
             throw new BadRequestHttpException();
         }
 

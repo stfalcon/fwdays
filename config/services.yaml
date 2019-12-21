@@ -19,17 +19,20 @@ services:
             $appConfig: '%app.config%'
             $localeCookieName: '%jms_i18n_routing.cookie.name%'
             $environment: '%env(APP_ENV)%'
+            $oAuthUserProviderProperties: {facebook: facebookID, google: googleID}
+            $paymentSystem: '@App\Service\PaymentProcess\InterkassaService'
+            $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
 
-    fos_user.registration.controller:
-        class: App\Controller\RegistrationController
-        public: true
-        arguments:
-            - "@event_dispatcher"
-            - "@fos_user.registration.form.factory"
-            - "@fos_user.user_manager"
-            - "@security.token_storage"
-        calls:
-            - [setContainer, ["@service_container"]]
+#    fos_user.registration.controller:
+#        class: App\Controller\RegistrationController
+#        public: true
+#        arguments:
+#            - "@event_dispatcher"
+#            - "@fos_user.registration.form.factory"
+#            - "@fos_user.user_manager"
+#            - "@security.token_storage"
+#        calls:
+#            - [setContainer, ["@service_container"]]
 
     App\:
         resource: '../src/{Command,EventListener,Form,Helper,Repository,Security,Serializer,Service,Twig,Validator}/'
@@ -170,6 +173,7 @@ services:
 #    App\EventListener\LoginEntryPoint:
 #        arguments: ["@jms_i18n_routing.router"]
 
+    App\Handler\LoginHandler: ~
 #    App\Handler\LoginHandler:
 #        arguments:
 #            - '@router'
@@ -247,6 +251,8 @@ services:
         arguments: ['', '@router.request_context', '', '', '']
 
     Endroid\QrCode\QrCode: ~
+    App\Service\PaymentProcess\InterkassaService: ~
+    App\Service\PaymentProcess\WayForPayService: ~
 
 #    App\Helper\MailerHelper:
 #        arguments:
@@ -323,3 +329,7 @@ services:
     Maxmind\Bundle\GeoipBundle\Service\GeoipManager: '@maxmind.geoip'
     League\Flysystem\MountManager: '@oneup_flysystem.mount_manager'
     Sonata\IntlBundle\Twig\Extension\DateTimeExtension: '@sonata.intl.twig.extension.datetime'
+    Monolog\Logger: '@logger'
+    Doctrine\Common\Persistence\ObjectManager: '@fos_user.object_manager'
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+    FOS\UserBundle\Form\Factory\FactoryInterface: '@fos_user.registration.form.factory'

@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Entity\Ticket;
 use App\Service\SvgToJpg;
+use App\Traits\RouterTrait;
 use Endroid\QrCode\Exceptions\ImageFunctionFailedException;
 use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
 use Endroid\QrCode\QrCode;
@@ -19,8 +20,9 @@ use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
  */
 class PdfGeneratorHelper
 {
+    use RouterTrait;
+
     private $templating;
-    private $router;
     private $qrCode;
     private $projectDir;
     private $svgToJpgService;
@@ -29,17 +31,15 @@ class PdfGeneratorHelper
 
     /**
      * @param Environment            $templating      Twig
-     * @param Router                 $router          Router
      * @param QrCode                 $qrCode          QrCode generator
      * @param string                 $projectDir
      * @param SvgToJpg               $svgToJpgService
      * @param Filesystem             $filesystem
      * @param PropertyMappingFactory $vichUploader
      */
-    public function __construct(Environment $templating, Router $router, QrCode $qrCode, string $projectDir, SvgToJpg $svgToJpgService, Filesystem $filesystem, PropertyMappingFactory $vichUploader)
+    public function __construct(Environment $templating, QrCode $qrCode, string $projectDir, SvgToJpg $svgToJpgService, Filesystem $filesystem, PropertyMappingFactory $vichUploader)
     {
         $this->templating = $templating;
-        $this->router = $router;
         $this->qrCode = $qrCode;
         $this->projectDir = $projectDir;
         $this->svgToJpgService = $svgToJpgService;

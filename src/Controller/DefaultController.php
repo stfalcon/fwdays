@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Model\UserManager;
 use App\Repository\EventRepository;
 use App\Service\ReferralService;
+use App\Traits\ValidatorTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,20 @@ use Symfony\Component\Validator\ConstraintViolation;
  */
 class DefaultController extends AbstractController
 {
+    use ValidatorTrait;
+
+    private $referralService;
+    private $userManager;
+
+    /**
+     * @param ReferralService $referralService
+     */
+    public function __construct(ReferralService $referralService, UserManager $userManager)
+    {
+        $this->referralService = $referralService;
+        $this->userManager = $userManager;
+    }
+
     /**
      * @Route("/", name="homepage", options = {"expose"=true})
      *
@@ -30,7 +45,7 @@ class DefaultController extends AbstractController
     {
         $events = $this->getDoctrine()
             ->getRepository(Event::class)
-            ->findBy(['active' => true], ['date' => 'ASC']);
+            ->findBy(['active' => true], ['date' => Criteria::ASC]);
 
         return $this->render('Default/index.html.twig', ['events' => $events]);
     }
@@ -86,7 +101,7 @@ class DefaultController extends AbstractController
             'user_active_events' => $userActiveEvents,
             'user_past_events' => $userPastEvents,
             'events' => $allActiveEvents,
-            'code' => $this->get(ReferralService::class)->getReferralCode(),
+            'code' => $this->referralService->getReferralCode(),
         ]);
     }
 
@@ -119,10 +134,8 @@ class DefaultController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $userManager = $this->get(UserManager::class);
-        $validator = $this->get('validator');
         $user->setPhone($phoneNumber);
-        $errors = $validator->validate($user);
+        $errors = $this->validator->validate($user);
         /** @var ConstraintViolation $error */
         foreach ($errors as $error) {
             if ('name' === $error->getPropertyPath()) {
@@ -132,7 +145,7 @@ class DefaultController extends AbstractController
             }
         }
 
-        $errors = $validator->validate($user);
+        $errors = $this->validator->validate($user);
 
         if (\count($errors) > 0) {
             $errorsString = (string) $errors;
@@ -140,7 +153,7 @@ class DefaultController extends AbstractController
             return new JsonResponse(['result' => true, 'error' => $errorsString]);
         }
 
-        $userManager->updateUser($user);
+        $this->userManager->updateUser($user);
 
         return new JsonResponse(['result' => true]);
     }

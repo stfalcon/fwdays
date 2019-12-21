@@ -22,11 +22,11 @@ class UserService
     /**
      * @param string $throw
      *
-     * @return User
+     * @return User|null
      *
      * @throws AccessDeniedException
      */
-    public function getCurrentUser(string $throw = self::RESULT_THROW_ON_NULL): User
+    public function getCurrentUser(string $throw = self::RESULT_THROW_ON_NULL): ?User
     {
         $user = null;
 
@@ -35,7 +35,9 @@ class UserService
             $user = $token->getUser();
         }
 
-        if (!$user instanceof User && self::RESULT_THROW_ON_NULL === $throw) {
+        $user = $user instanceof User ? $user : null;
+
+        if (null === $user && self::RESULT_THROW_ON_NULL === $throw) {
             throw new AccessDeniedException();
         }
 

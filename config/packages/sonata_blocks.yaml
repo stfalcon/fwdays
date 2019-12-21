@@ -7,12 +7,12 @@ services:
 
     sonata.block.event.partners:
         class: App\Service\SonataBlock\EventBlock\PartnersEventBlockService
-        arguments: ['sonata.block.event.partners', '@templating', '@app.partners_repository.service', '@app.partners_category_repository.service']
+        arguments: ['sonata.block.event.partners', '@templating', '@App\Repository\SponsorRepository', '@App\Repository\CategoryRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.prices:
         class: App\Service\SonataBlock\EventBlock\PricesEventBlockService
-        arguments: ['sonata.block.event.prices', '@templating', '@app.ticket_cost_repository.service']
+        arguments: ['sonata.block.event.prices', '@templating', '@App\Repository\TicketCostRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.description:
@@ -32,17 +32,17 @@ services:
 
     sonata.block.event.speakers:
         class: App\Service\SonataBlock\EventBlock\SpeakersEventBlockService
-        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.reviews:
         class: App\Service\SonataBlock\EventBlock\ReviewsEventBlockService
-        arguments: ['sonata.block.event.reviews', '@templating', '@app.event_review.repository.service']
+        arguments: ['sonata.block.event.reviews', '@templating', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.candidate_speakers:
         class: App\Service\SonataBlock\EventBlock\CandidateSpeakersEventBlockService
-        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.committee_speakers:
@@ -62,7 +62,7 @@ services:
 
     sonata.block.footer:
         class: App\Service\SonataBlock\FooterBlockService
-        arguments: ['sonata.block.footer', '@templating', '@app.page.repository.service']
+        arguments: ['sonata.block.footer', '@templating', '@App\Repository\PageRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.language_switcher:
