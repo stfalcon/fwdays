@@ -23,16 +23,18 @@ services:
             $paymentSystem: '@App\Service\PaymentProcess\InterkassaService'
             $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
 
-#    fos_user.registration.controller:
-#        class: App\Controller\RegistrationController
-#        public: true
-#        arguments:
-#            - "@event_dispatcher"
-#            - "@fos_user.registration.form.factory"
-#            - "@fos_user.user_manager"
-#            - "@security.token_storage"
-#        calls:
-#            - [setContainer, ["@service_container"]]
+    fos_user.registration.controller:
+        class: App\Controller\RegistrationController
+        public: true
+        arguments:
+            - '@event_dispatcher'
+            - '@fos_user.registration.form.factory'
+            - '@fos_user.user_manager'
+            - '@security.token_storage'
+            - '@fos_user.security.login_manager'
+            - '@App\Handler\LoginHandler'
+        calls:
+            - [setContainer, ["@service_container"]]
 
     App\:
         resource: '../src/{Command,EventListener,Form,Helper,Repository,Security,Serializer,Service,Twig,Validator}/'
@@ -333,3 +335,6 @@ services:
     Doctrine\Common\Persistence\ObjectManager: '@fos_user.object_manager'
     Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
     FOS\UserBundle\Form\Factory\FactoryInterface: '@fos_user.registration.form.factory'
+    FOS\UserBundle\Security\LoginManager: '@fos_user.security.login_manager'
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']

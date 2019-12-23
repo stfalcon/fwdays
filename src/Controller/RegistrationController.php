@@ -3,18 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\User\UseRegistrationCompletedEvent;
+use App\Event\User\UseRegistrationSuccessEvent;
 use App\Handler\LoginHandler;
-use App\Helper\MailerHelper;
 use App\Traits;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
-use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use FOS\UserBundle\Security\LoginManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,8 +24,6 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 /**
  * RegistrationController.
- *
- * @Security("has_role('IS_AUTHENTICATED_ANONYMOUSLY')")
  */
 class RegistrationController extends BaseController
 {
@@ -36,24 +31,32 @@ class RegistrationController extends BaseController
     use Traits\ValidatorTrait;
     use Traits\EventDispatcherTrait;
     use Traits\LoggerTrait;
+    use Traits\HttpClientTrait;
+    use Traits\MailerHelperTrait;
 
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
     private $formFactory;
     private $userManager;
+    private $loginManager;
+    private $loginHandler;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
      * @param FactoryInterface         $formFactory
      * @param UserManagerInterface     $userManager
      * @param TokenStorageInterface    $tokenStorage
+     * @param LoginManager             $loginManager
+     * @param LoginHandler             $loginHandler
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage)
+    public function __construct(EventDispatcherInterface $eventDispatcher, FactoryInterface $formFactory, UserManagerInterface $userManager, TokenStorageInterface $tokenStorage, LoginManager $loginManager, LoginHandler $loginHandler)
     {
         parent::__construct($eventDispatcher, $formFactory, $userManager, $tokenStorage);
 
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
+        $this->loginManager = $loginManager;
+        $this->loginHandler = $loginHandler;
     }
 
     /**
@@ -65,13 +68,6 @@ class RegistrationController extends BaseController
     {
         $user = $this->userManager->createUser();
         $user->setEnabled(true);
-
-        $event = new GetResponseUserEvent($user, $request);
-        $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
-
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
 
         $form = $this->formFactory->createForm();
         $form->setData($user);
@@ -97,13 +93,13 @@ class RegistrationController extends BaseController
 
         if ($process) {
             if ($form->isSubmitted() && $form->isValid()) {
-                $event = new FormEvent($form, $request);
-                $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+                $event = new UseRegistrationSuccessEvent($form, $request);
+                $this->eventDispatcher->dispatch($event);
 
                 $user = $form->getData();
                 $this->userManager->updateUser($user);
 
-                $this->container->get(MailerHelper::class)->sendEasyEmail(
+                $this->mailerHelper->sendEasyEmail(
                     $this->container->get('translator')->trans('registration.email.subject'),
                     '@FOSUser/Registration/email.on_registration.html.twig',
                     ['user' => $user],
@@ -114,15 +110,9 @@ class RegistrationController extends BaseController
                     $url = $this->generateUrl('fos_user_registration_confirmed');
                     $response = new RedirectResponse($url);
                 }
-                $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+                $this->eventDispatcher->dispatch(new UseRegistrationCompletedEvent($user, $request, $response));
                 $this->authenticateUser($user, $response);
 
-                return $response;
-            }
-            $event = new FormEvent($form, $request);
-            $this->eventDispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
-
-            if (null !== $response = $event->getResponse()) {
                 return $response;
             }
         }
@@ -154,7 +144,7 @@ class RegistrationController extends BaseController
         $response = new RedirectResponse($this->container->get('router')->generate('events'));
         $this->authenticateUser($user, $response);
 
-        return $this->get(LoginHandler::class)->processAuthSuccess($request, $user);
+        return $this->loginHandler->processAuthSuccess($request, $user);
     }
 
     /**
@@ -171,7 +161,7 @@ class RegistrationController extends BaseController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->get(LoginHandler::class)->processAuthSuccess($request, $user);
+        return $this->loginHandler->processAuthSuccess($request, $user);
     }
 
     /**
@@ -200,35 +190,28 @@ class RegistrationController extends BaseController
      *
      * @see https://www.google.com/recaptcha/admin#list
      *
-     * @param string $captcha
+     * @param string|null $captcha
      *
      * @return bool
      */
-    private function isGoogleCaptchaTrue($captcha): bool
+    private function isGoogleCaptchaTrue(?string $captcha): bool
     {
-        if ('stag' === $this->getParameter('kernel.environment')) {
-            return true;
-        }
-
-        if (empty($captcha)) {
+        if (null === $captcha) {
             return false;
         }
 
-        $captchaSecretKey = $this->getParameter('google_captcha_secret_key');
+        $content = $this->httpClient->request(
+            Request::METHOD_POST,
+            $this->captchaCheckUrl,
+            ['body' => [
+                    'secret' => $this->getParameter('google_captcha_secret_key'),
+                    'response' => $captcha,
+                    'remoteip' => $_SERVER['REMOTE_ADDR'],
+                ],
+            ]
+        )->getContent();
 
-        $params = [
-            'secret' => $captchaSecretKey,
-            'response' => $captcha,
-            'remoteip' => $_SERVER['REMOTE_ADDR'],
-        ];
-
-        $response = json_decode(
-            $this->buzz->submitForm(
-                $this->captchaCheckUrl,
-                $params
-            )->getBody()->getContents(),
-            true
-        );
+        $response = \json_decode($content, true);
         if (!isset($response['success'])) {
             $this->logger->addError('google captcha api response missing');
 
@@ -250,7 +233,7 @@ class RegistrationController extends BaseController
     private function authenticateUser(UserInterface $user, Response $response): void
     {
         try {
-            $this->get('fos_user.security.login_manager')->loginUser(
+            $this->loginManager->loginUser(
                 $this->getParameter('fos_user.firewall_name'),
                 $user,
                 $response

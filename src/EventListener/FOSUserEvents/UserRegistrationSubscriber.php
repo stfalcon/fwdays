@@ -2,6 +2,8 @@
 
 namespace App\EventListener\FOSUserEvents;
 
+use App\Event\User\UseRegistrationCompletedEvent;
+use App\Event\User\UseRegistrationSuccessEvent;
 use App\Traits;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\FOSUserEvents;
@@ -23,8 +25,8 @@ class UserRegistrationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            FOSUserEvents::REGISTRATION_SUCCESS => ['onRegistrationSuccess'],
-            FOSUserEvents::REGISTRATION_COMPLETED => ['onRegistrationCompleted'],
+            UseRegistrationSuccessEvent::class => ['onRegistrationSuccess'],
+            UseRegistrationCompletedEvent::class => ['onRegistrationCompleted'],
         ];
     }
 

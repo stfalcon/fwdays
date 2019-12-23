@@ -7,6 +7,7 @@ parameters:
     app.event_header_video: "uploads/video"
     app.upload_image: "uploads/images"
     app.media_cache: '/media/cache/'
+    google_captcha_secret_key: '%env(GOOGLE_CAPTCHA_SECRET_KEY)%'
 #    app.payment_system: '@App\Service\PaymentProcess\InterkassaService'
 #    app.payment_system: 'App\Service\PaymentProcess\WayForPayService'
     app.config:
