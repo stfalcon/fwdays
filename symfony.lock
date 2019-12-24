@@ -1,4 +1,7 @@
 {
+    "a2lix/translation-form-bundle": {
+        "version": "dev-symfony4"
+    },
     "accord/mandrill-swiftmailer": {
         "version": "2.2.0"
     },

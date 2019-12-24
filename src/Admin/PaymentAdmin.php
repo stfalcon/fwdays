@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class PaymentAdmin.
@@ -170,7 +171,7 @@ final class PaymentAdmin extends AbstractAdmin
                     'choices' => Payment::getPaymentTypeChoice(),
                     'disabled' => !$isSuperAdmin,
                 ])
-                ->add('user', 'text', ['required' => true, 'label' => 'Пользователь', 'disabled' => true])
+                ->add('user', TextType::class, ['required' => true, 'label' => 'Пользователь', 'disabled' => true])
                 ->add(
                     'tickets',
                     'sonata_type_collection',

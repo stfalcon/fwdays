@@ -40,9 +40,9 @@
     <p></p>
     <div id="event-data">{{ event_statistic_html|raw }}</div>
 
-    {{ render(controller('AppBundle:Analytics:showDailyDynamics', { 'event': event })) }}
+    {{ render(controller('App\\Controller\\AnalyticsController:showDailyDynamicsAction', { 'event': event })) }}
 
-    {{ render(controller('AppBundle:Analytics:showComparisonWithPreviousEvents', { 'event': event })) }}
+    {{ render(controller('App\\Controller\\AnalyticsController:showComparisonWithPreviousEventsAction', { 'event': event })) }}
 
     {#<h2>Графік продажів + графік розсилок по базі</h2>#}
     {#<h2>Графік розподілу цін (як точки)</h2>#}

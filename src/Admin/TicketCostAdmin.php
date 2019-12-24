@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class TicketCostAdmin.
@@ -51,7 +52,7 @@ final class TicketCostAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('name', null, ['label' => 'название'])
-            ->add('event', 'text', ['disabled' => true, 'label' => 'событие'])
+            ->add('event', TextType::class, ['disabled' => true, 'label' => 'событие'])
             ->add('amount', null, ['label' => 'цена'])
             ->add('altAmount', null, ['label' => 'цена в валюте'])
             ->add('count', null, ['label' => 'количество'])

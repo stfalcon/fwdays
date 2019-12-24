@@ -5,6 +5,9 @@ sonata_core:
 
 sonata_admin:
     title: framework days
+    options:
+        html5_validate:  true     # enable or disable html5 form validation
+        js_debug:        false    # enable or disable to show javascript debug messages
     templates:
         layout: "admin.html.twig"
         user_block: 'user_block.html.twig'

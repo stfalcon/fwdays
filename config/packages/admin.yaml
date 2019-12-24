@@ -57,7 +57,7 @@ services:
         class: App\Admin\MailAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Рассылки }
-        arguments: ['', 'App\Entity\Mail', 'AppBundle:MailAdmin']
+        arguments: ['', 'App\Entity\Mail', App\Controller\MailAdminController]
         calls:
             - [addChild, ['@app.admin.mail_queue']]
 
@@ -71,7 +71,7 @@ services:
         class: App\Admin\TicketAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Билеты }
-        arguments: ['', 'App\Entity\Ticket', 'AppBundle:TicketCRUD']
+        arguments: ['', 'App\Entity\Ticket', 'App\Controller\TicketCRUDController']
 
     app.admin.payment:
         class: App\Admin\PaymentAdmin
@@ -115,8 +115,8 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Логи, label: Логи wayforpay}
         arguments: [~, 'App\Entity\WayForPayLog', ~]
 
-    application.admin.mail_admin:
+    app.admin.mail_admin:
         class: App\Admin\MailAdmin
         tags:
             - { name: mail_admin, manager_type: orm }
-        arguments: ['', 'App\Entity\Mail', 'AppBundle:MailAdmin']
+        arguments: ['', 'App\Entity\Mail', 'App\Controller\MailAdminController']

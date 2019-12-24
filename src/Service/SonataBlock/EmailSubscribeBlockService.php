@@ -54,7 +54,7 @@ class EmailSubscribeBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Email:_email_subscribe.html.twig',
+            'template' => 'Email/_email_subscribe.html.twig',
             'email_type' => 'unsubscribe',
             'user' => null,
             'mailId' => null,

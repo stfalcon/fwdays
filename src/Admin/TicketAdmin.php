@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class TicketAdmin.
@@ -183,7 +184,7 @@ final class TicketAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id', 'text', ['required' => false, 'label' => 'id', 'disabled' => true])
+            ->add('id', TextType::class, ['required' => false, 'label' => 'id', 'disabled' => true])
             ->add(
                 'createdAt',
                 'sonata_type_datetime_picker',
@@ -193,7 +194,7 @@ final class TicketAdmin extends AbstractAdmin
                     'disabled' => true,
                 ]
             )
-            ->add('event', 'text', ['required' => true, 'label' => 'Событие', 'disabled' => true])
+            ->add('event', TextType::class, ['required' => true, 'label' => 'Событие', 'disabled' => true])
             ->add(
                 'amount',
                 'money',
@@ -202,7 +203,7 @@ final class TicketAdmin extends AbstractAdmin
                     'label' => 'Цена',
                 ]
             )
-            ->add('payment', 'text', ['label' => 'Оплата', 'disabled' => true])
+            ->add('payment', TextType::class, ['label' => 'Оплата', 'disabled' => true])
             ->add('used', null, ['label' => 'Использован', 'disabled' => true])
         ;
     }

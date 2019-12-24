@@ -25,8 +25,6 @@ return [
     Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle::class => ['all' => true],
     Lexik\Bundle\TranslationBundle\LexikTranslationBundle::class => ['all' => true],
     Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle::class => ['all' => true],
-    A2lix\AutoFormBundle\A2lixAutoFormBundle::class => ['all' => true],
-    A2lix\TranslationFormBundle\A2lixTranslationFormBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],
     SunCat\MobileDetectBundle\MobileDetectBundle::class => ['all' => true],
@@ -40,4 +38,5 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Sentry\SentryBundle\SentryBundle::class => ['prod' => true],
+    A2lix\TranslationFormBundle\A2lixTranslationFormBundle::class => ['all' => true],
 ];

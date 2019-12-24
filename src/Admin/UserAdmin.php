@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class UserAdmin.
@@ -153,7 +154,7 @@ final class UserAdmin extends AbstractAdmin
                 ->with('Management')
                     ->add(
                         'plainPassword',
-                        'text',
+                        TextType::class,
                         [
                             'required' => null === $this->getSubject()->getId(),
                             'label' => 'Пароль',

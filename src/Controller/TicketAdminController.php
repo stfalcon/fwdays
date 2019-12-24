@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Ticket;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * TicketAdminController.
@@ -17,19 +17,17 @@ class TicketAdminController extends CoreController
      *
      * @param Request $request
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
-    public function checkAction(Request $request)
+    public function checkAction(Request $request): Response
     {
         if (!($ticketId = $request->get('id'))) {
-            return [
+            return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
                 'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
-            ];
+            ]);
         }
 
         $ticket = $this->getDoctrine()->getManager()->getRepository(Ticket::class)
@@ -45,21 +43,21 @@ class TicketAdminController extends CoreController
                 true
             );
 
-            return [
+            return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
                 'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
                 'ticket_url' => $url,
-            ];
+            ]);
         }
 
-        return [
+        return $this->render('ticket_admin/check.html.twig', [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
             'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             'message' => 'Not Found',
-        ];
+        ]);
     }
 }

@@ -472,7 +472,7 @@ class AdminController extends AbstractController
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
-        return $this->renderView('@App/Statistic/event_statistic.html.twig', [
+        return $this->renderView('Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
@@ -527,7 +527,7 @@ class AdminController extends AbstractController
             }
         }
 
-        return $this->renderView('@App/Statistic/events_statistic_table.html.twig', [
+        return $this->renderView('Statistic/events_statistic_table.html.twig', [
             'events' => $events,
         ]);
     }

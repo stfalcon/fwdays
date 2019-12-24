@@ -4,156 +4,67 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2cac2147a016b1136efcb40f0864bf6d",
+    "content-hash": "2d445893ebb6313e444c0df4417a5d46",
     "packages": [
         {
-            "name": "a2lix/auto-form-bundle",
-            "version": "0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/a2lix/AutoFormBundle.git",
-                "reference": "a22365315c704bcc5358ddeecd66b9668de4eea4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/a22365315c704bcc5358ddeecd66b9668de4eea4",
-                "reference": "a22365315c704bcc5358ddeecd66b9668de4eea4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3",
-                "symfony/config": "^3.4|^4.0|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/doctrine-bridge": "^3.4|^4.0|^5.0",
-                "symfony/form": "^3.4|^4.0|^5.0",
-                "symfony/http-kernel": "^3.4|^4.0|^5.0"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.4",
-                "friendsofphp/php-cs-fixer": "^2.10",
-                "symfony/phpunit-bridge": "^4.0",
-                "symfony/validator": "^3.4|^4.0",
-                "vimeo/psalm": "^1.0"
-            },
-            "suggest": {
-                "a2lix/translation-form-bundle": "For translation form"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "A2lix\\AutoFormBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David ALLIX",
-                    "homepage": "http://a2lix.fr"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/a2lix/AutoFormBundle/contributors"
-                }
-            ],
-            "description": "Automate form building",
-            "homepage": "https://github.com/a2lix/AutoFormBundle",
-            "keywords": [
-                "automate",
-                "automation",
-                "building",
-                "field",
-                "form",
-                "magic",
-                "symfony"
-            ],
-            "time": "2019-12-02T19:07:13+00:00"
-        },
-        {
             "name": "a2lix/translation-form-bundle",
-            "version": "3.0.6",
+            "version": "dev-symfony4",
+            "target-dir": "A2lix/TranslationFormBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "b806d72585c9832e4eb3f67cd70b5ac548edfa90"
+                "url": "https://github.com/stfalcon-studio/TranslationFormBundle.git",
+                "reference": "8079650a2eb6261e1f753c7eed4ba54abed08d93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/b806d72585c9832e4eb3f67cd70b5ac548edfa90",
-                "reference": "b806d72585c9832e4eb3f67cd70b5ac548edfa90",
+                "url": "https://api.github.com/repos/stfalcon-studio/TranslationFormBundle/zipball/8079650a2eb6261e1f753c7eed4ba54abed08d93",
+                "reference": "8079650a2eb6261e1f753c7eed4ba54abed08d93",
                 "shasum": ""
             },
             "require": {
-                "a2lix/auto-form-bundle": "^0.2|^0.3",
-                "php": "^7.1.3",
-                "symfony/config": "^3.4|^4.0|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/doctrine-bridge": "^3.4|^4.0|^5.0",
-                "symfony/event-dispatcher": "^3.4|^4.0|^5.0",
-                "symfony/form": "^3.4|^4.0|^5.0",
-                "symfony/http-foundation": "^3.4|^4.0|^5.0",
-                "symfony/http-kernel": "^3.4|^4.0|^5.0",
-                "symfony/options-resolver": "^3.4|^4.0|^5.0"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.4",
-                "friendsofphp/php-cs-fixer": "^2.10",
-                "knplabs/doctrine-behaviors": "^1.4",
-                "matthiasnoback/symfony-dependency-injection-test": "^3.0",
-                "symfony/phpunit-bridge": "^4.0|^5.0",
-                "symfony/validator": "^3.4|^4.0|^5.0",
-                "vimeo/psalm": "^1.0"
+                "symfony/form": "^4.0"
             },
             "suggest": {
+                "a2lix/i18n-doctrine-bundle": "For A2lix strategy",
                 "knplabs/doctrine-behaviors": "For Knp strategy",
-                "prezent/doctrine-translatable-bundle": "For Prezent strategy"
+                "stof/doctrine-extensions-bundle": "For Gedmo strategy"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
             "autoload": {
-                "psr-4": {
-                    "A2lix\\TranslationFormBundle\\": "src/"
+                "psr-0": {
+                    "A2lix\\TranslationFormBundle": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "David ALLIX",
-                    "homepage": "http://a2lix.fr"
+                    "name": "A2lix",
+                    "homepage": "http://www.a2lix.fr"
                 },
                 {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/a2lix/TranslationFormBundle/contributors"
+                    "name": "David ALLIX"
                 }
             ],
-            "description": "Translate your doctrine objects easily with some helps",
+            "description": "Translate your doctrine objects easily with a custom form field",
             "homepage": "https://github.com/a2lix/TranslationFormBundle",
             "keywords": [
                 "doctrine2",
                 "form",
+                "gedmo",
                 "i18n",
                 "internationalization",
                 "knplabs",
-                "prezent",
-                "symfony",
+                "symfony4",
                 "translatable",
                 "translation"
             ],
-            "time": "2019-12-10T19:06:38+00:00"
+            "support": {
+                "source": "https://github.com/stfalcon-studio/TranslationFormBundle/tree/symfony4",
+                "issues": "https://github.com/stfalcon-studio/TranslationFormBundle/issues"
+            },
+            "time": "2019-12-24T08:56:29+00:00"
         },
         {
             "name": "accord/mandrill-swiftmailer",
@@ -6600,16 +6511,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "d8df2c5a3ba88430c559145bc8b944cb578f9d65"
+                "reference": "6e8d978878ae5de705ec9fabbb6011cc18776bc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/d8df2c5a3ba88430c559145bc8b944cb578f9d65",
-                "reference": "d8df2c5a3ba88430c559145bc8b944cb578f9d65",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/6e8d978878ae5de705ec9fabbb6011cc18776bc9",
+                "reference": "6e8d978878ae5de705ec9fabbb6011cc18776bc9",
                 "shasum": ""
             },
             "require": {
@@ -6675,7 +6586,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2019-11-28T14:20:16+00:00"
+            "time": "2019-12-12T13:03:32+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -7442,7 +7353,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.4.1",
+            "version": "v4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -9393,16 +9304,16 @@
         },
         {
             "name": "symfony/security-core",
-            "version": "v4.4.1",
+            "version": "v4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "312c91f90786fd7add89e8542cfc98543f0e60db"
+                "reference": "52709ee2aafd13d777253d510d96fbf2ccc5a578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/312c91f90786fd7add89e8542cfc98543f0e60db",
-                "reference": "312c91f90786fd7add89e8542cfc98543f0e60db",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/52709ee2aafd13d777253d510d96fbf2ccc5a578",
+                "reference": "52709ee2aafd13d777253d510d96fbf2ccc5a578",
                 "shasum": ""
             },
             "require": {
@@ -9462,7 +9373,7 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "https://symfony.com",
-            "time": "2019-11-20T10:44:55+00:00"
+            "time": "2019-12-16T11:07:37+00:00"
         },
         {
             "name": "symfony/security-csrf",
@@ -10433,7 +10344,7 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
@@ -14696,6 +14607,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "a2lix/translation-form-bundle": 20,
         "hwi/oauth-bundle": 20,
         "ibrows/sonata-translation-bundle": 20,
         "roave/security-advisories": 20

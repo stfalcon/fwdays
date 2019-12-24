@@ -14,10 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 class AnalyticsController extends AbstractController
 {
     private $analyticsService;
+    private $chartService;
 
-    public function __construct(AnalyticsService $analyticsService)
+    public function __construct(AnalyticsService $analyticsService, ChartService $chartService)
     {
         $this->analyticsService = $analyticsService;
+        $this->chartService = $chartService;
     }
 
     /**
@@ -43,10 +45,10 @@ class AnalyticsController extends AbstractController
                 ['label' => 'Tickets sold number', 'type' => 'number'],
             ]);
 
-            $chart = $this->container->get(ChartService::class)->calendarChart($dailyData);
+            $chart = $this->chartService->calendarChart($dailyData);
         }
 
-        return $this->render(':Analytics:daily_dynamics.html.twig', [
+        return $this->render('Analytics/daily_dynamics.html.twig', [
             'event' => $event, 'chart' => $chart, 'summary' => $summary,
         ]);
     }
@@ -64,7 +66,7 @@ class AnalyticsController extends AbstractController
     {
         $data = $this->analyticsService->getDataForCompareTicketSales($event);
 
-        return $this->render(':Analytics:comparison_with_previous_events.html.twig', [
+        return $this->render('Analytics/comparison_with_previous_events.html.twig', [
             'event' => $event, 'data' => $data,
         ]);
     }

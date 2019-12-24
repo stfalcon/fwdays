@@ -21,6 +21,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/stfalcon-studio/SonataTranslationBundle.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/stfalcon-studio/TranslationFormBundle.git"
         }
     ],
     "require": {
@@ -29,7 +33,7 @@
         "ext-json": "*",
         "ext-redis": "*",
         "ext-zip": "*",
-        "a2lix/translation-form-bundle": "^3.0",
+        "a2lix/translation-form-bundle": "dev-symfony4",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "aws/aws-sdk-php": "^3.92.5",
         "beberlei/doctrineextensions": "^1.2",

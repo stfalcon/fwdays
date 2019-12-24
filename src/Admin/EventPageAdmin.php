@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractPageAdmin;
 use App\Entity\Event;
@@ -38,7 +39,7 @@ final class EventPageAdmin extends AbstractPageAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-                ->add('translations', TranslationsType::class, [
+                ->add('translations', GedmoTranslationsType::class, [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
                         'title' => [

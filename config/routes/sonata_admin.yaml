@@ -1,6 +1,6 @@
 admin_area:
-#    resource: '@App/Resources/config/sonata_admin.xml'
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    resource: '/app/src/Resources/config/sonata_admin.xml'
+#    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
     prefix: /admin
     defaults: { _locale: uk}
     options:
@@ -16,7 +16,7 @@ _sonata_admin:
 
 sonata_admin_ticket_check:
     path:  /admin/ticket/check
-    defaults: { _controller: AppBundle:TicketAdmin:check }
+    defaults: { _controller: App\Controller\TicketAdminController:checkAction }
     options:
         i18n: false
 

@@ -133,8 +133,8 @@ services:
 #        tags:
 #            - { name: kernel.event_listener, event: kernel.request }
 
-#    App\Service\GoogleMapService:
-#        arguments: ['%google_api_key%', '@http_client']
+    App\Service\GoogleMapService:
+        public: true
 
 #    App\Service\PaymentProcess\WayForPayService:
 #        arguments:
@@ -221,8 +221,8 @@ services:
 #            - '@router'
 #            - '@maxmind.geoip'
 #
-#    App\Service\LocalsRequiredService:
-#        arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
+    App\Service\LocalsRequiredService:
+        public: true
 
     App\Command\AppResolveLiipCacheCommand:
         calls:
@@ -321,9 +321,8 @@ services:
 #    App\Service\TranslatedMailService:
 #        arguments: ['%locale%']
 
-#    App\Service\User\UserService:
-#        calls:
-#            - [setTokenStorage, ['@security.token_storage']]
+    App\Service\User\UserService:
+        public: true
 
     Symfony\Bundle\FrameworkBundle\Routing\Router: '@router'
     Symfony\Component\HttpFoundation\Session\Session: '@session'

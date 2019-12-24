@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Entity\Event;
 use App\Entity\EventAudience;
@@ -23,6 +24,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -162,10 +164,10 @@ final class MailAdmin extends AbstractAdmin
                     'edit' => [],
                     'delete' => [],
                     'ispremium' => [
-                        'template' => 'AppBundle:Admin:list__action_adminsend.html.twig',
+                        'template' => 'Admin/list__action_adminsend.html.twig',
                     ],
                     'start' => [
-                        'template' => 'AppBundle:Admin:list__action_start.html.twig',
+                        'template' => 'Admin/list__action_start.html.twig',
                     ],
                 ],
             ]);
@@ -192,24 +194,23 @@ final class MailAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Переводы')
-                ->add('translations', TranslationsType::class, [
-                    'translatable_class' => $this->getClass(),
-                    'data_class' => EmailTranslation::class,
-                    'fields' => [
-                        'title' => [
-                            'label' => 'Название',
-                            'locale_options' => $localOptions,
-                        ],
-                        'text' => [
-                            'label' => 'Текст',
-                            'locale_options' => $localOptions,
-                        ],
+            ->add('translations', GedmoTranslationsType::class, [
+                'translatable_class' => $this->getClass(),
+                'fields' => [
+                    'title' => [
+                        'label' => 'Название',
+                        'locale_options' => $localOptions,
                     ],
-                ])
+                    'text' => [
+                        'label' => 'Текст',
+                        'locale_options' => $localOptions,
+                    ],
+                ],
+            ])
             ->end()
             ->with('Общие')
                 ->add('audiences', null, ['label' => 'Аудитории'])
-                ->add('events', 'entity', [
+                ->add('events', EntityType::class, [
                     'class' => Event::class,
                     'multiple' => true,
                     'expanded' => false,
@@ -242,7 +243,7 @@ final class MailAdmin extends AbstractAdmin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', ['uri' => $admin->generateUrl('edit', ['id' => $id])]);
-        $menu->addChild('Line items', ['uri' => $admin->generateUrl('appBundle.admin.mails|appBundle.admin.mail_queue.list', ['id' => $id])]);
+        $menu->addChild('Line items', ['uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', ['id' => $id])]);
     }
 
     /**

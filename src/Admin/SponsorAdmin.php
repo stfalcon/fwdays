@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Sponsor;
@@ -68,7 +69,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
         $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
-            ->add('translations', TranslationsType::class, [
+            ->add('translations', GedmoTranslationsType::class, [
                 'label' => 'Переводы',
                 'translatable_class' => $this->getClass(),
                 'fields' => [
