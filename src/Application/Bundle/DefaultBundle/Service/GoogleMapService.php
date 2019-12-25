@@ -35,7 +35,7 @@ class GoogleMapService
      *
      * @return bool
      */
-    public function setEventMapPosition($event)
+    public function setEventMapPosition($event): bool
     {
         if (!$event instanceof Event) {
             return false;
@@ -43,19 +43,26 @@ class GoogleMapService
 
         $lat = null;
         $lng = null;
-        $address = $event->getCity().','.$event->getPlace();
-        $json = $this->buzzService->get(
-            'https://maps.google.com/maps/api/geocode/json?key='.$this->googleApiKey.'&address='.urlencode($address)
-        );
 
-        $response = json_decode(
-            $json->getContent(),
-            true
-        );
+        $city = $event->getCity();
+        if (\is_string($city)) {
+            $place = $event->getPlace();
+            $address = \is_string($place) ? \sprintf('%s,%s', $city, $place) : $city;
+            $googlePath = \sprintf('https://maps.google.com/maps/api/geocode/json?key=%s&address=%s', $this->googleApiKey, \urlencode($address));
+            $json = $this->buzzService->get($googlePath);
 
-        if (isset($response['status']) && 'OK' === $response['status']) {
-            $lat = isset($response['results'][0]['geometry']['location']['lat']) ? $response['results'][0]['geometry']['location']['lat'] : null;
-            $lng = isset($response['results'][0]['geometry']['location']['lng']) ? $response['results'][0]['geometry']['location']['lng'] : null;
+            $response = \json_decode(
+                $json->getContent(),
+                true
+            );
+
+            if (isset($response['status']) && 'OK' === $response['status']) {
+                $location = isset($response['results'][0]['geometry']['location']) ? $response['results'][0]['geometry']['location'] : null;
+                if (\is_array($location)) {
+                    $lat = isset($location['lat']) ? $location['lat'] : null;
+                    $lng = isset($location['lng']) ? $location['lng'] : null;
+                }
+            }
         }
 
         $event

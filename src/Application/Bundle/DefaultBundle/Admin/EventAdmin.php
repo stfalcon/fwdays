@@ -143,12 +143,12 @@ class EventAdmin extends AbstractTranslateAdmin
                             ],
                             'city' => [
                                 'label' => 'Город',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                                 'sonata_help' => 'указывать город в котором проводиться событие (используется для поиска координат на карте)',
                             ],
                             'place' => [
                                 'label' => 'Место проведения',
-                                'locale_options' => $localOptions,
+                                'locale_options' => $localAllFalse,
                                 'sonata_help' => 'указывать либо точный адрес, либо название здания, где проводиться событие (используется для поиска координат на карте)',
                             ],
                             'description' => [

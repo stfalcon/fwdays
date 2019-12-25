@@ -69,7 +69,7 @@ final class PaymentProcessControllerTest extends TestCase
 
         $paymentSystem
             ->expects(self::once())
-            ->method('processResponse')
+            ->method('processData')
             ->with($response)
             ->willReturn($status)
         ;
@@ -121,7 +121,7 @@ final class PaymentProcessControllerTest extends TestCase
 
         $paymentSystem
             ->expects(self::once())
-            ->method('processResponse')
+            ->method('processData')
             ->with($response)
             ->willThrowException(new BadRequestHttpException())
         ;

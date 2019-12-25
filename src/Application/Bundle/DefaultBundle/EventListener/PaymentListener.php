@@ -8,6 +8,7 @@ use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\Ticket;
 use Application\Bundle\DefaultBundle\Entity\User;
 use Application\Bundle\DefaultBundle\Service\PaymentService;
+use Application\Bundle\DefaultBundle\Service\TranslatedMailService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\Container;
@@ -85,8 +86,12 @@ class PaymentListener
                     $mail = new Mail();
                     $mail->addEvent($event);
 
+                    $translatedMailService = $this->container->get(TranslatedMailService::class);
+                    $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-                    $message = $this->mailerHelper->formatMessage($user, $mail, false, true);
+                    $defaultLocal = $this->container->getParameter('locale');
+                    $message = $this->mailerHelper->formatMessage($user, $translatedMails[$defaultLocal], false, true);
 
                     $message->setSubject($event->getName());
                     $message->attach(
