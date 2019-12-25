@@ -3,7 +3,6 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
-use App\Entity\Speaker;
 use App\Repository\ReviewRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;

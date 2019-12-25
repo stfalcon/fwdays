@@ -3,11 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Event;
-use App\Entity\Review;
 use App\Entity\Sponsor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

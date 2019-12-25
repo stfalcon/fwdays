@@ -9,6 +9,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -78,7 +81,7 @@ final class TicketAdmin extends AbstractAdmin
             ->add('user.phone', 'string', ['label' => 'Тел.'])
             ->add(
                 'amount',
-                'money',
+                MoneyType::class,
                 [
                     'currency' => 'UAH',
                     'label' => 'Цена',
@@ -86,7 +89,7 @@ final class TicketAdmin extends AbstractAdmin
             )
             ->add(
                 'amountWithoutDiscount',
-                'money',
+                MoneyType::class,
                 [
                     'currency' => 'UAH',
                     'label' => 'Цена без скидки',
@@ -102,7 +105,7 @@ final class TicketAdmin extends AbstractAdmin
                 'actions' => [
                     'removeTicket' => [
                         'ask_confirmation' => true,
-                        'template' => 'AppBundle:Admin:list_action_remove_ticket.html.twig',
+                        'template' => 'Admin/list_action_remove_ticket.html.twig',
                     ],
                 ],
             ])
@@ -162,7 +165,7 @@ final class TicketAdmin extends AbstractAdmin
                     'field_options' => [
                         'choices' => Payment::getPaymentStatusChoice(),
                     ],
-                    'field_type' => 'choice',
+                    'field_type' => ChoiceType::class,
                 ]
             )
             ->add(
@@ -173,7 +176,7 @@ final class TicketAdmin extends AbstractAdmin
                     'field_options' => [
                         'choices' => Payment::getPaymentTypeChoice(),
                     ],
-                    'field_type' => 'choice',
+                    'field_type' => ChoiceType::class,
                 ]
             );
     }
@@ -187,7 +190,7 @@ final class TicketAdmin extends AbstractAdmin
             ->add('id', TextType::class, ['required' => false, 'label' => 'id', 'disabled' => true])
             ->add(
                 'createdAt',
-                'sonata_type_datetime_picker',
+                DateTimePickerType::class,
                 [
                     'required' => false,
                     'label' => 'Создан',
@@ -197,7 +200,7 @@ final class TicketAdmin extends AbstractAdmin
             ->add('event', TextType::class, ['required' => true, 'label' => 'Событие', 'disabled' => true])
             ->add(
                 'amount',
-                'money',
+                MoneyType::class,
                 [
                     'currency' => 'UAH',
                     'label' => 'Цена',

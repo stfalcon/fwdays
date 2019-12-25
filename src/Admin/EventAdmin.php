@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Service\GoogleMapService;
@@ -15,7 +14,6 @@ use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class EventAdmin.
@@ -103,7 +101,7 @@ class EventAdmin extends AbstractTranslateAdmin
                 'images',
                 'string',
                 [
-                    'template' => 'AppBundle:Admin:images_thumb_layout.html.twig',
+                    'template' => 'Admin/images_thumb_layout.html.twig',
                     'label' => 'Изображения',
                 ]
             );

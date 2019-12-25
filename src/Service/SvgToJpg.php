@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Traits\LoggerTrait;
-use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Class SvgToJpg.

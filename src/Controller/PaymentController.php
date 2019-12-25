@@ -33,12 +33,12 @@ class PaymentController extends AbstractController
     use Traits\SerializerTrait;
     use Traits\SessionTrait;
     use Traits\LoggerTrait;
-    
+
     private $paymentService;
     private $paymentSystem;
     private $userManager;
     private $ticketService;
-    
+
     public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService)
     {
         $this->paymentService = $paymentService;

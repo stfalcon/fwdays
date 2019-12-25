@@ -3,13 +3,13 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractPageAdmin;
 use App\Entity\Event;
 use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class EventPageAdmin.
@@ -67,7 +67,7 @@ final class EventPageAdmin extends AbstractPageAdmin
             ->end()
             ->with('Общие')
                 ->add('slug')
-                ->add('event', 'entity', [
+                ->add('event', EntityType::class, [
                     'class' => Event::class,
                 ])
                 ->add('showInMenu', null, ['required' => false, 'label' => 'Показывать страницу'])

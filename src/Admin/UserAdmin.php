@@ -10,8 +10,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -24,7 +26,7 @@ final class UserAdmin extends AbstractAdmin
      */
     public function configure()
     {
-        $this->setTemplate('list', 'AppBundle:Admin:list_with_js.html.twig');
+        $this->setTemplate('list', 'Admin/list_with_js.html.twig');
     }
 
     /**
@@ -54,7 +56,7 @@ final class UserAdmin extends AbstractAdmin
     {
         return array_merge(
             parent::getFormTheme(),
-            ['@App/Admin/admin.light_theme.html.twig']
+            ['Admin/admin.light_theme.html.twig']
         );
     }
 
@@ -115,7 +117,7 @@ final class UserAdmin extends AbstractAdmin
                     ->add('surname', null, ['required' => true, 'label' => 'Фамилия'])
                     ->add(
                         'email',
-                        'email',
+                        EmailType::class,
                         [
                             'required' => true,
                             'label' => 'Почта',
@@ -134,13 +136,11 @@ final class UserAdmin extends AbstractAdmin
                 ->with('Билеты')
                     ->add(
                         'tickets',
-                        'sonata_type_collection',
+                        CollectionType::class,
                         [
                             'by_reference' => false,
                             'disabled' => true,
-                            'type_options' => [
-                                'delete' => false,
-                            ],
+                            'allow_delete' => false,
                         ],
                         [
                             'edit' => 'inline',

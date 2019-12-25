@@ -11,7 +11,6 @@ use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
 use Twig\Environment;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 

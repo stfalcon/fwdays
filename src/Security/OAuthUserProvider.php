@@ -31,7 +31,7 @@ class OAuthUserProvider extends FOSUBUserProvider
     /**
      * @param UserManagerInterface $userManager
      * @param array                $oAuthUserProviderProperties
-     * @param MailerHelper $mailerHelper
+     * @param MailerHelper         $mailerHelper
      */
     public function __construct(UserManagerInterface $userManager, array $oAuthUserProviderProperties, MailerHelper $mailerHelper)
     {

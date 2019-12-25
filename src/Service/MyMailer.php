@@ -19,7 +19,7 @@ class MyMailer extends \Swift_Mailer
 
     /**
      * @param \Swift_Mime_SimpleMessage $message
-     * @param array               $failedRecipients An array of failures by-reference
+     * @param array                     $failedRecipients An array of failures by-reference
      *
      * @return int The number of successful recipients. Can be 0 which indicates failure
      */

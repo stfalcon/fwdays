@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\EventBlock;
 use App\Service\LocalsRequiredService;

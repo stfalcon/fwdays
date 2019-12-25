@@ -8,6 +8,7 @@ use App\Entity\Speaker;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class ReviewAdmin.
@@ -43,11 +44,11 @@ final class ReviewAdmin extends AbstractPageAdmin
         $formMapper = parent::configureFormFields($formMapper);
         $formMapper
             ->with('Общие')
-                ->add('event', 'entity', [
+                ->add('event', EntityType::class, [
                     'class' => Event::class,
                     'label' => 'Событие',
                 ])
-                ->add('speakers', 'entity', [
+                ->add('speakers', EntityType::class, [
                     'class' => Speaker::class,
                     'multiple' => true,
                     'expanded' => true,

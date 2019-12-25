@@ -7,8 +7,8 @@ use App\Entity\Mail;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Helper\PdfGeneratorHelper;
 use App\Helper\MailerHelper;
+use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;
 use App\Service\PaymentService;
 use App\Service\TranslatedMailService;
@@ -32,7 +32,7 @@ class PaymentListener
 
     /**
      * @param string                $locale
-     * @param MailerHelper  $mailerHelper
+     * @param MailerHelper          $mailerHelper
      * @param PdfGeneratorHelper    $pdfGeneratorHelper
      * @param \Swift_Mailer         $mailer
      * @param PaymentService        $paymentService

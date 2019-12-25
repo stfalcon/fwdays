@@ -3,12 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Event;
-use App\Entity\PromoCode;
 use App\Entity\Review;
 use App\Entity\Speaker;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 

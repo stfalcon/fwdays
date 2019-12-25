@@ -3,7 +3,6 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\Speaker;
@@ -12,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -82,7 +82,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                 ->add('email')
                 ->add('company', null, ['label' => 'Место работы'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
-                ->add('file', 'file', [
+                ->add('file', FileType::class, [
                     'required' => false,
                     'data_class' => File::class,
                     'property_path' => 'file',

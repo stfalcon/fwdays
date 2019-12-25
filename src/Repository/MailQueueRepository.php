@@ -6,8 +6,8 @@ use App\Entity\Mail;
 use App\Entity\MailQueue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Parameter;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * MailQueueRepository.

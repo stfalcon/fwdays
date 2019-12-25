@@ -26,7 +26,6 @@ class ReferralController extends AbstractController
         $this->referralService = $referralService;
     }
 
-
     /**
      * @Route("/ref/{code}/event/{slug}", name="referral_link")
      *

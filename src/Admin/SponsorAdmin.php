@@ -3,12 +3,13 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Sponsor;
 use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
  * SponsorAdmin Class.
@@ -85,7 +86,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
                 ->add('site', null, ['label' => 'Сайт'])
                 ->add(
                     'file',
-                    'file',
+                    FileType::class,
                     [
                         'label' => 'Логотип',
                         'required' => false,
@@ -99,7 +100,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
             ->with('События')
                 ->add(
                     'sponsorEvents',
-                    'sonata_type_collection',
+                    CollectionType::class,
                     [
                         'label' => 'Спонсируемые события',
                         'by_reference' => false,

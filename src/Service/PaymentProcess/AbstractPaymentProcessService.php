@@ -8,13 +8,7 @@ use App\Entity\Payment;
 use App\Entity\WayForPayLog;
 use App\Service\ReferralService;
 use App\Traits;
-use Doctrine\ORM\EntityManager;
-use Monolog\Logger;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Router;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * AbstractPaymentProcessService.
@@ -45,8 +39,8 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     protected $referralService;
 
     /**
-     * @param array               $appConfig
-     * @param ReferralService     $referralService
+     * @param array           $appConfig
+     * @param ReferralService $referralService
      */
     public function __construct(array $appConfig, ReferralService $referralService)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Admin\AbstractClass;
 
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Service\LocalsRequiredService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

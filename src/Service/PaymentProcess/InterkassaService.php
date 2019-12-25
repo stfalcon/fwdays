@@ -21,9 +21,9 @@ class InterkassaService extends AbstractPaymentProcessService
     protected $isOverrideCallbacks;
 
     /**
-     * @param array               $appConfig
-     * @param ReferralService     $referralService
-     * @param bool                $isOverrideCallbacks
+     * @param array           $appConfig
+     * @param ReferralService $referralService
+     * @param bool            $isOverrideCallbacks
      */
     public function __construct(array $appConfig, ReferralService $referralService, bool $isOverrideCallbacks)
     {
@@ -120,7 +120,7 @@ class InterkassaService extends AbstractPaymentProcessService
             'ik_am' => $payment->getAmount(),
             'ik_cur' => 'uah',
             'ik_desc' => $description,
-            'ik_loc' => $this-> getCurrentLocale(),
+            'ik_loc' => $this->getCurrentLocale(),
         ];
 
         if ($this->isOverrideCallbacks) {

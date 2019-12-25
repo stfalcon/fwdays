@@ -7,7 +7,6 @@ use App\Model\UserManager;
 use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
 use App\Traits\RouterTrait;
-use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

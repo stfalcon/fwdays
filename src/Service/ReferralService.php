@@ -8,8 +8,6 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\User\UserService;
 use App\Traits\EntityManagerTrait;
-use App\Traits\RequestStackTrait;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +28,7 @@ class ReferralService
     private $userRepository;
 
     /**
-     * @param UserService $userService
+     * @param UserService    $userService
      * @param UserRepository $userRepository
      */
     public function __construct(UserService $userService, UserRepository $userRepository)

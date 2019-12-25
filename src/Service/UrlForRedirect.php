@@ -15,6 +15,7 @@ class UrlForRedirect
     private $homePages = [];
     private $authorizationUrls = [];
     private $locales;
+
     /**
      * @param array $locales
      */

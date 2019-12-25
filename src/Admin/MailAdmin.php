@@ -3,14 +3,12 @@
 namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
-use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use App\Entity\Event;
 use App\Entity\EventAudience;
 use App\Entity\Mail;
 use App\Entity\MailQueue;
 use App\Entity\Payment;
 use App\Entity\Ticket;
-use App\Entity\Translation\EmailTranslation;
 use App\Entity\User;
 use App\Repository\MailQueueRepository;
 use App\Service\LocalsRequiredService;

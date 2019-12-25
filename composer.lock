@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d445893ebb6313e444c0df4417a5d46",
+    "content-hash": "1d6031145fa507275bd03b7e03fee495",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2536,16 +2536,16 @@
         },
         {
             "name": "ibrows/sonata-translation-bundle",
-            "version": "dev-stfalcon",
+            "version": "dev-symfony4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stfalcon-studio/SonataTranslationBundle.git",
-                "reference": "e885a6e6a384a25750908ec7025214f90723bca6"
+                "reference": "1a9b86129809af22a8b5569753f44d32d1ce52dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stfalcon-studio/SonataTranslationBundle/zipball/e885a6e6a384a25750908ec7025214f90723bca6",
-                "reference": "e885a6e6a384a25750908ec7025214f90723bca6",
+                "url": "https://api.github.com/repos/stfalcon-studio/SonataTranslationBundle/zipball/1a9b86129809af22a8b5569753f44d32d1ce52dd",
+                "reference": "1a9b86129809af22a8b5569753f44d32d1ce52dd",
                 "shasum": ""
             },
             "require": {
@@ -2571,10 +2571,10 @@
                 "translation"
             ],
             "support": {
-                "source": "https://github.com/stfalcon-studio/SonataTranslationBundle/tree/master",
+                "source": "https://github.com/stfalcon-studio/SonataTranslationBundle/tree/symfony4",
                 "issues": "https://github.com/stfalcon-studio/SonataTranslationBundle/issues"
             },
-            "time": "2019-11-01T12:26:22+00:00"
+            "time": "2019-12-24T15:49:53+00:00"
         },
         {
             "name": "imagine/imagine",

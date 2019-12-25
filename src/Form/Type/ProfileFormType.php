@@ -19,7 +19,7 @@ class ProfileFormType extends FosProfileFormType
     private $locales;
 
     /**
-     * @param array  $locales
+     * @param array $locales
      */
     public function __construct(array $locales)
     {

@@ -15,7 +15,7 @@ class BaseNormalizer
     protected $normalizer;
 
     /**
-     * @param ObjectNormalizer    $normalizer
+     * @param ObjectNormalizer $normalizer
      */
     public function __construct(ObjectNormalizer $normalizer)
     {

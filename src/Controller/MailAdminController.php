@@ -75,7 +75,6 @@ class MailAdminController extends CRUDController
 
         $em = $this->getDoctrine()->getManager();
 
-
         $users = $em->getRepository(User::class)->getAdmins();
         $isTestMessage = true;
         $error = false;

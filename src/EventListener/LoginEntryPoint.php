@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use App\Traits\RouterTrait;
-use JMS\I18nRoutingBundle\Router\I18nRouter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

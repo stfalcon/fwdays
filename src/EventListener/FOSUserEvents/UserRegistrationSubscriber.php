@@ -6,7 +6,6 @@ use App\Event\User\UseRegistrationCompletedEvent;
 use App\Event\User\UseRegistrationSuccessEvent;
 use App\Traits;
 use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 

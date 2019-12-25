@@ -20,7 +20,7 @@ class RegistrationFormType extends BaseRegistrationFormType
     private $locales;
 
     /**
-     * @param array  $locales
+     * @param array $locales
      */
     public function __construct(array $locales)
     {

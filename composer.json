@@ -47,7 +47,7 @@
         "friendsofsymfony/user-bundle": "^2.1.2",
         "gedmo/doctrine-extensions": "^2.4",
         "hwi/oauth-bundle": "dev-master",
-        "ibrows/sonata-translation-bundle": "dev-stfalcon",
+        "ibrows/sonata-translation-bundle": "dev-symfony4",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/i18n-routing-bundle": "^3.0",
         "league/flysystem-aws-s3-v3": "^1.0.22",

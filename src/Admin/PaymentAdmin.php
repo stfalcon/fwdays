@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Entity\Event;
 use App\Entity\Payment;
 use App\Service\User\UserService;
 use Doctrine\ORM\QueryBuilder;
@@ -9,7 +10,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\Form\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -42,7 +46,7 @@ final class PaymentAdmin extends AbstractAdmin
     {
         return array_merge(
             parent::getFormTheme(),
-            ['@App/Admin/admin.light_theme.html.twig']
+            ['Admin/admin.light_theme.html.twig']
         );
     }
 
@@ -66,7 +70,7 @@ final class PaymentAdmin extends AbstractAdmin
                     'route' => [
                         'name' => 'show',
                     ],
-                    'template' => 'AppBundle:Admin:list_tickets.html.twig',
+                    'template' => 'Admin/list_tickets.html.twig',
                 ]
             )
             ->add('gate', null, ['label' => 'Способ оплаты'])
@@ -85,7 +89,7 @@ final class PaymentAdmin extends AbstractAdmin
                 'gate',
                 'doctrine_orm_choice',
                 ['label' => 'Способ оплаты'],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => Payment::getPaymentTypeChoice(),
                     'required' => false,
@@ -95,7 +99,7 @@ final class PaymentAdmin extends AbstractAdmin
                 'status',
                 'doctrine_orm_choice',
                 ['label' => 'Статус оплаты'],
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
@@ -124,9 +128,9 @@ final class PaymentAdmin extends AbstractAdmin
 
                         return true;
                     },
-                    'field_type' => 'entity',
+                    'field_type' => EntityType::class,
                     'field_options' => [
-                        'class' => 'AppBundle:Event',
+                        'class' => Event::class,
                         'choice_label' => 'name',
                         'multiple' => true,
                         'required' => false,
@@ -150,12 +154,12 @@ final class PaymentAdmin extends AbstractAdmin
 
         $formMapper
             ->with('Общие')
-                ->add('amount', 'money', [
+                ->add('amount', MoneyType::class, [
                     'currency' => 'UAH',
                     'label' => 'Сума оплаты',
                     'disabled' => $subject->isPaid(),
                 ])
-                ->add('fwdaysAmount', 'money', [
+                ->add('fwdaysAmount', MoneyType::class, [
                     'currency' => 'UAH',
                     'required' => false,
                     'label' => 'Сума реферальных',
@@ -174,7 +178,7 @@ final class PaymentAdmin extends AbstractAdmin
                 ->add('user', TextType::class, ['required' => true, 'label' => 'Пользователь', 'disabled' => true])
                 ->add(
                     'tickets',
-                    'sonata_type_collection',
+                    CollectionType::class,
                     [
                         'by_reference' => false,
                         'disabled' => true,

@@ -6,7 +6,6 @@ use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Helper\NewPdfGeneratorHelper;
 use App\Helper\PdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

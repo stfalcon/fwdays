@@ -8,8 +8,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Parameter;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * EventRepository.
