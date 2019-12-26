@@ -61,7 +61,7 @@ twig:
         fb_page_id: "235981893111914"
         speaker_cache_path: '%aws_s3_public_endpoint%/%app.speaker_image%%app.media_cache%speaker'
         sponsor_cache_path: '%aws_s3_public_endpoint%/%app.sponsor_image%%app.media_cache%partner'
-
+        locales: '%locales%'
 #    form:
 #        resources: ['form_table_layout.html.twig']
 

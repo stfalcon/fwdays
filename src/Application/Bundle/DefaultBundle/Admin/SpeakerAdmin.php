@@ -3,10 +3,14 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Speaker;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class SpeakerAdmin.
@@ -46,6 +50,15 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
+
+        $eventFormOptions = [
+            'class' => Event::class,
+            'choice_label' => 'name',
+            'multiple' => true,
+            'expanded' => true,
+            'label' => 'События',
+        ];
+
         $formMapper
             ->with('Переводы')
                 ->add('translations', MyGedmoTranslationsType::class, [
@@ -67,70 +80,41 @@ class SpeakerAdmin extends AbstractTranslateAdmin
                 ->add('email')
                 ->add('company', null, ['label' => 'Место работы'])
                 ->add('sortOrder', null, ['label' => 'Номер сортировки'])
-                // @todo rm array options https://github.com/dustin10/VichUploaderBundle/issues/27 and https://github.com/symfony/symfony/pull/5028
                 ->add('file', 'file', [
                     'required' => false,
-                    'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+                    'data_class' => File::class,
                     'property_path' => 'file',
                     'label' => 'Фото',
                 ])
             ->end()
             ->with('Участвует в событиях', ['class' => 'col-md-3'])
-                ->add('events', 'entity', [
-                    'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
-                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
-                        $qb = $repository->createQueryBuilder('e');
-                        $repository = $qb->orderBy('e.id', 'DESC');
-
-                        return  $repository;
-                    },
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'События',
-                ])
+                ->add('events', EntityType::class, $eventFormOptions)
             ->end()
             ->with('Кандидат на события', ['class' => 'col-md-3'])
-                ->add('candidateEvents', 'entity', [
-                    'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
-                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
-                        $qb = $repository->createQueryBuilder('e');
-                        $repository = $qb->orderBy('e.id', 'DESC');
-
-                        return  $repository;
-                    },
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'События',
-                ])
+                ->add('candidateEvents', EntityType::class, $eventFormOptions)
             ->end()
             ->with('Программный комитет', ['class' => 'col-md-3'])
-                ->add('committeeEvents', 'entity', [
-                    'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
-                    'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
-                        $qb = $repository->createQueryBuilder('e');
-                        $repository = $qb->orderBy('e.id', 'DESC');
-
-                        return  $repository;
-                    },
-                    'multiple' => true,
-                    'expanded' => true,
-                    'label' => 'События',
-                ])
+                ->add('committeeEvents', EntityType::class, $eventFormOptions)
             ->end()
             ->with('Эксперт дискуссий', ['class' => 'col-md-3'])
-            ->add('expertEvents', 'entity', [
-                'class' => 'Application\Bundle\DefaultBundle\Entity\Event',
-                'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) {
-                    $qb = $repository->createQueryBuilder('e');
-                    $repository = $qb->orderBy('e.id', 'DESC');
-
-                    return  $repository;
-                },
-                'multiple' => true,
-                'expanded' => true,
-                'label' => 'События',
-            ])
+                ->add('expertEvents', EntityType::class, $eventFormOptions)
             ->end()
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter
+            ->add('id')
+            ->add('slug')
+            ->add('name')
+            ->add('events', null, ['label' => 'Участвует в событиях'])
+            ->add('candidateEvents', null, ['label' => 'Кандидат на события'])
+            ->add('committeeEvents', null, ['label' => 'Программный комитет'])
+            ->add('expertEvents', null, ['label' => 'Эксперт дискуссий'])
         ;
     }
 

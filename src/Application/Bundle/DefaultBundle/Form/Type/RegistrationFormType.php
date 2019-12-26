@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseRegistrationFormType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -15,6 +16,18 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class RegistrationFormType extends BaseRegistrationFormType
 {
+    private $locales;
+
+    /**
+     * @param string $class
+     * @param array  $locales
+     */
+    public function __construct(string $class, array $locales)
+    {
+        parent::__construct($class);
+        $this->locales = $locales;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -58,6 +71,14 @@ class RegistrationFormType extends BaseRegistrationFormType
                 'required' => true,
                 'label' => 'fos_user_profile_form_password',
             ])
+            ->add(
+                'emailLanguage',
+                ChoiceType::class,
+                [
+                    'multiple' => false,
+                    'choices' => $this->locales,
+                ]
+            )
             ->add('subscribe', CheckboxType::class, [
                 'required' => false,
                 'data' => true,
