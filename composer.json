@@ -32,7 +32,6 @@
         "ext-imagick": "*",
         "ext-json": "*",
         "ext-redis": "*",
-        "ext-zip": "*",
         "a2lix/translation-form-bundle": "dev-symfony4",
         "accord/mandrill-swiftmailer-bundle": "^1.2",
         "aws/aws-sdk-php": "^3.92.5",
@@ -48,7 +47,6 @@
         "gedmo/doctrine-extensions": "^2.4",
         "hwi/oauth-bundle": "dev-master",
         "ibrows/sonata-translation-bundle": "dev-symfony4",
-        "incenteev/composer-parameter-handler": "^2.0",
         "jms/i18n-routing-bundle": "^3.0",
         "league/flysystem-aws-s3-v3": "^1.0.22",
         "liip/imagine-bundle": "^2.2",
@@ -80,7 +78,6 @@
         "symfony/intl": "4.4.*",
         "symfony/monolog-bundle": "^3.5",
         "symfony/orm-pack": "^1.0",
-        "symfony/polyfill-apcu": "^1.7",
         "symfony/profiler-pack": "^1.0",
         "symfony/property-info": "4.0.*",
         "symfony/proxy-manager-bridge": "4.4.*",
@@ -102,6 +99,7 @@
         "escapestudios/symfony2-coding-standard": "^3.8",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hirak/prestissimo": "0.3.*",
+        "icanhazstring/composer-unused": "^0.7.1",
         "liip/functional-test-bundle": "^3.2",
         "phpspec/prophecy": "^1.7",
         "phpstan/phpstan": "^0.12",
@@ -116,7 +114,6 @@
         "thecodingmachine/phpstan-strict-rules": "^0.12.0"
     },
     "config": {
-        "bin-dir": "bin",
         "optimize-autoloader": true,
         "platform": {
             "php": "7.3"
@@ -136,7 +133,9 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "ci:composer-validate": "composer.phar validate --no-check-all",
+        "ci:composer-validate": "composer.phar validate --no-check-all --strict",
+        "ci:composer-unused": "vendor/bin/composer-unused --no-progress",
+        "ci:composer-require-checker": "vendor/bin/composer-require-checker",
         "ci:security-check": "bin/console security:check",
         "ci:doctrine-schema-validate": [
             "bin/console doctrine:database:create --if-not-exists",
@@ -149,22 +148,22 @@
             "bin/console lint:yaml --parse-tags translations/"
         ],
         "ci:code-style": [
-            "bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Migrations -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
-            "bin/php-cs-fixer fix -q --dry-run --config=.php_cs -v"
+            "vendor/bin/phpcs ./src -p --encoding=utf-8 --extensions=php --ignore=Tests,Migrations -n --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony",
+            "vendor/bin/php-cs-fixer fix -q --dry-run --config=.php_cs -v"
         ],
         "ci:phpunit": [
-            "bin/phpunit -c phpunit.xml.dist"
+            "vendor/bin/phpunit -c phpunit.xml.dist"
         ],
         "ci:codeception-acceptance": [
-            "./bin/codecept build",
-            "./bin/codecept run acceptancePhpWeb",
-            "./bin/codecept run acceptance"
+            "vendor/bin/codecept build",
+            "vendor/bin/codecept run acceptancePhpWeb",
+            "vendor/bin/codecept run acceptance"
         ],
         "ci:static-analysis": [
-            "bin/phpstan analyse -l 6 --no-progress -c phpstan.neon src/"
+            "vendor/bin/phpstan analyse -l 6 --no-progress -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
-            "bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml"
+            "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml"
         ],
         "app:recreate-database": [
             "bin/console doctrine:database:drop --force --if-exists",

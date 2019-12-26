@@ -23,7 +23,7 @@ class Kernel extends BaseKernel
     /**
      * {@inheritdoc}
      */
-    public function __construct($environment, $debug)
+    public function __construct(string $environment, bool $debug)
     {
         parent::__construct($environment, (bool) $debug);
 

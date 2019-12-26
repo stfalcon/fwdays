@@ -16,6 +16,10 @@ class AnalyticsController extends AbstractController
     private $analyticsService;
     private $chartService;
 
+    /**
+     * @param AnalyticsService $analyticsService
+     * @param ChartService     $chartService
+     */
     public function __construct(AnalyticsService $analyticsService, ChartService $chartService)
     {
         $this->analyticsService = $analyticsService;

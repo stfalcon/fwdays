@@ -30,7 +30,7 @@ class NeedUserDataException extends \Exception
     /**
      * @param User $user
      */
-    public function setUser($user)
+    public function setUser($user): void
     {
         $this->user = $user;
     }

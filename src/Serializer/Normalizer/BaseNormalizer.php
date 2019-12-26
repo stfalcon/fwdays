@@ -12,6 +12,7 @@ class BaseNormalizer
 {
     use TranslatorTrait;
 
+    /** @var ObjectNormalizer */
     protected $normalizer;
 
     /**

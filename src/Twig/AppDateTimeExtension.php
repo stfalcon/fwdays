@@ -2,8 +2,8 @@
 
 namespace App\Twig;
 
+use App\Traits\TranslatorTrait;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -12,22 +12,21 @@ use Twig\TwigFilter;
  */
 class AppDateTimeExtension extends AbstractExtension
 {
+    use TranslatorTrait;
+
     const YEAR_SEASON_FORMAT = 'S';
 
     private $intlTwigDateTimeService;
+
+    /** @var bool */
     private $convertToSeason = false;
-    private $translator;
 
     /**
-     * AppDateTimeExtension constructor.
-     *
-     * @param DateTimeExtension   $intlTwigDateTimeService
-     * @param TranslatorInterface $translator
+     * @param DateTimeExtension $intlTwigDateTimeService
      */
-    public function __construct(DateTimeExtension $intlTwigDateTimeService, TranslatorInterface $translator)
+    public function __construct(DateTimeExtension $intlTwigDateTimeService)
     {
         $this->intlTwigDateTimeService = $intlTwigDateTimeService;
-        $this->translator = $translator;
     }
 
     /**
@@ -60,7 +59,7 @@ class AppDateTimeExtension extends AbstractExtension
 
         $formattedDate = $this->intlTwigDateTimeService->formatDate($date, $pattern, $locale, $timezone, $dateType);
         if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern, $locale);
+            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
         }
 
         return $formattedDate;
@@ -117,7 +116,7 @@ class AppDateTimeExtension extends AbstractExtension
 
         $formattedDate = $this->intlTwigDateTimeService->formatTime($time, $pattern, $locale, $timezone, $timeType);
         if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern, $locale);
+            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
         }
 
         return $formattedDate;
@@ -157,18 +156,10 @@ class AppDateTimeExtension extends AbstractExtension
 
         $formattedDate = $this->intlTwigDateTimeService->formatDatetime($time, $pattern, $locale, $timezone, $dateType, $timeType);
         if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern, $locale);
+            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
         }
 
         return $formattedDate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'app_datetime';
     }
 
     /**
@@ -177,11 +168,10 @@ class AppDateTimeExtension extends AbstractExtension
      *
      * @param string $formattedDate
      * @param string $pattern
-     * @param string $locale
      *
      * @return mixed
      */
-    private function replaceMonthToNominative($formattedDate, $pattern, $locale)
+    private function replaceMonthToNominative($formattedDate, $pattern)
     {
         $result = $formattedDate;
 
@@ -210,7 +200,7 @@ class AppDateTimeExtension extends AbstractExtension
     {
         $this->convertToSeason = null !== $pattern ? (false !== strpos($pattern, self::YEAR_SEASON_FORMAT)) : false;
         if ($this->convertToSeason) {
-            $pattern = str_replace(self::YEAR_SEASON_FORMAT, 'MMMM', $pattern);
+            $pattern = \str_replace(self::YEAR_SEASON_FORMAT, 'MMMM', $pattern);
         }
 
         return $pattern;

@@ -335,5 +335,6 @@ services:
     Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
     FOS\UserBundle\Form\Factory\FactoryInterface: '@fos_user.registration.form.factory'
     FOS\UserBundle\Security\LoginManager: '@fos_user.security.login_manager'
+    Symfony\Bundle\FrameworkBundle\Translation\Translator: '@translator.default'
     Symfony\Contracts\HttpClient\HttpClientInterface:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']

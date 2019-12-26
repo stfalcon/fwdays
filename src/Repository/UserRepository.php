@@ -158,7 +158,7 @@ class UserRepository extends ServiceEntityRepository
      * @param QueryBuilder $qb
      * @param bool         $ignoreUnsubscribe
      */
-    private function addIgnoreUnsubscribeFilter(QueryBuilder $qb, bool $ignoreUnsubscribe)
+    private function addIgnoreUnsubscribeFilter(QueryBuilder $qb, bool $ignoreUnsubscribe): void
     {
         if (!$ignoreUnsubscribe) {
             $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))

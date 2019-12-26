@@ -13,7 +13,6 @@ use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * UserManager.
@@ -54,7 +53,7 @@ class UserManager extends FosUserManager
         $user->setSurname($participant['surname']);
         $user->setFullname($participant['surname'].' '.$participant['name']);
 
-        $plainPassword = \substr(md5(\uniqid(\mt_rand(), true).\time()), 0, 8);
+        $plainPassword = \substr(md5(\uniqid((string) \mt_rand(), true).\time()), 0, 8);
 
         $user->setPlainPassword($plainPassword);
         $user->setEnabled(true);
@@ -103,7 +102,7 @@ class UserManager extends FosUserManager
         }
 
         if ($oldEmail !== $email) {
-            $plainPassword = \substr(md5(\uniqid(\mt_rand(), true).\time()), 0, 8);
+            $plainPassword = \substr(md5((string) \uniqid(\mt_rand(), true).\time()), 0, 8);
 
             $user->setPlainPassword($plainPassword);
             $this->mailHelper->sendAutoRegistration($user, $plainPassword);
@@ -116,7 +115,7 @@ class UserManager extends FosUserManager
      *
      * @return array
      */
-    private function getErrorMap(ConstraintViolationListInterface $errors): array
+    private function getErrorMap(ConstraintViolationList $errors): array
     {
         $errorsMap = [];
         foreach ($errors as $error) {

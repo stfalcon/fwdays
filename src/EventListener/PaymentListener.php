@@ -63,7 +63,7 @@ class PaymentListener
      *
      * @throws \Exception
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args): void
     {
         $payment = $args->getEntity();
         if ($payment instanceof Payment && Payment::STATUS_PAID === $payment->getStatus() && $this->runPaymentPostUpdate) {
@@ -72,9 +72,7 @@ class PaymentListener
 
             $tickets = $this->ticketRepository->getAllTicketsByPayment($payment);
 
-            /** @var Ticket $ticket */
             foreach ($tickets as $ticket) {
-                /** @var $user User */
                 $user = $ticket->getUser();
 
                 /** @var Event $event */

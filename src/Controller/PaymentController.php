@@ -39,6 +39,12 @@ class PaymentController extends AbstractController
     private $userManager;
     private $ticketService;
 
+    /**
+     * @param PaymentService          $paymentService
+     * @param PaymentProcessInterface $paymentSystem
+     * @param UserManager             $userManager
+     * @param TicketService           $ticketService
+     */
     public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService)
     {
         $this->paymentService = $paymentService;

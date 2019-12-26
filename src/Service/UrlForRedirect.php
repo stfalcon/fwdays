@@ -12,7 +12,9 @@ class UrlForRedirect
 {
     use RouterTrait;
 
+    /** @var array  */
     private $homePages = [];
+    /** @var array  */
     private $authorizationUrls = [];
     private $locales;
 
@@ -24,7 +26,34 @@ class UrlForRedirect
         $this->locales = $locales;
     }
 
-    private function prepare()
+    /**
+     * get redirect url for referral url.
+     *
+     * @param string $referralUrl
+     * @param string $host
+     *
+     * @return string
+     */
+    public function getRedirectUrl($referralUrl, $host = ''): string
+    {
+        $this->prepare();
+        $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
+
+        if (\in_array($clearReferrer, $this->authorizationUrls)) {
+            return $this->router->generate('homepage');
+        }
+
+        if (!empty($host) && false === strpos($clearReferrer, $host)) {
+            return $this->router->generate('homepage');
+        }
+
+        return $referralUrl;
+    }
+
+    /**
+     * prepare url array.
+     */
+    private function prepare(): void
     {
         $this->homePages = [];
         $this->authorizationUrls = [];
@@ -46,29 +75,5 @@ class UrlForRedirect
             $this->authorizationUrls[] = $this->router->generate('fos_user_resetting_send_email', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
             $this->authorizationUrls[] = $this->router->generate('password_already_requested', ['_locale' => $locale], UrlGeneratorInterface::ABSOLUTE_URL);
         }
-    }
-
-    /**
-     * get redirect url for referral url.
-     *
-     * @param string $referralUrl
-     * @param string $host
-     *
-     * @return string
-     */
-    public function getRedirectUrl($referralUrl, $host = '')
-    {
-        $this->prepare();
-        $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
-
-        if (\in_array($clearReferrer, $this->authorizationUrls)) {
-            return $this->router->generate('homepage');
-        }
-
-        if (!empty($host) && false === strpos($clearReferrer, $host)) {
-            return $this->router->generate('homepage');
-        }
-
-        return $referralUrl;
     }
 }

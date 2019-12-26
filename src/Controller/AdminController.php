@@ -30,6 +30,12 @@ class AdminController extends AbstractController
     private $pool;
     private $mailer;
 
+    /**
+     * @param UserManager   $userManager
+     * @param MailerHelper  $mailerHelper
+     * @param Pool          $pool
+     * @param \Swift_Mailer $mailer
+     */
     public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer)
     {
         $this->userManager = $userManager;

@@ -21,7 +21,7 @@ class EmailSubscribeBlockService extends AbstractBlockService
     /**
      * @param EmailHashValidationService $emailHashValidationService
      */
-    public function setEmailHashValidationService(EmailHashValidationService $emailHashValidationService)
+    public function setEmailHashValidationService(EmailHashValidationService $emailHashValidationService): void
     {
         $this->emailHashValidationService = $emailHashValidationService;
     }
@@ -29,7 +29,7 @@ class EmailSubscribeBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
         $user = $blockContext->getSetting('user');
         $type = $blockContext->getSetting('email_type');
@@ -51,7 +51,7 @@ class EmailSubscribeBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'Email/_email_subscribe.html.twig',

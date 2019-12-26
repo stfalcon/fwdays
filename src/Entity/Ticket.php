@@ -64,7 +64,7 @@ class Ticket
     private $event;
 
     /**
-     * @var TicketCost
+     * @var TicketCost|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TicketCost", inversedBy="tickets")
      * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
@@ -84,7 +84,7 @@ class Ticket
     private $user;
 
     /**
-     * @var \App\Entity\Payment
+     * @var Payment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Payment", inversedBy="tickets")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
@@ -145,7 +145,7 @@ class Ticket
     /**
      * @return TicketCost
      */
-    public function getTicketCost()
+    public function getTicketCost(): ?TicketCost
     {
         return $this->ticketCost;
     }
@@ -192,9 +192,9 @@ class Ticket
     }
 
     /**
-     * @return Payment
+     * @return Payment|null
      */
-    public function getPayment()
+    public function getPayment(): ?Payment
     {
         return $this->payment;
     }

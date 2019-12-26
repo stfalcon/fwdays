@@ -6,3 +6,4 @@ services:
 
     App\DataFixtures\ORM\:
         resource: '../../src/DataFixtures/ORM/'
+        tags: ['doctrine.fixture.orm']

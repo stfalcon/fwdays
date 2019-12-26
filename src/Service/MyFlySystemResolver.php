@@ -21,7 +21,7 @@ class MyFlySystemResolver extends FlysystemResolver
      * @param string          $path   The path where the original file is expected to be
      * @param string          $filter The name of the imagine filter in effect
      */
-    public function store(BinaryInterface $binary, $path, $filter)
+    public function store(BinaryInterface $binary, $path, $filter): void
     {
         $this->flysystem->put(
             $this->getFilePath($path, $filter),

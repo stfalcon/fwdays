@@ -1,3 +1,5 @@
+includes:
+#    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
     excludes_analyse:
         - '%rootDir%/../../../src/Tests/*'
@@ -5,6 +7,6 @@ parameters:
         - '%rootDir%/../../../src/Migrations/*'
     fileExtensions:
         - 'php'
-    reportUnmatchedIgnoredErrors: false
-includes:
-    - vendor/phpstan/phpstan-symfony/extension.neon
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

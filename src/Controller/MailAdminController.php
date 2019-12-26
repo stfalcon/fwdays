@@ -27,6 +27,11 @@ class MailAdminController extends CRUDController
     private $mailerHelper;
     private $translatedMailService;
 
+    /**
+     * @param \Swift_Mailer         $mailer
+     * @param MailerHelper          $mailerHelper
+     * @param TranslatedMailService $translatedMailService
+     */
     public function __construct(\Swift_Mailer $mailer, MailerHelper $mailerHelper, TranslatedMailService $translatedMailService)
     {
         $this->mailer = $mailer;

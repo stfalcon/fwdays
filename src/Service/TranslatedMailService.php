@@ -51,7 +51,7 @@ class TranslatedMailService
      * @param array $keysArray
      * @param array $checkArray
      */
-    private function assertKeyExists(array $keysArray, array $checkArray)
+    private function assertKeyExists(array $keysArray, array $checkArray): void
     {
         foreach ($keysArray as $key) {
             if (!\array_key_exists($key, $checkArray)) {

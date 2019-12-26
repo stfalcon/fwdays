@@ -22,14 +22,6 @@ class StatisticBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function getDefaultSettings()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         return $this->renderResponse(

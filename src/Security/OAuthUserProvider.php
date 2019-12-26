@@ -45,10 +45,11 @@ class OAuthUserProvider extends FOSUBUserProvider
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $socialID = $response->getUsername();
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $socialID ? $this->userManager->findUserBy([$this->getProperty($response) => $socialID]) : null;
         $email = $response->getEmail();
-        if (!$user) {
+        if (!$user instanceof User) {
+            /** @var User|null $user */
             $user = $this->userManager->findUserByEmail($email);
 
             if (!$user || !$user instanceof UserInterface) {

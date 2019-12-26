@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 namespace App\Traits;
-
-use Symfony\Contracts\Translation\TranslatorInterface;
+//@todo remove deprecated and transchoice
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 /**
  * TranslatorTrait.
  */
 trait TranslatorTrait
 {
-    /** @var TranslatorInterface */
+    /** @var Translator */
     protected $translator;
 
     /**
-     * @param TranslatorInterface $translator
+     * @param Translator $translator
      *
      * @required
      */
-    public function setTranslator(TranslatorInterface $translator): void
+    public function setTranslator(Translator $translator): void
     {
         $this->translator = $translator;
     }

@@ -29,6 +29,7 @@ class DefaultController extends AbstractController
 
     /**
      * @param ReferralService $referralService
+     * @param UserManager     $userManager
      */
     public function __construct(ReferralService $referralService, UserManager $userManager)
     {

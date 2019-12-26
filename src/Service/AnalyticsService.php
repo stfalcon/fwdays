@@ -66,7 +66,7 @@ class AnalyticsService
     /**
      * Get data for summary statistics of tickets sold.
      *
-     * @param Event|null $event
+     * @param Event $event
      *
      * @throws \Exception
      *
@@ -146,7 +146,7 @@ class AnalyticsService
      *
      * @return \DateTime|null
      */
-    private function getLastDayOfTicketSales(Event $event)
+    private function getLastDayOfTicketSales(Event $event): ?\DateTime
     {
         return $event->getDateEnd() ?: $event->getDate();
     }

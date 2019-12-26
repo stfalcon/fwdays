@@ -149,7 +149,7 @@ class Event implements Translatable
     protected $date;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
@@ -595,7 +595,7 @@ class Event implements Translatable
     /**
      * @return \DateTime
      */
-    public function getDateEnd()
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }

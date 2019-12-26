@@ -1,13 +1,12 @@
 doctrine:
     dbal:
-        dbname: '%env(APP_DBNAME)%'
-        host: '%env(APP_DBHOST)%'
-        port: '%env(APP_DBPORT)%'
-        user: '%env(APP_DBUSER)%'
-        password: '%env(APP_DBPASS)%'
+        url: 'mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%'
         driver: 'pdo_mysql'
-        charset: 'utf8mb4'
-#        url: 'pdo_mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%?charset=utf8mb4&serverVersion=5.6'
+        server_version: '5.6'
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true

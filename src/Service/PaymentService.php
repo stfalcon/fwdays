@@ -9,6 +9,9 @@ use App\Entity\PromoCode;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
+use App\Repository\PaymentRepository;
+use App\Repository\PromoCodeRepository;
+use App\Repository\TicketRepository;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Traits;
@@ -59,10 +62,11 @@ class PaymentService
 
         $this->em->persist($payment);
         if ($ticket instanceof Ticket) {
-            if (($ticket->getPayment() && $this->removeTicketFromPayment($ticket->getPayment(), $ticket))
-                || !$ticket->getPayment()) {
-                $this->addTicketToPayment($payment, $ticket);
+            $ticketPayment = $ticket->getPayment();
+            if ($ticketPayment instanceof Payment) {
+                $this->removeTicketFromPayment($ticketPayment, $ticket);
             }
+            $this->addTicketToPayment($payment, $ticket);
         }
 
         $this->em->flush();
@@ -78,7 +82,7 @@ class PaymentService
      * @param Payment $payment
      * @param Ticket  $ticket
      */
-    public function addTicketToPayment($payment, $ticket)
+    public function addTicketToPayment(Payment $payment, Ticket $ticket): void
     {
         if (!$ticket->isPaid() && $payment->addTicket($ticket)) {
             $ticket->setPayment($payment);
@@ -177,8 +181,9 @@ class PaymentService
     public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket): void
     {
         if ($promoCodeString) {
-            /** @var PromoCode|null $promoCode */
-            $promoCode = $this->em->getRepository(PromoCode::class)
+            /** @var PromoCodeRepository $promoCodeRepository */
+            $promoCodeRepository = $this->em->getRepository(PromoCode::class);
+            $promoCode = $promoCodeRepository
                 ->findActivePromoCodeByCodeAndEvent($promoCodeString, $event);
 
             if (!$promoCode) {
@@ -207,7 +212,7 @@ class PaymentService
      * @param Payment $payment
      * @param Event   $event
      */
-    public function checkTicketsPricesInPayment($payment, $event)
+    public function checkTicketsPricesInPayment(Payment $payment, Event $event): void
     {
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
@@ -247,14 +252,14 @@ class PaymentService
      *
      * @param Payment $payment
      */
-    public function setTicketsCostAsSold(Payment $payment)
+    public function setTicketsCostAsSold(Payment $payment): void
     {
         $ticketCostsRecalculate = [];
         if ($payment->isPaid()) {
             /** @var Ticket $ticket */
             foreach ($payment->getTickets() as $ticket) {
                 $ticketCost = $ticket->getTicketCost();
-                if ($ticketCost) {
+                if ($ticketCost instanceof TicketCost) {
                     $ticketCostsRecalculate[$ticketCost->getId()] = $ticketCost;
                 }
             }
@@ -271,7 +276,7 @@ class PaymentService
      *
      * @param Payment $payment
      */
-    public function calculateTicketsPromocode(Payment $payment)
+    public function calculateTicketsPromocode(Payment $payment): void
     {
         if ($payment->isPaid()) {
             /** @var Ticket $ticket */
@@ -360,6 +365,7 @@ class PaymentService
         /* @var Ticket|null $ticket  */
         $ticket = $this->em->getRepository(Ticket::class)->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
+        /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->em->getRepository(Payment::class);
         /** @var Payment|null $payment */
         $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
@@ -406,9 +412,11 @@ class PaymentService
         if (!$user instanceof User) {
             return $editTicket;
         }
-        /** @var Ticket|null $ticket */
-        $ticket = $this->em->getRepository(Ticket::class)
-            ->findOneByUserAndEventWithPendingPayment($user, $event);
+
+        /** @var TicketRepository $ticketRepository */
+        $ticketRepository = $this->em->getRepository(Ticket::class);
+
+        $ticket = $ticketRepository->findOneByUserAndEventWithPendingPayment($user, $event);
 
         if (!$ticket instanceof Ticket || $editTicket->isEqualTo($ticket)) {
             return $editTicket;
@@ -439,8 +447,9 @@ class PaymentService
         $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
         if ($this->session->has($sessionKey)) {
             $paymentId = $this->session->get($sessionKey);
-            $payment = $this->em->getRepository(Payment::class)
-                ->findPendingPaymentByIdForUser($paymentId, $currentUser);
+            /** @var PaymentRepository $paymentRepository */
+            $paymentRepository = $this->em->getRepository(Payment::class);
+            $payment = $paymentRepository->findPendingPaymentByIdForUser($paymentId, $currentUser);
         }
 
         if (!$payment instanceof Payment) {

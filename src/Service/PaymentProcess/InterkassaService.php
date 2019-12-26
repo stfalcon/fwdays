@@ -18,6 +18,7 @@ class InterkassaService extends AbstractPaymentProcessService
 
     private const PAYMENT_SYSTEM_NAME = 'Interkassa';
 
+    /** @var bool */
     protected $isOverrideCallbacks;
 
     /**

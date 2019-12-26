@@ -8,6 +8,7 @@ use App\Entity\Payment;
 use App\Entity\WayForPayLog;
 use App\Service\ReferralService;
 use App\Traits;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -33,9 +34,10 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
     ];
 
-    private $locale;
-
+    /** @var array  */
     protected $appConfig;
+
+    /** @var ReferralService */
     protected $referralService;
 
     /**
@@ -48,9 +50,12 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         $this->referralService = $referralService;
     }
 
-    public function getRequest(): void
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
     {
-        $this->requestStack->getCurrentRequest();
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
@@ -82,13 +87,13 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
      */
     protected function processSystemData(array $data, string $paymentIdKey, string $paymentGate): string
     {
-        /** @var Payment $payment */
+        /** @var Payment|null $payment */
         $payment = $this->em
             ->getRepository(Payment::class)
             ->find($data[$paymentIdKey])
         ;
 
-        if (!$payment) {
+        if (!$payment instanceof Payment) {
             $this->logger->addCritical(\sprintf('%s interaction Fail! payment not found', $this->getSystemName()));
             $this->saveDataLog(null, $data, \sprintf('%s: payment not found', $this->getSystemName()));
 

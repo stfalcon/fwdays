@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator\Constraints\Event;
 
 use Symfony\Component\Validator\Constraint;
@@ -11,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class EventBlockPositionUnique extends Constraint
 {
+    /** @var string  */
     public $message = 'эта позиция уже используется';
 
     /**

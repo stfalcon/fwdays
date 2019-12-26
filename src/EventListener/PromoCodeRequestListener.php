@@ -30,7 +30,7 @@ class PromoCodeRequestListener implements EventSubscriberInterface
     /**
      * @param RequestEvent $event
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

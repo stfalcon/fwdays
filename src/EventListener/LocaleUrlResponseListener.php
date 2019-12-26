@@ -7,6 +7,7 @@ use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,6 +33,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
     private $locales;
     private $cookieName;
     private $geoIpService;
+    /** @var array */
     private $pathArray = [];
 
     /**
@@ -60,7 +62,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
     /**
      * @param RequestEvent $event
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -106,7 +108,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
     /**
      * @param ExceptionEvent $event
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -151,7 +153,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
         }
 
         if (!$local) {
-            if (false !== $this->geoIpService->lookup($this->getRealIpAddr($request))) {
+            if (false !== $this->geoIpService->lookup($request->getClientIp())) {
                 if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
                     $local = $this->defaultLocale;
                     $langSource = self::LANG_FROM_IP;
@@ -205,16 +207,17 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
     private function getRealIpAddr($request): ?string
     {
         $server = $request->server;
-        if (!$server) {
+        if (!$server instanceof ServerBag) {
             return null;
         }
+
         $ip = null;
         if ($server->has('HTTP_CLIENT_IP')) {
-            $ip = filter_var($server->get('HTTP_CLIENT_IP'), FILTER_VALIDATE_IP);
+            $ip = \filter_var($server->get('HTTP_CLIENT_IP'), FILTER_VALIDATE_IP);
         }
 
         if (!$ip && $server->has('HTTP_X_FORWARDED_FOR')) {
-            $ip = filter_var($server->get('HTTP_X_FORWARDED_FOR'), FILTER_VALIDATE_IP);
+            $ip = \filter_var($server->get('HTTP_X_FORWARDED_FOR'), FILTER_VALIDATE_IP);
         }
 
         if (!$ip) {

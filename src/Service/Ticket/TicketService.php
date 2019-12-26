@@ -10,6 +10,7 @@ use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Model\DownloadTicketData;
 use App\Model\EventStateData;
+use App\Repository\PaymentRepository;
 use App\Repository\TicketCostRepository;
 use App\Service\User\UserService;
 use Doctrine\ORM\EntityManager;
@@ -114,9 +115,10 @@ class TicketService
         if (!$event->getUseDiscounts()) {
             return false;
         }
+        /** @var PaymentRepository $repository */
+        $repository = $this->em->getRepository(Payment::class);
 
-        $paidPayments = $this->em->getRepository(Payment::class)
-            ->findPaidPaymentsForUser($user);
+        $paidPayments = $repository->findPaidPaymentsForUser($user);
 
         return \count($paidPayments) > 0;
     }
@@ -129,7 +131,7 @@ class TicketService
      * @param bool       $isMustBeDiscount
      * @param TicketCost $currentTicketCost
      */
-    public function setTicketAmount($ticket, $amount, $isMustBeDiscount, $currentTicketCost)
+    public function setTicketAmount($ticket, $amount, $isMustBeDiscount, $currentTicketCost): void
     {
         $ticket->setAmountWithoutDiscount($amount);
         $ticket->setAmount($amount);
@@ -351,6 +353,7 @@ class TicketService
         $payment = null;
         $user = $this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL);
         if ($user instanceof User) {
+            /** @var PaymentRepository $paymentRepository */
             $paymentRepository = $this->em->getRepository(Payment::class);
             $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
 

@@ -63,7 +63,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.ticket.status.html.twig',
