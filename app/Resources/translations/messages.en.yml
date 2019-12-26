@@ -77,6 +77,9 @@ user.by_user.title: login with social network
 user.by_email.title: Or by mail
 user.create.title: Create an account
 user.already_have_account.title: I already have an account
+user.lang_uk: Українська
+user.lang_en: English
+
 speaker.about: Speaker's info
 speaker.no_review.text: The subject of the report is specified
 pay.i_have_promo.title: I have promo code
@@ -233,7 +236,7 @@ mail.news.site_link: 'https://fwdays.com/en/'
 ticket.email.waitfornews: 'Keep up with the news:'
 ticket.email.unsubscribe: Unsubscribe from mailing news
 ticket.email.team: 'Best regards, <br/> Team Fwdays <br/>'
-ticket.email.change_language: Щоб змінити мову листів, перейдіть у налаштування Профілю на сайті
+ticket.email.change_language: Щоб змінити мову листів, перейдіть у налаштування Профілю
 ticket.email.event_date.title: 'Date'
 ticket.email.event_reg.title: 'Registration'
 ticket.email.event_member.title: 'Participant'
