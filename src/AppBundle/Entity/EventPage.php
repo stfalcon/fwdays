@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * EventPage.
  *
  * @ORM\Table(name="event__pages")
- * @ORM\Entity(repositoryClass="App\Bundle\DefaultBundle\Repository\EventPageRepository")
+ * @ORM\Entity()
  *
  * @UniqueEntity({"slug", "event"})
  *
