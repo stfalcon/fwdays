@@ -5,7 +5,9 @@ namespace Application\Bundle\DefaultBundle\Repository;
 use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\EventGroup;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Parameter;
 
 /**
  * EventRepository.
@@ -63,16 +65,18 @@ class EventRepository extends EntityRepository
      *
      * @return Event[]
      */
-    public function findClosesActiveEvents($count)
+    public function findClosesActiveEvents($count): array
     {
         $qb = $this->createQueryBuilder('e');
         $qb
             ->where($qb->expr()->eq('e.active', ':active'))
             ->andWhere($qb->expr()->gte('e.date', ':date'))
-            ->setParameters([
-                'active' => true,
-                'date' => new \DateTime(),
-            ])
+            ->andWhere($qb->expr()->gte('e.adminOnly', ':adminOnly'))
+            ->setParameters(new ArrayCollection([
+                new Parameter('active', true),
+                new Parameter('date', new \DateTime()),
+                new Parameter('adminOnly', false),
+            ]))
             ->orderBy('e.date', 'ASC')
             ->setMaxResults($count);
 
