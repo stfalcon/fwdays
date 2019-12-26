@@ -1,0 +1,30 @@
+services:
+
+    App\EventListener\FOSUserEvents\UserProfileUpdateSubscriber:
+        arguments:
+            - "@session"
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\EventListener\FOSUserEvents\UserRegistrationSubscriber:
+        arguments:
+            - "@session"
+            - "@router"
+            - "@request_stack"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\EventListener\FOSUserEvents\UserResettingSubscriber:
+        arguments:
+            - "@session"
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\EventListener\FOSUserEvents\UserChangePasswordSubscriber:
+        arguments:
+            - "@session"
+            - "@router"
+        tags:
+            - { name: kernel.event_subscriber }

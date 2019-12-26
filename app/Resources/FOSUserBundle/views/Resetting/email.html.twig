@@ -1,12 +1,12 @@
-{% include '@ApplicationDefault/Email/_email_header.html.twig' %}
+{% include '@App/Email/_email_header.html.twig' %}
 <p style="margin: 10px 0;">
 {{ 'resetting.email.message'|trans({'%username%': user.fullname, '%confirmationUrl%': confirmationUrl})|raw }}
 </p>
 <p style="margin: 10px 0;">
     {{ 'ticket.email.team'|trans|raw }}
 </p>
-{% include '@ApplicationDefault/Email/_email_end_table.html.twig' %}
+{% include '@App/Email/_email_end_table.html.twig' %}
 
-{% include '@ApplicationDefault/Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
+{% include '@App/Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
 </center>
 </body>

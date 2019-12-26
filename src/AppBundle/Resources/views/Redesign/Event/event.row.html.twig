@@ -1,0 +1,22 @@
+<div class="event-row {% if listItem %} event-list__item{% endif %}{% if not event.active %} event-row--inactive{% endif %}">
+    <div class="event-row__left">
+        <a href="{{ path('event_show', {'slug': event.slug } )}}" class="event-row__logo-link">
+            {% if event.smallLogo is not empty %}
+                <img class="event-row__logo" src="{{ vich_uploader_asset(event, 'smallLogoFile') }}" alt="">
+            {% elseif event.logo is not empty %}
+                <img class="event-row__logo" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
+            {% endif %}
+        </a>
+        <div class="event-row__details">
+            <a href="{{ path('event_show', {'slug': event.slug } )}}" class="event-row__title">{{ event.name }}</a>
+            <div class="event-row__location">{{ event.city }}</div>
+        </div>
+    </div>
+    <div class="event-row__right">
+        <div class="event-row__date">
+            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-row__month">{{ event.date|app_format_date_day_month(event.dateFormat, app.request.locale, 'Europe/Kiev') }}</time>
+            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-row__year">{{ event.date|format_date('Y', app.request.locale, 'Europe/Kiev') }}</time>
+        </div>
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'row'}) }}
+    </div>
+</div>

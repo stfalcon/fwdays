@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.0
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.2
 cache:
     paths:
         - vendor/
@@ -28,10 +28,34 @@ variables:
 
 stages:
     - 'CI jobs'
-    - 'SonarQube'
     - 'Build'
     - 'Deploy to staging'
     - 'Deploy to production'
+    - 'SonarQube'
+    - 'Codeception'
+
+
+functional-test:
+    tags:
+        - heavy
+    stage: 'Codeception'
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/docker-compose:v1.0
+    only:
+        - stag
+    variables:
+        COMPOSE_INTERACTIVE_NO_CLI: 1
+        DOCKER_HOST: tcp://docker:2375
+        DOCKER_TLS_CERTDIR: ""
+        DOCKER_DRIVER: overlay2
+    services:
+        - docker:19.03.1-dind
+    script:
+        - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+        - docker-compose up -d
+        - sleep 10
+        - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
+        - docker-compose exec -T php ./init "test"
+        - docker-compose exec -T php bin/run-codeception
 
 # CI jobs
 composer checks:
@@ -92,7 +116,7 @@ static analysis:
 
 sonar-scanner:
     stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.0
+    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.1
     only:
         - master
     <<: *build_ci
@@ -203,4 +227,3 @@ production rollback:
         name: production
         url: https://fwdays.com
     when: manual
-

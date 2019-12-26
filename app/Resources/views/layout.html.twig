@@ -38,7 +38,7 @@
 <div class="layout-box">
     <!--BEGIN layout-box__top-->
     <div class="layout-box__top">
-        {% include '@ApplicationDefault/Redesign/header.html.twig' %}
+        {% include '@App/Redesign/header.html.twig' %}
 
         {% block content %}{% endblock content %}
     </div>
@@ -46,11 +46,11 @@
 
     <!--BEGIN layout-box__bottom-->
     <div class="layout-box__bottom">
-        {% include '@ApplicationDefault/Redesign/footer.html.twig' %}
+        {% include '@App/Redesign/footer.html.twig' %}
     </div>
     <!--END layout-box__bottom-->
     {% if not is_mobile() and not app.user %}
-        {% include '@ApplicationDefault/Redesign/signin_popups.html.twig' %}
+        {% include '@App/Redesign/signin_popups.html.twig' %}
     {% endif %}
 </div>
 
@@ -67,7 +67,7 @@
 {% endblock popups %}
 
 {% block facebook %}
-    {% include '@ApplicationDefault/Redesign/_fb_init.html.twig' %}
+    {% include '@App/Redesign/_fb_init.html.twig' %}
 {% endblock %}
 
 {% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}

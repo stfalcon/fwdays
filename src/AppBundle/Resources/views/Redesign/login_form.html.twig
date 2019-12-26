@@ -1,0 +1,54 @@
+<form id="login-form-{{ remodal }}" action="{{ url("fos_user_security_check") }}{{ queryLink }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+    {% set add_class = '' %}
+    {% if queryLink != '' %}
+        {% set add_class = ' bye-after-login' %}
+    {% endif %}
+
+    {% include '@App/Redesign/login_social_btn.html.twig' with{'add_class':add_class} %}
+    <div class="form-hint">{{ 'user.by_email.title'|trans }}</div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="user_email_{{ remodal }}">{{ 'user.email.title'|trans }}</label>
+                <input class="input" type="email" id="user_email_{{ remodal }}" name="_username" value="">
+                {% if error %}<p class="text-error">{{ error.messageKey|trans(error.messageData, 'security') }}</p>{% endif %}
+            </div>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <label class="form-label" for="user_password_{{ remodal }}">{{ 'user.password.title'|trans }}</label>
+            <input class="input" type="password" id="user_password_{{ remodal }}" name="_password" value="">
+        </div>
+    </div>
+    <div class="form-row form-row--checkbox">
+        <div class="form-col">
+            <div class="checkbox">
+                <input id="login-check_{{ remodal }}" type="checkbox" name="_remember_me" class="checkbox__input">
+                <label for="login-check_{{ remodal }}" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-row form-row--align-center">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <button class="btn btn--primary btn--lg form-col__btn"
+                    {% if queryLink is not empty %}
+                        {% set ga_label = 'main' %}
+                        {% if app.request.baseUrl ~ app.request.pathInfo != path('homepage') %}
+                            {% set ga_label = 'event' %}
+                        {% endif %}
+                    {% endif %}
+                    type="submit">{{ 'menu.login'|trans }}
+            </button>
+        </div>
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="help-links">
+                <div class="help-links__item">
+                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="modal-forgot-password" href="#"{% else %} href="{{ path('fos_user_resetting_check_email') }}"{% endif %} class="form-link">{{ 'user.forgot_password.title'|trans }}</a>
+                </div>
+                <div class="help-links__item">
+                    <a {% if remodal is not empty and not is_mobile() %}data-remodal-target="{{ remodal }}" href="#" class="form-link add_recapcha"{% else %} href="{{ path('fos_user_registration_register') }}" class="form-link"{% endif %}>{{ 'menu.user.registration'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

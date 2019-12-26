@@ -1,0 +1,78 @@
+services:
+
+    sonata.block.event.text:
+        class: App\Service\SonataBlock\EventBlock\TextEventBlockService
+        arguments: ['sonata.block.event.text', '@templating']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.partners:
+        class: App\Service\SonataBlock\EventBlock\PartnersEventBlockService
+        arguments: ['sonata.block.event.partners', '@templating', '@app.partners_repository.service', '@app.partners_category_repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.prices:
+        class: App\Service\SonataBlock\EventBlock\PricesEventBlockService
+        arguments: ['sonata.block.event.prices', '@templating', '@app.ticket_cost_repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.description:
+        class: App\Service\SonataBlock\EventBlock\DescriptionEventBlockService
+        arguments: ['sonata.block.event.description', '@templating']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.venue:
+        class: App\Service\SonataBlock\EventBlock\VenueEventBlockService
+        arguments: ['sonata.block.event.venue', '@templating', '@App\Service\EventService']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.program:
+        class: App\Service\SonataBlock\EventBlock\ProgramEventBlockService
+        arguments: ['sonata.block.event.program', '@templating', '@App\Service\EventService']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.speakers:
+        class: App\Service\SonataBlock\EventBlock\SpeakersEventBlockService
+        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.reviews:
+        class: App\Service\SonataBlock\EventBlock\ReviewsEventBlockService
+        arguments: ['sonata.block.event.reviews', '@templating', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.candidate_speakers:
+        class: App\Service\SonataBlock\EventBlock\CandidateSpeakersEventBlockService
+        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@app.event_review.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.committee_speakers:
+        class: App\Service\SonataBlock\EventBlock\CommitteeSpeakersEventBlockService
+        arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.expert_speakers:
+        class: App\Service\SonataBlock\EventBlock\DiscussionExpertsEventBlockService
+        arguments: ['sonata.block.event.expert_speakers', '@templating', '@translator']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.ticket_status:
+        class: App\Service\SonataBlock\EventBlock\TicketStatusEventBlockService
+        arguments: ['sonata.block.event.ticket_status', '@templating', '@App\Service\Ticket\TicketService']
+        tags: [name: 'sonata.block']
+
+    sonata.block.footer:
+        class: App\Service\SonataBlock\FooterBlockService
+        arguments: ['sonata.block.footer', '@templating', '@app.page.repository.service']
+        tags: [name: 'sonata.block']
+
+    sonata.block.language_switcher:
+        class: App\Service\SonataBlock\LanguageSwitcherBlockService
+        arguments: ['sonata.block.language_switcher', '@templating', '@request_stack', '%locales%']
+        tags: [name: 'sonata.block']
+
+    sonata.block.email_user_subscribe:
+        class: App\Service\SonataBlock\EmailSubscribeBlockService
+        arguments: ['sonata.block.language_switcher', '@templating']
+        calls:
+            - [setEmailHashValidationService, ['@App\Service\EmailHashValidationService']]
+        tags: [name: 'sonata.block']
