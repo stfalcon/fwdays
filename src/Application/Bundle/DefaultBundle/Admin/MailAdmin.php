@@ -7,7 +7,9 @@ use Application\Bundle\DefaultBundle\Entity\EventAudience;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\MailQueue;
 use Application\Bundle\DefaultBundle\Entity\Payment;
+use Application\Bundle\DefaultBundle\Entity\Translation\EmailTranslation;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
 use Application\Bundle\DefaultBundle\Repository\MailQueueRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -171,6 +173,9 @@ final class MailAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get('application.sonata.locales.required');
+        $localOptions = $localsRequiredService->getLocalsRequiredArray(true);
+
         /** @var Mail $object */
         $object = $this->getSubject();
         $this->savedEvents = [];
@@ -183,9 +188,23 @@ final class MailAdmin extends AbstractAdmin
         }
 
         $formMapper
+            ->with('Переводы')
+                ->add('translations', MyGedmoTranslationsType::class, [
+                    'translatable_class' => $this->getClass(),
+                    'data_class' => EmailTranslation::class,
+                    'fields' => [
+                        'title' => [
+                            'label' => 'Название',
+                            'locale_options' => $localOptions,
+                        ],
+                        'text' => [
+                            'label' => 'Текст',
+                            'locale_options' => $localOptions,
+                        ],
+                    ],
+                ])
+            ->end()
             ->with('Общие')
-                ->add('title', null, ['label' => 'Название'])
-                ->add('text', null, ['label' => 'Текст'])
                 ->add('audiences', null, ['label' => 'Аудитории'])
                 ->add('events', 'entity', [
                     'class' => Event::class,

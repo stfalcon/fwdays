@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Helper;
 
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Application\Bundle\DefaultBundle\Model\TranslatedMail;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -39,21 +40,22 @@ class StfalconMailerHelper
     /**
      * Format message.
      *
-     * @param User $user          User
-     * @param Mail $mail          Mail
-     * @param bool $isTestMessage Test message (needed for admin mails)
-     * @param bool $withTicket
+     * @param User           $user          User
+     * @param TranslatedMail $mail          Mail
+     * @param bool           $isTestMessage Test message (needed for admin mails)
+     * @param bool           $withTicket
      *
      * @return \Swift_Message
      */
-    public function formatMessage(User $user, Mail $mail, $isTestMessage = false, $withTicket = false): \Swift_Message
+    public function formatMessage(User $user, TranslatedMail $mail, $isTestMessage = false, $withTicket = false): \Swift_Message
     {
         if ($withTicket) {
             $event = $mail->getEvents()[0] ?? null;
             $params = ['event' => $event];
             $template = '@ApplicationDefault/Email/email_with_ticket.html.twig';
         } else {
-            $text = $mail->replace(
+            $text = $this->replace(
+                $mail->getText(),
                 [
                     '%fullname%' => $user->getFullname(),
                     '%user_id%' => $user->getId(),
@@ -149,5 +151,20 @@ class StfalconMailerHelper
         );
 
         return $this->mailer->send($message) > 0;
+    }
+
+    /**
+     * @param string $text
+     * @param array  $data
+     *
+     * @return mixed|string
+     */
+    private function replace(string $text, array $data)
+    {
+        foreach ($data as $key => $value) {
+            $text = str_replace($key, $value, $text);
+        }
+
+        return $text;
     }
 }

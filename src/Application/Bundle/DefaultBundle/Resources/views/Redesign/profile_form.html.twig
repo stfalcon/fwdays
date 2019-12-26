@@ -59,6 +59,19 @@
             {% if form is defined and form.post.vars.errors|length %}<p class="text-error">{{ form.post.vars.errors[0].message|trans }}</p>{% endif %}
         </div>
     </div>
+    <div class="form-row">
+        <div class="form-col form-col--6 form-col--xs-12">
+            <div class="form-group">
+                <label class="form-label" for="fos_user_profile_form_emailLanguage">{{ 'user.email.language'|trans }}</label>
+                <select class="input" id="fos_user_profile_form_emailLanguage" name="fos_user_profile_form[emailLanguage]">
+                    {% for local in locales %}
+                        {% set trans_lang = 'user.lang_' ~ local %}
+                        <option {% if user and user.emailLanguage == local %}selected{% endif %} value="{{ local }}">{{ trans_lang|trans }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="form-row form-row--checkbox">
         <div class="form-col">
             <div class="checkbox">

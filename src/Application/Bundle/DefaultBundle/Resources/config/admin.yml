@@ -41,6 +41,7 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
         arguments: ['', 'Application\Bundle\DefaultBundle\Entity\Review', ~]
+
     app.admin.speaker:
         class: Application\Bundle\DefaultBundle\Admin\SpeakerAdmin
         tags:

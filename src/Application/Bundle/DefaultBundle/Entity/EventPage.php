@@ -8,12 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Application\Bundle\DefaultBundle\Entity\Event.
  *
  * @ORM\Table(name="event__pages")
  * @ORM\Entity(repositoryClass="Application\Bundle\DefaultBundle\Repository\EventPageRepository")
+ *
+ * @UniqueEntity({"slug", "event"})
  *
  * @Gedmo\TranslationEntity(class="Application\Bundle\DefaultBundle\Entity\Translation\EventPageTranslation")
  */

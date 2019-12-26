@@ -3,10 +3,12 @@
 namespace Application\Bundle\DefaultBundle\Service;
 
 /**
- * Class GetSonataLocalsRequiredService.
+ * LocalsRequiredService.
  */
-class GetSonataLocalsRequiredService
+class LocalsRequiredService
 {
+    public const DEFAULT_EMAIL_LANGUAGE = 'uk';
+
     private $defaultLocale;
     private $locales;
 

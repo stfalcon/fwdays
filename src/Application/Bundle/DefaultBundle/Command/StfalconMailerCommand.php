@@ -5,6 +5,7 @@ namespace Application\Bundle\DefaultBundle\Command;
 use Application\Bundle\DefaultBundle\Entity\Mail;
 use Application\Bundle\DefaultBundle\Service\EmailHashValidationService;
 use Application\Bundle\DefaultBundle\Service\MyMailer;
+use Application\Bundle\DefaultBundle\Service\TranslatedMailService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -56,19 +57,21 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $context->setHost((string) $input->getOption('host'));
         }
 
+        $container = $this->getContainer();
+
         /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $container->get('doctrine.orm.entity_manager');
         /** @var $mailer MyMailer */
-        $mailer = $this->getContainer()->get('app.my_mailer.service');
+        $mailer = $container->get('app.my_mailer.service');
         /** @var $mailerHelper \Application\Bundle\DefaultBundle\Helper\StfalconMailerHelper */
-        $mailerHelper = $this->getContainer()->get('application.mailer_helper');
+        $mailerHelper = $container->get('application.mailer_helper');
         /** @var $queueRepository \Application\Bundle\DefaultBundle\Repository\MailQueueRepository */
         $queueRepository = $em->getRepository('ApplicationDefaultBundle:MailQueue');
 
         $mailsQueue = $queueRepository->getMessages($limit);
-        $logger = $this->getContainer()->get('logger');
-        $this->emailHashValidationService = $this->getContainer()->get('app.email_hash_validation.service');
-        $router = $this->getContainer()->get('router');
+        $logger = $container->get('logger');
+        $this->emailHashValidationService = $container->get('app.email_hash_validation.service');
+        $router = $container->get('router');
 
         /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
@@ -83,7 +86,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
             }
 
             try {
-                $message = $mailerHelper->formatMessage($user, $mail);
+                $translatedMailService = $container->get(TranslatedMailService::class);
+                $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+
+                $message = $mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()]);
             } catch (\Exception $e) {
                 $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 

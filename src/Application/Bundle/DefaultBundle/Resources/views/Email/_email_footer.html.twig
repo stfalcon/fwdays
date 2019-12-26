@@ -30,7 +30,7 @@
                                             vertical-align: bottom;">
                                 <p style="font-size: 11px;
                                               color: #747A88;
-                                              margin: 0 0 4px;">{{ 'ticket.email.waitfornews'|trans }}</p>
+                                              margin: 0 0 4px;">{{ 'ticket.email.waitfornews'|trans({}, 'messages', user.emailLanguage) }}</p>
                                 <div style="overflow: hidden;">
                                     {% include '@ApplicationDefault/Email/_email_social.html.twig' with
                                         {
@@ -68,6 +68,13 @@
                                             margin-right: 50px;
                                             margin-bottom: 15px;
                                             vertical-align: bottom;">
+
+                                <p style="font-size: 11px;
+                                              line-height: 15px;
+                                              color: #747A88;
+                                              margin: 0;">
+                                    <a href="{{ url('cabinet') }}" style="color: #747A88;">{{ 'ticket.email.change_language'|trans({}, 'messages', user.emailLanguage)|raw }}</a>
+                                </p>
                                 <p style="font-size: 11px;
                                               line-height: 15px;
                                               color: #747A88;
@@ -84,7 +91,7 @@
                                               line-height: 16px;
                                               color: #747A88;
                                               margin: 0;">
-                                    {{ 'ticket.email.team'|trans|raw }}
+                                    {{ 'ticket.email.team'|trans({}, 'messages', user.emailLanguage)|raw }}
                                     <a href="https://fwdays.com/" style="color: #747A88;">fwdays.com</a>
                                 </p>
                             </div>

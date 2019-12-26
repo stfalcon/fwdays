@@ -173,7 +173,7 @@ services:
             - '@maxmind.geoip'
 
     application.sonata.locales.required:
-        class: Application\Bundle\DefaultBundle\Service\GetSonataLocalsRequiredService
+        class: Application\Bundle\DefaultBundle\Service\LocalsRequiredService
         arguments: ['%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%']
 
     app_liip_cache_resolve_command:
@@ -285,6 +285,7 @@ services:
         class: Application\Bundle\DefaultBundle\Form\Type\ProfileFormType
         arguments:
             - "%fos_user.model.user.class%"
+            - "%locales%"
         tags:
             - { name: form.type, alias: application_profile }
 
@@ -292,6 +293,7 @@ services:
         class: Application\Bundle\DefaultBundle\Form\Type\RegistrationFormType
         arguments:
             - "%fos_user.model.user.class%"
+            - "%locales%"
         tags:
             - { name: form.type, alias: application_registration }
 
@@ -309,3 +311,6 @@ services:
 
     app.email_hash_validation.service:
         class: Application\Bundle\DefaultBundle\Service\EmailHashValidationService
+
+    Application\Bundle\DefaultBundle\Service\TranslatedMailService:
+        arguments: ['%locale%']
