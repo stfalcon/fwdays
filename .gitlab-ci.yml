@@ -21,7 +21,6 @@ variables:
 
 .before_script_template: &build_ci
     before_script:
-        - cp app/config/parameters.yml.stag app/config/parameters.yml
         - unxz geodata/GeoLiteCity.dat.xz
         - composer.phar install --optimize-autoloader
         - npm install
@@ -41,7 +40,7 @@ functional-test:
     stage: 'Codeception'
     image: gitlab.stfalcon.com:4567/stfalcon/fwdays/docker-compose:v1.0
     only:
-        - add-codception
+        - stag
     variables:
         COMPOSE_INTERACTIVE_NO_CLI: 1
         DOCKER_HOST: tcp://docker:2375
