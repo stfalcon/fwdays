@@ -23,7 +23,9 @@
     <div class="form-row form-row--checkbox">
         <div class="form-col">
             <div class="checkbox">
-                <input id="login-check_{{ remodal }}" type="checkbox" name="_remember_me" class="checkbox__input">
+                {% set remember_me_key = constant('App\\EventListener\\Auth\\UserAuthenticationSubscriber::SESSION_REMEMBER_ME_KEY') %}
+                {% set remember_me_state = app.session.has(remember_me_key) ? app.session.get(remember_me_key) : 'checked' %}
+                <input id="login-check_{{ remodal }}" type="checkbox" name="_remember_me" class="checkbox__input" {{ remember_me_state }}>
                 <label for="login-check_{{ remodal }}" class="checkbox__label">{{ 'user.remember_me.title'|trans }}</label>
             </div>
         </div>
