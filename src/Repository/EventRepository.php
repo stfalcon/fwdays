@@ -85,9 +85,11 @@ class EventRepository extends ServiceEntityRepository
         $qb
             ->where($qb->expr()->eq('e.active', ':active'))
             ->andWhere($qb->expr()->gte('e.date', ':date'))
+            ->andWhere($qb->expr()->gte('e.adminOnly', ':adminOnly'))
             ->setParameters(new ArrayCollection([
                 new Parameter('active', true),
                 new Parameter('date', new \DateTime()),
+                new Parameter('adminOnly', false),
             ]))
             ->orderBy('e.date', Criteria::ASC)
             ->setMaxResults($count);

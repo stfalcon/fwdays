@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Generate and open API docs" type="JavascriptDebugType" uri="http://localhost:63342/scheduler/apidoc/index.html" useBuiltInWebServerPort="true">
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -226,7 +226,7 @@ mail.news.site_link: 'https://fwdays.com/'
 ticket.email.waitfornews: 'Слідкуйте за новинами:'
 ticket.email.unsubscribe: Відписатись від розсилки
 ticket.email.team: 'З повагою, <br/>команда Fwdays <br/>'
-ticket.email.change_language: To change e-mail language, go to Profile settings on site
+ticket.email.change_language: To change e-mail language, go to Profile settings
 ticket.email.event_date.title: 'Дата'
 ticket.email.event_reg.title: 'Реєстрація'
 ticket.email.event_member.title: 'Учасник'
