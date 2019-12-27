@@ -65,7 +65,7 @@ class AppKernel extends Kernel
             new CMEN\GoogleChartsBundle\CMENGoogleChartsBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
 
-            new Application\Bundle\DefaultBundle\ApplicationDefaultBundle(),
+            new App\AppBundle(),
         );
 
         if (in_array($this->getEnvironment(), ['prod', 'stag'], true)) {

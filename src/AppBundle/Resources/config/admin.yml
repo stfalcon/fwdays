@@ -1,0 +1,123 @@
+services:
+
+    app.admin.event_audience:
+        class: App\Admin\EventAudienceAdmin
+        arguments: [~, 'App\Entity\EventAudience', ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: События, label: Аудитории}
+
+    app.admin.event_sponsor:
+        class: App\Admin\EventSponsorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false }
+        arguments: ['', 'App\Entity\EventSponsor', ~]
+
+    app.admin.sponsor:
+        class: App\Admin\SponsorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Спонсоры }
+        arguments: ['', 'App\Entity\Sponsor', ~]
+
+    app.admin.category:
+        class: App\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Категории }
+        arguments: ['', 'App\Entity\Category', ~]
+
+    app.admin.event:
+        class: App\Admin\EventAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: События }
+        arguments: ['', 'App\Entity\Event', ~]
+
+    app.admin.event_group:
+        class: App\Admin\EventGroupAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Групы }
+        arguments: ['', 'App\Entity\EventGroup', '']
+
+    app.admin.reviews:
+        class: App\Admin\ReviewAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
+        arguments: ['', 'App\Entity\Review', ~]
+
+    app.admin.speaker:
+        class: App\Admin\SpeakerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Докладчики }
+        arguments: ['', 'App\Entity\Speaker', ~]
+
+    app.admin.event_page:
+        class: App\Admin\EventPageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: События, label: Страницы }
+        arguments: ['', 'App\Entity\EventPage', ~]
+
+    app.admin.mails:
+        class: App\Admin\MailAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Рассылки }
+        arguments: ['', 'App\Entity\Mail', 'AppBundle:MailAdmin']
+        calls:
+            - [addChild, ['@app.admin.mail_queue']]
+
+    app.admin.mail_queue:
+        class: App\Admin\MailQueueAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Очередь }
+        arguments: ['', 'App\Entity\MailQueue', ~]
+
+    app.admin.tickets:
+        class: App\Admin\TicketAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: Билеты }
+        arguments: ['', 'App\Entity\Ticket', 'AppBundle:TicketCRUD']
+
+    app.admin.payment:
+        class: App\Admin\PaymentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: Платежи }
+        arguments: ['', 'App\Entity\Payment', ~]
+
+    app.admin.promo_code:
+        class: App\Admin\PromoCodeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Билеты, label: 'Промо коды' }
+        arguments: ['', 'App\Entity\PromoCode', ~]
+
+    app.admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Пользователи, label: 'Пользователи' }
+        arguments: ['', 'App\Entity\User', ~]
+
+    app.admin.page:
+        class: App\Admin\PageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Страницы, label: Страницы }
+        arguments: ['', 'App\Entity\Page', ~]
+
+    app.ticket_cost.admin:
+        class: App\Admin\TicketCostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'App\Entity\TicketCost', ~]
+
+    app.event_block.admin:
+        class: App\Admin\EventBlockAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'App\Entity\EventBlock', ~]
+
+    app.wayforpay_log.admin:
+        class: App\Admin\WayForPayLogAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Логи, label: Логи wayforpay}
+        arguments: [~, 'App\Entity\WayForPayLog', ~]
+
+    application.admin.mail_admin:
+        class: App\Admin\MailAdmin
+        tags:
+            - { name: mail_admin, manager_type: orm }
+        arguments: ['', 'App\Entity\Mail', 'AppBundle:MailAdmin']

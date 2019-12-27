@@ -22,7 +22,7 @@ class Version20190114115107 extends AbstractMigration implements ContainerAwareI
         // this up() migration is auto-generated, please modify it to your needs
 //        /** @var Event[] $events */
 //        $em = $this->container->get('doctrine.orm.entity_manager');
-//        $events = $em->getRepository('ApplicationDefaultBundle:Event')->findAll();
+//        $events = $em->getRepository(Event::class)->findAll();
 //        foreach ($events as $event) {
 //            $position = 1;
 //            foreach ($event->getBlocks() as $block) {

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+/opt/chromedriver --url-base=/wd/hub &
+chdr_pid=$!
+composer.phar ci:codeception-acceptance
+result=$?
+kill $chdr_pid
+exit $result

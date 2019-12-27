@@ -2,10 +2,10 @@
 $(document).ready(function () {
 
     function setMapByCoords(lng, lat) {
-        var myLatLng = new google.maps.LatLng(lat, lng);
         if (typeof google === 'undefined') {
             return;
         }
+        var myLatLng = new google.maps.LatLng(lat, lng);
         var map = new google.maps.Map(document.getElementById('map'),
             {
                 zoom: 17,

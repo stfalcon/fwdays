@@ -1,0 +1,29 @@
+<div class="payer" id="{{ ticket.id }}"
+        {%- if payment_data.ticket_count == 1 and app.session.get(constant('App\\Controller\\PaymentController::NEW_PAYMENT_SESSION_KEY')) -%}
+    style="display: none"
+        {% endif %}>
+    <label class="label-hidden-user-promocode" style="display: none">{% if ticket.promo_code %}{{ ticket.promo_code.code }}{% endif %}</label>
+    <div class="payer__number">{{ loop.index }}</div>
+    <div class="user-payment">
+        <div class="user-payment__left">
+            <label class="label-hidden-user-name" style="display: none">{{ ticket.user.name }}</label>
+            <label class="label-hidden-user-surname" style="display: none">{{ ticket.user.surname }}</label>
+            <div class="user-payment__name">{{ ticket.user.name ~ ' ' ~ ticket.user.surname }}</div>
+            <div class="user-payment__email">{{ ticket.user.email }}</div>
+        </div>
+        <div class="user-payment__right">
+            <div class="user-payment__price">
+                <span class="user-payment__price-strike" {%- if ticket.has_discount == false -%}style="display: none" {%- endif -%} >{{ ticket.amount_without_discount }}</span>{{ ticket.amount }}
+            </div>
+            <div class="user-payment__discount" {%- if ticket.has_discount == false -%}style="display: none"{%- endif -%}>{{ ticket.discount_description|raw }}</div>
+        </div>
+        <div class="user-payment__controls">
+            <button type="button" class="user-payment__btn ticket-edit-btn">
+                <i class="icon-edit"></i>
+            </button>
+            <button type="button" class="user-payment__btn ticket-delete-btn" {%- if payment_data.ticket_count < 2 -%}style="display: none" {% endif %}>
+                <i class="icon-closed"></i>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+{% extends 'AppBundle:Redesign:layout.html.twig' %}
+
+{% set firstEvent = events|first %}
+{% set fistLink = url('event_show', {'slug' : firstEvent.slug, 'ref': code}) %}
+
+{% block content %}
+    <!--BEGIN cabinet-head-->
+    <div class="cabinet-head">
+        <div class="container">
+            <div class="cabinet-head__wrap">
+                <div class="cabinet-head__left">
+                    <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
+                </div>
+                <div class="cabinet-head__right">
+                {% if is_mobile() %}
+                    <a href="{{ path('fos_user_profile_edit') }}" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                {% else %}
+                    <a data-remodal-target="modal-profile" href="#" class="cabinet-head__link">{{ 'menu.profile.my'|trans }}</a>
+                {% endif %}
+                    <a href="{{ path('fos_user_security_logout') }}" class="cabinet-head__link">{{ 'menu.logout'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END cabinet-head-->
+
+    <!--BEGIN events-->
+    {%- if user_active_events|length > 0 -%}
+        <section class="events">
+            <div class="container">
+                <div class="events__box">
+                    {% for event in user_active_events %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {%- endif -%}
+    <!--END events-->
+
+    <!--BEGIN share-->
+    {% set bonus = constant('App\\Service\\ReferralService::REFERRAL_BONUS') %}
+    {% set special_bonus = constant('App\\Service\\ReferralService::SPECIAL_REFERRAL_BONUS') %}
+    {% set special_bonus_event = constant('App\\Service\\ReferralService::SPECIAL_BONUS_EVENT') %}
+
+    <section class="share">
+        <div class="container">
+            <div class="share-banner">
+                <div class="share-banner__info">
+                    <h2 class="h2 h2--white share-banner__title">{{ 'referral.invaite.title2'|trans }}</h2>
+                    <div class="share-banner__hint-show">{{ 'referral.program.conditions.title'|trans }}</div>
+                    {% set current_bonus = special_bonus_event == firstEvent.slug ? special_bonus : bonus %}
+                    <div id="bonus_text" class="share-banner__hint">
+                        {{ 'referral.program.conditions.text'|trans({'%referal_bonus%':current_bonus }) }}
+                    </div>
+                    <div class="share-banner__balance">{{ 'referral.balance.redesign'|trans({'%user_balance%': user.balance}) }}</div>
+                </div>
+                <div class="share-ref">
+                    <div class="share-ref__top">
+                        <div class="share-ref__label">{{ 'referral.invaite.link.text'|trans }}</div>
+                        <div class="share-ref__dropdown">
+                            <div id="ref-selected" class="share-ref__dropdown-selected">{{ firstEvent.name }}</div>
+                            <select id="ref-dropdown" name="" class="share-ref__select">
+                                {% for event in events %}
+                                    {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                                        {% if firstEvent.logoFile is not empty %}
+                                            {% set image = absolute_url(vich_uploader_asset(event, 'logoFile')) %}
+                                        {% else %}
+                                            {% set image = '' %}
+                                        {% endif %}
+                                        <option value="{{ loop.index }}"
+                                            data-ref="{{ url('event_show', {'slug' : event.slug, 'ref': code}) }}"
+                                            data-bonus="{% if special_bonus_event == event.slug %}{{ special_bonus }}{% else %}{{ bonus }}{% endif %}"
+                                            data-image="{{ image }}">
+                                        {{ event.name }}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="share-ref__bottom">
+                        <div class="share-ref__field">
+                            <input id="ref-input" class="input share-ref__input" type="text"
+                                   value="{{ url('event_show', {'slug' : firstEvent.slug, 'ref': code}) }}"
+                                   readonly>
+                            <button id="ref-copy" class="share-ref__copy tooltip-copy" type="button"
+                                    data-copy="{{ 'referral.link.copied'|trans }}">
+                                <i class="icon-copy share-ref__copy-icon"></i>
+                            </button>
+                        </div>
+                        <a id="share-ref__facebook" class="btn btn--md share-ref__facebook" target="_blank"
+                           data-layout="button" data-size="large" data-mobile-iframe="true">
+                            <i class="btn__icon icon-facebook"></i>{{ 'referral.share.title'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--END share-->
+
+    {%- if user_past_events|length > 0 -%}
+        <div class="cabinet-head">
+            <div class="container">
+                <div class="cabinet-head__wrap">
+                    <div class="cabinet-head__left">
+                        <div class="cabinet-head__label">{{ 'menu.past_events.my'|trans }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="events">
+            <div class="container">
+                <div class="events__box">
+                    {% for event in user_past_events %}
+                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                            {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {%- endif -%}
+
+{% endblock content%}
+
+{% block popups %}
+    {{ parent() }}
+    <!--BEGIN profile-popup-->
+    <div class="remodal remodal--md" data-remodal-id="modal-profile" data-remodal-options="hashTracking: false">
+        <button data-remodal-action="close" class="remodal-close icon-close"></button>
+        <div class="remodal__body">
+            <div class="remodal__head">
+                <div class="h2 remodal__title">{{ 'menu.user.info'|trans }}</div>
+            </div>
+            {% include '@App/Redesign/profile_form.html.twig' %}
+        </div>
+    </div>
+    <!--END profile-popup-->
+{% endblock popups %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        var bonus_translate = '{{ 'referral.program.conditions.text'|trans }}';
+    </script>
+    <script src="{{ asset('js/cabinet-bonus-text.js') }}" defer></script>
+{% endblock %}

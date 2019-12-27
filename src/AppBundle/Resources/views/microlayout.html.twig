@@ -1,0 +1,40 @@
+{% for event in events %}
+    {%- set event_url = url('event_show', {'slug': event.slug})|replace({'/': '\\/'}) -%}
+    <script type="application/ld+json">
+            {
+                "@context":"https:\/\/schema.org",
+                "@type":"Event",
+                "name":"{{ event.name }}",
+                "url":"{{ event_url }}",
+                "description": "{{ event.description  }}",
+                "startDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                {% if event.dateEnd -%}
+                  "endDate":"{{ event.dateEnd|date('c', 'Europe/Kiev') }}",
+                {%- else -%}
+                  "endDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                {% endif -%}
+                {% if (event.showLogoWithBackground or event.useCustomBackground == false) -%}
+                  "image" : "{{ vich_uploader_asset(event, 'logoFile')|replace({'/': '\\/'}) }}",
+                {% endif -%}
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.place }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ event.city }}",
+                        "addressRegion": "UA"
+                    }
+                },
+                "offers": {
+                    "@type":"Offer",
+                    "url":"{{ event_url }}",
+                    {% if event.isHaveFreeTickets() -%}
+                      "price": "{{ event.getCurrentPrice }}",
+                    "priceCurrency": "UAH",
+                    {% endif -%}
+                    "validFrom": "{{ event.date|date('c', 'Europe/Kiev') }}",
+                    "availability": "https:\/\/schema.org\/InStock"
+                }
+            }
+    </script>
+{% endfor %}

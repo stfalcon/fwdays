@@ -1,0 +1,82 @@
+<?php
+
+namespace App\DataFixtures\ORM;
+
+use App\Entity\Payment;
+use App\Entity\User;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
+/**
+ * LoadPaymentData Class.
+ */
+class LoadPaymentData extends AbstractFixture implements DependentFixtureInterface
+{
+    /**
+     * Return fixture classes fixture is dependent on.
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return [
+            LoadUserData::class,
+        ];
+    }
+
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     */
+    public function load(ObjectManager $manager)
+    {
+        /** @var User $userDefault */
+        $userDefault = $manager->merge($this->getReference('user-default'));
+
+        $payment = new Payment();
+        $payment->setUser($userDefault);
+        $payment->setAmount(0);
+        $payment->setBaseAmount(0);
+        $payment->setStatus(Payment::STATUS_PAID);
+        $manager->persist($payment);
+        $this->addReference('payment', $payment);
+
+        $payment = new Payment();
+        $payment->setUser($userDefault);
+        $payment->setAmount(0);
+        $payment->setBaseAmount(0);
+        $payment->setStatus(Payment::STATUS_PENDING);
+        $manager->persist($payment);
+        $this->addReference('pending', $payment);
+
+        /** @var User $userDefault2 */
+        $userDefault2 = $manager->merge($this->getReference('user-default2'));
+
+        $payment = new Payment();
+        $payment->setUser($userDefault2);
+        $payment->setAmount(0);
+        $payment->setBaseAmount(0);
+        $payment->setStatus(Payment::STATUS_PAID);
+        $manager->persist($payment);
+        $this->addReference('payment2', $payment);
+
+        $payment = new Payment();
+        $payment->setUser($userDefault2);
+        $payment->setAmount(0);
+        $payment->setBaseAmount(0);
+        $payment->setStatus(Payment::STATUS_PENDING);
+        $manager->persist($payment);
+        $this->addReference('pending2', $payment);
+
+        $payment = (new Payment())
+            ->setUser($userDefault2)
+            ->setAmount(0)
+            ->setBaseAmount(0)
+            ->setStatus(Payment::STATUS_PENDING)
+        ;
+        $manager->persist($payment);
+        $this->addReference('pending3', $payment);
+
+        $manager->flush();
+    }
+}
