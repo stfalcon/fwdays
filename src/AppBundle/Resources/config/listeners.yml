@@ -28,3 +28,10 @@ services:
             - "@router"
         tags:
             - { name: kernel.event_subscriber }
+
+    App\EventListener\Auth\UserAuthenticationSubscriber:
+        arguments:
+            - "@session"
+            - "@request_stack"
+        tags:
+            - { name: kernel.event_subscriber }
