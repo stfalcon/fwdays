@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Clear Doctrine Cache" type="BashConfigurationType" factoryName="Bash" folderName="Doctrine">
+    <module name="symfony-project-skeleton" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="INTERPRETER_PATH" value="/usr/local/bin/docker-compose" />
+    <option name="PROJECT_INTERPRETER" value="false" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="PARENT_ENVS" value="true" />
+    <option name="SCRIPT_NAME" value="exec" />
+    <option name="PARAMETERS" value="-T php composer.phar app:clear-doctrine-cache" />
+    <method v="2" />
+  </configuration>
+</component>

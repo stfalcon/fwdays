@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Generate and open api" type="JavascriptDebugType" uri="http://localhost:63342/roomeeting/api/index.html" useFirstLineBreakpoints="true" useBuiltInWebServerPort="true">
+    <method v="2" />
+  </configuration>
+</component>
