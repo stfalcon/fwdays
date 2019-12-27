@@ -1280,6 +1280,16 @@
     }
   }
 
+  .event-img {
+    &__mob {
+      display: block;
+    }
+
+    &__desktop {
+      display: none;
+    }
+  }
+
   .video {
     &__box {
       flex-direction: column;
