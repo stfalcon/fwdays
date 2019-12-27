@@ -16,7 +16,7 @@ final class PageAdmin extends AbstractPageAdmin
      *
      * @return ListMapper|void
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper = parent::configureListFields($listMapper);
         $listMapper->add('showInFooter', null, ['label' => 'Показывать в футере']);
@@ -27,9 +27,9 @@ final class PageAdmin extends AbstractPageAdmin
      *
      * @return FormMapper|void
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $formMapper = parent::configureFormFields($formMapper);
+        parent::configureFormFields($formMapper);
         $formMapper
             ->with('Общие')
                 ->add('showInFooter', null, ['label' => 'Показывать в футере'])

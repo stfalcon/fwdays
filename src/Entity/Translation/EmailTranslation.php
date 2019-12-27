@@ -3,6 +3,7 @@
 namespace App\Entity\Translation;
 
 use App\Entity\AbstractClass\AbstractTranslation;
+use App\Entity\Mail;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 class EmailTranslation extends AbstractTranslation
 {
     /**
+     * @var Mail
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Mail", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */

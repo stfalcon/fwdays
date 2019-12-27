@@ -3,6 +3,7 @@
 namespace App\Entity\Translation;
 
 use App\Entity\AbstractClass\AbstractTranslation;
+use App\Entity\Category;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CategoryTranslation extends AbstractTranslation
 {
     /**
+     * @var Category
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */

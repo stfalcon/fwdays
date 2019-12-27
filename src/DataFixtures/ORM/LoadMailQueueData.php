@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Mail;
 use App\Entity\MailQueue;
+use App\Entity\Payment;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,14 +31,14 @@ class LoadMailQueueData extends AbstractFixture implements DependentFixtureInter
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userDefault = $manager->merge($this->getReference('user-default'));
 
         $mail = new Mail();
         $mail->setTitle('test');
         $mail->setText('test');
-        $mail->setPaymentStatus($manager->merge($this->getReference('payment')));
+        $mail->setPaymentStatus(Payment::STATUS_PAID);
         $mail->addEvent($manager->merge($this->getReference('event-jsday2018')));
         $manager->persist($mail);
 

@@ -21,9 +21,9 @@ final class EventPageAdmin extends AbstractPageAdmin
      *
      * @return \Sonata\AdminBundle\Datagrid\ListMapper|void
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        $listMapper = parent::configureListFields($listMapper);
+        parent::configureListFields($listMapper);
         $listMapper
             ->add('event', null, ['label' => 'Событие'])
             ->add('sortOrder', null, ['label' => 'Номер сортировки']);
@@ -32,7 +32,7 @@ final class EventPageAdmin extends AbstractPageAdmin
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
@@ -82,7 +82,7 @@ final class EventPageAdmin extends AbstractPageAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('event');

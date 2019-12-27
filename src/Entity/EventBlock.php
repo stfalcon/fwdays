@@ -206,10 +206,14 @@ class EventBlock implements Translatable
 
     /**
      * @param int $position
+     *
+     * @return $this
      */
-    public function setPosition($position)
+    public function setPosition($position): self
     {
         $this->position = $position;
+
+        return $this;
     }
 
     /**

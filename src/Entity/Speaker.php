@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -96,6 +96,8 @@ class Speaker implements Translatable
     private $photo;
 
     /**
+     * @var UploadedFile
+     *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image(minHeight=232, minWidth=232)
      *
@@ -104,7 +106,7 @@ class Speaker implements Translatable
     private $file;
 
     /**
-     * @var Collection
+     * @var Event[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
@@ -368,7 +370,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param File $file
+     * @param UploadedFile $file
      *
      * @return $this
      */

@@ -19,7 +19,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * @return array|void
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         return [];
     }
@@ -27,7 +27,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate($object): void
     {
         $this->prepareImageCache($object);
     }
@@ -35,7 +35,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function postPersist($object)
+    public function postPersist($object): void
     {
         $this->prepareImageCache($object);
     }
@@ -43,7 +43,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, ['label' => 'Название'])
@@ -62,7 +62,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Sponsor $subject */
         $subject = $this->getSubject();
@@ -116,7 +116,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     /**
      * @param Sponsor $sponsor
      */
-    private function prepareImageCache(Sponsor $sponsor)
+    private function prepareImageCache(Sponsor $sponsor): void
     {
         $filter = 'partner';
         $target = $sponsor->getLogo();

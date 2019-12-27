@@ -3,6 +3,7 @@
 namespace App\Entity\Translation;
 
 use App\Entity\AbstractClass\AbstractTranslation;
+use App\Entity\Event;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 class EventTranslation extends AbstractTranslation
 {
     /**
+     * @var Event
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */

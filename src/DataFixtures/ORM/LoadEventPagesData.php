@@ -12,6 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadEventPagesData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var string  */
     private $oldProgram = '<table class="event-program">
     <tbody>
         <tr>
@@ -112,6 +113,7 @@ HTML5 canvas.</a></div>
     </tbody>
 </table>';
 
+    /** @var string  */
     private $newProgram = '<div class="program">
                     <div class="program-header">
                         <div class="program-header__td program-header__td--active" style="background-color: #FF700A;">
@@ -442,6 +444,7 @@ HTML5 canvas.</a></div>
                     </div>
                 </div>';
 
+    /** @var string  */
     private $oldVenue = '<h2>Конференц-холл "ДЕПО", г. Киев, ул. Антоновича, 52, (М Олимпийская)</h2>
 
 <p><strong>Самый простой способ добраться:</strong> доехать до станции метро Олимпийская (синяя линия метро) и оттуда пешком (3 мин) вниз по ул. Физкультуры, перейти через дорогу к остановке общественного транспорта и пройти еще 20 метров влево.</p>
@@ -458,6 +461,7 @@ HTML5 canvas.</a></div>
 
 <p><img src="https://farm5.staticflickr.com/4390/36042716510_15e26a2c2b_z.jpg" width="640" /></p>';
 
+    /** @var string  */
     private $newVenue = 'Бизнес-центр «Инком» г. Киев, ул. Смоленская, 31-33, 2-й этаж — вход с&nbsp;улицы по внешней
                     лестнице (М&nbsp;Шулявская)';
 
@@ -476,7 +480,7 @@ HTML5 canvas.</a></div>
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $page = (new EventPage())
         ->setTitle('New Програма')

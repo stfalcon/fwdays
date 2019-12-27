@@ -40,26 +40,6 @@ class MailAdminController extends CRUDController
     }
 
     /**
-     * Send messages for all users in mail queue (using console command).
-     *
-     * @return Response
-     *
-     * @throws NotFoundHttpException
-     */
-    public function userSendAction()
-    {
-//        $command = $this->get(StfalconMailerCommand::class);
-//        $output = new ConsoleOutput();
-//        $arguments = [
-//            '--amount' => '5',
-//        ];
-//        $input = new ArrayInput($arguments);
-//        $command->run($input, $output);
-//
-//        return new Response('complete');
-    }
-
-    /**
      * Send messages only for admins.
      *
      * @param Request $request

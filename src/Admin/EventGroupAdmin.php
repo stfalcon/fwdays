@@ -21,7 +21,7 @@ final class EventGroupAdmin extends AbstractAdmin
      *
      * @return mixed|void
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
         /** @var Event $event */
         foreach ($this->prevEvents as $event) {
@@ -39,7 +39,7 @@ final class EventGroupAdmin extends AbstractAdmin
     /**
      * @param EventGroup $object
      */
-    public function preRemove($object)
+    public function preRemove($object): void
     {
         foreach ($object->getEvents() as $event) {
             $object->removeEvent($event);
@@ -53,7 +53,7 @@ final class EventGroupAdmin extends AbstractAdmin
      *
      * @return array
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         unset($actions['delete']);
 
@@ -63,7 +63,7 @@ final class EventGroupAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var EventGroup $group */
         $group = $this->getSubject();
@@ -87,7 +87,7 @@ final class EventGroupAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name')
@@ -97,7 +97,7 @@ final class EventGroupAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name')

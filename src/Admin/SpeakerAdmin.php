@@ -32,7 +32,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate($object): void
     {
         $this->prepareImageCache($object);
     }
@@ -40,7 +40,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function postPersist($object)
+    public function postPersist($object): void
     {
         $this->prepareImageCache($object);
     }
@@ -48,7 +48,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
@@ -107,7 +107,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id')
@@ -134,7 +134,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * @param Speaker $speaker
      */
-    private function prepareImageCache(Speaker $speaker)
+    private function prepareImageCache(Speaker $speaker): void
     {
         $filter = 'speaker';
         $target = $speaker->getPhoto();

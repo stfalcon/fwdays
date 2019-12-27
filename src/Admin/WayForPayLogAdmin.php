@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
- * Class WayForPayLogAdmin.
+ * WayForPayLogAdmin.
  */
 final class WayForPayLogAdmin extends AbstractAdmin
 {
@@ -28,7 +28,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
         // remove all route except named ones
         $collection->clearExcept(['list', 'show']);
@@ -37,7 +37,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureShowFields(ShowMapper $filter)
+    protected function configureShowFields(ShowMapper $filter): void
     {
         $filter->add('id')
             ->add('date', null, ['label' => 'Дата'])
@@ -50,7 +50,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper->add('id')
             ->add('date', null, ['label' => 'Дата'])
@@ -62,7 +62,7 @@ final class WayForPayLogAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper->addIdentifier('id')
             ->add('date', null, ['label' => 'Дата'])

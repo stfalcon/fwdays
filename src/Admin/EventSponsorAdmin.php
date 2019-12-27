@@ -13,7 +13,7 @@ final class EventSponsorAdmin extends AbstractAdmin
     /**
      * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('event', null, ['label' => 'Событие'])

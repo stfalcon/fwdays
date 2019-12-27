@@ -68,24 +68,22 @@ class TicketCRUDController extends CRUDController
      */
     public function removePaidTicketFromPaymentAction($id)
     {
-        /** @var Ticket $object */
+        /** @var Ticket|null $object */
         $object = $this->admin->getSubject();
 
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
         $em = $this->getDoctrine()->getManager();
-        /**
-         * @var Ticket
-         */
+        /** @var Ticket|null */
         $ticket = $em->getRepository(Ticket::class)->find($id);
 
         if ($ticket) {
-            /** @var Payment $payment */
+            /** @var Payment|null $payment */
             $payment = $ticket->getPayment();
             if ($payment && $payment->isPaid()) {
                 if ($payment->removePaidTicket($ticket)) {
-                    /** @var TicketCost $ticketCost */
+                    /** @var TicketCost|null $ticketCost */
                     $ticketCost = $ticket->getTicketCost();
                     if ($ticketCost) {
                         $ticketCost->recalculateSoldCount();

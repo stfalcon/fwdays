@@ -29,7 +29,7 @@ class LoadTicketData extends AbstractFixture implements DependentFixtureInterfac
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userDefault = $manager->merge($this->getReference('user-default'));
         $userDefault2 = $manager->merge($this->getReference('user-default2'));

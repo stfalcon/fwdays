@@ -12,7 +12,7 @@ class AbstractTranslateAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
         $this->removeNullTranslate($object);
     }
@@ -20,7 +20,7 @@ class AbstractTranslateAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function prePersist($object)
+    public function prePersist($object): void
     {
         $this->removeNullTranslate($object);
     }
@@ -28,7 +28,7 @@ class AbstractTranslateAdmin extends AbstractAdmin
     /**
      * @param $object
      */
-    public function removeNullTranslate($object)
+    public function removeNullTranslate($object): void
     {
         foreach ($object->getTranslations() as $key => $translation) {
             if (!$translation->getContent()) {

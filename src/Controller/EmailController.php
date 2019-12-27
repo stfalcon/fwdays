@@ -49,7 +49,7 @@ class EmailController extends AbstractController
             if ($mail) {
                 $mail->addUnsubscribeMessagesCount();
             }
-            /** @var MailQueue $mailQueue */
+            /** @var MailQueue|null $mailQueue */
             $mailQueue = $em->getRepository(MailQueue::class)
                 ->findOneBy(['user' => $subscriber->getId(), 'mail' => $mailId]);
             if ($mailQueue && $subscriber->isSubscribe()) {
@@ -100,10 +100,10 @@ class EmailController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        /** @var MailQueue $mailQueue */
+        /** @var MailQueue|null $mailQueue */
         $mailQueue = $em->getRepository(MailQueue::class)->findOneBy(['user' => $subscriber, 'mail' => $mailId]);
         if ($mailQueue && !$mailQueue->getIsOpen()) {
-            /** @var Mail $mail */
+            /** @var Mail|null $mail */
             $mail = $em->getRepository(Mail::class)->find($mailId);
             if ($mail) {
                 $mail->addOpenMessagesCount();

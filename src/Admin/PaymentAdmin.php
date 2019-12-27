@@ -34,7 +34,7 @@ final class PaymentAdmin extends AbstractAdmin
     /**
      * @return array|void
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         return [];
     }
@@ -42,7 +42,7 @@ final class PaymentAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getFormTheme()
+    public function getFormTheme(): array
     {
         return array_merge(
             parent::getFormTheme(),
@@ -53,7 +53,7 @@ final class PaymentAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
@@ -81,7 +81,7 @@ final class PaymentAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('id')
@@ -142,7 +142,7 @@ final class PaymentAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         $userService = $container->get(UserService::class);

@@ -12,6 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadReviewData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var array */
     private $reviews = [
         '<ul>
 <li>Общие понятия, используемые паттерны, применение на практике.</li>
@@ -101,9 +102,9 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
     }
 
     /**
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
@@ -120,7 +121,7 @@ class LoadReviewData extends AbstractFixture implements DependentFixtureInterfac
         $review = (new Review())
             ->setTitle('PHP steps')
             ->setSlug('php-first-steps')
-            ->setText($this->reviews[0])
+            ->setText((string) $this->reviews[0])
             ->setEvent($eventPHPDay2018)
             ->setSpeaker([$speaker, $speakers[0]]);
         $manager->persist($review);

@@ -129,7 +129,7 @@ EOF,
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::PAGE_DATA as $pageData) {
             $page = (new Page())

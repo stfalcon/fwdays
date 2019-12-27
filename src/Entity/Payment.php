@@ -27,6 +27,7 @@ class Payment
     const PROMOCODE_GATE = 'promocode';
     const UNKNOWN_GATE = 'unknown';
 
+    /** @var array */
     private $gates = [self::ADMIN_GATE, self::INTERKASSA_GATE, self::WAYFORPAY_GATE, self::BONUS_GATE, self::PROMOCODE_GATE];
 
     /**
@@ -137,10 +138,14 @@ class Payment
 
     /**
      * @param mixed $tickets
+     *
+     * @return $this
      */
-    public function setTickets($tickets)
+    public function setTickets($tickets): self
     {
         $this->tickets = $tickets;
+
+        return $this;
     }
 
     /**
@@ -174,9 +179,15 @@ class Payment
      *
      * @return bool
      */
-    public function addTicket(Ticket $ticket)
+    public function addTicket(Ticket $ticket): bool
     {
-        return !$this->tickets->contains($ticket) && $this->tickets->add($ticket);
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

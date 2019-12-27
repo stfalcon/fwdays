@@ -70,7 +70,7 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::PROMO_DATA as $key => $promoData) {
             $event = $this->getReference((string) $promoData['event']);

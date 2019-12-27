@@ -6,6 +6,7 @@ use App\Entity\Ticket;
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * TicketAdminController.
@@ -40,7 +41,7 @@ class TicketAdminController extends CoreController
                     'ticket' => $ticket->getId(),
                     'hash' => $ticket->getHash(),
                 ],
-                true
+                UrlGeneratorInterface::ABSOLUTE_URL
             );
 
             return $this->render('ticket_admin/check.html.twig', [

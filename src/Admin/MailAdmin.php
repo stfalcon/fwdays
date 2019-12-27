@@ -45,7 +45,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         return [];
     }
@@ -53,7 +53,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function postPersist($mail)
+    public function postPersist($mail): void
     {
         $users = $this->getUsersForEmail($mail);
 
@@ -63,7 +63,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
         /** @var Mail $object */
         $container = $this->getConfigurationPool()->getContainer();
@@ -139,7 +139,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
         $collection->add('admin_send', $this->getRouterIdParameter().'/admin-send');
         $collection->add('user_send', 'user-send');
@@ -148,7 +148,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id', null, ['label' => 'id'])
@@ -174,7 +174,7 @@ final class MailAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray(true);
@@ -231,7 +231,7 @@ final class MailAdmin extends AbstractAdmin
      * @param string            $action     Action
      * @param AdminInterface    $childAdmin Child admin
      */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
         if (!$childAdmin && !\in_array($action, ['edit', 'show'])) {
             return;
@@ -249,7 +249,7 @@ final class MailAdmin extends AbstractAdmin
      *
      * @return array
      */
-    private function getUsersForEmail($mail)
+    private function getUsersForEmail($mail): array
     {
         $container = $this->getConfigurationPool()->getContainer();
 
@@ -285,7 +285,7 @@ final class MailAdmin extends AbstractAdmin
      *
      * @throws OptimisticLockException
      */
-    private function addUsersToEmail($mail, $users)
+    private function addUsersToEmail($mail, $users): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         /** @var EntityManager $em */

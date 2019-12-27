@@ -23,7 +23,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param ContainerInterface|null $container
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -31,7 +31,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->container->get(PrepareFileStorage::class)->clearStorage();
         $event = (new Event())
@@ -416,7 +416,7 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, false);
+            return new UploadedFile($tmpFile, $filename, null, null, false);
         }
 
         return null;

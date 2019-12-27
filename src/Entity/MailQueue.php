@@ -103,9 +103,7 @@ class MailQueue
      */
     public function __toString()
     {
-        return $this->getUser() && $this->getMail()
-            ? $this->getMail().' => '.$this->getUser()
-            : '';
+        return $this->getMail().' => '.$this->getUser();
     }
 
     /**
@@ -118,10 +116,14 @@ class MailQueue
 
     /**
      * @param bool $isSent
+     *
+     * @return $this
      */
-    public function setIsSent($isSent)
+    public function setIsSent($isSent): self
     {
         $this->isSent = $isSent;
+
+        return $this;
     }
 
     /**
@@ -134,10 +136,14 @@ class MailQueue
 
     /**
      * @param Mail $mail
+     *
+     * @return $this
      */
-    public function setMail($mail)
+    public function setMail($mail): self
     {
         $this->mail = $mail;
+
+        return $this;
     }
 
     /**
@@ -150,10 +156,14 @@ class MailQueue
 
     /**
      * @param User $user
+     *
+     * @return $this
      */
-    public function setUser($user)
+    public function setUser($user): self
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**

@@ -19,7 +19,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id')
@@ -32,7 +32,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);

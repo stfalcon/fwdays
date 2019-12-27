@@ -24,7 +24,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(): void
     {
         $this->setTemplate('list', 'Admin/list_with_js.html.twig');
     }
@@ -34,7 +34,7 @@ final class UserAdmin extends AbstractAdmin
      *
      * @return mixed|void
      */
-    public function prePersist($project)
+    public function prePersist($project): void
     {
         $project->setTickets($project->getTickets());
     }
@@ -44,7 +44,7 @@ final class UserAdmin extends AbstractAdmin
      *
      * @return mixed|void
      */
-    public function preUpdate($project)
+    public function preUpdate($project): void
     {
         $project->setTickets($project->getTickets());
     }
@@ -52,7 +52,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getFormTheme()
+    public function getFormTheme(): array
     {
         return array_merge(
             parent::getFormTheme(),
@@ -63,7 +63,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('id')
@@ -86,7 +86,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('name', null, ['label' => 'Имя'])
@@ -102,7 +102,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         $userService = $container->get(UserService::class);
@@ -180,7 +180,7 @@ final class UserAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    private function getAvailableRoles()
+    private function getAvailableRoles(): array
     {
         $roles = [];
         $rolesHierarhy = $this->getConfigurationPool()->getContainer()

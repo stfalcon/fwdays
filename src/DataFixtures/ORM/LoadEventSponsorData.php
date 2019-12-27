@@ -35,7 +35,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
      * @param Event         $event
      * @param Sponsor       $sponsor
      */
-    public function setEventSponsor(ObjectManager $manager, $sponsorCtg, $event, $sponsor)
+    public function setEventSponsor(ObjectManager $manager, $sponsorCtg, $event, $sponsor): void
     {
         $eventSponsor = (new EventSponsor())
             ->setCategory($sponsorCtg)
@@ -48,7 +48,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
      * @param ObjectManager $manager
      * @param Event         $event
      */
-    public function setComplectSponsor(ObjectManager $manager, $event)
+    public function setComplectSponsor(ObjectManager $manager, $event): void
     {
         $goldenSponsor = $manager->merge($this->getReference('golden-sponsor'));
         $silverSponsor = $manager->merge($this->getReference('silver-sponsor'));
@@ -82,7 +82,7 @@ class LoadEventSponsorData extends AbstractFixture implements DependentFixtureIn
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $eventZFDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay = $manager->merge($this->getReference('event-phpday2017'));

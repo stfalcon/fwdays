@@ -16,7 +16,7 @@ final class TicketCostAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagrid
      */
-    protected function configureDatagridFilters(DatagridMapper $datagrid)
+    protected function configureDatagridFilters(DatagridMapper $datagrid): void
     {
         $datagrid
             ->add('name')
@@ -32,7 +32,7 @@ final class TicketCostAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->add('id')
@@ -48,7 +48,7 @@ final class TicketCostAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('name', null, ['label' => 'название'])

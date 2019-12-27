@@ -114,7 +114,7 @@ class EventController extends AbstractController
     public function getEventMapPosition(Event $event): JsonResponse
     {
         if ($this->googleMapService->setEventMapPosition($event)) {
-            $this->getDoctrine()->getManager()->flush($event);
+            $this->getDoctrine()->getManager()->flush();
 
             return new JsonResponse(['result' => true, 'lat' => $event->getLat(), 'lng' => $event->getLng()]);
         }

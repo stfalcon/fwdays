@@ -20,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User extends BaseUser
 {
     /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -105,6 +107,8 @@ class User extends BaseUser
     private $allowShareContacts;
 
     /**
+     * @var Ticket[]|ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Ticket", mappedBy="user")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @ORM\OrderBy({"createdAt" = "DESC"})
@@ -130,11 +134,15 @@ class User extends BaseUser
     protected $wantsToVisitEvents;
 
     /**
+     * @var string
+     *
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
      */
     protected $referralCode;
 
     /**
+     * @var User|null
+     *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_ref_id", referencedColumnName="id", onDelete="SET NULL")
      */
@@ -203,6 +211,8 @@ class User extends BaseUser
     protected $phone;
 
     /**
+     * @var string
+     *
      * @Assert\Email(message="error.email_bad_format", strict="true")
      * @Assert\NotBlank()
      *
@@ -356,7 +366,9 @@ class User extends BaseUser
      */
     public function addWantsToVisitEvents(Event $event)
     {
-        if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
+        if (!$this->wantsToVisitEvents->contains($event)) {
+            $this->wantsToVisitEvents->add($event);
+
             return $event->addWantsToVisitCount();
         }
 

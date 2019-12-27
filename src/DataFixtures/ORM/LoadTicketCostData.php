@@ -27,7 +27,7 @@ class LoadTicketCostData extends AbstractFixture implements DependentFixtureInte
     /**
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $ticketCost = new TicketCost();
 

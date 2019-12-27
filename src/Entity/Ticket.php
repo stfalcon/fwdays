@@ -261,10 +261,14 @@ class Ticket
 
     /**
      * @param \DateTime $updatedAt
+     *
+     * @return $this
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt($updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
@@ -272,7 +276,7 @@ class Ticket
      *
      * @return bool
      */
-    public function isPaid()
+    public function isPaid(): bool
     {
         return $this->hasPayment() && $this->getPayment()->isPaid();
     }

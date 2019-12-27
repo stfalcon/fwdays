@@ -25,7 +25,7 @@ final class MailQueueAdmin extends AbstractAdmin
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function postPersist($mailQueue)
+    public function postPersist($mailQueue): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getManager();
@@ -43,7 +43,7 @@ final class MailQueueAdmin extends AbstractAdmin
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function postRemove($mailQueue)
+    public function postRemove($mailQueue): void
     {
         $container = $this->getConfigurationPool()->getContainer();
         $em = $container->get('doctrine')->getManager();
@@ -59,7 +59,7 @@ final class MailQueueAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
@@ -80,7 +80,7 @@ final class MailQueueAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('mail.id', null, ['label' => 'Id письма'])
@@ -93,7 +93,7 @@ final class MailQueueAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('Общие')

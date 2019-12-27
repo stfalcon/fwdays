@@ -93,6 +93,8 @@ class Sponsor implements Translatable
     protected $file;
 
     /**
+     * @var EventSponsor[]|ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\EventSponsor",
      *     mappedBy="sponsor", cascade={"persist", "remove"}, orphanRemoval=true
      * )

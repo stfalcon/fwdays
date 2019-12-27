@@ -28,9 +28,9 @@ final class ReviewAdmin extends AbstractPageAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
-        $listMapper = parent::configureListFields($listMapper);
+        parent::configureListFields($listMapper);
         $listMapper
             ->add('event', null, ['label' => 'Событие'])
             ->add('speakers', null, ['label' => 'Докладчики']);
@@ -39,9 +39,9 @@ final class ReviewAdmin extends AbstractPageAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
-        $formMapper = parent::configureFormFields($formMapper);
+        parent::configureFormFields($formMapper);
         $formMapper
             ->with('Общие')
                 ->add('event', EntityType::class, [
@@ -64,7 +64,7 @@ final class ReviewAdmin extends AbstractPageAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('event', null, ['label' => 'Событие']);

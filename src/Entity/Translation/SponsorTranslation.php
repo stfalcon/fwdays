@@ -3,6 +3,7 @@
 namespace App\Entity\Translation;
 
 use App\Entity\AbstractClass\AbstractTranslation;
+use App\Entity\Sponsor;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 class SponsorTranslation extends AbstractTranslation
 {
     /**
+     * @var Sponsor
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Sponsor", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */

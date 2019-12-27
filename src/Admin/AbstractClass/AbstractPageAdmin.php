@@ -15,19 +15,17 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('slug')
             ->add('title', null, ['label' => 'Название']);
-
-        return $listMapper;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
@@ -60,7 +58,5 @@ abstract class AbstractPageAdmin extends AbstractTranslateAdmin
                 ->add('slug')
             ->end()
         ;
-
-        return $formMapper;
     }
 }

@@ -37,13 +37,13 @@ class TicketController extends AbstractController
      * @param Event       $event
      * @param string|null $asHtml
      *
-     * @return array|Response
+     * @return Response
      */
     public function downloadAction(Event $event, $asHtml = null): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        /** @var Ticket $ticket */
+        /** @var Ticket|null $ticket */
         $ticket = $this->getDoctrine()->getRepository(Ticket::class)
             ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 

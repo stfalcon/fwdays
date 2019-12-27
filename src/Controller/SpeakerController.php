@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Review;
 use App\Entity\Speaker;
+use App\Repository\ReviewRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +33,7 @@ class SpeakerController extends AbstractController
     public function speakerPopupAction(Event $event, Speaker $speaker, $withReview = true): JsonResponse
     {
         if ((bool) $withReview) {
+            /** @var ReviewRepository $reviewRepository */
             $reviewRepository = $this->getDoctrine()->getRepository(Review::class);
             $speaker->setReviews(
                 $reviewRepository->findReviewsOfSpeakerForEvent($speaker, $event)

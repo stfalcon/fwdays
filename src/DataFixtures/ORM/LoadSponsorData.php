@@ -22,7 +22,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param ContainerInterface|null $container
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -30,7 +30,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Magento
         $magento = (new Sponsor())
@@ -104,7 +104,7 @@ class LoadSponsorData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, false);
+            return new UploadedFile($tmpFile, $filename, null, null, false);
         }
 
         return null;

@@ -34,6 +34,7 @@ class RegistrationController extends BaseController
     use Traits\HttpClientTrait;
     use Traits\MailerHelperTrait;
 
+    /** @var string  */
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
     private $formFactory;

@@ -39,7 +39,7 @@ class EventAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
         $this->removeNullTranslate($object);
         foreach ($object->getBlocks() as $block) {
@@ -54,7 +54,7 @@ class EventAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    public function prePersist($object)
+    public function prePersist($object): void
     {
         $this->removeNullTranslate($object);
         foreach ($object->getBlocks() as $block) {
@@ -67,7 +67,7 @@ class EventAdmin extends AbstractTranslateAdmin
     /**
      * @return array
      */
-    public function getBatchActions()
+    public function getBatchActions(): array
     {
         $container = $this->getConfigurationPool()->getContainer();
 
@@ -85,7 +85,7 @@ class EventAdmin extends AbstractTranslateAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
@@ -110,7 +110,7 @@ class EventAdmin extends AbstractTranslateAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Event $subject */
         $subject = $this->getSubject();
@@ -188,8 +188,8 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => 'Цены события',
                             'by_reference' => false,
                             'type_options' => ['delete' => true],
-                            'btn_add' => null === $subject->getId() ? false : 'Добавить цену',
-                            'help' => null === $subject->getId() ? 'добавление цен возможно только после создания события'
+                            'btn_add' => !\is_int($subject->getId()) ? false : 'Добавить цену',
+                            'help' => !\is_int($subject->getId()) ? 'добавление цен возможно только после создания события'
                                 : 'добавьте блоки с ценами на билеты',
                         ],
                         [
@@ -222,7 +222,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         FileType::class,
                         [
                             'label' => $subject->getLogo() ? 'Логотип | '.$subject->getLogo() : 'Логотип',
-                            'required' => null === $subject->getLogo(),
+                            'required' => \is_null($subject->getLogo()),
                             'help' => 'Основной логотип.',
                         ]
                     )

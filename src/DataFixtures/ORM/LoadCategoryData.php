@@ -14,7 +14,7 @@ class LoadCategoryData extends AbstractFixture
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $golden = (new Category())
             ->setName('Golden sponsor')

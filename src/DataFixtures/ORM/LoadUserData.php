@@ -16,7 +16,7 @@ class LoadUserData extends AbstractFixture
      *
      * @param ObjectManager $manager Entity manager object
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userAdmin = (new User())
             ->setUsername('Администратор')

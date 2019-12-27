@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -54,6 +55,8 @@ class Event implements Translatable
     private $translations;
 
     /**
+     * @var EventGroup|null
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\EventGroup", inversedBy="events")
      */
     private $group;
@@ -254,6 +257,8 @@ class Event implements Translatable
     protected $useDiscounts = true;
 
     /**
+     * @var string
+     *
      * Background color for event card.
      *
      * @Assert\NotBlank()
@@ -282,13 +287,15 @@ class Event implements Translatable
     protected $showLogoWithBackground = false;
 
     /**
+     * @var EventPage[]|ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="EventPage", mappedBy="event")
      * @ORM\OrderBy({"sortOrder" = "DESC"})
      */
     protected $pages;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Speaker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="events")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
@@ -298,7 +305,7 @@ class Event implements Translatable
     /**
      * Спикери які знаходяться на розгляді участі в евенті.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var Speaker[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Speaker", mappedBy="candidateEvents")
      * @ORM\OrderBy({"sortOrder" = "ASC"})
@@ -326,11 +333,15 @@ class Event implements Translatable
     protected $discussionExperts;
 
     /**
+     * @var Ticket[]|ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="Ticket", mappedBy="event")
      */
     protected $tickets;
 
     /**
+     * @var UploadedFile
+     *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      *
@@ -339,6 +350,8 @@ class Event implements Translatable
     protected $logoFile;
 
     /**
+     * @var UploadedFile
+     *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      *
@@ -347,6 +360,8 @@ class Event implements Translatable
     protected $smallLogoFile;
 
     /**
+     * @var File
+     *
      * @Assert\File(maxSize="6000000")
      * @Assert\Image
      *
@@ -392,6 +407,8 @@ class Event implements Translatable
     private $headerVideo;
 
     /**
+     * @var File
+     *
      * @Assert\File(maxSize="25165824", mimeTypes={"video/webm", "video/mp4"})
      *
      * @Vich\UploadableField(mapping="event_header_video", fileNameProperty="headerVideo")
@@ -1146,11 +1163,11 @@ class Event implements Translatable
      */
     public function getBiggestTicketCost()
     {
-        /** @var TicketCost $result */
+        /** @var TicketCost|null $result */
         $result = null;
         /** @var TicketCost $ticketCost */
         foreach ($this->ticketsCost as $ticketCost) {
-            if (!$result) {
+            if (!$result instanceof TicketCost) {
                 $result = $ticketCost;
             }
             if ($ticketCost->getAmount() > $result->getAmount()) {

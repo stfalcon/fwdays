@@ -34,7 +34,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @return array
      */
-    public function getExportFields()
+    public function getExportFields(): array
     {
         return [
             'id',
@@ -54,7 +54,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
         $collection->remove('create');
         $collection->add('remove_paid_ticket_from_payment', $this->getRouterIdParameter().'/remove_paid_ticket_from_payment');
@@ -64,7 +64,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
@@ -115,7 +115,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @param ShowMapper $filter
      */
-    protected function configureShowFields(ShowMapper $filter)
+    protected function configureShowFields(ShowMapper $filter): void
     {
         $filter->add('id')
             ->add('event', null, ['label' => 'Событие'])
@@ -148,7 +148,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('id')
@@ -184,7 +184,7 @@ final class TicketAdmin extends AbstractAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->add('id', TextType::class, ['required' => false, 'label' => 'id', 'disabled' => true])

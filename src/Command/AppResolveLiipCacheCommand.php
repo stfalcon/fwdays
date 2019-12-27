@@ -12,13 +12,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class AppResolveLiipCacheCommand.
+ * AppResolveLiipCacheCommand.
  */
 class AppResolveLiipCacheCommand extends ContainerAwareCommand
 {
-    /**
-     * @var OutputInterface
-     */
+    /** @var OutputInterface */
     protected $output;
     /** @var CacheManager */
     protected $cacheManager;
@@ -36,7 +34,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
     /**
      * Set options.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:liip_imagine:cache:resolve')
@@ -51,10 +49,8 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
-     *
-     * @return int|void|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->output = $output;
 
@@ -86,7 +82,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
      * @param string      $filter
      * @param string|null $target
      */
-    protected function writeActionStart($filter, $target = null)
+    protected function writeActionStart($filter, $target = null): void
     {
         $this->output->write(sprintf('%s[%s] ', $target ?: '*', $filter));
     }
@@ -95,7 +91,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
      * @param string $result
      * @param bool   $continued
      */
-    protected function writeActionResult($result, $continued = true)
+    protected function writeActionResult($result, $continued = true): void
     {
         $this->output->write($continued ? sprintf('%s: ', $result) : $result);
 
@@ -107,7 +103,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
     /**
      * @param string $detail
      */
-    protected function writeActionDetail($detail)
+    protected function writeActionDetail($detail): void
     {
         $this->output->write($detail);
         $this->writeNewline();
@@ -116,7 +112,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
     /**
      * @param int $count
      */
-    private function writeNewline($count = 1)
+    private function writeNewline($count = 1): void
     {
         $this->output->write(str_repeat(PHP_EOL, $count));
     }
@@ -126,7 +122,7 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
      * @param string $filter
      * @param bool   $forced
      */
-    private function doCacheResolve(string $target, string $filter, bool $forced)
+    private function doCacheResolve(string $target, string $filter, bool $forced): void
     {
         $this->writeActionStart($filter, $target);
 

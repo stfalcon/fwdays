@@ -8,6 +8,7 @@ use App\Helper\MailerHelper;
 use App\Service\EmailHashValidationService;
 use App\Service\MyMailer;
 use App\Service\TranslatedMailService;
+use App\Traits\EntityManagerTrait;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,13 +20,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class StfalconMailerCommand extends ContainerAwareCommand
 {
+    use EntityManagerTrait;
+
     /** @var EmailHashValidationService */
     private $emailHashValidationService;
 
     /**
      * Set options.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('stfalcon:mailer')
@@ -38,11 +41,9 @@ class StfalconMailerCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return int|void|null
-     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         /** @var \Symfony\Component\Routing\RequestContext $context */
         $context = $this->getContainer()->get('router')->getContext();
@@ -61,11 +62,9 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
         $container = $this->getContainer();
 
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $container->get('doctrine.orm.entity_manager');
         $mailer = $container->get(MyMailer::class);
         $mailerHelper = $container->get(MailerHelper::class);
-        $queueRepository = $em->getRepository(MailQueue::class);
+        $queueRepository = $this->em->getRepository(MailQueue::class);
 
         $mailsQueue = $queueRepository->getMessages($limit);
         $logger = $container->get('logger');
@@ -85,8 +84,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
                 $mail->decTotalMessages();
-                $em->remove($item);
-                $em->flush();
+                $this->em->remove($item);
+                $this->em->flush();
                 continue;
             }
 
@@ -99,8 +98,8 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
-                $em->remove($item);
-                $em->flush();
+                $this->em->remove($item);
+                $this->em->flush();
                 continue;
             }
             $mailId = $mail->getId();
@@ -123,7 +122,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             if ($mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
-                $em->flush();
+                $this->em->flush();
             } else {
                 $logger->addError('Mailer send exception', [
                     'mail_id' => $mail->getId(),
@@ -137,6 +136,6 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 ]);
             }
         }
-        $em->flush();
+        $this->em->flush();
     }
 }

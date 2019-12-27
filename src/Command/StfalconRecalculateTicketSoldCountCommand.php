@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\TicketCost;
+use App\Traits\EntityManagerTrait;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,10 +13,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
 {
+    use EntityManagerTrait;
+
     /**
      * Set options.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('stfalcon:recalculate-ticket-sold')
@@ -23,19 +26,12 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
     }
 
     /**
-     * Execute command.
-     *
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
-     *
-     * @return int|void|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        $ticketsCost = $em->getRepository(TicketCost::class)->findAll();
+        $ticketsCost = $this->em->getRepository(TicketCost::class)->findAll();
         foreach ($ticketsCost as $ticketCost) {
             $saveCount = $ticketCost->getSoldCount();
             $newCount = $ticketCost->recalculateSoldCount();
@@ -44,6 +40,6 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
             }
         }
 
-        $em->flush();
+        $this->em->flush();
     }
 }

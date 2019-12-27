@@ -28,7 +28,7 @@ class LoadPaymentData extends AbstractFixture implements DependentFixtureInterfa
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var User $userDefault */
         $userDefault = $manager->merge($this->getReference('user-default'));

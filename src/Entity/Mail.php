@@ -248,10 +248,14 @@ class Mail implements Translatable
 
     /**
      * @param int $sentMessages
+     *
+     * @return $this
      */
-    public function setSentMessages($sentMessages)
+    public function setSentMessages($sentMessages): self
     {
         $this->sentMessages = $sentMessages;
+
+        return $this;
     }
 
     /**
@@ -310,10 +314,14 @@ class Mail implements Translatable
 
     /**
      * @param int $totalMessages
+     *
+     * @return $this
      */
-    public function setTotalMessages($totalMessages)
+    public function setTotalMessages($totalMessages): self
     {
         $this->totalMessages = $totalMessages;
+
+        return $this;
     }
 
     /**
@@ -436,10 +444,14 @@ class Mail implements Translatable
 
     /**
      * @param bool $start
+     *
+     * @return $this
      */
-    public function setStart($start)
+    public function setStart(bool $start): self
     {
         $this->start = $start;
+
+        return $this;
     }
 
     /**
@@ -452,10 +464,14 @@ class Mail implements Translatable
 
     /**
      * @param string $paymentStatus
+     *
+     * @return $this
      */
-    public function setPaymentStatus($paymentStatus)
+    public function setPaymentStatus($paymentStatus): self
     {
         $this->paymentStatus = $paymentStatus;
+
+        return $this;
     }
 
     /**
@@ -485,10 +501,14 @@ class Mail implements Translatable
      * Remove events.
      *
      * @param Event $event
+     *
+     * @return $this
      */
-    public function removeEvent(Event $event)
+    public function removeEvent(Event $event): self
     {
         $this->events->removeElement($event);
+
+        return $this;
     }
 
     /**
@@ -508,11 +528,15 @@ class Mail implements Translatable
     /**
      * Remove mailQueue.
      *
-     * @param \App\Entity\MailQueue $mailQueue
+     * @param MailQueue $mailQueue
+     *
+     * @return $this
      */
-    public function removeMailQueue(MailQueue $mailQueue)
+    public function removeMailQueue(MailQueue $mailQueue): self
     {
         $this->mailQueues->removeElement($mailQueue);
+
+        return $this;
     }
 
     /**

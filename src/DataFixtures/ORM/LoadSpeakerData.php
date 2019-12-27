@@ -3,6 +3,8 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Speaker;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,6 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
+    /** @var array  */
     private $abouts = [
         '<ul class="presenter-facts">
 <li>Senior Developer</li>
@@ -44,7 +47,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param ContainerInterface|null $container
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -64,7 +67,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
     /**
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $eventJsDay = $manager->merge($this->getReference('event-jsday2018'));
         $eventPHPDay2017 = $manager->merge($this->getReference('event-phpday2017'));
@@ -76,11 +79,11 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
             ->setName('Андрей Воробей')
             ->setEmail('a_s@test.com')
             ->setCompany('Stfalcon')
-            ->setAbout($this->abouts[0])
+            ->setAbout((string) $this->abouts[0])
             ->setSlug('andrew-vorobey')
             ->setFile($this->generateUploadedFile('speaker-1.jpg'))
-            ->setEvents([$eventJsDay, $eventNotActive])
-            ->setCandidateEvents([$eventPHPDay2017, $eventHighLoad])
+            ->setEvents(new ArrayCollection([$eventJsDay, $eventNotActive]))
+            ->setCandidateEvents(new ArrayCollection([$eventPHPDay2017, $eventHighLoad]))
             ->setSortOrder(1);
         $manager->persist($speaker);
         $this->addReference('speaker', $speaker);
@@ -93,8 +96,8 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
                 ->setAbout($this->abouts[2])
                 ->setSlug('speaker'.$i)
                 ->setFile($this->generateUploadedFile('speaker-'.($i + 4).'.jpg'))
-                ->setEvents([$eventPHPDay2017, $eventHighLoad])
-                ->setCandidateEvents([$eventNotActive, $eventJsDay, $eventPHPDay2018])
+                ->setEvents(new ArrayCollection([$eventPHPDay2017, $eventHighLoad]))
+                ->setCandidateEvents(new ArrayCollection([$eventNotActive, $eventJsDay, $eventPHPDay2018]))
                 ->setSortOrder(5);
             $manager->persist($speaker);
             $this->addReference('speaker-'.$i, $speaker);
@@ -120,7 +123,7 @@ class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface
         if (file_exists($fullPath)) {
             copy($fullPath, $tmpFile);
 
-            return new UploadedFile($tmpFile, $filename, null, null, null, true);
+            return new UploadedFile($tmpFile, $filename, null, null, true);
         }
 
         return null;

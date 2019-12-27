@@ -17,7 +17,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
         $collection->remove('application.admin.category.delete');
     }
@@ -29,7 +29,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
      *
      * @return array
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         unset($actions['delete']);
 
@@ -39,7 +39,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
@@ -57,7 +57,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
