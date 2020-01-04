@@ -12,18 +12,18 @@
 
 {% block meta_description %}
     {% if event.metaDescription is not null %}
-    <meta name="description" content="{{ event.metaDescription }}">
+        <meta name="description" content="{{ event.metaDescription }}">
     {% else %}
-    {{ parent() }}
+        {{ parent() }}
     {% endif %}
 {% endblock meta_description %}
 
 {% block body_class %}
-{% if event.smallEvent %}
-<body class="short-event">
-{% else %}
-{{ parent() }}
-{% endif %}
+    {% if event.smallEvent %}
+    <body class="short-event">
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -65,16 +65,16 @@
 {% endblock content %}
 
 {% block popups %}
-{{ parent() }}
-<!--BEGIN speaker-popup-->
-<div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
-    <button data-remodal-action="close"
-            class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
-    <div id="speaker-popup-content" class="remodal__body static-styles">
-    <!-- popup content  -->
+    {{ parent() }}
+    <!--BEGIN speaker-popup-->
+    <div id="speaker-popup" class="remodal remodal--lg" data-remodal-id="modal-speaker" data-remodal-options="hashTracking: false">
+        <button data-remodal-action="close"
+                class="remodal-close remodal-close--circle icon-close icon-close--circle"></button>
+        <div id="speaker-popup-content" class="remodal__body static-styles">
+        <!-- popup content  -->
+        </div>
     </div>
-</div>
-<!--END speaker-popup-->
+    <!--END speaker-popup-->
 {% endblock popups %}
 
 {% block scripts %}
@@ -82,4 +82,50 @@
     <script src="{{ asset('js/scroll-near-event-date.js') }}" defer></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" defer></script>
     <script src="{{ asset('js/partials/location.js') }}" defer></script>
+    {# Микроразметка для событий -- http://schema.org/Event, https://support.google.com/webmasters/answer/2774099 #}
+    {%- set event_show_url = url('event_show', {'slug': event.slug})|replace({'/': '\\/'}) -%}
+    {%- set event_pay_url = url('event_pay', {'slug': event.slug})|replace({'/': '\\/'}) -%}
+    <script type="application/ld+json">
+            {
+                "@context":"https:\/\/schema.org",
+                "@type":"BusinessEvent",
+                "name":"{{ event.name }}",
+                "url":"{{ event_show_url }}",
+                "description": "{{ event.description  }}",
+                "startDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                {% if event.dateEnd -%}
+                  "endDate":"{{ event.dateEnd|date('c', 'Europe/Kiev') }}",
+                {%- else -%}
+                  "endDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                {% endif -%}
+                {% if (event.showLogoWithBackground or event.useCustomBackground == false) -%}
+                  "image" : "{{ vich_uploader_asset(event, 'logoFile')|replace({'/': '\\/'}) }}",
+                {% endif -%}
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.place }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ event.city }}",
+                        "addressRegion": "Kyiv region",
+                        "addressCountry": {
+                          "@type": "Country",
+                          "name": "UA"
+                        }
+                    }
+                },
+                {% if (event.receivePayments) -%}
+                "offers": {
+                    "@type":"Offer",
+                    "url":"{{ event_pay_url }}",
+                    {% if event.hasAvailableTickets() -%}
+                      "price": "{{ event.currentPrice }}",
+                      "priceCurrency": "UAH",
+                    {% endif -%}
+                    "validFrom": "{{ event.date|date('c', 'Europe/Kiev') }}",
+                    "availability": "https:\/\/schema.org\/InStock"
+                }
+                {% endif -%}
+            }
+    </script>
 {% endblock scripts %}
