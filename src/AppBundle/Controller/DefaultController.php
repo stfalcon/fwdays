@@ -144,16 +144,4 @@ class DefaultController extends Controller
 
         return new JsonResponse(['result' => true]);
     }
-
-    /**
-     * @return Response
-     */
-    public function renderMicrolayoutAction()
-    {
-        $events = $this->getDoctrine()
-            ->getRepository(Event::class)
-            ->findClosesActiveEvents(3);
-
-        return $this->render('AppBundle::microlayout.html.twig', ['events' => $events]);
-    }
 }
