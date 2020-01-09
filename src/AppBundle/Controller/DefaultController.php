@@ -40,13 +40,10 @@ class DefaultController extends Controller
         switch ($page->getSlug()) {
             case 'contacts':
                 return $this->render('@App/Redesign/static_contacts.page.html.twig', ['page' => $page]);
-                break;
             case 'about':
                 return $this->render('@App/Page/about.html.twig', ['page' => $page]);
-                break;
             default:
                 return $this->render('@App/Default/page.html.twig', ['page' => $page]);
-                break;
         }
     }
 }
