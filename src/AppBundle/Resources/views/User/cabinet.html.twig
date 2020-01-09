@@ -9,7 +9,7 @@
         <div class="container">
             <div class="cabinet-head__wrap">
                 <div class="cabinet-head__left">
-                    <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
+                    &nbsp;
                 </div>
                 <div class="cabinet-head__right">
                 {% if is_mobile() %}
@@ -23,22 +23,6 @@
         </div>
     </div>
     <!--END cabinet-head-->
-
-    <!--BEGIN events-->
-    {%- if user_active_events|length > 0 -%}
-        <section class="events">
-            <div class="container">
-                <div class="events__box">
-                    {% for event in user_active_events %}
-                        {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
-                            {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-    {%- endif -%}
-    <!--END events-->
 
     <!--BEGIN share-->
     {% set bonus = constant('App\\Service\\ReferralService::REFERRAL_BONUS') %}
@@ -102,12 +86,12 @@
     </section>
     <!--END share-->
 
-{#{%- if user_past_events|length > 0 -%}
+    {%- if user_active_events|length > 0 -%}
         <div class="cabinet-head">
             <div class="container">
                 <div class="cabinet-head__wrap">
                     <div class="cabinet-head__left">
-                        <div class="cabinet-head__label">{{ 'menu.past_events.my'|trans }}</div>
+                        <div class="cabinet-head__label">{{ 'menu.events.my'|trans }}</div>
                     </div>
                 </div>
             </div>
@@ -115,7 +99,7 @@
         <section class="events">
             <div class="container">
                 <div class="events__box">
-                    {% for event in user_past_events %}
+                    {% for event in user_active_events %}
                         {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
                             {% include '@App/Redesign/Event/event.card.html.twig' with {'event': event} %}
                         {% endif %}
@@ -124,7 +108,25 @@
             </div>
         </section>
     {%- endif -%}
-#}
+
+    {%- if user_past_events|length > 0 -%}
+        <!--BEGIN event-list-->
+        <section class="event-list">
+            <div class="container">
+                <div class="event-list__box">
+                    <div class="event-list__label">{{ 'menu.past_events.my'|trans }}</div>
+                    <div class="event-list__items">
+                        {% for event in user_past_events %}
+                            {% if (event.adminOnly and is_granted('ROLE_ADMIN')) or (event.adminOnly != true) %}
+                                {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': event, 'listItem': true} %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--END event-list-->
+    {%- endif -%}
 {% endblock content%}
 
 {% block popups %}
