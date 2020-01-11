@@ -56,6 +56,10 @@ functional-test:
         - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
         - docker-compose exec -T php ./init "test"
         - docker-compose exec -T php bin/run-codeception
+    artifacts:
+        paths:
+            - app/tests/Codeception/_output
+        expire_in: 1 week
 
 # CI jobs
 composer checks:
