@@ -20,7 +20,6 @@ use Symfony\Component\Validator\ConstraintViolation;
  */
 class UserController extends Controller
 {
-
     /**
      * @Route(path="/cabinet", name="cabinet")
      *

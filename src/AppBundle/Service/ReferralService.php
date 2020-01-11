@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Payment;
-use App\Entity\Ticket;
 use App\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Cookie;
