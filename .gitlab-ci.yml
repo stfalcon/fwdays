@@ -58,7 +58,7 @@ functional-test:
         - docker-compose exec -T php bin/run-codeception
     artifacts:
         paths:
-            - app/tests/Codeception/_output
+            - /app/tests/Codeception/_output/
         expire_in: 1 week
 
 # CI jobs
