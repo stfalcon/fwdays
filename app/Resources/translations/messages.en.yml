@@ -155,7 +155,7 @@ ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
 ticket.status.download: Download ticket
 ticket.status.pay: Buy ticket
 ticket.status.get: Get ticket
-ticket.mob_status.pay: Buy
+ticket.status.pay_mob: Buy
 ticket.status.pay_for: Buy for
 
 ticket.status.sold: Tickets sold out
