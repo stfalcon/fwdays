@@ -1,5 +1,0 @@
-parameters:
-    a2lix_translation_form.gedmo.type.translations.class: Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType
-    a2lix_translation_form.gedmo.type.translations_locales.class: Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsLocalesType
-
-

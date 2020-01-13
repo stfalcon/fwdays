@@ -1,0 +1,7 @@
+{% include '@App/Email/_email_header.html.twig' %}
+{{ text|raw }}
+{% include '@App/Email/_email_end_table.html.twig' %}
+
+{% include '@App/Email/_email_footer.html.twig' with {'user':user, 'mail':mail} %}
+</center>
+</body>

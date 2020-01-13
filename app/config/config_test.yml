@@ -28,4 +28,5 @@ doctrine:
 
 liip_functional_test: ~
 
-
+app:
+    payment_system: 'App\Service\PaymentProcess\InterkassaService'
