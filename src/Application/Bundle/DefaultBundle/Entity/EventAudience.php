@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class EventAudience.
@@ -34,6 +35,9 @@ class EventAudience
      * @var string
      *
      * @ORM\Column(type="string", nullable=false)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $name;
 
