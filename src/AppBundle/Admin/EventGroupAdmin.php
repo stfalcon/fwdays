@@ -93,7 +93,8 @@ final class EventGroupAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('events',
+            ->add(
+                'events',
                 null,
                 [],
                 EntityType::class,

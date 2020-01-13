@@ -92,7 +92,8 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('event',
+        $datagridMapper->add(
+            'event',
             null,
             [],
             EntityType::class,

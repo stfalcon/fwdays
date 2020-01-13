@@ -99,7 +99,8 @@ final class EventPageAdmin extends AbstractPageAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('event',
+            ->add(
+                'event',
                 null,
                 [],
                 EntityType::class,
