@@ -3,10 +3,13 @@
 namespace Application\Bundle\DefaultBundle\Admin;
 
 use Application\Bundle\DefaultBundle\Admin\AbstractClass\AbstractTranslateAdmin;
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Form\Type\MyGedmoTranslationsType;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class PromoCodeAdmin.
@@ -89,6 +92,21 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('event');
+        $datagridMapper->add('event',
+            null,
+            [],
+            EntityType::class,
+            ['choices' => $this->getEvents()]
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

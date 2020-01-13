@@ -2,8 +2,10 @@
 
 namespace Application\Bundle\DefaultBundle\Admin;
 
+use Application\Bundle\DefaultBundle\Entity\Event;
 use Application\Bundle\DefaultBundle\Entity\Payment;
 use Application\Bundle\DefaultBundle\Entity\User;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -117,18 +119,21 @@ final class PaymentAdmin extends AbstractAdmin
                         }
 
                         /* @var $queryBuilder QueryBuilder */
-                        $queryBuilder->join(sprintf('%s.tickets', $alias), 't');
-                        $queryBuilder->join('t.event', 'e');
-                        $queryBuilder->andWhere($queryBuilder->expr()->in('e.id', $eventsId));
+                        $queryBuilder->join(sprintf('%s.tickets', $alias), 't')
+                            ->join('t.event', 'e')
+                            ->andWhere($queryBuilder->expr()->in('e.id', $eventsId))
+                            ->orderBy('e.id', Criteria::DESC)
+                        ;
 
                         return true;
                     },
                     'field_type' => 'entity',
                     'field_options' => [
-                        'class' => 'ApplicationDefaultBundle:Event',
+                        'class' => Event::class,
                         'choice_label' => 'name',
                         'multiple' => true,
                         'required' => false,
+                        'choices' => $this->getEvents(),
                     ],
                 ]
             );
@@ -191,5 +196,15 @@ final class PaymentAdmin extends AbstractAdmin
                     ]
                 )
             ->end();
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }
