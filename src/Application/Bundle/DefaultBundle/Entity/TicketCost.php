@@ -4,6 +4,7 @@ namespace Application\Bundle\DefaultBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="event__ticketsCost")
@@ -18,6 +19,7 @@ class TicketCost
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
+
     private $id;
     /**
      * @var Event
@@ -40,6 +42,8 @@ class TicketCost
      * @var int
      *
      * @ORM\Column(name="count", type="integer", nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $count;
 
@@ -49,6 +53,8 @@ class TicketCost
      * @var float
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\GreaterThan(0)
      */
     private $amount;
 
@@ -58,6 +64,8 @@ class TicketCost
      * @var float
      *
      * @ORM\Column(name="alt_amount", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\GreaterThan(0)
      */
     private $altAmount;
 
@@ -86,6 +94,9 @@ class TicketCost
      * @var string
      *
      * @ORM\Column(name="name", type="string", nullable=false)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $name;
 

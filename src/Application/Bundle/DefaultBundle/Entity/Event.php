@@ -234,6 +234,8 @@ class Event implements Translatable
      *
      * @ORM\OneToMany(targetEntity="Application\Bundle\DefaultBundle\Entity\TicketCost",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
      */
     protected $ticketsCost;
 
