@@ -168,7 +168,7 @@ class UserRepository extends EntityRepository
     {
         $qb->join('u.wantsToVisitEvents', 'wtv');
         $andX->add($qb->expr()->in('wtv.id', ':events'));
-        $qb->setParameter(':events', $events->toArray());
+        $qb->setParameter('events', $events->toArray());
     }
 
     /**
@@ -203,8 +203,8 @@ class UserRepository extends EntityRepository
 
             $andX->add($statusQuery);
             $qb
-                ->setParameter(':status', $status)
-                ->setParameter(':payment_events', $paymentEvents->toArray())
+                ->setParameter('status', $status)
+                ->setParameter('payment_events', $paymentEvents->toArray())
             ;
         }
     }

@@ -253,7 +253,7 @@ final class MailAdmin extends AbstractAdmin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
-        $eventCollection = $mail->getEvents()->toArray();
+        $eventCollection = $mail->getPaymentStatus() ? [] : $mail->getEvents()->toArray();
 
         /** @var EventAudience $audience */
         foreach ($mail->getAudiences() as $audience) {

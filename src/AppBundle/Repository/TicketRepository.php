@@ -326,14 +326,30 @@ class TicketRepository extends EntityRepository
     private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, Collection $paymentEvents, ?string $status = null): void
     {
         if (null !== $status) {
-            $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
+            $onExp = 'tp.user = u AND tp.event = :payment_events';
+
             if (Payment::STATUS_PENDING === $status) {
-                $statusOr->add($qb->expr()->isNull('p.status'));
+                $qb
+                    ->leftJoin(Ticket::class, 'tp', Join::WITH, $onExp)
+                    ->leftJoin('tp.payment', 'p');
+
+                $statusQuery = $qb->expr()->orX(
+                    $qb->expr()->eq('p.status', ':status'),
+                    $qb->expr()->isNull('p.status'),
+                    $qb->expr()->isNull('tp.user')
+                );
+            } else {
+                $qb
+                    ->join(Ticket::class, 'tp', Join::WITH, $onExp)
+                    ->join('tp.payment', 'p')
+                ;
+
+                $statusQuery = $qb->expr()->eq('p.status', ':status');
             }
-            $andX->add($statusOr);
-            $qb->join(Ticket::class, 'tp', Join::WITH, 'tp.user = u AND tp.event = :payment_events')
-                ->leftJoin('tp.payment', 'p')
-                ->setParameter(':status', $status)
+
+            $andX->add($statusQuery);
+            $qb
+                ->setParameter('status', $status)
                 ->setParameter('payment_events', $paymentEvents->toArray())
             ;
         }
@@ -348,7 +364,7 @@ class TicketRepository extends EntityRepository
     {
         if ($events->count() > 0) {
             $andX->add($qb->expr()->in('t.event', ':events'));
-            $qb->setParameter(':events', $events->toArray());
+            $qb->setParameter('events', $events->toArray());
         }
     }
 }
