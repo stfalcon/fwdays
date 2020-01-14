@@ -77,10 +77,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!$user->isEnabled() || !$user->isEmailExists() || !($user->isSubscribe() || $mail->isIgnoreUnsubscribe())) {
+            if (null === $user || null === $mail || !$user->isEnabled() || !$user->isEmailExists() || !($user->isSubscribe() || $mail->isIgnoreUnsubscribe())) {
                 $mail->decTotalMessages();
                 $em->remove($item);
                 $em->flush();
+
                 continue;
             }
 
