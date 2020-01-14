@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use Application\Bundle\DefaultBundle\Entity\Event;
+use App\Entity\Event;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

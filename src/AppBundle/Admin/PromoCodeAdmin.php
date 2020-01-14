@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
+use App\Entity\Event;
 use App\Form\Type\MyGedmoTranslationsType;
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\Criteria;

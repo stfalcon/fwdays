@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Entity\Event;
 use App\Entity\Payment;
 use App\Service\User\UserService;
 use Doctrine\Common\Collections\Criteria;

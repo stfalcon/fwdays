@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Entity\Event;
 use App\Entity\Payment;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
