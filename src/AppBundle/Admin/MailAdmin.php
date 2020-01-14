@@ -241,7 +241,7 @@ final class MailAdmin extends AbstractAdmin
         $id = $admin->getRequest()->get('id');
 
         $menu->addChild('Mail', ['uri' => $admin->generateUrl('edit', ['id' => $id])]);
-        $menu->addChild('Line items', ['uri' => $admin->generateUrl('appBundle.admin.mails|appBundle.admin.mail_queue.list', ['id' => $id])]);
+        $menu->addChild('Line items', ['uri' => $admin->generateUrl('app.admin.mails|app.admin.mail_queue.list', ['id' => $id])]);
     }
 
     /**
