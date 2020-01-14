@@ -415,7 +415,50 @@
     <pre id="output-9" class="output-code cm-s-default"></pre>
     <br>
     <br>
-
+    <h2 class="h2">Кнопка з закругленими кутами</h2>
+    <div class="container-email">
+        <a href="#" style="display: block;
+                           max-width: 275px;
+                           width: 100%;
+                           height: 50px;
+                           font-size: 14px;
+                           font-weight: 600;
+                           line-height: 50px;
+                           color: #FFFFFF;
+                           background: #3DCC85;
+                           text-decoration: none;
+                           text-transform: uppercase;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;
+                           border-radius: 6px;">
+            Купити квиток
+        </a>
+    </div>
+    <br>
+    <textarea id="code-9-3" class="input-code" readonly hidden>
+        <a href="#" style="display: block;
+                           max-width: 275px;
+                           width: 100%;
+                           height: 50px;
+                           font-size: 14px;
+                           font-weight: 600;
+                           line-height: 50px;
+                           color: #FFFFFF;
+                           background: #3DCC85;
+                           text-decoration: none;
+                           text-transform: uppercase;
+                           text-align: center;
+                           padding: 0;
+                           margin: 24px auto;
+                           border-radius: 6px;">
+            Купити квиток
+        </a>
+    </textarea>
+    <h2 class="h2">Код:</h2>
+    <pre id="output-9-3" class="output-code cm-s-default"></pre>
+    <br>
+    <br>
     <h2 class="h2">Кнопки</h2>
     <div class="container-email">
         <a href="#" style="display: inline-block;
@@ -873,6 +916,10 @@
         CodeMirror.runMode(document.getElementById("code-9-2").value, "application/xml",
             document.getElementById("output-9-2"));
     }
+    function doHighlight9_3() {
+        CodeMirror.runMode(document.getElementById("code-9-3").value, "application/xml",
+            document.getElementById("output-9-3"));
+    }
     function doHighlight10() {
         CodeMirror.runMode(document.getElementById("code-10").value, "application/xml",
             document.getElementById("output-10"));
@@ -901,6 +948,7 @@
     doHighlight9();
     doHighlight9_1();
     doHighlight9_2();
+    doHighlight9_3();
     doHighlight10();
     doHighlight11();
     doHighlight12();

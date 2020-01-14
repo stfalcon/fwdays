@@ -4,6 +4,7 @@ namespace App\Entity\AbstractClass;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
@@ -23,6 +24,9 @@ abstract class AbstractPage
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     protected $slug;
 
@@ -32,6 +36,9 @@ abstract class AbstractPage
      * @Gedmo\Translatable(fallback=true)
      *
      * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     protected $title;
 
@@ -41,6 +48,9 @@ abstract class AbstractPage
      * @Gedmo\Translatable(fallback=true)
      *
      * @ORM\Column(name="text", type="text")
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     protected $text;
 
@@ -75,11 +85,11 @@ abstract class AbstractPage
     /**
      * Set text.
      *
-     * @param string $text
+     * @param string|null $text
      *
      * @return $this
      */
-    public function setText(string $text): self
+    public function setText(?string $text): self
     {
         $this->text = $text;
 
@@ -99,11 +109,11 @@ abstract class AbstractPage
     /**
      * Set slug.
      *
-     * @param string $slug
+     * @param string|null $slug
      *
      * @return $this
      */
-    public function setSlug(string $slug): self
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
@@ -123,11 +133,11 @@ abstract class AbstractPage
     /**
      * Set title.
      *
-     * @param string $title
+     * @param string|null $title
      *
      * @return $this
      */
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
