@@ -8,6 +8,7 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
@@ -57,19 +58,20 @@ class UserRepository extends EntityRepository
      * Users registered for events.
      *
      * @param ArrayCollection $events
+     * @param Collection      $paymentEvents
      * @param bool            $ignoreUnsubscribe
      * @param string|null     $status
      *
-     * @return array
+     * @return User[]
      */
-    public function getRegisteredUsers(ArrayCollection $events, bool $ignoreUnsubscribe = false, ?string $status = null)
+    public function getRegisteredUsers(ArrayCollection $events, Collection $paymentEvents, bool $ignoreUnsubscribe = false, ?string $status = null): array
     {
         $qb = $this->createQueryBuilder('u');
         $andX = $qb->expr()->andX();
 
         if ($events->count() > 0) {
             $this->addEventsFilter($qb, $andX, $events);
-            $this->addPaymentStatusFilter($qb, $andX, $status);
+            $this->addPaymentStatusFilter($qb, $andX, $paymentEvents, $status);
         }
 
         $qb->andWhere($andX)
@@ -77,9 +79,8 @@ class UserRepository extends EntityRepository
         ;
 
         $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
-        $users = $qb->getQuery()->getResult();
 
-        return $users;
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -171,14 +172,15 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param Andx         $andX
-     * @param string|null  $status
+     * @param QueryBuilder    $qb
+     * @param Andx            $andX
+     * @param Collection      $paymentEvents
+     * @param string|null     $status
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, Collection $paymentEvents, ?string $status = null): void
     {
         if (null !== $status) {
-            $onExp = 't.user = u AND t.event = :events';
+            $onExp = 't.user = u AND t.event = :payment_events';
 
             if (Payment::STATUS_PENDING === $status) {
                 $qb
@@ -200,7 +202,10 @@ class UserRepository extends EntityRepository
             }
 
             $andX->add($statusQuery);
-            $qb->setParameter(':status', $status);
+            $qb
+                ->setParameter(':status', $status)
+                ->setParameter(':payment_events', $paymentEvents->toArray())
+            ;
         }
     }
 }

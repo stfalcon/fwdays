@@ -7,9 +7,11 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 
@@ -111,11 +113,12 @@ class TicketRepository extends EntityRepository
 
     /**
      * @param ArrayCollection $events
+     * @param Collection      $paymentEvents
      * @param string|null     $status
      *
      * @return QueryBuilder
      */
-    public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, ?string $status = null): QueryBuilder
+    public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, Collection $paymentEvents, ?string $status = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -126,7 +129,7 @@ class TicketRepository extends EntityRepository
 
         $andX = $qb->expr()->andX();
         $this->addEventsFilter($qb, $andX, $events);
-        $this->addPaymentStatusFilter($qb, $andX, $status);
+        $this->addPaymentStatusFilter($qb, $andX, $paymentEvents, $status);
 
         $qb->andWhere($andX);
 
@@ -137,14 +140,15 @@ class TicketRepository extends EntityRepository
      * Find users by event and status.
      *
      * @param ArrayCollection $events
+     * @param Collection      $paymentEvents
      * @param string|null     $status
      * @param bool            $ignoreUnsubscribe
      *
      * @return array
      */
-    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, ?string $status = null, bool $ignoreUnsubscribe = false): array
+    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, Collection $paymentEvents, ?string $status = null, bool $ignoreUnsubscribe = false): array
     {
-        $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $status);
+        $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $paymentEvents, $status);
 
         if (!$ignoreUnsubscribe) {
             $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
@@ -316,9 +320,10 @@ class TicketRepository extends EntityRepository
     /**
      * @param QueryBuilder $qb
      * @param Andx         $andX
+     * @param Collection   $paymentEvents
      * @param string|null  $status
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, Collection $paymentEvents, ?string $status = null): void
     {
         if (null !== $status) {
             $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
@@ -326,8 +331,11 @@ class TicketRepository extends EntityRepository
                 $statusOr->add($qb->expr()->isNull('p.status'));
             }
             $andX->add($statusOr);
-            $qb->leftJoin('t.payment', 'p')
-                ->setParameter(':status', $status);
+            $qb->join(Ticket::class, 'tp', Join::WITH, 'tp.user = u AND tp.event = :payment_events')
+                ->leftJoin('tp.payment', 'p')
+                ->setParameter(':status', $status)
+                ->setParameter('payment_events', $paymentEvents->toArray())
+            ;
         }
     }
 
