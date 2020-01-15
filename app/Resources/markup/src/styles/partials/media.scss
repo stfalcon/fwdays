@@ -1145,6 +1145,15 @@
       right: 0;
     }
   }
+  .event-img {
+    &__mob {
+      display: block;
+    }
+
+    &__desktop {
+      display: none;
+    }
+  }
 
   .video {
     &__box {
