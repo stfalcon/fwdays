@@ -12,9 +12,9 @@ class UrlForRedirect
 {
     use RouterTrait;
 
-    /** @var array  */
+    /** @var array */
     private $homePages = [];
-    /** @var array  */
+    /** @var array */
     private $authorizationUrls = [];
     private $locales;
 

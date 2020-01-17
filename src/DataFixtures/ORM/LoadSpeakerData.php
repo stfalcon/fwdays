@@ -4,7 +4,6 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Speaker;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class LoadSpeakerData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    /** @var array  */
+    /** @var array */
     private $abouts = [
         '<ul class="presenter-facts">
 <li>Senior Developer</li>

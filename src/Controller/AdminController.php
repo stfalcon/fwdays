@@ -94,7 +94,7 @@ class AdminController extends AbstractController
 
                     // отправляем сообщение о регистрации
                     $body = $this->mailerHelper->renderTwigTemplate(
-                        'AppBundle:Registration:automatically.html.twig',
+                        'Registration:automatically.html.twig',
                         [
                             'user' => $user,
                             'plainPassword' => $password,

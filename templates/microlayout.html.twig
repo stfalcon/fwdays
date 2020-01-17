@@ -1,5 +1,5 @@
 {% for event in events %}
-    {%- set event_url = url('event_show', {'eventSlug': event.slug})|replace({'/': '\\/'}) -%}
+    {%- set event_url = url('event_show', {'slug': event.slug})|replace({'/': '\\/'}) -%}
     <script type="application/ld+json">
             {
                 "@context":"https:\/\/schema.org",

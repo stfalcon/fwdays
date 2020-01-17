@@ -7,6 +7,7 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Exception\BadAutoRegistrationDataException;
+use App\Form\Type\ParticipantFormType;
 use App\Model\UserManager;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
@@ -116,15 +117,21 @@ class PaymentController extends AbstractController
             return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
         }
 
-        $name = $request->request->get('name');
-        $surname = $request->request->get('surname');
-        $email = $request->request->get('email');
-        $promoCodeString = $request->request->get('promocode');
+        $form = $this->createForm(ParticipantFormType::class);
+        $form->submit($request->request->all());
+        try {
+            $formUser = $this->userManager->getUserFromForm($form);
+        } catch (BadAutoRegistrationDataException $e) {
+            $this->logger->addError('Bad user data!');
 
+            return new JsonResponse(['result' => false, 'error' => $e->getErrorMap()]);
+        }
+
+        $promoCodeString = \trim(\strip_tags($form->get('promocode')->getData()));
         $this->session->set(self::NEW_PAYMENT_SESSION_KEY, false);
 
         /** @var User|null $user */
-        $user = $this->userManager->findUserBy(['email' => $email]);
+        $user = $this->userManager->findUserBy(['email' => $formUser->getEmail()]);
 
         if ($this->ticketService->isUserHasPaidTicketForEvent($user, $event)) {
             return new JsonResponse(
@@ -153,9 +160,9 @@ class PaymentController extends AbstractController
 
         try {
             if (!$user) {
-                $user = $this->userManager->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+                $user = $this->userManager->autoRegistration($formUser);
             } else {
-                $this->userManager->updateUserData($user, $name, $surname, $email);
+                $this->userManager->updateUserData($user, $formUser);
             }
         } catch (BadAutoRegistrationDataException $e) {
             return new JsonResponse(['result' => false, 'error' => $e->getErrorMap()]);
@@ -163,7 +170,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(['result' => false, 'error' => ['email' => $this->translator->trans('error.user.cant_be_edit')]]);
         }
 
-        $ticketService->setNewUserToTicket($user, $ticket);
+        $this->ticketService->setNewUserToTicket($user, $ticket);
         $user->addWantsToVisitEvents($event);
         try {
             $this->paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
@@ -207,17 +214,24 @@ class PaymentController extends AbstractController
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
         }
+        $form = $this->createForm(ParticipantFormType::class, null, ['csrf_protection' => false]);
+        $form->submit($request->request->all());
 
-        $name = $request->request->get('name');
-        $surname = $request->request->get('surname');
-        $email = $request->request->get('email');
-        $promoCodeString = $request->request->get('promocode');
+        try {
+            $formUser = $this->userManager->getUserFromForm($form);
+        } catch (BadAutoRegistrationDataException $e) {
+            $this->logger->addError('Bad user data!');
+
+            return new JsonResponse(['result' => false, 'error' => $e->getErrorMap()]);
+        }
+
+        $promoCodeString = \trim(\strip_tags($form->get('promocode')->getData()));
 
         /** @var User|null $user */
-        $user = $this->userManager->findUserBy(['email' => $email]);
+        $user = $this->userManager->findUserBy(['email' => $formUser->getEmail()]);
         if (!$user) {
             try {
-                $user = $this->userManager->autoRegistration(['name' => $name, 'surname' => $surname, 'email' => $email]);
+                $user = $this->userManager->autoRegistration($formUser);
             } catch (BadAutoRegistrationDataException $e) {
                 $this->logger->addError('autoRegistration with bad params');
 

@@ -259,7 +259,7 @@ class Event implements Translatable
     /**
      * @var string
      *
-     * Background color for event card.
+     * Background color for event card
      *
      * @Assert\NotBlank()
      * @Assert\Regex(

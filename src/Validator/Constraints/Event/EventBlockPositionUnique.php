@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class EventBlockPositionUnique extends Constraint
 {
-    /** @var string  */
+    /** @var string */
     public $message = 'эта позиция уже используется';
 
     /**

@@ -117,7 +117,7 @@ class Review extends AbstractPage implements Translatable
     }
 
     /**
-     * @param Speaker[]|Collection $speakers
+     * @param mixed $speakers
      *
      * @return $this
      */

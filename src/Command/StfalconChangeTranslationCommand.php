@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class StfalconChangeTranslationCommand extends ContainerAwareCommand
 {
     use EntityManagerTrait;
-    
+
     /**
      * Set options.
      */

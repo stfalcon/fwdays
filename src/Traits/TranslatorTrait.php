@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Traits;
+
 //@todo remove deprecated and transchoice
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 

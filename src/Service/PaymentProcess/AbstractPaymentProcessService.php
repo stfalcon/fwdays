@@ -34,7 +34,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
     ];
 
-    /** @var array  */
+    /** @var array */
     protected $appConfig;
 
     /** @var ReferralService */

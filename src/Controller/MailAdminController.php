@@ -2,19 +2,14 @@
 
 namespace App\Controller;
 
-use App\Command\StfalconMailerCommand;
 use App\Entity\Mail;
 use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Service\TranslatedMailService;
 use App\Traits\SessionTrait;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class MailAdminController.

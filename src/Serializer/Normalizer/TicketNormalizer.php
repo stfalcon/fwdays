@@ -35,7 +35,7 @@ class TicketNormalizer extends BaseNormalizer implements NormalizerInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\is_array($data)) {
-            $discountAmount = 100 * (float)$this->appConfig['discount'];
+            $discountAmount = 100 * (float) $this->appConfig['discount'];
             $data['amount'] = $this->formatPrice($data['amount']);
             $data['amount_without_discount'] = $this->formatPrice($data['amount_without_discount']);
             $data['discount_description'] = '';

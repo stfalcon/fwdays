@@ -23,7 +23,7 @@ sonata_admin_ticket_check:
 admin_show_statistic:
     path:  /admin/statistic
     defaults:
-        _controller: AppBundle:Admin:showStatistic
+        _controller: App\Controller\AdminController:showStatisticAction
         _locale: uk
     options:
         i18n: false
@@ -31,7 +31,7 @@ admin_show_statistic:
 admin_show_event_statistic:
     path:  /admin/event_statistic
     defaults:
-        _controller: AppBundle:Admin:showEventStatistic
+        _controller: App\Controller\AdminController:showEventStatisticAction
         _locale: uk
     options:
         i18n: false

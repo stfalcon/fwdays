@@ -34,7 +34,7 @@ class RegistrationController extends BaseController
     use Traits\HttpClientTrait;
     use Traits\MailerHelperTrait;
 
-    /** @var string  */
+    /** @var string */
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
     private $formFactory;
@@ -131,9 +131,10 @@ class RegistrationController extends BaseController
      */
     public function confirmAction(Request $request, $token): RedirectResponse
     {
+        /** @var User|null $user */
         $user = $this->userManager->findUserByConfirmationToken($token);
 
-        if (null === $user) {
+        if (!$user instanceof User) {
             throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
         }
 
@@ -158,7 +159,7 @@ class RegistrationController extends BaseController
     public function confirmedAction(Request $request): RedirectResponse
     {
         $user = $this->getUser();
-        if (!\is_object($user) || !$user instanceof UserInterface) {
+        if (!\is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 

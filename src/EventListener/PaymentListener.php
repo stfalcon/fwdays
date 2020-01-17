@@ -5,8 +5,6 @@ namespace App\EventListener;
 use App\Entity\Event;
 use App\Entity\Mail;
 use App\Entity\Payment;
-use App\Entity\Ticket;
-use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;

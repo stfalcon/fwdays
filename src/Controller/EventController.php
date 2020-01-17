@@ -86,7 +86,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/{slug}/review/{reviewSlug}", name="event_review_show")
      *
-     * @ParamConverter("review", class="AppBundle:Review", options={"mapping": {"reviewSlug": "slug"}})
+     * @ParamConverter("review", class="App\Entity\Review", options={"mapping": {"reviewSlug": "slug"}})
      *
      * @param Event  $event
      * @param Review $review

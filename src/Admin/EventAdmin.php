@@ -222,7 +222,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         FileType::class,
                         [
                             'label' => $subject->getLogo() ? 'Логотип | '.$subject->getLogo() : 'Логотип',
-                            'required' => \is_null($subject->getLogo()),
+                            'required' => null === $subject->getLogo(),
                             'help' => 'Основной логотип.',
                         ]
                     )

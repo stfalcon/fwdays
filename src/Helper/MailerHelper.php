@@ -127,7 +127,7 @@ class MailerHelper
     public function sendAutoRegistration(User $user, string $plainPassword): bool
     {
         $body = $this->renderTwigTemplate(
-            'AppBundle:Registration:automatically.html.twig',
+            'Registration/automatically.html.twig',
             [
                 'user' => $user,
                 'plainPassword' => $plainPassword,

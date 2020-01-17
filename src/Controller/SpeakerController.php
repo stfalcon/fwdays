@@ -22,7 +22,7 @@ class SpeakerController extends AbstractController
      *     options = {"expose"=true},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @ParamConverter("speaker", class="AppBundle:Speaker", options={"mapping": {"speakerSlug": "slug"}})
+     * @ParamConverter("speaker", class="App\Entity\Speaker", options={"mapping": {"speakerSlug": "slug"}})
      *
      * @param Event    $event
      * @param Speaker  $speaker

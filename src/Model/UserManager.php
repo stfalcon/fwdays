@@ -8,9 +8,9 @@ use App\Helper\MailerHelper;
 use App\Traits;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager as FosUserManager;
-use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Util\CanonicalFieldsUpdater;
 use FOS\UserBundle\Util\PasswordUpdaterInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -40,19 +40,12 @@ class UserManager extends FosUserManager
     }
 
     /**
-     * @param array $participant
+     * @param User $user
      *
-     * @return UserInterface
+     * @return User
      */
-    public function autoRegistration(array $participant): UserInterface
+    public function autoRegistration(User $user): User
     {
-        /** @var User $user */
-        $user = $this->createUser();
-        $user->setEmail($participant['email']);
-        $user->setName($participant['name']);
-        $user->setSurname($participant['surname']);
-        $user->setFullname($participant['surname'].' '.$participant['name']);
-
         $plainPassword = \substr(md5(\uniqid((string) \mt_rand(), true).\time()), 0, 8);
 
         $user->setPlainPassword($plainPassword);
@@ -73,14 +66,14 @@ class UserManager extends FosUserManager
     }
 
     /**
-     * @param User   $user
-     * @param string $name
-     * @param string $surname
-     * @param string $email
+     * @param User $user
+     * @param User $formUser
      */
-    public function updateUserData(User $user, string $name, string $surname, string $email): void
+    public function updateUserData(User $user, User $formUser): void
     {
-        if ($email === $user->getEmail() && $name === $user->getName() && $surname === $user->getSurname()) {
+        if ($formUser->getEmail() === $user->getEmail() &&
+            $formUser->getName() === $user->getName() &&
+            $formUser->getSurname() === $user->getSurname()) {
             return;
         }
 
@@ -91,23 +84,44 @@ class UserManager extends FosUserManager
 
         $oldEmail = $user->getEmail();
 
-        $user->setEmail($email);
-        $user->setName($name);
-        $user->setSurname($surname);
-        $user->setFullname($surname.' '.$name);
+        $user
+            ->setEmail($formUser->getEmail())
+            ->setName($formUser->getName())
+            ->setSurname($formUser->getSurname())
+            ->setFullname($formUser->getFullname())
+        ;
 
         $errors = $this->validator->validate($user);
         if ($errors->count() > 0) {
             throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
 
-        if ($oldEmail !== $email) {
+        if ($oldEmail !== $user->getEmail()) {
             $plainPassword = \substr(md5(\uniqid((string) \mt_rand(), true).\time()), 0, 8);
 
             $user->setPlainPassword($plainPassword);
             $this->mailHelper->sendAutoRegistration($user, $plainPassword);
         }
         $this->updateUser($user);
+    }
+
+    /**
+     * @param FormInterface $form
+     *
+     * @return User
+     *
+     * @throws BadAutoRegistrationDataException
+     */
+    public function getUserFromForm(FormInterface $form): User
+    {
+        $user = $form->getData();
+        $errors = $this->validator->validate($user);
+        if ($errors->count() > 0) {
+            throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
+        }
+        $user->setFullname(\sprintf('%s %s',$user->getSurname(), $user->getName()));
+
+        return $user;
     }
 
     /**

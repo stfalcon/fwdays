@@ -294,17 +294,21 @@ services:
 #            - '@App\Helper\MailerHelper'
 #            - '@session'
 
-    App\Form\Type\ProfileFormType:
-        arguments:
-            - "%locales%"
-        tags:
-            - { name: form.type, alias: application_profile }
-
-    App\Form\Type\RegistrationFormType:
-        arguments:
-            - "%locales%"
-        tags:
-            - { name: form.type, alias: application_registration }
+#    App\Form\Type\ProfileFormType:
+#        arguments:
+#            - "%locales%"
+#        tags:
+#            - { name: form.type, alias: application_profile }
+#
+#    App\Form\Type\ParticipantFormType:
+#        tags:
+#            - { name: form.type, alias: application_profile }
+#
+#    App\Form\Type\RegistrationFormType:
+#        arguments:
+#            - "%locales%"
+#        tags:
+#            - { name: form.type, alias: application_registration }
 
 #    App\Serializer\Normalizer\PaymentNormalizer:
 #        arguments: ['@translator', '@serializer.normalizer.object']
@@ -324,6 +328,7 @@ services:
     App\Service\User\UserService:
         public: true
 
+    Symfony\Component\Serializer\Serializer: '@serializer'
     Symfony\Bundle\FrameworkBundle\Routing\Router: '@router'
     Symfony\Component\HttpFoundation\Session\Session: '@session'
     Symfony\Component\Security\Core\Authorization\AuthorizationChecker: '@security.authorization_checker'

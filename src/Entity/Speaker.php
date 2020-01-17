@@ -106,7 +106,7 @@ class Speaker implements Translatable
     private $file;
 
     /**
-     * @var Event[]|Collection
+     * @var Event[]|Collection|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="speakers")
      * @ORM\JoinTable(name="event__events_speakers",
@@ -124,7 +124,7 @@ class Speaker implements Translatable
     /**
      * Євенти в яких спикер знаходиться на розгляді.
      *
-     * @var Event[]|Collection
+     * @var Event[]|Collection|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", inversedBy="candidateSpeakers")
      * @ORM\JoinTable(name="event_speakers_candidate")
@@ -392,7 +392,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param Event[]|Collection $events
+     * @param mixed $events
      *
      * @return $this
      */
@@ -432,7 +432,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param Event[]|Collection $candidateEvents
+     * @param mixed $candidateEvents
      *
      * @return $this
      */
@@ -452,7 +452,7 @@ class Speaker implements Translatable
     }
 
     /**
-     * @param Review[]|Collection $reviews
+     * @param mixed $reviews
      *
      * @return $this
      */

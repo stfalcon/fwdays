@@ -61,6 +61,11 @@ $(document).ready(function () {
             minlength: 12,
             maxlength: 16,
             pattern: /\+[1-9][0-9]{10,14}$/i,
+        },
+        'valid-promo_code' : {
+            required: false,
+            minlength: 2,
+            pattern: XRegExp("[\\pL\-\s0-9]+$"),
         }
     });
 

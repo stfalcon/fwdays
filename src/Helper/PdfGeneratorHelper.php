@@ -109,7 +109,7 @@ class PdfGeneratorHelper
         $this->qrCode->setSize(105);
         $this->qrCode->setPadding(0);
         $qrCodeBase64 = base64_encode($this->qrCode->get());
-        $templateContent = $twig->load('AppBundle:Ticket:_new_pdf.html.twig');
+        $templateContent = $twig->load('Ticket/_new_pdf.html.twig');
 
         $event = $ticket->getEvent();
         $fieldFileName = $event->getSmallLogo() ? 'smallLogoFile' : 'logoFile';
