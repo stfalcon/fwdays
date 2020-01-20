@@ -1,0 +1,22 @@
+{% include '@App/Email/_email_header.html.twig' %}
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text0'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text1'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text2'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="{{ 'mail.news.site_link'|trans }}" style="color: #0c9db9;">{{ 'mail.news.site'|trans }}</a>
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="https://www.facebook.com/fwdays/" style="color: #0c9db9;">Facebook news</a>
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="https://t.me/fwdays" style="color: #0c9db9;">Telegram channel</a>
+                                        </p>
+{% include '@App/Email/_email_end_table.html.twig' %}
+</center>
+</body>

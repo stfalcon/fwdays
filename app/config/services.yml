@@ -1,6 +1,6 @@
 imports:
-    - { resource: "@ApplicationDefaultBundle/Resources/config/admin.yml" }
-    - { resource: "@ApplicationDefaultBundle/Resources/config/services.yml" }
+    - { resource: "@AppBundle/Resources/config/admin.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 services:
     monolog.processor.added_host:
@@ -8,8 +8,7 @@ services:
         tags:
             - { name: monolog.processor, method: __invoke }
 
-    app.prepare_file_storage:
-        class: Application\Bundle\DefaultBundle\DataFixtures\PrepareFileStorage
+    App\DataFixtures\PrepareFileStorage:
         arguments:
             - '%kernel.environment%'
             -
@@ -18,6 +17,6 @@ services:
                 - '@oneup_flysystem.event_image_filesystem'
                 - '@oneup_flysystem.upload_image_filesystem'
 
-    Application\Bundle\DefaultBundle\DataFixtures\ORM\:
-        resource: '../../src/Application/Bundle/DefaultBundle/DataFixtures/ORM/*'
+    App\DataFixtures\ORM\:
+        resource: '../../src/AppBundle/DataFixtures/ORM/*'
         tags: ['doctrine.fixture.orm']

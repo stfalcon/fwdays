@@ -126,25 +126,25 @@ knp_menu:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb'
     firewall_name: main
-    user_class: Application\Bundle\DefaultBundle\Entity\User
+    user_class: App\Entity\User
     registration:
         form:
-            type: Application\Bundle\DefaultBundle\Form\Type\RegistrationFormType
+            type: App\Form\Type\RegistrationFormType
         confirmation:
             enabled:    false
             template:   FOSUserBundle:Registration:email.txt.twig
     profile:
         form:
-            type: Application\Bundle\DefaultBundle\Form\Type\ProfileFormType
+            type: App\Form\Type\ProfileFormType
     from_email:
         address:        orgs@fwdays.com
         sender_name:    "Frameworks Days"
     service:
-        user_manager: application.user_manager
+        user_manager: App\Model\UserManager
 
-application_default:
-#    payment_system: 'app.way_for_pay.service'
-    payment_system: 'app.interkassa.service'
+app:
+#    payment_system: 'App\Service\PaymentProcess\WayForPayService'
+    payment_system: 'App\Service\PaymentProcess\InterkassaService'
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
@@ -159,7 +159,7 @@ accord_mandrill_swift_mailer:
 hwi_oauth:
     firewall_names: [main]
     connect:
-        account_connector: app.provider.oauth
+        account_connector: App\Security\OAuthUserProvider
     resource_owners:
         facebook:
             type:                facebook
