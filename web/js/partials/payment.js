@@ -230,7 +230,7 @@ $(document).on('click', '.add-user-btn', function () {
 
         var e_slug = paymentList.data('event');
         $.ajax({
-            url: Routing.generate('add_ticket_participant', {eventSlug: e_slug}),
+            url: Routing.generate('add_ticket_participant', {slug: e_slug}),
             method: 'POST',
             data: {name: input_name.val(), surname: input_surname.val(), email: input_email.val(), promocode: input_promocode.val()},
             success: function (data) {

@@ -1,0 +1,22 @@
+paths:
+    tests: tests/Codeception
+    output: tests/Codeception/_output
+    data: tests/Codeception/_data
+    support: tests/Codeception/_support
+    envs: tests/Codeception/_envs
+actor_suffix: Tester
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+        - Codeception\Extension\Recorder
+step_decorators:
+    - \Codeception\Step\ConditionalAssertion
+modules:
+    config:
+        Db:
+            dsn: 'mysql:host=mysql;dbname=fwdays_com_development'
+            user: 'root'
+            password: 'qwerty'
+            populate: false
+            cleanup: false
+            reconnect: true
