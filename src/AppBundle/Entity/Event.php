@@ -62,6 +62,8 @@ class Event implements Translatable
      * @var ArrayCollection|EventAudience[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\EventAudience", mappedBy="events")
+     *
+     * @Assert\Valid()
      */
     private $audiences;
 
