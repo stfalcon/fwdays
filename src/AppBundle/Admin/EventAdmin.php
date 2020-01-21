@@ -117,7 +117,7 @@ class EventAdmin extends AbstractTranslateAdmin
         $smallLogo = null;
         $backGround = null;
         $video = null;
-        if (is_object($subject) && null !== $subject->getId()) {
+        if (\is_object($subject) && null !== $subject->getId()) {
             $this->saveCity = $subject->getCity();
             $this->savePlace = $subject->getPlace();
             $objectId = $subject->getId();

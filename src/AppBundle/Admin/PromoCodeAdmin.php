@@ -23,6 +23,16 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class PromoCodeAdmin extends AbstractTranslateAdmin
 {
     /**
+     * @var array
+     */
+    protected $datagridValues =
+        [
+            '_page' => 1,
+            '_sort_order' => 'DESC',
+            '_sort_by' => 'id',
+        ];
+
+    /**
      * @param object $object
      */
     public function preRemove($object)
@@ -50,16 +60,6 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
 
         return $actions;
     }
-
-    /**
-     * @var array
-     */
-    protected $datagridValues =
-        [
-            '_page' => 1,
-            '_sort_order' => 'DESC',
-            '_sort_by' => 'id',
-        ];
 
     /**
      * @param ListMapper $listMapper
