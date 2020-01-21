@@ -40,21 +40,6 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @return array
-     */
-    public function getBatchActions()
-    {
-        $user = $this->getCurrentUser();
-        $isSuperAdmin = $user instanceof User && \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true);
-
-        if (!$isSuperAdmin) {
-            return [];
-        }
-
-        return parent::getBatchActions();
-    }
-
-    /**
      * @param object $object
      */
     public function preRemove($object)
