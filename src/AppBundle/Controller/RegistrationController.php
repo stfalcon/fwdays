@@ -13,7 +13,6 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,8 +25,6 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 /**
  * RegistrationController.
- *
- * @Security("has_role('IS_AUTHENTICATED_ANONYMOUSLY')")
  */
 class RegistrationController extends BaseController
 {
