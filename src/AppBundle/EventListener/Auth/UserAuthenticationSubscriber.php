@@ -40,6 +40,8 @@ class UserAuthenticationSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Save "remember me" status for output to another authorization page.
+     *
      * @param AuthenticationFailureEvent $event
      */
     public function onAuthFail(AuthenticationFailureEvent $event): void

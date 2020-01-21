@@ -4,10 +4,12 @@ namespace App\Admin;
 
 use App\Entity\Event;
 use App\Entity\EventGroup;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class EventGroupAdmin.
@@ -91,7 +93,13 @@ final class EventGroupAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('events');
+            ->add(
+                'events',
+                null,
+                [],
+                EntityType::class,
+                ['choices' => $this->getEvents()]
+            );
     }
 
     /**
@@ -102,5 +110,15 @@ final class EventGroupAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name')
             ->add('events');
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

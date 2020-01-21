@@ -236,6 +236,8 @@ class Event implements Translatable
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TicketCost",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
      */
     protected $ticketsCost;
 

@@ -48,7 +48,6 @@ class Sponsor implements Translatable
      *
      * @ORM\Column(name="name", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     protected $name;
@@ -79,7 +78,7 @@ class Sponsor implements Translatable
     protected $sortOrder = 1;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="about", type="text", nullable=true)
      *
@@ -391,11 +390,11 @@ class Sponsor implements Translatable
     }
 
     /**
-     * @param string $about
+     * @param string|null $about
      *
      * @return $this
      */
-    public function setAbout(string $about): self
+    public function setAbout(?string $about): self
     {
         $this->about = $about;
 
