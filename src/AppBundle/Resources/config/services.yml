@@ -50,6 +50,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    App\EventListener\ORM\Blameable\BlameableListener:
+        calls:
+            - [setTokenStorage, ['@security.token_storage']]
+        tags:
+            - { name: doctrine.orm.entity_listener, lazy: true }
+
     App\Helper\NewPdfGeneratorHelper:
         arguments:
             - '@twig'

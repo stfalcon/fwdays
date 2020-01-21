@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class PromoCodeAdmin.
@@ -38,7 +39,9 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ->add('code', null, ['label' => 'Код'])
             ->add('event', null, ['label' => 'Событие'])
             ->add('used', null, ['label' => 'Использований'])
-            ->add('endDate', null, ['label' => 'Дата окончания']);
+            ->add('endDate', null, ['label' => 'Дата окончания'])
+            ->add('createdBy', null, ['label' => 'Создал'])
+        ;
     }
 
     /**
@@ -85,6 +88,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
                         $datetimePickerOptions
                     )
                 )
+                ->add('description', TextType::class, ['label' => 'Описание', 'required' => false])
             ->end();
     }
 
@@ -99,7 +103,9 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             [],
             EntityType::class,
             ['choices' => $this->getEvents()]
-        );
+        )
+            ->add('createdBy', null, ['label' => 'Создал'])
+        ;
     }
 
     /**
