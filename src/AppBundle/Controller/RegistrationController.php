@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 /**
  * RegistrationController.
-  */
+ */
 class RegistrationController extends BaseController
 {
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
