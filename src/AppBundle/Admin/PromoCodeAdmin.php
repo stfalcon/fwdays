@@ -23,6 +23,18 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class PromoCodeAdmin extends AbstractTranslateAdmin
 {
     /**
+     * @param object $object
+     */
+    public function preRemove($object)
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user instanceof User || !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
      * Allows you to customize batch actions.
      *
      * @param array $actions List of actions
@@ -37,18 +49,6 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
         }
 
         return $actions;
-    }
-
-    /**
-     * @param object $object
-     */
-    public function preRemove($object)
-    {
-        $user = $this->getCurrentUser();
-
-        if (!$user instanceof User || !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
-           throw new AccessDeniedException();
-        }
     }
 
     /**
