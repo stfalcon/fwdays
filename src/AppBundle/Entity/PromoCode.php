@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Model\Blameable\BlameableInterface;
+use App\Model\Blameable\BlameableTrait;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +13,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * App\Entity\PromoCode.
+ * PromoCode.
  *
  * @ORM\Table(name="event__promo_code")
  * @ORM\Entity(repositoryClass="App\Repository\PromoCodeRepository")
+ * @ORM\EntityListeners({
+ *     "App\EventListener\ORM\Blameable\BlameableListener"
+ * })
  *
  * @UniqueEntity(
  *     "code",
@@ -23,9 +28,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\PromoCodeTranslation")
  */
-class PromoCode
+class PromoCode implements BlameableInterface
 {
     use TranslateTrait;
+    use BlameableTrait;
 
     public const PROMOCODE_APPLIED = 'promocode_applied';
     public const PROMOCODE_LOW_THAN_DISCOUNT = 'error.promocode.low_than_discount';
@@ -119,6 +125,21 @@ class PromoCode
      * @var int
      */
     protected $tmpUsedCount = 0;
+
+    /**
+     * @var User|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="created_by")
+     */
+    private $createdBy;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="string", nullable=true)
+     */
+    private $description;
 
     /**
      * PromoCode constructor.
@@ -383,5 +404,25 @@ class PromoCode
         }
 
         return true;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     *
+     * @return $this
+     */
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
