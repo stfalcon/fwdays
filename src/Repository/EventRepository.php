@@ -73,27 +73,4 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
-
-    /**
-     * @param int $count
-     *
-     * @return Event[]
-     */
-    public function findClosesActiveEvents(int $count): array
-    {
-        $qb = $this->createQueryBuilder('e');
-        $qb
-            ->where($qb->expr()->eq('e.active', ':active'))
-            ->andWhere($qb->expr()->gte('e.date', ':date'))
-            ->andWhere($qb->expr()->gte('e.adminOnly', ':adminOnly'))
-            ->setParameters(new ArrayCollection([
-                new Parameter('active', true),
-                new Parameter('date', new \DateTime()),
-                new Parameter('adminOnly', false),
-            ]))
-            ->orderBy('e.date', Criteria::ASC)
-            ->setMaxResults($count);
-
-        return $qb->getQuery()->getResult();
-    }
 }

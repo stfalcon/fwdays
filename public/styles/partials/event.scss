@@ -1577,3 +1577,13 @@ a.fix-event-header__title {   //for review-page, venue-page
     line-height: 22px;
   }
 }
+
+.event-img {
+  &__mob {
+    display: none;
+  }
+
+  &__desktop {
+    display: block;
+  }
+}

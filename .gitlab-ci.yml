@@ -55,6 +55,10 @@ functional-test:
         - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
         - docker-compose exec -T php ./init "test"
         - docker-compose exec -T php bin/run-codeception
+    artifacts:
+        paths:
+            - /app/tests/Codeception/_output/
+        expire_in: 1 week
 
 # CI jobs
 composer checks:
@@ -146,7 +150,7 @@ staging deploy:
     tags:
         - k8s-deploy
     script:
-        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.14.8/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
         - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
         - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
@@ -167,7 +171,7 @@ staging rollback:
     tags:
         - k8s-deploy
     script:
-        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.14.8/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
         - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
         - kubectl -n fwdays-stag rollout undo deployments/fwdays-backend
@@ -187,7 +191,7 @@ production deploy:
     tags:
         - k8s-deploy
     script:
-        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.14.8/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
         - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
         - kubectl -n fwdays-prod set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
@@ -215,7 +219,7 @@ production rollback:
     tags:
         - k8s-deploy
     script:
-        - wget https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
+        - wget https://storage.googleapis.com/kubernetes-release/release/v1.14.8/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
         - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
         - kubectl -n fwdays-prod rollout undo deployments/fwdays-backend

@@ -1146,7 +1146,7 @@ class Event implements Translatable
     /**
      * @return bool
      */
-    public function isHaveFreeTickets()
+    public function isHasAvailableTickets()
     {
         /** @var TicketCost $cost */
         foreach ($this->ticketsCost as $cost) {

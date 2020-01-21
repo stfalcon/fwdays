@@ -34,20 +34,21 @@ class UrlForRedirect
      *
      * @return string
      */
-    public function getRedirectUrl($referralUrl, $host = ''): string
+    public function getRedirectUrl(?string $referralUrl, string $host = ''): string
     {
         $this->prepare();
         $clearReferrer = trim(preg_replace('/(\?.*)/', '', $referralUrl), '\/');
+        $homePage = $this->router->generate('homepage');
 
-        if (\in_array($clearReferrer, $this->authorizationUrls)) {
-            return $this->router->generate('homepage');
+        if (\in_array($clearReferrer, $this->authorizationUrls, true)) {
+            return $homePage;
         }
 
         if (!empty($host) && false === strpos($clearReferrer, $host)) {
-            return $this->router->generate('homepage');
+            return $homePage;
         }
 
-        return $referralUrl;
+        return $referralUrl ?? $homePage;
     }
 
     /**

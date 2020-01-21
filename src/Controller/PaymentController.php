@@ -67,7 +67,7 @@ class PaymentController extends AbstractController
      */
     public function payAction(Event $event): Response
     {
-        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
             return $this->render(
                 'Page/index.html.twig',
                 ['text' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()])]
@@ -104,7 +104,7 @@ class PaymentController extends AbstractController
      */
     public function editTicketParticipantAction(Event $event, Ticket $ticket, Request $request): JsonResponse
     {
-        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
             return new JsonResponse(
                 [
                     'result' => false,
@@ -201,7 +201,7 @@ class PaymentController extends AbstractController
      */
     public function addTicketParticipantAction(Event $event, Request $request): JsonResponse
     {
-        if (!$event->getReceivePayments() || !$event->isHaveFreeTickets()) {
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
             return new JsonResponse(
                 [
                     'result' => false,

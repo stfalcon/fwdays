@@ -232,7 +232,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         [
                             'label' => $subject->getSmallLogo() ? 'Мини логотип | '.$subject->getSmallLogo() : 'Мини логотип',
                             'required' => false,
-                            'help' => 'Если не указан, тогда используєтся основной.',
+                            'help' => 'Если не указан, тогда используется основной.',
                         ]
                     )
                 ->end()
