@@ -22,10 +22,10 @@ class PromoCodeCest
         $I->wantTo('Check if got promocode from query url.');
 
         $I->amOnPage('/event/javaScript-framework-day-2018?promocode=AnyCode');
-        $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018');
+        $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018');
 
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
-        $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018/pay');
+        $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018/pay');
 
         $I->seeElement('#payer-block-edit-1 input[name=user_promo_code]');
         $I->seeInField('#payer-block-edit-1 input[name=user_promo_code]', 'AnyCode');
@@ -82,9 +82,9 @@ class PromoCodeCest
         $I->click('#buy-ticket-btn');
         $I->waitForText('Payment successful!');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/payment/success');
+        $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');
         $I->amOnPage('/');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
         $I->see('Download ticket');
     }
 

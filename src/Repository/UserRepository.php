@@ -55,9 +55,83 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalUserCount(): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getEnabledUserCount(): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->eq('u.enabled', ':enabled'))
+            ->setParameter('enabled', true);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getSubscribedUserCount(): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->eq('u.subscribe', ':subscribed'))
+            ->setParameter('subscribed', true);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getUserHasReferalCount(): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->isNotNull('u.userReferral'));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param bool $refused
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getProvideDataUserCount(bool $refused): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+        $qb->where($qb->expr()->eq('u.allowShareContacts', ':allowShareContacts'))
+            ->setParameter('allowShareContacts', $refused);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
      * @return QueryBuilder
      */
-    public function getCountBaseQueryBuilder()
+    private function getCountBaseQueryBuilder()
     {
         return $this->createQueryBuilder('u')->select('COUNT(u)');
     }

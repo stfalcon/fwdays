@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Model\UserManager;
 use App\Repository\EventRepository;
 use App\Service\ReferralService;
+use App\Traits\TokenStorageTrait;
 use App\Traits\ValidatorTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -26,15 +27,18 @@ class DefaultController extends AbstractController
 
     private $referralService;
     private $userManager;
+    private $eventRepository;
 
     /**
      * @param ReferralService $referralService
      * @param UserManager     $userManager
+     * @param EventRepository $eventRepository
      */
-    public function __construct(ReferralService $referralService, UserManager $userManager)
+    public function __construct(ReferralService $referralService, UserManager $userManager, EventRepository $eventRepository)
     {
         $this->referralService = $referralService;
         $this->userManager = $userManager;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
@@ -147,27 +151,12 @@ class DefaultController extends AbstractController
         }
 
         $errors = $this->validator->validate($user);
-
         if (\count($errors) > 0) {
-            $errorsString = (string) $errors;
-
-            return new JsonResponse(['result' => true, 'error' => $errorsString]);
+            return new JsonResponse(['result' => false, 'error' => 'update user error']);
         }
 
         $this->userManager->updateUser($user);
 
         return new JsonResponse(['result' => true]);
-    }
-
-    /**
-     * @return Response
-     */
-    public function renderMicrolayoutAction()
-    {
-        $events = $this->getDoctrine()
-            ->getRepository(Event::class)
-            ->findClosesActiveEvents(3);
-
-        return $this->render('microlayout.html.twig', ['events' => $events]);
     }
 }

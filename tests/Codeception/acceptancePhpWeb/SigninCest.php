@@ -20,7 +20,7 @@ class SigninCest
 
         $I->click('#login-form- button[type=submit]');
 
-        $I->seeCurrentUrlEquals('/app_test.php');
+        $I->seeCurrentUrlEquals('/index_test.php');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
         static::iAmSigned($I);
@@ -39,13 +39,13 @@ class SigninCest
         $I->seeLink('Купити за');
         $I->click('Купити за');
 
-        $I->seeCurrentUrlEquals('/app_test.php/login');
+        $I->seeCurrentUrlEquals('/index_test.php/login');
 
         static::fillLoginFieldsAdmin($I);
 
         $I->click('#login-form- button[type=submit]');
 
-        $I->seeCurrentUrlEquals('/app_test.php/event/javaScript-framework-day-2018/pay');
+        $I->seeCurrentUrlEquals('/index_test.php/event/javaScript-framework-day-2018/pay');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 

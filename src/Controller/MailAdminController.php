@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Mail;
 use App\Entity\User;
 use App\Helper\MailerHelper;
+use App\Repository\UserRepository;
 use App\Service\TranslatedMailService;
 use App\Traits\SessionTrait;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -21,17 +22,20 @@ class MailAdminController extends CRUDController
     private $mailer;
     private $mailerHelper;
     private $translatedMailService;
+    private $userRepository;
 
     /**
      * @param \Swift_Mailer         $mailer
      * @param MailerHelper          $mailerHelper
      * @param TranslatedMailService $translatedMailService
+     * @param UserRepository        $userRepository
      */
-    public function __construct(\Swift_Mailer $mailer, MailerHelper $mailerHelper, TranslatedMailService $translatedMailService)
+    public function __construct(\Swift_Mailer $mailer, MailerHelper $mailerHelper, TranslatedMailService $translatedMailService, UserRepository $userRepository)
     {
         $this->mailer = $mailer;
         $this->mailerHelper = $mailerHelper;
         $this->translatedMailService = $translatedMailService;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -53,9 +57,7 @@ class MailAdminController extends CRUDController
             return new RedirectResponse($this->admin->generateUrl('list')); // Redirect to edit mode
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        $users = $em->getRepository(User::class)->getAdmins();
+        $users = $this->userRepository->getAdmins();
         $isTestMessage = true;
         $error = false;
         $translatedMails = $this->translatedMailService->getTranslatedMailArray($mail);

@@ -42,6 +42,6 @@ class ReferalBalanceCest
         $I->click('#buy-ticket-btn');
         $I->waitForText('Payment successful!');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/payment/success');
+        $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');
     }
 }

@@ -47,12 +47,12 @@ class UserCest
         $I->wantTo('Check language switcher');
 
         $I->amOnPage('/');
-        $I->seeCurrentUrlEquals('/app_test.php/');
+        $I->seeCurrentUrlEquals('/index_test.php/');
         static::iAmNotSigned($I, 'uk');
 
         static::seeAndClick($I, '.language_switcher');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
         static::iAmNotSigned($I);
     }
 
@@ -127,7 +127,7 @@ class UserCest
         static::seeAndClick($I, '#login-form-modal-signup button[type=submit]');
 
         $I->waitForText('ACCOUNT');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
         static::iAmSigned($I);
     }
 
@@ -199,10 +199,10 @@ class UserCest
         static::seeAndClick($I, '.cabinet-head__link');
         $I->waitForText('User info');
 
-        static::seeAndClick($I, 'a[href="/app_test.php/en/change-password"]');
+        static::seeAndClick($I, 'a[href="/index_test.php/en/change-password"]');
         $I->waitForText('Change password');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/change-password');
+        $I->seeCurrentUrlEquals('/index_test.php/en/change-password');
 
         foreach (self::CHANGE_PASSWORD_FIELDS as $field => $value) {
             $I->seeElement($field);
@@ -219,7 +219,7 @@ class UserCest
         static::seeAndClick($I, 'form button[type=submit]');
 
         $I->waitForText('The password has been changed.');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
     }
 
     /**
@@ -247,7 +247,7 @@ class UserCest
 
         $I->amOnPage('/change-password');
 
-        static::seeAndClick($I, 'a[href="/app_test.php/en/resetting/check-email"]');
+        static::seeAndClick($I, 'a[href="/index_test.php/en/resetting/check-email"]');
         $I->waitForText('Forgot password?');
 
         $I->seeElement('#forgot_user_email');

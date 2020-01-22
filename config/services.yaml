@@ -50,6 +50,7 @@ services:
 #            - { name: monolog.processor, method: __invoke }
 
     App\DataFixtures\PrepareFileStorage:
+        public: true
         arguments:
             - '%kernel.environment%'
             -

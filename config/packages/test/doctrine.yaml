@@ -1,3 +1,3 @@
-octrine:
+doctrine:
     dbal:
-        dbname: fwdays_com_testing
+        url: 'mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/fwdays_com_testing'

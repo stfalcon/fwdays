@@ -11,6 +11,11 @@ use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Model\UserManager;
+use App\Repository\EventRepository;
+use App\Repository\TicketRepository;
+use App\Repository\UserRepository;
+use App\Traits\EntityManagerTrait;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,23 +30,34 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    use EntityManagerTrait;
+
     private $userManager;
     private $mailerHelper;
     private $pool;
     private $mailer;
+    private $userRepository;
+    private $ticketRepository;
+    private $eventRepository;
 
     /**
-     * @param UserManager   $userManager
-     * @param MailerHelper  $mailerHelper
-     * @param Pool          $pool
-     * @param \Swift_Mailer $mailer
+     * @param UserManager      $userManager
+     * @param MailerHelper     $mailerHelper
+     * @param Pool             $pool
+     * @param \Swift_Mailer    $mailer
+     * @param UserRepository   $userRepository
+     * @param TicketRepository $ticketRepository
+     * @param EventRepository  $eventRepository
      */
-    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer)
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository)
     {
         $this->userManager = $userManager;
         $this->mailerHelper = $mailerHelper;
         $this->pool = $pool;
         $this->mailer = $mailer;
+        $this->userRepository = $userRepository;
+        $this->ticketRepository = $ticketRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
@@ -62,25 +78,24 @@ class AdminController extends AbstractController
 
             foreach ($users as $data) {
                 // данные с формы
-                $dt = explode(' ', $data);
+                $dt = \explode(' ', $data);
                 unset($data);
                 $data['name'] = $dt[0];
                 $data['surname'] = $dt[1];
                 $data['email'] = $dt[2];
-                $data['discount'] = isset($dt[3]) && 'D' === strtoupper($dt[3]);
+                $data['discount'] = isset($dt[3]) && 'D' === \strtoupper($dt[3]);
 
                 $user = $this->userManager->findUserBy(['email' => $data['email']]);
 
                 // создаем нового пользователя
                 if (!$user) {
-                    /** @var User $user */
                     $user = $this->userManager->createUser();
                     $user->setEmail($data['email'])
                         ->setName($data['name'])
                         ->setSurname($data['surname']);
 
                     // генерация временного пароля
-                    $password = substr(str_shuffle(md5(time())), 5, 8);
+                    $password = substr(str_shuffle(md5((string) time())), 5, 8);
                     $user->setPlainPassword($password);
                     $user->setEnabled(true);
 
@@ -129,7 +144,7 @@ class AdminController extends AbstractController
                 $ticket = $em->getRepository(Ticket::class)
                     ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
 
-                if (!$ticket) {
+                if (!$ticket instanceof Ticket) {
                     $ticket = (new Ticket())
                         ->setEvent($event)
                         ->setUser($user)
@@ -211,37 +226,13 @@ class AdminController extends AbstractController
      */
     public function showStatisticAction()
     {
-        $repo = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(User::class);
-
-        $totalUsersCount = $repo->getCountBaseQueryBuilder()->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.enabled = :enabled')
-        ->setParameter('enabled', 1);
-        $enabledUsersCount = $qb->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.subscribe = :subscribed')
-            ->setParameter('subscribed', 1);
-        $subscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
-
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.subscribe = :subscribed')
-            ->setParameter('subscribed', 0);
-        $unSubscribedUsersCount = $qb->getQuery()->getSingleScalarResult();
+        $totalUsersCount = $this->userRepository->getTotalUserCount();
+        $subscribedUsersCount = $this->userRepository->getSubscribedUserCount();
 
         //Кол-во людей которые не купили билеты никогда
         //Кол-во людей которые купили билеты на одну \ две \ три \ четыре\ пять \ и так далее любых конференций
-
         $usersTicketsCount = [];
-
-        $ticketRepository = $this->getDoctrine()
-            ->getRepository(Ticket::class);
-
-        $paidTickets = $ticketRepository->getPaidTicketsCount();
-
+        $paidTickets = $this->ticketRepository->getPaidTicketsCount();
         foreach ($paidTickets as $paidTicket) {
             if (isset($usersTicketsCount[$paidTicket[1]])) {
                 ++$usersTicketsCount[$paidTicket[1]];
@@ -255,10 +246,8 @@ class AdminController extends AbstractController
             $haveTickets += $item;
         }
         $usersTicketsCount[0] = $totalUsersCount - $haveTickets;
-        ksort($usersTicketsCount);
-
-        $ticketsByEventGroup = $ticketRepository->getTicketsCountByEventGroup();
-
+        \ksort($usersTicketsCount);
+        $ticketsByEventGroup = $this->ticketRepository->getTicketsCountByEventGroup();
         $countsByGroup = [];
 
         foreach ($ticketsByEventGroup as $key => $item) {
@@ -269,52 +258,26 @@ class AdminController extends AbstractController
             }
         }
         foreach ($countsByGroup as $key => $item) {
-            ksort($item);
+            \ksort($item);
             $countsByGroup[$key] = $item;
         }
-        //сколько людей отказалось предоставлять свои данные партнерам
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.allowShareContacts = :allowShareContacts');
-        $qb->setParameter('allowShareContacts', 0);
-        $countRefusedProvideData = $qb->getQuery()->getSingleScalarResult();
+        $countRefusedProvideData = $this->userRepository->getProvideDataUserCount(false);
+        $countAgreedProvideData = $this->userRepository->getProvideDataUserCount(true);
 
-        //сколько согласилось
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where('u.allowShareContacts = :allowShareContacts');
-        $qb->setParameter('allowShareContacts', 1);
-        $countAgreedProvideData = $qb->getQuery()->getSingleScalarResult();
-
-        //сколько еще не ответило
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where($qb->expr()->isNull('u.allowShareContacts'));
-        $countNotAnswered = $qb->getQuery()->getSingleScalarResult();
-
-        //сколько было переходов
-        $qb = $repo->getCountBaseQueryBuilder();
-        $qb->where($qb->expr()->isNotNull('u.userReferral'));
-        $countUseReferralProgram = $qb->getQuery()->getSingleScalarResult();
-
-        $event = $this
-            ->getDoctrine()
-            ->getRepository(Event::class)
-            ->findOneBy([], ['date' => 'DESC']);
-
-        $eventStatisticSlug = '';
-        if ($event instanceof Event) {
-            $eventStatisticSlug = $event->getSlug();
-        }
+        $event = $this->eventRepository->findOneBy([], ['date' => Criteria::DESC]);
+        $eventStatisticSlug = $event instanceof Event ? $event->getSlug() : '';
 
         return $this->render('Statistic/statistic.html.twig', [
             'admin_pool' => $this->pool,
             'data' => [
                 'countRefusedProvideData' => $countRefusedProvideData,
                 'countAgreedProvideData' => $countAgreedProvideData,
-                'countNotAnswered' => $countNotAnswered,
-                'countUseReferralProgram' => $countUseReferralProgram,
+                'countNotAnswered' => $totalUsersCount - ($countAgreedProvideData + $countRefusedProvideData),
+                'countUseReferralProgram' => $this->userRepository->getUserHasReferalCount(),
                 'totalUsersCount' => $totalUsersCount,
-                'enabledUsersCount' => $enabledUsersCount,
+                'enabledUsersCount' => $this->userRepository->getEnabledUserCount(),
                 'subscribedUsersCount' => $subscribedUsersCount,
-                'unSubscribedUsersCount' => $unSubscribedUsersCount,
+                'unSubscribedUsersCount' => $totalUsersCount - $subscribedUsersCount,
                 'haveTicketsCount' => $haveTickets,
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
@@ -328,23 +291,20 @@ class AdminController extends AbstractController
      *
      * @Route("/mail/{id}/start/{value}", name="admin_start_mail")
      *
-     * @param Request $request Request
-     * @param Mail    $mail    Mail
-     * @param int     $value   Value
+     * @param Request $request
+     * @param Mail    $mail
+     * @param int     $value
      *
      * @return JsonResponse
      */
-    public function startMailAction(Request $request, Mail $mail, $value)
+    public function startMailAction(Request $request, Mail $mail, $value): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
         }
 
-        $em = $this->getDoctrine()->getManager();
-
         $mail->setStart((bool) $value);
-        $em->persist($mail);
-        $em->flush();
+        $this->persistAndFlush($mail);
 
         return new JsonResponse([
             'status' => true,
@@ -362,13 +322,9 @@ class AdminController extends AbstractController
      *
      * @return Response
      */
-    public function showEventStatisticAction(Event $event)
+    public function showEventStatisticAction(Event $event): Response
     {
-        $events = $this
-            ->getDoctrine()
-            ->getRepository(Event::class)
-            ->findBy([], ['date' => 'DESC']);
-
+        $events = $this->eventRepository->findBy([], ['date' => Criteria::DESC]);
         $eventStatisticHtml = $this->getEventStatistic($event);
 
         return $this->render('Statistic/event_statistic_page.html.twig', [
@@ -390,17 +346,15 @@ class AdminController extends AbstractController
      *
      * @return Response
      */
-    public function showEventsStatisticAction($checkedEvents = '')
+    public function showEventsStatisticAction(string $checkedEvents = ''): Response
     {
-        $ticketRepository = $this->getDoctrine()->getRepository(Ticket::class);
-
-        $events = $ticketRepository->getEventWithTicketsCount();
+        $events = $this->ticketRepository->getEventWithTicketsCount();
         if (empty($checkedEvents)) {
             $checkedEventsArr = null;
         } else {
-            $checkedEventsArr = explode(';', $checkedEvents);
-            array_pop($checkedEventsArr);
-            $checkedEventsArr = array_flip($checkedEventsArr);
+            $checkedEventsArr = \explode(';', $checkedEvents);
+            \array_pop($checkedEventsArr);
+            $checkedEventsArr = \array_flip($checkedEventsArr);
         }
         foreach ($events as $key => $event) {
             if (empty($checkedEventsArr)) {
@@ -436,14 +390,12 @@ class AdminController extends AbstractController
         $hasTicketObjectId = 'event' === $checkType ? $request->request->getInt('has_ticket_event')
             : $request->request->getInt('has_ticket_group');
 
-        $events = $this->getDoctrine()->getRepository(Event::class)
-            ->findBy([], ['date' => 'DESC']);
+        $events = $this->eventRepository->findBy([], ['date' => Criteria::DESC]);
         $groups = $this->getDoctrine()->getRepository(EventGroup::class)
             ->findAll();
 
         if ($checkEventId > 0 && $hasTicketObjectId > 0) {
-            $users = $this->getDoctrine()->getRepository(User::class)
-                ->getUsersNotBuyTicket($checkEventId, $hasTicketObjectId, $checkType);
+            $users = $this->userRepository->getUsersNotBuyTicket($checkEventId, $hasTicketObjectId, $checkType);
             if (\count($users)) {
                 return $this->getCsvResponse($users);
             }
@@ -474,7 +426,7 @@ class AdminController extends AbstractController
             $totalSoldTicketCount += $blockSold;
         }
 
-        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository(Ticket::class)->getEventTicketsWithoutTicketCostCount($event);
+        $ticketsWithoutCostsCount = (int) $this->ticketRepository->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
@@ -494,8 +446,6 @@ class AdminController extends AbstractController
      */
     private function getEventsTable($events)
     {
-        $ticketRepository = $this->getDoctrine()->getRepository(Ticket::class);
-
         $minGreen = 127;
         $maxGreen = 255;
         $deltaGreen = $maxGreen - $minGreen;
@@ -509,18 +459,18 @@ class AdminController extends AbstractController
                     continue;
                 }
                 if ($event !== $subEvent) {
-                    $result['cnt'] = $ticketRepository->getUserVisitsEventCount($event['id'], $subEvent['id']);
+                    $result['cnt'] = $this->ticketRepository->getUserVisitsEventCount($event['id'], $subEvent['id']);
                     if ($subEvent['cnt'] > 0) {
-                        $result['percent'] = round($result['cnt'] * 100 / $subEvent['cnt'], 2);
+                        $result['percent'] = \round($result['cnt'] * 100 / $subEvent['cnt'], 2);
                     } else {
                         $result['percent'] = 0;
                     }
                     $result['text'] = $result['cnt'].'&nbsp;('.$result['percent'].'&nbsp;%)';
 
-                    $green = $maxGreen - round($deltaGreen * $result['percent'] / 100);
-                    $otherColor = (int) round($green / ($maxGreen / $green));
-                    $otherColor = dechex($otherColor);
-                    $result['color'] = '#'.$otherColor.dechex((int) $green).$otherColor;
+                    $green = $maxGreen - \round($deltaGreen * $result['percent'] / 100);
+                    $otherColor = (int) \round($green / ($maxGreen / $green));
+                    $otherColor = \dechex($otherColor);
+                    $result['color'] = '#'.$otherColor.\dechex((int) $green).$otherColor;
                 } else {
                     $result = [
                         'cnt' => 0,
@@ -549,7 +499,7 @@ class AdminController extends AbstractController
         \array_unshift($users, ['Fullname', 'email']);
 
         $headers = [
-            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            'Content-Disposition' => \sprintf('attachment; filename="%s"', $filename),
             'Content-Type' => 'text/csv',
         ];
         $callback = function () use ($users) {

@@ -125,6 +125,24 @@ class UserManager extends FosUserManager
     }
 
     /**
+     * @return User
+     */
+    public function createUser(): User
+    {
+        return new User();
+    }
+
+    /**
+     * @param array $criteria
+     *
+     * @return User|null|object
+     */
+    public function findUserBy(array $criteria)
+    {
+        return $this->getRepository()->findOneBy($criteria);
+    }
+
+    /**
      * @param ConstraintViolationListInterface $errors
      *
      * @return array
