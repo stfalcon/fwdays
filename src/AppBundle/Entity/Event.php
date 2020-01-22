@@ -1499,4 +1499,12 @@ class Event implements Translatable
 
         return $this;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDateFromDates(): \DateTime
+    {
+        return $this->dateEnd instanceof \DateTime ? $this->dateEnd : $this->date;
+    }
 }

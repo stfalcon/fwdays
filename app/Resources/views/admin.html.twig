@@ -62,5 +62,15 @@
                 }
             });
         });
+
+        $(document).on('change', '.event_choice', function () {
+            var selected_val = $(this).val();
+            $('select.date_for_promo').find('option').each(function() {
+                if (selected_val === $(this).text()) {
+                    $('.promo_end_date').val($(this).val());
+                    return true;
+                }
+            });
+        })
     </script>
 {% endblock %}
