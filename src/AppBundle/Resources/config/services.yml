@@ -79,11 +79,10 @@ services:
 
     App\Service\PaymentProcess\WayForPayService:
         arguments:
-            - '%app.config%'
-            - '@translator'
-            - '@request_stack'
+            - "%app.config%"
+            - "@translator"
+            - "@request_stack"
             - '@router'
-            - '@security.token_storage'
             - '@doctrine.orm.entity_manager'
             - '@logger'
             - '@App\Service\ReferralService'

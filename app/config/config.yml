@@ -143,8 +143,8 @@ fos_user:
         user_manager: App\Model\UserManager
 
 app:
-#    payment_system: 'App\Service\PaymentProcess\WayForPayService'
-    payment_system: 'App\Service\PaymentProcess\InterkassaService'
+    payment_system: 'App\Service\PaymentProcess\WayForPayService'
+#    payment_system: 'App\Service\PaymentProcess\InterkassaService'
     wayforpay:
         shop_id: "%merchantAccount%"
         secret: "%merchantSecretKey%"
