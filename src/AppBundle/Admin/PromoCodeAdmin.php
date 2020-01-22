@@ -13,6 +13,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -117,11 +118,20 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ->with('Общие')
                 ->add('discountAmount', null, ['required' => true, 'disabled' => !$allowedToEdit, 'label' => 'Скидка (%)'])
                 ->add('code', null, ['disabled' => !$allowedToEdit, 'label' => 'Код'])
-                ->add('event', null, [
+                ->add('event', EntityType::class, [
+                    'class' => Event::class,
                     'label' => 'Событие',
                     'required' => true,
                     'disabled' => !$allowedToEdit,
-                    'placeholder' => 'Choose event',
+                    'placeholder' => 'Выбирите событие',
+                    'choices' => $this->getActiveEvents(),
+                    'attr' => ['class' => 'event_choice'],
+                ])
+                ->add('date_for_promo', ChoiceType::class, [
+                    'mapped' => false,
+                    'label' => false,
+                    'attr' => ['class' => 'date_for_promo hidden'],
+                    'choices' => $this->getActiveEventsDates(),
                 ])
                 ->add('maxUseCount', null, ['disabled' => !$allowedToEdit, 'label' => 'Максимальное количество использований', 'help' => '(0 - безлимитный)'])
                 ->add(
@@ -132,12 +142,14 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
                             'disabled' => !$allowedToEdit,
                             'required' => true,
                             'label' => 'Дата окончания',
+                            'attr' => ['class' => 'promo_end_date'],
                         ],
                         $datetimePickerOptions
                     )
                 )
                 ->add('description', TextType::class, ['disabled' => !$allowedToEdit, 'label' => 'Описание', 'required' => false])
-            ->end();
+            ->end()
+        ;
     }
 
     /**
@@ -167,6 +179,16 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     }
 
     /**
+     * @return array
+     */
+    private function getActiveEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy(['active' => true, 'receivePayments' => true], ['id' => Criteria::DESC]);
+    }
+
+    /**
      * @return User|null
      */
     private function getCurrentUser(): ?User
@@ -185,5 +207,20 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
         }
 
         return $user;
+    }
+
+    /**
+     * @return array
+     */
+    private function getActiveEventsDates(): array
+    {
+        $result = [];
+        $events = $this->getActiveEvents();
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $result[$event->getId()] = (clone $event->getEndDateFromDates())->modify('+1 day')->format('d.m.Y H:i:s');
+        }
+
+        return $result;
     }
 }
