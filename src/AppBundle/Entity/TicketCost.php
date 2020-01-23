@@ -187,9 +187,9 @@ class TicketCost
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAltAmount(): float
+    public function getAltAmount(): ?float
     {
         return $this->altAmount;
     }
