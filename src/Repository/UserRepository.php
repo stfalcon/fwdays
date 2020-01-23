@@ -129,14 +129,6 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
-     */
-    private function getCountBaseQueryBuilder()
-    {
-        return $this->createQueryBuilder('u')->select('COUNT(u)');
-    }
-
-    /**
      * Users registered for events.
      *
      * @param ArrayCollection $events
@@ -285,5 +277,13 @@ class UserRepository extends ServiceEntityRepository
             $andX->add($statusQuery);
             $qb->setParameter(':status', $status);
         }
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    private function getCountBaseQueryBuilder()
+    {
+        return $this->createQueryBuilder('u')->select('COUNT(u)');
     }
 }

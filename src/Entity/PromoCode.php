@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\PromoCodeTranslation")
  */
-class PromoCode
+class PromoCode implements TranslatableInterface
 {
     use TranslateTrait;
 

@@ -2,21 +2,11 @@
 
 namespace App\Service;
 
-use Swift_Transport;
-
 /**
  * MyMailer.
  */
 class MyMailer extends \Swift_Mailer
 {
-    /**
-     * @param Swift_Transport $transport
-     */
-    public function __construct(Swift_Transport $transport)
-    {
-        parent::__construct($transport);
-    }
-
     /**
      * @param \Swift_Mime_SimpleMessage $message
      * @param array                     $failedRecipients An array of failures by-reference

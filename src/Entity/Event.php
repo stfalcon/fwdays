@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,7 +33,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\EventTranslation")
  */
-class Event implements Translatable
+class Event implements TranslatableInterface
 {
     use TranslateTrait;
     /**
@@ -602,9 +602,9 @@ class Event implements Translatable
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -945,9 +945,9 @@ class Event implements Translatable
     /**
      * Get path to logo.
      *
-     * @return string
+     * @return string|null
      */
-    public function getLogo()
+    public function getLogo(): ?string
     {
         return $this->logo;
     }

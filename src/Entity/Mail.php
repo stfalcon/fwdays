@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\EmailTranslation")
  */
-class Mail implements Translatable
+class Mail implements TranslatableInterface
 {
     use TranslateTrait;
 

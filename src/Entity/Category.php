@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 
 /**
  * App\Entity\Category.
@@ -17,7 +17,7 @@ use Gedmo\Translatable\Translatable;
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\CategoryTranslation")
  */
-class Category implements Translatable
+class Category implements TranslatableInterface
 {
     use TranslateTrait;
     /**

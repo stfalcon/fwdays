@@ -95,7 +95,10 @@
         "vich/uploader-bundle": "^1.9.2"
     },
     "require-dev": {
-        "codeception/codeception": "^3.1",
+        "codeception/codeception": "^4.0",
+        "codeception/module-asserts": "^1.1",
+        "codeception/module-phpbrowser": "^1.0",
+        "codeception/module-webdriver": "^1.0",
         "escapestudios/symfony2-coding-standard": "^3.8",
         "friendsofphp/php-cs-fixer": "^2.15",
         "hirak/prestissimo": "0.3.*",

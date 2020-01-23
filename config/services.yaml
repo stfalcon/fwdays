@@ -44,6 +44,11 @@ services:
         tags:
             - 'controller.service_arguments'
 
+    App\EventListener\ORM\:
+        resource: '../src/EventListener/ORM/'
+        tags:
+            - 'doctrine.orm.entity_listener'
+
 #    monolog.processor.added_host:
 #        class: Monolog\Processor\WebProcessor
 #        tags:
@@ -226,18 +231,6 @@ services:
         public: true
 
     App\Command\AppResolveLiipCacheCommand:
-        calls:
-            - [setContainer, ['@service_container']]
-
-    App\Command\StfalconChangeTranslationCommand:
-        calls:
-            - [setContainer, ['@service_container']]
-
-    App\Command\StfalconRecalculateTicketSoldCountCommand:
-        calls:
-            - [setContainer, ['@service_container']]
-
-    App\Command\StfalconMailerCommand:
         calls:
             - [setContainer, ['@service_container']]
 

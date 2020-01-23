@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\BlockTranslation")
  */
-class EventBlock implements Translatable
+class EventBlock implements TranslatableInterface
 {
     use TranslateTrait;
 

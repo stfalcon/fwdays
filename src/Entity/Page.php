@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\AbstractClass\AbstractPage;
+use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\PageTranslation")
  */
-class Page extends AbstractPage implements Translatable
+class Page extends AbstractPage implements TranslatableInterface
 {
     use TranslateTrait;
     /**

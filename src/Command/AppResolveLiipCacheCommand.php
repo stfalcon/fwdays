@@ -5,31 +5,44 @@ namespace App\Command;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * AppResolveLiipCacheCommand.
  */
-class AppResolveLiipCacheCommand extends ContainerAwareCommand
+class AppResolveLiipCacheCommand extends Command implements ContainerAwareInterface
 {
     /** @var OutputInterface */
-    protected $output;
+    private $output;
     /** @var CacheManager */
-    protected $cacheManager;
+    private $cacheManager;
     /** @var FilterManager */
-    protected $filterManager;
+    private $filterManager;
     /** @var DataManager */
-    protected $dataManager;
+    private $dataManager;
+
+    /** @var ContainerInterface */
+    private $container;
 
     private const FILTER_MAPPING = [
         'speaker' => 'speaker_photo',
         'partner' => 'sponsor_image',
         'upload_image' => 'upload_image',
     ];
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container = null): void
+    {
+        $this->container = $container;
+    }
 
     /**
      * Set options.
@@ -44,13 +57,8 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input  Input
-     * @param OutputInterface $output Output
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    /** {@inheritdoc} */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
 
@@ -63,11 +71,10 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
             exit;
         }
 
-        $container = $this->getContainer();
-        $filesystem = $container->get('oneup_flysystem.'.$fileSystemName.'_filesystem');
-        $this->cacheManager = $container->get('liip_imagine.cache.manager');
-        $this->filterManager = $container->get('liip_imagine.filter.manager');
-        $this->dataManager = $container->get('liip_imagine.data.manager');
+        $filesystem = $this->container->get('oneup_flysystem.'.$fileSystemName.'_filesystem');
+        $this->cacheManager = $this->container->get('liip_imagine.cache.manager');
+        $this->filterManager = $this->container->get('liip_imagine.filter.manager');
+        $this->dataManager = $this->container->get('liip_imagine.data.manager');
 
         $contents = $filesystem->listContents('/', true);
         foreach ($contents as $contentItem) {
@@ -76,6 +83,8 @@ class AppResolveLiipCacheCommand extends ContainerAwareCommand
             }
             $this->doCacheResolve($contentItem['path'], $filter, $doForce);
         }
+
+        return 0;
     }
 
     /**

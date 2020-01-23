@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Event;
 use App\Entity\EventGroup;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,12 +15,11 @@ use Sonata\AdminBundle\Form\FormMapper;
  */
 final class EventGroupAdmin extends AbstractAdmin
 {
+    /** @var ArrayCollection|null */
     private $prevEvents = null;
 
     /**
      * @param EventGroup $object
-     *
-     * @return mixed|void
      */
     public function preUpdate($object): void
     {

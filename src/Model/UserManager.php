@@ -119,7 +119,7 @@ class UserManager extends FosUserManager
         if ($errors->count() > 0) {
             throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
-        $user->setFullname(\sprintf('%s %s',$user->getSurname(), $user->getName()));
+        $user->setFullname(\sprintf('%s %s', $user->getSurname(), $user->getName()));
 
         return $user;
     }
@@ -135,7 +135,7 @@ class UserManager extends FosUserManager
     /**
      * @param array $criteria
      *
-     * @return User|null|object
+     * @return User|object|null
      */
     public function findUserBy(array $criteria)
     {

@@ -32,7 +32,7 @@ final class PaymentAdmin extends AbstractAdmin
     ];
 
     /**
-     * @return array|void
+     * @return array
      */
     public function getBatchActions(): array
     {

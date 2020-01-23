@@ -31,8 +31,6 @@ final class UserAdmin extends AbstractAdmin
 
     /**
      * @param User $project
-     *
-     * @return mixed|void
      */
     public function prePersist($project): void
     {
@@ -41,8 +39,6 @@ final class UserAdmin extends AbstractAdmin
 
     /**
      * @param User $project
-     *
-     * @return mixed|void
      */
     public function preUpdate($project): void
     {

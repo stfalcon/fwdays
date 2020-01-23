@@ -21,10 +21,10 @@ class PromoCodeCest
     {
         $I->wantTo('Check if got promocode from query url.');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018?promocode=AnyCode');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018?promocode=AnyCode');
         $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
         $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018/pay');
 
         $I->seeElement('#payer-block-edit-1 input[name=user_promo_code]');
@@ -40,7 +40,7 @@ class PromoCodeCest
     {
         $I->wantTo('Check error message if not found promocode and dicount message on found.');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
         $this->clickEditUser($I);
 
@@ -65,11 +65,11 @@ class PromoCodeCest
     {
         $I->wantTo('Check buy ticket for 100% promocode and see download link.');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         $I->see('Buy ticket', '#card-javaScript-framework-day-2018');
         $I->dontSee('Download ticket');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
         $this->clickEditUser($I);
 
@@ -83,7 +83,7 @@ class PromoCodeCest
         $I->waitForText('Payment successful!');
 
         $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         $I->seeCurrentUrlEquals('/index_test.php/en/');
         $I->see('Download ticket');
     }
@@ -97,7 +97,7 @@ class PromoCodeCest
     {
         $I->wantTo('Check using limited promocode and see error text.');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
         $I->dontSeeElement('#buy-ticket-btn');
 

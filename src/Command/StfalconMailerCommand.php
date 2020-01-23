@@ -3,27 +3,53 @@
 namespace App\Command;
 
 use App\Entity\Mail;
-use App\Entity\MailQueue;
+use App\Entity\User;
 use App\Helper\MailerHelper;
+use App\Repository\MailQueueRepository;
 use App\Service\EmailHashValidationService;
 use App\Service\MyMailer;
 use App\Service\TranslatedMailService;
 use App\Traits\EntityManagerTrait;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Traits\LoggerTrait;
+use App\Traits\RouterTrait;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Class StfalconMailerCommand.
+ * StfalconMailerCommand.
  */
-class StfalconMailerCommand extends ContainerAwareCommand
+class StfalconMailerCommand extends Command
 {
     use EntityManagerTrait;
+    use RouterTrait;
+    use LoggerTrait;
 
-    /** @var EmailHashValidationService */
+    private $mailer;
+    private $mailerHelper;
+    private $queueRepository;
     private $emailHashValidationService;
+    private $translatedMailService;
+
+    /**
+     * @param MyMailer                   $mailer
+     * @param MailerHelper               $mailerHelper
+     * @param MailQueueRepository        $queueRepository
+     * @param EmailHashValidationService $emailHashValidationService
+     * @param TranslatedMailService      $translatedMailService
+     */
+    public function __construct(MyMailer $mailer, MailerHelper $mailerHelper, MailQueueRepository $queueRepository, EmailHashValidationService $emailHashValidationService, TranslatedMailService $translatedMailService)
+    {
+        parent::__construct();
+
+        $this->mailer = $mailer;
+        $this->mailerHelper = $mailerHelper;
+        $this->queueRepository = $queueRepository;
+        $this->emailHashValidationService = $emailHashValidationService;
+        $this->translatedMailService = $translatedMailService;
+    }
 
     /**
      * Set options.
@@ -37,16 +63,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
             ->addOption('host', null, InputOption::VALUE_OPTIONAL, 'Site host. Default fwdays.com.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    /** {@inheritdoc} */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var \Symfony\Component\Routing\RequestContext $context */
-        $context = $this->getContainer()->get('router')->getContext();
+        $context = $this->router->getContext();
         $context->setHost('fwdays.com');
         $context->setScheme('http');
 
@@ -60,28 +81,19 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $context->setHost((string) $input->getOption('host'));
         }
 
-        $container = $this->getContainer();
+        $mailsQueue = $this->queueRepository->getMessages($limit);
 
-        $mailer = $container->get(MyMailer::class);
-        $mailerHelper = $container->get(MailerHelper::class);
-        $queueRepository = $this->em->getRepository(MailQueue::class);
-
-        $mailsQueue = $queueRepository->getMessages($limit);
-        $logger = $container->get('logger');
-        $this->emailHashValidationService = $container->get(EmailHashValidationService::class);
-
-        /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
             $user = $item->getUser();
             $mail = $item->getMail();
 
             if (!(
-                $user &&
-                $mail &&
+                $user instanceof User &&
+                $mail instanceof Mail &&
                 $user->isEnabled() &&
                 ($user->isSubscribe() || $mail->isIgnoreUnsubscribe()) &&
                 $user->isEmailExists() &&
-                filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
+                \filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
                 $mail->decTotalMessages();
                 $this->em->remove($item);
@@ -90,12 +102,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
             }
 
             try {
-                $translatedMailService = $container->get(TranslatedMailService::class);
-                $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
+                $translatedMails = $this->translatedMailService->getTranslatedMailArray($mail);
 
-                $message = $mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()]);
+                $message = $this->mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()]);
             } catch (\Exception $e) {
-                $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
+                $this->logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
                 $this->em->remove($item);
@@ -106,7 +117,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $hash = $this->emailHashValidationService->generateHash($user, $mailId);
 
             $headers = $message->getHeaders();
-            $http = $container->get('router')->generate(
+            $unsubscribeUrl = $this->router->generate(
                 'unsubscribe',
                 [
                     'hash' => $hash,
@@ -117,14 +128,14 @@ class StfalconMailerCommand extends ContainerAwareCommand
             );
 
             $headers->removeAll('List-Unsubscribe');
-            $headers->addTextHeader('List-Unsubscribe', '<'.$http.'>');
+            $headers->addTextHeader('List-Unsubscribe', \sprintf('<%s>', $unsubscribeUrl));
             $failed = [];
-            if ($mailer->send($message, $failed)) {
+            if ($this->mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
                 $this->em->flush();
             } else {
-                $logger->addError('Mailer send exception', [
+                $this->logger->addError('Mailer send exception', [
                     'mail_id' => $mail->getId(),
                     'user_id' => $user->getId(),
                     'error_swift_message' => isset($failed['error_swift_message']) ? $failed['error_swift_message'] : '',
@@ -137,5 +148,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             }
         }
         $this->em->flush();
+
+        return 0;
     }
 }

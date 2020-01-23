@@ -17,7 +17,7 @@ class ReferalBalanceCest
     {
         $I->wantTo('Check buy ticket by user referal bonus.');
 
-        $I->amOnPage('/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
         $I->dontSeeElement('#buy-ticket-btn');
 
@@ -40,7 +40,7 @@ class ReferalBalanceCest
         $I->see('0 UAH ', '.payment-cart__amount');
 
         $I->click('#buy-ticket-btn');
-        $I->waitForText('Payment successful!');
+        $I->waitForText('Payment successful!', 15);
 
         $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');
     }

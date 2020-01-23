@@ -7,7 +7,7 @@
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="PARENT_ENVS" value="true" />
     <option name="SCRIPT_NAME" value="exec" />
-    <option name="PARAMETERS" value="-T php /app/bin/php-cs-fixer fix --config=.php_cs -v" />
+    <option name="PARAMETERS" value="-T php ./vendor/bin/php-cs-fixer fix --config=.php_cs -v" />
     <method v="2" />
   </configuration>
 </component>

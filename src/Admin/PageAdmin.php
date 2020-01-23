@@ -13,19 +13,15 @@ final class PageAdmin extends AbstractPageAdmin
 {
     /**
      * @param ListMapper $listMapper
-     *
-     * @return ListMapper|void
      */
     protected function configureListFields(ListMapper $listMapper): void
     {
-        $listMapper = parent::configureListFields($listMapper);
+        parent::configureListFields($listMapper);
         $listMapper->add('showInFooter', null, ['label' => 'Показывать в футере']);
     }
 
     /**
      * @param FormMapper $formMapper
-     *
-     * @return FormMapper|void
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {

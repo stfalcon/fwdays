@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
-use App\EventListener\PaymentListener;
+use App\EventListener\ORM\PaymentListener;
 use App\Helper\PdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;

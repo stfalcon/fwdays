@@ -8,12 +8,13 @@ use App\Entity\EventAudience;
 use App\Entity\Mail;
 use App\Entity\MailQueue;
 use App\Entity\Payment;
-use App\Entity\Ticket;
 use App\Entity\User;
 use App\Repository\MailQueueRepository;
+use App\Repository\TicketRepository;
+use App\Repository\UserRepository;
 use App\Service\LocalsRequiredService;
+use App\Traits\EntityManagerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\UnitOfWork;
 use Knp\Menu\ItemInterface as MenuItemInterface;
@@ -30,8 +31,16 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 final class MailAdmin extends AbstractAdmin
 {
+    use EntityManagerTrait;
+
+    /** @var array */
     private $savedEvents;
+    /** @var array */
     private $savedAudiences;
+
+    private $userRepository;
+    private $ticketRepository;
+
     /**
      * Default values to the datagrid.
      *
@@ -43,6 +52,23 @@ final class MailAdmin extends AbstractAdmin
     ];
 
     /**
+     * MailAdmin constructor.
+     *
+     * @param string           $code
+     * @param string           $class
+     * @param string           $baseControllerName
+     * @param UserRepository   $userRepository
+     * @param TicketRepository $ticketRepository
+     */
+    public function __construct($code, $class, $baseControllerName, UserRepository $userRepository, TicketRepository $ticketRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->userRepository = $userRepository;
+        $this->ticketRepository = $ticketRepository;
+    }
+
+    /**
      * @return array
      */
     public function getBatchActions(): array
@@ -51,7 +77,9 @@ final class MailAdmin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param Mail $mail
+     *
+     * @throws OptimisticLockException
      */
     public function postPersist($mail): void
     {
@@ -251,29 +279,24 @@ final class MailAdmin extends AbstractAdmin
      */
     private function getUsersForEmail($mail): array
     {
-        $container = $this->getConfigurationPool()->getContainer();
-
         $eventCollection = $mail->getEvents()->toArray();
 
         /** @var EventAudience $audience */
         foreach ($mail->getAudiences() as $audience) {
-            $eventCollection = array_merge($eventCollection, $audience->getEvents()->toArray());
+            $eventCollection = \array_merge($eventCollection, $audience->getEvents()->toArray());
         }
         $events = [];
         foreach ($eventCollection as $event) {
             $events[$event->getId()] = $event;
         }
         $events = new ArrayCollection($events);
-        /** @var EntityManager $em */
-        $em = $container->get('doctrine')->getManager();
+
         if ($events->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users = $em->getRepository(User::class)->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe(), $mail->getPaymentStatus());
+            $users = $this->userRepository->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe(), $mail->getPaymentStatus());
         } elseif ($events->count() > 0 || $mail->getPaymentStatus()) {
-            $users = $em->getRepository(Ticket::class)
-                ->
-                findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus(), $mail->isIgnoreUnsubscribe());
+            $users = $this->ticketRepository->findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus(), $mail->isIgnoreUnsubscribe());
         } else {
-            $users = $em->getRepository(User::class)->getAllSubscribed($mail->isIgnoreUnsubscribe());
+            $users = $this->userRepository->getAllSubscribed($mail->isIgnoreUnsubscribe());
         }
 
         return $users;
@@ -287,10 +310,6 @@ final class MailAdmin extends AbstractAdmin
      */
     private function addUsersToEmail($mail, $users): void
     {
-        $container = $this->getConfigurationPool()->getContainer();
-        /** @var EntityManager $em */
-        $em = $container->get('doctrine')->getManager();
-
         $countSubscribers = $mail->getTotalMessages();
         /** @var User $user */
         foreach ($users as $user) {
@@ -301,12 +320,11 @@ final class MailAdmin extends AbstractAdmin
                 $mailQueue = new MailQueue();
                 $mailQueue->setUser($user);
                 $mailQueue->setMail($mail);
-                $em->persist($mailQueue);
+                $this->em->persist($mailQueue);
                 ++$countSubscribers;
             }
         }
         $mail->setTotalMessages($countSubscribers);
-        $em->persist($mail);
-        $em->flush();
+        $this->persistAndFlush($mail);
     }
 }

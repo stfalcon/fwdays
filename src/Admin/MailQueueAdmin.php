@@ -21,8 +21,6 @@ final class MailQueueAdmin extends AbstractAdmin
     /**
      * @param MailQueue $mailQueue
      *
-     * @return mixed|void
-     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function postPersist($mailQueue): void
@@ -38,8 +36,6 @@ final class MailQueueAdmin extends AbstractAdmin
 
     /**
      * @param MailQueue $mailQueue
-     *
-     * @return mixed|void
      *
      * @throws \Doctrine\ORM\OptimisticLockException
      */

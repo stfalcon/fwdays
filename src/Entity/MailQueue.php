@@ -147,9 +147,9 @@ class MailQueue
     }
 
     /**
-     * @return Mail
+     * @return Mail|null
      */
-    public function getMail()
+    public function getMail(): ?Mail
     {
         return $this->mail;
     }
@@ -167,9 +167,9 @@ class MailQueue
     }
 
     /**
-     * @return User
+     * @return User|null
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }

@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 class SponsorAdmin extends AbstractTranslateAdmin
 {
     /**
-     * @return array|void
+     * @return array
      */
     public function getBatchActions(): array
     {

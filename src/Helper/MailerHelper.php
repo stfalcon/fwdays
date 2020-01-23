@@ -41,7 +41,7 @@ class MailerHelper
         if ($withTicket) {
             $event = $mail->getEvents()[0] ?? null;
             $params = ['event' => $event];
-            $template = '@App/Email/email_with_ticket.html.twig';
+            $template = 'Email/email_with_ticket.html.twig';
         } else {
             $text = $this->replace(
                 $mail->getText(),

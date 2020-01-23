@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventListener\ORM;
 
 use App\Entity\Event;
 use App\Entity\Mail;
@@ -10,7 +10,6 @@ use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;
 use App\Service\PaymentService;
 use App\Service\TranslatedMailService;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * PaymentListener.
@@ -57,14 +56,13 @@ class PaymentListener
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param Payment $payment
      *
      * @throws \Exception
      */
-    public function postUpdate(LifecycleEventArgs $args): void
+    public function postUpdate(Payment $payment): void
     {
-        $payment = $args->getEntity();
-        if ($payment instanceof Payment && Payment::STATUS_PAID === $payment->getStatus() && $this->runPaymentPostUpdate) {
+        if (Payment::STATUS_PAID === $payment->getStatus() && $this->runPaymentPostUpdate) {
             $this->paymentService->setTicketsCostAsSold($payment);
             $this->paymentService->calculateTicketsPromocode($payment);
 

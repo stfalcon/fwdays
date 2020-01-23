@@ -2,18 +2,30 @@
 
 namespace App\Command;
 
-use App\Entity\TicketCost;
+use App\Repository\TicketCostRepository;
 use App\Traits\EntityManagerTrait;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class StfalconRecalculateTicketSoldCount.
  */
-class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
+class StfalconRecalculateTicketSoldCountCommand extends Command
 {
     use EntityManagerTrait;
+
+    private $ticketCostRepository;
+
+    /**
+     * @param TicketCostRepository $ticketCostRepository
+     */
+    public function __construct(TicketCostRepository $ticketCostRepository)
+    {
+        parent::__construct();
+
+        $this->ticketCostRepository = $ticketCostRepository;
+    }
 
     /**
      * Set options.
@@ -25,13 +37,10 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
             ->setDescription('Recalculate tickets sold count in blocks');
     }
 
-    /**
-     * @param InputInterface  $input  Input
-     * @param OutputInterface $output Output
-     */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    /** {@inheritdoc} */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $ticketsCost = $this->em->getRepository(TicketCost::class)->findAll();
+        $ticketsCost = $this->ticketCostRepository->findAll();
         foreach ($ticketsCost as $ticketCost) {
             $saveCount = $ticketCost->getSoldCount();
             $newCount = $ticketCost->recalculateSoldCount();
@@ -41,5 +50,7 @@ class StfalconRecalculateTicketSoldCountCommand extends ContainerAwareCommand
         }
 
         $this->em->flush();
+
+        return 0;
     }
 }

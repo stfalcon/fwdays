@@ -2,6 +2,8 @@
 
 namespace App\Admin\AbstractClass;
 
+use App\Entity\AbstractClass\AbstractTranslation;
+use App\Model\Translatable\TranslatableInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
@@ -26,11 +28,12 @@ class AbstractTranslateAdmin extends AbstractAdmin
     }
 
     /**
-     * @param $object
+     * @param TranslatableInterface $object
      */
-    public function removeNullTranslate($object): void
+    public function removeNullTranslate(TranslatableInterface $object): void
     {
-        foreach ($object->getTranslations() as $key => $translation) {
+        /** @var AbstractTranslation $translation */
+        foreach ($object->getTranslations() as $translation) {
             if (!$translation->getContent()) {
                 $object->getTranslations()->removeElement($translation);
             }

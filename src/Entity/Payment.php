@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="App\Repository\PaymentRepository")
+ * @ORM\EntityListeners({
+ *     "App\EventListener\ORM\PaymentListener",
+ * })
  */
 class Payment
 {

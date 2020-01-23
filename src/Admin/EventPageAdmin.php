@@ -12,14 +12,12 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
- * Class EventPageAdmin.
+ * EventPageAdmin.
  */
 final class EventPageAdmin extends AbstractPageAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
-     *
-     * @return \Sonata\AdminBundle\Datagrid\ListMapper|void
      */
     protected function configureListFields(ListMapper $listMapper): void
     {

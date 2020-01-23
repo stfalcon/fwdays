@@ -57,7 +57,7 @@ services:
         class: App\Admin\MailAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Рассылки }
-        arguments: ['', 'App\Entity\Mail', App\Controller\MailAdminController]
+        arguments: ['', 'App\Entity\Mail', App\Controller\MailAdminController, '@App\Repository\UserRepository', '@App\Repository\TicketRepository']
         calls:
             - [addChild, ['@app.admin.mail_queue']]
 
@@ -119,4 +119,4 @@ services:
         class: App\Admin\MailAdmin
         tags:
             - { name: mail_admin, manager_type: orm }
-        arguments: ['', 'App\Entity\Mail', 'App\Controller\MailAdminController']
+        arguments: ['', 'App\Entity\Mail', 'App\Controller\MailAdminController', '@App\Repository\UserRepository', '@App\Repository\TicketRepository']

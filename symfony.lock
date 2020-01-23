@@ -56,6 +56,21 @@
             "tests/unit.suite.yml"
         ]
     },
+    "codeception/lib-asserts": {
+        "version": "1.10.1"
+    },
+    "codeception/lib-innerbrowser": {
+        "version": "1.2.3"
+    },
+    "codeception/module-asserts": {
+        "version": "1.1.1"
+    },
+    "codeception/module-phpbrowser": {
+        "version": "1.0.0"
+    },
+    "codeception/module-webdriver": {
+        "version": "1.0.1"
+    },
     "codeception/phpunit-wrapper": {
         "version": "8.1.0"
     },
@@ -409,6 +424,9 @@
     },
     "php-http/stopwatch-plugin": {
         "version": "1.2.0"
+    },
+    "php-webdriver/webdriver": {
+        "version": "1.7.1"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"

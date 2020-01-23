@@ -123,7 +123,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('slug')

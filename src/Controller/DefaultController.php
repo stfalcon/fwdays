@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Model\UserManager;
 use App\Repository\EventRepository;
 use App\Service\ReferralService;
-use App\Traits\TokenStorageTrait;
 use App\Traits\ValidatorTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
