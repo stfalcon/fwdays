@@ -110,11 +110,21 @@ class EventAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        /** @var Event $subject */
+        /** @var Event|null $subject */
         $subject = $this->getSubject();
-        if (null !== $subject->getId()) {
+        $objectId = null;
+        $logo = null;
+        $smallLogo = null;
+        $backGround = null;
+        $video = null;
+        if (\is_object($subject) && null !== $subject->getId()) {
             $this->saveCity = $subject->getCity();
             $this->savePlace = $subject->getPlace();
+            $objectId = $subject->getId();
+            $logo = $subject->getLogo();
+            $smallLogo = $subject->getSmallLogo();
+            $backGround = $subject->getBackground();
+            $video = $subject->getHeaderVideo();
         }
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
@@ -186,8 +196,8 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => 'Цены события',
                             'by_reference' => false,
                             'type_options' => ['delete' => true],
-                            'btn_add' => null === $subject->getId() ? false : 'Добавить цену',
-                            'help' => null === $subject->getId() ? 'добавление цен возможно только после создания события'
+                            'btn_add' => null === $objectId ? false : 'Добавить цену',
+                            'help' => null === $objectId ? 'добавление цен возможно только после создания события'
                                 : 'добавьте блоки с ценами на билеты',
                         ],
                         [
@@ -219,8 +229,8 @@ class EventAdmin extends AbstractTranslateAdmin
                         'logoFile',
                         FileType::class,
                         [
-                            'label' => $subject->getLogo() ? 'Логотип | '.$subject->getLogo() : 'Логотип',
-                            'required' => null === $subject->getLogo(),
+                            'label' => $logo ? 'Логотип | '.$logo : 'Логотип',
+                            'required' => null === $logo,
                             'help' => 'Основной логотип.',
                         ]
                     )
@@ -228,7 +238,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         'smallLogoFile',
                         FileType::class,
                         [
-                            'label' => $subject->getSmallLogo() ? 'Мини логотип | '.$subject->getSmallLogo() : 'Мини логотип',
+                            'label' => $smallLogo ? 'Мини логотип | '.$smallLogo : 'Мини логотип',
                             'required' => false,
                             'help' => 'Если не указан, тогда используется основной.',
                         ]
@@ -239,7 +249,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         'backgroundFile',
                         FileType::class,
                         [
-                            'label' => $subject->getBackground() ? 'Изображение | '.$subject->getBackground() : 'Изображение',
+                            'label' => $backGround ? 'Изображение | '.$backGround : 'Изображение',
                             'required' => false,
                             'help' => 'Фоновое изображение в шапке ивента.',
                         ]
@@ -248,7 +258,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         'headerVideoFile',
                         FileType::class,
                         [
-                            'label' => $subject->getHeaderVideo() ? 'Видео | '.$subject->getHeaderVideo() : 'Видео',
+                            'label' => $video ? 'Видео | '.$video : 'Видео',
                             'required' => false,
                             'help' => 'Фоновое видео в шапке ивента.',
                         ]
@@ -264,8 +274,8 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => 'Блоки отображения события',
                             'by_reference' => false,
                             'type_options' => ['delete' => true],
-                            'btn_add' => null === $subject->getId() ? false : 'Добавить блок',
-                            'help' => null === $subject->getId() ? 'добавление блоков возможно только после создания события'
+                            'btn_add' => null === $objectId ? false : 'Добавить блок',
+                            'help' => null === $objectId ? 'добавление блоков возможно только после создания события'
                                 : 'добавьте блоки отображения',
                         ],
                         [
