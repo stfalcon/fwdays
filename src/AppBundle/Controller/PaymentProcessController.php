@@ -97,7 +97,7 @@ class PaymentProcessController extends Controller
     {
         $session = $this->get('session');
         $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
-        $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
+//        $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
             $data = $request->query->all();
