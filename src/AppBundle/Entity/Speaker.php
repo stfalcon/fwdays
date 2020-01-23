@@ -53,6 +53,9 @@ class Speaker implements Translatable
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -60,6 +63,9 @@ class Speaker implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      *
      * @Gedmo\Translatable(fallback=true)
      */
@@ -69,6 +75,9 @@ class Speaker implements Translatable
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -76,6 +85,9 @@ class Speaker implements Translatable
      * @var string
      *
      * @ORM\Column(name="company", type="string", length=255)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $company;
 
@@ -169,6 +181,8 @@ class Speaker implements Translatable
      * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false, options={"default":"1"})
+     *
+     * @Assert\NotNull()
      */
     protected $sortOrder = 1;
 
