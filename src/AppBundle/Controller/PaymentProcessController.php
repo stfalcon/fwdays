@@ -97,18 +97,18 @@ class PaymentProcessController extends Controller
     {
         $session = $this->get('session');
         $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
-//        $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
+        $session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
             $data = $request->query->all();
             $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
-            if (null === $paymentId) {
-                throw new BadRequestHttpException();
-            }
+//            if (null === $paymentId) {
+//                throw new BadRequestHttpException();
+//            }
         }
 
         /** @var Payment|null $payment */
-        $payment = $this->getDoctrine()->getRepository(Payment::class)->find($paymentId);
+        $payment = null !== $paymentId ? $this->getDoctrine()->getRepository(Payment::class)->find($paymentId) : null;
 
         $eventName = '';
         $eventType = '';
