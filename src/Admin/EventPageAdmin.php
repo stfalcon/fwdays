@@ -6,6 +6,7 @@ use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractPageAdmin;
 use App\Entity\Event;
 use App\Service\LocalsRequiredService;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -83,6 +84,30 @@ final class EventPageAdmin extends AbstractPageAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('event');
+            ->add(
+                'event',
+                null,
+                [],
+                EntityType::class,
+                ['choices' => $this->getEvents()]
+            );
+    }
+
+    /**
+     * @return array
+     */
+    private function getSlugChoice(): array
+    {
+        return ['program' => 'program', 'venue' => 'venue'];
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

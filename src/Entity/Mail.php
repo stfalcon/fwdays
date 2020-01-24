@@ -367,9 +367,9 @@ class Mail implements TranslatableInterface
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

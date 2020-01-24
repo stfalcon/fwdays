@@ -52,6 +52,22 @@ class SigninCest
     /**
      * @param AcceptancePhpWebTester $I
      */
+    public function cabinetPageAllowed(AcceptancePhpWebTester $I): void
+    {
+        $I->wantTo('Check cabinet allowed for user.');
+        $I->amOnPage('/');
+        static::iAmNotSigned($I);
+        $I->amOnPage('/login');
+        static::fillLoginFieldsAdmin($I);
+        $I->click('#login-form- button[type=submit]');
+        $I->seeCurrentUrlEquals('/index_test.php');
+        $I->amOnPage('/cabinet');
+        $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    }
+
+    /**
+     * @param AcceptancePhpWebTester $I
+     */
     private static function fillLoginFieldsAdmin(AcceptancePhpWebTester $I): void
     {
         $I->fillField('_username', 'admin@fwdays.com');

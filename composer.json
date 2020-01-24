@@ -143,7 +143,7 @@
         "ci:doctrine-schema-validate": [
             "bin/console doctrine:database:create --if-not-exists",
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
-            "bin/console doctrine:schema:validate"
+            "bin/console doctrine:schema:validate --skip-sync"
         ],
         "ci:twig-lint": "bin/console lint:twig templates/",
         "ci:yaml-lint": [

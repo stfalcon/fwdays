@@ -72,6 +72,8 @@ class Sponsor implements TranslatableInterface
      * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
+     *
+     * @Assert\NotNull()
      */
     protected $sortOrder = 1;
 

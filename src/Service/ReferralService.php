@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Payment;
-use App\Entity\Ticket;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\User\UserService;
@@ -19,10 +18,9 @@ class ReferralService
 {
     use EntityManagerTrait;
 
-    const REFERRAL_CODE = 'REFERRALCODE';
+    const REFERRAL_COOKIE_NAME = 'REFERRALCODE';
+    const REFERRAL_COOKIE_LIFETIME = 3600 * 24 * 365 * 10;
     const REFERRAL_BONUS = 100;
-    const SPECIAL_REFERRAL_BONUS = 500;
-    const SPECIAL_BONUS_EVENT = 'js-fwdays-2019';
 
     private $userService;
     private $userRepository;
@@ -70,13 +68,8 @@ class ReferralService
     {
         $userReferral = $payment->getUser()->getUserReferral();
 
-        if ($userReferral instanceof User) {
-            $tickets = $payment->getTickets();
-            /** @var Ticket $firstTicket */
-            $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
-            $bonus = (null !== $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug()) ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
-
-            $balance = $userReferral->getBalance() + $bonus;
+        if ($userReferral) {
+            $balance = $userReferral->getBalance() + self::REFERRAL_BONUS;
             $userReferral->setBalance($balance);
             $this->em->flush();
         }
@@ -101,6 +94,8 @@ class ReferralService
      * @param string $referralCode
      *
      * @return User|null
+     *
+     * @throws \Exception
      */
     public function getUserByReferralCode(string $referralCode): ?User
     {
@@ -117,7 +112,8 @@ class ReferralService
         if ($request->query->has('ref')) {
             $code = $request->query->get('ref');
 
-            if (false === $request->cookies->has(self::REFERRAL_CODE)) {
+            //уже используется реф. код
+            if (false === $request->cookies->has(self::REFERRAL_COOKIE_NAME)) {
                 $user = $this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL);
 
                 if ($user instanceof User) {
@@ -135,9 +131,9 @@ class ReferralService
                 }
 
                 $response = new Response();
-                $expire = time() + (10 * 365 * 24 * 3600);
-                //@todo check this
-                $response->headers->setCookie(new Cookie(self::REFERRAL_CODE, $code, $expire));
+                $expire = time() + self::REFERRAL_COOKIE_LIFETIME;
+
+                $response->headers->setCookie(new Cookie(self::REFERRAL_COOKIE_NAME, $code, $expire));
                 $response->send();
             }
         }

@@ -7,6 +7,7 @@ use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\Speaker;
 use App\Service\LocalsRequiredService;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -109,14 +110,15 @@ class SpeakerAdmin extends AbstractTranslateAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
+        $choices = ['choices' => $this->getEvents()];
         $filter
             ->add('id')
             ->add('slug')
             ->add('name')
-            ->add('events', null, ['label' => 'Участвует в событиях'])
-            ->add('candidateEvents', null, ['label' => 'Кандидат на события'])
-            ->add('committeeEvents', null, ['label' => 'Программный комитет'])
-            ->add('expertEvents', null, ['label' => 'Эксперт дискуссий'])
+            ->add('events', null, ['label' => 'Участвует в событиях'], EntityType::class, $choices)
+            ->add('candidateEvents', null, ['label' => 'Кандидат на события'], EntityType::class, $choices)
+            ->add('committeeEvents', null, ['label' => 'Программный комитет'], EntityType::class, $choices)
+            ->add('expertEvents', null, ['label' => 'Эксперт дискуссий'], EntityType::class, $choices)
         ;
     }
 
@@ -148,5 +150,15 @@ class SpeakerAdmin extends AbstractTranslateAdmin
             $dataManager = $container->get('liip_imagine.data.manager');
             $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
         }
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Admin;
 
+use App\Entity\Event;
 use App\Entity\Payment;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -152,7 +155,7 @@ final class TicketAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('event', null, ['label' => 'Событие'])
+            ->add('event', null, ['label' => 'Событие'], EntityType::class, ['choices' => $this->getEvents()])
             ->add('user', null, ['label' => 'Пользователь'])
             ->add('user.email', null, ['label' => 'E-Mail'])
             ->add('user.phone', null, ['label' => 'Тел.'])
@@ -209,5 +212,15 @@ final class TicketAdmin extends AbstractAdmin
             ->add('payment', TextType::class, ['label' => 'Оплата', 'disabled' => true])
             ->add('used', null, ['label' => 'Использован', 'disabled' => true])
         ;
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

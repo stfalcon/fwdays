@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * App\Entity\MailQueue.
+ * MailQueue.
  *
  * @ORM\Table(name="event__mails_queues")
- * @ORM\Entity()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\MailQueueRepository")
  */
 class MailQueue
@@ -27,6 +28,8 @@ class MailQueue
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Assert\NotNull()
      */
     private $user;
 
@@ -35,6 +38,8 @@ class MailQueue
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Mail", inversedBy="mailQueues", cascade={"persist"})
      * @ORM\JoinColumn(name="mail_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @Assert\NotNull()
      */
     private $mail;
 
@@ -61,9 +66,9 @@ class MailQueue
     /**
      * @param bool $isOpen
      *
-     * @return MailQueue
+     * @return $this
      */
-    public function setIsOpen($isOpen = true)
+    public function setIsOpen($isOpen = true): self
     {
         $this->isOpen = $isOpen;
 
@@ -73,7 +78,7 @@ class MailQueue
     /**
      * @return bool
      */
-    public function getIsOpen()
+    public function getIsOpen(): bool
     {
         return $this->isOpen;
     }
@@ -81,9 +86,9 @@ class MailQueue
     /**
      * @param bool $isUnsubscribe
      *
-     * @return MailQueue
+     * @return $this
      */
-    public function setIsUnsubscribe($isUnsubscribe = true)
+    public function setIsUnsubscribe($isUnsubscribe = true): self
     {
         $this->isUnsubscribe = $isUnsubscribe;
 
@@ -129,7 +134,7 @@ class MailQueue
     /**
      * @return bool
      */
-    public function getIsSent()
+    public function getIsSent(): bool
     {
         return $this->isSent;
     }
