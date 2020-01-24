@@ -4,4 +4,8 @@ framework:
         collect: false
 
 parameters:
-    spool_path: '%kernel.root_dir%/spool'
+    spool_path: '%kernel.project_dir%/var/spool'
+    app.sponsor_image: "%kernel.environment%/uploads/sponsors"
+    app.speaker_image: "%kernel.environment%/uploads/speakers"
+    app.event_image: "%kernel.environment%/uploads/events"
+    app.upload_image: "%kernel.environment%/uploads/images"

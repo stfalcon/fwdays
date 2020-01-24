@@ -47,14 +47,14 @@ class PdfGeneratorHelper
     }
 
     /**
-     * Generate PDF-file of ticket.
-     *
      * @param Ticket $ticket
      * @param string $html
      *
-     * @return mixed
+     * @return string
+     *
+     * @throws \Mpdf\MpdfException
      */
-    public function generatePdfFile(Ticket $ticket, $html)
+    public function generatePdfFile(Ticket $ticket, string $html)
     {
         $constructorArgs = [
             'mode' => 'BLANK',
@@ -108,7 +108,7 @@ class PdfGeneratorHelper
         $this->qrCode->setText($url);
         $this->qrCode->setSize(105);
         $this->qrCode->setPadding(0);
-        $qrCodeBase64 = base64_encode($this->qrCode->get());
+        $qrCodeBase64 = \base64_encode($this->qrCode->get());
         $templateContent = $twig->load('Ticket/_new_pdf.html.twig');
 
         $event = $ticket->getEvent();
@@ -123,21 +123,13 @@ class PdfGeneratorHelper
             } else {
                 $imageData = null;
             }
-            $base64EventSmallLogo = base64_encode($imageData);
+            $base64EventSmallLogo = \base64_encode($imageData);
         } catch (\Exception $e) {
             $base64EventSmallLogo = '';
         }
 
-        try {
-            $base64CircleLeftImg = base64_encode(\file_get_contents('assets/img/email/circle_left.png'));
-        } catch (\Exception $e) {
-            $base64CircleLeftImg = '';
-        }
-        try {
-            $base64CircleRightImg = base64_encode(\file_get_contents('assets/img/email/circle_right.png'));
-        } catch (\Exception $e) {
-            $base64CircleRightImg = '';
-        }
+        $base64CircleLeftImg = \base64_encode(\file_get_contents('build/img/email/circle_left.png'));
+        $base64CircleRightImg = \base64_encode(\file_get_contents('build/img/email/circle_right.png'));
 
         return $templateContent->render(
             [

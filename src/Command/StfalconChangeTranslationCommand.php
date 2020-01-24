@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * StfalconMailerCommand.
+ * StfalconChangeTranslationCommand.
  */
 class StfalconChangeTranslationCommand extends Command
 {
