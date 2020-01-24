@@ -15,7 +15,7 @@ class WayForPayService extends AbstractPaymentProcessService
     public const WFP_PAY_BY_WIDGET = 'wfp_pay_widget';
     public const WFP_PAY_BY_SECURE_PAGE = 'wfp_pay_secure_page';
 
-    private const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
+    public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
     private const WFP_TRANSACTION_PENDING_STATUS = 'Pending';
     private const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
 
