@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
+use App\Service\PaymentProcess\WayForPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,11 @@ class PaymentProcessController extends Controller
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
                 return $this->redirectToRoute('payment_success');
             }
+
+            if (WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $transactionStatus && $paymentSystem instanceof WayForPayService) {
+                return $this->redirectToRoute('payment_success');
+            }
+
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
                 return $this->redirectToRoute('payment_pending');
             }
@@ -96,13 +102,13 @@ class PaymentProcessController extends Controller
         if (null === $paymentId) {
             $data = $request->query->all();
             $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
-            if (null === $paymentId) {
-                throw new BadRequestHttpException();
-            }
+//            if (null === $paymentId) {
+//                throw new BadRequestHttpException();
+//            }
         }
 
         /** @var Payment|null $payment */
-        $payment = $this->getDoctrine()->getRepository(Payment::class)->find($paymentId);
+        $payment = null !== $paymentId ? $this->getDoctrine()->getRepository(Payment::class)->find($paymentId) : null;
 
         $eventName = '';
         $eventType = '';
