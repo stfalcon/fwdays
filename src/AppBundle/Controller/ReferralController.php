@@ -35,7 +35,7 @@ class ReferralController extends Controller
             $response = new Response();
             $expire = time() + (10 * 365 * 24 * 3600);
 
-            $response->headers->setCookie(new Cookie(ReferralService::REFERRAL_CODE, $code, $expire));
+            $response->headers->setCookie(new Cookie(ReferralService::REFERRAL_COOKIE_NAME, $code, $expire));
             $response->send();
         }
 
