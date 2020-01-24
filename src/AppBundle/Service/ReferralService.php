@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Payment;
-use App\Entity\Ticket;
 use App\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -15,10 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReferralService
 {
-    const REFERRAL_CODE = 'REFERRALCODE';
+    const REFERRAL_COOKIE_NAME = 'REFERRALCODE';
+    const REFERRAL_COOKIE_LIFETIME = 3600 * 24 * 365 * 10;
     const REFERRAL_BONUS = 100;
-    const SPECIAL_REFERRAL_BONUS = 500;
-    const SPECIAL_BONUS_EVENT = 'js-fwdays-2019';
 
     /**
      * @var Container
@@ -79,13 +77,8 @@ class ReferralService
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         $userReferral = $payment->getUser()->getUserReferral();
 
-        $tickets = $payment->getTickets();
-        /** @var Ticket $firstTicket */
-        $firstTicket = $tickets->count() > 0 ? $tickets[0] : null;
-        $bonus = $firstTicket && self::SPECIAL_BONUS_EVENT === $firstTicket->getEvent()->getSlug() ? self::SPECIAL_REFERRAL_BONUS : self::REFERRAL_BONUS;
-
         if ($userReferral) {
-            $balance = $userReferral->getBalance() + $bonus;
+            $balance = $userReferral->getBalance() + self::REFERRAL_BONUS;
             $userReferral->setBalance($balance);
 
             $em->flush();
@@ -148,7 +141,7 @@ class ReferralService
             $code = $request->query->get('ref');
 
             //уже используется реф. код
-            if (false == $request->cookies->has(self::REFERRAL_CODE)) {
+            if (false == $request->cookies->has(self::REFERRAL_COOKIE_NAME)) {
                 $user = $this->getUser();
 
                 //user authorize
@@ -170,9 +163,9 @@ class ReferralService
                 }
 
                 $response = new Response();
-                $expire = time() + (10 * 365 * 24 * 3600);
+                $expire = time() + self::REFERRAL_COOKIE_LIFETIME;
 
-                $response->headers->setCookie(new Cookie(self::REFERRAL_CODE, $code, $expire));
+                $response->headers->setCookie(new Cookie(self::REFERRAL_COOKIE_NAME, $code, $expire));
                 $response->send();
             }
         }
