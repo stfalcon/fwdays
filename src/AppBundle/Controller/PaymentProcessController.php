@@ -48,6 +48,7 @@ class PaymentProcessController extends Controller
                 if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
                     $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $paymentSystem->getPaymentIdFromData($data));
                 }
+
                 return $this->redirectToRoute('payment_success');
             }
 
