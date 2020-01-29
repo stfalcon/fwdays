@@ -191,13 +191,10 @@ class RegistrationController extends BaseController
         $user->setEmail($response['email']);
 
         $socialID = $response['socialID'];
-        switch ($response['service']) {
-            case 'google':
-                $user->setGoogleID($socialID);
-                break;
-            case 'facebook':
-                $user->setFacebookID($socialID);
-                break;
+        if ('google' === $response['service']) {
+            $user->setGoogleID($socialID);
+        } elseif ('facebook' === $response['service']) {
+            $user->setFacebookID($socialID);
         }
     }
 
