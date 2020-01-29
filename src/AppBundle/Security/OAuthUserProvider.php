@@ -67,8 +67,7 @@ class OAuthUserProvider extends BaseClass
                         throw new NeedUserDataException('need_data');
                     }
                     $this->userManager->updateUser($user);
-                } catch (\Exception $e) {
-                    $needUserData = new NeedUserDataException('needUserData');
+                } catch (NeedUserDataException $needUserData) {
                     $responseArr = [
                         'first_name' => $response->getFirstName(),
                         'last_name' => $response->getLastName(),
