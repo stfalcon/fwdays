@@ -44,12 +44,17 @@ class PaymentProcessController extends Controller
             }
 
             if (WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $transactionStatus && $paymentSystem instanceof WayForPayService) {
+                $session = $this->get('session');
+                if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
+                    $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $paymentSystem->getPaymentIdFromData($data));
+                }
                 return $this->redirectToRoute('payment_success');
             }
 
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
                 return $this->redirectToRoute('payment_pending');
             }
+
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_FAIL === $transactionStatus) {
                 return $this->redirectToRoute('payment_fail');
             }
@@ -93,7 +98,7 @@ class PaymentProcessController extends Controller
      *
      * @return Response
      */
-    public function showSuccessAction(Request $request)
+    public function showSuccessAction(Request $request): Response
     {
         $session = $this->get('session');
         $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
