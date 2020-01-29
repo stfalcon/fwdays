@@ -186,6 +186,10 @@ class RegistrationController extends BaseController
      */
     private function setUserFromOAuthResponse(User $user, array $response): void
     {
+        if (!isset($response['first_name'], $response['last_name'], $response['email'], $response['socialID'])) {
+            return;
+        }
+
         $user->setName($response['first_name']);
         $user->setSurname($response['last_name']);
         $user->setEmail($response['email']);
