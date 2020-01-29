@@ -18,6 +18,7 @@ class WayForPayService extends AbstractPaymentProcessService
     public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
     private const WFP_TRANSACTION_PENDING_STATUS = 'Pending';
     private const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
+    private const WFP_ORDER_NUMBER_KEY = 'orderNo';
 
     protected const TRANSACTION_STATUS = [
         self::TRANSACTION_STATUS_PENDING => self::WFP_TRANSACTION_PENDING_STATUS,
@@ -35,7 +36,9 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function getPaymentIdFromData(array $data): ?string
     {
-        return null;
+        $this->assertArrayKeysExists([self::WFP_ORDER_NUMBER_KEY], $data);
+
+        return $data[self::WFP_ORDER_NUMBER_KEY];
     }
 
     /**
@@ -137,7 +140,7 @@ class WayForPayService extends AbstractPaymentProcessService
         $params['authorizationType'] = 'SimpleSignature';
         $params['merchantTransactionSecureType'] = 'AUTO';
         $params['merchantTransactionType'] = 'SALE';
-        $params['orderNo'] = $payment->getId();
+        $params[self::WFP_ORDER_NUMBER_KEY] = $payment->getId();
         $params['clientFirstName'] = $user->getName();
         $params['clientLastName'] = $user->getSurname();
         $params['clientEmail'] = $user->getEmail();
@@ -158,9 +161,9 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function processData(?array $data): string
     {
-        $this->assertArrayKeysExists(['transactionStatus', 'orderNo', 'merchantSignature'], $data);
+        $this->assertArrayKeysExists(['transactionStatus', self::WFP_ORDER_NUMBER_KEY, 'merchantSignature'], $data);
 
-        return $this->processSystemData($data, 'orderNo', Payment::WAYFORPAY_GATE);
+        return $this->processSystemData($data, self::WFP_ORDER_NUMBER_KEY, Payment::WAYFORPAY_GATE);
     }
 
     /**
