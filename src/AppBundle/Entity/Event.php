@@ -62,6 +62,8 @@ class Event implements Translatable
      * @var ArrayCollection|EventAudience[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\EventAudience", mappedBy="events")
+     *
+     * @Assert\Valid()
      */
     private $audiences;
 
@@ -234,6 +236,8 @@ class Event implements Translatable
      *
      * @ORM\OneToMany(targetEntity="App\Entity\TicketCost",
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
      */
     protected $ticketsCost;
 
@@ -1494,5 +1498,13 @@ class Event implements Translatable
         $this->discussionExperts = $discussionExperts;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDateFromDates(): \DateTime
+    {
+        return $this->dateEnd instanceof \DateTime ? $this->dateEnd : $this->date;
     }
 }

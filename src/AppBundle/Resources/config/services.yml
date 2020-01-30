@@ -50,6 +50,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    App\EventListener\ORM\Blameable\BlameableListener:
+        calls:
+            - [setTokenStorage, ['@security.token_storage']]
+        tags:
+            - { name: doctrine.orm.entity_listener, lazy: true }
+
     App\Helper\NewPdfGeneratorHelper:
         arguments:
             - '@twig'
@@ -79,11 +85,10 @@ services:
 
     App\Service\PaymentProcess\WayForPayService:
         arguments:
-            - '%app.config%'
-            - '@translator'
-            - '@request_stack'
+            - "%app.config%"
+            - "@translator"
+            - "@request_stack"
             - '@router'
-            - '@security.token_storage'
             - '@doctrine.orm.entity_manager'
             - '@logger'
             - '@App\Service\ReferralService'

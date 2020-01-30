@@ -70,23 +70,18 @@ class StfalconMailerCommand extends ContainerAwareCommand
         $mailsQueue = $queueRepository->getMessages($limit);
         $logger = $container->get('logger');
         $this->emailHashValidationService = $container->get(EmailHashValidationService::class);
+        $router = $container->get('router');
 
         /* @var $mail Mail */
         foreach ($mailsQueue as $item) {
             $user = $item->getUser();
             $mail = $item->getMail();
 
-            if (!(
-                $user &&
-                $mail &&
-                $user->isEnabled() &&
-                ($user->isSubscribe() || $mail->isIgnoreUnsubscribe()) &&
-                $user->isEmailExists() &&
-                filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
-            )) {
+            if (null === $user || null === $mail || !$user->isEnabled() || !$user->isEmailExists() || !($user->isSubscribe() || $mail->isIgnoreUnsubscribe())) {
                 $mail->decTotalMessages();
                 $em->remove($item);
                 $em->flush();
+
                 continue;
             }
 
@@ -107,7 +102,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
             $hash = $this->emailHashValidationService->generateHash($user, $mailId);
 
             $headers = $message->getHeaders();
-            $http = $container->get('router')->generate(
+            $http = $router->generate(
                 'unsubscribe',
                 [
                     'hash' => $hash,

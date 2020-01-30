@@ -13,12 +13,12 @@ use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -26,8 +26,6 @@ use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 /**
  * RegistrationController.
- *
- * @Security("has_role('IS_AUTHENTICATED_ANONYMOUSLY')")
  */
 class RegistrationController extends BaseController
 {
@@ -189,18 +187,17 @@ class RegistrationController extends BaseController
      */
     private function setUserFromOAuthResponse(User $user, array $response): void
     {
+        $this->assertArrayKeysExists(['first_name', 'last_name', 'email', 'socialID'], $response);
+
         $user->setName($response['first_name']);
         $user->setSurname($response['last_name']);
         $user->setEmail($response['email']);
 
         $socialID = $response['socialID'];
-        switch ($response['service']) {
-            case 'google':
-                $user->setGoogleID($socialID);
-                break;
-            case 'facebook':
-                $user->setFacebookID($socialID);
-                break;
+        if ('google' === $response['service']) {
+            $user->setGoogleID($socialID);
+        } elseif ('facebook' === $response['service']) {
+            $user->setFacebookID($socialID);
         }
     }
 
@@ -265,6 +262,19 @@ class RegistrationController extends BaseController
                 $response
             );
         } catch (AccountStatusException $ex) {
+        }
+    }
+
+    /**
+     * @param array $keysArray
+     * @param array $checkArray
+     */
+    private function assertArrayKeysExists(array $keysArray, array $checkArray): void
+    {
+        foreach ($keysArray as $key) {
+            if (!\array_key_exists($key, $checkArray)) {
+                throw new BadRequestHttpException(\sprintf('data key %s not found', $key));
+            }
         }
     }
 }

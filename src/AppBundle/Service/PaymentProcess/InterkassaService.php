@@ -23,7 +23,15 @@ class InterkassaService extends AbstractPaymentProcessService
     private const IK_TRANSACTION_APPROVED_STATUS = 'success';
 
     private const PAYMENT_SYSTEM_NAME = 'Interkassa';
+    private const ORDER_NUMBER_KEY = 'ik_pm_no';
 
+    protected $transactionStatus = [
+        self::IK_TRANSACTION_APPROVED_STATUS => self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS,
+        self::TRANSACTION_STATUS_PENDING => self::TRANSACTION_STATUS_PENDING,
+        self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
+    ];
+
+    protected $transactionStatusKey = 'ik_inv_st';
     protected $isOverrideCallbacks;
 
     /**
@@ -51,9 +59,9 @@ class InterkassaService extends AbstractPaymentProcessService
      */
     public function getPaymentIdFromData(array $data): ?string
     {
-        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_inv_st'], $data);
+        $this->assertArrayKeysExists([self::ORDER_NUMBER_KEY], $data);
 
-        return $this->isValidShop($data) && $this->isApproved($data) ? $data['ik_pm_no'] : null;
+        return $data[self::ORDER_NUMBER_KEY];
     }
 
     /**
@@ -128,7 +136,7 @@ class InterkassaService extends AbstractPaymentProcessService
 
         $params = [
             'ik_co_id' => $this->appConfig['interkassa']['shop_id'],
-            'ik_pm_no' => $payment->getId(),
+            self::ORDER_NUMBER_KEY => $payment->getId(),
             'ik_am' => $payment->getAmount(),
             'ik_cur' => 'uah',
             'ik_desc' => $description,
@@ -154,9 +162,17 @@ class InterkassaService extends AbstractPaymentProcessService
      */
     public function processData(?array $data): string
     {
-        $this->assertArrayKeysExists(['ik_pm_no', 'ik_co_id', 'ik_am', 'ik_sign', 'ik_inv_st'], $data);
+        $this->assertArrayKeysExists([self::ORDER_NUMBER_KEY, 'ik_co_id', 'ik_am', 'ik_sign', $this->transactionStatusKey], $data);
 
-        return $this->processSystemData($data, 'ik_pm_no', Payment::INTERKASSA_GATE);
+        return $this->processSystemData($data, self::ORDER_NUMBER_KEY, Payment::INTERKASSA_GATE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNumberKey(): string
+    {
+        return self::ORDER_NUMBER_KEY;
     }
 
     /**
@@ -165,21 +181,6 @@ class InterkassaService extends AbstractPaymentProcessService
     protected function getSystemName(): string
     {
         return self::PAYMENT_SYSTEM_NAME;
-    }
-
-    /**
-     * @param array $data
-     * @param bool  $isUnprocessedTransaction
-     *
-     * @return string
-     */
-    protected function getStatusFromData(array $data, bool $isUnprocessedTransaction = false): string
-    {
-        if (!isset($data['ik_inv_st']) || $isUnprocessedTransaction) {
-            return self::TRANSACTION_STATUS_FAIL;
-        }
-
-        return $data['ik_inv_st'];
     }
 
     /**
@@ -230,7 +231,7 @@ class InterkassaService extends AbstractPaymentProcessService
      */
     private function isApproved(array $data): bool
     {
-        return self::IK_TRANSACTION_APPROVED_STATUS === $this->getStatusFromData($data);
+        return self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $this->getStatusFromData($data);
     }
 
     /**

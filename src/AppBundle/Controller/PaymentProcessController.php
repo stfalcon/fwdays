@@ -39,11 +39,18 @@ class PaymentProcessController extends Controller
 
         if ($paymentSystem->isUseRedirectByStatus()) {
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
+                $session = $this->get('session');
+                if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
+                    $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $paymentSystem->getPaymentIdFromData($data));
+                }
+
                 return $this->redirectToRoute('payment_success');
             }
+
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
                 return $this->redirectToRoute('payment_pending');
             }
+
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_FAIL === $transactionStatus) {
                 return $this->redirectToRoute('payment_fail');
             }
@@ -87,7 +94,7 @@ class PaymentProcessController extends Controller
      *
      * @return Response
      */
-    public function showSuccessAction(Request $request)
+    public function showSuccessAction(Request $request): Response
     {
         $session = $this->get('session');
         $paymentId = $session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
@@ -95,14 +102,14 @@ class PaymentProcessController extends Controller
 
         if (null === $paymentId) {
             $data = $request->query->all();
-            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
-            if (null === $paymentId) {
-                throw new BadRequestHttpException();
+            $paymentSystem = $this->get('app.payment_system.service');
+            if (isset($data[$paymentSystem->getOrderNumberKey()])) {
+                $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
             }
         }
 
         /** @var Payment|null $payment */
-        $payment = $this->getDoctrine()->getRepository(Payment::class)->find($paymentId);
+        $payment = null !== $paymentId ? $this->getDoctrine()->getRepository(Payment::class)->find($paymentId) : null;
 
         $eventName = '';
         $eventType = '';

@@ -71,8 +71,8 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
      */
     public function processAuthSuccess(Request $request, ?User $user)
     {
-        if ($request->cookies->has(ReferralService::REFERRAL_CODE)) {
-            $referralCode = $request->cookies->get(ReferralService::REFERRAL_CODE);
+        if ($request->cookies->has(ReferralService::REFERRAL_COOKIE_NAME)) {
+            $referralCode = $request->cookies->get(ReferralService::REFERRAL_COOKIE_NAME);
             if ($user && $this->referralService->getReferralCode($user) !== $referralCode) {
                 $userReferral = $this->userManager->findUserBy(['referralCode' => $referralCode]);
                 if ($userReferral) {

@@ -2,10 +2,13 @@
 
 namespace App\Admin;
 
+use App\Entity\Event;
+use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class TicketCostAdmin.
@@ -19,7 +22,7 @@ final class TicketCostAdmin extends AbstractAdmin
     {
         $datagrid
             ->add('name')
-            ->add('event')
+            ->add('event', null, [], EntityType::class, ['choices' => $this->getEvents()])
             ->add('amount')
             ->add('count')
             ->add('soldCount')
@@ -61,5 +64,15 @@ final class TicketCostAdmin extends AbstractAdmin
             ->add('ticketsRunOut', null, ['label' => 'заканчиваются'])
             ->add('comingSoon', null, ['label' => 'вскоре'])
         ;
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents(): array
+    {
+        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+
+        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

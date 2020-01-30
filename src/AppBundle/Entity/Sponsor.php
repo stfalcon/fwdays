@@ -47,6 +47,8 @@ class Sponsor implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank()
      */
     protected $name;
 
@@ -70,6 +72,8 @@ class Sponsor implements Translatable
      * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
+     *
+     * @Assert\NotNull()
      */
     protected $sortOrder = 1;
 

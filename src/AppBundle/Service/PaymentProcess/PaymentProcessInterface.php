@@ -55,4 +55,9 @@ interface PaymentProcessInterface
      * @return string|null
      */
     public function getPaymentIdFromData(array $data): ?string;
+
+    /**
+     * @return string
+     */
+    public function getOrderNumberKey(): string;
 }
