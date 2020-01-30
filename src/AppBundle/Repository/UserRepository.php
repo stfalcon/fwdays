@@ -172,10 +172,10 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @param QueryBuilder    $qb
-     * @param Andx            $andX
-     * @param Collection      $paymentEvents
-     * @param string|null     $status
+     * @param QueryBuilder $qb
+     * @param Andx         $andX
+     * @param Collection   $paymentEvents
+     * @param string|null  $status
      */
     private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, Collection $paymentEvents, ?string $status = null): void
     {
