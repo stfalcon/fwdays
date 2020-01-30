@@ -3,9 +3,13 @@ services:
     nginx:
         image: nginx:1.17.0
         ports:
-            - "127.0.0.1:8000:80"
+            - "127.0.0.1:8000:443"
+            # - "127.0.0.1:8000:80"
         volumes:
-            - "./docker-configs/fwdays-dev/configs/nginx.conf:/etc/nginx/conf.d/default.conf"
+            - "./docker-configs/fwdays-dev/configs/vhost_ssl.conf:/etc/nginx/conf.d/default.conf"
+            # - "./docker-configs/fwdays-dev/configs/vhost_ssl.conf:/etc/nginx/default.conf"
+            - "./docker-configs/fwdays-dev/ssl/fullchain.pem:/etc/nginx/fullchain.pem"
+            - "./docker-configs/fwdays-dev/ssl/privkey.pem:/etc/nginx/privkey.pem"  
             - ".:/app:cached"
         depends_on:
             - "php"
