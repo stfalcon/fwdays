@@ -373,21 +373,21 @@ class PaymentService
             $payment = $paymentRepository->findPendingPaymentByUserWithoutEvent($user);
         }
 
-        if (!$ticket && !$payment) {
+        if (!$ticket instanceOf Ticket && !$payment instanceof Payment) {
             $user->addWantsToVisitEvents($event);
             $ticket = $this->ticketService->createTicket($event, $user);
         }
-
-        if (!$payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
+        /** @var Ticket $ticket */
+        if (!$payment instanceOf Payment && $ticket->getPayment() && !$ticket->getPayment()->isReturned()) {
             $payment = $ticket->getPayment();
             if ($payment->isPending()) {
                 $payment->setUser($ticket->getUser());
             }
         }
 
-        if ($ticket && !$payment) {
+        if ($ticket instanceOf Ticket && !$payment instanceof Payment) {
             $payment = $this->createPaymentForCurrentUserWithTicket($ticket);
-        } elseif ($ticket && $payment->isPaid()) {
+        } elseif ($ticket instanceOf Ticket && $payment->isPaid()) {
             $payment = $this->createPaymentForCurrentUserWithTicket(null);
         }
 

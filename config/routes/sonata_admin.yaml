@@ -1,6 +1,5 @@
 admin_area:
-    resource: '/app/src/Resources/config/sonata_admin.xml'
-#    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    resource: '../../src/Resources/config/sonata_admin.xml'
     prefix: /admin
     defaults: { _locale: uk}
     options:

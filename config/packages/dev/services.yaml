@@ -1,6 +1,8 @@
 services:
     app.assets.s3:
         class: Aws\S3\S3Client
+        public: true
+        autowire: false
         arguments:
             -
                 version: 'latest'

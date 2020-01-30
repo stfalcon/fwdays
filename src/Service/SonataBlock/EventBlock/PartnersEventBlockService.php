@@ -2,7 +2,9 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
+use App\Entity\Category;
 use App\Entity\Event;
+use App\Repository\CategoryRepository;
 use App\Repository\SponsorRepository;
 use Doctrine\ORM\EntityRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -23,12 +25,12 @@ class PartnersEventBlockService extends AbstractBlockService
     /**
      * PartnersEventBlockService constructor.
      *
-     * @param string            $name
-     * @param EngineInterface   $templating
-     * @param SponsorRepository $partnerRepository
-     * @param EntityRepository  $partnerCategoryRepository
+     * @param string             $name
+     * @param EngineInterface    $templating
+     * @param SponsorRepository  $partnerRepository
+     * @param CategoryRepository $partnerCategoryRepository
      */
-    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, EntityRepository $partnerCategoryRepository)
+    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, CategoryRepository $partnerCategoryRepository)
     {
         parent::__construct($name, $templating);
 
@@ -50,9 +52,9 @@ class PartnersEventBlockService extends AbstractBlockService
         $partners = $this->partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
-        foreach ($partners as $key => $partner) {
+        foreach ($partners as $partner) {
             $partnerCategory = $this->partnerCategoryRepository->find($partner['id']);
-            if ($partnerCategory) {
+            if ($partnerCategory instanceof Category) {
                 $sortedPartners[$partnerCategory->isWideContainer()][$partnerCategory->getSortOrder()][$partnerCategory->getName()][] = $partner[0];
             }
         }

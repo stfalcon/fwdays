@@ -22,7 +22,8 @@ class AssetVersionExtension extends AbstractExtension
      */
     public function __construct(string $projectDir)
     {
-        $this->webRoot = \realpath($projectDir.'/public');
+        $path = \realpath($projectDir.'/public');
+        $this->webRoot = $path ? $path : '';
     }
 
     /**
@@ -47,16 +48,17 @@ class AssetVersionExtension extends AbstractExtension
         $path = \pathinfo(\sprintf('%s/%s', $this->webRoot, $asset));
         $manifestFile = $path['dirname'].\DIRECTORY_SEPARATOR.self::REV_MANIFEST_FILE;
 
-        if (!file_exists($manifestFile)) {
+        if (!\file_exists($manifestFile)) {
             throw new \Exception(\sprintf('Cannot find manifest file: "%s"', $manifestFile));
         }
 
-        $manifestPaths = json_decode(file_get_contents($manifestFile), true);
+        $fileContent = \file_get_contents($manifestFile);
+        $manifestPaths = $fileContent ? \json_decode($fileContent, true) : [];
 
         if (!isset($manifestPaths[$path['basename']])) {
             throw new \Exception(\sprintf('There is no file "%s" in the version manifest!', $path['basename']));
         }
 
-        return pathinfo($asset)['dirname'].\DIRECTORY_SEPARATOR.$manifestPaths[$path['basename']];
+        return \pathinfo($asset)['dirname'].\DIRECTORY_SEPARATOR.$manifestPaths[$path['basename']];
     }
 }

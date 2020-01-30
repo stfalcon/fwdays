@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
 use App\Entity\User;
 use App\Model\UserManager;
 use App\Repository\EventRepository;

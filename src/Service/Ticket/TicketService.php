@@ -356,7 +356,7 @@ class TicketService
             /** @var PaymentRepository $paymentRepository */
             $paymentRepository = $this->em->getRepository(Payment::class);
             $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
-
+            /** @var Ticket|null $ticket */
             $ticket = $this->em->getRepository(Ticket::class)
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         }

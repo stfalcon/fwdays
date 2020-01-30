@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Traits\ValidatorTrait;
+use Aws\S3\S3Client;
+use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +22,25 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class UploadController extends AbstractController
 {
     use ValidatorTrait;
+
+    private $s3Client;
+    private $uploadImagePath;
+    private $awsS3BucketName;
+    private $awsS3PublicEndpoint;
+
+    /**
+     * @param S3Client   $s3Client
+     * @param string     $uploadImagePath
+     * @param string     $awsS3BucketName
+     * @param string     $awsS3PublicEndpoint
+     */
+    public function __construct(S3Client $s3Client, string $uploadImagePath, string $awsS3BucketName, string $awsS3PublicEndpoint)
+    {
+        $this->uploadImagePath = $uploadImagePath;
+        $this->s3Client = $s3Client;
+        $this->awsS3BucketName = $awsS3BucketName;
+        $this->awsS3PublicEndpoint = $awsS3PublicEndpoint;
+    }
 
     /**
      * @Route("/admin/text-area/uploadImage", name="text_area_upload_image", methods={"POST"})
@@ -49,21 +71,18 @@ class UploadController extends AbstractController
         }
         list($width, $height) = \getimagesize($file);
         $extension = $file->guessExtension() ? $file->guessExtension() : $file->getClientOriginalExtension();
-        $newFileName = \md5_file($file->getRealPath()).'.'.$extension;
-
-        $adapter = $this->get('oneup_flysystem.upload_image_filesystem')->getAdapter();
-
+        $pathToFile = \sprintf('%s/%s.%s', $this->uploadImagePath, \md5_file($file->getRealPath()), $extension);
         try {
-            $this->uploadFile($file->getPathname(), $adapter->getPathPrefix().$newFileName);
-            $newFile = $this->getParameter('aws_s3_public_endpoint').'/'.$adapter->getPathPrefix().$newFileName;
+            $this->uploadFile($file->getPathname(), $pathToFile);
+            $fullFileUrl = \sprintf('%s/%s',$this->awsS3PublicEndpoint, $pathToFile);
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
 
         return new JsonResponse(
-            $response = [
+            [
                 'status' => 'success',
-                'src' => $newFile,
+                'src' => $fullFileUrl,
                 'width' => $width,
                 'height' => $height,
             ]
@@ -103,9 +122,8 @@ class UploadController extends AbstractController
     public function upload($fileName, $content, array $meta = [], $privacy = 'public-read')
     {
         $s3client = $this->get('app.assets.s3');
-        $bucket = $this->getParameter('aws_s3_bucketname');
 
-        return $s3client->upload($bucket, $fileName, $content, $privacy, [
+        return $s3client->upload($this->awsS3BucketName, $fileName, $content, $privacy, [
             'Metadata' => $meta,
         ])->toArray()['ObjectURL'];
     }

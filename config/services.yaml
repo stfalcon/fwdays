@@ -20,8 +20,11 @@ services:
             $localeCookieName: '%jms_i18n_routing.cookie.name%'
             $environment: '%env(APP_ENV)%'
             $oAuthUserProviderProperties: {facebook: facebookID, google: googleID}
-            $paymentSystem: '@App\Service\PaymentProcess\InterkassaService'
+            $paymentSystem: '@App\Service\PaymentProcess\WayForPayService'
             $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
+            $awsS3BucketName: '%env(AWS_S3_BUCKETNAME)%'
+            $awsS3PublicEndpoint: '%env(AWS_S3_PUBLIC_ENDPOINT)%'
+            $uploadImagePath: '%app.upload_image%'
 
     fos_user.registration.controller:
         class: App\Controller\RegistrationController
@@ -49,11 +52,6 @@ services:
         tags:
             - 'doctrine.orm.entity_listener'
 
-#    monolog.processor.added_host:
-#        class: Monolog\Processor\WebProcessor
-#        tags:
-#            - { name: monolog.processor, method: __invoke }
-
     App\DataFixtures\PrepareFileStorage:
         public: true
         arguments:
@@ -63,25 +61,6 @@ services:
                 - '@oneup_flysystem.speaker_photo_filesystem'
                 - '@oneup_flysystem.event_image_filesystem'
                 - '@oneup_flysystem.upload_image_filesystem'
-
-#    App\Twig\AppPluralizationExtension:
-#        tags:
-#            - { name: twig.extension}
-
-#    App\Service\UrlForRedirect:
-#        arguments: ["@router", "%locales%"]
-
-#    App\Service\Ticket\WaitPaymentReceiveEventState:
-#        calls: [[setTranslator, ['@translator']]]
-#    App\Service\Ticket\DoneEventState:
-#        calls: [[setTranslator, ['@translator']]]
-#    App\Service\Ticket\SaleOpenEventState:
-#        arguments: ['@router']
-#        calls: [[setTranslator, ['@translator']]]
-#    App\Service\Ticket\SoldOutEventState:
-#        calls: [[setTranslator, ['@translator']]]
-#    App\Service\Ticket\WannaVisitEventState:
-#        calls: [[setTranslator, ['@translator']]]
 
     App\Service\Ticket\TicketService:
         arguments:
@@ -96,117 +75,10 @@ services:
             - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
             - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
-#    App\Twig\AppDateTimeExtension:
-#        arguments:
-#            - '@sonata.intl.twig.extension.datetime'
-#            - '@translator'
-#        tags:
-#            - { name: twig.extension}
-
-#    App\Twig\AssetVersionExtension:
-#        arguments: ["%kernel.root_dir%", "%kernel.environment%"]
-#        tags:
-#            - { name: twig.extension }
-
-#    App\EventListener\ExceptionListener:
-#        arguments: ["@session"]
-#        calls:
-#            - [setRouter, ['@router']]
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.exception }
-
-#    App\Helper\NewPdfGeneratorHelper:
-#        arguments:
-#            - '@twig'
-#            - '@router'
-#            - '@Endroid\QrCode\QrCode'
-#            - '@kernel'
-#            - '@App\Service\SvgToJpg'
-#            - '@oneup_flysystem.event_image_filesystem'
-#            - '@vich_uploader.property_mapping_factory'
-
-#    App\Service\SvgToJpg:
-#        arguments:
-#            - "@monolog.logger"
-
-#    App\Service\MyMailer:
-#        arguments: ['@swiftmailer.transport']
-
-#    App\EventListener\PromoCodeRequestListener:
-#        arguments:
-#            - '@router'
-#            - '@session'
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.request }
-
     App\Service\GoogleMapService:
         public: true
 
-#    App\Service\PaymentProcess\WayForPayService:
-#        arguments:
-#            - '%app.config%'
-#            - '@translator'
-#            - '@request_stack'
-#            - '@router'
-#            - '@security.token_storage'
-#            - '@doctrine.orm.entity_manager'
-#            - '@logger'
-#            - '@App\Service\ReferralService'
-#            - '@session'
-
-#    App\Service\PaymentProcess\InterkassaService:
-#        arguments:
-#            - "%app.config%"
-#            - "@translator"
-#            - "@request_stack"
-#            - '@router'
-#            - '@doctrine.orm.entity_manager'
-#            - '@logger'
-#            - '@App\Service\ReferralService'
-#            - '@session'
-#            - '%interkassa_override_callbacks%'
-
-#    App\Service\EventService:
-#        arguments:
-#            - '@app.event.repository.service'
-#            - '@app.ticket_cost_repository.service'
-#            - '@app.event_review.repository.service'
-#            - '@security.authorization_checker'
-
-#    App\Service\ChartService: ~
-
-#    App\Service\AnalyticsService:
-#        arguments: ["@doctrine.orm.entity_manager"]
-
-#    App\EventListener\LoginEntryPoint:
-#        arguments: ["@jms_i18n_routing.router"]
-
     App\Handler\LoginHandler: ~
-#    App\Handler\LoginHandler:
-#        arguments:
-#            - '@router'
-#            - '@App\Service\ReferralService'
-#            - '@fos_user.user_manager'
-#            - '@App\Service\UrlForRedirect'
-
-#    App\Security\OAuthUserProvider:
-#        arguments:
-#            - "@fos_user.user_manager"
-#            - {facebook: facebookID, google: googleID}
-#            - "@service_container"
-
-#    App\Service\PaymentService:
-#        arguments:
-#            - '@doctrine.orm.entity_manager'
-#            - '@App\Service\Ticket\TicketService'
-#            - '@translator'
-#            - '@App\Service\User\UserService'
-#            - '@App\Service\ReferralService'
-#            - '@session'
-
-#    App\Service\ReferralService:
-#        arguments: ['@service_container']
-
 
     App\Menu\MenuBuilder:
         arguments: ['@knp_menu.factory','%locales%', '@mobile_detect.mobile_detector']
@@ -216,27 +88,12 @@ services:
         tags:
             - { name: twig.extension }
 
-#    App\EventListener\LocaleUrlResponseListener:
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 128 }
-#            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 128 }
-#        arguments:
-#            - '%jms_i18n_routing.default_locale%'
-#            - '%jms_i18n_routing.locales%'
-#            - '%jms_i18n_routing.cookie.name%'
-#            - '@router'
-#            - '@maxmind.geoip'
-#
     App\Service\LocalsRequiredService:
         public: true
 
     App\Command\AppResolveLiipCacheCommand:
         calls:
             - [setContainer, ['@service_container']]
-
-    #    sonata.admin.menu.matcher.voter.children:
-    #        class: Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter
-    #        arguments: ['@knp_menu.matcher']
 
 #    vich_uploader.my_storage.flysystem:
 #        class: App\Service\MyFlySystemStorage
@@ -249,19 +106,6 @@ services:
     Endroid\QrCode\QrCode: ~
     App\Service\PaymentProcess\InterkassaService: ~
     App\Service\PaymentProcess\WayForPayService: ~
-
-#    App\Helper\MailerHelper:
-#        arguments:
-#            - '@twig'
-#            - '@doctrine.orm.entity_manager'
-#            - '@router'
-#            - '@mailer'
-#            - "@translator"
-
-#    App\EventListener\PaymentListener:
-#        tags:
-#            - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
-#        arguments: ['@service_container']
 
     app.menu.main.redesign:
         class: Knp\Menu\MenuItem
@@ -278,49 +122,23 @@ services:
         arguments: ['@request_stack']
 
     App\Model\UserManager: ~
-#    App\Model\UserManager:
-#        arguments:
-#            - '@fos_user.util.password_updater'
-#            - '@fos_user.util.canonical_fields_updater'
-#            - '@fos_user.object_manager'
-#            - '%fos_user.model.user.class%'
-#            - '@validator'
-#            - '@App\Helper\MailerHelper'
-#            - '@session'
-
-#    App\Form\Type\ProfileFormType:
-#        arguments:
-#            - "%locales%"
-#        tags:
-#            - { name: form.type, alias: application_profile }
-#
-#    App\Form\Type\ParticipantFormType:
-#        tags:
-#            - { name: form.type, alias: application_profile }
-#
-#    App\Form\Type\RegistrationFormType:
-#        arguments:
-#            - "%locales%"
-#        tags:
-#            - { name: form.type, alias: application_registration }
-
-#    App\Serializer\Normalizer\PaymentNormalizer:
-#        arguments: ['@translator', '@serializer.normalizer.object']
-#        tags:
-#            - { name: serializer.normalizer }
-
-#    App\Serializer\Normalizer\TicketNormalizer:
-#        arguments: ['@translator', '@serializer.normalizer.object', '%app.config%']
-#        tags:
-#            - { name: serializer.normalizer }
-
-#    App\Service\EmailHashValidationService: ~
-
-#    App\Service\TranslatedMailService:
-#        arguments: ['%locale%']
 
     App\Service\User\UserService:
         public: true
+
+    app.assets.s3:
+        class: Aws\S3\S3Client
+        public: true
+        autowire: false
+        arguments:
+            -
+                version: 'latest'
+                region: '%env(AWS_REGION)%'
+                endpoint: '%env(AWS_ENDPOINT)%'
+                use_path_style_endpoint: true
+                credentials:
+                    key: '%env(AWS_ACCESS_KEY_ID)%'
+                    secret: '%env(AWS_SECRET_ACCESS_KEY)%'
 
     Symfony\Component\Serializer\Serializer: '@serializer'
     Symfony\Bundle\FrameworkBundle\Routing\Router: '@router'

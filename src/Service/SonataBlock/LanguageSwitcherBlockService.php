@@ -76,11 +76,11 @@ class LanguageSwitcherBlockService extends AbstractBlockService
      *
      * @return string
      */
-    private function getInnerSubstring($string, $delim, $keyNumber = 1)
+    private function getInnerSubstring(string $string, string $delim, int $keyNumber = 1): string
     {
-        $string = explode($delim, $string, 3);
+        $result = \explode($delim, $string, 3);
 
-        return isset($string[$keyNumber]) ? $string[$keyNumber] : '';
+        return (\is_array($result) && isset($result[$keyNumber])) ? (string) $result[$keyNumber] : '';
     }
 
     /**

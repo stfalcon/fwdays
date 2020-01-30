@@ -27,7 +27,7 @@ class MyFlySystemResolver extends FlysystemResolver
             $this->getFilePath($path, $filter),
             $binary->getContent(),
             [
-                'CacheControl' => sprintf('max-age=%s', self::CACHE_MAX_AGE),
+                'CacheControl' => \sprintf('max-age=%s', self::CACHE_MAX_AGE),
                 'visibility' => $this->visibility,
             ]
         );

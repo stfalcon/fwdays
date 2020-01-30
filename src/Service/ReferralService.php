@@ -99,7 +99,10 @@ class ReferralService
      */
     public function getUserByReferralCode(string $referralCode): ?User
     {
-        return $this->userRepository->findOneBy(['referralCode' => $referralCode]);
+        /** @var User|null $user */
+        $user = $this->userRepository->findOneBy(['referralCode' => $referralCode]);
+
+        return $user;
     }
 
     /**

@@ -11,12 +11,12 @@ extensions:
         - Codeception\Extension\Recorder
 step_decorators:
     - \Codeception\Step\ConditionalAssertion
-modules:
-    config:
-        Db:
-            dsn: 'mysql:host=mysql;dbname=fwdays_com_development'
-            user: 'root'
-            password: 'qwerty'
-            populate: false
-            cleanup: false
-            reconnect: true
+#modules:
+#    config:
+#        Db:
+#            dsn: 'mysql:host=mysql;dbname=fwdays_com_development'
+#            user: 'root'
+#            password: 'qwerty'
+#            populate: false
+#            cleanup: false
+#            reconnect: true

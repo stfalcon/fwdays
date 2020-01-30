@@ -22,11 +22,15 @@ class MyFlySystemStorage extends FlysystemStorage
     {
         $fs = $this->getFilesystem($mapping);
         $path = !empty($dir) ? $dir.'/'.$name : $name;
-
-        $stream = fopen($file->getRealPath(), 'r');
-        $fs->writeStream($path, $stream, [
-            'CacheControl' => sprintf('max-age=%s', self::CACHE_MAX_AGE),
-            'mimetype' => $file->getMimeType(),
-        ]);
+        $realPath = $file->getRealPath();
+        if ($realPath) {
+            $stream = \fopen($realPath, 'r');
+            if ($stream) {
+                $fs->writeStream($path, $stream, [
+                    'CacheControl' => sprintf('max-age=%s', self::CACHE_MAX_AGE),
+                    'mimetype' => $file->getMimeType(),
+                ]);
+            }
+        }
     }
 }
