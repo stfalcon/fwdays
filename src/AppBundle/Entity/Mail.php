@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\LocalsRequiredService;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -142,6 +143,24 @@ class Mail implements Translatable
      * @ORM\Column(name="ignore_unsubscribe", type="boolean")
      */
     private $ignoreUnsubscribe = false;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", name="users_with_en_local", options={"unsigned"=true}, nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(value="0")
+     */
+    private $usersWithEnLocal = 0;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", name="users_with_uk_local", options={"unsigned"=true}, nullable=true)
+     *
+     * @Assert\GreaterThanOrEqual(value="0")
+     */
+    private $usersWithUkLocal = 0;
 
     /**
      * Constructor.
@@ -563,5 +582,121 @@ class Mail implements Translatable
         $this->ignoreUnsubscribe = $ignoreUnsubscribe;
 
         return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUsersWithEnLocal(): ?int
+    {
+        return $this->usersWithEnLocal;
+    }
+
+    /**
+     * @param int|null $usersWithEnLocal
+     *
+     * @return $this
+     */
+    public function setUsersWithEnLocal(?int $usersWithEnLocal): self
+    {
+        $this->usersWithEnLocal = $usersWithEnLocal;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUsersWithUkLocal(): ?int
+    {
+        return $this->usersWithUkLocal;
+    }
+
+    /**
+     * @param int|null $usersWithUkLocal
+     *
+     * @return $this
+     */
+    public function setUsersWithUkLocal(?int $usersWithUkLocal): self
+    {
+        $this->usersWithUkLocal = $usersWithUkLocal;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function incrementUsersWithUkLocal(): self
+    {
+        ++$this->usersWithUkLocal;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function incrementUsersWithEnLocal(): self
+    {
+        ++$this->usersWithEnLocal;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function decrementUsersWithUkLocal(): self
+    {
+        if ($this->usersWithUkLocal > 0) {
+            --$this->usersWithUkLocal;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function decrementUsersWithEnLocal(): self
+    {
+        if ($this->usersWithEnLocal > 0) {
+            --$this->usersWithEnLocal;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsersLocalsStatistic(): string
+    {
+        return \sprintf('%s/%s', $this->usersWithUkLocal, $this->usersWithEnLocal);
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function processIncrementUserLocal(string $locale): void
+    {
+        if (LocalsRequiredService::UK_EMAIL_LANGUAGE === $locale) {
+            ++$this->usersWithUkLocal;
+        } elseif (LocalsRequiredService::EN_EMAIL_LANGUAGE === $locale) {
+            ++$this->usersWithEnLocal;
+        }
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function processDecrementUserLocal(string $locale): void
+    {
+        if (LocalsRequiredService::UK_EMAIL_LANGUAGE === $locale) {
+            --$this->usersWithUkLocal;
+        } elseif (LocalsRequiredService::EN_EMAIL_LANGUAGE === $locale) {
+            --$this->usersWithEnLocal;
+        }
     }
 }
