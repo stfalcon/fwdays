@@ -113,8 +113,8 @@
                           "name": "UA"
                         }
                     }
-                },
-                {% if (event.receivePayments) -%}
+                }
+                {%- if (event.receivePayments) -%},
                 "offers": {
                     "@type":"Offer",
                     "url":"{{ event_pay_url }}",
