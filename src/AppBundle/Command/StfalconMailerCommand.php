@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Mail;
 use App\Entity\MailQueue;
+use App\Entity\User;
 use App\Helper\StfalconMailerHelper;
 use App\Service\EmailHashValidationService;
 use App\Service\MyMailer;
@@ -79,6 +80,9 @@ class StfalconMailerCommand extends ContainerAwareCommand
 
             if (null === $user || null === $mail || !$user->isEnabled() || !$user->isEmailExists() || !($user->isSubscribe() || $mail->isIgnoreUnsubscribe())) {
                 $mail->decTotalMessages();
+                if ($user instanceof User) {
+                    $mail->processDecrementUserLocal($user->getEmailLanguage());
+                }
                 $em->remove($item);
                 $em->flush();
 
@@ -92,8 +96,10 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $message = $mailerHelper->formatMessage($user, $translatedMails[$user->getEmailLanguage()]);
             } catch (\Exception $e) {
                 $logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
-
                 $mail->decTotalMessages();
+                if ($user instanceof User) {
+                    $mail->processDecrementUserLocal($user->getEmailLanguage());
+                }
                 $em->remove($item);
                 $em->flush();
                 continue;
