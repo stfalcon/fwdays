@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Payment;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
-use App\Service\PaymentProcess\WayForPayService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,10 +39,6 @@ class PaymentProcessController extends Controller
 
         if ($paymentSystem->isUseRedirectByStatus()) {
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
-                return $this->redirectToRoute('payment_success');
-            }
-
-            if (WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $transactionStatus && $paymentSystem instanceof WayForPayService) {
                 $session = $this->get('session');
                 if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
                     $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $paymentSystem->getPaymentIdFromData($data));
@@ -107,10 +102,10 @@ class PaymentProcessController extends Controller
 
         if (null === $paymentId) {
             $data = $request->query->all();
-            $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
-//            if (null === $paymentId) {
-//                throw new BadRequestHttpException();
-//            }
+            $paymentSystem = $this->get('app.payment_system.service');
+            if (isset($data[$paymentSystem->getOrderNumberKey()])) {
+                $paymentId = $this->get('app.payment_system.service')->getPaymentIdFromData($data);
+            }
         }
 
         /** @var Payment|null $payment */
