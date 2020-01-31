@@ -7,7 +7,8 @@ namespace App\Service;
  */
 class LocalsRequiredService
 {
-    public const DEFAULT_EMAIL_LANGUAGE = 'uk';
+    public const UK_EMAIL_LANGUAGE = 'uk';
+    public const EN_EMAIL_LANGUAGE = 'en';
 
     private $defaultLocale;
     private $locales;

@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\MailQueue;
+use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -33,6 +34,10 @@ final class MailQueueAdmin extends AbstractAdmin
         /** @var MailQueue $mailQueue */
         $mail = $mailQueue->getMail();
         $mail->incTotalMessages();
+        $user = $mailQueue->getUser();
+        if ($user instanceof User) {
+            $mail->processIncrementUserLocal($user->getEmailLanguage());
+        }
         $em->flush();
     }
 
@@ -50,6 +55,10 @@ final class MailQueueAdmin extends AbstractAdmin
 
         $mail = $mailQueue->getMail();
         $mail->decTotalMessages();
+        $user = $mailQueue->getUser();
+        if ($user instanceof User) {
+            $mail->processDecrementUserLocal($user->getEmailLanguage());
+        }
         if ($mailQueue->getIsSent()) {
             $mail->decSentMessage();
         }
