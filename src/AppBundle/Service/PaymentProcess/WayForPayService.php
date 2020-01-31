@@ -16,18 +16,38 @@ class WayForPayService extends AbstractPaymentProcessService
     public const WFP_PAY_BY_SECURE_PAGE = 'wfp_pay_secure_page';
 
     public const WFP_TRANSACTION_APPROVED_STATUS = 'Approved';
-    private const WFP_TRANSACTION_PENDING_STATUS = 'Pending';
-    private const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
-    private const WFP_ORDER_NUMBER_KEY = 'orderNo';
 
-    protected const TRANSACTION_STATUS = [
-        self::TRANSACTION_STATUS_PENDING => self::WFP_TRANSACTION_PENDING_STATUS,
-        self::TRANSACTION_STATUS_FAIL => self::WFP_TRANSACTION_FAIL_STATUS,
+    private const WFP_TRANSACTION_PENDING_STATUS = 'Pending';
+    private const WFP_TRANSACTION_IN_PROCESSING_STATUS = 'InProcessing';
+    private const WFP_TRANSACTION_WAITING_AUTO_COMPLETE_STATUS = 'WaitingAuthComplete';
+    private const WFP_TRANSACTION_REFUND_IN_PROCESSING_STATUS = 'RefundInProcessing';
+
+    private const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
+    private const WFP_TRANSACTION_EXPIRED_STATUS = 'Expired';
+    private const WFP_TRANSACTION_DECLINED_STATUS = 'Declined';
+    private const WFP_TRANSACTION_REFUNDED_STATUS = 'Refunded/Voided';
+
+    private const ORDER_NUMBER_KEY = 'orderNo';
+
+    protected $transactionStatus = [
+        self::WFP_TRANSACTION_APPROVED_STATUS => self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS,
+
+        self::WFP_TRANSACTION_PENDING_STATUS => self::TRANSACTION_STATUS_PENDING,
+        self::WFP_TRANSACTION_IN_PROCESSING_STATUS => self::TRANSACTION_STATUS_PENDING,
+        self::WFP_TRANSACTION_WAITING_AUTO_COMPLETE_STATUS => self::TRANSACTION_STATUS_PENDING,
+        self::WFP_TRANSACTION_REFUND_IN_PROCESSING_STATUS => self::TRANSACTION_STATUS_PENDING,
+
+        self::WFP_TRANSACTION_FAIL_STATUS => self::TRANSACTION_STATUS_FAIL,
+        self::WFP_TRANSACTION_EXPIRED_STATUS => self::TRANSACTION_STATUS_FAIL,
+        self::WFP_TRANSACTION_REFUNDED_STATUS => self::TRANSACTION_STATUS_FAIL,
+        self::WFP_TRANSACTION_DECLINED_STATUS => self::TRANSACTION_STATUS_FAIL,
+        self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
     ];
 
     private const PAYMENT_SYSTEM_NAME = 'WayForPay';
-
     private const WFP_SECURE_PAGE = 'https://secure.wayforpay.com/pay';
+
+    protected $transactionStatusKey = 'transactionStatus';
 
     /**
      * @param array $data
@@ -36,9 +56,9 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function getPaymentIdFromData(array $data): ?string
     {
-        $this->assertArrayKeysExists([self::WFP_ORDER_NUMBER_KEY], $data);
+        $this->assertArrayKeysExists([self::ORDER_NUMBER_KEY], $data);
 
-        return $data[self::WFP_ORDER_NUMBER_KEY];
+        return $data[self::ORDER_NUMBER_KEY];
     }
 
     /**
@@ -140,7 +160,7 @@ class WayForPayService extends AbstractPaymentProcessService
         $params['authorizationType'] = 'SimpleSignature';
         $params['merchantTransactionSecureType'] = 'AUTO';
         $params['merchantTransactionType'] = 'SALE';
-        $params[self::WFP_ORDER_NUMBER_KEY] = $payment->getId();
+        $params[self::ORDER_NUMBER_KEY] = $payment->getId();
         $params['clientFirstName'] = $user->getName();
         $params['clientLastName'] = $user->getSurname();
         $params['clientEmail'] = $user->getEmail();
@@ -161,9 +181,17 @@ class WayForPayService extends AbstractPaymentProcessService
      */
     public function processData(?array $data): string
     {
-        $this->assertArrayKeysExists(['transactionStatus', self::WFP_ORDER_NUMBER_KEY, 'merchantSignature'], $data);
+        $this->assertArrayKeysExists([$this->transactionStatusKey, self::ORDER_NUMBER_KEY, 'merchantSignature'], $data);
 
-        return $this->processSystemData($data, self::WFP_ORDER_NUMBER_KEY, Payment::WAYFORPAY_GATE);
+        return $this->processSystemData($data, self::ORDER_NUMBER_KEY, Payment::WAYFORPAY_GATE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNumberKey(): string
+    {
+        return self::ORDER_NUMBER_KEY;
     }
 
     /**
@@ -172,25 +200,6 @@ class WayForPayService extends AbstractPaymentProcessService
     protected function getSystemName(): string
     {
         return self::PAYMENT_SYSTEM_NAME;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getTransactionStatus(): array
-    {
-        return self::TRANSACTION_STATUS;
-    }
-
-    /**
-     * @param array $data
-     * @param bool  $isUnprocessedTransaction
-     *
-     * @return string
-     */
-    protected function getStatusFromData(array $data, bool $isUnprocessedTransaction = false): string
-    {
-        return $data['transactionStatus'] ?? self::TRANSACTION_STATUS_FAIL;
     }
 
     /**
@@ -229,8 +238,8 @@ class WayForPayService extends AbstractPaymentProcessService
     protected function checkPayment(Payment $payment, array $data): bool
     {
         if ($this->appConfig['wayforpay']['shop_id'] === $this->getArrMean($data['merchantAccount']) &&
-            (float) $this->getArrMean($data['amount']) === $payment->getAmount() &&
-            self::WFP_TRANSACTION_APPROVED_STATUS === $this->getArrMean($data['transactionStatus'])
+            self::WFP_TRANSACTION_APPROVED_STATUS === $this->getArrMean($data[$this->transactionStatusKey]) &&
+            (float) $this->getArrMean($data['amount']) === $payment->getAmount()
         ) {
             $params = [
                 'merchantAccount' => $this->getArrMean($data['merchantAccount']),
@@ -239,7 +248,7 @@ class WayForPayService extends AbstractPaymentProcessService
                 'currency' => $this->getArrMean($data['currency']),
                 'authCode' => $this->getArrMean($data['authCode']),
                 'cardPan' => $this->getArrMean($data['cardPan']),
-                'transactionStatus' => $this->getArrMean($data['transactionStatus']),
+                $this->transactionStatusKey => $this->getArrMean($data[$this->transactionStatusKey]),
                 'reasonCode' => $this->getArrMean($data['reasonCode']),
             ];
 

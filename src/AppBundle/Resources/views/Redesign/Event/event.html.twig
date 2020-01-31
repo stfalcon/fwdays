@@ -79,9 +79,7 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ asset('js/scroll-near-event-date.js') }}" defer></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" defer></script>
-    <script src="{{ asset('js/partials/location.js') }}" defer></script>
     {# Микроразметка для событий -- http://schema.org/Event, https://support.google.com/webmasters/answer/2774099 #}
     {%- set event_show_url = url('event_show', {'slug': event.slug})|replace({'/': '\\/'}) -%}
     {%- set event_pay_url = url('event_pay', {'slug': event.slug})|replace({'/': '\\/'}) -%}

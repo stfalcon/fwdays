@@ -18,3 +18,5 @@
 //= ../partials/add.js
 //= ../partials/payment.js
 //= ../partials/validator.js
+//= ../partials/location.js
+//= ../scroll-near-event-date.js
