@@ -34,7 +34,7 @@ event.get_more_info: Learn more
 sponsor.partners.can_be_your_logo: Your logo <br>can be here
 news.all: All news
 
-autoreg.mail.text1: You were automatically registered on the site Frameworks Days.
+autoreg.mail.text1: You were automatically registered on the site Fwdays.
 autoreg.mail.text2: 'Your temporary password: "%password%"'
 autoreg.mail.text3: You can change it on the page "%url%"
 
