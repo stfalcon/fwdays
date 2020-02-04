@@ -5,6 +5,7 @@ namespace App\Admin;
 use App\Admin\AbstractClass\AbstractPageAdmin;
 use App\Entity\Event;
 use App\Entity\Speaker;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,6 +17,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  */
 final class ReviewAdmin extends AbstractPageAdmin
 {
+    /** @var EventRepository */
+    private $eventRepository;
+
     /**
      * @var array
      */
@@ -25,6 +29,18 @@ final class ReviewAdmin extends AbstractPageAdmin
             '_sort_order' => 'DESC',
             '_sort_by' => 'id',
         ];
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -78,12 +94,10 @@ final class ReviewAdmin extends AbstractPageAdmin
     }
 
     /**
-     * @return array
+     * @return Event[]
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

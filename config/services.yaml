@@ -140,6 +140,7 @@ services:
                     key: '%env(AWS_ACCESS_KEY_ID)%'
                     secret: '%env(AWS_SECRET_ACCESS_KEY)%'
 
+    Aws\S3\S3Client: '@app.assets.s3'
     Symfony\Component\Serializer\Serializer: '@serializer'
     Symfony\Bundle\FrameworkBundle\Routing\Router: '@router'
     Symfony\Component\HttpFoundation\Session\Session: '@session'
@@ -153,5 +154,8 @@ services:
     FOS\UserBundle\Form\Factory\FactoryInterface: '@fos_user.registration.form.factory'
     FOS\UserBundle\Security\LoginManager: '@fos_user.security.login_manager'
     Symfony\Bundle\FrameworkBundle\Translation\Translator: '@translator.default'
+    Liip\ImagineBundle\Imagine\Cache\CacheManager: '@liip_imagine.cache.manager'
+    Liip\ImagineBundle\Imagine\Filter\FilterManager: '@liip_imagine.filter.manager'
+    Liip\ImagineBundle\Imagine\Data\DataManager: '@liip_imagine.data.manager'
     Symfony\Contracts\HttpClient\HttpClientInterface:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']

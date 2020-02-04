@@ -5,9 +5,9 @@ namespace App\Admin;
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
-use App\Service\GoogleMapService;
-use App\Service\LocalsRequiredService;
 use App\Service\User\UserService;
+use App\Traits\GoogleMapServiceTrait;
+use App\Traits\LocalsRequiredServiceTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -20,11 +20,16 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
  */
 class EventAdmin extends AbstractTranslateAdmin
 {
+    use LocalsRequiredServiceTrait;
+    use GoogleMapServiceTrait;
+
     /** @var string */
     protected $saveCity;
 
     /** @var string */
     protected $savePlace;
+
+    private $userService;
 
     /**
      * @var array
@@ -37,7 +42,19 @@ class EventAdmin extends AbstractTranslateAdmin
         ];
 
     /**
-     * {@inheritdoc}
+     * @param string      $code
+     * @param string      $class
+     * @param string      $baseControllerName
+     * @param UserService $userService
+     */
+    public function __construct($code, $class, $baseControllerName, UserService $userService)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->userService = $userService;
+    }
+
+    /**
+     * @param Event $object
      */
     public function preUpdate($object): void
     {
@@ -46,13 +63,12 @@ class EventAdmin extends AbstractTranslateAdmin
             $this->removeNullTranslate($block);
         }
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
-            $this->getConfigurationPool()->getContainer()->get(GoogleMapService::class)
-                ->setEventMapPosition($object);
+            $this->googleMap->setEventMapPosition($object);
         }
     }
 
     /**
-     * {@inheritdoc}
+     * @param Event $object
      */
     public function prePersist($object): void
     {
@@ -60,8 +76,7 @@ class EventAdmin extends AbstractTranslateAdmin
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
-        $this->getConfigurationPool()->getContainer()->get(GoogleMapService::class)
-            ->setEventMapPosition($object);
+        $this->googleMap->setEventMapPosition($object);
     }
 
     /**
@@ -69,10 +84,7 @@ class EventAdmin extends AbstractTranslateAdmin
      */
     public function getBatchActions(): array
     {
-        $container = $this->getConfigurationPool()->getContainer();
-
-        $userService = $container->get(UserService::class);
-        $user = $userService->getCurrentUser();
+        $user = $this->userService->getCurrentUser();
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true);
 
         if (!$isSuperAdmin) {
@@ -128,9 +140,9 @@ class EventAdmin extends AbstractTranslateAdmin
             $backGround = $subject->getBackground();
             $video = $subject->getHeaderVideo();
         }
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray();
-        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
+
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
+        $localAllFalse = $this->localsRequiredService->getLocalsRequiredArray(false);
         $datetimePickerOptions =
             [
                 'dp_use_seconds' => false,

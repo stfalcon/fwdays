@@ -5,7 +5,8 @@ namespace App\Admin;
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Sponsor;
-use App\Service\LocalsRequiredService;
+use App\Traits\LiipImagineTrait;
+use App\Traits\LocalsRequiredServiceTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -16,6 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
  */
 class SponsorAdmin extends AbstractTranslateAdmin
 {
+    use LiipImagineTrait;
+    use LocalsRequiredServiceTrait;
+
     /**
      * @return array
      */
@@ -25,7 +29,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param Sponsor $object
      */
     public function postUpdate($object): void
     {
@@ -33,7 +37,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param Sponsor $object
      */
     public function postPersist($object): void
     {
@@ -41,7 +45,7 @@ class SponsorAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper): void
     {
@@ -60,14 +64,13 @@ class SponsorAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @param \Sonata\AdminBundle\Form\FormMapper $formMapper
+     * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
         /** @var Sponsor $subject */
         $subject = $this->getSubject();
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
+        $localOptionsAllFalse = $this->localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
             ->add('translations', GedmoTranslationsType::class, [
@@ -123,12 +126,9 @@ class SponsorAdmin extends AbstractTranslateAdmin
         if (empty($target)) {
             return;
         }
-        $container = $this->getConfigurationPool()->getContainer();
-        $cacheManager = $container->get('liip_imagine.cache.manager');
-        if (!$cacheManager->isStored($target, $filter)) {
-            $filterManager = $container->get('liip_imagine.filter.manager');
-            $dataManager = $container->get('liip_imagine.data.manager');
-            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+
+        if (!$this->liipImagineCacheManager->isStored($target, $filter)) {
+            $this->liipImagineCacheManager->store($this->liipImagineFilterManager->applyFilter($this->liipImagineDataManager->find($filter, $target), $filter), $target, $filter);
         }
     }
 }

@@ -33,6 +33,8 @@ class RegistrationController extends BaseController
     use Traits\LoggerTrait;
     use Traits\HttpClientTrait;
     use Traits\MailerHelperTrait;
+    use Traits\TranslatorTrait;
+    use Traits\RouterTrait;
 
     /** @var string */
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
@@ -101,7 +103,7 @@ class RegistrationController extends BaseController
                 $this->userManager->updateUser($user);
 
                 $this->mailerHelper->sendEasyEmail(
-                    $this->container->get('translator')->trans('registration.email.subject'),
+                    $this->translator->trans('registration.email.subject'),
                     '@FOSUser/Registration/email.on_registration.html.twig',
                     ['user' => $user],
                     $user
@@ -143,7 +145,7 @@ class RegistrationController extends BaseController
         $user->setLastLogin(new \DateTime());
 
         $this->userManager->updateUser($user);
-        $response = new RedirectResponse($this->container->get('router')->generate('events'));
+        $response = new RedirectResponse($this->router->generate('events'));
         $this->authenticateUser($user, $response);
 
         return $this->loginHandler->processAuthSuccess($request, $user);

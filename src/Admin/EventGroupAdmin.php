@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Event;
 use App\Entity\EventGroup;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -19,6 +20,21 @@ final class EventGroupAdmin extends AbstractAdmin
 {
     /** @var ArrayCollection|null */
     private $prevEvents = null;
+
+    /** @var EventRepository */
+    private $eventRepository;
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
 
     /**
      * @param EventGroup $object
@@ -117,8 +133,6 @@ final class EventGroupAdmin extends AbstractAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

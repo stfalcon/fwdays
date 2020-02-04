@@ -32,9 +32,9 @@ class TicketAdminController extends CoreController
         }
 
         $ticket = $this->getDoctrine()->getManager()->getRepository(Ticket::class)
-            ->findOneBy(['id' => $ticketId]);
+            ->find($ticketId);
 
-        if (null !== $ticket) {
+        if ($ticket instanceof Ticket) {
             $url = $this->generateUrl(
                 'event_ticket_registration',
                 [

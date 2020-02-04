@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Traits\ValidatorTrait;
 use Aws\S3\S3Client;
-use League\Flysystem\Filesystem;
-use League\Flysystem\MountManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,10 +27,10 @@ class UploadController extends AbstractController
     private $awsS3PublicEndpoint;
 
     /**
-     * @param S3Client   $s3Client
-     * @param string     $uploadImagePath
-     * @param string     $awsS3BucketName
-     * @param string     $awsS3PublicEndpoint
+     * @param S3Client $s3Client
+     * @param string   $uploadImagePath
+     * @param string   $awsS3BucketName
+     * @param string   $awsS3PublicEndpoint
      */
     public function __construct(S3Client $s3Client, string $uploadImagePath, string $awsS3BucketName, string $awsS3PublicEndpoint)
     {
@@ -71,10 +69,11 @@ class UploadController extends AbstractController
         }
         list($width, $height) = \getimagesize($file);
         $extension = $file->guessExtension() ? $file->guessExtension() : $file->getClientOriginalExtension();
-        $pathToFile = \sprintf('%s/%s.%s', $this->uploadImagePath, \md5_file($file->getRealPath()), $extension);
+        $realPath = \is_string($file->getRealPath()) ? $file->getRealPath() : '';
+        $pathToFile = \sprintf('%s/%s.%s', $this->uploadImagePath, \md5_file($realPath), $extension);
         try {
             $this->uploadFile($file->getPathname(), $pathToFile);
-            $fullFileUrl = \sprintf('%s/%s',$this->awsS3PublicEndpoint, $pathToFile);
+            $fullFileUrl = \sprintf('%s/%s', $this->awsS3PublicEndpoint, $pathToFile);
         } catch (\Exception $e) {
             return new JsonResponse(['msg' => $e->getMessage()], 400);
         }
@@ -104,11 +103,17 @@ class UploadController extends AbstractController
         }
         if (!isset($meta['contentType'])) {
             $mimeTypeHandler = \finfo_open(FILEINFO_MIME_TYPE);
-            $meta['contentType'] = \finfo_file($mimeTypeHandler, $fileName);
-            \finfo_close($mimeTypeHandler);
+            if (false !== $mimeTypeHandler) {
+                $meta['contentType'] = \finfo_file($mimeTypeHandler, $fileName);
+                \finfo_close($mimeTypeHandler);
+            }
+        }
+        $content = \file_get_contents($fileName);
+        if (!\is_string($content)) {
+            $content = '';
         }
 
-        return $this->upload($newFilename, \file_get_contents($fileName), $meta, $privacy);
+        return $this->upload($newFilename, $content, $meta, $privacy);
     }
 
     /**
@@ -121,9 +126,7 @@ class UploadController extends AbstractController
      */
     public function upload($fileName, $content, array $meta = [], $privacy = 'public-read')
     {
-        $s3client = $this->get('app.assets.s3');
-
-        return $s3client->upload($this->awsS3BucketName, $fileName, $content, $privacy, [
+        return $this->s3Client->upload($this->awsS3BucketName, $fileName, $content, $privacy, [
             'Metadata' => $meta,
         ])->toArray()['ObjectURL'];
     }

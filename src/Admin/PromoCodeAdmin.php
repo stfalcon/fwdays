@@ -7,7 +7,10 @@ use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\PromoCode;
 use App\Entity\User;
+use App\Repository\EventRepository;
 use App\Service\LocalsRequiredService;
+use App\Traits\LocalsRequiredServiceTrait;
+use App\Traits\TokenStorageTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,6 +27,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class PromoCodeAdmin extends AbstractTranslateAdmin
 {
+    use TokenStorageTrait;
+    use LocalsRequiredServiceTrait;
+
+    /** @var EventRepository */
+    private $eventRepository;
+
     /**
      * @var array
      */
@@ -33,6 +42,18 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             '_sort_order' => 'DESC',
             '_sort_by' => 'id',
         ];
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
 
     /**
      * @param object $object
@@ -84,6 +105,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
+        /** @var LocalsRequiredService $localsRequiredService */
         $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
         $localOptions = $localsRequiredService->getLocalsRequiredArray();
         /** @var PromoCode|null $promocode */
@@ -174,9 +196,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 
     /**
@@ -184,9 +204,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     private function getActiveEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy(['active' => true, 'receivePayments' => true], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy(['active' => true, 'receivePayments' => true], ['id' => Criteria::DESC]);
     }
 
     /**
@@ -194,7 +212,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     private function getCurrentUser(): ?User
     {
-        $token = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken();
+        $token = $this->tokenStorage->getToken();
 
         if (!$token instanceof TokenInterface) {
             return null;

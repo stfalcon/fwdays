@@ -27,7 +27,7 @@ class LocalsRequiredService
      *
      * @return array
      */
-    public function getLocalsRequiredArray($setAllAs = null)
+    public function getLocalsRequiredArray($setAllAs = null): array
     {
         $result = [];
         foreach ($this->locales as $locale) {

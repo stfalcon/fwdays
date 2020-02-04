@@ -39,13 +39,13 @@ services:
         class: App\Admin\ReviewAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
-        arguments: ['', 'App\Entity\Review', ~]
+        arguments: ['', 'App\Entity\Review', ~, '@App\Repository\EventRepository']
 
     app.admin.speaker:
         class: App\Admin\SpeakerAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Докладчики }
-        arguments: ['', 'App\Entity\Speaker', ~]
+        arguments: ['', 'App\Entity\Speaker', ~, '@App\Repository\EventRepository']
 
     app.admin.event_page:
         class: App\Admin\EventPageAdmin
@@ -71,7 +71,7 @@ services:
         class: App\Admin\TicketAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Билеты }
-        arguments: ['', 'App\Entity\Ticket', 'App\Controller\TicketCRUDController']
+        arguments: ['', 'App\Entity\Ticket', 'App\Controller\TicketCRUDController', '@App\Repository\EventRepository']
 
     app.admin.payment:
         class: App\Admin\PaymentAdmin
@@ -83,19 +83,19 @@ services:
         class: App\Admin\PromoCodeAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: 'Промо коды' }
-        arguments: ['', 'App\Entity\PromoCode', ~]
+        arguments: ['', 'App\Entity\PromoCode', ~, '@App\Repository\EventRepository']
 
     app.admin.user:
         class: App\Admin\UserAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Пользователи, label: 'Пользователи' }
-        arguments: ['', 'App\Entity\User', ~]
+        arguments: ['', 'App\Entity\User', ~, '@App\Repository\EventRepository']
 
     app.admin.user_event:
         class: App\Admin\UserEventAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Регистрации }
-        arguments: ['', 'App\Entity\UserEvent', ~]
+        arguments: ['', 'App\Entity\UserEvent', ~, '@App\Repository\EventRepository']
 
     app.admin.page:
         class: App\Admin\PageAdmin
@@ -107,7 +107,7 @@ services:
         class: App\Admin\TicketCostAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
-        arguments: [~, 'App\Entity\TicketCost', ~]
+        arguments: [~, 'App\Entity\TicketCost', ~, '@App\Repository\EventRepository']
 
     app.event_block.admin:
         class: App\Admin\EventBlockAdmin

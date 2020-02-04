@@ -6,7 +6,9 @@ use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\Speaker;
-use App\Service\LocalsRequiredService;
+use App\Repository\EventRepository;
+use App\Traits\LiipImagineTrait;
+use App\Traits\LocalsRequiredServiceTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,6 +22,11 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class SpeakerAdmin extends AbstractTranslateAdmin
 {
+    use LiipImagineTrait;
+    use LocalsRequiredServiceTrait;
+
+    private $eventRepository;
+
     /**
      * @var array
      */
@@ -31,7 +38,19 @@ class SpeakerAdmin extends AbstractTranslateAdmin
         ];
 
     /**
-     * {@inheritdoc}
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
+
+    /**
+     * @param Speaker $object
      */
     public function postUpdate($object): void
     {
@@ -39,7 +58,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param Speaker $object
      */
     public function postPersist($object): void
     {
@@ -51,8 +70,7 @@ class SpeakerAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
 
         $eventFormOptions = [
             'class' => Event::class,
@@ -143,12 +161,9 @@ class SpeakerAdmin extends AbstractTranslateAdmin
         if (empty($target)) {
             return;
         }
-        $container = $this->getConfigurationPool()->getContainer();
-        $cacheManager = $container->get('liip_imagine.cache.manager');
-        if (!$cacheManager->isStored($target, $filter)) {
-            $filterManager = $container->get('liip_imagine.filter.manager');
-            $dataManager = $container->get('liip_imagine.data.manager');
-            $cacheManager->store($filterManager->applyFilter($dataManager->find($filter, $target), $filter), $target, $filter);
+
+        if (!$this->liipImagineCacheManager->isStored($target, $filter)) {
+            $this->liipImagineCacheManager->store($this->liipImagineFilterManager->applyFilter($this->liipImagineDataManager->find($filter, $target), $filter), $target, $filter);
         }
     }
 
@@ -157,8 +172,6 @@ class SpeakerAdmin extends AbstractTranslateAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

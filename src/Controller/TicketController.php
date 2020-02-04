@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * TicketController.
@@ -18,13 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class TicketController extends AbstractController
 {
     private $pdfGeneratorHelper;
+    private $authorizationChecker;
 
     /**
-     * @param PdfGeneratorHelper $pdfGeneratorHelper
+     * @param PdfGeneratorHelper   $pdfGeneratorHelper
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper)
+    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper, AuthorizationChecker $authorizationChecker)
     {
         $this->pdfGeneratorHelper = $pdfGeneratorHelper;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -94,7 +98,7 @@ class TicketController extends AbstractController
 
         //bag fix test ticket.feature:33
         // любопытных пользователей перенаправляем на страницу события
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_VOLUNTEER')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_VOLUNTEER')) {
             return $this->redirect($this->generateUrl('event_show', ['slug' => $ticket->getEvent()->getSlug()]));
         }
 

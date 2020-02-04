@@ -73,11 +73,11 @@ class StfalconMailerCommand extends Command
 
         $limit = 10;
 
-        if ($input->getOption('amount')) {
+        if (\is_string($input->getOption('amount'))) {
             $limit = (int) $input->getOption('amount');
         }
 
-        if ($input->getOption('host')) {
+        if (\is_string($input->getOption('host'))) {
             $context->setHost((string) $input->getOption('host'));
         }
 

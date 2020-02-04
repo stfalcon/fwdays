@@ -46,7 +46,7 @@ class Ticket
     private $amountWithoutDiscount;
 
     /**
-     * @var PromoCode
+     * @var PromoCode|null
      *
      * @ORM\ManyToOne(targetEntity="PromoCode", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="promo_code_id", referencedColumnName="id", onDelete="SET NULL")
@@ -380,7 +380,7 @@ class Ticket
     }
 
     /**
-     * @return PromoCode
+     * @return PromoCode|null
      */
     public function getPromoCode(): ?PromoCode
     {

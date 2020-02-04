@@ -163,7 +163,7 @@
             "vendor/bin/codecept run acceptance"
         ],
         "ci:static-analysis": [
-            "vendor/bin/phpstan analyse -l 6 --no-progress -c phpstan.neon src/"
+            "vendor/bin/phpstan analyse -l 7 --no-progress -c phpstan.neon src/"
         ],
         "ci:phpunit-with-coverage": [
             "vendor/bin/phpunit -c phpunit.xml.dist --coverage-text --colors=never --coverage-xml=./phpunit-coverage.xml --coverage-clover=clover-coverage.xml --log-junit=./junit.xml"

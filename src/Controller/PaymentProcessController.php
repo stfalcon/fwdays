@@ -83,7 +83,7 @@ class PaymentProcessController extends AbstractController
      */
     public function serviceInteractionAction(Request $request)
     {
-        $json = $request->getContent();
+        $json = (string) $request->getContent();
         $response = \json_decode($json, true);
 
         try {

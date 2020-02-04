@@ -5,7 +5,7 @@ namespace App\Admin;
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\EventBlock;
-use App\Service\LocalsRequiredService;
+use App\Traits\LocalsRequiredServiceTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class EventBlockAdmin extends AbstractTranslateAdmin
 {
+    use LocalsRequiredServiceTrait;
+
     /**
      * @param ListMapper $listMapper
      */
@@ -34,8 +36,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
+        $localAllFalse = $this->localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->add(
                 'type',

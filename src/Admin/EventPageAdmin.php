@@ -5,18 +5,37 @@ namespace App\Admin;
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractPageAdmin;
 use App\Entity\Event;
-use App\Service\LocalsRequiredService;
+use App\Repository\EventRepository;
+use App\Traits\LocalsRequiredServiceTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * EventPageAdmin.
  */
 final class EventPageAdmin extends AbstractPageAdmin
 {
+    use LocalsRequiredServiceTrait;
+
+    /** @var EventRepository */
+    private $eventRepository;
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
+
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
      */
@@ -33,9 +52,8 @@ final class EventPageAdmin extends AbstractPageAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray();
-        $localOptionsAllFalse = $localsRequiredService->getLocalsRequiredArray(false);
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
+        $localOptionsAllFalse = $this->localsRequiredService->getLocalsRequiredArray(false);
         $formMapper
             ->with('Переводы')
                 ->add('translations', GedmoTranslationsType::class, [
@@ -65,7 +83,9 @@ final class EventPageAdmin extends AbstractPageAdmin
                 ])
             ->end()
             ->with('Общие')
-                ->add('slug')
+                ->add('slug', ChoiceType::class, [
+                    'choices' => $this->getSlugChoice(),
+                ])
                 ->add('event', EntityType::class, [
                     'class' => Event::class,
                 ])
@@ -106,8 +126,6 @@ final class EventPageAdmin extends AbstractPageAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

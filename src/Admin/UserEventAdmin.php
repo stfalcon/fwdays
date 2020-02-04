@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Event;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,6 +15,20 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  */
 final class UserEventAdmin extends AbstractAdmin
 {
+    private $eventRepository;
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
+
     /**
      * Allows you to customize batch actions.
      *
@@ -65,8 +80,8 @@ final class UserEventAdmin extends AbstractAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+//        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
 
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

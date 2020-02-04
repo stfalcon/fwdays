@@ -4,7 +4,7 @@ namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
-use App\Service\LocalsRequiredService;
+use App\Traits\LocalsRequiredServiceTrait;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -14,6 +14,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
  */
 class CategoryAdmin extends AbstractTranslateAdmin
 {
+    use LocalsRequiredServiceTrait;
+
     /**
      * @param RouteCollection $collection
      */
@@ -59,8 +61,7 @@ class CategoryAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
         $formMapper
             ->with('Переводы')
                 ->add(

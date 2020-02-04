@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\MailQueue;
+use App\Traits\EntityManagerTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,6 +14,8 @@ use Sonata\AdminBundle\Form\FormMapper;
  */
 final class MailQueueAdmin extends AbstractAdmin
 {
+    use EntityManagerTrait;
+
     /**
      * @var string
      */
@@ -25,13 +28,10 @@ final class MailQueueAdmin extends AbstractAdmin
      */
     public function postPersist($mailQueue): void
     {
-        $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getManager();
-
         /** @var MailQueue $mailQueue */
         $mail = $mailQueue->getMail();
         $mail->incTotalMessages();
-        $em->flush();
+        $this->em->flush();
     }
 
     /**
@@ -41,15 +41,12 @@ final class MailQueueAdmin extends AbstractAdmin
      */
     public function postRemove($mailQueue): void
     {
-        $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getManager();
-
         $mail = $mailQueue->getMail();
         $mail->decTotalMessages();
         if ($mailQueue->getIsSent()) {
             $mail->decSentMessage();
         }
-        $em->flush();
+        $this->em->flush();
     }
 
     /**

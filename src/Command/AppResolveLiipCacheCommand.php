@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Exception\Console\InvalidParameterException;
+use League\Flysystem\FilesystemInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -37,6 +39,20 @@ class AppResolveLiipCacheCommand extends Command implements ContainerAwareInterf
     ];
 
     /**
+     * @param CacheManager  $cacheManager
+     * @param FilterManager $filterManager
+     * @param DataManager   $dataManager
+     */
+    public function __construct(CacheManager $cacheManager, FilterManager $filterManager, DataManager $dataManager)
+    {
+        parent::__construct();
+
+        $this->cacheManager = $cacheManager;
+        $this->filterManager = $filterManager;
+        $this->dataManager = $dataManager;
+    }
+
+    /**
      * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null): void
@@ -64,17 +80,19 @@ class AppResolveLiipCacheCommand extends Command implements ContainerAwareInterf
 
         $filter = $input->getArgument('filter');
         $doForce = (bool) $input->getOption('force');
-        try {
-            $fileSystemName = self::FILTER_MAPPING[$filter];
-        } catch (\Exception $e) {
-            $this->writeActionDetail($e->getMessage());
-            exit;
+
+        if (!\is_string($filter)) {
+            throw new InvalidParameterException('Argument `filter` is not a string');
         }
 
-        $filesystem = $this->container->get('oneup_flysystem.'.$fileSystemName.'_filesystem');
-        $this->cacheManager = $this->container->get('liip_imagine.cache.manager');
-        $this->filterManager = $this->container->get('liip_imagine.filter.manager');
-        $this->dataManager = $this->container->get('liip_imagine.data.manager');
+        if (!isset(self::FILTER_MAPPING[$filter])) {
+            throw new InvalidParameterException('Unknown filter');
+        }
+
+        $fileSystemName = self::FILTER_MAPPING[$filter];
+
+        /** @var FilesystemInterface $filesystem */
+        $filesystem = $this->container->get(\sprintf('oneup_flysystem.%s_filesystem', $fileSystemName));
 
         $contents = $filesystem->listContents('/', true);
         foreach ($contents as $contentItem) {

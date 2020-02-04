@@ -179,7 +179,8 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
      */
     private function getInnerSubstring(string $string, string $delim, int $keyNumber = 1): string
     {
-        $this->pathArray = explode($delim, $string, 3);
+        $array = \explode($delim, $string, 3);
+        $this->pathArray = \is_array($array) ? $array : [];
 
         return isset($this->pathArray[$keyNumber]) ? $this->pathArray[$keyNumber] : '';
     }

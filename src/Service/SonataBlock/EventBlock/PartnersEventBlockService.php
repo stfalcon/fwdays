@@ -6,7 +6,6 @@ use App\Entity\Category;
 use App\Entity\Event;
 use App\Repository\CategoryRepository;
 use App\Repository\SponsorRepository;
-use Doctrine\ORM\EntityRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

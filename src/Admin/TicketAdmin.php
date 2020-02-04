@@ -2,8 +2,8 @@
 
 namespace App\Admin;
 
-use App\Entity\Event;
 use App\Entity\Payment;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -22,6 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 final class TicketAdmin extends AbstractAdmin
 {
+    /** @var EventRepository */
+    private $eventRepository;
+
     /**
      * Default Datagrid values.
      *
@@ -33,6 +36,18 @@ final class TicketAdmin extends AbstractAdmin
             '_sort_order' => 'DESC',
             '_sort_by' => 'id',
         ];
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
 
     /**
      * @return array
@@ -219,8 +234,6 @@ final class TicketAdmin extends AbstractAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

@@ -97,13 +97,14 @@ class AnalyticsService
         $weeksMaxNumber = 20; // задаєм максимальну глибину аналізу
 
         // витягнути івенти з цієї групи
+        /** @var Event[]|null $events */
         $events = $this->em->getRepository(Event::class)
             ->findBy(['group' => $event->getGroup()], ['date' => Criteria::DESC], 4);
 
         // формуєм масив ключів з айдшок івентів, щоб використати його в формуванні заготовки масиву результатів
         $resultsKeys = [$event->getId()];
+        /** @var Event $e */
         foreach ($events as $e) {
-            /* @var Event $e */
             $resultsKeys[] = $e->getId();
         }
         $resultsValueTemplate = \array_fill_keys($resultsKeys, null);
@@ -111,8 +112,8 @@ class AnalyticsService
         $results = \array_fill(0, $weeksMaxNumber, $resultsValueTemplate);
 
         // витягуєм статистику продажів для івентів з цієї групи
+        /* @var Event $e */
         foreach ($events as $e) {
-            /* @var Event $e  */
             $dataForDailyStatistics = $this->getDailyTicketsSoldData($e);
             $reverseDataForDailyStatistics = \array_reverse($dataForDailyStatistics);
 

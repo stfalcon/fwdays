@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 class AbstractTranslateAdmin extends AbstractAdmin
 {
     /**
-     * {@inheritdoc}
+     * @param TranslatableInterface $object
      */
     public function preUpdate($object): void
     {
@@ -20,7 +20,7 @@ class AbstractTranslateAdmin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param TranslatableInterface $object
      */
     public function prePersist($object): void
     {

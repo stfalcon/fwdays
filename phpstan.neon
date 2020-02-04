@@ -1,8 +1,9 @@
 includes:
-#    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
     excludes_analyse:
         - '%rootDir%/../../../src/Tests/*'
+        - '%rootDir%/../../../src/DataFixtures/*'
         - '%rootDir%/../../../src/Service/SvgToJpg.php'
         - '%rootDir%/../../../src/Migrations/*'
     fileExtensions:

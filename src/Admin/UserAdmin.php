@@ -2,8 +2,8 @@
 
 namespace App\Admin;
 
-use App\Entity\Event;
 use App\Entity\User;
+use App\Repository\EventRepository;
 use App\Service\User\UserService;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -12,15 +12,31 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class UserAdmin.
  */
 final class UserAdmin extends AbstractAdmin
 {
+    private $eventRepository;
+
+    /**
+     * @param string          $code
+     * @param string          $class
+     * @param string          $baseControllerName
+     * @param EventRepository $eventRepository
+     */
+    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->eventRepository = $eventRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -101,10 +117,17 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $container = $this->getConfigurationPool()->getContainer();
+        if (!$container instanceof ContainerInterface) {
+            throw new BadRequestHttpException('container not found');
+        }
+        /** @var UserService $userService */
         $userService = $container->get(UserService::class);
         $user = $userService->getCurrentUser();
         $environment = $container->getParameter('kernel.environment');
+
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
+        /** @var User $editUser */
+        $editUser = $this->getSubject();
 
         $formMapper
             ->tab('Общие')
@@ -117,7 +140,7 @@ final class UserAdmin extends AbstractAdmin
                         [
                             'required' => true,
                             'label' => 'Почта',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $editUser->getId(),
                         ]
                     )
                     ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
@@ -152,9 +175,9 @@ final class UserAdmin extends AbstractAdmin
                         'plainPassword',
                         TextType::class,
                         [
-                            'required' => null === $this->getSubject()->getId(),
+                            'required' => null === $editUser->getId(),
                             'label' => 'Пароль',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $editUser->getId(),
                         ]
                     )
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
@@ -193,8 +216,6 @@ final class UserAdmin extends AbstractAdmin
      */
     private function getEvents(): array
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

@@ -88,7 +88,7 @@ class AdminController extends AbstractController
                 $user = $this->userManager->findUserBy(['email' => $data['email']]);
 
                 // создаем нового пользователя
-                if (!$user) {
+                if (!$user instanceof User) {
                     $user = $this->userManager->createUser();
                     $user->setEmail($data['email'])
                         ->setName($data['name'])
@@ -504,8 +504,10 @@ class AdminController extends AbstractController
         ];
         $callback = function () use ($users) {
             $usersFile = \fopen('php://output', 'w');
-            foreach ($users as $fields) {
-                \fputcsv($usersFile, $fields);
+            if (false !== $usersFile) {
+                foreach ($users as $fields) {
+                    \fputcsv($usersFile, $fields);
+                }
             }
 
             return $usersFile;

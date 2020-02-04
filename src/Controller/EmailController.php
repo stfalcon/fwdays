@@ -46,7 +46,7 @@ class EmailController extends AbstractController
 
         if ($mailId) {
             $mail = $em->getRepository(Mail::class)->find($mailId);
-            if ($mail) {
+            if ($mail instanceof Mail) {
                 $mail->addUnsubscribeMessagesCount();
             }
             /** @var MailQueue|null $mailQueue */

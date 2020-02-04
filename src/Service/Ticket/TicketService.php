@@ -144,13 +144,13 @@ class TicketService
     /**
      * Set the best (from promo code or standard discount) discount for ticket.
      *
-     * @param Ticket    $ticket
-     * @param PromoCode $promoCode
-     * @param float|int $discount
+     * @param Ticket         $ticket
+     * @param PromoCode|null $promoCode
+     * @param float|int      $discount
      *
      * @return string
      */
-    public function setTicketBestDiscount($ticket, $promoCode, $discount = -1): string
+    public function setTicketBestDiscount(Ticket $ticket, ?PromoCode $promoCode, $discount = -1): string
     {
         if (-1 === $discount) {
             $discount = (float) $this->paymentsConfig['discount'];

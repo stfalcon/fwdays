@@ -127,9 +127,10 @@ class PdfGeneratorHelper
         } catch (\Exception $e) {
             $base64EventSmallLogo = '';
         }
-
-        $base64CircleLeftImg = \base64_encode(\file_get_contents('build/img/email/circle_left.png'));
-        $base64CircleRightImg = \base64_encode(\file_get_contents('build/img/email/circle_right.png'));
+        $content = \file_get_contents('build/img/email/circle_left.png');
+        $base64CircleLeftImg = \is_string($content) ? \base64_encode($content) : '';
+        $content = \file_get_contents('build/img/email/circle_right.png');
+        $base64CircleRightImg = \is_string($content) ? \base64_encode($content) : '';
 
         return $templateContent->render(
             [

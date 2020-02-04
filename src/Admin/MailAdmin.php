@@ -12,8 +12,8 @@ use App\Entity\User;
 use App\Repository\MailQueueRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
-use App\Service\LocalsRequiredService;
 use App\Traits\EntityManagerTrait;
+use App\Traits\LocalsRequiredServiceTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\UnitOfWork;
@@ -32,6 +32,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 final class MailAdmin extends AbstractAdmin
 {
     use EntityManagerTrait;
+    use LocalsRequiredServiceTrait;
 
     /** @var array */
     private $savedEvents;
@@ -89,15 +90,14 @@ final class MailAdmin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
+     * @param Mail $object
+     *
+     * @throws OptimisticLockException
      */
     public function preUpdate($object): void
     {
-        /** @var Mail $object */
-        $container = $this->getConfigurationPool()->getContainer();
-        $em = $container->get('doctrine')->getManager();
         /** @var UnitOfWork $uow */
-        $uow = $em->getUnitOfWork();
+        $uow = $this->em->getUnitOfWork();
         $originalObject = $uow->getOriginalEntityData($object);
 
         $eventsChange = \count($this->savedEvents) !== $object->getEvents()->count();
@@ -145,21 +145,21 @@ final class MailAdmin extends AbstractAdmin
             $objectStatus = $object->getStart();
             if (true === $objectStatus) {
                 $object->setStart(false);
-                $em->flush();
+                $this->em->flush();
             }
             /** @var MailQueueRepository $queueRepository */
-            $queueRepository = $em->getRepository(MailQueue::class);
+            $queueRepository = $this->em->getRepository(MailQueue::class);
             $deleteCount = $queueRepository->deleteAllNotSentMessages($object);
             $object->setTotalMessages($object->getTotalMessages() - $deleteCount);
-            $usersInMail = $em->getRepository(User::class)->getUsersFromMail($object);
+            $usersInMail = $this->userRepository->getUsersFromMail($object);
             $newUsers = $this->getUsersForEmail($object);
-            $addUsers = array_diff($newUsers, $usersInMail);
+            $addUsers = \array_diff($newUsers, $usersInMail);
 
             $this->addUsersToEmail($object, $addUsers);
 
             if (true === $objectStatus) {
                 $object->setStart(true);
-                $em->flush();
+                $this->em->flush();
             }
         }
     }
@@ -204,8 +204,7 @@ final class MailAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray(true);
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray(true);
 
         /** @var Mail $object */
         $object = $this->getSubject();
