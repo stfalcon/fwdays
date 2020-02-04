@@ -11,7 +11,7 @@
 {% block linkElement %}
     {% set remodal = item.attribute('data-remodal-target') is not empty ? item.attribute('data-remodal-target') : '' %}
     {% set class="header__auth" %}
-    {% if app.user is null or not is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+    {% if not app.user %}
         {% set class= class~" header__auth--sign-in" %}
     {% endif %}
     {% if matcher.isCurrent(item) %}

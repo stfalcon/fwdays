@@ -155,7 +155,7 @@ final class MailAdmin extends AbstractAdmin
             $newUsers = $this->getUsersForEmail($object);
             $addUsers = \array_diff($newUsers, $usersInMail);
 
-            $this->addUsersToEmail($object, $addUsers);
+            $this->addUsersToEmail($object, $addUsers, true);
 
             if (true === $objectStatus) {
                 $object->setStart(true);
@@ -182,6 +182,7 @@ final class MailAdmin extends AbstractAdmin
             ->addIdentifier('id', null, ['label' => 'id'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
+            ->add('usersLocalsStatistic', 'string', ['label' => 'получатели украинской / английской версий'])
             ->add('audiences', null, ['label' => 'Аудитории'])
             ->add('events', null, ['label' => 'События'])
             ->add('_action', 'actions', [
@@ -304,26 +305,47 @@ final class MailAdmin extends AbstractAdmin
     /**
      * @param Mail  $mail
      * @param array $users
+     * @param bool  $recalculateLocals
      *
      * @throws OptimisticLockException
      */
-    private function addUsersToEmail($mail, $users): void
+    private function addUsersToEmail($mail, $users, bool $recalculateLocals = false): void
     {
-        $countSubscribers = $mail->getTotalMessages();
-        /** @var User $user */
-        foreach ($users as $user) {
-            if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
-                $user->isEnabled() &&
-                $user->isEmailExists()
-            ) {
-                $mailQueue = new MailQueue();
-                $mailQueue->setUser($user);
-                $mailQueue->setMail($mail);
-                $this->em->persist($mailQueue);
-                ++$countSubscribers;
+        $container = $this->getConfigurationPool()->getContainer();
+
+        if (isset($users)) {
+            $countSubscribers = $mail->getTotalMessages();
+            /** @var User $user */
+            foreach ($users as $user) {
+                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
+                    $user->isEnabled() &&
+                    $user->isEmailExists()
+                ) {
+                    $mailQueue = new MailQueue();
+                    $mailQueue->setUser($user);
+                    $mailQueue->setMail($mail);
+                    $this->em->persist($mailQueue);
+                    ++$countSubscribers;
+                    if (!$recalculateLocals) {
+                        $mail->processIncrementUserLocal($user->getEmailLanguage());
+                    }
+                }
+            }
+            $mail->setTotalMessages($countSubscribers);
+            $this->persistAndFlush($mail);
+
+            if ($recalculateLocals) {
+                $mail->setUsersWithEnLocal(0);
+                $mail->setUsersWithUkLocal(0);
+
+                foreach ($mail->getMailQueues() as $mailQueue) {
+                    $user = $mailQueue->getUser();
+                    if ($user instanceof User) {
+                        $mail->processIncrementUserLocal($user->getEmailLanguage());
+                    }
+                }
+                $this->em->flush();
             }
         }
-        $mail->setTotalMessages($countSubscribers);
-        $this->persistAndFlush($mail);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Service\PaymentProcess;
 
 use App\Entity\Payment;
 use App\Entity\WayForPayLog;
+use App\Exception\UnprocessedPaymentStatusException;
 use App\Service\ReferralService;
 use App\Traits;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,10 +30,10 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     public const TRANSACTION_STATUS_PENDING = 'pending';
     public const TRANSACTION_STATUS_FAIL = 'fail';
 
-    protected const TRANSACTION_STATUS = [
-        self::TRANSACTION_STATUS_PENDING => self::TRANSACTION_STATUS_PENDING,
-        self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
-    ];
+    protected $transactionStatus = [];
+
+    /** @var string */
+    protected $transactionStatusKey = '';
 
     /** @var array */
     protected $appConfig;
@@ -79,11 +80,20 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     }
 
     /**
+     * @return string
+     */
+    abstract public function getOrderNumberKey(): string;
+
+    /**
      * @param array  $data
      * @param string $paymentIdKey
      * @param string $paymentGate
      *
      * @return string
+     *
+     * @throws UnprocessedPaymentStatusException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     protected function processSystemData(array $data, string $paymentIdKey, string $paymentGate): string
     {
@@ -112,20 +122,11 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
             return self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS;
         }
 
-        $transactionStatus = $this->getTransactionStatus();
-
-        switch ($this->getStatusFromData($data)) {
-            case $transactionStatus[self::TRANSACTION_STATUS_PENDING]:
-                $status = self::TRANSACTION_STATUS_PENDING;
-                break;
-            case $transactionStatus[self::TRANSACTION_STATUS_FAIL]:
-                $status = self::TRANSACTION_STATUS_FAIL;
-                $this->logger->addCritical(\sprintf('%s interaction Fail!', $this->getSystemName()), $this->getRequestDataToArr($data, $payment));
-                $this->saveDataLog(null, $data, \sprintf('%s interaction Fail!', $this->getSystemName()));
-                break;
-            default:
-                $status = $this->getStatusFromData($data, true);
+        $status = $this->getStatusFromData($data);
+        if (self::TRANSACTION_STATUS_FAIL === $status) {
+            $this->logger->addCritical(\sprintf('%s interaction Fail!', $this->getSystemName()), $this->getRequestDataToArr($data, $payment));
         }
+        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status));
 
         return $status;
     }
@@ -147,24 +148,26 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     abstract protected function getRequestDataToArr(array $data, ?Payment $payment): array;
 
     /**
-     * @param array $data
-     * @param bool  $isUnprocessedTransaction
-     *
-     * @return string
-     */
-    abstract protected function getStatusFromData(array $data, bool $isUnprocessedTransaction = false): string;
-
-    /**
      * @return string
      */
     abstract protected function getSystemName(): string;
 
     /**
-     * @return array
+     * @param array $data
+     *
+     * @return string
+     *
+     * @throws UnprocessedPaymentStatusException
      */
-    protected function getTransactionStatus(): array
+    protected function getStatusFromData(array $data): string
     {
-        return self::TRANSACTION_STATUS;
+        $status = $data[$this->transactionStatusKey] ?? self::TRANSACTION_STATUS_FAIL;
+
+        if (isset($this->transactionStatus[$status])) {
+            return $this->transactionStatus[$status];
+        }
+        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status));
+        throw new UnprocessedPaymentStatusException($status, $this->getSystemName());
     }
 
     /**

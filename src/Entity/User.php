@@ -267,7 +267,7 @@ class User extends BaseUser
      * @Assert\NotBlank()
      * @Assert\Length(min="2")
      */
-    private $emailLanguage = LocalsRequiredService::DEFAULT_EMAIL_LANGUAGE;
+    private $emailLanguage = LocalsRequiredService::UK_EMAIL_LANGUAGE;
 
     /**
      * User constructor.

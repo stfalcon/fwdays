@@ -19,7 +19,7 @@ main.menu.cabinet: Кабінет
 email: email
 madeby: 'Зроблено в '
 
-autoreg.mail.text1: Ви були автоматично зареєстровані на сайті Frameworks Days.
+autoreg.mail.text1: Ви були автоматично зареєстровані на сайті Fwdays.
 autoreg.mail.text2: 'Ваш тимчасовий пароль: "%password%"'
 autoreg.mail.text3: Його можна змінити на сторінці "%url%"
 

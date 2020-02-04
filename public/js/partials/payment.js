@@ -108,11 +108,7 @@ applyBonusBtn.click(function () {
     applyFwdaysBonus(amount);
 });
 
-userBonusInput.change(function (event) {
-    var max = $(this).attr('max');
-    if ($(this).val() > max) {
-        $(this).val(max);
-    }
+userBonusInput.change(function () {
     if ($(this).val() < 0) {
         $(this).val(0);
     }

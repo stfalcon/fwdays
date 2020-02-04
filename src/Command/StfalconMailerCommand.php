@@ -6,6 +6,9 @@ use App\Entity\Mail;
 use App\Entity\User;
 use App\Helper\MailerHelper;
 use App\Repository\MailQueueRepository;
+use App\Entity\MailQueue;
+use App\Entity\User;
+use App\Helper\StfalconMailerHelper;
 use App\Service\EmailHashValidationService;
 use App\Service\MyMailer;
 use App\Service\TranslatedMailService;
@@ -95,6 +98,9 @@ class StfalconMailerCommand extends Command
                 $user->isEmailExists() &&
                 \filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)
             )) {
+                if ($user instanceof User) {
+                    $mail->processDecrementUserLocal($user->getEmailLanguage());
+                }
                 $mail->decTotalMessages();
                 $this->em->remove($item);
                 $this->em->flush();
@@ -109,6 +115,9 @@ class StfalconMailerCommand extends Command
                 $this->logger->addError('Mailer:'.$e->getMessage(), ['email' => $user->getEmail()]);
 
                 $mail->decTotalMessages();
+                if ($user instanceof User) {
+                    $mail->processDecrementUserLocal($user->getEmailLanguage());
+                }
                 $this->em->remove($item);
                 $this->em->flush();
                 continue;

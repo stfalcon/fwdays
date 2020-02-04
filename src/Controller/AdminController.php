@@ -117,7 +117,7 @@ class AdminController extends AbstractController
                     );
 
                     $message = (new \Swift_Message())
-                        ->setSubject('Регистрация на сайте Frameworks Days')
+                        ->setSubject('Регистрация на сайте Fwdays')
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
                         ->setBody($body, 'text/html');

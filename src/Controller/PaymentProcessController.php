@@ -52,16 +52,18 @@ class PaymentProcessController extends AbstractController
 
         if ($this->paymentSystem->isUseRedirectByStatus()) {
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
-                return $this->redirectToRoute('payment_success');
-            }
+                $session = $this->get('session');
+                if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
+                    $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $this->paymentSystem->getPaymentIdFromData($data));
+                }
 
-            if (WayForPayService::WFP_TRANSACTION_APPROVED_STATUS === $transactionStatus && $this->paymentSystem instanceof WayForPayService) {
                 return $this->redirectToRoute('payment_success');
             }
 
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_PENDING === $transactionStatus) {
                 return $this->redirectToRoute('payment_pending');
             }
+
             if (AbstractPaymentProcessService::TRANSACTION_STATUS_FAIL === $transactionStatus) {
                 return $this->redirectToRoute('payment_fail');
             }
@@ -103,17 +105,16 @@ class PaymentProcessController extends AbstractController
      *
      * @return Response
      */
-    public function showSuccessAction(Request $request)
+    public function showSuccessAction(Request $request): Response
     {
         $paymentId = $this->session->get(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
         $this->session->remove(AbstractPaymentProcessService::SESSION_PAYMENT_KEY);
 
         if (null === $paymentId) {
             $data = $request->query->all();
-            $paymentId = $this->paymentSystem->getPaymentIdFromData($data);
-//            if (null === $paymentId) {
-//                throw new BadRequestHttpException();
-//            }
+            if (isset($data[$this->paymentSystem->getOrderNumberKey()])) {
+                $paymentId = $this->paymentSystem->getPaymentIdFromData($data);
+            }
         }
 
         /** @var Payment|null $payment */
