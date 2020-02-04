@@ -70,6 +70,12 @@ class LocaleUrlResponseListener
             return;
         }
 
+        if ($this->defaultLocale !== $pathLocal && \in_array($pathLocal, $this->locales, true)) {
+            $request->setLocale($pathLocal);
+
+            return;
+        }
+
         if ($pathLocal !== $locale && \in_array($pathLocal, $this->locales, true)) {
             $params = $request->query->all();
             $newPath = $this->getStringFromPathArray(2);
