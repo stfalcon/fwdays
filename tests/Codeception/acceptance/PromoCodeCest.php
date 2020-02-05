@@ -78,6 +78,9 @@ class PromoCodeCest
         $I->waitForText('(coupon discount 100%)');
         $I->dontSee('Promo code not found!');
 
+        $I->seeElement('#agree-check-payment');
+        $I->click('#agree-check-payment');
+
         $I->seeElement('#buy-ticket-btn');
         $I->click('#buy-ticket-btn');
         $I->waitForText('Payment successful!');

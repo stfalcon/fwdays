@@ -39,6 +39,9 @@ class ReferalBalanceCest
         $I->waitForText('−1 000 UAH fwdays bonus');
         $I->see('0 UAH ', '.payment-cart__amount');
 
+        $I->seeElement('#agree-check-payment');
+        $I->click('#agree-check-payment');
+
         $I->click('#buy-ticket-btn');
         $I->waitForText('Payment successful!', 15);
 
