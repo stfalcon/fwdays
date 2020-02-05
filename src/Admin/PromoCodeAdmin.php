@@ -8,7 +8,6 @@ use App\Entity\Event;
 use App\Entity\PromoCode;
 use App\Entity\User;
 use App\Repository\EventRepository;
-use App\Service\LocalsRequiredService;
 use App\Traits\LocalsRequiredServiceTrait;
 use App\Traits\TokenStorageTrait;
 use Doctrine\Common\Collections\Criteria;
