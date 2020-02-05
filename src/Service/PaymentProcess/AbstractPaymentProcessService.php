@@ -9,6 +9,8 @@ use App\Entity\WayForPayLog;
 use App\Exception\UnprocessedPaymentStatusException;
 use App\Service\ReferralService;
 use App\Traits;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -30,6 +32,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     public const TRANSACTION_STATUS_PENDING = 'pending';
     public const TRANSACTION_STATUS_FAIL = 'fail';
 
+    /** @var array */
     protected $transactionStatus = [];
 
     /** @var string */

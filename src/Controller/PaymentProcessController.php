@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
-use App\Service\PaymentProcess\WayForPayService;
 use App\Traits\SessionTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -38,7 +38,7 @@ class PaymentProcessController extends AbstractController
      *
      * @param Request $request
      *
-     * @return array|Response
+     * @return RedirectResponse|Response
      */
     public function interactionAction(Request $request)
     {
@@ -52,9 +52,8 @@ class PaymentProcessController extends AbstractController
 
         if ($this->paymentSystem->isUseRedirectByStatus()) {
             if (AbstractPaymentProcessService::TRANSACTION_APPROVED_AND_SET_PAID_STATUS === $transactionStatus) {
-                $session = $this->get('session');
-                if (!$session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
-                    $session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $this->paymentSystem->getPaymentIdFromData($data));
+                if (!$this->session->has(AbstractPaymentProcessService::SESSION_PAYMENT_KEY)) {
+                    $this->session->set(AbstractPaymentProcessService::SESSION_PAYMENT_KEY, $this->paymentSystem->getPaymentIdFromData($data));
                 }
 
                 return $this->redirectToRoute('payment_success');

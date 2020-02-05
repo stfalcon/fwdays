@@ -29,6 +29,7 @@ class WayForPayService extends AbstractPaymentProcessService
 
     private const ORDER_NUMBER_KEY = 'orderNo';
 
+    /** @var array */
     protected $transactionStatus = [
         self::WFP_TRANSACTION_APPROVED_STATUS => self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS,
 

@@ -75,8 +75,6 @@ services:
             - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
             - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
-    App\Service\GoogleMapService:
-        public: true
 
     App\Handler\LoginHandler: ~
 
@@ -88,6 +86,9 @@ services:
         tags:
             - { name: twig.extension }
 
+    App\Service\GoogleMapService:
+        public: true
+
     App\Service\LocalsRequiredService:
         public: true
 
@@ -95,9 +96,9 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
-#    vich_uploader.my_storage.flysystem:
-#        class: App\Service\MyFlySystemStorage
-#        arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
+    vich_uploader.my_storage.flysystem:
+        class: App\Service\MyFlySystemStorage
+        arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
 
     liip_imagine.cache.resolver.prototype.flysystem:
         class: App\Service\MyFlySystemResolver

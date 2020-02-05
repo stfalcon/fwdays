@@ -105,9 +105,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        /** @var LocalsRequiredService $localsRequiredService */
-        $localsRequiredService = $this->getConfigurationPool()->getContainer()->get(LocalsRequiredService::class);
-        $localOptions = $localsRequiredService->getLocalsRequiredArray();
+        $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
         /** @var PromoCode|null $promocode */
         $promocode = $this->getSubject();
         $user = $this->getCurrentUser();

@@ -311,9 +311,7 @@ final class MailAdmin extends AbstractAdmin
      */
     private function addUsersToEmail($mail, $users, bool $recalculateLocals = false): void
     {
-        $container = $this->getConfigurationPool()->getContainer();
-
-        if (isset($users)) {
+        if (\count($users) > 0) {
             $countSubscribers = $mail->getTotalMessages();
             /** @var User $user */
             foreach ($users as $user) {

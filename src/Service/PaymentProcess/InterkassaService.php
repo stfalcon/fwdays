@@ -19,7 +19,7 @@ class InterkassaService extends AbstractPaymentProcessService
     private const PAYMENT_SYSTEM_NAME = 'Interkassa';
     private const ORDER_NUMBER_KEY = 'ik_pm_no';
 
-    /** @var bool */
+    /** @var array */
     protected $transactionStatus = [
         self::IK_TRANSACTION_APPROVED_STATUS => self::TRANSACTION_APPROVED_AND_SET_PAID_STATUS,
         self::TRANSACTION_STATUS_PENDING => self::TRANSACTION_STATUS_PENDING,
@@ -27,6 +27,7 @@ class InterkassaService extends AbstractPaymentProcessService
     ];
 
     protected $transactionStatusKey = 'ik_inv_st';
+    /** @var bool */
     protected $isOverrideCallbacks;
 
     /**
