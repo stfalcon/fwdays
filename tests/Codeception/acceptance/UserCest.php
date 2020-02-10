@@ -235,7 +235,7 @@ class UserCest
         $this->newLogin = true;
         $I->amOnPage('/en');
         static::seeAndClick($I, '.language_switcher');
-        $I->seeCurrentUrlEquals('/index_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/');
         $this->loginModal($I);
     }
 
@@ -271,7 +271,6 @@ class UserCest
     {
         $I->wantTo('Check user cabinet page');
         $I->amOnPage('/');
-        static::seeAndClick($I, '.language_switcher');
         $I->seeCurrentUrlEquals('/index_test.php/en/');
 
         static::iAmSigned($I);
