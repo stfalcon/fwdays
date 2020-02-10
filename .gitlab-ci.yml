@@ -6,7 +6,7 @@ cache:
 
 services:
     - name: jekakm/mysql-core:201902201
-      alias: fwdays-php73-mysql
+      alias: mysql
 
     - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
 
