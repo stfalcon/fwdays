@@ -106,6 +106,11 @@ final class UserAdmin extends AbstractAdmin
         $user = $userService->getCurrentUser();
         $environment = $container->getParameter('kernel.environment');
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
+        $object = $this->getSubject();
+        $objectId = null;
+        if ($object instanceof User) {
+            $objectId = $object->getId();
+        }
 
         $formMapper
             ->tab('Общие')
@@ -118,7 +123,7 @@ final class UserAdmin extends AbstractAdmin
                         [
                             'required' => true,
                             'label' => 'Почта',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
@@ -155,9 +160,9 @@ final class UserAdmin extends AbstractAdmin
                         'plainPassword',
                         'text',
                         [
-                            'required' => null === $this->getSubject()->getId(),
+                            'required' => null === $objectId,
                             'label' => 'Пароль',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
