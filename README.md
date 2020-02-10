@@ -1,4 +1,4 @@
-It's engine for site of conference Frameworks Days
+It's engine for site of conference Fwdays
 ========================================
 [![Build Status](https://img.shields.io/travis/stfalcon/fwdays.svg)](https://travis-ci.org/stfalcon/fwdays)
 [![Scrutinizer code quality](https://img.shields.io/scrutinizer/g/stfalcon/fwdays.svg)](https://scrutinizer-ci.com/g/stfalcon/fwdays/?branch=master)
