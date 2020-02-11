@@ -7,9 +7,9 @@ namespace App\Service\Ticket;
 use App\Model\EventStateData;
 
 /**
- * SoldOutEventState.
+ * RegistrationCloseEventState.
  */
-class SoldOutEventState extends AbstractBaseEventState
+class RegistrationCloseEventState extends AbstractBaseEventState
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class SoldOutEventState extends AbstractBaseEventState
     {
         $event = $eventStateData->getEvent();
 
-        return $event->isActiveAndFuture() && !$event->isHasAvailableTickets() && $event->getReceivePayments();
+        return $event->isActiveAndFuture() && !$event->getReceivePayments() && !$event->isRegistrationOpen();
     }
 
     /**
@@ -26,7 +26,7 @@ class SoldOutEventState extends AbstractBaseEventState
      */
     public function getEventState(): string
     {
-        return TicketService::TICKETS_SOLD_OUT;
+        return TicketService::EVENT_REGISTRATION_CLOSE;
     }
 
     /**
@@ -42,7 +42,7 @@ class SoldOutEventState extends AbstractBaseEventState
      */
     public function getCaption(EventStateData $eventStateData): string
     {
-        return $this->translator->trans(\sprintf('ticket.status.sold%s', $eventStateData->getMob()));
+        return $this->translator->trans(\sprintf('ticket.status.registration_closed%s', $eventStateData->getMob()));
     }
 
     /**

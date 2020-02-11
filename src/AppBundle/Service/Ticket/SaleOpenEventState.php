@@ -68,8 +68,8 @@ class SaleOpenEventState extends AbstractBaseEventState
      */
     public function support(EventStateData $eventStateData): bool
     {
-        $payment = $eventStateData->getPendingPayment();
+        $event = $eventStateData->getEvent();
 
-        return $eventStateData->getEvent()->isActiveAndFuture() && (!$payment || $payment->isPending());
+        return $event->isActiveAndFuture() && $event->getReceivePayments();
     }
 }
