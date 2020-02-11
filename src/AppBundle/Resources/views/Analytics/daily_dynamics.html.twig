@@ -10,8 +10,8 @@
 </h4>
 <div id="div_chart_{{ event.id }}"></div>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 {%- if chart -%}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         {{ gc_draw(chart, 'div_chart_' ~ event.id) }}
     </script>

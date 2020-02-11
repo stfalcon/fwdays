@@ -37,7 +37,7 @@ class AnalyticsController extends Controller
                 ['label' => 'Tickets sold number', 'type' => 'number'],
             ]);
 
-            $chart = $this->container->get(ChartService::class)->calendarChart($dailyData);
+            $chart = $this->get(ChartService::class)->calendarChart($dailyData);
         }
 
         return $this->render('AppBundle:Analytics:daily_dynamics.html.twig', [
