@@ -121,9 +121,9 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
 
-        if ($event->isActiveAndFuture()) {
+        if ($event->isActiveAndFuture() && $event->isRegistrationOpen()) {
             $result = $user->addWantsToVisitEvents($event);
-            $error = $result ? '' : \sprintf('cant remove event %s', $event->getSlug());
+            $error = $result ? '' : \sprintf('cant add event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
         }
@@ -165,7 +165,7 @@ class EventController extends Controller
         $flashContent = '';
         $em = $this->getDoctrine()->getManager();
 
-        if ($event->isActiveAndFuture()) {
+        if ($event->isActiveAndFuture() && $event->isRegistrationOpen()) {
             $result = $user->subtractWantsToVisitEvents($event);
             $error = $result ? '' : \sprintf('cant remove event %s', $event->getSlug());
         } else {
