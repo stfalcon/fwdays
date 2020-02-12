@@ -46,7 +46,7 @@
                 <p id="info_p"></p>
             <div class="form-row payment-cart-btn">
                 <div class="form-col form-col--12">
-                    <button id="buy-ticket-btn" type="button" class="btn btn--lg btn--primary form-col__btn">{{ 'ticket.status.pay'|trans }}</button>
+                    <button id="buy-ticket-btn-{{ event.slug }}" type="button" class="btn btn--lg btn--primary form-col__btn">{{ 'ticket.status.pay'|trans }}</button>
                 </div>
             </div>
             {%- if with_conditions -%}
