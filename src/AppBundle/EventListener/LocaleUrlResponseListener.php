@@ -22,7 +22,6 @@ class LocaleUrlResponseListener
     private const LANG_FROM_IP = 'lang_from_ip';
     private const LANG_FROM_PREFERRED = 'lang_from_preferred';
     private const LANG_FROM_NULL = 'lang_from_null';
-    private const CHECK_COOKIE_LANG_NAME = 'check-lang2';
     private const REDIRECT_NUMBER = 302;
 
     private $defaultLocale;
@@ -154,8 +153,10 @@ class LocaleUrlResponseListener
             if (false !== $this->geoIpService->lookup($this->getRealIpAddr($request))) {
                 if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
                     $local = $this->defaultLocale;
-                    $langSource = self::LANG_FROM_IP;
+                } else {
+                    $local = 'en';
                 }
+                $langSource = self::LANG_FROM_IP;
             }
         }
 
