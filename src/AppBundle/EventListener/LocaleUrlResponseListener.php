@@ -30,6 +30,8 @@ class LocaleUrlResponseListener
     private $routerService;
     private $geoIpService;
     private $pathArray = [];
+    private $skipRoutes = [];
+
 
     /**
      * @param string       $defaultLocale
@@ -45,6 +47,7 @@ class LocaleUrlResponseListener
         $this->cookieName = $cookieName;
         $this->routerService = $routerService;
         $this->geoIpService = $geoIpService;
+        $this->skipRoutes[] = $this->routerService->generate('payment_service_interaction', ['_locale' => 'uk']);
     }
 
     /**
@@ -57,10 +60,16 @@ class LocaleUrlResponseListener
         }
 
         $request = $event->getRequest();
+        $path = $request->getPathInfo();
+
+        if (\in_array($path, $this->skipRoutes, true)) {
+            $request->setLocale($this->defaultLocale);
+
+            return;
+        }
+
         $langSource = self::LANG_FROM_NULL;
         $locale = $this->getCurrentLocale($request, $langSource);
-
-        $path = $request->getPathInfo();
         $pathLocal = $this->getInnerSubstring($path, '/');
 
         if ($locale === $this->defaultLocale && '' === $pathLocal) {
