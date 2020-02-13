@@ -213,7 +213,7 @@ services:
     App\EventListener\PaymentListener:
         tags:
             - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
-        arguments: ['@service_container']
+        arguments: ['@service_container', '@request_stack']
 
     app.menu.main.redesign:
         class: Knp\Menu\MenuItem

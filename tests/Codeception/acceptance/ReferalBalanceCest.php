@@ -19,7 +19,7 @@ class ReferalBalanceCest
 
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
 
-        $I->dontSeeElement('#buy-ticket-btn');
+        $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
 
         foreach (self::PAY_USER_DATA as $field => $value) {
             $I->seeElement($field);
@@ -39,7 +39,7 @@ class ReferalBalanceCest
         $I->waitForText('−1 000 UAH fwdays bonus');
         $I->see('0 UAH ', '.payment-cart__amount');
 
-        $I->click('#buy-ticket-btn');
+        $I->click('#buy-ticket-btn-javaScript-framework-day-2018');
         $I->waitForText('Payment successful!');
 
         $I->seeCurrentUrlEquals('/app_test.php/en/payment/success');
