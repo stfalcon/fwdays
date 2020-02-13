@@ -14,6 +14,7 @@ use App\Form\Type\MyGedmoTranslationsType;
 use App\Repository\MailQueueRepository;
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Knp\Menu\ItemInterface as MenuItemInterface;
@@ -23,6 +24,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
  * Class MailAdmin.
@@ -151,6 +153,7 @@ final class MailAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('id', null, ['label' => 'id'])
+            ->add('startDate', null, ['label' => 'Дата запуска'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
             ->add('usersLocalsStatistic', 'string', ['label' => 'получатели украинской / английской версий'])
