@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use FOS\UserBundle\Model\UserInterface;
@@ -129,6 +130,13 @@ class User extends BaseUser
      * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $wantsToVisitEvents;
+
+    /**
+     * @var UserEventRegistration[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\UserEventRegistration", mappedBy="user", orphanRemoval=true)
+     */
+    private $eventRegistrations;
 
     /**
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
@@ -839,5 +847,59 @@ class User extends BaseUser
         $this->emailLanguage = $emailLanguage;
 
         return $this;
+    }
+
+    /**
+     * @return UserEventRegistration[]|Collection
+     */
+    public function getEventRegistrations()
+    {
+        return $this->eventRegistrations;
+    }
+
+    /**
+     * @param UserEventRegistration[]|Collection $eventRegistrations
+     *
+     * @return $this
+     */
+    public function setEventRegistrations($eventRegistrations): self
+    {
+        $this->eventRegistrations = $eventRegistrations;
+
+        return $this;
+    }
+
+    /**
+     * @param UserEventRegistration $registration
+     *
+     * @return bool
+     */
+    public function addUserEventRegistration(UserEventRegistration $registration): bool
+    {
+        $registrationExists = $this->eventRegistrations->exists(
+            function (int $key, UserEventRegistration $collectionElement) use ($registration) {
+                return $collectionElement->getEvent()->getId() === $registration->getEvent()->getId();
+            }
+        );
+
+        if (!$registrationExists) {
+            return $this->eventRegistrations->add($registration);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param UserEventRegistration $registration
+     *
+     * @return bool
+     */
+    public function removeUserEventRegistration(UserEventRegistration $registration): bool
+    {
+        if ($this->eventRegistrations->contains($registration)) {
+            return $this->eventRegistrations->removeElement($registration);
+        }
+
+        return false;
     }
 }
