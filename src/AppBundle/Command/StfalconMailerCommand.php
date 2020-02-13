@@ -126,7 +126,7 @@ class StfalconMailerCommand extends ContainerAwareCommand
                 $item->setIsSent(true);
 
                 if (null === $mail->getStartDate()) {
-                    $mail->setStartDate(new \DateTimeImmutable('now'));
+                    $mail->setStartDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Kiev')));
                 }
 
                 $em->flush();
