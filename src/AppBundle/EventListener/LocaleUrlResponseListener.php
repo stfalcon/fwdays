@@ -32,7 +32,6 @@ class LocaleUrlResponseListener
     private $pathArray = [];
     private $skipRoutes = [];
 
-
     /**
      * @param string       $defaultLocale
      * @param array        $locales
