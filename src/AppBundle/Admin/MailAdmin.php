@@ -14,7 +14,6 @@ use App\Form\Type\MyGedmoTranslationsType;
 use App\Repository\MailQueueRepository;
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Knp\Menu\ItemInterface as MenuItemInterface;
@@ -24,7 +23,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
  * Class MailAdmin.
