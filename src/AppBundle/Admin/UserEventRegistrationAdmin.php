@@ -10,10 +10,25 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
- * UserEventAdmin.
+ * UserEventRegistrationAdmin.
  */
-final class UserEventAdmin extends AbstractAdmin
+final class UserEventRegistrationAdmin extends AbstractAdmin
 {
+    /**
+     * @return array
+     */
+    public function getExportFields()
+    {
+        return [
+            'id',
+            'event',
+            'user.fullname',
+            'user.email',
+            'user.phone',
+            'createdAt',
+        ];
+    }
+
     /**
      * Allows you to customize batch actions.
      *
@@ -34,9 +49,7 @@ final class UserEventAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('user', null, ['label' => 'Почта'])
-            ->add('user.fullname', null, ['label' => 'Имя'])
-            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('id')
             ->add(
                 'event',
                 null,
@@ -44,6 +57,10 @@ final class UserEventAdmin extends AbstractAdmin
                 EntityType::class,
                 ['choices' => $this->getEvents()]
             )
+            ->add('user.fullname', null, ['label' => 'Имя'])
+            ->add('user.email', null, ['label' => 'Почта'])
+            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('createdAt')
         ;
     }
 
@@ -53,10 +70,12 @@ final class UserEventAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('user', null, ['label' => 'Почта'])
-            ->add('user.fullname', null, ['label' => 'Имя'])
-            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('id')
             ->add('event')
+            ->add('user.fullname', null, ['label' => 'Имя'])
+            ->add('user', null, ['label' => 'Почта'])
+            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('createdAt', null, ['label' => 'Дата создания'])
         ;
     }
 

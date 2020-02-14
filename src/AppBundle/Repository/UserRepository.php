@@ -184,8 +184,8 @@ class UserRepository extends EntityRepository
      */
     private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
     {
-        $qb->join('u.wantsToVisitEvents', 'wtv');
-        $andX->add($qb->expr()->in('wtv.id', ':events'));
+        $qb->join('u.eventRegistrations', 'er');
+        $andX->add($qb->expr()->in('er.event', ':events'));
         $qb->setParameter(':events', $events->toArray());
     }
 

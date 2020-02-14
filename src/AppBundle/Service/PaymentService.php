@@ -375,7 +375,7 @@ class PaymentService
         }
 
         if (!$ticket && !$payment) {
-            $user->addWantsToVisitEvents($event);
+            $this->userService->registerUserToEvent($user, $event);
             $ticket = $this->ticketService->createTicket($event, $user);
         }
 
