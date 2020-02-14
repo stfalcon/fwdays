@@ -375,8 +375,7 @@ class PaymentService
         }
 
         if (!$ticket && !$payment) {
-            $userService = $this->get(UserService::class);
-            $userService->registerUserToEvent($user, $event);
+            $this->userService->registerUserToEvent($user, $event);
             $ticket = $this->ticketService->createTicket($event, $user);
         }
 
