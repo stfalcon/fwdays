@@ -112,7 +112,7 @@ final class UserAdmin extends AbstractAdmin
                     'choices' => [
                         'Украинский' => 'uk',
                         'Английский' => 'en',
-                    ]
+                    ],
                 ]
             )
             ->add(
