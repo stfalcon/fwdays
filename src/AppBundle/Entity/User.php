@@ -276,6 +276,7 @@ class User extends BaseUser
         parent::__construct();
         $this->tickets = new ArrayCollection();
         $this->wantsToVisitEvents = new ArrayCollection();
+        $this->eventRegistrations = new ArrayCollection();
     }
 
     /**
@@ -347,53 +348,17 @@ class User extends BaseUser
     }
 
     /**
-     * @param ArrayCollection $wantsToVisitEvents
-     *
-     * @return $this
-     */
-    public function setWantsToVisitEvents($wantsToVisitEvents)
-    {
-        $this->wantsToVisitEvents = $wantsToVisitEvents;
-
-        return $this;
-    }
-
-    /**
      * @param Event $event
      *
      * @return bool
      */
-    public function addWantsToVisitEvents(Event $event)
+    public function isRegisterToEvent(Event $event): bool
     {
-        if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
-            return $event->addWantsToVisitCount();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Event $event
-     *
-     * @return bool
-     */
-    public function subtractWantsToVisitEvents(Event $event)
-    {
-        if ($this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->removeElement($event)) {
-            return $event->subtractWantsToVisitCount();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Event $event
-     *
-     * @return bool
-     */
-    public function isEventInWants(Event $event)
-    {
-        return $this->wantsToVisitEvents->contains($event);
+        return $this->eventRegistrations->exists(
+            function (int $key, UserEventRegistration $collectionElement) use ($event) {
+                return $collectionElement->getEvent()->isEqualTo($event);
+            }
+        );
     }
 
     /**
@@ -878,26 +843,32 @@ class User extends BaseUser
     {
         $registrationExists = $this->eventRegistrations->exists(
             function (int $key, UserEventRegistration $collectionElement) use ($registration) {
-                return $collectionElement->getEvent()->getId() === $registration->getEvent()->getId();
+                return $collectionElement->getEvent()->isEqualTo($registration->getEvent());
             }
         );
 
         if (!$registrationExists) {
-            return $this->eventRegistrations->add($registration);
+            $this->eventRegistrations->add($registration);
+
+            return $registration->getEvent()->addWantsToVisitCount();
         }
 
         return false;
     }
 
     /**
-     * @param UserEventRegistration $registration
+     * @param Event $event
      *
      * @return bool
      */
-    public function removeUserEventRegistration(UserEventRegistration $registration): bool
+    public function removeUserEventRegistration(Event $event): bool
     {
-        if ($this->eventRegistrations->contains($registration)) {
-            return $this->eventRegistrations->removeElement($registration);
+        foreach ($this->eventRegistrations as $registration) {
+            if ($registration->getEvent()->isEqualTo($event)) {
+                $this->eventRegistrations->removeElement($registration);
+
+                return $event->subtractWantsToVisitCount();
+            }
         }
 
         return false;

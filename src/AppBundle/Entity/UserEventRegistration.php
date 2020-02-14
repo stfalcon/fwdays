@@ -38,7 +38,7 @@ class UserEventRegistration
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="eventRegistrations")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      *
      * @Assert\Type("App\Entity\User")
@@ -56,16 +56,17 @@ class UserEventRegistration
     private $event;
 
     /**
-     * @param User  $user
-     * @param Event $event
+     * @param User   $user
+     * @param Event  $event
+     * @param string $date
      *
      * @throws \Exception
      */
-    public function __construct(User $user, Event $event)
+    public function __construct(User $user, Event $event, string $date = 'now')
     {
         $this->user = $user;
         $this->event = $event;
-        $this->createdAt = new \DateTimeImmutable('now');
+        $this->createdAt = new \DateTimeImmutable($date, new \DateTimeZone('Europe/Kiev'));
     }
 
     /**

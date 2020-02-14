@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service\User;
 
+use App\Entity\Event;
 use App\Entity\User;
+use App\Entity\UserEventRegistration;
 use App\Traits\TokenStorageTrait;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -15,6 +18,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UserService
 {
     use TokenStorageTrait;
+
+    /** @var EntityManager */
+    private $em;
+
+    /** @param EntityManager $em */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
     /**
      * @return User
@@ -50,5 +62,48 @@ class UserService
         }
 
         return $user instanceof User;
+    }
+
+    /**
+     * @param User   $user
+     * @param Event  $event
+     * @param string $date
+     *
+     * @return bool
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function registerUserToEvent(User $user, Event $event, string $date = 'now'): bool
+    {
+        $userEventRegistration = new UserEventRegistration($user, $event, $date);
+
+        if ($user->addUserEventRegistration($userEventRegistration)) {
+            $this->em->persist($userEventRegistration);
+            $this->em->flush();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function unregisterUserFromEvent(User $user, Event $event): bool
+    {
+        if ($user->removeUserEventRegistration($event)) {
+            $this->em->flush();
+
+            return true;
+        }
+
+        return false;
     }
 }

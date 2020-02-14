@@ -273,5 +273,6 @@ services:
         arguments: ['%locale%']
 
     App\Service\User\UserService:
+        arguments: ['@doctrine.orm.entity_manager']
         calls:
             - [setTokenStorage, ['@security.token_storage']]

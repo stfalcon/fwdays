@@ -10,6 +10,7 @@ use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Helper\StfalconMailerHelper;
+use App\Service\User\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -114,8 +115,9 @@ class AdminController extends Controller
                         ->setUser($user)
                         ->setHideConditions(isset($_POST['hide_conditions']))
                     ;
-                    $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
+                    $userService = $this->get(UserService::class);
+                    $userService->registerUserToEvent($user, $event);
                 }
 
                 if ($ticket->isPaid()) {

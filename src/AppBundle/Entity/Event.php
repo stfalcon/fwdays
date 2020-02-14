@@ -1534,4 +1534,22 @@ class Event implements Translatable
 
         return $this;
     }
+
+    /**
+     * @param mixed $event
+     *
+     * @return bool
+     */
+    public function isEqualTo($event): bool
+    {
+        if (!$event instanceof self) {
+            return false;
+        }
+
+        if ($event->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
+    }
 }
