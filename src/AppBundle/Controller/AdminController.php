@@ -11,6 +11,7 @@ use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Helper\StfalconMailerHelper;
 use App\Service\User\UserService;
+use App\Service\LocalsRequiredService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -285,6 +286,9 @@ class AdminController extends Controller
             $eventStatisticSlug = $event->getSlug();
         }
 
+        $usersWithUkLocale = $repo->getUserCountByEmailLanguage(LocalsRequiredService::UK_EMAIL_LANGUAGE);
+        $usersWithEnLocale = $repo->getUserCountByEmailLanguage(LocalsRequiredService::EN_EMAIL_LANGUAGE);
+
         return $this->render('@App/Statistic/statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
@@ -300,6 +304,8 @@ class AdminController extends Controller
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
+                'usersWithUkLocale' => \sprintf('%s (%s%%)', $usersWithUkLocale, \round($usersWithUkLocale * 100 / $totalUsersCount, 2)),
+                'usersWithEnLocale' => \sprintf('%s (%s%%)', $usersWithEnLocale, \round($usersWithEnLocale * 100 / $totalUsersCount, 2)),
             ],
         ]);
     }
