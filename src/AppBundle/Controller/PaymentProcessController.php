@@ -29,6 +29,9 @@ class PaymentProcessController extends Controller
     public function interactionAction(Request $request)
     {
         $data = $request->request->all();
+        $data['locale'] = $request->getLocale();
+        $data['processed'] = 'payment_interaction';
+
         $paymentSystem = $this->get('app.payment_system.service');
 
         try {
@@ -74,6 +77,8 @@ class PaymentProcessController extends Controller
     {
         $json = $request->getContent();
         $response = \json_decode($json, true);
+        $response['locale'] = $request->getLocale();
+        $response['processed'] = 'payment_service_interaction';
 
         $paymentSystem = $this->get('app.payment_system.service');
 

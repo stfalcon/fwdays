@@ -14,6 +14,8 @@ use App\Service\TranslatedMailService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class PaymentListener.
@@ -35,15 +37,18 @@ class PaymentListener
 
     /** @var bool */
     private $runPaymentPostUpdate = true;
+    private $requestStack;
 
     /**
      * PaymentListener constructor.
      *
-     * @param Container $container
+     * @param Container    $container
+     * @param RequestStack $requestStack
      */
-    public function __construct($container)
+    public function __construct($container, RequestStack $requestStack)
     {
         $this->container = $container;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -92,8 +97,19 @@ class PaymentListener
                     $translatedMails = $translatedMailService->getTranslatedMailArray($mail);
 
                     $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-                    $defaultLocal = $this->container->getParameter('locale');
-                    $message = $this->mailerHelper->formatMessage($user, $translatedMails[$defaultLocal], false, true);
+                    $local = $defaultLocal = $this->container->getParameter('locale');
+                    $request = $this->requestStack->getCurrentRequest();
+                    if ($request instanceof Request) {
+                        $local = $request->getLocale();
+                    }
+
+                    if (isset($translatedMails[$local])) {
+                        $translatedMail = $translatedMails[$local];
+                    } else {
+                        $translatedMail = $translatedMails[$defaultLocal];
+                    }
+
+                    $message = $this->mailerHelper->formatMessage($user, $translatedMail, false, true);
 
                     $message->setSubject($event->getName());
                     $message->attach(
