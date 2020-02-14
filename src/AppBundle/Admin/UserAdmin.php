@@ -104,6 +104,18 @@ final class UserAdmin extends AbstractAdmin
             ->add('balance', null, ['label' => 'Баланс'])
             ->add('enabled', null, ['label' => 'Активирован'])
             ->add(
+                'emailLanguage',
+                null,
+                ['label' => 'Язык рассылки'],
+                'choice',
+                [
+                    'choices' => [
+                        'Украинский' => 'uk',
+                        'Английский' => 'en',
+                    ],
+                ]
+            )
+            ->add(
                 'wantsToVisitEvents',
                 null,
                 ['label' => 'Зарегистрировались на событие'],
