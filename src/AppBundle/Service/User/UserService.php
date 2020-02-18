@@ -68,19 +68,22 @@ class UserService
      * @param User   $user
      * @param Event  $event
      * @param string $date
+     * @param bool   $flush
      *
      * @return bool
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function registerUserToEvent(User $user, Event $event, string $date = 'now'): bool
+    public function registerUserToEvent(User $user, Event $event, string $date = 'now', bool $flush = true): bool
     {
         $userEventRegistration = new UserEventRegistration($user, $event, $date);
 
         if ($user->addUserEventRegistration($userEventRegistration)) {
             $this->em->persist($userEventRegistration);
-            $this->em->flush();
+            if ($flush) {
+                $this->em->flush();
+            }
 
             return true;
         }

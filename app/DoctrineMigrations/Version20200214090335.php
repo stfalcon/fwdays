@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\User\UserService;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -21,12 +22,23 @@ final class Version20200214090335 extends AbstractMigration implements Container
         /** @var User[] $users */
         $em = $this->container->get('doctrine.orm.entity_manager');
         $users = $em->getRepository(User::class)->findAll();
+        $userCount = \count($users);
         $userService = $this->container->get(UserService::class);
-        foreach ($users as $user) {
-            foreach ($user->getWantsToVisitEvents() as $event) {
-                $userService->registerUserToEvent($user, $event);
-            }
+
+        if (0 === $userCount) {
+            return;
         }
+
+        $i = 0;
+        do {
+            $user = $users[$i];
+            foreach ($user->getWantsToVisitEvents() as $event) {
+                $userService->registerUserToEvent($user, $event, 'now', false);
+            }
+            ++$i;
+        } while ($userCount > $i);
+
+        $em->flush();
     }
 
     public function down(Schema $schema) : void
