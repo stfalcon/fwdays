@@ -57,10 +57,10 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
                 EntityType::class,
                 ['choices' => $this->getEvents()]
             )
-            ->add('user.fullname', null, ['label' => 'Имя'])
-            ->add('user.email', null, ['label' => 'Почта'])
+            ->add('user.fullname', null, ['label' => 'Пользователь'])
+            ->add('user.email', null, ['label' => 'E-mail'])
             ->add('user.phone', null, ['label' => 'Номер телефона'])
-            ->add('createdAt')
+            ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }
 
@@ -71,11 +71,11 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('event')
-            ->add('user.fullname', null, ['label' => 'Имя'])
-            ->add('user', null, ['label' => 'Почта'])
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('user.fullname', null, ['label' => 'Пользователь'])
+            ->add('user', null, ['label' => 'E-mail'])
             ->add('user.phone', null, ['label' => 'Номер телефона'])
-            ->add('createdAt', null, ['label' => 'Дата создания'])
+            ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }
 
