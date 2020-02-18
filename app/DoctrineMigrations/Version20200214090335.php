@@ -25,6 +25,10 @@ final class Version20200214090335 extends AbstractMigration implements Container
         $userCount = \count($users);
         $userService = $this->container->get(UserService::class);
 
+        if (0 === $userCount) {
+            return;
+        }
+
         $i = 0;
         do {
             $user = $users[$i];
