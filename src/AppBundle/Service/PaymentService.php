@@ -177,11 +177,12 @@ class PaymentService
      * @param string $promoCodeString
      * @param Event  $event
      * @param Ticket $ticket
+     * @param bool   $throwException
      *
      * @throws \Exception
      * @throws BadRequestHttpException
      */
-    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket): void
+    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket, bool $throwException = true): void
     {
         if ($promoCodeString) {
             /** @var PromoCode|null $promoCode */
@@ -189,11 +190,19 @@ class PaymentService
                 ->findActivePromoCodeByCodeAndEvent($promoCodeString, $event);
 
             if (!$promoCode) {
-                throw new BadRequestHttpException($this->translator->trans('error.promocode.not_found'));
+                if ($throwException) {
+                    throw new BadRequestHttpException($this->translator->trans('error.promocode.not_found'));
+                }
+
+                return;
             }
 
             if (!$promoCode->isCanBeUsed()) {
-                throw new BadRequestHttpException($this->translator->trans('error.promocode.used'));
+                if ($throwException) {
+                    throw new BadRequestHttpException($this->translator->trans('error.promocode.used'));
+                }
+
+                return;
             }
 
             $result = $this->addPromoCodeForTicket($ticket, $promoCode);
@@ -202,7 +211,7 @@ class PaymentService
             $ticket->setPromoCode(null);
         }
 
-        if (PromoCode::PROMOCODE_APPLIED !== $result) {
+        if (PromoCode::PROMOCODE_APPLIED !== $result && $throwException) {
             throw new BadRequestHttpException($this->translator->trans($result));
         }
     }
@@ -393,6 +402,7 @@ class PaymentService
         }
 
         if ($payment->isPending()) {
+            $this->addPromocodeFromSession($payment, $event);
             $this->checkTicketsPricesInPayment($payment, $event);
         }
         $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
@@ -462,6 +472,24 @@ class PaymentService
     }
 
     /**
+     * @param Payment $payment
+     * @param Event   $event
+     *
+     * @throws \Exception
+     */
+    private function addPromocodeFromSession(Payment $payment, Event $event): void
+    {
+        $promoCodes = $this->session->get(self::PROMO_CODE_SESSION_KEY, []);
+        if (isset($promoCodes[$event->getSlug()])) {
+            foreach ($payment->getTickets() as $ticket) {
+                if (!$ticket->hasPromoCode()) {
+                    $this->addPromoCodeForTicketByCode($promoCodes[$event->getSlug()], $event, $ticket, false);
+                }
+            }
+        }
+    }
+
+    /**
      * @param Ticket    $ticket
      * @param PromoCode $promoCode
      *
@@ -482,6 +510,8 @@ class PaymentService
         }
 
         if (!$promoCode->isCanBeTmpUsed()) {
+            $promoCode->clearTmpUsedCount();
+
             return PromoCode::PROMOCODE_USED;
         }
 
