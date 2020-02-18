@@ -22,7 +22,7 @@ class PromoCodeCest
         $I->wantTo('Check if got promocode from query url.');
 
         $I->amOnPage('/event/javaScript-framework-day-2018?promocode=AnyCode');
-        $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018');
+        $I->seeCurrentUrlEquals('/en/event/javaScript-framework-day-2018');
 
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
         $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018/pay');
