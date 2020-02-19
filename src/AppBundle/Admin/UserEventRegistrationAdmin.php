@@ -30,17 +30,16 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
     }
 
     /**
-     * Allows you to customize batch actions.
-     *
-     * @param array $actions List of actions
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function configureBatchActions($actions): array
+    public function hasAccess($action, $object = null): bool
     {
-        unset($actions['delete']);
+        $result = parent::hasAccess($action, $object);
+        if (\in_array($action, ['delete', 'create'], true)) {
+            return false;
+        }
 
-        return $actions;
+        return $result;
     }
 
     /**
