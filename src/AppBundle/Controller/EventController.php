@@ -9,6 +9,7 @@ use App\Service\EventService;
 use App\Service\GoogleMapService;
 use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
+use App\Service\User\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -119,10 +120,10 @@ class EventController extends Controller
         $result = false;
         $html = '';
         $flashContent = '';
-        $em = $this->getDoctrine()->getManager();
 
         if ($event->isActiveAndFuture() && $event->isRegistrationOpen()) {
-            $result = $user->addWantsToVisitEvents($event);
+            $userService = $this->get(UserService::class);
+            $result = $userService->registerUserToEvent($user, $event);
             $error = $result ? '' : \sprintf('cant add event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
@@ -132,8 +133,6 @@ class EventController extends Controller
             $translator = $this->get('translator');
             $flashContent = $translator->trans('flash_you_registrated.title');
             $html = $translator->trans('ticket.status.not_take_apart');
-            $em->persist($user);
-            $em->flush();
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -163,10 +162,10 @@ class EventController extends Controller
         $result = false;
         $html = '';
         $flashContent = '';
-        $em = $this->getDoctrine()->getManager();
 
         if ($event->isActiveAndFuture() && $event->isRegistrationOpen()) {
-            $result = $user->subtractWantsToVisitEvents($event);
+            $userService = $this->get(UserService::class);
+            $result = $userService->unregisterUserFromEvent($user, $event);
             $error = $result ? '' : \sprintf('cant remove event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
@@ -176,7 +175,6 @@ class EventController extends Controller
             $translator = $this->get('translator');
             $flashContent = $translator->trans('flash_you_unsubscribe.title');
             $html = $translator->trans('ticket.status.take_apart');
-            $em->flush();
         }
 
         return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);

@@ -2,16 +2,13 @@
 
 namespace App\Admin;
 
-use App\Entity\Event;
 use App\Entity\User;
 use App\Service\User\UserService;
 use App\Traits\TokenStorageTrait;
-use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -104,11 +101,16 @@ final class UserAdmin extends AbstractAdmin
             ->add('balance', null, ['label' => 'Баланс'])
             ->add('enabled', null, ['label' => 'Активирован'])
             ->add(
-                'wantsToVisitEvents',
+                'emailLanguage',
                 null,
-                ['label' => 'Зарегистрировались на событие'],
-                EntityType::class,
-                ['choices' => $this->getEvents()]
+                ['label' => 'Язык рассылки'],
+                'choice',
+                [
+                    'choices' => [
+                        'Украинский' => 'uk',
+                        'Английский' => 'en',
+                    ],
+                ]
             )
         ;
     }
@@ -212,7 +214,6 @@ final class UserAdmin extends AbstractAdmin
                     )
                 ->end()
             ->end()
-//            ->add('_actions')
         ;
     }
 
@@ -229,16 +230,6 @@ final class UserAdmin extends AbstractAdmin
         }
 
         return $roles;
-    }
-
-    /**
-     * @return array
-     */
-    private function getEvents(): array
-    {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 
     /**

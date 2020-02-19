@@ -37,7 +37,7 @@ class RegistrationOpenEventState extends AbstractBaseEventState
         $event = $eventStateData->getEvent();
         $user = $eventStateData->getUser();
 
-        if ($user && $user->isEventInWants($event)) {
+        if ($user && $user->isRegisterToEvent($event)) {
             $caption = $this->translator->trans('ticket.status.not_take_apart');
         } else {
             $caption = $this->translator->trans('ticket.status.take_apart');
@@ -55,7 +55,7 @@ class RegistrationOpenEventState extends AbstractBaseEventState
         $event = $eventStateData->getEvent();
         $user = $eventStateData->getUser();
 
-        if ($user && $user->isEventInWants($event)) {
+        if ($user && $user->isRegisterToEvent($event)) {
             $class .= ' sub-wants-visit-event';
         } else {
             $class .= ' add-wants-visit-event';

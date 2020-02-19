@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Service\LocalsRequiredService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use FOS\UserBundle\Model\UserInterface;
@@ -129,6 +130,13 @@ class User extends BaseUser
      * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $wantsToVisitEvents;
+
+    /**
+     * @var UserEventRegistration[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\UserEventRegistration", mappedBy="user", orphanRemoval=true)
+     */
+    private $eventRegistrations;
 
     /**
      * @ORM\Column(name="referral_code", type="string", length=50, nullable=true)
@@ -268,6 +276,7 @@ class User extends BaseUser
         parent::__construct();
         $this->tickets = new ArrayCollection();
         $this->wantsToVisitEvents = new ArrayCollection();
+        $this->eventRegistrations = new ArrayCollection();
     }
 
     /**
@@ -339,53 +348,17 @@ class User extends BaseUser
     }
 
     /**
-     * @param ArrayCollection $wantsToVisitEvents
-     *
-     * @return $this
-     */
-    public function setWantsToVisitEvents($wantsToVisitEvents)
-    {
-        $this->wantsToVisitEvents = $wantsToVisitEvents;
-
-        return $this;
-    }
-
-    /**
      * @param Event $event
      *
      * @return bool
      */
-    public function addWantsToVisitEvents(Event $event)
+    public function isRegisterToEvent(Event $event): bool
     {
-        if (!$this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->add($event)) {
-            return $event->addWantsToVisitCount();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Event $event
-     *
-     * @return bool
-     */
-    public function subtractWantsToVisitEvents(Event $event)
-    {
-        if ($this->wantsToVisitEvents->contains($event) && $this->wantsToVisitEvents->removeElement($event)) {
-            return $event->subtractWantsToVisitCount();
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Event $event
-     *
-     * @return bool
-     */
-    public function isEventInWants(Event $event)
-    {
-        return $this->wantsToVisitEvents->contains($event);
+        return $this->eventRegistrations->exists(
+            function (int $key, UserEventRegistration $collectionElement) use ($event) {
+                return $collectionElement->getEvent()->isEqualTo($event);
+            }
+        );
     }
 
     /**
@@ -839,5 +812,65 @@ class User extends BaseUser
         $this->emailLanguage = $emailLanguage;
 
         return $this;
+    }
+
+    /**
+     * @return UserEventRegistration[]|Collection
+     */
+    public function getEventRegistrations()
+    {
+        return $this->eventRegistrations;
+    }
+
+    /**
+     * @param UserEventRegistration[]|Collection $eventRegistrations
+     *
+     * @return $this
+     */
+    public function setEventRegistrations($eventRegistrations): self
+    {
+        $this->eventRegistrations = $eventRegistrations;
+
+        return $this;
+    }
+
+    /**
+     * @param UserEventRegistration $registration
+     *
+     * @return bool
+     */
+    public function addUserEventRegistration(UserEventRegistration $registration): bool
+    {
+        $registrationExists = $this->eventRegistrations->exists(
+            function (int $key, UserEventRegistration $collectionElement) use ($registration) {
+                return $collectionElement->getEvent()->isEqualTo($registration->getEvent());
+            }
+        );
+
+        if (!$registrationExists) {
+            $this->eventRegistrations->add($registration);
+
+            return $registration->getEvent()->addWantsToVisitCount();
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function removeUserEventRegistration(Event $event): bool
+    {
+        foreach ($this->eventRegistrations as $registration) {
+            if ($registration->getEvent()->isEqualTo($event)) {
+                $this->eventRegistrations->removeElement($registration);
+
+                return $event->subtractWantsToVisitCount();
+            }
+        }
+
+        return false;
     }
 }

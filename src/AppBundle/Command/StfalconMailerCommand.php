@@ -124,6 +124,11 @@ class StfalconMailerCommand extends ContainerAwareCommand
             if ($mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
+
+                if (null === $mail->getStartDate()) {
+                    $mail->setStartDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Kiev')));
+                }
+
                 $em->flush();
             } else {
                 $logger->addError('Mailer send exception', [
