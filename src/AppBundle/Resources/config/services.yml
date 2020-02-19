@@ -15,7 +15,9 @@ services:
         calls: [[setTranslator, ['@translator']]]
     App\Service\Ticket\SoldOutEventState:
         calls: [[setTranslator, ['@translator']]]
-    App\Service\Ticket\WannaVisitEventState:
+    App\Service\Ticket\RegistrationCloseEventState:
+        calls: [[setTranslator, ['@translator']]]
+    App\Service\Ticket\RegistrationOpenEventState:
         calls: [[setTranslator, ['@translator']]]
 
     App\Service\Ticket\TicketService:
@@ -27,8 +29,9 @@ services:
             - '@App\Service\User\UserService'
         calls:
             - [addEventState, ['@App\Service\Ticket\DoneEventState']]
-            - [addEventState, ['@App\Service\Ticket\WannaVisitEventState']]
             - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationOpenEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationCloseEventState']]
             - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
     App\Twig\AppDateTimeExtension:
@@ -44,9 +47,7 @@ services:
             - { name: twig.extension }
 
     App\EventListener\ExceptionListener:
-        arguments: ["@session"]
-        calls:
-            - [setRouter, ['@router']]
+        arguments: ["@session", "@router"]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
@@ -212,7 +213,7 @@ services:
     App\EventListener\PaymentListener:
         tags:
             - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
-        arguments: ['@service_container']
+        arguments: ['@service_container', '@request_stack']
 
     app.menu.main.redesign:
         class: Knp\Menu\MenuItem
@@ -272,5 +273,6 @@ services:
         arguments: ['%locale%']
 
     App\Service\User\UserService:
+        arguments: ['@doctrine.orm.entity_manager']
         calls:
             - [setTokenStorage, ['@security.token_storage']]

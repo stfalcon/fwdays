@@ -1,8 +1,8 @@
-var buyTicketButton = $('#buy-ticket-btn');
+var paymentList = $('#payment-list');
+var buyTicketButton = $('#buy-ticket-btn-'+paymentList.data('event'));
 var addTicketBtn = $('#add-user-form');
 var userBonusInput = $('#user-bonus-input');
 var applyBonusBtn = $('#btn-apply-bonus');
-var paymentList = $('#payment-list');
 
 function editTicketRow(index, ticketBlock, ticket) {
     if (index) {

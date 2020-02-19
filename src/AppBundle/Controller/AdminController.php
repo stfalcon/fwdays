@@ -10,6 +10,8 @@ use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Helper\StfalconMailerHelper;
+use App\Service\LocalsRequiredService;
+use App\Service\User\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -81,7 +83,7 @@ class AdminController extends Controller
                     );
 
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('Регистрация на сайте Frameworks Days')
+                        ->setSubject('Регистрация на сайте Fwdays')
                         ->setFrom('orgs@fwdays.com', 'Fwdays')
                         ->setTo($user->getEmail())
                         ->setBody($body, 'text/html');
@@ -114,8 +116,9 @@ class AdminController extends Controller
                         ->setUser($user)
                         ->setHideConditions(isset($_POST['hide_conditions']))
                     ;
-                    $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
+                    $userService = $this->get(UserService::class);
+                    $userService->registerUserToEvent($user, $event);
                 }
 
                 if ($ticket->isPaid()) {
@@ -283,6 +286,9 @@ class AdminController extends Controller
             $eventStatisticSlug = $event->getSlug();
         }
 
+        $usersWithUkLocale = $repo->getUserCountByEmailLanguage(LocalsRequiredService::UK_EMAIL_LANGUAGE);
+        $usersWithEnLocale = $repo->getUserCountByEmailLanguage(LocalsRequiredService::EN_EMAIL_LANGUAGE);
+
         return $this->render('@App/Statistic/statistic.html.twig', [
             'admin_pool' => $this->get('sonata.admin.pool'),
             'data' => [
@@ -298,6 +304,8 @@ class AdminController extends Controller
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
+                'usersWithUkLocale' => \sprintf('%s (%s%%)', $usersWithUkLocale, \round($usersWithUkLocale * 100 / $totalUsersCount, 2)),
+                'usersWithEnLocale' => \sprintf('%s (%s%%)', $usersWithEnLocale, \round($usersWithEnLocale * 100 / $totalUsersCount, 2)),
             ],
         ]);
     }
