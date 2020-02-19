@@ -177,9 +177,13 @@ class TicketService
      */
     public function setTicketPromoCode($ticket, $promoCode)
     {
-        $ticket->setPromoCode($promoCode);
+        $oldPromoCode = $ticket->getPromoCode();
+        $isNewPromoCode = !$oldPromoCode instanceof PromoCode || $oldPromoCode->getId() !== $promoCode->getId();
+        if ($isNewPromoCode) {
+            $ticket->setPromoCode($promoCode);
+            $promoCode->incTmpUsedCount();
+        }
         $this->setTicketDiscount($ticket, $promoCode->getDiscountAmount() / 100);
-        $promoCode->incTmpUsedCount();
 
         return $ticket;
     }
