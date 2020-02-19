@@ -65,17 +65,17 @@ class UserService
     }
 
     /**
-     * @param User   $user
-     * @param Event  $event
-     * @param string $date
-     * @param bool   $flush
+     * @param User           $user
+     * @param Event          $event
+     * @param null|\DateTime $date
+     * @param bool           $flush
      *
      * @return bool
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function registerUserToEvent(User $user, Event $event, string $date = 'now', bool $flush = true): bool
+    public function registerUserToEvent(User $user, Event $event, ?\DateTime $date = null, bool $flush = true): bool
     {
         $userEventRegistration = new UserEventRegistration($user, $event, $date);
 
