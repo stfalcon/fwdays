@@ -56,17 +56,23 @@ class UserEventRegistration
     private $event;
 
     /**
-     * @param User   $user
-     * @param Event  $event
-     * @param string $date
+     * @param User                    $user
+     * @param Event                   $event
+     * @param \DateTimeInterface|null $date
      *
      * @throws \Exception
      */
-    public function __construct(User $user, Event $event, string $date = 'now')
+    public function __construct(User $user, Event $event, ?\DateTimeInterface $date = null)
     {
         $this->user = $user;
         $this->event = $event;
-        $this->createdAt = new \DateTimeImmutable($date, new \DateTimeZone('Europe/Kiev'));
+        if ($date instanceof \DateTime) {
+            $this->createdAt = \DateTimeImmutable::createFromMutable($date);
+        } elseif ($date instanceof \DateTimeImmutable) {
+            $this->createdAt = $date;
+        } else {
+            $this->createdAt = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Kiev'));
+        }
     }
 
     /**
