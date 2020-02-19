@@ -58,7 +58,7 @@ class UserEventRegistration
     /**
      * @param User                    $user
      * @param Event                   $event
-     * @param null|\DateTimeInterface $date
+     * @param \DateTimeInterface|null $date
      *
      * @throws \Exception
      */

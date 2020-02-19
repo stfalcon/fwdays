@@ -67,7 +67,7 @@ class UserService
     /**
      * @param User                    $user
      * @param Event                   $event
-     * @param null|\DateTimeInterface $date
+     * @param \DateTimeInterface|null $date
      * @param bool                    $flush
      *
      * @return bool
