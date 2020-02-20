@@ -144,6 +144,7 @@ class UserCest
         static::iAmSigned($I);
         $I->amOnPage('/cabinet');
 
+        static::seeAndClick($I, '.btn-explore--close');
         static::seeAndClick($I, '.cabinet-head__link');
 
         $I->waitForText('User info');
@@ -171,6 +172,7 @@ class UserCest
         static::iAmSigned($I);
         $I->amOnPage('/cabinet');
 
+        static::seeAndClick($I, '.btn-explore--close');
         static::seeAndClick($I, '.cabinet-head__link');
 
         $I->waitForText('User info');
@@ -196,6 +198,7 @@ class UserCest
 
         $I->amOnPage('/cabinet');
 
+        static::seeAndClick($I, '.btn-explore--close');
         static::seeAndClick($I, '.cabinet-head__link');
         $I->waitForText('User info');
 
