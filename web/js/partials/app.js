@@ -287,6 +287,37 @@ $(document).ready(function () {
         eventMenu.removeClass('event-menu--open');
     }
 
+    if ($('.btn-explore').length) {
+        $('.btn-explore--close').on('click', function () {
+            $('#btn-explore-expanded').hide();
+            $('#btn-explore-rolled-up').show();
+        });
+
+        $('.btn-explore--rolled-up').on('click', function () {
+            $('#btn-explore-expanded').show();
+            $('#btn-explore-rolled-up').hide();
+        });
+
+        var scrollTop = 45;
+        var fixTop = 110;
+
+        if ($('.btn-explore').offset().top > fixTop) {
+            $('.btn-explore').css('top', scrollTop);
+        }
+
+        $(window).scroll(function () {
+            if ($(window).width() < 444) {
+                var fixTopScroll = 50;
+                var currentScroll = $(this).scrollTop();
+                if (currentScroll < fixTopScroll) {
+                    $('.btn-explore').css('top', fixTop);
+                } else {
+                    $('.btn-explore').css('top', scrollTop);
+                }
+            }
+        })
+    }
+
     /**
      *  Button for scroll top page
      */
