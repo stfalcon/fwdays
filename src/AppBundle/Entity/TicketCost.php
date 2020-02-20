@@ -187,6 +187,20 @@ class TicketCost
     }
 
     /**
+     * @param Ticket $ticket
+     *
+     * @return $this
+     */
+    public function removeTicket($ticket)
+    {
+        if ($this->tickets->contains($ticket)) {
+            $this->tickets->removeElement($ticket);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return float|null
      */
     public function getAltAmount(): ?float
