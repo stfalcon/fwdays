@@ -287,6 +287,18 @@ $(document).ready(function () {
         eventMenu.removeClass('event-menu--open');
     }
 
+    if ($('.btn-explore').length) {
+        $('.btn-explore--close').on('click', function () {
+            $('#btn-explore-expanded').hide();
+            $('#btn-explore-rolled-up').show();
+        });
+
+        $('.btn-explore--rolled-up').on('click', function () {
+            $('#btn-explore-expanded').show();
+            $('#btn-explore-rolled-up').hide();
+        });
+    }
+
     /**
      *  Button for scroll top page
      */
