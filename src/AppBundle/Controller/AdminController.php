@@ -118,7 +118,7 @@ class AdminController extends Controller
                     ;
                     $em->persist($ticket);
                     $userService = $this->get(UserService::class);
-                    $userService->registerUserToEvent($user, $event);
+                    $userService->registerUserToEvent($user, $event, null, false);
                 }
 
                 if ($ticket->isPaid()) {
