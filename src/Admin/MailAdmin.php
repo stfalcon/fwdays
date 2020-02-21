@@ -180,6 +180,7 @@ final class MailAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('id', null, ['label' => 'id'])
+            ->add('startDate', null, ['label' => 'Дата запуска'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
             ->add('usersLocalsStatistic', 'string', ['label' => 'получатели украинской / английской версий'])

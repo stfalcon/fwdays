@@ -19,7 +19,7 @@ class ReferalBalanceCest
 
         $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
-        $I->dontSeeElement('#buy-ticket-btn');
+        $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
 
         foreach (self::PAY_USER_DATA as $field => $value) {
             $I->seeElement($field);
@@ -42,7 +42,7 @@ class ReferalBalanceCest
         $I->seeElement('#agree-check-payment');
         $I->click('#agree-check-payment');
 
-        $I->click('#buy-ticket-btn');
+        $I->click('#buy-ticket-btn-javaScript-framework-day-2018');
         $I->waitForText('Payment successful!', 15);
 
         $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');

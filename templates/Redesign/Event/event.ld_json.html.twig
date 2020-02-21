@@ -1,0 +1,71 @@
+{% set ld_events = [] %}
+{% for event in events if (event.adminOnly != true) %}
+    {% set ld_events = ld_events|merge([event]) %}
+{% endfor %}
+<script type="application/ld+json">
+            {
+                "@context": "http:\/\/schema.org",
+                "@type": "Organization",
+                "name": "Fwdays",
+                "url" : "https:\/\/fwdays.com",
+                "contactPoint" : [
+                    {
+                        "@type" : "ContactPoint",
+                        "email" : "tanyabukhanova@fwdays.com",
+                        "telephone" : "+380-99-21-596-22",
+                        "contactType" : "Registration and cashless payment, general questions"
+                    },
+                    {
+                        "@type" : "ContactPoint",
+                        "email" : "iryna.bozhyk@fwdays.com",
+                        "telephone" : "+380-67-999-5-888",
+                        "contactType" : "Cooperation and partnership with Fwdays"
+                    }
+                ],
+                "events": [
+                    {% for event in ld_events|slice(0, 4) %}
+                        {%- set event_show_url = url('event_show', {'slug': event.slug})|replace({'/': '\\/'}) -%}
+                        {%- set event_pay_url = url('event_pay', {'slug': event.slug})|replace({'/': '\\/'}) -%}
+                        {
+                            "@context":"https:\/\/schema.org",
+                            "@type":"BusinessEvent",
+                            "name":"{{ event.name }}",
+                            "url":"{{ event_show_url }}",
+                            "description": "{{ event.description  }}",
+                            "startDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                            {% if event.dateEnd -%}
+                              "endDate":"{{ event.dateEnd|date('c', 'Europe/Kiev') }}",
+                            {%- else -%}
+                              "endDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                            {% endif -%}
+                            {% if (event.showLogoWithBackground or event.useCustomBackground == false) -%}
+                              "image" : ["{{ vich_uploader_asset(event, 'logoFile')|replace({'/': '\\/'}) }}"],
+                            {% endif -%}
+                            "location": {
+                                "@type": "Place",
+                                "name": "{{ event.place }}",
+                                "address": {
+                                    "@type": "PostalAddress",
+                                    "addressLocality": "{{ event.city }}",
+                                    "streetAddress": "{{ event.place }}",
+                                    "addressRegion": "Kyiv region",
+                                    "addressCountry": "UA"
+                                }
+                            }
+                            {%- if (event.receivePayments) -%},
+                            "offers": {
+                                "@type":"Offer",
+                                "url":"{{ event_pay_url }}",
+                                {% if event.hasAvailableTickets() -%}
+                                  "price": "{{ event.currentPrice }}",
+                                  "priceCurrency": "UAH",
+                                {% endif -%}
+                                "validFrom": "{{ event.date|date('c', 'Europe/Kiev') }}",
+                                "availability": "https:\/\/schema.org\/InStock"
+                            }
+                            {% endif -%}
+                        }{%- if false == loop.last -%},{%- endif -%}
+                    {% endfor %}
+                ]
+            }
+</script>

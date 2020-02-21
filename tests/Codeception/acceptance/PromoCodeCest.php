@@ -46,7 +46,7 @@ class PromoCodeCest
 
         $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'AnyCode');
         $I->click('#payer-block-edit-1 .edit-user-btn');
-        $I->waitForText('Promo code not found!');
+        $I->waitForText('Promo code not found!', 15);
 
         $I->fillField('#payer-block-edit-1 input[name=user_promo_code]', 'Promo code for JsDays');
         $I->click('#payer-block-edit-1 .edit-user-btn');
@@ -81,8 +81,8 @@ class PromoCodeCest
         $I->seeElement('#agree-check-payment');
         $I->click('#agree-check-payment');
 
-        $I->seeElement('#buy-ticket-btn');
-        $I->click('#buy-ticket-btn');
+        $I->seeElement('#buy-ticket-btn-javaScript-framework-day-2018');
+        $I->click('#buy-ticket-btn-javaScript-framework-day-2018');
         $I->waitForText('Payment successful!');
 
         $I->seeCurrentUrlEquals('/index_test.php/en/payment/success');
@@ -102,7 +102,7 @@ class PromoCodeCest
 
         $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
 
-        $I->dontSeeElement('#buy-ticket-btn');
+        $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
 
         foreach (self::PAY_USER_DATA as $field => $value) {
             $I->fillField($field, $value);

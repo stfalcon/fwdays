@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Entity\Event;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -11,9 +10,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
- * UserEventAdmin.
+ * UserEventRegistrationAdmin.
  */
-final class UserEventAdmin extends AbstractAdmin
+final class UserEventRegistrationAdmin extends AbstractAdmin
 {
     private $eventRepository;
 
@@ -30,17 +29,31 @@ final class UserEventAdmin extends AbstractAdmin
     }
 
     /**
-     * Allows you to customize batch actions.
-     *
-     * @param array $actions List of actions
-     *
      * @return array
      */
-    protected function configureBatchActions($actions): array
+    public function getExportFields()
     {
-        unset($actions['delete']);
+        return [
+            'id',
+            'event',
+            'user.fullname',
+            'user.email',
+            'user.phone',
+            'createdAt',
+        ];
+    }
 
-        return $actions;
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAccess($action, $object = null): bool
+    {
+        $result = parent::hasAccess($action, $object);
+        if (\in_array($action, ['delete', 'create'], true)) {
+            return false;
+        }
+
+        return $result;
     }
 
     /**
@@ -49,9 +62,7 @@ final class UserEventAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
-            ->add('user', null, ['label' => 'Почта'])
-            ->add('user.fullname', null, ['label' => 'Имя'])
-            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('id')
             ->add(
                 'event',
                 null,
@@ -59,6 +70,10 @@ final class UserEventAdmin extends AbstractAdmin
                 EntityType::class,
                 ['choices' => $this->getEvents()]
             )
+            ->add('user.fullname', null, ['label' => 'Пользователь'])
+            ->add('user.email', null, ['label' => 'E-mail'])
+            ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }
 
@@ -68,10 +83,12 @@ final class UserEventAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->add('user', null, ['label' => 'Почта'])
-            ->add('user.fullname', null, ['label' => 'Имя'])
+            ->add('id')
+            ->add('event', null, ['label' => 'Событие'])
+            ->add('user.fullname', null, ['label' => 'Пользователь'])
+            ->add('user', null, ['label' => 'E-mail'])
             ->add('user.phone', null, ['label' => 'Номер телефона'])
-            ->add('event')
+            ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }
 
@@ -80,8 +97,6 @@ final class UserEventAdmin extends AbstractAdmin
      */
     private function getEvents(): array
     {
-//        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
-
         return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
     }
 }

@@ -14,6 +14,7 @@ use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
 use App\Service\PaymentService;
 use App\Service\Ticket\TicketService;
+use App\Service\User\UserService;
 use App\Traits;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -40,19 +41,22 @@ class PaymentController extends AbstractController
     private $paymentSystem;
     private $userManager;
     private $ticketService;
+    private $userService;
 
     /**
      * @param PaymentService          $paymentService
      * @param PaymentProcessInterface $paymentSystem
      * @param UserManager             $userManager
      * @param TicketService           $ticketService
+     * @param UserService             $userService
      */
-    public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService)
+    public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService, UserService $userService)
     {
         $this->paymentService = $paymentService;
         $this->paymentSystem = $paymentSystem;
         $this->userManager = $userManager;
         $this->ticketService = $ticketService;
+        $this->userService = $userService;
     }
 
     public const NEW_PAYMENT_SESSION_KEY = 'new_payment';
@@ -172,7 +176,7 @@ class PaymentController extends AbstractController
         }
 
         $this->ticketService->setNewUserToTicket($user, $ticket);
-        $user->addWantsToVisitEvents($event);
+        $this->userService->registerUserToEvent($user, $event);
         try {
             $this->paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
@@ -248,8 +252,8 @@ class PaymentController extends AbstractController
 
         if (!$ticket) {
             $ticket = $this->ticketService->createTicket($event, $user);
-            $user->addWantsToVisitEvents($event);
             $em->flush();
+            $this->userService->registerUserToEvent($user, $event);
         } else {
             if ($ticket->isPaid()) {
                 return new JsonResponse(

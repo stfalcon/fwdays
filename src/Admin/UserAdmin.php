@@ -3,39 +3,27 @@
 namespace App\Admin;
 
 use App\Entity\User;
-use App\Repository\EventRepository;
 use App\Service\User\UserService;
-use Doctrine\Common\Collections\Criteria;
+use App\Traits\TokenStorageTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class UserAdmin.
  */
 final class UserAdmin extends AbstractAdmin
 {
-    private $eventRepository;
-
-    /**
-     * @param string          $code
-     * @param string          $class
-     * @param string          $baseControllerName
-     * @param EventRepository $eventRepository
-     */
-    public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-        $this->eventRepository = $eventRepository;
-    }
+    use TokenStorageTrait;
 
     /**
      * {@inheritdoc}
@@ -43,6 +31,34 @@ final class UserAdmin extends AbstractAdmin
     public function configure(): void
     {
         $this->setTemplate('list', 'Admin/list_with_js.html.twig');
+    }
+
+    /**
+     * @param object $object
+     */
+    public function preRemove($object): void
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user instanceof User || !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAccess($action, $object = null): bool
+    {
+        $result = parent::hasAccess($action, $object);
+        if ('delete' === $action) {
+            $user = $this->getCurrentUser();
+            if ($user instanceof User && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+                return false;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -86,11 +102,16 @@ final class UserAdmin extends AbstractAdmin
             ->add('balance', null, ['label' => 'Баланс'])
             ->add('enabled', null, ['label' => 'Активирован'])
             ->add(
-                'wantsToVisitEvents',
+                'emailLanguage',
                 null,
-                ['label' => 'Зарегистрировались на событие'],
-                EntityType::class,
-                ['choices' => $this->getEvents()]
+                ['label' => 'Язык рассылки'],
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        'Украинский' => 'uk',
+                        'Английский' => 'en',
+                    ],
+                ]
             )
         ;
     }
@@ -126,8 +147,11 @@ final class UserAdmin extends AbstractAdmin
         $environment = $container->getParameter('kernel.environment');
 
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
-        /** @var User $editUser */
-        $editUser = $this->getSubject();
+        $object = $this->getSubject();
+        $objectId = null;
+        if ($object instanceof User) {
+            $objectId = $object->getId();
+        }
 
         $formMapper
             ->tab('Общие')
@@ -140,7 +164,7 @@ final class UserAdmin extends AbstractAdmin
                         [
                             'required' => true,
                             'label' => 'Почта',
-                            'disabled' => !$isSuperAdmin && $editUser->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
@@ -175,9 +199,9 @@ final class UserAdmin extends AbstractAdmin
                         'plainPassword',
                         TextType::class,
                         [
-                            'required' => null === $editUser->getId(),
+                            'required' => null === $objectId,
                             'label' => 'Пароль',
-                            'disabled' => !$isSuperAdmin && $editUser->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
@@ -193,7 +217,8 @@ final class UserAdmin extends AbstractAdmin
                         ]
                     )
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     /**
@@ -212,10 +237,16 @@ final class UserAdmin extends AbstractAdmin
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    private function getEvents(): array
+    private function getCurrentUser()
     {
-        return $this->eventRepository->findBy([], ['id' => Criteria::DESC]);
+        $token = $this->tokenStorage->getToken();
+
+        if (!$token instanceof TokenInterface) {
+            return null;
+        }
+
+        return $token->getUser();
     }
 }

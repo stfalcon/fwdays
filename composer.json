@@ -143,7 +143,7 @@
         "ci:doctrine-schema-validate": [
             "bin/console doctrine:database:create --if-not-exists",
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration",
-            "bin/console doctrine:schema:validate --skip-sync"
+            "bin/console doctrine:schema:validate"
         ],
         "ci:twig-lint": "bin/console lint:twig templates/",
         "ci:yaml-lint": [
@@ -158,6 +158,7 @@
             "vendor/bin/phpunit -c phpunit.xml.dist"
         ],
         "ci:codeception-acceptance": [
+            "bin/console cache:clear --env=test",
             "vendor/bin/codecept build",
             "vendor/bin/codecept run acceptancePhpWeb",
             "vendor/bin/codecept run acceptance"
@@ -188,7 +189,7 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:static-analysis",
-            "bin/run-codeception"
+            "@ci:codeception-acceptance"
         ]
     },
     "extra": {

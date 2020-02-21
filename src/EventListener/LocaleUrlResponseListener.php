@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use App\Traits\RouterTrait;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +21,6 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class LocaleUrlResponseListener implements EventSubscriberInterface
 {
-    use RouterTrait;
-
     private const UKRAINE_COUNTRY_CODE = 'UA';
     private const LANG_FROM_COOKIE = 'lang_from_cookie';
     private const LANG_FROM_IP = 'lang_from_ip';
@@ -33,21 +32,27 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
     private $locales;
     private $cookieName;
     private $geoIpService;
+    private $router;
     /** @var array */
     private $pathArray = [];
+    /** @var array */
+    private $skipRoutes = [];
 
     /**
      * @param string       $locale
      * @param array        $locales
      * @param string       $localeCookieName
      * @param GeoipManager $geoIpService
+     * @param Router       $router
      */
-    public function __construct(string $locale, array $locales, string $localeCookieName, GeoipManager $geoIpService)
+    public function __construct(string $locale, array $locales, string $localeCookieName, GeoipManager $geoIpService, Router $router)
     {
         $this->defaultLocale = $locale;
         $this->locales = $locales;
         $this->cookieName = $localeCookieName;
         $this->geoIpService = $geoIpService;
+        $this->router = $router;
+        $this->skipRoutes[] = $this->router->generate('payment_service_interaction', ['_locale' => 'uk']);
     }
 
     /**
@@ -69,10 +74,16 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+        $path = $request->getPathInfo();
+
+        if (\in_array($path, $this->skipRoutes, true)) {
+            $request->setLocale($this->defaultLocale);
+
+            return;
+        }
+
         $langSource = self::LANG_FROM_NULL;
         $locale = $this->getCurrentLocale($request, $langSource);
-
-        $path = $request->getPathInfo();
         $pathLocal = $this->getInnerSubstring($path, '/');
 
         if ($locale === $this->defaultLocale && '' === $pathLocal) {
@@ -162,8 +173,10 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
             if (false !== $this->geoIpService->lookup($request->getClientIp())) {
                 if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
                     $local = $this->defaultLocale;
-                    $langSource = self::LANG_FROM_IP;
+                } else {
+                    $local = 'en';
                 }
+                $langSource = self::LANG_FROM_IP;
             }
         }
 

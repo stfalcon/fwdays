@@ -14,6 +14,8 @@ use App\Model\UserManager;
 use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
+use App\Service\LocalsRequiredService;
+use App\Service\User\UserService;
 use App\Traits\EntityManagerTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,6 +41,7 @@ class AdminController extends AbstractController
     private $userRepository;
     private $ticketRepository;
     private $eventRepository;
+    private $userService;
 
     /**
      * @param UserManager      $userManager
@@ -48,8 +51,9 @@ class AdminController extends AbstractController
      * @param UserRepository   $userRepository
      * @param TicketRepository $ticketRepository
      * @param EventRepository  $eventRepository
+     * @param UserService      $userService
      */
-    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository)
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService)
     {
         $this->userManager = $userManager;
         $this->mailerHelper = $mailerHelper;
@@ -58,6 +62,7 @@ class AdminController extends AbstractController
         $this->userRepository = $userRepository;
         $this->ticketRepository = $ticketRepository;
         $this->eventRepository = $eventRepository;
+        $this->userService = $userService;
     }
 
     /**
@@ -150,8 +155,8 @@ class AdminController extends AbstractController
                         ->setUser($user)
                         ->setHideConditions(isset($_POST['hide_conditions']))
                     ;
-                    $user->addWantsToVisitEvents($event);
                     $em->persist($ticket);
+                    $this->userService->registerUserToEvent($user, $event, null, false);
                 }
 
                 if ($ticket->isPaid()) {
@@ -267,6 +272,9 @@ class AdminController extends AbstractController
         $event = $this->eventRepository->findOneBy([], ['date' => Criteria::DESC]);
         $eventStatisticSlug = $event instanceof Event ? $event->getSlug() : '';
 
+        $usersWithUkLocale = $this->userRepository->getUserCountByEmailLanguage(LocalsRequiredService::UK_EMAIL_LANGUAGE);
+        $usersWithEnLocale = $this->userRepository->getUserCountByEmailLanguage(LocalsRequiredService::EN_EMAIL_LANGUAGE);
+
         return $this->render('Statistic/statistic.html.twig', [
             'admin_pool' => $this->pool,
             'data' => [
@@ -282,6 +290,8 @@ class AdminController extends AbstractController
                 'usersTicketsCount' => $usersTicketsCount,
                 'countsByGroup' => $countsByGroup,
                 'event_statistic_slug' => $eventStatisticSlug,
+                'usersWithUkLocale' => \sprintf('%s (%s%%)', $usersWithUkLocale, \round($usersWithUkLocale * 100 / $totalUsersCount, 2)),
+                'usersWithEnLocale' => \sprintf('%s (%s%%)', $usersWithEnLocale, \round($usersWithEnLocale * 100 / $totalUsersCount, 2)),
             ],
         ]);
     }

@@ -67,20 +67,19 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * Allows you to customize batch actions.
-     *
-     * @param array $actions List of actions
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function configureBatchActions($actions): array
+    public function hasAccess($action, $object = null): bool
     {
-        $user = $this->getCurrentUser();
-        if (!$user instanceof User || !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
-            unset($actions['delete']);
+        $result = parent::hasAccess($action, $object);
+        if ('delete' === $action) {
+            $user = $this->getCurrentUser();
+            if ($user instanceof User && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+                return false;
+            }
         }
 
-        return $actions;
+        return $result;
     }
 
     /**
@@ -205,9 +204,9 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * @return User|null
+     * @return mixed
      */
-    private function getCurrentUser(): ?User
+    private function getCurrentUser()
     {
         $token = $this->tokenStorage->getToken();
 
@@ -215,14 +214,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             return null;
         }
 
-        /** @var User $user */
-        $user = $token->getUser();
-
-        if (!$user instanceof User) {
-            throw new AccessDeniedException();
-        }
-
-        return $user;
+        return $token->getUser();
     }
 
     /**

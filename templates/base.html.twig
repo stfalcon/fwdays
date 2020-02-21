@@ -2,6 +2,10 @@
 <html lang="{{ app.request.locale }}">
 <head>
     <title>{% block title %}Fwdays. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
+
+    {% block ld_json %}
+    {% endblock %}
+
     {% block metatags %}
     {% if app.environment != 'prod' -%}
         <meta name="robots" content="none"/>
@@ -13,6 +17,7 @@
     <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_6.jpg')) }}" />
     <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_8.jpg')) }}" />
     {% endblock metatags %}
+
     {% block meta_description %}
     <meta name="description" content="Fwdays - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
     {% endblock meta_description %}

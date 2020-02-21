@@ -51,7 +51,7 @@ class PromoCodeRequestListener implements EventSubscriberInterface
             $currentPromoCodes[$eventSlug] = $promocode;
             $this->session->set(PaymentService::PROMO_CODE_SESSION_KEY, $currentPromoCodes);
 
-            $url = $this->router->generate('event_show', ['slug' => $eventSlug]);
+            $url = $request->getBaseUrl().$request->getPathInfo();
             $event->setResponse(new RedirectResponse($url));
         }
     }

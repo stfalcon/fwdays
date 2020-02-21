@@ -71,8 +71,9 @@ services:
             - '@App\Service\User\UserService'
         calls:
             - [addEventState, ['@App\Service\Ticket\DoneEventState']]
-            - [addEventState, ['@App\Service\Ticket\WannaVisitEventState']]
             - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationOpenEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationCloseEventState']]
             - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
 

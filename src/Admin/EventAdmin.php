@@ -223,6 +223,7 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                    ->add('registrationOpen', null, ['required' => false, 'label' => 'Включить регистрацию'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
                     ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])

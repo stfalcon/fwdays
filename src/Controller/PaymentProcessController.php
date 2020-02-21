@@ -43,6 +43,8 @@ class PaymentProcessController extends AbstractController
     public function interactionAction(Request $request)
     {
         $data = $request->request->all();
+        $data['locale'] = $request->getLocale();
+        $data['processed'] = 'payment_interaction';
 
         try {
             $transactionStatus = $this->paymentSystem->processData($data);
@@ -86,6 +88,8 @@ class PaymentProcessController extends AbstractController
     {
         $json = (string) $request->getContent();
         $response = \json_decode($json, true);
+        $response['locale'] = $request->getLocale();
+        $response['processed'] = 'payment_service_interaction';
 
         try {
             $this->paymentSystem->processData($response);

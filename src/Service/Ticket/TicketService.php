@@ -26,9 +26,10 @@ class TicketService
     public const CAN_BUY_TICKET = 'can buy ticket';
     public const CAN_DOWNLOAD_TICKET = 'can download ticket';
     public const TICKETS_SOLD_OUT = 'all tickets sold out';
-    public const CAN_WANNA_VISIT = 'can wanna visit';
-    public const WAIT_FOR_PAYMENT_RECEIVE = 'wit for payment receive';
+    public const EVENT_REGISTRATION_OPEN = 'event registration open';
+    public const WAIT_FOR_PAYMENT_RECEIVE = 'wait for payment receive';
     public const EVENT_DONE = 'event done';
+    public const EVENT_REGISTRATION_CLOSE = 'event registration close';
     public const EVENT_DEFAULT_STATE = 'event default state';
 
     public const STATES =
@@ -178,9 +179,13 @@ class TicketService
      */
     public function setTicketPromoCode($ticket, $promoCode)
     {
-        $ticket->setPromoCode($promoCode);
+        $oldPromoCode = $ticket->getPromoCode();
+        $isNewPromoCode = !$oldPromoCode instanceof PromoCode || $oldPromoCode->getId() !== $promoCode->getId();
+        if ($isNewPromoCode) {
+            $ticket->setPromoCode($promoCode);
+            $promoCode->incTmpUsedCount();
+        }
         $this->setTicketDiscount($ticket, $promoCode->getDiscountAmount() / 100);
-        $promoCode->incTmpUsedCount();
 
         return $ticket;
     }

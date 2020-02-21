@@ -33,6 +33,7 @@ class WayForPayLog
      * @var Payment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Payment")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $payment;
 

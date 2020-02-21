@@ -420,6 +420,13 @@ class Event implements TranslatableInterface
     private $headerVideoFile;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", name="registration_open", options={"default":true})
+     */
+    private $registrationOpen = true;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -1523,5 +1530,43 @@ class Event implements TranslatableInterface
     public function getEndDateFromDates(): \DateTime
     {
         return $this->dateEnd instanceof \DateTime ? $this->dateEnd : $this->date;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegistrationOpen(): bool
+    {
+        return $this->registrationOpen;
+    }
+
+    /**
+     * @param bool $registrationOpen
+     *
+     * @return $this
+     */
+    public function setRegistrationOpen(bool $registrationOpen): self
+    {
+        $this->registrationOpen = $registrationOpen;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $event
+     *
+     * @return bool
+     */
+    public function isEqualTo($event): bool
+    {
+        if (!$event instanceof self) {
+            return false;
+        }
+
+        if ($event->getId() !== $this->getId()) {
+            return false;
+        }
+
+        return true;
     }
 }

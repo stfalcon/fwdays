@@ -163,6 +163,13 @@ class Mail implements TranslatableInterface
     private $usersWithUkLocal = 0;
 
     /**
+     * @var \DateTimeImmutable|null
+     *
+     * @ORM\Column(type="datetime_immutable", name="start_date", nullable=true)
+     */
+    private $startDate = null;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -722,5 +729,25 @@ class Mail implements TranslatableInterface
         } elseif (LocalsRequiredService::EN_EMAIL_LANGUAGE === $locale) {
             --$this->usersWithEnLocal;
         }
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getStartDate(): ?\DateTimeImmutable
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param \DateTimeImmutable|null $startDate
+     *
+     * @return $this
+     */
+    public function setStartDate(?\DateTimeImmutable $startDate): self
+    {
+        $this->startDate = $startDate;
+
+        return $this;
     }
 }

@@ -139,6 +139,11 @@ class StfalconMailerCommand extends Command
             if ($this->mailer->send($message, $failed)) {
                 $mail->incSentMessage();
                 $item->setIsSent(true);
+
+                if (null === $mail->getStartDate()) {
+                    $mail->setStartDate(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Kiev')));
+                }
+
                 $this->em->flush();
             } else {
                 $this->logger->addError('Mailer send exception', [

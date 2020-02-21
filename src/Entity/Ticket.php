@@ -164,6 +164,19 @@ class Ticket
     }
 
     /**
+     * @return $this
+     */
+    public function removeTicketCost(): self
+    {
+        if ($this->ticketCost instanceof TicketCost) {
+            $this->ticketCost->removeTicket($this);
+            $this->ticketCost = null;
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Event
      */
     public function getEvent()

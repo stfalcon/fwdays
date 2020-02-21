@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\EventGroup;
 use App\Entity\User;
+use App\Entity\UserEventRegistration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -35,12 +36,11 @@ class EventRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb
-            ->join(User::class, 'u', 'WITH', 'u.id = :user_id')
-            ->join('u.wantsToVisitEvents', 'wve', 'WITH', 'e.id = wve.id')
+            ->join(UserEventRegistration::class, 'ur', 'WITH', 'ur.user = :user AND ur.event = e')
             ->where($qb->expr()->eq('e.active', ':active'))
             ->setParameters(
                 new ArrayCollection([
-                    new Parameter('user_id', $user),
+                    new Parameter('user', $user),
                     new Parameter('active', $active),
                 ])
             )

@@ -97,6 +97,8 @@ in.lang.link: In English
 ticket.status.event.add: Подія додана
 ticket.status.event_done: Подія відбулась
 ticket.status.event_done_mob: Відбулась
+ticket.status.registration_closed: Реєстрацію закінчено
+ticket.status.registration_closed_mob: закінчено
 referral.program.conditions.title: Умови програми
 referral.program.conditions.text: Отримуйте по %referal_bonus% грн за кожну купівлю білета за вашим посиланням. Використовуйте ці бонуси під час купівлі білетів на наші наступні івенти.
 referral.share.title: Поділитись
