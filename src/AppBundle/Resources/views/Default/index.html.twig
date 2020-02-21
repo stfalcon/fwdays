@@ -1,5 +1,9 @@
 {% extends 'AppBundle:Redesign:layout.html.twig' %}
 
+{% block ld_json %}
+    {% include '@App/Redesign/Event/event.ld_json.html.twig' with {'event': events} %}
+{% endblock %}
+
 {% block content %}
 <!--BEGIN home-->
 <section class="home" style="background-image: url({{ asset('assets/img/header_bg.jpg') }});">
