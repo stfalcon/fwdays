@@ -254,6 +254,10 @@ class PaymentService
             ) {
                 $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
+
+            if (0.0 === $ticket->getAmount() && $ticket->hasPromoCode()) {
+                $ticket->removeTicketCost();
+            }
         }
         $this->recalculatePaymentAmount($payment);
     }
@@ -373,7 +377,7 @@ class PaymentService
 
         $user = $this->userService->getCurrentUser();
 
-        /* @var Ticket|null $ticket  */
+        /* @var Ticket|null $ticket */
         $ticket = $this->em->getRepository(Ticket::class)->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
 
         $paymentRepository = $this->em->getRepository(Payment::class);
