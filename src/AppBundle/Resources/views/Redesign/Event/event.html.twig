@@ -62,6 +62,13 @@
     {%- endif -%}
 
     <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+    {% if event.slug == 'js-fwdays-2020' %}
+        <div id="btn-explore-expanded" class="btn-explore btn-explore--expanded" {% if is_mobile() %}style="display: none"{% endif %}>
+            <a href="http://fwdays.com" class="link-explorer" target="_blank"></a>
+            <button class="btn-explore--close"></button>
+        </div>
+        <div id="btn-explore-rolled-up" class="btn-explore btn-explore--rolled-up" {% if is_mobile() %}style="display: block"{% endif %}></div>
+    {% endif %}
 {% endblock content %}
 
 {% block popups %}

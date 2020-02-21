@@ -46,12 +46,6 @@
         {% include '@App/Redesign/header.html.twig' %}
 
         {% block content %}{% endblock content %}
-
-        <div id="btn-explore-expanded" class="btn-explore btn-explore--expanded" {% if is_mobile() %}style="display: none"{% endif %}>
-            <a href="http://fwdays.com" class="link-explorer" target="_blank"></a>
-            <button class="btn-explore--close"></button>
-        </div>
-        <div id="btn-explore-rolled-up" class="btn-explore btn-explore--rolled-up" {% if is_mobile() %}style="display: block"{% endif %}></div>
     </div>
     <!--END layout-box__top-->
 
