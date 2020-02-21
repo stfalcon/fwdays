@@ -2,7 +2,6 @@
 
 namespace App\EventListener;
 
-use App\Traits\RouterTrait;
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
