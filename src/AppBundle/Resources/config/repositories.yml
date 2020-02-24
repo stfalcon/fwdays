@@ -29,3 +29,8 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ['AppBundle:Page']
+
+    app.user_registration.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ['AppBundle:UserEventRegistration']
