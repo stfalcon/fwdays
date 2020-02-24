@@ -41,6 +41,13 @@ services:
         tags:
             - { name: twig.extension}
 
+    App\Twig\AppUserLocaleByIpExtension:
+        arguments:
+            - '@request_stack'
+            - '@maxmind.geoip'
+        tags:
+            - { name: twig.extension}
+
     App\Twig\AssetVersionExtension:
         arguments: ["%kernel.root_dir%", "%kernel.environment%"]
         tags:
