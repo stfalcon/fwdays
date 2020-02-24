@@ -207,6 +207,10 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
+    App\Command\StfalconRecalculateWantVisitCountCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+
     Endroid\QrCode\QrCode: ~
 
     App\Helper\StfalconMailerHelper:
