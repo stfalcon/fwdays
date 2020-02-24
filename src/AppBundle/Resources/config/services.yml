@@ -41,6 +41,13 @@ services:
         tags:
             - { name: twig.extension}
 
+    App\Twig\AppUserLocaleByIpExtension:
+        arguments:
+            - '@request_stack'
+            - '@maxmind.geoip'
+        tags:
+            - { name: twig.extension}
+
     App\Twig\AssetVersionExtension:
         arguments: ["%kernel.root_dir%", "%kernel.environment%"]
         tags:
@@ -197,6 +204,10 @@ services:
             - [setContainer, ['@service_container']]
 
     App\Command\StfalconRecalculateTicketSoldCountCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+
+    App\Command\StfalconRecalculateWantVisitCountCommand:
         calls:
             - [setContainer, ['@service_container']]
 
