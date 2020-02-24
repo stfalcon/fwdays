@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Event;
 use App\Entity\UserEventRegistration;
-use App\Repository\UserEventRegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
