@@ -2,21 +2,39 @@
 
 namespace App\Command;
 
-use App\Entity\Event;
-use App\Entity\UserEventRegistration;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Repository\EventRepository;
+use App\Repository\UserEventRegistrationRepository;
+use App\Traits\EntityManagerTrait;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * StfalconRecalculateWantVisitCountCommand.
  */
-class StfalconRecalculateWantVisitCountCommand extends ContainerAwareCommand
+class StfalconRecalculateWantVisitCountCommand extends Command
 {
+    use EntityManagerTrait;
+
+    private $eventRepository;
+    private $userEventRegistrationRepository;
+
+    /**
+     * @param EventRepository                 $eventRepository
+     * @param UserEventRegistrationRepository $userEventRegistrationRepository
+     */
+    public function __construct(EventRepository $eventRepository, UserEventRegistrationRepository $userEventRegistrationRepository)
+    {
+        parent::__construct();
+
+        $this->eventRepository = $eventRepository;
+        $this->userEventRegistrationRepository = $userEventRegistrationRepository;
+    }
+
     /**
      * Set options.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('stfalcon:recalculate-wanna-visit')
@@ -29,19 +47,18 @@ class StfalconRecalculateWantVisitCountCommand extends ContainerAwareCommand
      * @param InputInterface  $input  Input
      * @param OutputInterface $output Output
      *
-     * @return int|void|null
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $events = $em->getRepository(Event::class)->findAll();
-        $userEventRegistrationRepository = $em->getRepository(UserEventRegistration::class);
+        $events = $this->eventRepository->findAll();
         foreach ($events as $event) {
-            $count = $userEventRegistrationRepository->getRegistrationCountByEvent($event);
+            $count = $this->userEventRegistrationRepository->getRegistrationCountByEvent($event);
             $event->setWantsToVisitCount($count);
         }
 
-        $em->flush();
+        $this->em->flush();
+
+        return 0;
     }
 }

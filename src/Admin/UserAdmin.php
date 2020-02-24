@@ -183,7 +183,6 @@ final class UserAdmin extends AbstractAdmin
                         [
                             'by_reference' => false,
                             'disabled' => true,
-//                            'allow_delete' => false,
                         ],
                         [
                             'edit' => 'inline',

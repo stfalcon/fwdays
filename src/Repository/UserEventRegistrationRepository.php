@@ -3,13 +3,23 @@
 namespace App\Repository;
 
 use App\Entity\Event;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\UserEventRegistration;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * UserEventRegistrationRepository.
  */
-class UserEventRegistrationRepository extends EntityRepository
+class UserEventRegistrationRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserEventRegistration::class);
+    }
+
     /**
      * @param Event $event
      *
