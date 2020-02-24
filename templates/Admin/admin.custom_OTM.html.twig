@@ -8,7 +8,7 @@
                             <tr>
                                 {% for field_name, nested_field in form.children|first.children %}
                                     <th {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
-                                        {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label, {}, nested_field.vars.translation_domain) }}
+                                        {{ nested_field.vars.label }}
                                     </th>
                                 {% endfor %}
                                 <th>Скачать</th>
