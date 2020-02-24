@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(columns={"user_id", "event_id"})
  *     })
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UserEventRegistrationRepository")
  *
  * @UniqueEntity({"user", "event"})
  */
