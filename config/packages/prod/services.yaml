@@ -1,0 +1,15 @@
+services:
+    app.assets.s3:
+        class: Aws\S3\S3Client
+        public: true
+        autowire: false
+        arguments:
+            -
+                version: 'latest'
+                region: '%env(AWS_REGION)%'
+                endpoint: '%env(AWS_ENDPOINT)%'
+                credentials:
+                    key: '%env(AWS_ACCESS_KEY_ID)%'
+                    secret: '%env(AWS_SECRET_ACCESS_KEY)%'
+
+    Aws\S3\S3Client: '@app.assets.s3'

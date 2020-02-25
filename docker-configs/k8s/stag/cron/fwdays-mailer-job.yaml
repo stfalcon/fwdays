@@ -21,8 +21,8 @@ spec:
             - name: PARAMETERS
               valueFrom:
                 secretKeyRef:
-                  name: fwdays-backend-parameters
-                  key: parameters.yml
+                  name: fwdays-backend-env
+                  key: .env
             args:
             - bash
             - -c

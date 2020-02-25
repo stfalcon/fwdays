@@ -1,0 +1,105 @@
+<!--BEGIN footer-->
+<table border="0"
+       cellpadding="0"
+       cellspacing="0"
+       style="font-family:'Helvetica Neue', arial;
+                  width: 100%;
+                  font-size: 13px;
+                  line-height: 18px;
+                  color: #121314;
+                  margin: 0 auto;
+                  background: #E5E6EA;">
+    <tr>
+        <td>
+            <table border="0"
+                   cellpadding="0"
+                   cellspacing="0"
+                   style="font-family:'Helvetica Neue', arial;
+                              max-width: 600px;
+                              width: 100%;
+                              font-size: 13px;
+                              line-height: 18px;
+                              color: #121314;
+                              margin: 0 auto;">
+                <tr>
+                    <td>
+                        <div style="padding: 24px 24px 14px;">
+                            <div style="display: inline-block;
+                                            margin-right: 34px;
+                                            margin-bottom: 15px;
+                                            vertical-align: bottom;">
+                                <p style="font-size: 11px;
+                                              color: #747A88;
+                                              margin: 0 0 4px;">{{ 'ticket.email.waitfornews'|trans({}, 'messages', user.emailLanguage) }}</p>
+                                <div style="overflow: hidden;">
+                                    {% include 'Email/_email_social.html.twig' with
+                                        {
+                                            'site_link': 'https://www.facebook.com/fwdays/',
+                                            'icon_link':  absolute_url(asset('build/img/social/social_fb.png'))
+                                        }
+                                    %}
+                                    {% include 'Email/_email_social.html.twig' with
+                                        {
+                                            'site_link': 'https://t.me/fwdays',
+                                            'icon_link':  absolute_url(asset('build/img/social/social_te.png'))
+                                        }
+                                    %}
+                                    {% include 'Email/_email_social.html.twig' with
+                                        {
+                                            'site_link': 'https://twitter.com/fwdays',
+                                            'icon_link':  absolute_url(asset('build/img/social/social_tw.png'))
+                                        }
+                                    %}
+                                    {% include 'Email/_email_social.html.twig' with
+                                        {
+                                            'site_link': 'https://www.youtube.com/user/fwdays/',
+                                            'icon_link':  absolute_url(asset('build/img/social/social_yt.png'))
+                                        }
+                                    %}
+                                    {% include 'Email/_email_social.html.twig' with
+                                        {
+                                            'site_link': 'https://www.instagram.com/fwdays/',
+                                            'icon_link':  absolute_url(asset('build/img/social/social_in.png'))
+                                        }
+                                    %}
+                                </div>
+                            </div>
+                            <div style="display: inline-block;
+                                            margin-right: 50px;
+                                            margin-bottom: 15px;
+                                            vertical-align: bottom;">
+
+                                <p style="font-size: 11px;
+                                              line-height: 15px;
+                                              color: #747A88;
+                                              margin: 0;">
+                                    <a href="{{ url('cabinet') }}" style="color: #747A88;">{{ 'ticket.email.change_language'|trans({}, 'messages', user.emailLanguage)|raw }}</a>
+                                </p>
+                                <p style="font-size: 11px;
+                                              line-height: 15px;
+                                              color: #747A88;
+                                              margin: 0;">
+                                    {% if mail != null %}
+                                        {{ sonata_block_render({ 'type': 'sonata.block.email_user_subscribe' }, {'user': user, 'email_type': 'unsubscribe', 'mailId': mail.id}) }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div style="display: inline-block;
+                                            margin-bottom: 15px;
+                                            vertical-align: bottom;">
+                                <p style="font-size: 11px;
+                                              line-height: 16px;
+                                              color: #747A88;
+                                              margin: 0;">
+                                    {{ 'ticket.email.team'|trans({}, 'messages', user.emailLanguage)|raw }}
+                                    <a href="https://fwdays.com/" style="color: #747A88;">fwdays.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!--END footer-->

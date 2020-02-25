@@ -5,7 +5,7 @@ coverage:
 modules:
     enabled:
         - WebDriver:
-            url: http://nginx/app_test.php/
+            url: http://nginx/index_test.php/
             window_size: 1920x1080
             port: 9515
             browser: chrome
@@ -19,7 +19,4 @@ extensions:
     enabled:
         - Codeception\Extension\RunBefore:
             - composer.phar app:recreate-test-database
-#            - ./bin/console doctrine:fixtures:load --no-interaction --env=test
-#            - /opt/phantomjs-2.1.1-linux-x86_64/bin/phantomjs --webdriver=4444 &
-#        - Codeception\Extension\RunProcess:
-#            - /opt/chromedriver --url-base=/wd/hub
+            - /opt/chromedriver --url-base=/wd/hub &

@@ -5,23 +5,22 @@ cache:
         - node_modules/
 
 services:
-  - name: jekakm/mysql-core:201902201
-    alias: fwdays-php73-mysql
+    - name: jekakm/mysql-core:201902201
+      alias: mysql
 
-  - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
-  
-  - name: minio/minio:latest
-    alias: minio
+    - name: gitlab.stfalcon.com:4567/stfalcon/fwdays/minio-mc:v1.0
+
+    - name: minio/minio:latest
+      alias: minio
 
 variables:
-  MYSQL_ROOT_PASSWORD: qwerty
-  MINIO_ACCESS_KEY: minio
-  MINIO_SECRET_KEY: qwe12345
+    MYSQL_ROOT_PASSWORD: qwerty
+    MINIO_ACCESS_KEY: minio
+    MINIO_SECRET_KEY: qwe12345
 
 
 .before_script_template: &build_ci
     before_script:
-        - cp app/config/parameters.yml.stag app/config/parameters.yml
         - unxz geodata/GeoLiteCity.dat.xz
         - composer.phar install --optimize-autoloader
         - npm install
@@ -55,7 +54,7 @@ functional-test:
         - sleep 10
         - docker-compose exec -T php sudo unxz geodata/GeoLiteCity.dat.xz
         - docker-compose exec -T php ./init "test"
-        - docker-compose exec -T php bin/run-codeception
+        - docker-compose exec -T php composer.phar ci:codeception-acceptance
     artifacts:
         paths:
             - /app/tests/Codeception/_output/
@@ -126,7 +125,7 @@ sonar-scanner:
     <<: *build_ci
     script:
         - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
-        
+
 build image:
     stage: 'Build'
     image: docker:stable
@@ -142,7 +141,7 @@ build image:
         - docker build -t fwdays-deployment .
         - docker tag fwdays-deployment:latest jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
         - docker push jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
-        
+
 staging deploy:
     stage: 'Deploy to staging'
     only:

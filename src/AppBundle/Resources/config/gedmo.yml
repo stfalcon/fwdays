@@ -1,5 +1,0 @@
-parameters:
-    a2lix_translation_form.gedmo.type.translations.class: App\Form\Type\MyGedmoTranslationsType
-    a2lix_translation_form.gedmo.type.translations_locales.class: App\Form\Type\MyGedmoTranslationsLocalesType
-
-

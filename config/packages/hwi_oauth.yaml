@@ -1,0 +1,22 @@
+hwi_oauth:
+    firewall_names: [main]
+    connect:
+        account_connector: App\Security\OAuthUserProvider
+    resource_owners:
+        facebook:
+            type: facebook
+            client_id: '%env(FACEBOOK_CLIENT_ID)%'
+            client_secret: '%env(FACEBOOK_CLIENT_SECRET)%'
+            scope: "email, public_profile"
+            infos_url: "https://graph.facebook.com/me?fields=id,name,email,first_name,last_name"
+            paths:
+                email: email
+            options:
+                display: page
+        google:
+            type: google
+            client_id: '%env(GOOGLE_CLIENT_ID)%'
+            client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
+            scope: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email
