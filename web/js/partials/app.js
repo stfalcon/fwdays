@@ -287,6 +287,72 @@ $(document).ready(function () {
         eventMenu.removeClass('event-menu--open');
     }
 
+    function hideExplorer() {
+        $('#btn-explore-expanded').hide();
+        $('#btn-explore-rolled-up').show();
+        Cookies.set('explore-expanded', false);
+    }
+
+    function showExplorer() {
+        $('#btn-explore-expanded').show();
+        $('#btn-explore-rolled-up').hide();
+        Cookies.set('explore-expanded', true);
+    }
+
+    function detectmob() {
+
+        return navigator.userAgent.match(/Android/i)
+            || navigator.userAgent.match(/webOS/i)
+            || navigator.userAgent.match(/iPhone/i)
+            || navigator.userAgent.match(/iPad/i)
+            || navigator.userAgent.match(/iPod/i)
+            || navigator.userAgent.match(/BlackBerry/i)
+            || navigator.userAgent.match(/Windows Phone/i);
+    }
+
+    if ($('.btn-explore').length) {
+        var cookie_explore_expanded = Cookies.get('explore-expanded');
+
+        if (cookie_explore_expanded == null) {
+            if (detectmob()) {
+                hideExplorer();
+            } else {
+                showExplorer();
+            }
+        } else if ('true' === cookie_explore_expanded) {
+            showExplorer();
+        } else {
+            hideExplorer();
+        }
+
+        $('.btn-explore--close').on('click', function () {
+            hideExplorer();
+        });
+
+        $('.btn-explore--rolled-up').on('click', function () {
+            showExplorer();
+        });
+
+        var scrollTop = 45;
+        var fixTop = 110;
+
+        if ($('.btn-explore').offset().top > fixTop) {
+            $('.btn-explore').css('top', scrollTop);
+        }
+
+        $(window).scroll(function () {
+            if ($(window).width() < 444) {
+                var fixTopScroll = 50;
+                var currentScroll = $(this).scrollTop();
+                if (currentScroll < fixTopScroll) {
+                    $('.btn-explore').css('top', fixTop);
+                } else {
+                    $('.btn-explore').css('top', scrollTop);
+                }
+            }
+        })
+    }
+
     /**
      *  Button for scroll top page
      */

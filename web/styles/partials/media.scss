@@ -2143,6 +2143,34 @@
   }
 }
 
+@media only screen and (max-width: 444px) {
+  .btn-explore {
+    top: 110px;
+
+    &--expanded {
+      width: 100%;
+      height: 104px;
+      background-size: 100% 104px;
+    }
+
+    .link-explorer {
+      background-image: url('../../img/explorer/explorer_mob.svg');
+    }
+
+    &--rolled-up {
+      width: 49px;
+      height: 133px;
+      display: none;
+      background-image: url('../../img/explorer/explorer_rolled_up_mob.svg');
+      background-size: 49px 133px;
+    }
+
+    &--close {
+      top: 0;
+    }
+  }
+}
+
 @media only screen and (max-width: 400px) {
   .header-nav {
     &__link {
