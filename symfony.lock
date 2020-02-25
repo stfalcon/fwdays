@@ -192,9 +192,6 @@
     "escapestudios/symfony2-coding-standard": {
         "version": "3.10.0"
     },
-    "facebook/webdriver": {
-        "version": "1.7.1"
-    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -236,33 +233,6 @@
     },
     "hirak/prestissimo": {
         "version": "0.3.9"
-    },
-    "hoa/consistency": {
-        "version": "1.17.05.02"
-    },
-    "hoa/console": {
-        "version": "3.17.05.02"
-    },
-    "hoa/event": {
-        "version": "1.17.01.13"
-    },
-    "hoa/exception": {
-        "version": "1.17.01.16"
-    },
-    "hoa/file": {
-        "version": "1.17.07.11"
-    },
-    "hoa/iterator": {
-        "version": "2.17.01.10"
-    },
-    "hoa/protocol": {
-        "version": "1.17.01.14"
-    },
-    "hoa/stream": {
-        "version": "1.17.02.21"
-    },
-    "hoa/ustring": {
-        "version": "4.17.01.16"
     },
     "http-interop/http-factory-guzzle": {
         "version": "1.0.0"
@@ -315,6 +285,9 @@
     },
     "league/flysystem-aws-s3-v3": {
         "version": "1.0.23"
+    },
+    "lexik/translation-bundle": {
+        "version": "v4.0.14"
     },
     "liip/functional-test-bundle": {
         "version": "3.3.0"
@@ -389,11 +362,11 @@
     "php-http/client-common": {
         "version": "1.10.0"
     },
-    "php-http/curl-client": {
-        "version": "2.0.0"
-    },
     "php-http/discovery": {
         "version": "1.7.0"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v2.0.1"
     },
     "php-http/httplug": {
         "version": "v1.1.0"
@@ -505,9 +478,6 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
-    },
-    "ramsey/uuid": {
-        "version": "3.9.2"
     },
     "roave/security-advisories": {
         "version": "dev-master"
@@ -875,11 +845,17 @@
     "symfony/polyfill-iconv": {
         "version": "v1.13.1"
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.14.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.13.1"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.14.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.13.1"
@@ -892,6 +868,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-uuid": {
+        "version": "v1.14.0"
     },
     "symfony/process": {
         "version": "v4.4.1"
@@ -957,6 +936,9 @@
     },
     "symfony/stopwatch": {
         "version": "v5.0.1"
+    },
+    "symfony/string": {
+        "version": "v5.0.4"
     },
     "symfony/swiftmailer-bundle": {
         "version": "2.5",
@@ -1097,9 +1079,6 @@
     },
     "zendframework/zend-code": {
         "version": "3.4.1"
-    },
-    "zendframework/zend-diactoros": {
-        "version": "2.2.1"
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.1"

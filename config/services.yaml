@@ -99,6 +99,7 @@ services:
 
     vich_uploader.my_storage.flysystem:
         class: App\Service\MyFlySystemStorage
+        autowire: false
         arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
 
     liip_imagine.cache.resolver.prototype.flysystem:

@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use League\Flysystem\MountManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 use Vich\UploaderBundle\Storage\FlysystemStorage;
 
 /**
@@ -14,6 +16,15 @@ use Vich\UploaderBundle\Storage\FlysystemStorage;
 class MyFlySystemStorage extends FlysystemStorage
 {
     private const CACHE_MAX_AGE = 2678400;
+
+    /**
+     * @param PropertyMappingFactory $factory
+     * @param MountManager           $registry
+     */
+    public function __construct(PropertyMappingFactory $factory, MountManager $registry)
+    {
+        parent::__construct($factory, $registry);
+    }
 
     /**
      * {@inheritdoc}

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use _HumbugBoxb49a3c9618cf\Symfony\Component\Console\Exception\InvalidArgumentException;
 use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
@@ -426,7 +425,7 @@ class PaymentController extends AbstractController
         $savedData = (float) $request->request->get('saved_data');
         $paymentData = $this->serializer->normalize($payment, null, ['groups' => ['payment.view']]);
         if (!\is_array($paymentData)) {
-            throw new InvalidArgumentException();
+            throw new \InvalidArgumentException();
         }
         $form = null;
         $amountChanged = $savedData !== (float) $paymentData['amount'];
