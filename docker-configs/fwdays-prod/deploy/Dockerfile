@@ -4,7 +4,6 @@ WORKDIR /app
 RUN unxz geodata/GeoLiteCity.dat.xz
 RUN composer.phar install --optimize-autoloader
 RUN php bin/console assets:install public --env=prod
-RUN php bin/console assetic:dump --env=prod
 RUN npm install
 RUN npm run gulp-prod
 RUN chown -R www-data:www-data /app/var /app/public
