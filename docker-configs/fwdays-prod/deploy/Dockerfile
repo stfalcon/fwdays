@@ -2,7 +2,7 @@ FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-prod:v2.0
 COPY . /app
 WORKDIR /app
 RUN unxz geodata/GeoLiteCity.dat.xz
-RUN composer.phar install --no-dev --optimize-autoloader
+RUN composer.phar install --optimize-autoloader
 RUN php bin/console assets:install web --env=prod
 RUN php bin/console assetic:dump --env=prod
 RUN npm install
