@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,7 +33,6 @@ class City implements TranslatableInterface
      *
      * @ORM\Column(name="name", type="string", nullable=false, unique=true)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Length(min="3")
      *
@@ -45,9 +45,14 @@ class City implements TranslatableInterface
      *
      * @ORM\Column(name="url_name", type="string", nullable=false, unique=true)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Length(min="3")
+     *
+     * @Assert\Regex(
+     *     pattern="/^[a-z0-9\.\-\+]+$/i",
+     *     match=true,
+     *     message="Поле може містити тільки eng букви, цифры, знаки -+."
+     * )
      */
     private $urlName;
 
@@ -73,6 +78,8 @@ class City implements TranslatableInterface
     private $contactInfo;
 
     /**
+     * var CityTranslation[]|ArrayCollection.
+     *
      * @ORM\OneToMany(
      *   targetEntity="App\Entity\Translation\CityTranslation",
      *   mappedBy="object",
@@ -80,6 +87,14 @@ class City implements TranslatableInterface
      * )
      */
     private $translations;
+
+    /**
+     * City constructor.
+     */
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -165,6 +180,7 @@ class City implements TranslatableInterface
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
         return $this;
     }
 

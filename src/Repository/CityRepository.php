@@ -63,7 +63,7 @@ class CityRepository extends ServiceEntityRepository
     /**
      * @param string $urlName
      *
-     * @return null|City
+     * @return City|null
      */
     public function findOneByUrlName($urlName): ?City
     {
@@ -88,7 +88,7 @@ class CityRepository extends ServiceEntityRepository
     /**
      * @param int $id
      *
-     * @return null|City
+     * @return City|null
      */
     public function findOneById($id): ?City
     {

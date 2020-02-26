@@ -4,9 +4,10 @@ namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
+use App\Entity\City;
 use App\Traits\LocalsRequiredServiceTrait;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * CityAdmin.
@@ -16,7 +17,7 @@ class CityAdmin extends AbstractTranslateAdmin
     use LocalsRequiredServiceTrait;
 
     /**
-     * {@inheritDoc}
+     * @param City $object
      */
     public function preUpdate($object): void
     {
@@ -26,7 +27,7 @@ class CityAdmin extends AbstractTranslateAdmin
     }
 
     /**
-     * {@inheritDoc}
+     * @param City $object
      */
     public function prePersist($object): void
     {
@@ -38,7 +39,7 @@ class CityAdmin extends AbstractTranslateAdmin
     /**
      * @param ListMapper $listMapper
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name', null, ['label' => 'Название'])
@@ -51,7 +52,7 @@ class CityAdmin extends AbstractTranslateAdmin
     /**
      * @param FormMapper $formMapper
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $localOptions = $this->localsRequiredService->getLocalsRequiredArray();
         $formMapper

@@ -116,6 +116,11 @@ class Event implements TranslatableInterface
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[a-z0-9\.\-\+]+$/i",
+     *     match=true,
+     *     message="Поле може містити тільки eng букви, цифры, знаки -+."
+     * )
      */
     protected $slug;
 

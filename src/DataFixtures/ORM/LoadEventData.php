@@ -43,7 +43,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->generateUploadedFile('JS_small.svg'))
             ->setLogo('JS_big.svg')
             ->setSmallLogo('JS_small.svg')
-            ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h3>Как прошла конференция</h3>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0cNRmWrq_hw" frameborder="0" allowfullscreen></iframe>
@@ -124,7 +123,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->generateUploadedFile('php_small.svg'))
             ->setLogo('PHP_big.svg')
             ->setSmallLogo('php_small.svg')
-            ->setCity('Киев')
             ->setPlace('Пока неизвестно')
             ->setAbout('<h3>Панельная дискуссия</h3>
 
@@ -209,7 +207,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->generateUploadedFile('phpel_small.svg'))
             ->setLogo('phpel_big.svg')
             ->setSmallLogo('phpel_small.svg')
-            ->setCity('Где-то там')
             ->setPlace('Пока неизвестно')
             ->setAbout('Описание события')
             ->setActive(false)
@@ -229,7 +226,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setLogo('highload_big.svg')
             ->setSmallLogoFile($this->generateUploadedFile('highload_small.svg'))
             ->setSmallLogo('highload_small.svg')
-            ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('
 <p>Highload fwdays’17 - это конференция, посвященная разработке высоконагруженных технологичных проектов, а также работе с архитектурой и микросервисами, базами данных, машинному обучению, Big Data и не только.</p>
@@ -323,7 +319,6 @@ class LoadEventData extends AbstractFixture implements ContainerAwareInterface
             ->setSmallLogoFile($this->generateUploadedFile('zend_small.svg'))
             ->setLogo('zend_big.svg')
             ->setSmallLogo('zend_small.svg')
-            ->setCity('Киев')
             ->setPlace('отель "Казацкий"')
             ->setAbout('<h2>Панельная дискуссия</h2>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5CdSEyZmLbc" frameborder="0" allowfullscreen></iframe><br />

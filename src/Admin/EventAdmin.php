@@ -6,10 +6,10 @@ use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\City;
 use App\Entity\Event;
+use App\Repository\CityRepository;
 use App\Service\User\UserService;
 use App\Traits\GoogleMapServiceTrait;
 use App\Traits\LocalsRequiredServiceTrait;
-use App\Repository\CityRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -25,7 +25,7 @@ class EventAdmin extends AbstractTranslateAdmin
     use LocalsRequiredServiceTrait;
     use GoogleMapServiceTrait;
 
-    /** @var string */
+    /** @var City|null */
     protected $saveCity;
 
     /** @var string */
@@ -62,6 +62,7 @@ class EventAdmin extends AbstractTranslateAdmin
      */
     public function getNewInstance()
     {
+        /** @var Event $instance */
         $instance = parent::getNewInstance();
         $defaultCity = $this->cityRepository->findDefault();
         if ($defaultCity instanceof City) {
