@@ -214,10 +214,10 @@ fos_user.password.mismatch: Невідповідність нового паро
 Bad credentials.: 'Невірна електронна адреса або пароль'
 User account is disabled.: 'Обліковий запис не активовано'
 
-mail.unsubscribe.no_more_news: Ми більше не будемо надсилати Вам новини Framework Days
+mail.unsubscribe.no_more_news: Ми більше не будемо надсилати Вам новини Fwdays
 mail.unsubscribe.you_can_suscribe1: Якщо ви відписалися помилково, ви можете
 mail.unsubscribe.you_can_suscribe2: Підписатися знову
-mail.subcribe: Ви підписані на новини Framework Days
+mail.subcribe: Ви підписані на новини FwDays
 mail.with_ticket.text0: Шановний учаснику,
 mail.with_ticket.text1: У вкладенні знаходиться ваш вхідний квиток. Покажіть його з екрана телефона, будь ласка, або роздрукуйте на папері.
 mail.with_ticket.text2: З нетерпінням чекаємо вас на конференції у Києві.

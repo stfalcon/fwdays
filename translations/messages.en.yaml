@@ -224,10 +224,10 @@ fos_user.password.mismatch: Uncorrect new password
 Bad credentials.: 'Uncorrect email address or password'
 User account is disabled.: 'Account does not activated'
 
-mail.unsubscribe.no_more_news: We will not send you news about the Framework Days anymore
+mail.unsubscribe.no_more_news: We will not send you news about the Fwdays anymore
 mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
 mail.unsubscribe.you_can_suscribe2: subscribe again
-mail.subcribe: You have subscribed on Framework Days news
+mail.subcribe: You have subscribed on Fwdays news
 mail.with_ticket.text0: Dear participant,
 mail.with_ticket.text1: Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.
 mail.with_ticket.text2: We are looking forward to seeing you in Kyiv at the conference.

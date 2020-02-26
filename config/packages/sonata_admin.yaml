@@ -4,7 +4,7 @@ sonata_core:
             enabled: false
 
 sonata_admin:
-    title: framework days
+    title: fwdays
     options:
         html5_validate:  true     # enable or disable html5 form validation
         js_debug:        false    # enable or disable to show javascript debug messages
