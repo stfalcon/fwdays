@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * App\Entity\Mail.
+ * Mail.
  *
  * @ORM\Table(name="event__mails")
  * @ORM\Entity()
@@ -63,6 +63,14 @@ class Mail implements TranslatableInterface
      * @Assert\NotBlank()
      */
     protected $text;
+
+    /**
+     * @var City|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $city;
 
     /**
      * @var Event[]|Collection
@@ -747,6 +755,26 @@ class Mail implements TranslatableInterface
     public function setStartDate(?\DateTimeImmutable $startDate): self
     {
         $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * @return City|null
+     */
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param City|null $city
+     *
+     * @return $this
+     */
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

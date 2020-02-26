@@ -34,7 +34,7 @@ services:
         class: App\Admin\EventAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: События }
-        arguments: ['', 'App\Entity\Event', ~, '@App\Service\User\UserService']
+        arguments: ['', 'App\Entity\Event', ~, '@App\Service\User\UserService', '@App\Repository\CityRepository']
         calls:
             - [setGoogleMap, ['@App\Service\GoogleMapService']]
             - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
@@ -163,3 +163,11 @@ services:
         calls:
             - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
+
+    app.city.admin:
+        class: App\Admin\CityAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Города, label: Города }
+        arguments: ['', 'App\Entity\City', ~]
+        calls:
+            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]

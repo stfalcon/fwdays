@@ -2,7 +2,7 @@
     <div class="container container--sm">
         <h2 class="h2 location__title">{{ 'event.page.venue'|trans }}</h2>
         <div class="location__description">
-            {{ event.city }}, {{ event.place }}
+            {% if event.city != null %}{{ event.city.name }}, {% endif %}{{ event.place }}
         </div>
         {%- if venue_page -%}
             <a href="{{ path('show_event_venue_page', {'slug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>

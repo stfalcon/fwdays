@@ -116,17 +116,21 @@ class Event implements TranslatableInterface
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[a-z0-9\.\-\+]+$/i",
+     *     match=true,
+     *     message="Поле може містити тільки eng букви, цифры, знаки -+."
+     * )
      */
     protected $slug;
 
     /**
-     * @var string|null
+     * @var City|null
      *
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Gedmo\Translatable(fallback=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $city;
+    private $city;
 
     /**
      * @var string|null
@@ -689,23 +693,23 @@ class Event implements TranslatableInterface
     }
 
     /**
-     * @param string|null $city
+     * @return City|null
+     */
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param City|null $city
      *
      * @return $this
      */
-    public function setCity(?string $city): self
+    public function setCity(?City $city): self
     {
         $this->city = $city;
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace DoctrineMigrations;;
+namespace DoctrineMigrations;
 
 use App\Entity\Event;
 use App\Entity\Ticket;
@@ -20,9 +20,9 @@ final class Version20200214090335 extends AbstractMigration implements Container
 
     public function up(Schema $schema) : void
     {
-        /** @var User[] $users */
         $em = $this->container->get('doctrine.orm.entity_manager');
 
+        /** @var User[] $users */
         $users = $em->getRepository(User::class)->findAll();
         $userCount = \count($users);
         if (0 === $userCount) {
