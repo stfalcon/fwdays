@@ -15,7 +15,7 @@ class PromoCodeCest
     /**
      * @param AcceptanceTester $I
      *
-     * @depends UserCest:loginModal
+     * @depends UserCest:forgotPassword
      */
     public function promocodeFromQueryFirst(AcceptanceTester $I)
     {
