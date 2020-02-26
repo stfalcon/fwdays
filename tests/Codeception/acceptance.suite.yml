@@ -19,3 +19,4 @@ extensions:
     enabled:
         - Codeception\Extension\RunBefore:
             - composer.phar app:recreate-test-database
+            - /opt/chromedriver --url-base=/wd/hub &
