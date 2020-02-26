@@ -85,11 +85,11 @@ class UserController extends AbstractController
      *     condition="request.isXmlHttpRequest()")
      * @Security("has_role('ROLE_USER')")
      *
-     * @param string $phoneNumber
+     * @param string|null $phoneNumber
      *
      * @return JsonResponse
      */
-    public function updateUserPhoneAction(string $phoneNumber): JsonResponse
+    public function updateUserPhoneAction(?string $phoneNumber = null): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();

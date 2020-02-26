@@ -206,7 +206,7 @@ class User extends BaseUser
     protected $surname;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      *
@@ -425,19 +425,19 @@ class User extends BaseUser
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
     /**
-     * @param string $phone
+     * @param string|null $phone
      *
      * @return $this
      */
-    public function setPhone($phone)
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
 
