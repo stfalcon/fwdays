@@ -189,7 +189,7 @@
             "@ci:yaml-lint",
             "@ci:code-style",
             "@ci:static-analysis",
-            "@ci:codeception-acceptance"
+            "bin/run-codeception"
         ]
     },
     "extra": {
