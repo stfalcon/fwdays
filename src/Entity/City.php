@@ -105,9 +105,9 @@ class City implements TranslatableInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -125,9 +125,9 @@ class City implements TranslatableInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUrlName(): string
+    public function getUrlName(): ?string
     {
         return $this->urlName;
     }
