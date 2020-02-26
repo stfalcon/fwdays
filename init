@@ -9,7 +9,6 @@ else
     sudo chown -R www-data /app/vendor /app/node_modules
 fi
 
-cp app/config/parameters.yml.docker app/config/parameters.yml
 composer.phar install
 php bin/console do:da:cr --no-interaction --env=$env --if-not-exists
 php bin/console do:mi:mi --no-interaction --env=$env
