@@ -59,6 +59,7 @@ functional-test:
         paths:
             - /app/tests/Codeception/_output/
         expire_in: 1 week
+        when: always
 
 # CI jobs
 composer checks:
