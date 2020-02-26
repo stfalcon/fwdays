@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Controller\RegistrationController;
 use App\Exception\NeedUserDataException;
 use App\Traits;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,7 +35,7 @@ class ExceptionListener implements EventSubscriberInterface
 
         if ($exception instanceof NeedUserDataException) {
             $oAuthResponse = $exception->getResponse();
-            $this->session->set('social-response', $oAuthResponse);
+            $this->session->set(RegistrationController::SOCIAL_RESPONSE_SESSION_KEY, $oAuthResponse);
             $response = new RedirectResponse($this->router->generate('fos_user_registration_register'));
 
             $event->setResponse($response);

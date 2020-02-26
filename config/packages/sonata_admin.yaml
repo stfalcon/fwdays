@@ -18,12 +18,12 @@ sonata_admin:
                 position: left
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Пользователи", "События", "group.translation"]
+                    groups: ['Пользователи', 'События', 'group.translation', 'Города']
             -
                 position: right
                 type: sonata.admin.block.admin_list
                 settings:
-                    groups: ["Спонсоры", "Билеты", "Страницы", "Рассылки", "Логи"]
+                    groups: ['Спонсоры', 'Билеты', 'Страницы', 'Рассылки', 'Логи']
             -
                 position: left
                 type: sonata.block.service.statistic

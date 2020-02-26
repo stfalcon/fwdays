@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\City;
 use App\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -42,9 +43,10 @@ class GoogleMapService
         $lng = null;
 
         $city = $event->getCity();
-        if (\is_string($city)) {
+        $cityName = $city instanceof City ? $city->getName() : null;
+        if (\is_string($cityName)) {
             $place = $event->getPlace();
-            $address = \is_string($place) ? \sprintf('%s,%s', $city, $place) : $city;
+            $address = \is_string($place) ? \sprintf('%s,%s', $cityName, $place) : $cityName;
             $googlePath = \sprintf('https://maps.google.com/maps/api/geocode/json?key=%s&address=%s', $this->googleApiKey, \urlencode($address));
             $json = $this->httpClient->request(Request::METHOD_GET, $googlePath);
 

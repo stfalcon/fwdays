@@ -115,8 +115,10 @@
                     "name": "{{ event.place }}",
                     "address": {
                         "@type": "PostalAddress",
-                        "addressLocality": "{{ event.city }}",
-                        "addressRegion": "Kyiv region",
+                        {% if event.city != null %}
+                        "addressLocality": "{{ event.city.name }}",
+                        "addressRegion": "{{ event.city.name }} region",
+                        {% endif %}
                         "addressCountry": {
                           "@type": "Country",
                           "name": "UA"

@@ -129,7 +129,7 @@
                 <td colspan="2">
                     <div class="label-td">{{ 'contacts.address.title'|trans }}</div>
                     <div class="content-td">
-                        {{ event.city }}, {{ event.place }}
+                        {% if event.city != null %}{{ event.city.name }}, {% endif %}{{ event.place }}
                     </div>
                 </td>
             </tr>

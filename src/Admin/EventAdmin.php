@@ -4,10 +4,12 @@ namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
+use App\Entity\City;
 use App\Entity\Event;
 use App\Service\User\UserService;
 use App\Traits\GoogleMapServiceTrait;
 use App\Traits\LocalsRequiredServiceTrait;
+use App\Repository\CityRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
@@ -28,8 +30,8 @@ class EventAdmin extends AbstractTranslateAdmin
 
     /** @var string */
     protected $savePlace;
-
     private $userService;
+    private $cityRepository;
 
     /**
      * @var array
@@ -42,15 +44,31 @@ class EventAdmin extends AbstractTranslateAdmin
         ];
 
     /**
-     * @param string      $code
-     * @param string      $class
-     * @param string      $baseControllerName
-     * @param UserService $userService
+     * @param string         $code
+     * @param string         $class
+     * @param string         $baseControllerName
+     * @param UserService    $userService
+     * @param CityRepository $cityRepository
      */
-    public function __construct($code, $class, $baseControllerName, UserService $userService)
+    public function __construct($code, $class, $baseControllerName, UserService $userService, CityRepository $cityRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
         $this->userService = $userService;
+        $this->cityRepository = $cityRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNewInstance()
+    {
+        $instance = parent::getNewInstance();
+        $defaultCity = $this->cityRepository->findDefault();
+        if ($defaultCity instanceof City) {
+            $instance->setCity($defaultCity);
+        }
+
+        return $instance;
     }
 
     /**
@@ -58,7 +76,7 @@ class EventAdmin extends AbstractTranslateAdmin
      */
     public function preUpdate($object): void
     {
-        $this->removeNullTranslate($object);
+        parent::preUpdate($object);
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
@@ -72,7 +90,7 @@ class EventAdmin extends AbstractTranslateAdmin
      */
     public function prePersist($object): void
     {
-        $this->removeNullTranslate($object);
+        parent::prePersist($object);
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
@@ -165,11 +183,6 @@ class EventAdmin extends AbstractTranslateAdmin
                                 'label' => 'Seo Title',
                                 'locale_options' => $localAllFalse,
                             ],
-                            'city' => [
-                                'label' => 'Город',
-                                'locale_options' => $localAllFalse,
-                                'sonata_help' => 'указывать город в котором проводиться событие (используется для поиска координат на карте)',
-                            ],
                             'place' => [
                                 'label' => 'Место проведения',
                                 'locale_options' => $localAllFalse,
@@ -193,13 +206,16 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->end()
             ->end()
             ->tab('Настройки')
-                ->with('Slug', ['class' => 'col-md-4'])
+                ->with('Город', ['class' => 'col-md-3'])
+                    ->add('city', null, ['label' => 'Город'])
+                ->end()
+                ->with('Slug', ['class' => 'col-md-3'])
                     ->add('slug')
                 ->end()
-                ->with('Группа', ['class' => 'col-md-4'])
+                ->with('Группа', ['class' => 'col-md-3'])
                     ->add('group', null, ['label' => 'Группа'])
                 ->end()
-                ->with('Аудитории', ['class' => 'col-md-4'])
+                ->with('Аудитории', ['class' => 'col-md-3'])
                         ->add('audiences', null, ['label' => 'Аудитории'])
                 ->end()
                 ->with('Цены')

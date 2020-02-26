@@ -37,6 +37,9 @@ class RegistrationController extends BaseController
     use Traits\TranslatorTrait;
     use Traits\RouterTrait;
 
+    private const SOCIAL_DATA_SESSION_KEY = 'social-data';
+    public const SOCIAL_RESPONSE_SESSION_KEY = 'social-response';
+
     /** @var string */
     private $captchaCheckUrl = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -76,24 +79,26 @@ class RegistrationController extends BaseController
         $form = $this->formFactory->createForm();
         $form->setData($user);
 
-        $fromOAuth = false;
-        if ($this->session->has('social-response')) {
-            $oAuthData = $this->session->get('social-response');
+        $oAuthError = false;
+        if ($this->session->has(self::SOCIAL_RESPONSE_SESSION_KEY)) {
+            $oAuthData = $this->session->get(self::SOCIAL_RESPONSE_SESSION_KEY);
+            $this->session->remove(self::SOCIAL_RESPONSE_SESSION_KEY);
+
             if ($user instanceof User) {
                 $this->setUserFromOAuthResponse($user, $oAuthData);
                 $form->setData($user);
                 $errors = $this->validator->validate($user);
+                $oAuthError = $errors->count() > 0;
                 foreach ($errors as $error) {
                     $form->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));
                 }
-                $fromOAuth = true;
             }
-            $this->session->remove('social-response');
+            $this->session->set(self::SOCIAL_DATA_SESSION_KEY, $oAuthData);
         } else {
             $form->handleRequest($request);
         }
         $captcha = $request->get('g-recaptcha-response');
-        $process = $fromOAuth ? false : $this->isGoogleCaptchaTrue($captcha);
+        $process = $oAuthError ? false : $this->isGoogleCaptchaTrue($captcha);
 
         if ($process) {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -101,6 +106,10 @@ class RegistrationController extends BaseController
                 $this->eventDispatcher->dispatch($event);
 
                 $user = $form->getData();
+                if ($this->session->has(self::SOCIAL_DATA_SESSION_KEY)) {
+                    $this->addSocialData($user, $this->session->get(self::SOCIAL_DATA_SESSION_KEY));
+                    $this->session->remove(self::SOCIAL_DATA_SESSION_KEY);
+                }
                 $this->userManager->updateUser($user);
 
                 $this->mailerHelper->sendEasyEmail(
@@ -180,6 +189,19 @@ class RegistrationController extends BaseController
         $user->setName($response['first_name']);
         $user->setSurname($response['last_name']);
         $user->setEmail($response['email']);
+
+        $this->addSocialData($user, $response);
+    }
+
+    /**
+     * @param User  $user
+     * @param array $response
+     */
+    private function addSocialData(User $user, array $response): void
+    {
+        if (!isset($response['socialID'], $response['service'])) {
+            return;
+        }
 
         $socialID = $response['socialID'];
         if ('google' === $response['service']) {

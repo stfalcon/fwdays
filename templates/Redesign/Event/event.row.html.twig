@@ -9,7 +9,7 @@
         </a>
         <div class="event-row__details">
             <a href="{{ path('event_show', {'slug': event.slug } )}}" class="event-row__title">{{ event.name }}</a>
-            <div class="event-row__location">{{ event.city }}</div>
+            {% if event.city != null %}<div class="event-row__location">{{ event.city.name }}</div>{% endif %}
         </div>
     </div>
     <div class="event-row__right">
