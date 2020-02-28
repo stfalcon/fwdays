@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -48,11 +49,7 @@ class City implements TranslatableInterface
      * @Assert\NotBlank()
      * @Assert\Length(min="3")
      *
-     * @Assert\Regex(
-     *     pattern="/^[a-z0-9\.\-\+]+$/i",
-     *     match=true,
-     *     message="Поле може містити тільки eng букви, цифры, знаки -+."
-     * )
+     * @AppAssert\Slug\Slug()
      */
     private $urlName;
 

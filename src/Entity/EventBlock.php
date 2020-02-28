@@ -64,7 +64,6 @@ class EventBlock implements TranslatableInterface
      *
      * @ORM\Column(type="string", nullable=false)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $type;

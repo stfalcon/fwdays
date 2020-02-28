@@ -42,7 +42,6 @@ class WayForPayLog
      *
      * @ORM\Column(type="string")
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $status;

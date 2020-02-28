@@ -36,7 +36,6 @@ class EventAudience
      *
      * @ORM\Column(type="string", nullable=false)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $name;
