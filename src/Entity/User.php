@@ -271,7 +271,6 @@ class User extends BaseUser
      *
      * @ORM\Column(type="string", name="email_language", nullable=false, options={"default":"uk"})
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Length(min="2")
      */

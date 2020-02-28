@@ -59,7 +59,6 @@ class Mail implements TranslatableInterface
      *
      * @Gedmo\Translatable(fallback=true)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     protected $text;

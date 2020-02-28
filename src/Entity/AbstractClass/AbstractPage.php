@@ -2,6 +2,7 @@
 
 namespace App\Entity\AbstractClass;
 
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,8 +26,9 @@ abstract class AbstractPage
      *
      * @ORM\Column(name="slug", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
+     *
+     * @AppAssert\Slug\Slug()
      */
     protected $slug;
 
@@ -37,7 +39,6 @@ abstract class AbstractPage
      *
      * @ORM\Column(name="title", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     protected $title;
@@ -49,7 +50,6 @@ abstract class AbstractPage
      *
      * @ORM\Column(name="text", type="text")
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     protected $text;

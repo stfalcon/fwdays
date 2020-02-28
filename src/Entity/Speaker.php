@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Model\Translatable\TranslatableInterface;
 use App\Traits\TranslateTrait;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -54,8 +55,9 @@ class Speaker implements TranslatableInterface
      *
      * @ORM\Column(name="slug", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
+     *
+     * @AppAssert\Slug\Slug()
      */
     private $slug;
 
@@ -64,7 +66,6 @@ class Speaker implements TranslatableInterface
      *
      * @ORM\Column(name="name", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      *
      * @Gedmo\Translatable(fallback=true)
@@ -76,7 +77,6 @@ class Speaker implements TranslatableInterface
      *
      * @ORM\Column(name="email", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $email;
@@ -86,7 +86,6 @@ class Speaker implements TranslatableInterface
      *
      * @ORM\Column(name="company", type="string", length=255)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $company;

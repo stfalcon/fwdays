@@ -94,7 +94,6 @@ class TicketCost
      *
      * @ORM\Column(name="name", type="string", nullable=false)
      *
-     * @Assert\NotNull()
      * @Assert\NotBlank()
      */
     private $name;
