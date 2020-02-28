@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @Annotation
+ *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 class Slug extends Regex
