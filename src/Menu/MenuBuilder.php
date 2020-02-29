@@ -3,7 +3,7 @@
 namespace App\Menu;
 
 use App\Entity\User;
-use App\Traits\TokenStorageTrait;
+use App\Service\User\UserService;
 use App\Traits\TranslatorTrait;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -16,22 +16,24 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class MenuBuilder
 {
     use TranslatorTrait;
-    use TokenStorageTrait;
 
     private $factory;
     private $locales;
     private $mobileDetector;
+    private $userService;
 
     /**
      * @param FactoryInterface $factory
      * @param array            $locales
      * @param MobileDetector   $mobileDetector
+     * @param UserService      $userService
      */
-    public function __construct(FactoryInterface $factory, array $locales, MobileDetector $mobileDetector)
+    public function __construct(FactoryInterface $factory, array $locales, MobileDetector $mobileDetector, UserService $userService)
     {
         $this->factory = $factory;
         $this->locales = $locales;
         $this->mobileDetector = $mobileDetector;
+        $this->userService = $userService;
     }
 
     /**
@@ -54,7 +56,7 @@ class MenuBuilder
         $menu->addChild($this->translator->trans('main.menu.about'), ['route' => 'page', 'routeParameters' => ['slug' => 'about']])
             ->setAttribute('class', 'header-nav__item');
 
-        if ($this->tokenStorage->getToken()->getUser() instanceof User) {
+        if ($this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL) instanceof User) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet'])
                 ->setAttribute('class', 'header-nav__item header-nav__item--mob');
         } else {
@@ -93,7 +95,7 @@ class MenuBuilder
         $request = $requestStack->getCurrentRequest();
         $menu->setUri($request->getRequestUri());
 
-        if ($this->tokenStorage->getToken()->getUser() instanceof User) {
+        if ($this->userService->getCurrentUser(UserService::RESULT_RETURN_IF_NULL) instanceof User) {
             $menu->addChild($this->translator->trans('main.menu.cabinet'), ['route' => 'cabinet']);
         } else {
             $menu->addChild($this->translator->trans('menu.login'), ['uri' => '#'])

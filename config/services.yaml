@@ -80,7 +80,7 @@ services:
     App\Handler\LoginHandler: ~
 
     App\Menu\MenuBuilder:
-        arguments: ['@knp_menu.factory','%locales%', '@mobile_detect.mobile_detector']
+        arguments: ['@knp_menu.factory','%locales%', '@mobile_detect.mobile_detector', '@App\Service\User\UserService']
 
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
