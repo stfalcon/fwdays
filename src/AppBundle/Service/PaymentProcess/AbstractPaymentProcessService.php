@@ -120,7 +120,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         }
 
         $status = $this->getStatusFromData($data);
-        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status));
+        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status), $status);
 
         return $status;
     }
