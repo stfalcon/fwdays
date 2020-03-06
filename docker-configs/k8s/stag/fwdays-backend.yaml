@@ -73,11 +73,11 @@ spec:
             secretKeyRef:
               name: server-name
               key: server-name
+        - name: STAGING
+          value: "true"
         envFrom:
         - configMapRef:
             name: backend-env
-        - name: STAGING
-          value: "true"
         ports:
         - containerPort: 80
           name: fwdays-backend
