@@ -73,11 +73,9 @@ spec:
             secretKeyRef:
               name: server-name
               key: server-name
-        - name: PARAMETERS
-          valueFrom:
-            secretKeyRef:
-              name: fwdays-backend-env
-              key: .env
+        envFrom:
+        - configMapRef:
+            name: backend-env
         - name: STAGING
           value: "true"
         ports:
