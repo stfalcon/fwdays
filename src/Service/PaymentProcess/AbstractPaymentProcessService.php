@@ -126,10 +126,7 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         }
 
         $status = $this->getStatusFromData($data);
-        if (self::TRANSACTION_STATUS_FAIL === $status) {
-            $this->logger->addCritical(\sprintf('%s interaction Fail!', $this->getSystemName()), $this->getRequestDataToArr($data, $payment));
-        }
-        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status));
+        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status), $status);
 
         return $status;
     }
@@ -169,7 +166,10 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
         if (isset($this->transactionStatus[$status])) {
             return $this->transactionStatus[$status];
         }
-        $this->saveDataLog(null, $data, \sprintf('%s status %s!', $this->getSystemName(), $status));
+
+        $fwdaysResponse = \sprintf('%s status %s!', $this->getSystemName(), $status);
+        $this->saveDataLog(null, $data, $fwdaysResponse, 'unprocessed');
+
         throw new UnprocessedPaymentStatusException($status, $this->getSystemName());
     }
 
@@ -191,14 +191,12 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
     protected function assertArrayKeysExists(array $keysArray, ?array $checkArray): void
     {
         if (!\is_array($checkArray)) {
-            $this->logger->addCritical(\sprintf('%s interaction Fail! bad content', $this->getSystemName()));
             $this->saveDataLog(null, $checkArray, \sprintf('%s: bad content', $this->getSystemName()));
             throw new BadRequestHttpException('bad content');
         }
 
         foreach ($keysArray as $key) {
             if (!\array_key_exists($key, $checkArray)) {
-                $this->logger->addCritical(\sprintf('%s interaction Fail! bad content', $this->getSystemName()));
                 $this->saveDataLog(null, $checkArray, \sprintf('%s: bad content', $this->getSystemName()));
 
                 throw new BadRequestHttpException(\sprintf('data key %s not found', $key));
@@ -227,12 +225,15 @@ abstract class AbstractPaymentProcessService implements PaymentProcessInterface
      * @param Payment|null $payment
      * @param array|null   $data
      * @param string|null  $fwdaysResponse
+     * @param string|null  $status
      */
-    protected function saveDataLog(?Payment $payment, ?array $data, ?string $fwdaysResponse = null): void
+    protected function saveDataLog(?Payment $payment, ?array $data, ?string $fwdaysResponse = null, string $status = null): void
     {
+        $status = null === $status ? $this->getStatusFromData($data) : $status;
+
         $logEntry = (new WayForPayLog())
             ->setPayment($payment)
-            ->setStatus($this->getStatusFromData($data))
+            ->setStatus($status)
             ->setResponseData(\serialize($data))
             ->setFwdaysResponse($fwdaysResponse)
         ;
