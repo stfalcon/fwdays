@@ -18,15 +18,13 @@ spec:
                 secretKeyRef:
                   name: server-name
                   key: server-name
-            - name: PARAMETERS
-              valueFrom:
-                secretKeyRef:
-                  name: fwdays-backend-env
-                  key: .env
+            envFrom:
+            - configMapRef:
+                name: backend-env
             args:
             - bash
             - -c
             - su www-data -c  "php bin/console stfalcon:mailer --host=fwdays.com --amount=10 --env=prod"
-          restartPolicy: OnFailure
+          restartPolicy: Never
           imagePullSecrets:
             - name: regcred-dockerhub
