@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sleep 5
+
+/usr/sbin/nginx -s quit
+FPM_PID=`cat /var/run/php/php7.1-fpm.pid`
+/bin/kill -SIGQUIT $FPM_PID

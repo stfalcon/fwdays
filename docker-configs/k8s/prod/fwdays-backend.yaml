@@ -49,6 +49,10 @@ spec:
       containers:
       - image: <place latest image>
         name: fwdays-backend
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/local/bin/graceful-shutdown"]
         livenessProbe:
           httpGet:
             path: /service/status
