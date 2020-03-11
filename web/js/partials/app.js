@@ -311,20 +311,6 @@ $(document).ready(function () {
     }
 
     if ($('.btn-explore').length) {
-        var cookie_explore_expanded = Cookies.get('explore-expanded');
-
-        if (cookie_explore_expanded == null) {
-            if (detectmob()) {
-                hideExplorer();
-            } else {
-                showExplorer();
-            }
-        } else if ('true' === cookie_explore_expanded) {
-            showExplorer();
-        } else {
-            hideExplorer();
-        }
-
         $('.btn-explore--close').on('click', function () {
             hideExplorer();
         });
