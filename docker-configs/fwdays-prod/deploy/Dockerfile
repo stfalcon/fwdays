@@ -6,5 +6,5 @@ RUN composer.phar install --optimize-autoloader
 RUN php bin/console assets:install public --env=prod
 RUN npm install
 RUN npm run gulp-prod
-RUN rm /app/.env
+RUN echo > /app/.env
 RUN chown -R www-data:www-data /app/var /app/public
