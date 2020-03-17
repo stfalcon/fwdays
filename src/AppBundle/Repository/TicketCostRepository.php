@@ -21,14 +21,14 @@ class TicketCostRepository extends EntityRepository
     {
         $qb = $this->getEventTicketsCostQB($event);
         $qb->select('tc.amount');
-        $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', true)
+        ;
 
         $result = $qb->getQuery()->getResult();
         $result = \is_array($result) ? \array_shift($result) : null;
 
-        $currentCost = $result ? $result['amount'] : null;
-
-        return $currentCost;
+        return $result ? $result['amount'] : null;
     }
 
     /**
@@ -55,7 +55,9 @@ class TicketCostRepository extends EntityRepository
     public function getEventEnabledTicketsCost(Event $event)
     {
         $qb = $this->getEventTicketsCostQB($event);
-        $qb->andWhere($qb->expr()->eq('tc.enabled', 1));
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', true)
+        ;
 
         return  $qb->getQuery()->getResult();
     }
@@ -69,8 +71,11 @@ class TicketCostRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('tc');
         $qb->where($qb->expr()->eq('tc.event', ':event'))
+            ->andWhere($qb->expr()->eq('tc.visible', ':visible'))
             ->setParameter(':event', $event)
-            ->orderBy('tc.amount');
+            ->setParameter(':visible', true)
+            ->orderBy('tc.amount')
+        ;
 
         return $qb;
     }
