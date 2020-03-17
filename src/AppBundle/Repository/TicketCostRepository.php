@@ -59,7 +59,6 @@ class TicketCostRepository extends EntityRepository
             ->setParameter('enabled', true)
         ;
 
-
         return  $qb->getQuery()->getResult();
     }
 
