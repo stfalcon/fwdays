@@ -119,6 +119,13 @@ class TicketCost
     private $comingSoon = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean", options={"default":true})
+     */
+    private $visible = true;
+
+    /**
      * TicketCost constructor.
      */
     public function __construct()
@@ -435,6 +442,26 @@ class TicketCost
     public function setComingSoon(bool $comingSoon): self
     {
         $this->comingSoon = $comingSoon;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param bool $visible
+     *
+     * @return $this
+     */
+    public function setVisible(bool $visible): self
+    {
+        $this->visible = $visible;
 
         return $this;
     }
