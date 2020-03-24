@@ -44,6 +44,10 @@ class AdminController extends Controller
             foreach ($users as $data) {
                 // данные с формы
                 $dt = explode(' ', $data);
+                if (\count($dt) < 3) {
+                    $this->addFlash('sonata_flash_info', 'Не достаточно данных!');
+                    continue;
+                }
                 unset($data);
                 $data['name'] = $dt[0];
                 $data['surname'] = $dt[1];
