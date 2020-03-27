@@ -111,7 +111,9 @@ class NewPdfGeneratorHelper
 
     /**
      * @param Ticket $ticket
+     *
      * @return string
+     *
      * @throws ImageFunctionFailedException
      * @throws ImageFunctionUnknownException
      */

@@ -93,12 +93,14 @@ class StfalconMailerHelper
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
 
-        $body = $this->renderTwigTemplate('@App/Email/email_with_ticket.html.twig',
+        $body = $this->renderTwigTemplate(
+            '@App/Email/email_with_ticket.html.twig',
             [
                 'event' => $event,
                 'ticket' => $ticket,
                 'user' => $user,
-            ]);
+            ]
+        );
 
         $message = $this->createMessage($event->getName(), $user->getEmail(), $body);
 
