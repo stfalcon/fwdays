@@ -19,4 +19,47 @@
                                         </p>
 {% include '@App/Email/_email_end_table.html.twig' %}
 </center>
+
+{%- if ticket is defined and event is defined and user is defined -%}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "EventReservation",
+            "reservationNumber": "{{ ticket.id }}",
+            "reservationStatus": "http://schema.org/Confirmed",
+            "underName": {
+                "@type": "Person",
+                "name": "{{ user.fullname }}"
+            },
+            "reservationFor": {
+                "@type": "Event",
+                "name": "{{ event.name }}",
+                "performer": {
+                    "@type": "Organization",
+                    "name": "fwdays.com",
+                    "image": "https://fwdays.com/assets/img/logo_header.svg"
+                },
+                "startDate": "{{ event.date|date('c', 'Europe/Kiev') }}",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.place }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ event.city }}",
+                        "addressRegion": "Kyiv region",
+                        "postalCode": "3057",
+                        "streetAddress": "{{ event.place }}",
+                        "addressCountry": {
+                          "@type": "Country",
+                          "name": "UA"
+                        }
+                    }
+                }
+            },
+            "ticketNumber": "{{ ticket.id }}",
+            "numSeats": "1"
+        }
+    </script>
+{%- endif -%}
+
 </body>

@@ -4,6 +4,8 @@ namespace App\Helper;
 
 use App\Entity\Ticket;
 use App\Service\SvgToJpg;
+use Endroid\QrCode\Exceptions\ImageFunctionFailedException;
+use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
 use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
@@ -112,13 +114,11 @@ class NewPdfGeneratorHelper
      *
      * @return string
      *
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionFailedException
-     * @throws \Endroid\QrCode\Exceptions\ImageFunctionUnknownException
+     * @throws ImageFunctionFailedException
+     * @throws ImageFunctionUnknownException
      */
-    public function generateHTML(Ticket $ticket)
+    public function getTicketQrCode(Ticket $ticket)
     {
-        $twig = $this->templating;
-
         $url = $this->router->generate(
             'event_ticket_registration',
             [
@@ -131,7 +131,25 @@ class NewPdfGeneratorHelper
         $this->qrCode->setText($url);
         $this->qrCode->setSize(105);
         $this->qrCode->setPadding(0);
-        $qrCodeBase64 = base64_encode($this->qrCode->get());
+
+        return $this->qrCode->get();
+    }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @return string
+     *
+     * @throws ImageFunctionFailedException
+     * @throws ImageFunctionUnknownException
+     */
+    public function generateHTML(Ticket $ticket)
+    {
+        $twig = $this->templating;
+
+        $qrCode = $this->getTicketQrCode($ticket);
+        $qrCodeBase64 = \base64_encode($qrCode);
+
         $templateContent = $twig->load('AppBundle:Ticket:_new_pdf.html.twig');
 
         $event = $ticket->getEvent();
@@ -162,7 +180,7 @@ class NewPdfGeneratorHelper
             $base64CircleRightImg = '';
         }
 
-        $body = $templateContent->render(
+        return $templateContent->render(
             [
                 'ticket' => $ticket,
                 'qrCodeBase64' => $qrCodeBase64,
@@ -171,7 +189,5 @@ class NewPdfGeneratorHelper
                 'circle_right' => $base64CircleRightImg,
             ]
         );
-
-        return $body;
     }
 }
