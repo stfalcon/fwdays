@@ -220,6 +220,7 @@ services:
             - '@router'
             - '@mailer'
             - "@translator"
+            - '@App\Helper\NewPdfGeneratorHelper'
 
     App\EventListener\PaymentListener:
         tags:
