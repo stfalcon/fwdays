@@ -215,7 +215,7 @@ final class MailAdmin extends AbstractAdmin
                     'expanded' => false,
                     'required' => false,
                     'label' => 'События',
-                    'help' => 'События, для которых действует фильтр статус оплаты. Если указано больше чем одно событие - работает по формуле "любое из"',
+                    'help' => 'События, для которых действует фильтр статус оплаты. Если указано больше чем одно событие - "любое из"',
                 ])
             ->end()
             ->with('Фильтры', ['class' => 'col-md-6'])
@@ -224,7 +224,7 @@ final class MailAdmin extends AbstractAdmin
                     'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
                     'label' => 'Статус оплаты',
-                    'help' => 'проверяет стутус билета на ивент(-ы) указаные в поле "События" ("любое из")',
+                    'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
                 ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от рассылки', 'required' => false])
             ->end()
