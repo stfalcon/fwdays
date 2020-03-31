@@ -7,13 +7,9 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Andx;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * TicketRepository.
@@ -109,62 +105,6 @@ class TicketRepository extends EntityRepository
         $date = $qb->getQuery()->getOneOrNullResult();
 
         return $date['createdAt'] ?? null;
-    }
-
-    /**
-     * @param ArrayCollection $events
-     * @param Collection      $paymentEvents
-     * @param string|null     $status
-     *
-     * @return QueryBuilder
-     */
-    public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, Collection $paymentEvents, ?string $status = null): QueryBuilder
-    {
-        $qb = $this->createQueryBuilder('t');
-
-        $qb->addSelect('u')
-            ->join('t.user', 'u')
-            ->groupBy('u')
-        ;
-
-        $andX = $qb->expr()->andX();
-        $this->addEventsFilter($qb, $andX, $events);
-        $this->addPaymentStatusFilter($qb, $andX, $paymentEvents, $status);
-
-        $qb->andWhere($andX);
-
-        return $qb;
-    }
-
-    /**
-     * Find users by event and status.
-     *
-     * @param ArrayCollection $events
-     * @param Collection      $paymentEvents
-     * @param string|null     $status
-     * @param bool            $ignoreUnsubscribe
-     *
-     * @return array
-     */
-    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, Collection $paymentEvents, ?string $status = null, bool $ignoreUnsubscribe = false): array
-    {
-        $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $paymentEvents, $status);
-
-        if (!$ignoreUnsubscribe) {
-            $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
-                ->setParameter('subscribe', true)
-            ;
-        }
-
-        $users = [];
-        $result = $qb->getQuery()->getResult();
-
-        /** @var Ticket $ticket */
-        foreach ($result as $ticket) {
-            $users[] = $ticket->getUser();
-        }
-
-        return $users;
     }
 
     /**
@@ -315,56 +255,5 @@ class TicketRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * @param QueryBuilder $qb
-     * @param Andx         $andX
-     * @param Collection   $paymentEvents
-     * @param string|null  $status
-     */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, Collection $paymentEvents, ?string $status = null): void
-    {
-        if (null !== $status) {
-            $onExp = 'tp.user = u AND tp.event = :payment_events';
-
-            if (Payment::STATUS_PENDING === $status) {
-                $qb
-                    ->leftJoin(Ticket::class, 'tp', Join::WITH, $onExp)
-                    ->leftJoin('tp.payment', 'p');
-
-                $statusQuery = $qb->expr()->orX(
-                    $qb->expr()->eq('p.status', ':status'),
-                    $qb->expr()->isNull('p.status'),
-                    $qb->expr()->isNull('tp.user')
-                );
-            } else {
-                $qb
-                    ->join(Ticket::class, 'tp', Join::WITH, $onExp)
-                    ->join('tp.payment', 'p')
-                ;
-
-                $statusQuery = $qb->expr()->eq('p.status', ':status');
-            }
-
-            $andX->add($statusQuery);
-            $qb
-                ->setParameter('status', $status)
-                ->setParameter('payment_events', $paymentEvents->toArray())
-            ;
-        }
-    }
-
-    /**
-     * @param QueryBuilder    $qb
-     * @param Andx            $andX
-     * @param ArrayCollection $events
-     */
-    private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
-    {
-        if ($events->count() > 0) {
-            $andX->add($qb->expr()->in('t.event', ':events'));
-            $qb->setParameter('events', $events->toArray());
-        }
     }
 }
