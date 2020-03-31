@@ -8,8 +8,8 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
@@ -73,32 +73,31 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Users registered for events.
+     * @param bool            $isEventsRegisteredUsers
+     * @param ArrayCollection $allEvents
+     * @param Collection      $selectedEvents
+     * @param bool            $isIgnoreUnsubscribe
+     * @param string|null     $paymentStatus
      *
-     * @param ArrayCollection $events
-     * @param bool            $ignoreUnsubscribe
-     * @param string|null     $status
-     *
-     * @return array
+     * @return User[]
      */
-    public function getRegisteredUsers(ArrayCollection $events, bool $ignoreUnsubscribe = false, ?string $status = null)
+    public function getUsersForEmail(bool $isEventsRegisteredUsers, ArrayCollection $allEvents, Collection $selectedEvents, bool $isIgnoreUnsubscribe = false, ?string $paymentStatus = null): array
     {
         $qb = $this->createQueryBuilder('u');
-        $andX = $qb->expr()->andX();
 
-        if ($events->count() > 0) {
-            $this->addEventsFilter($qb, $andX, $events);
-            $this->addPaymentStatusFilter($qb, $andX, $status);
+        if ($isEventsRegisteredUsers) {
+            $this->addRegisteredEventsFilter($qb, $allEvents);
+        } else {
+            $this->addEventsWithTicketFilter($qb, $allEvents);
         }
 
-        $qb->andWhere($andX)
-            ->groupBy('u')
-        ;
+        $this->addPaymentStatusFilter($qb, $selectedEvents, $paymentStatus);
 
-        $this->addIgnoreUnsubscribeFilter($qb, $ignoreUnsubscribe);
-        $users = $qb->getQuery()->getResult();
+        $qb->groupBy('u');
 
-        return $users;
+        $this->addIgnoreUnsubscribeFilter($qb, $isIgnoreUnsubscribe);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -179,27 +178,43 @@ class UserRepository extends EntityRepository
 
     /**
      * @param QueryBuilder    $qb
-     * @param Andx            $andX
-     * @param ArrayCollection $events
+     * @param ArrayCollection $allEvents
      */
-    private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
+    private function addRegisteredEventsFilter(QueryBuilder $qb, ArrayCollection $allEvents): void
     {
-        $qb->join('u.eventRegistrations', 'er');
-        $andX->add($qb->expr()->in('er.event', ':events'));
-        $qb->setParameter(':events', $events->toArray());
+        if ($allEvents->count() > 0) {
+            $qb
+                ->join('u.eventRegistrations', 'r')
+                ->andWhere($qb->expr()->in('r.event', ':all_events'))
+                ->setParameter('all_events', $allEvents->toArray())
+            ;
+        }
+    }
+
+    /**
+     * @param QueryBuilder    $qb
+     * @param ArrayCollection $allEvents
+     */
+    private function addEventsWithTicketFilter(QueryBuilder $qb, ArrayCollection $allEvents): void
+    {
+        if ($allEvents->count() > 0) {
+            $onExp = 'all_tickets.user = u AND all_tickets.event IN (:all_events)';
+            $qb->join(Ticket::class, 'all_tickets', Join::WITH, $onExp);
+            $qb->setParameter(':all_events', $allEvents->toArray());
+        }
     }
 
     /**
      * @param QueryBuilder $qb
-     * @param Andx         $andX
-     * @param string|null  $status
+     * @param Collection   $selectedEvents
+     * @param string|null  $paymentStatus
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    private function addPaymentStatusFilter(QueryBuilder $qb, Collection $selectedEvents, ?string $paymentStatus = null): void
     {
-        if (null !== $status) {
-            $onExp = 't.user = u AND t.event = :events';
+        if (null !== $paymentStatus && $selectedEvents->count() > 0) {
+            $onExp = 't.user = u AND t.event IN (:selected_events)';
 
-            if (Payment::STATUS_PENDING === $status) {
+            if (Payment::STATUS_PENDING === $paymentStatus) {
                 $qb
                     ->leftJoin(Ticket::class, 't', Join::WITH, $onExp)
                     ->leftJoin('t.payment', 'p');
@@ -218,8 +233,10 @@ class UserRepository extends EntityRepository
                 $statusQuery = $qb->expr()->eq('p.status', ':status');
             }
 
-            $andX->add($statusQuery);
-            $qb->setParameter(':status', $status);
+            $qb->andWhere($qb->expr()->andX($statusQuery))
+                ->setParameter('selected_events', $selectedEvents->toArray())
+                ->setParameter('status', $paymentStatus)
+            ;
         }
     }
 }
