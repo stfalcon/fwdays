@@ -12,6 +12,7 @@ use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
 use App\Service\PaymentService;
 use App\Service\Ticket\TicketService;
+use App\Service\User\UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -145,7 +146,8 @@ class PaymentController extends Controller
         }
 
         $ticketService->setNewUserToTicket($user, $ticket);
-        $user->addWantsToVisitEvents($event);
+        $userService = $this->get(UserService::class);
+        $userService->registerUserToEvent($user, $event);
         try {
             $paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
         } catch (BadRequestHttpException $e) {
@@ -216,8 +218,9 @@ class PaymentController extends Controller
 
         if (!$ticket) {
             $ticket = $this->get(TicketService::class)->createTicket($event, $user);
-            $user->addWantsToVisitEvents($event);
             $em->flush();
+            $userService = $this->get(UserService::class);
+            $userService->registerUserToEvent($user, $event);
         } else {
             if ($ticket->isPaid()) {
                 return new JsonResponse(

@@ -64,7 +64,7 @@ class Ticket
     private $event;
 
     /**
-     * @var TicketCost
+     * @var TicketCost|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\TicketCost", inversedBy="tickets")
      * @ORM\JoinColumn(name="ticket_cost_id", referencedColumnName="id", onDelete="SET NULL")
@@ -159,6 +159,19 @@ class Ticket
     {
         $this->ticketCost = $ticketCost;
         $this->ticketCost->addTicket($this);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function removeTicketCost(): self
+    {
+        if ($this->ticketCost instanceof TicketCost) {
+            $this->ticketCost->removeTicket($this);
+            $this->ticketCost = null;
+        }
 
         return $this;
     }

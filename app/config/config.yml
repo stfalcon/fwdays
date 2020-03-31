@@ -14,8 +14,8 @@ imports:
 
 parameters:
     graylog.fromname: "https://fwdays.com"
-    rss.title: "Frameworks Days"
-    rss.description: "Новости событий, которые проходят под эгидой Frameworks Days"
+    rss.title: "Fwdays"
+    rss.description: "Новости событий, которые проходят под эгидой Fwdays"
     google_apikey: "%google_api_key%"
     app.sponsor_image: "uploads/sponsors"
     app.speaker_image: "uploads/speakers"
@@ -138,7 +138,7 @@ fos_user:
             type: App\Form\Type\ProfileFormType
     from_email:
         address:        orgs@fwdays.com
-        sender_name:    "Frameworks Days"
+        sender_name:    "Fwdays"
     service:
         user_manager: App\Model\UserManager
 

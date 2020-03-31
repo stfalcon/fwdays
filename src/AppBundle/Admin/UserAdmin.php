@@ -2,28 +2,58 @@
 
 namespace App\Admin;
 
-use App\Entity\Event;
 use App\Entity\User;
 use App\Service\User\UserService;
-use Doctrine\Common\Collections\Criteria;
+use App\Traits\TokenStorageTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class UserAdmin.
  */
 final class UserAdmin extends AbstractAdmin
 {
+    use TokenStorageTrait;
+
     /**
      * {@inheritdoc}
      */
     public function configure()
     {
         $this->setTemplate('list', 'AppBundle:Admin:list_with_js.html.twig');
+    }
+
+    /**
+     * @param object $object
+     */
+    public function preRemove($object)
+    {
+        $user = $this->getCurrentUser();
+
+        if (!$user instanceof User || !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAccess($action, $object = null): bool
+    {
+        $result = parent::hasAccess($action, $object);
+        if ('delete' === $action) {
+            $user = $this->getCurrentUser();
+            if ($user instanceof User && !\in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+                return false;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -71,11 +101,16 @@ final class UserAdmin extends AbstractAdmin
             ->add('balance', null, ['label' => 'Баланс'])
             ->add('enabled', null, ['label' => 'Активирован'])
             ->add(
-                'wantsToVisitEvents',
+                'emailLanguage',
                 null,
-                ['label' => 'Зарегистрировались на событие'],
-                EntityType::class,
-                ['choices' => $this->getEvents()]
+                ['label' => 'Язык рассылки'],
+                'choice',
+                [
+                    'choices' => [
+                        'Украинский' => 'uk',
+                        'Английский' => 'en',
+                    ],
+                ]
             )
         ;
     }
@@ -106,6 +141,11 @@ final class UserAdmin extends AbstractAdmin
         $user = $userService->getCurrentUser();
         $environment = $container->getParameter('kernel.environment');
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
+        $object = $this->getSubject();
+        $objectId = null;
+        if ($object instanceof User) {
+            $objectId = $object->getId();
+        }
 
         $formMapper
             ->tab('Общие')
@@ -118,7 +158,7 @@ final class UserAdmin extends AbstractAdmin
                         [
                             'required' => true,
                             'label' => 'Почта',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('phone', null, ['required' => false, 'label' => 'Номер телефона'])
@@ -155,9 +195,9 @@ final class UserAdmin extends AbstractAdmin
                         'plainPassword',
                         'text',
                         [
-                            'required' => null === $this->getSubject()->getId(),
+                            'required' => null === $objectId,
                             'label' => 'Пароль',
-                            'disabled' => !$isSuperAdmin && $this->getSubject()->getId(),
+                            'disabled' => !$isSuperAdmin && $objectId,
                         ]
                     )
                     ->add('enabled', null, ['required' => false, 'label' => 'Активирован'])
@@ -173,7 +213,8 @@ final class UserAdmin extends AbstractAdmin
                         ]
                     )
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     /**
@@ -192,12 +233,16 @@ final class UserAdmin extends AbstractAdmin
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    private function getEvents(): array
+    private function getCurrentUser()
     {
-        $eventRepository = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Event::class);
+        $token = $this->tokenStorage->getToken();
 
-        return $eventRepository->findBy([], ['id' => Criteria::DESC]);
+        if (!$token instanceof TokenInterface) {
+            return null;
+        }
+
+        return $token->getUser();
     }
 }

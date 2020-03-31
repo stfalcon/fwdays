@@ -9,7 +9,7 @@ use App\Model\EventStateData;
 /**
  * WannaVisitEventState.
  */
-class WannaVisitEventState extends AbstractBaseEventState
+class RegistrationOpenEventState extends AbstractBaseEventState
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class WannaVisitEventState extends AbstractBaseEventState
     {
         $event = $eventStateData->getEvent();
 
-        return $event->isActiveAndFuture() && !$event->getReceivePayments();
+        return $event->isActiveAndFuture() && !$event->getReceivePayments() && $event->isRegistrationOpen();
     }
 
     /**
@@ -26,7 +26,7 @@ class WannaVisitEventState extends AbstractBaseEventState
      */
     public function getEventState(): string
     {
-        return TicketService::CAN_WANNA_VISIT;
+        return TicketService::EVENT_REGISTRATION_OPEN;
     }
 
     /**
@@ -37,7 +37,7 @@ class WannaVisitEventState extends AbstractBaseEventState
         $event = $eventStateData->getEvent();
         $user = $eventStateData->getUser();
 
-        if ($user && $user->isEventInWants($event)) {
+        if ($user && $user->isRegisterToEvent($event)) {
             $caption = $this->translator->trans('ticket.status.not_take_apart');
         } else {
             $caption = $this->translator->trans('ticket.status.take_apart');
@@ -55,7 +55,7 @@ class WannaVisitEventState extends AbstractBaseEventState
         $event = $eventStateData->getEvent();
         $user = $eventStateData->getUser();
 
-        if ($user && $user->isEventInWants($event)) {
+        if ($user && $user->isRegisterToEvent($event)) {
             $class .= ' sub-wants-visit-event';
         } else {
             $class .= ' add-wants-visit-event';

@@ -152,9 +152,9 @@ final class TicketAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('event', null, ['label' => 'Событие'], EntityType::class, ['choices' => $this->getEvents()])
-            ->add('user', null, ['label' => 'Пользователь'])
-            ->add('user.email', null, ['label' => 'E-Mail'])
-            ->add('user.phone', null, ['label' => 'Тел.'])
+            ->add('user.fullname', null, ['label' => 'Имя пользователя'])
+            ->add('user.email', null, ['label' => 'E-Mail пользователя'])
+            ->add('user.phone', null, ['label' => 'Номер телефона пользователя'])
             ->add('used', null, ['label' => 'Использован'])
             ->add(
                 'payment.status',

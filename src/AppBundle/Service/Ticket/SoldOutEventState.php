@@ -18,7 +18,7 @@ class SoldOutEventState extends AbstractBaseEventState
     {
         $event = $eventStateData->getEvent();
 
-        return $event->isActiveAndFuture() && !$event->isHasAvailableTickets();
+        return $event->isActiveAndFuture() && !$event->isHasAvailableTickets() && $event->getReceivePayments();
     }
 
     /**

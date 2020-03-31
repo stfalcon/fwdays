@@ -22,7 +22,7 @@ class PromoCodeCest
         $I->wantTo('Check if got promocode from query url.');
 
         $I->amOnPage('/event/javaScript-framework-day-2018?promocode=AnyCode');
-        $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018');
+        $I->seeCurrentUrlEquals('/en/event/javaScript-framework-day-2018');
 
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
         $I->seeCurrentUrlEquals('/app_test.php/en/event/javaScript-framework-day-2018/pay');
@@ -78,8 +78,8 @@ class PromoCodeCest
         $I->waitForText('(coupon discount 100%)');
         $I->dontSee('Promo code not found!');
 
-        $I->seeElement('#buy-ticket-btn');
-        $I->click('#buy-ticket-btn');
+        $I->seeElement('#buy-ticket-btn-javaScript-framework-day-2018');
+        $I->click('#buy-ticket-btn-javaScript-framework-day-2018');
         $I->waitForText('Payment successful!');
 
         $I->seeCurrentUrlEquals('/app_test.php/en/payment/success');
@@ -99,7 +99,7 @@ class PromoCodeCest
 
         $I->amOnPage('/event/javaScript-framework-day-2018/pay');
 
-        $I->dontSeeElement('#buy-ticket-btn');
+        $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
 
         foreach (self::PAY_USER_DATA as $field => $value) {
             $I->fillField($field, $value);

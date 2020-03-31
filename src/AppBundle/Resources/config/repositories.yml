@@ -15,6 +15,11 @@ services:
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ['AppBundle:TicketCost']
 
+    app.ticket_repository.service:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ['AppBundle:Ticket']
+
     app.event_review.repository.service:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
@@ -29,3 +34,8 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: 'doctrine.orm.default_entity_manager:getRepository'
         arguments: ['AppBundle:Page']
+
+    app.user_registration.repository:
+        class: Doctrine\ORM\EntityRepository
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ['AppBundle:UserEventRegistration']

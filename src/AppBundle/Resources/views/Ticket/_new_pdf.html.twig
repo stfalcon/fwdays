@@ -167,7 +167,7 @@
                 <td class="second-td">
                     <div class="label-td">{{ 'ticket.email.ticket_price.title'|trans }}</div>
                     <div class="content-td">
-                        {{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}
+                        {{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(2,',',' ')}) }}
                     </div>
                 </td>
             </tr>

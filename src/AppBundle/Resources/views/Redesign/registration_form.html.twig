@@ -3,7 +3,7 @@
 <form id="form_registration_{{ form_id }}" action="{{ path('fos_user_registration_register') }}{{ queryLink }}" method="POST">
     <input type="hidden" id="fos_user_registration_form__token_{{ remodal }}" name="fos_user_registration_form[_token]"
            value="{{ csrf_token('registration') }}"/>
-    <input type="hidden" value="{{ app.request.locale }}" name="fos_user_registration_form[emailLanguage]">
+    <input type="hidden" value="{{ null|app_get_user_locale }}" name="fos_user_registration_form[emailLanguage]">
     <div class="form-row">
         <div class="form-col form-col--6 form-col--xs-12">
             <div class="form-group">

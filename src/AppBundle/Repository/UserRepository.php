@@ -55,6 +55,25 @@ class UserRepository extends EntityRepository
     }
 
     /**
+     * @param string $locale
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getUserCountByEmailLanguage(string $locale): int
+    {
+        $qb = $this->getCountBaseQueryBuilder();
+        $qb
+            ->where($qb->expr()->eq('u.emailLanguage', ':locale'))
+            ->setParameter('locale', $locale)
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
      * Users registered for events.
      *
      * @param ArrayCollection $events
@@ -166,9 +185,9 @@ class UserRepository extends EntityRepository
      */
     private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
     {
-        $qb->join('u.wantsToVisitEvents', 'wtv');
-        $andX->add($qb->expr()->in('wtv.id', ':events'));
-        $qb->setParameter('events', $events->toArray());
+        $qb->join('u.eventRegistrations', 'er');
+        $andX->add($qb->expr()->in('er.event', ':events'));
+        $qb->setParameter(':events', $events->toArray());
     }
 
     /**

@@ -25,7 +25,8 @@ class WayForPayService extends AbstractPaymentProcessService
     private const WFP_TRANSACTION_FAIL_STATUS = 'Fail';
     private const WFP_TRANSACTION_EXPIRED_STATUS = 'Expired';
     private const WFP_TRANSACTION_DECLINED_STATUS = 'Declined';
-    private const WFP_TRANSACTION_REFUNDED_STATUS = 'Refunded/Voided';
+    private const WFP_TRANSACTION_REFUNDED_STATUS = 'Refunded';
+    private const WFP_TRANSACTION_VOIDED_STATUS = 'Voided';
 
     private const ORDER_NUMBER_KEY = 'orderNo';
 
@@ -40,6 +41,7 @@ class WayForPayService extends AbstractPaymentProcessService
         self::WFP_TRANSACTION_FAIL_STATUS => self::TRANSACTION_STATUS_FAIL,
         self::WFP_TRANSACTION_EXPIRED_STATUS => self::TRANSACTION_STATUS_FAIL,
         self::WFP_TRANSACTION_REFUNDED_STATUS => self::TRANSACTION_STATUS_FAIL,
+        self::WFP_TRANSACTION_VOIDED_STATUS => self::TRANSACTION_STATUS_FAIL,
         self::WFP_TRANSACTION_DECLINED_STATUS => self::TRANSACTION_STATUS_FAIL,
         self::TRANSACTION_STATUS_FAIL => self::TRANSACTION_STATUS_FAIL,
     ];
@@ -169,7 +171,7 @@ class WayForPayService extends AbstractPaymentProcessService
         $params['defaultPaymentSystem'] = 'card';
         $params['orderTimeout'] = '49000';
         $params['returnUrl'] = $this->router->generate('payment_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', ['_locale' => 'uk'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $params['serviceUrl'] = $this->router->generate('payment_service_interaction', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $params;
     }

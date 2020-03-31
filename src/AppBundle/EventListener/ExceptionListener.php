@@ -13,37 +13,19 @@ use Symfony\Component\Routing\Router;
  */
 class ExceptionListener
 {
-    /**
-     * @var Router
-     */
-    protected $router;
+    /** @var Router */
+    private $router;
 
     /** @var Session */
-    protected $session;
+    private $session;
 
     /**
-     * ExceptionListener constructor.
-     *
      * @param Session $session
+     * @param Router  $router
      */
-    public function __construct($session)
+    public function __construct($session, $router)
     {
         $this->session = $session;
-    }
-
-    /**
-     * @return Router
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * @param Router $router
-     */
-    public function setRouter($router)
-    {
         $this->router = $router;
     }
 

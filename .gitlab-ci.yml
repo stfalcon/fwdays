@@ -158,6 +158,7 @@ staging deploy:
         - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
         - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - kubectl -n fwdays-stag exec -it $POD -- bash -c 'su www-data -c  "php bin/console lexik:translations:import --env=prod"'
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$CI_COMMIT_SHORT_SHA/ docker-configs/k8s/stag/cron/*
         - kubectl apply -f docker-configs/k8s/stag/cron/
     environment:
@@ -199,6 +200,7 @@ production deploy:
         - kubectl rollout status deployment/fwdays-backend -n fwdays-prod
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-prod|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
         - kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"'
+        - kubectl -n fwdays-prod exec -it $POD -- bash -c 'su www-data -c  "php bin/console lexik:translations:import --env=prod"'
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$CI_COMMIT_SHORT_SHA/ docker-configs/k8s/prod/cron/*
         - kubectl apply -f docker-configs/k8s/prod/cron/
         - wget https://downloads.sentry-cdn.com/sentry-cli/1.48.0/sentry-cli-Linux-x86_64 -O /usr/local/bin/sentry-cli
