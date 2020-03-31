@@ -200,7 +200,7 @@ class UserRepository extends EntityRepository
         if ($allEvents->count() > 0) {
             $onExp = 'all_tickets.user = u AND all_tickets.event IN (:all_events)';
             $qb->join(Ticket::class, 'all_tickets', Join::WITH, $onExp);
-            $qb->setParameter(':all_events', $allEvents->toArray());
+            $qb->setParameter('all_events', $allEvents->toArray());
         }
     }
 
