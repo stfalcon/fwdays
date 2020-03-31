@@ -207,7 +207,7 @@ final class MailAdmin extends AbstractAdmin
                     ],
                 ])
             ->end()
-            ->with('Общие')
+            ->with('События', ['class' => 'col-md-6'])
                 ->add('audiences', null, ['label' => 'Аудитории', 'help' => 'События, на которые есть любой билет, либо регистрация при указаной опции "Подписанным на события" ("любое из")'])
                 ->add('events', 'entity', [
                     'class' => Event::class,
@@ -217,7 +217,8 @@ final class MailAdmin extends AbstractAdmin
                     'label' => 'События',
                     'help' => 'События, для которых действует фильтр статус оплаты. Если указано больше чем одно событие - работает по формуле "любое из"',
                 ])
-                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
+            ->end()
+            ->with('Фильтры', ['class' => 'col-md-6'])
                 ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false, 'help' => 'действует на аудиторию либо на аудиторию + события, если не указан статус оплаты'])
                 ->add('paymentStatus', ChoiceType::class, [
                     'choices' => Payment::getPaymentStatusChoice(),
@@ -226,6 +227,9 @@ final class MailAdmin extends AbstractAdmin
                     'help' => 'проверяет стутус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
                 ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки', 'required' => false])
+            ->end()
+            ->with('Запустить')
+                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
             ->end();
     }
 
