@@ -226,7 +226,7 @@ final class MailAdmin extends AbstractAdmin
                     'label' => 'Статус оплаты',
                     'help' => 'проверяет стутус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
-                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки', 'required' => false])
+                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от рассылки', 'required' => false])
             ->end()
             ->with('Запустить')
                 ->add('start', null, ['required' => false, 'label' => 'Запустить'])
