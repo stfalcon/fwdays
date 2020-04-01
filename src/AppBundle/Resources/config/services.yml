@@ -64,6 +64,11 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, lazy: true }
 
+    App\EventListener\ORM\Ticket\TicketAmountListener:
+        arguments: ['@App\Service\PaymentService']
+        tags:
+            - { name: doctrine.orm.entity_listener, lazy: true }
+
     App\Helper\NewPdfGeneratorHelper:
         arguments:
             - '@twig'
@@ -222,10 +227,10 @@ services:
             - "@translator"
             - '@App\Helper\NewPdfGeneratorHelper'
 
-    App\EventListener\PaymentListener:
-        tags:
-            - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
+    App\EventListener\ORM\Payment\PaymentListener:
         arguments: ['@service_container', '@request_stack']
+        tags:
+            - { name: doctrine.orm.entity_listener }
 
     app.menu.main.redesign:
         class: Knp\Menu\MenuItem

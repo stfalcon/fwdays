@@ -11,6 +11,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="event__tickets")
  * @ORM\Entity(repositoryClass="App\Repository\TicketRepository")
+ *
+ * @ORM\EntityListeners({
+ *     "App\EventListener\ORM\Ticket\TicketAmountListener",
+ * })
  */
 class Ticket
 {
