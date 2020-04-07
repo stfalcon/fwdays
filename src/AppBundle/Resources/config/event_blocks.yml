@@ -7,12 +7,14 @@ services:
 
     sonata.block.event.youtube_video_paid:
         class: App\Service\SonataBlock\EventBlock\YoutubeVideoPaidEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@app.ticket_repository.service']
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@app.ticket_repository.service', '@app.user_registration.repository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.youtube_playlist_paid:
-        class: App\Service\SonataBlock\EventBlock\YoutubePlaylistPaidEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@app.ticket_repository.service']
+        class: App\Service\SonataBlock\EventBlock\YoutubeVideoPaidEventBlockService
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@app.ticket_repository.service', '@app.user_registration.repository']
+        calls:
+            - [setIsPlayList, ['true']]
         tags: [name: 'sonata.block']
 
     sonata.block.event.partners:

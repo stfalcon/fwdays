@@ -46,8 +46,12 @@
                     <div class="event-header__action-ticket">
                         {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'event_header'}) }}
                     </div>
-                    {% if event.activeAndFuture and event.receivePayments and event.hasAvailableTickets %}
-                        <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
+                    {% if event.activeAndFuture %}
+                        {% if event.receivePayments and event.hasAvailableTickets %}
+                            <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
+                        {% elseif event.free %}
+                            <a class="event-header__tickets">{{ 'event.free'|trans }}</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

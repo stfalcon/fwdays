@@ -7,6 +7,7 @@ use App\Entity\EventBlock;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Repository\TicketRepository;
+use App\Repository\UserEventRegistrationRepository;
 use App\Service\User\UserService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -23,24 +24,31 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
 {
     private $userService;
     private $ticketRepository;
-    private $isPlaylist;
+    private $userRegistrationRepository;
+    private $isPlaylist = false;
 
     /**
-     * ProgramEventBlockService constructor.
-     *
-     * @param string           $name
-     * @param EngineInterface  $templating
-     * @param UserService      $userService
-     * @param TicketRepository $ticketRepository
-     * @param bool             $isPlaylist
+     * @param string                          $name
+     * @param EngineInterface                 $templating
+     * @param UserService                     $userService
+     * @param TicketRepository                $ticketRepository
+     * @param UserEventRegistrationRepository $userRegistrationRepository
      */
-    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, bool $isPlaylist = false)
+    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, UserEventRegistrationRepository $userRegistrationRepository)
     {
         parent::__construct($name, $templating);
 
         $this->userService = $userService;
         $this->ticketRepository = $ticketRepository;
-        $this->isPlaylist = $isPlaylist;
+        $this->userRegistrationRepository = $userRegistrationRepository;
+    }
+
+    /**
+     * @param bool $isPlayList
+     */
+    public function setIsPlayList(bool $isPlayList): void
+    {
+        $this->isPlaylist = $isPlayList;
     }
 
     /**
@@ -61,12 +69,14 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
         try {
             $user = $this->userService->getCurrentUser();
             $ticket = $this->ticketRepository->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
+            $userRegisteredForEvent = $event->isFree() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
         } catch (AccessDeniedException $e) {
             $user = null;
             $ticket = null;
+            $userRegisteredForEvent = false;
         }
 
-        if ($ticket instanceof Ticket && $ticket->isPaid() || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
+        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForEvent || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
             return $this->renderResponse($blockContext->getTemplate(), [
                 'block' => $blockContext->getBlock(),
                 'event_block' => $eventBlock,
