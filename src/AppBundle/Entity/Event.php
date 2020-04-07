@@ -245,6 +245,11 @@ class Event implements Translatable
      * @var bool
      *
      * @ORM\Column(name="receive_payments", type="boolean")
+     *
+     * @Assert\Expression(
+     *     "value !== this.isFree() || (!value && !this.isFree())",
+     *     message="Нельзя принимать оплату в бесплатном событии."
+     * )
      */
     protected $receivePayments = false;
 
@@ -408,6 +413,13 @@ class Event implements Translatable
      * @ORM\Column(type="boolean", name="registration_open", options={"default":true})
      */
     private $registrationOpen = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $free = false;
 
     /**
      * Constructor.
@@ -1551,5 +1563,21 @@ class Event implements Translatable
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFree(): bool
+    {
+        return $this->free;
+    }
+
+    /**
+     * @param bool $free
+     */
+    public function setFree(bool $free): void
+    {
+        $this->free = $free;
     }
 }
