@@ -5,6 +5,7 @@ namespace App\Service\SonataBlock\EventBlock;
 use App\Entity\Event;
 use App\Entity\EventBlock;
 use App\Entity\Ticket;
+use App\Entity\User;
 use App\Repository\TicketRepository;
 use App\Repository\UserEventRegistrationRepository;
 use App\Service\User\UserService;
@@ -75,7 +76,7 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
             $userRegisteredForEvent = false;
         }
 
-        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForEvent || $user->hasRole('ROLE_ADMIN')) {
+        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForEvent || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
             return $this->renderResponse($blockContext->getTemplate(), [
                 'block' => $blockContext->getBlock(),
                 'event_block' => $eventBlock,
