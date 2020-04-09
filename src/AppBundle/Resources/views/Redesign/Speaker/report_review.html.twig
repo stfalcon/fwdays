@@ -26,9 +26,9 @@
             <div class="event-alert">
                 <div class="container container--sm">
                     {% if futureEvent.receivePayments %}
-                        <h2 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h2>
+                        <h1 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h1>
                     {% else %}
-                        <h2 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h2>
+                        <h1 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h1>
                     {% endif %}
                     {% include 'AppBundle:Redesign/Event:event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
                 </div>
@@ -41,7 +41,7 @@
         <div class="container container--sm">
             <article class="review-layout">
                 <div class="review-header review-layout__header">
-                    <h2 class="h2 review-header__title">{{ review.title }}</h2>
+                    <h1 class="h2 review-header__title">{{ review.title }}</h1>
                     {% if review.event.isActiveAndFuture %}
                         <div class="review-header__likes">
                             <div class="like-btn">
