@@ -5,10 +5,13 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
+use App\Entity\TicketCost;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Parameter;
 
 /**
@@ -252,6 +255,28 @@ class TicketRepository extends EntityRepository
                 'status' => Payment::STATUS_PAID,
                 'event' => $event,
             ])
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param TicketCost $ticketCost
+     *
+     * @return float
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getAmountSumByBlock(TicketCost $ticketCost): ?float
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('SUM(t.amount)')
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->eq('t.ticketCost', ':ticket_cost'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameter('ticket_cost', $ticketCost)
+            ->setParameter('status', Payment::STATUS_PAID)
         ;
 
         return $qb->getQuery()->getSingleScalarResult();
