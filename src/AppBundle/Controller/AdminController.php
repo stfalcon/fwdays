@@ -458,14 +458,19 @@ class AdminController extends Controller
         $ticketBlocks = $event->getTicketsCost();
         $totalTicketCount = 0;
         $totalSoldTicketCount = 0;
+
+        $ticketRepository = $this->getDoctrine()->getRepository(Ticket::class);
+
+        $ticketsAmountSumByBlock = [];
         /** @var TicketCost $ticketBlock */
         foreach ($ticketBlocks as $ticketBlock) {
             $blockSold = $ticketBlock->recalculateSoldCount();
             $totalTicketCount += $ticketBlock->getCount();
             $totalSoldTicketCount += $blockSold;
+            $ticketsAmountSumByBlock[$ticketBlock->getId()] = $ticketRepository->getAmountSumByBlock($ticketBlock);
         }
 
-        $ticketsWithoutCostsCount = (int) $this->getDoctrine()->getRepository(Ticket::class)->getEventTicketsWithoutTicketCostCount($event);
+        $ticketsWithoutCostsCount = (int) $ticketRepository->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
 
@@ -475,6 +480,7 @@ class AdminController extends Controller
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
+            'ticketsAmountSumByBlock' => $ticketsAmountSumByBlock,
         ]);
     }
 
