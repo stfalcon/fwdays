@@ -8,7 +8,6 @@ use App\Entity\EventAudience;
 use App\Entity\Mail;
 use App\Entity\MailQueue;
 use App\Entity\Payment;
-use App\Entity\Translation\EmailTranslation;
 use App\Entity\User;
 use App\Repository\MailQueueRepository;
 use App\Repository\TicketRepository;

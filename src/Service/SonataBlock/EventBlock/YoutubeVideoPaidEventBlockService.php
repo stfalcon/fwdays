@@ -25,6 +25,7 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
     private $userService;
     private $ticketRepository;
     private $userRegistrationRepository;
+    /** @var bool */
     private $isPlaylist = false;
 
     /**
@@ -90,7 +91,7 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'template' => 'AppBundle:Redesign/Event:event.youtube_video_block.html.twig',

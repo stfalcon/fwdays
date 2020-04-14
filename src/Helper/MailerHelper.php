@@ -6,6 +6,8 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Model\TranslatedMail;
 use App\Traits;
+use Endroid\QrCode\Exceptions\ImageFunctionFailedException;
+use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
 
 /**
  * MailerHelper.
@@ -18,14 +20,14 @@ class MailerHelper
     use Traits\TwigTrait;
 
     private $mailer;
-    /** @var NewPdfGeneratorHelper $pdfGeneratorHelper */
+    /** @var PdfGeneratorHelper */
     private $pdfGeneratorHelper;
 
     /**
-     * @param \Swift_Mailer $mailer
-     * @param NewPdfGeneratorHelper $pdfGeneratorHelper
+     * @param \Swift_Mailer      $mailer
+     * @param PdfGeneratorHelper $pdfGeneratorHelper
      */
-    public function __construct(\Swift_Mailer $mailer, NewPdfGeneratorHelper $pdfGeneratorHelper)
+    public function __construct(\Swift_Mailer $mailer, PdfGeneratorHelper $pdfGeneratorHelper)
     {
         $this->mailer = $mailer;
         $this->pdfGeneratorHelper = $pdfGeneratorHelper;
@@ -94,7 +96,7 @@ class MailerHelper
 
         $html = $this->pdfGeneratorHelper->generateHTML($ticket);
         $message->attach(
-            \Swift_Attachment::newInstance(
+            new \Swift_Attachment(
                 $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
                 $ticket->generatePdfFilename()
             )

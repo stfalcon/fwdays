@@ -86,7 +86,7 @@ class TicketCRUDController extends CRUDController
                 if ($payment->removeTicket($ticket)) {
                     /** @var TicketCost $ticketCost */
                     $ticketCost = $ticket->getTicketCost();
-                    if ($ticketCost) {
+                    if ($ticketCost instanceof TicketCost) {
                         $ticketCost->recalculateSoldCount();
                     }
                 }

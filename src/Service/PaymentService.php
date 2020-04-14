@@ -16,6 +16,8 @@ use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**

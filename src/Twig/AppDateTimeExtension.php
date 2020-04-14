@@ -95,7 +95,7 @@ class AppDateTimeExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'app_datetime';
     }

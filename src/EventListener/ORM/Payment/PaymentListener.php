@@ -4,49 +4,44 @@ namespace App\EventListener\ORM\Payment;
 
 use App\Entity\Payment;
 use App\Entity\Ticket;
-use App\Helper\StfalconMailerHelper;
+use App\Helper\MailerHelper;
+use App\Repository\TicketRepository;
 use App\Service\PaymentService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * PaymentListener.
  */
 final class PaymentListener
 {
-    /** @var StfalconMailerHelper $mailerHelper */
+    /** @var MailerHelper */
     private $mailerHelper;
-
-    /** @var \Swift_Mailer $mailer */
+    /** @var \Swift_Mailer */
     private $mailer;
-    /**
-     * @var Container
-     */
-    private $container;
-
     /** @var bool */
     private $statusChanged = false;
-    private $requestStack;
+    private $paymentService;
+    private $ticketRepository;
 
     /**
-     * PaymentListener constructor.
-     *
-     * @param Container    $container
-     * @param RequestStack $requestStack
+     * @param MailerHelper     $mailerHelper
+     * @param \Swift_Mailer    $mailer
+     * @param PaymentService   $paymentService
+     * @param TicketRepository $ticketRepository
      */
-    public function __construct($container, RequestStack $requestStack)
+    public function __construct(MailerHelper $mailerHelper, \Swift_Mailer $mailer, PaymentService $paymentService, TicketRepository $ticketRepository)
     {
-        $this->container = $container;
-        $this->requestStack = $requestStack;
+        $this->mailer = $mailer;
+        $this->mailerHelper = $mailerHelper;
+        $this->paymentService = $paymentService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
      * @param Payment            $payment
      * @param PreUpdateEventArgs $event
      */
-    public function preUpdate(Payment $payment, PreUpdateEventArgs $event)
+    public function preUpdate(Payment $payment, PreUpdateEventArgs $event): void
     {
         $this->statusChanged = $event->hasChangedField('status');
     }
@@ -54,20 +49,12 @@ final class PaymentListener
     /**
      * @param Payment $payment
      */
-    public function postUpdate(Payment $payment)
+    public function postUpdate(Payment $payment): void
     {
         if (Payment::STATUS_PAID === $payment->getStatus() && $this->statusChanged) {
-            $this->mailer = $this->container->get('mailer');
-            $this->mailerHelper = $this->container->get(StfalconMailerHelper::class);
-
-            /** @var PaymentService $paymentService */
-            $paymentService = $this->container->get(PaymentService::class);
-            $paymentService->setTicketsCostAsSold($payment);
-            $paymentService->calculateTicketsPromocode($payment);
-            /** @var EntityManager $em */
-            $em = $this->container->get('doctrine.orm.entity_manager');
-            $tickets = $em->getRepository(Ticket::class)
-                ->getAllTicketsByPayment($payment);
+            $this->paymentService->setTicketsCostAsSold($payment);
+            $this->paymentService->calculateTicketsPromocode($payment);
+            $tickets = $this->ticketRepository->getAllTicketsByPayment($payment);
 
             /** @var Ticket $ticket */
             foreach ($tickets as $ticket) {
