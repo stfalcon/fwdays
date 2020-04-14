@@ -249,6 +249,11 @@ class Event implements TranslatableInterface
      * @var bool
      *
      * @ORM\Column(name="receive_payments", type="boolean")
+     *
+     * @Assert\Expression(
+     *     "value !== this.isFree() || (!value && !this.isFree())",
+     *     message="Нельзя принимать оплату в бесплатном событии."
+     * )
      */
     protected $receivePayments = false;
 
@@ -426,6 +431,13 @@ class Event implements TranslatableInterface
      * @ORM\Column(type="boolean", name="registration_open", options={"default":true})
      */
     private $registrationOpen = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $free = false;
 
     /**
      * Constructor.
@@ -832,10 +844,25 @@ class Event implements TranslatableInterface
      */
     public function isActiveAndFuture()
     {
-        $eventEndDate = $this->dateEnd ?: $this->date;
-        $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
+        $eventEndDate = $this->getEndDateFromDates();
+        $now = (new \DateTime('now', new \DateTimeZone('Europe/Kiev')))->setTime(0, 0);
 
-        return $this->active && $eventEndDate > $pastDate;
+        return $this->active && $eventEndDate > $now;
+    }
+
+    /**
+     * @param string $format
+     *
+     * @return bool
+     */
+    public function isStartAndEndDateSameByFormat(string $format = 'Y-m-d'): bool
+    {
+        $eventEndDate = $this->getEndDateFromDates();
+
+        $startDate = $this->date->format($format);
+        $endDate = $eventEndDate->format($format);
+
+        return $startDate === $endDate;
     }
 
     /**
@@ -1569,5 +1596,21 @@ class Event implements TranslatableInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFree(): bool
+    {
+        return $this->free;
+    }
+
+    /**
+     * @param bool $free
+     */
+    public function setFree(bool $free): void
+    {
+        $this->free = $free;
     }
 }

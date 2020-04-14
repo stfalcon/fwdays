@@ -240,12 +240,11 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
+                    ->add('free', null, ['required' => false, 'label' => 'Бесплатное событие'])
                     ->add('registrationOpen', null, ['required' => false, 'label' => 'Включить регистрацию'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
                     ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
-                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Показать фон'])
-                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Показать логотип на фоне'])
                 ->end()
                 ->with('Логотип и цвет', ['class' => 'col-md-4'])
                     ->add(
@@ -277,6 +276,8 @@ class EventAdmin extends AbstractTranslateAdmin
                     )
                 ->end()
                 ->with('Фон', ['class' => 'col-md-4'])
+                    ->add('useCustomBackground', null, ['required' => false, 'label' => 'Показать фон'])
+                    ->add('showLogoWithBackground', null, ['required' => false, 'label' => 'Показать логотип на фоне'])
                     ->add(
                         'backgroundFile',
                         FileType::class,

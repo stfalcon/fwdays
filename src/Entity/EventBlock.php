@@ -32,6 +32,8 @@ class EventBlock implements TranslatableInterface
     const CANDIDATE_SPEAKERS = 'candidate_speakers';
     const COMMITTEE_SPEAKERS = 'committee_speakers';
     const EXPERT_SPEAKERS = 'expert_speakers';
+    const YOUTUBE_VIDEO_PAID = 'youtube_video_paid';
+    const YOUTUBE_PLAYLIST_PAID = 'youtube_playlist_paid';
 
     /**
      * @var int
@@ -232,6 +234,8 @@ class EventBlock implements TranslatableInterface
             'кандидаты' => self::CANDIDATE_SPEAKERS,
             'програмный комитет' => self::COMMITTEE_SPEAKERS,
             'эксперты' => self::EXPERT_SPEAKERS,
+            'youtube трансляция' => self::YOUTUBE_VIDEO_PAID,
+            'youtube playlist' => self::YOUTUBE_PLAYLIST_PAID,
         ];
     }
 }

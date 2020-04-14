@@ -319,7 +319,7 @@ $(document).ready(function () {
             showExplorer();
         });
 
-        var scrollTop = 45;
+        var scrollTop = 65;
         var fixTop = 110;
 
         if ($('.btn-explore').offset().top > fixTop) {

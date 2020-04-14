@@ -6,6 +6,11 @@ use App\Entity\Event;
 use App\Entity\UserEventRegistration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
+use App\Entity\UserEventRegistration;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Parameter;
 
 /**
  * UserEventRegistrationRepository.
@@ -37,5 +42,30 @@ class UserEventRegistrationRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function isUserRegisteredForEvent(User $user, Event $event): bool
+    {
+        $qb = $this->createQueryBuilder('ur');
+        $qb->where($qb->expr()->eq('ur.user', ':user'))
+            ->andWhere($qb->expr()->eq('ur.event', ':event'))
+            ->setParameters(
+                new ArrayCollection(
+                    [
+                        new Parameter('user', $user),
+                        new Parameter('event', $event),
+                    ]
+                )
+            )
+            ->setMaxResults(1)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult() instanceof UserEventRegistration;
     }
 }

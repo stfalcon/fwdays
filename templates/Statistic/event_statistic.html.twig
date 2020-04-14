@@ -28,6 +28,7 @@
             <td>% от всех</td>
             <td>Активный</td>
             <td>Безлимитный</td>
+            <td>Сумма</td>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +45,7 @@
             {% endif %}
             <td>{% if ticketBlock.enabled %}Да{% else %}Нет{% endif %}</td>
             <td>{% if ticketBlock.unlimited %}Да{% else %}Нет{% endif %}</td>
+            <td>{{ ticketsAmountSumByBlock[ticketBlock.id]|number_format(2, '.', ' ') }}</td>
         </tr>
     {% endfor %}
     </tbody>

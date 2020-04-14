@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
-use App\EventListener\ORM\PaymentListener;
+use App\EventListener\ORM\Payment\PaymentListener;
 use App\Helper\PdfGeneratorHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -75,6 +75,7 @@ class TicketCRUDController extends CRUDController
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
         $em = $this->getDoctrine()->getManager();
+
         /** @var Ticket|null */
         $ticket = $em->getRepository(Ticket::class)->find($id);
 
@@ -82,17 +83,14 @@ class TicketCRUDController extends CRUDController
             /** @var Payment|null $payment */
             $payment = $ticket->getPayment();
             if ($payment && $payment->isPaid()) {
-                if ($payment->removePaidTicket($ticket)) {
-                    /** @var TicketCost|null $ticketCost */
+                if ($payment->removeTicket($ticket)) {
+                    /** @var TicketCost $ticketCost */
                     $ticketCost = $ticket->getTicketCost();
                     if ($ticketCost) {
                         $ticketCost->recalculateSoldCount();
                     }
                 }
-                $this->paymentListener->setRunPaymentPostUpdate(false);
                 $em->flush();
-                $this->paymentListener->setRunPaymentPostUpdate(true);
-
                 $this->addFlash('sonata_flash_success', 'Ticket removed successfully');
             }
         }

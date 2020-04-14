@@ -96,6 +96,7 @@ pay.user.add_btn: 'save'
 pay.user.continue: 'continue'
 pay.amount_changed: 'Payment Amount Changed! Check the data!'
 event.price.title: Event price
+event.free: Free paricipation
 tickets.count: '{0}%ticket_count% ticket|{1}%ticket_count% tickets|{2}%ticket_count% tickets'
 tickets.coming_soon: 'coming soon'
 tickets.hint: available only via website

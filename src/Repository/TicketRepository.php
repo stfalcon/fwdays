@@ -5,11 +5,15 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
+use App\Entity\TicketCost;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -116,60 +120,6 @@ class TicketRepository extends ServiceEntityRepository
         $date = $qb->getQuery()->getOneOrNullResult();
 
         return $date['createdAt'] ?? null;
-    }
-
-    /**
-     * @param ArrayCollection $events
-     * @param string|null     $status
-     *
-     * @return QueryBuilder
-     */
-    public function findUsersByEventsAndStatusQueryBuilder(ArrayCollection $events, ?string $status = null): QueryBuilder
-    {
-        $qb = $this->createQueryBuilder('t');
-
-        $qb->addSelect('u')
-            ->join('t.user', 'u')
-            ->groupBy('u')
-        ;
-
-        $andX = $qb->expr()->andX();
-        $this->addEventsFilter($qb, $andX, $events);
-        $this->addPaymentStatusFilter($qb, $andX, $status);
-
-        $qb->andWhere($andX);
-
-        return $qb;
-    }
-
-    /**
-     * Find users by event and status.
-     *
-     * @param ArrayCollection $events
-     * @param string|null     $status
-     * @param bool            $ignoreUnsubscribe
-     *
-     * @return array
-     */
-    public function findUsersSubscribedByEventsAndStatus(ArrayCollection $events, ?string $status = null, bool $ignoreUnsubscribe = false): array
-    {
-        $qb = $this->findUsersByEventsAndStatusQueryBuilder($events, $status);
-
-        if (!$ignoreUnsubscribe) {
-            $qb->andWhere($qb->expr()->eq('u.subscribe', ':subscribe'))
-                ->setParameter('subscribe', true)
-            ;
-        }
-
-        $users = [];
-        $result = $qb->getQuery()->getResult();
-
-        /** @var Ticket $ticket */
-        foreach ($result as $ticket) {
-            $users[] = $ticket->getUser();
-        }
-
-        return $users;
     }
 
     /**
@@ -323,33 +273,24 @@ class TicketRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param Andx         $andX
-     * @param string|null  $status
+     * @param TicketCost $ticketCost
+     *
+     * @return float
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Andx $andX, ?string $status = null): void
+    public function getAmountSumByBlock(TicketCost $ticketCost): ?float
     {
-        if (null !== $status) {
-            $statusOr = $qb->expr()->orX($qb->expr()->eq('p.status', ':status'));
-            if (Payment::STATUS_PENDING === $status) {
-                $statusOr->add($qb->expr()->isNull('p.status'));
-            }
-            $andX->add($statusOr);
-            $qb->leftJoin('t.payment', 'p')
-                ->setParameter(':status', $status);
-        }
-    }
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('SUM(t.amount)')
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->eq('t.ticketCost', ':ticket_cost'))
+            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->setParameter('ticket_cost', $ticketCost)
+            ->setParameter('status', Payment::STATUS_PAID)
+        ;
 
-    /**
-     * @param QueryBuilder    $qb
-     * @param Andx            $andX
-     * @param ArrayCollection $events
-     */
-    private function addEventsFilter(QueryBuilder $qb, Andx $andX, ArrayCollection $events): void
-    {
-        if ($events->count() > 0) {
-            $andX->add($qb->expr()->in('t.event', ':events'));
-            $qb->setParameter(':events', $events->toArray());
-        }
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
