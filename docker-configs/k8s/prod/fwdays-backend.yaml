@@ -49,6 +49,9 @@ spec:
       containers:
       - image: <place latest image>
         name: fwdays-backend
+        resources:
+          requests:
+            memory: "300Mi"
         livenessProbe:
           httpGet:
             path: /service/status

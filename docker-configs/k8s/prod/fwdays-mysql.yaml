@@ -48,6 +48,9 @@ spec:
       - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3
         args:
         name: fwdays-mysql
+        resources:
+          requests:
+            memory: "1300Mi"
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
