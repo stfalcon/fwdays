@@ -826,10 +826,25 @@ class Event implements Translatable
      */
     public function isActiveAndFuture()
     {
-        $eventEndDate = $this->dateEnd ?: $this->date;
-        $pastDate = (new \DateTime())->sub(new \DateInterval('P1D'));
+        $eventEndDate = $this->getEndDateFromDates();
+        $now = (new \DateTime('now', new \DateTimeZone('Europe/Kiev')))->setTime(0, 0);
 
-        return $this->active && $eventEndDate > $pastDate;
+        return $this->active && $eventEndDate > $now;
+    }
+
+    /**
+     * @param string $format
+     *
+     * @return bool
+     */
+    public function isStartAndEndDateSameByFormat(string $format = 'Y-m-d'): bool
+    {
+        $eventEndDate = $this->getEndDateFromDates();
+
+        $startDate = $this->date->format($format);
+        $endDate = $eventEndDate->format($format);
+
+        return $startDate === $endDate;
     }
 
     /**

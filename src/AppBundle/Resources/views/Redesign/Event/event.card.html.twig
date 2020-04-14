@@ -4,7 +4,7 @@
             <h2 class="h2 h2--white event-card__title">
                 <a href="{{ path('event_show', {'slug': event.slug } )}}">{{ event.name }}</a>
             </h2>
-            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-card__date">{{ event.date|app_format_date_only(event.dateFormat, app.request.locale, 'Europe/Kiev') }}, {{ event.city }}</time>
+            <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-card__date">{{ event|app_event_date(app.request.locale, false)|raw }}, {{ event.city }}</time>
             <div class="event-card__action">
             {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'card'}) }}
             </div>
