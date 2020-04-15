@@ -84,7 +84,7 @@ class MailerHelper
         $user = $ticket->getUser();
 
         $body = $this->renderTwigTemplate(
-            '@App/Email/email_with_ticket.html.twig',
+            'Email/email_with_ticket.html.twig',
             [
                 'event' => $event,
                 'ticket' => $ticket,
