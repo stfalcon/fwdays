@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\Event;
 use App\Traits\TranslatorTrait;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
 use Twig\Extension\AbstractExtension;
@@ -35,34 +36,68 @@ class AppDateTimeExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('app_format_date', [$this, 'formatDate'], ['is_safe' => ['html']]),
             new TwigFilter('app_format_date_day_month', [$this, 'formatDateDayMonth'], ['is_safe' => ['html']]),
-            new TwigFilter('app_format_date_only', [$this, 'formatDateOnly'], ['is_safe' => ['html']]),
-            new TwigFilter('app_format_time', [$this, 'formatTime'], ['is_safe' => ['html']]),
-            new TwigFilter('app_format_time_only', [$this, 'formatTimeOnly'], ['is_safe' => ['html']]),
-            new TwigFilter('app_format_datetime', [$this, 'formatDatetime'], ['is_safe' => ['html']]),
+            new TwigFilter('app_event_date', [$this, 'eventDate'], ['is_safe' => ['html']]),
         ];
     }
 
     /**
-     * @param \Datetime|string|int $date
-     * @param string|null          $pattern
-     * @param string|null          $locale
-     * @param string|null          $timezone
-     * @param string|null          $dateType
+     * @param Event       $event
+     * @param string|null $locale
+     * @param bool        $withTime
+     * @param string|null $pattern
      *
      * @return string
      */
-    public function formatDate($date, $pattern = null, $locale = null, $timezone = null, $dateType = null)
+    public function eventDate(Event $event, ?string $locale = null, bool $withTime = true, ?string $pattern = null): string
     {
-        $pattern = $this->checkConvertToSeason($pattern);
+        $pattern = $pattern ?: $event->getDateFormat();
 
-        $formattedDate = $this->intlTwigDateTimeService->formatDate($date, $pattern, $locale, $timezone, $dateType);
-        if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
+        $timeString = '';
+        if (false !== \strpos($event->getDateFormat(), 'H')) {
+            $timeStart = $this->formatTimeOnly($event->getDate(), $pattern, $locale, 'Europe/Kiev');
+            $timeEnd = $this->formatTimeOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');
+            $timeString = \sprintf(',<br> %s–%s', $timeStart, $timeEnd);
         }
 
-        return $formattedDate;
+        if ($event->isStartAndEndDateSameByFormat('Y-m-d')) {
+            $dateString = $this->formatDateOnly($event->getDate(), $pattern, $locale, 'Europe/Kiev');
+        } elseif ($event->isStartAndEndDateSameByFormat('Y-m')) {
+            $dayStart = $event->getDate()->format('d');
+            $dateEnd = $this->formatDateOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');
+            $dateString = \sprintf('%s & %s', $dayStart, $dateEnd);
+        } else {
+            $dayStart = $this->formatDateOnly($event->getDate(), $pattern, $locale, 'Europe/Kiev');
+            $dateEnd = $this->formatDateOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');
+            $dateString = \sprintf('%s,<br> %s', $dayStart, $dateEnd);
+        }
+
+        if ($withTime && '' !== $timeString) {
+            $dateString = \sprintf('%s%s', $dateString, $timeString);
+        }
+
+        return $dateString;
+    }
+
+    /**
+     * @param Event $event
+     * @param null  $locale
+     *
+     * @return string
+     */
+    public function formatDateDayMonth(Event $event, $locale = null): string
+    {
+        $pattern = trim(preg_replace('/[Hm:,Y]+/', '', $event->getDateFormat()));
+
+        return $this->eventDate($event, $locale, false, $pattern);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return 'app_datetime';
     }
 
     /**
@@ -74,7 +109,7 @@ class AppDateTimeExtension extends AbstractExtension
      *
      * @return string
      */
-    public function formatDateOnly($date, $pattern = null, $locale = null, $timezone = null, $dateType = null)
+    private function formatDateOnly($date, $pattern = null, $locale = null, $timezone = null, $dateType = null)
     {
         if (null !== $pattern) {
             $pattern = trim(preg_replace('/[Hm:,]+/', '', $pattern));
@@ -84,24 +119,6 @@ class AppDateTimeExtension extends AbstractExtension
     }
 
     /**
-     * @param \Datetime|string|int $date
-     * @param string|null          $pattern
-     * @param string|null          $locale
-     * @param string|null          $timezone
-     * @param string|null          $dateType
-     *
-     * @return string
-     */
-    public function formatDateDayMonth($date, $pattern = null, $locale = null, $timezone = null, $dateType = null)
-    {
-        if (null !== $pattern) {
-            $pattern = trim(preg_replace('/[Hm:,Y]+/', '', $pattern));
-        }
-
-        return $this->formatDate($date, $pattern, $locale, $timezone, $dateType);
-    }
-
-    /**
      * @param \Datetime|string|int $time
      * @param string|null          $pattern
      * @param string|null          $locale
@@ -110,56 +127,13 @@ class AppDateTimeExtension extends AbstractExtension
      *
      * @return string
      */
-    public function formatTime($time, $pattern = null, $locale = null, $timezone = null, $timeType = null)
-    {
-        $pattern = $this->checkConvertToSeason($pattern);
-
-        $formattedDate = $this->intlTwigDateTimeService->formatTime($time, $pattern, $locale, $timezone, $timeType);
-        if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
-        }
-
-        return $formattedDate;
-    }
-
-    /**
-     * @param \Datetime|string|int $time
-     * @param string|null          $pattern
-     * @param string|null          $locale
-     * @param string|null          $timezone
-     * @param string|null          $timeType
-     *
-     * @return string
-     */
-    public function formatTimeOnly($time, $pattern = null, $locale = null, $timezone = null, $timeType = null)
+    private function formatTimeOnly($time, $pattern = null, $locale = null, $timezone = null, $timeType = null)
     {
         if (null !== $pattern) {
             $pattern = 'HH:mm';
         }
 
         return $this->intlTwigDateTimeService->formatTime($time, $pattern, $locale, $timezone, $timeType);
-    }
-
-    /**
-     * @param \Datetime|string|int $time
-     * @param string|null          $pattern
-     * @param string|null          $locale
-     * @param string|null          $timezone
-     * @param string|null          $dateType
-     * @param string|null          $timeType
-     *
-     * @return string
-     */
-    public function formatDatetime($time, $pattern = null, $locale = null, $timezone = null, $dateType = null, $timeType = null)
-    {
-        $pattern = $this->checkConvertToSeason($pattern);
-
-        $formattedDate = $this->intlTwigDateTimeService->formatDatetime($time, $pattern, $locale, $timezone, $dateType, $timeType);
-        if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
-            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
-        }
-
-        return $formattedDate;
     }
 
     /**
@@ -204,5 +178,26 @@ class AppDateTimeExtension extends AbstractExtension
         }
 
         return $pattern;
+    }
+
+    /**
+     * @param \Datetime|string|int $date
+     * @param string|null          $pattern
+     * @param string|null          $locale
+     * @param string|null          $timezone
+     * @param string|null          $dateType
+     *
+     * @return string
+     */
+    private function formatDate($date, $pattern = null, $locale = null, $timezone = null, $dateType = null)
+    {
+        $pattern = $this->checkConvertToSeason($pattern);
+
+        $formattedDate = $this->intlTwigDateTimeService->formatDate($date, $pattern, $locale, $timezone, $dateType);
+        if (null !== $pattern && ('uk' === $locale || $this->convertToSeason)) {
+            $formattedDate = $this->replaceMonthToNominative($formattedDate, $pattern);
+        }
+
+        return $formattedDate;
     }
 }

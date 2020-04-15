@@ -53,6 +53,9 @@ spec:
           preStop:
             exec:
               command: ["/usr/local/bin/graceful-shutdown"]
+        resources:
+          requests:
+            memory: "300Mi"
         livenessProbe:
           httpGet:
             path: /service/status

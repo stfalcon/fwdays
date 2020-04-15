@@ -92,10 +92,8 @@ class PdfGeneratorHelper
      * @throws ImageFunctionFailedException
      * @throws ImageFunctionUnknownException
      */
-    public function generateHTML(Ticket $ticket)
+    public function getTicketQrCode(Ticket $ticket)
     {
-        $twig = $this->templating;
-
         $url = $this->router->generate(
             'event_ticket_registration',
             [
@@ -108,7 +106,24 @@ class PdfGeneratorHelper
         $this->qrCode->setText($url);
         $this->qrCode->setSize(105);
         $this->qrCode->setPadding(0);
-        $qrCodeBase64 = \base64_encode($this->qrCode->get());
+
+        return $this->qrCode->get();
+    }
+
+    /**
+     * @param Ticket $ticket
+     *
+     * @return string
+     *
+     * @throws ImageFunctionFailedException
+     * @throws ImageFunctionUnknownException
+     */
+    public function generateHTML(Ticket $ticket)
+    {
+        $twig = $this->templating;
+
+        $qrCode = $this->getTicketQrCode($ticket);
+        $qrCodeBase64 = \base64_encode($qrCode);
         $templateContent = $twig->load('Ticket/_new_pdf.html.twig');
 
         $event = $ticket->getEvent();

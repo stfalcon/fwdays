@@ -84,6 +84,10 @@ class AdminController extends AbstractController
             foreach ($users as $data) {
                 // данные с формы
                 $dt = \explode(' ', $data);
+                if (\count($dt) < 3) {
+                    $this->addFlash('sonata_flash_info', 'Не достаточно данных!');
+                    continue;
+                }
                 unset($data);
                 $data['name'] = $dt[0];
                 $data['surname'] = $dt[1];
@@ -429,11 +433,14 @@ class AdminController extends AbstractController
         $ticketBlocks = $event->getTicketsCost();
         $totalTicketCount = 0;
         $totalSoldTicketCount = 0;
+
+        $ticketsAmountSumByBlock = [];
         /** @var TicketCost $ticketBlock */
         foreach ($ticketBlocks as $ticketBlock) {
             $blockSold = $ticketBlock->recalculateSoldCount();
             $totalTicketCount += $ticketBlock->getCount();
             $totalSoldTicketCount += $blockSold;
+            $ticketsAmountSumByBlock[$ticketBlock->getId()] = $this->ticketRepository->getAmountSumByBlock($ticketBlock);
         }
 
         $ticketsWithoutCostsCount = (int) $this->ticketRepository->getEventTicketsWithoutTicketCostCount($event);
@@ -446,6 +453,7 @@ class AdminController extends AbstractController
             'totalTicketCount' => $totalTicketCount,
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
+            'ticketsAmountSumByBlock' => $ticketsAmountSumByBlock,
         ]);
     }
 

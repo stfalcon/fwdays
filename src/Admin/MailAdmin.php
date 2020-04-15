@@ -235,23 +235,29 @@ final class MailAdmin extends AbstractAdmin
                 ],
             ])
             ->end()
-            ->with('Общие')
-                ->add('audiences', null, ['label' => 'Аудитории'])
+            ->with('События', ['class' => 'col-md-6'])
+                ->add('audiences', null, ['label' => 'Аудитории', 'help' => 'События, на которые есть любой билет, либо регистрация при указаной опции "Подписанным на события" ("любое из")'])
                 ->add('events', EntityType::class, [
                     'class' => Event::class,
                     'multiple' => true,
                     'expanded' => false,
                     'required' => false,
                     'label' => 'События',
+                    'help' => 'События, для которых действует фильтр статус оплаты. Если указано больше чем одно событие - "любое из"',
                 ])
-                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
-                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
+            ->end()
+            ->with('Фильтры', ['class' => 'col-md-6'])
+                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false, 'help' => 'действует на аудиторию либо на аудиторию + события, если не указан статус оплаты'])
                 ->add('paymentStatus', ChoiceType::class, [
                     'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
                     'label' => 'Статус оплаты',
+                    'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
-                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от розсылки', 'required' => false])
+                ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от рассылки', 'required' => false])
+            ->end()
+            ->with('Запустить')
+                ->add('start', null, ['required' => false, 'label' => 'Запустить'])
             ->end();
     }
 
@@ -280,24 +286,28 @@ final class MailAdmin extends AbstractAdmin
      */
     private function getUsersForEmail($mail): array
     {
-        $eventCollection = $mail->getEvents()->toArray();
+        $paymentStatus = $mail->getPaymentStatus();
 
+        $eventCollection = $paymentStatus ? [] : $mail->getEvents()->toArray();
         /** @var EventAudience $audience */
         foreach ($mail->getAudiences() as $audience) {
             $eventCollection = \array_merge($eventCollection, $audience->getEvents()->toArray());
         }
-        $events = [];
-        foreach ($eventCollection as $event) {
-            $events[$event->getId()] = $event;
-        }
-        $events = new ArrayCollection($events);
 
-        if ($events->count() > 0 && $mail->isWantsVisitEvent()) {
-            $users = $this->userRepository->getRegisteredUsers($events, $mail->isIgnoreUnsubscribe(), $mail->getPaymentStatus());
-        } elseif ($events->count() > 0 || $mail->getPaymentStatus()) {
-            $users = $this->ticketRepository->findUsersSubscribedByEventsAndStatus($events, $mail->getPaymentStatus(), $mail->isIgnoreUnsubscribe());
+        $allEvents = [];
+        foreach ($eventCollection as $event) {
+            $allEvents[$event->getId()] = $event;
+        }
+        $allEvents = new ArrayCollection($allEvents);
+
+        $selectedEvents = $mail->getEvents();
+
+        $isIgnoreUnsubscribe = $mail->isIgnoreUnsubscribe();
+
+        if ($allEvents->count() > 0 || $selectedEvents->count() > 0) {
+            $users = $this->userRepository->getUsersForEmail($mail->isWantsVisitEvent(), $allEvents, $selectedEvents, $isIgnoreUnsubscribe, $paymentStatus);
         } else {
-            $users = $this->userRepository->getAllSubscribed($mail->isIgnoreUnsubscribe());
+            $users = $this->userRepository->getAllSubscribed($isIgnoreUnsubscribe);
         }
 
         return $users;
@@ -316,8 +326,7 @@ final class MailAdmin extends AbstractAdmin
             $countSubscribers = $mail->getTotalMessages();
             /** @var User $user */
             foreach ($users as $user) {
-                if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL) &&
-                    $user->isEnabled() &&
+                if ($user->isEnabled() &&
                     $user->isEmailExists()
                 ) {
                     $mailQueue = new MailQueue();

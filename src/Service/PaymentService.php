@@ -16,6 +16,8 @@ use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -112,6 +114,18 @@ class PaymentService
 
     /**
      * @param Payment $payment
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function recalculateRefundedAmount(Payment $payment): void
+    {
+        $payment->calculateRefundedAmount();
+        $this->em->flush();
+    }
+
+    /**
+     * @param Payment $payment
      * @param bool    $withFlush
      */
     public function recalculatePaymentAmount(Payment $payment, bool $withFlush = true): void
@@ -123,8 +137,11 @@ class PaymentService
             $paymentAmount += $ticket->getAmount();
             $paymentAmountWithoutDiscount += $ticket->getAmountWithoutDiscount();
         }
-        $payment->setAmount($paymentAmount);
-        $payment->setBaseAmount($paymentAmountWithoutDiscount);
+        $payment
+            ->setAmount($paymentAmount)
+            ->setBaseAmount($paymentAmountWithoutDiscount)
+            ->setRefundedAmount(0)
+        ;
         $this->recalculatePaymentFwdaysAmount($payment);
         if ($withFlush) {
             $this->em->flush();

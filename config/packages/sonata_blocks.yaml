@@ -5,6 +5,18 @@ services:
         arguments: ['sonata.block.event.text', '@templating']
         tags: [name: 'sonata.block']
 
+    sonata.block.event.youtube_video_paid:
+        class: App\Service\SonataBlock\EventBlock\YoutubeVideoPaidEventBlockService
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        tags: [name: 'sonata.block']
+
+    sonata.block.event.youtube_playlist_paid:
+        class: App\Service\SonataBlock\EventBlock\YoutubeVideoPaidEventBlockService
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        calls:
+            - [setIsPlayList, ['true']]
+        tags: [name: 'sonata.block']
+
     sonata.block.event.partners:
         class: App\Service\SonataBlock\EventBlock\PartnersEventBlockService
         arguments: ['sonata.block.event.partners', '@templating', '@App\Repository\SponsorRepository', '@App\Repository\CategoryRepository']

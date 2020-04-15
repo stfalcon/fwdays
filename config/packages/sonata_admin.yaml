@@ -54,6 +54,8 @@ sonata_block:
         sonata.block.event.committee_speakers:
         sonata.block.event.expert_speakers:
         sonata.block.event.ticket_status:
+        sonata.block.event.youtube_video_paid:
+        sonata.block.event.youtube_playlist_paid:
         sonata.block.footer:
         sonata.block.language_switcher:
         sonata.block.email_user_subscribe:

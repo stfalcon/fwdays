@@ -13,8 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="payments")
  * @ORM\Entity(repositoryClass="App\Repository\PaymentRepository")
+ *
  * @ORM\EntityListeners({
- *     "App\EventListener\ORM\PaymentListener",
+ *     "App\EventListener\ORM\Payment\PaymentListener",
  * })
  */
 class Payment
@@ -198,38 +199,44 @@ class Payment
      *
      * @return bool
      */
-    public function removeTicket(Ticket $ticket)
+    public function removeTicket(Ticket $ticket): bool
     {
-        if ($ticket->isPaid()) {
-            return $this->removePaidTicket($ticket);
-        }
-
-        if ($ticket->getTicketCost() instanceof TicketCost) {
-            $ticket->getTicketCost()->recalculateSoldCount();
-        }
-
         $ticket->setPayment(null);
 
-        return $this->tickets->contains($ticket) && $this->tickets->removeElement($ticket);
+        $ticketCost = $ticket->getTicketCost();
+        if ($ticketCost instanceof TicketCost) {
+            $ticketCost->recalculateSoldCount();
+        }
+
+        if ($this->tickets->contains($ticket)) {
+            $this->tickets->removeElement($ticket);
+        }
+
+        if ($this->isPaid()) {
+            $this->calculateRefundedAmount();
+        }
+
+        return true;
     }
 
     /**
-     * @param Ticket $ticket
-     *
-     * @return bool
+     * Calculate refunded amount.
      */
-    public function removePaidTicket(Ticket $ticket)
+    public function calculateRefundedAmount(): void
     {
-        if ($this->tickets->contains($ticket)) {
-            if ($ticket->isPaid()) {
-                $this->refundedAmount += $ticket->getAmount();
-            }
-            $ticket->setPayment(null);
-
-            return $this->tickets->removeElement($ticket);
+        if (!$this->isPaid()) {
+            return;
+        }
+        $ticketAmount = 0;
+        foreach ($this->tickets as $ticket) {
+            $ticketAmount += $ticket->getAmount();
         }
 
-        return false;
+        if ($ticketAmount > $this->amount) {
+            return;
+        }
+
+        $this->refundedAmount = $this->amount - $ticketAmount;
     }
 
     /**

@@ -6,7 +6,7 @@ use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\EventListener\ORM\PaymentListener;
+use App\EventListener\ORM\Payment\PaymentListener;
 use App\Tests\BaseFunctionalTest\AbstractBaseFunctionalTest;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Filesystem\Filesystem;
