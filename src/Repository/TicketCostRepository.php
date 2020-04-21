@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\TicketCost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -69,6 +71,28 @@ class TicketCostRepository extends ServiceEntityRepository
             ->setParameter('enabled', true)
         ;
 
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param \DateTimeInterface $dateTime
+     *
+     * @return TicketCost[]
+     */
+    public function getEnabledTicketCostWithEndDateLessThanDate(\DateTimeInterface $dateTime): array
+    {
+        $qb = $this->createQueryBuilder('tc');
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->andWhere($qb->expr()->isNotNull('tc.endDate'))
+            ->andWhere($qb->expr()->lt('tc.endDate', ':date_time'))
+            ->setParameters(new ArrayCollection(
+                [
+                    new Parameter('date_time', $dateTime),
+                    new Parameter('enabled', true),
+                ]
+            ))
+        ;
+
         return  $qb->getQuery()->getResult();
     }
 
@@ -84,7 +108,8 @@ class TicketCostRepository extends ServiceEntityRepository
             ->andWhere($qb->expr()->eq('tc.visible', ':visible'))
             ->setParameter(':event', $event)
             ->setParameter(':visible', true)
-            ->orderBy('tc.amount')
+            ->orderBy('tc.sortOrder')
+            ->addOrderBy('tc.amount')
         ;
 
         return $qb;
