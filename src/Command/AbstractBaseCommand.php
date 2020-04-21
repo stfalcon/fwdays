@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Exception\Console\InvalidParameterException;
-use App\Util\DateTime\TimeConstants;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,6 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class AbstractBaseCommand extends Command
 {
+    public const INTERNAL_DATE_FORMAT_WITH_TIME = 'Y-m-d H:i';
     private const DEFAULT_CURRENT_DATE_VALUE = 'now';
     private const CURRENT_DATETIME_OPTION = 'current-datetime';
 
@@ -50,7 +50,7 @@ abstract class AbstractBaseCommand extends Command
             }
 
             if (null !== $currentDateFromInput && self::DEFAULT_CURRENT_DATE_VALUE !== $currentDateFromInput) {
-                $dateTime = \DateTime::createFromFormat(TimeConstants::INTERNAL_DATE_FORMAT_WITH_TIME, $currentDateFromInput);
+                $dateTime = \DateTime::createFromFormat(self::INTERNAL_DATE_FORMAT_WITH_TIME, $currentDateFromInput);
                 if (false === $dateTime) {
                     throw new InvalidParameterException('Invalid date format. Correct format YYYY-MM-DD HH:MM, e.g. "2018-11-01 14:45"');
                 }

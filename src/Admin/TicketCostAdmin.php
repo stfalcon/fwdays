@@ -33,7 +33,7 @@ final class TicketCostAdmin extends AbstractAdmin
             ->add('sortOrder', null, ['label' => 'Сортировка'])
             ->add(
                 'endDate',
-            DateTimePickerType::class,
+                DateTimePickerType::class,
                 \array_merge(
                     [
                         'required' => false,
