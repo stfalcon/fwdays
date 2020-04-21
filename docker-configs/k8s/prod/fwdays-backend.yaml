@@ -80,11 +80,9 @@ spec:
             secretKeyRef:
               name: server-name
               key: server-name
-        - name: PARAMETERS
-          valueFrom:
-            secretKeyRef:
-              name: fwdays-backend-env
-              key: .env
+        envFrom:
+        - configMapRef:
+            name: backend-env
         ports:
         - containerPort: 80
           name: fwdays-backend
