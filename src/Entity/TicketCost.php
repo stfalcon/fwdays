@@ -169,7 +169,7 @@ class TicketCost
      */
     public function isHaveTemporaryCount(): bool
     {
-        return ($this->endDateIsNullOrMoreThanNow() || $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count) && $this->enabled;
+        return ($this->endDateIsMoreThanNow() || $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count) && $this->enabled;
     }
 
     /**
@@ -502,9 +502,9 @@ class TicketCost
     /**
      * @return bool
      */
-    public function endDateIsNullOrMoreThanNow(): bool
+    public function endDateIsMoreThanNow(): bool
     {
-        return null === $this->endDate || ($this->endDate instanceof \DateTime && (new \DateTime()) <= $this->endDate);
+        return ($this->endDate instanceof \DateTime) && ((new \DateTime()) <= $this->endDate);
     }
 
     /**
