@@ -105,6 +105,24 @@ class LoadUserData extends AbstractFixture
         $manager->persist($userDefault4);
         $this->addReference('user-default4', $userDefault4);
 
+        $promoUser = (new User())
+            ->setUsername('newUser')
+            ->setName('newUser')
+            ->setSurname('newUser')
+            ->setEmail('new-user@gmail.com')
+            ->setPlainPassword('qwerty')
+            ->addRole('ROLE_USER')
+            ->setCountry('Greenland')
+            ->setCity('Tortuga')
+            ->setCompany('PHP')
+            ->setPost('Core developer')
+            ->setEnabled(true)
+            ->setSubscribe(false)
+            ->setBalance(5000)
+        ;
+        $manager->persist($promoUser);
+        $this->addReference('promo-user', $promoUser);
+
         $basePhone = 380960000000;
         for ($i = 1; $i <= 100; ++$i) {
             $userDefault = (new User())
