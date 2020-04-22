@@ -1,0 +1,286 @@
+menu.events.my: My events
+menu.past_events.my: My past events
+menu.user.info: User info
+menu.referral.title: Invite friends
+menu.check.ticket.bynumber: Ticket is checking by number
+menu.logout: Sign out
+menu.user.registration: Register with email
+menu.login: Sign in
+menu.profile.my: Account
+
+main.menu.go_head: ← Main
+main.menu.about: About us
+main.menu.events: Events
+main.menu.contacts: Contacts
+main.menu.partners: Partners
+main.menu.about_event: About event
+main.menu.speakers: Speakers
+main.menu.participants: Participants
+main.menu.cabinet: Account
+
+email: Email
+madeby: made by
+
+page.error.notfound: Page not found
+page.error.notfound.error: Error 404
+page.error.notfound.message: Page does not exist. <br />Please use the Menu to find what you are looking for.
+page.error.notfound.you_can: 'You can:'
+page.error.notfound.you_can1: Return to the main page
+page.error.notfound.you_can2: Go to another section via menu
+sponsor.and.partners: Sponsors and partners
+sponsor.partners.title: Partners
+sponsor.partners.call_us: <a href="/contacts">Contact</a> us for becoming sponsor/partner of conference.
+event.get_more_info: Learn more
+sponsor.partners.can_be_your_logo: Your logo <br>can be here
+news.all: All news
+
+autoreg.mail.text1: You were automatically registered on the site Fwdays.
+autoreg.mail.text2: 'Your temporary password: "%password%"'
+autoreg.mail.text3: You can change it on the page "%url%"
+
+events.past: Past events
+event.page.program: Program
+event.page.venue: Venue
+event.page.venue_how: How to get
+event.page.partners_detail: More about partners
+event_cost.title: Event cost
+
+event.detail.info2: Details
+event.about: Learn more
+event.events.title: All events
+event.detail.info1: Details
+events.future: Upcoming events
+event.future_event_registration: Registration for the next conference %name% is open!
+event.future_event_bye_tickets: Buy tickets for the next conference %name%!
+
+user.fullname.title: Your name and surname
+user.name.title: Name
+user.surname.title: Surname
+user.email.title: Email
+user.phone.title: Phone
+user.phone.title_payment: Phone (optionally)
+user.country.title: Country
+user.city.title: City
+user.company.title: Company
+user.company_post.title: Post
+user.email.language: Email subscription language
+user.subscribe.title: I agree to receive important news via email
+user.refresh.title: Update
+user.password.title: Password
+user.forgot_password.title: Forgot password?
+user.reset_password.title: Reset password
+user.reset_password.caption: Reset password
+user.change_password.title: Change password
+user.show_password.title: Show password
+user.remember_me.title: Remember me
+user.by_user.title: login with social network
+user.by_email.title: Or by mail
+user.create.title: Create an account
+user.already_have_account.title: I already have an account
+user.lang_uk: Українська
+user.lang_en: English
+
+speaker.about: Speaker's info
+speaker.no_review.text: The subject of the report is specified
+pay.i_have_promo.title: I have promo code
+pay.enter_promo.title: Add promo code to get discount
+pay.sum.bold.title: 'Sum: <b>%sum% UAH</b>'
+pay.bonus.bold.title: 'Your fwdays bonus: <b>%sum% UAH</b>'
+pay.bonus.label.title: 'your fwdays bonus'
+pay.bonus.title: '&minus;%sum% fwdays bonus'
+pay.sum_for_pay.bold.title: 'For payment: <b>%sum% UAH</b>'
+pay.sum_for_pay.title: 'For payment:'
+pay.card_description: 'У вартість квитка входить: відвідування всіх потоків доповідей, пакет учасника, обід, відвідування афтепаті, знижка 20% на всі майбутні конференції від Fwdays.'
+pay.bonus.apply_btn: 'apply'
+pay.user.add_btn: 'save'
+pay.user.continue: 'continue'
+pay.amount_changed: 'Payment Amount Changed! Check the data!'
+event.price.title: Event price
+event.free: Free paricipation
+tickets.count: '{0}%ticket_count% ticket|{1}%ticket_count% tickets|{2}%ticket_count% tickets'
+tickets.coming_soon: 'coming soon'
+tickets.hint: available only via website
+tickets.tickets_run_out: Only few left
+tickets.other.title: other tickets
+sold_out.title: Sold out
+
+image.home.title: Tech events in Ukraine. Share ideas, broaden experience.
+image.home.description: More than 30 events since 2010
+video.description.text: "<p> As usual, we’ve chosen for you the most current and useful topics from foreign and Ukrainian experts with great practical experience. </p> <p> 2 tracks of lectures, workshops, Tech Talks, communication with speakers, delicious coffee breaks and a nutritious lunch are waiting for you. </p><p></p>"
+our.youtube.channel: Our YouTube channel
+more.gallery.link: All photos on Flickr
+in.lang.link: Українською
+ticket.status.event_done: Event is over
+ticket.status.event_done_mob: done
+ticket.status.payment_returned: Payment returned
+ticket.status.payment_returned_mob: Payment returned
+ticket.status.registration_closed: Registration closed
+ticket.status.registration_closed_mob: Registration closed
+referral.program.conditions.title: Program terms
+referral.program.conditions.text: Get %referal_bonus% UAH per ticket purchased by your link. Use bonuses buying our next events tickets.
+referral.share.title: Share
+referral.link.copied: Copied
+popup.header.title: Pay for event %event_name%
+popup.header_reg.title: Registration for the event %event_name%
+cancel.title: Cancel
+add.title: Add
+ticket.title: ticket
+review.wonna.listen: Wanna listen
+
+speaker.title: Speakers
+
+interkassa.payment.fail: Payment failed
+interkassa.payment.fail.back: Please, go back to the payment page and try again.
+interkassa.mail.msg.hello: Hello, <br/>%user_fullname%.
+interkassa.mail.msg.thanks: Thank you for buying tickets to the %event_name% conference.
+interkassa.mail.msg.remember: Don't forget, that conference will be in
+interkassa.mail.msg.remember1: year,
+interkassa.mail.msg.ticket: Your ticket is attached.
+interkassa.payment.success: Payment successful!
+interkassa.payment.success.emailsend: Confirming payment message and participant's ticket was sent to your email. You can also download the ticket on the page
+interkassa.payment.pending: Payment is pending!
+interkassa.payment.pending.wait: Please, wait until the payment confirmation.
+interkassa.payment.description : 'Participate in %event_name%. The payer is %user_name% (%user_id%). Participants IDs: %ids_array%'
+
+check_box.agree_with_conditions_1: 'I agree with conditions and accept '
+check_box.agree_with_conditions_2: 'public offer contract'
+check_box.agree_with_conditions_error: "You must accept public offer contract"
+
+ticket.dear_user: Dear participant <b>%user_name%</b>,
+ticket.wait_for_you: 'We are waiting for you:'
+ticket.city: '%city_name%,'
+ticket.registration.begin: Registration starts at
+ticket.event.programm: 'Agenda:'
+new_ticket.event.programm: 'Agenda'
+ticket.print.ticket.text1: 'Please, print this invitation and take it with you. It is your entrance ticket to %event_name%.'
+ticket.print.ticket.text2: We are looking forward to meet you!
+ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
+ticket.status.download: Download ticket
+ticket.status.pay: Buy ticket
+ticket.status.get: Get ticket
+ticket.status.pay_mob: Buy
+ticket.status.pay_for: Buy for
+
+ticket.status.sold: Tickets sold out
+ticket.status.sold_mob: sold out
+
+ticket.summ_from: Tickets cost from %summ% UAH
+ticket.status.event.add: Event added
+ticket.status.paid: Participation is paid
+ticket.status.paid_mov: Paid
+ticket.status.take_apart: Register
+ticket.status.not_take_apart : Unsubscribe
+referral.invaite.title: Invite friends
+referral.invaite.title2: Invite your friends and collect bonuses!
+referral.invaite.link.text: your referral link
+referral.balance.redesign: 'Your balance: %user_balance% UAH'
+
+payment.price: '%summ% UAH '
+payment.price.multi: '%summ% $ '
+payment.discount.cupon: (coupon discount %summ%%)
+payment.discount.member: '&minus;%summ%% for participants of previous conferences'
+payment.discount.tooltip: 'It will be added automatically to account where you made a purchase previously'
+payment.discount.student: '&minus;50% for students of full-time education'
+payment.discount.student_tooltip: Send us a photo or a scanned copy of your Student's ID to <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> and we will send a promo code to you
+
+pay.event.pay_for_other: Pay for other participants
+pay.event.one_more_participants: Add participants
+pay.tickets_by_email.description: Tickets will be sent on users emails
+pay.event.cupon: 'Promo code:'
+
+flash_you_registrated.title: You are registered for event
+flash_you_unsubscribe.title: You are unsubscribed for event
+
+
+contact_info.title: Contact info
+candidate.speaker.title: On consideration
+committee.speaker.title: Program Committee
+expert.speaker.title: Discussion experts
+error.phone_bad_format: Please enter a valid phone number
+error.email_bad_format: Please enter a valid email address
+error.surname.only_letters: Surname must contain only letters
+error.name.only_letters: Name must contain only letters
+error.user.already.paid: the %email% has already paid the ticket
+error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
+error.promocode.not_found: 'Promo code not found!'
+error.promocode.used: 'Promo code used!'
+error.promocode.low_than_discount: 'Promo code discount is lower than regular participant!'
+error.ticket.already.added: 'A ticket for this user has already been added'
+error.user.cant_be_edit: 'You cannot edit this user'
+contacts.registration.title: Registration and payments for participation in conferences
+contacts.cooperation.title: Cooperation and partnership with FWDays
+contacts.partners.title: Informational partnerships, meetups and master classes
+contacts.organization.title: 'Sponsors'
+contacts.address.title: 'Address'
+contacts.facebook.title: 'Facebook'
+contacts.address.address: '42a Viborzka street, Kyiv'
+contacts.google.address: 'Kyiv, Viborzka, 42a'
+
+contacts.person.tatyana: Tetiana Bukhanova
+contacts.person.irina: Iryna Bozhyk
+contacts.person.lara: Lara Lukianiuk
+contacts.person.ksenia: Kenya Grabevnyk
+
+fos_user.password.mismatch: Uncorrect new password
+Bad credentials.: 'Uncorrect email address or password'
+User account is disabled.: 'Account does not activated'
+
+mail.unsubscribe.no_more_news: We will not send you news about the Fwdays anymore
+mail.unsubscribe.you_can_suscribe1: If you accidentally unsubscribed, you can
+mail.unsubscribe.you_can_suscribe2: subscribe again
+mail.subcribe: You have subscribed on Fwdays news
+mail.with_ticket.text0: Dear participant,
+mail.with_ticket.text1: Please, find your ticket to the conference attached. You do not need to print the ticket, show it on your screen at the registration desk.
+mail.with_ticket.text2: We are looking forward to seeing you in Kyiv at the conference.
+mail.news.title: '%site% news'
+mail.news.site: 'Web-site'
+mail.news.site_link: 'https://fwdays.com/en/'
+
+ticket.email.waitfornews: 'Keep up with the news:'
+ticket.email.unsubscribe: Unsubscribe from mailing news
+ticket.email.team: 'Best regards, <br/> Team Fwdays <br/>'
+ticket.email.change_language: Щоб змінити мову листів, перейдіть у налаштування Профілю
+ticket.email.event_date.title: 'Date'
+ticket.email.event_reg.title: 'Registration'
+ticket.email.event_member.title: 'Participant'
+ticket.email.ticket_price.title: 'Ticket price'
+ticket.email.conditions.title: 'Сonditions'
+ticket.email.event.title: 'Event'
+
+talks.title: Talks
+talks.text: 'Talks may be reordered. The final program to be released by %date%'
+
+welcome.email.title: Welcome!
+dear_user.email.text: |
+                  Hello, %user_name%. <br/>
+                  <br/>
+                  Thank you for registering on fwdays.com <br/>
+                  We will be glad to see you at our tech events. If you have any questions - just reply to this email. <br/>
+resetting:
+    check_email: An email has been sent to %email%. It contains a link you have to click on to reset your password.
+    password_already_requested: The password for this user has already been requested within the last 24 hours.
+    email:
+        message: |
+            Hello %username%!  <br/>
+            <br/>
+            You recently requested to reset your password.
+            To complete your request, please click the link below: <a href="%confirmationUrl%">%confirmationUrl%</a>
+    profile:
+        show:
+            username: Username
+            email: Email
+    flash:
+        success: 'The password has been reset successfully.'
+profile:
+    flash:
+        updated: Your profile updated
+registration:
+    flash:
+        user_created: You are registered on the site
+        user_need_data: Fill the required fields to complete the registration
+    email:
+        subject: Registration completed on fwdays.com
+
+change_password:
+    flash:
+        success: 'The password has been changed.'

@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Migrations Run" type="BashConfigurationType" factoryName="Bash" folderName="Doctrine" singleton="true">
+  <configuration default="false" name="Migrations Run" type="BashConfigurationType" factoryName="Bash" folderName="Doctrine">
+    <module name="symfony-project-skeleton" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="INTERPRETER_PATH" value="/usr/local/bin/docker-compose" />
-    <option name="USE_PROJECT_INTERPRETER" value="false" />
+    <option name="PROJECT_INTERPRETER" value="false" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="PARENT_ENVS" value="true" />
     <option name="SCRIPT_NAME" value="exec" />
     <option name="PARAMETERS" value="-T php bin/console doctrine:migrations:migrate" />
-    <module name="" />
     <method v="2" />
   </configuration>
 </component>

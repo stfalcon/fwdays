@@ -1,0 +1,48 @@
+<div id="field_container_{{ id }}" class="field-container">
+    <span id="field_widget_{{ id }}" >
+        {% if sonata_admin.edit == 'inline' %}
+            {% if sonata_admin.inline == 'table' %}
+                {% if form.children|length > 0 %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                {% for field_name, nested_field in form.children|first.children %}
+                                    <th {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                        {{ nested_field.vars.label }}
+                                    </th>
+                                {% endfor %}
+                                <th>Скачать</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sonata-ba-tbody">
+                            {% for nested_group_field_name, nested_group_field in form.children %}
+                                <tr>
+                                    {% set object_id = 0 %}
+                                    {% for field_name, nested_field in nested_group_field.children %}
+                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group"{% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %} style="display:none;"{% endif %}>
+                                            {% if nested_field.vars['name'] == 'id' %}
+                                                <a href="{{ path('admin_app_ticket_edit', {'id':nested_field.vars['data']}) }}">{{ nested_field.vars['data'] }}</a>
+                                                {% set object_id = nested_field.vars['data'] %}
+                                            {% elseif nested_field.vars['value'].id is defined %}
+                                                <a href="{{ path('admin_app_'~field_name~'_edit', {'id':nested_field.vars['value'].id}) }}">{{ nested_field.vars['data'] }}</a>
+                                            {% elseif nested_field.vars['name'] == 'createdAt'%}
+                                                {{ nested_field.vars['data']|format_datetime('d-MM-Y, HH:mm', app.request.locale, 'Europe/Kiev') }}
+                                            {% else %}
+                                                {{ nested_field.vars['data'] }}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                    <td>
+                                        <div>
+                                            <a class="btn btn-primary" href="{{ path('admin_app_ticket_download', {'id':object_id}) }}">Скачать</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </span>
+</div>

@@ -1,7 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
     excludes_analyse:
-        - '%rootDir%/../../../src/AppBundle/Tests/*'
-        - '%rootDir%/../../../src/AppBundle/Service/SvgToJpg.php'
+        - '%rootDir%/../../../src/Tests/*'
+        - '%rootDir%/../../../src/DataFixtures/*'
+        - '%rootDir%/../../../src/Service/SvgToJpg.php'
+        - '%rootDir%/../../../src/Migrations/*'
     fileExtensions:
         - 'php'
-    reportUnmatchedIgnoredErrors: false
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

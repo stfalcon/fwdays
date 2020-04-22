@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <title>{% block title %}Fwdays. IT tech conferences in Ukraine, Kyiv{% endblock title %}</title>
+
+    {% block ld_json %}
+    {% endblock %}
+
+    {% block metatags %}
+    {% if app.environment != 'prod' -%}
+        <meta name="robots" content="none"/>
+    {% endif -%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1">
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_9.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_4.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_6.jpg')) }}" />
+    <meta property="og:image" content="{{ absolute_url(asset('build/img/gallery/og_image/gallery_image_8.jpg')) }}" />
+    {% endblock metatags %}
+
+    {% block meta_description %}
+    <meta name="description" content="Fwdays - large-scale tech conferences, meetups and workshops for developers on JavaScript, Frontend, PHP, .NET, Highload, PM in Ukraine">
+    {% endblock meta_description %}
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('build/styles/main.css'|app_asset_version) }}">
+</head>
+
+{% block body_class %}
+<body>
+{% endblock %}
+{%- if app.environment == 'prod' -%}
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PHVHRX"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+{% endif %}
+<!--BEGIN layout-box-->
+<div class="layout-box">
+    <!--BEGIN layout-box__top-->
+    <div class="layout-box__top">
+        {% include 'Redesign/header.html.twig' %}
+
+        {% block content %}{% endblock content %}
+    </div>
+    <!--END layout-box__top-->
+
+    <!--BEGIN layout-box__bottom-->
+    <div class="layout-box__bottom">
+        {% include 'Redesign/footer.html.twig' %}
+    </div>
+    <!--END layout-box__bottom-->
+    {% if not is_mobile() and not app.user %}
+        {% include 'Redesign/signin_popups.html.twig' %}
+    {% endif %}
+</div>
+
+<!--END layout-box-->
+{% block popups %}
+    <!--BEGIN alert-->
+    <div id="flash-user" class="alert alert--success">
+        <div class="alert__container">
+            <div id="flash-user-content" class="alert__content"></div>
+            <button class="alert__close icon-close icon-close--dark"></button>
+        </div>
+    </div>
+    <!--END alert-->
+{% endblock popups %}
+
+{% block facebook %}
+    {% include 'Redesign/_fb_init.html.twig' %}
+{% endblock %}
+
+{% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}
+
+{% block scripts %}
+    {%- if app.environment == 'prod' -%}
+    <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');
+        </script>
+    <!-- End Google Tag Manager -->
+    {% endif %}
+    <script>
+        var locale = "{{ app.request.locale }}";
+        var homePath = "{{ path('homepage') }}";
+        var lang = '{{ lang }}';
+    </script>
+    <div id="fb-root"></div>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}" defer></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}" defer></script>
+    <script src="{{ asset('js/facebook-sdk.js') }}" async></script>
+    <script src="{{ asset('js/partials/xregexp-all.js') }}" defer></script>
+
+    {% if app.environment in ['prod', 'stag'] -%}
+        <script>
+            var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';
+        </script>
+        <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
+    {% endif -%}
+
+    {% set main_script = 'build/js/'~ app.request.locale ~'/main.js' %}
+    <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
+
+    {% if app.request.cookies.has('event') -%}
+        <script src="{{ asset('js/payment-after-login.js') }}" defer></script>
+    {%- endif %}
+
+    {% for message in app.session.flashBag.get('fos_user_success') %}
+        <script>
+            var flashText = '{{ message|trans }}';
+        </script>
+        <script src="{{ asset('js/flash-text.js') }}" defer></script>
+    {% endfor %}
+{% endblock scripts %}
+</body>
+</html>

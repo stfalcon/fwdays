@@ -1,0 +1,18 @@
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb'
+    firewall_name: main
+    user_class: App\Entity\User
+    registration:
+        form:
+            type: App\Form\Type\RegistrationFormType
+        confirmation:
+            enabled:    false
+            template:   FOSUserBundle:Registration:email.txt.twig
+    profile:
+        form:
+            type: App\Form\Type\ProfileFormType
+    from_email:
+        address:        orgs@fwdays.com
+        sender_name:    "Frameworks Days"
+    service:
+        user_manager: App\Model\UserManager

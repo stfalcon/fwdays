@@ -1,0 +1,16 @@
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'SonataCoreBundle:Form:colorpicker.html.twig'
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
+    globals:
+        google_apikey: '%env(GOOGLE_API_KEY)%'
+        ga_tracking_id: '%env(GOOGLE_ANALYTIC_TRACKING_ID)%'
+        google_site_key: '%env(GOOGLE_CAPTCHA_SITE_KEY)%'
+        facebook_api_id: '%env(FACEBOOK_CLIENT_ID)%'
+        fb_page_id: '%env(FACEBOOK_PAGE_ID)%'
+#        fb_page_id: '235981893111914'
+        speaker_cache_path: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.speaker_image%%app.media_cache%speaker'
+        sponsor_cache_path: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.sponsor_image%%app.media_cache%partner'
+        locales: '%locales%'

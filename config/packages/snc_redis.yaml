@@ -1,0 +1,12 @@
+snc_redis:
+    clients:
+        session:
+            dsn: "%env(REDIS_SESSION_URL)%"
+            type: predis
+            logging: false
+            alias: session
+
+    session:
+        client: session
+        ttl: 1728000
+        prefix: session_prefix_

@@ -1,0 +1,27 @@
+doctrine:
+    dbal:
+        url: 'mysql://%env(APP_DBUSER)%:%env(APP_DBPASS)%@%env(APP_DBHOST)%:%env(APP_DBPORT)%/%env(APP_DBNAME)%'
+        driver: 'pdo_mysql'
+        server_version: '5.6'
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_mapping: true
+        mappings:
+            StofDoctrineExtensionsBundle: false
+            app:
+                is_bundle: false
+                type: annotation
+                dir: "%kernel.project_dir%/src/Entity"
+                prefix: App\Entity\
+                alias: App
+        dql:
+            datetime_functions:
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                WEEK: DoctrineExtensions\Query\Mysql\Week
+                DAY: DoctrineExtensions\Query\Mysql\Day
+                DATE: DoctrineExtensions\Query\Mysql\Date

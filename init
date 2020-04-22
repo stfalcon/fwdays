@@ -9,13 +9,11 @@ else
     sudo chown -R www-data /app/vendor /app/node_modules
 fi
 
-cp app/config/parameters.yml.docker app/config/parameters.yml
 composer.phar install
 php bin/console do:da:cr --no-interaction --env=$env --if-not-exists
 php bin/console do:mi:mi --no-interaction --env=$env
 php bin/console do:fi:lo --no-interaction --env=$env
-php bin/console assets:install web --symlink
-php bin/console assetic:dump
+php bin/console assets:install public --symlink
 php bin/console lexik:translations:import --env=$env
 php bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard
 npm install

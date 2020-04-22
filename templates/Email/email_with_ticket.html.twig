@@ -1,0 +1,65 @@
+{% include 'Email/_email_header.html.twig' %}
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text0'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text1'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            {{ 'mail.with_ticket.text2'|trans|raw }}
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="{{ 'mail.news.site_link'|trans }}" style="color: #0c9db9;">{{ 'mail.news.site'|trans }}</a>
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="https://www.facebook.com/fwdays/" style="color: #0c9db9;">Facebook news</a>
+                                        </p>
+                                        <p style="margin: 10px 0;">
+                                            <a href="https://t.me/fwdays" style="color: #0c9db9;">Telegram channel</a>
+                                        </p>
+{% include 'Email/_email_end_table.html.twig' %}
+</center>
+
+{%- if ticket is defined and event is defined and user is defined -%}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "EventReservation",
+            "reservationNumber": "{{ ticket.id }}",
+            "reservationStatus": "http://schema.org/Confirmed",
+            "underName": {
+                "@type": "Person",
+                "name": "{{ user.fullname }}"
+            },
+            "reservationFor": {
+                "@type": "Event",
+                "name": "{{ event.name }}",
+                "performer": {
+                    "@type": "Organization",
+                    "name": "fwdays.com",
+                    "image": "https://fwdays.com/assets/img/logo_header.svg"
+                },
+                "startDate": "{{ event.date|date('c', 'Europe/Kiev') }}",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.place }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ event.city }}",
+                        "addressRegion": "Kyiv region",
+                        "postalCode": "3057",
+                        "streetAddress": "{{ event.place }}",
+                        "addressCountry": {
+                          "@type": "Country",
+                          "name": "UA"
+                        }
+                    }
+                }
+            },
+            "ticketNumber": "{{ ticket.id }}",
+            "numSeats": "1"
+        }
+    </script>
+{%- endif -%}
+
+</body>

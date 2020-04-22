@@ -1,5 +1,6 @@
 FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.2
 RUN apt-get update && apt-get install -y nginx-extras
+ADD configs/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 ADD configs/fpm-pool.conf /etc/php/7.3/fpm/pool.d/www.conf
 ADD configs/php-fpm.ini /etc/php/7.3/fpm/php.ini
 ADD configs/php-cli.ini /etc/php/7.3/cli/php.ini
@@ -12,5 +13,7 @@ RUN chmod a+x /usr/local/bin/start
 ADD configs/services /usr/local/bin/services
 RUN chmod a+x /usr/local/bin/services
 RUN usermod -s /bin/bash www-data
+ADD configs/graceful-shutdown /usr/local/bin/graceful-shutdown
+RUN chmod a+x /usr/local/bin/graceful-shutdown
 ENTRYPOINT ["/usr/local/bin/start"]
 CMD ["/usr/local/bin/services"]

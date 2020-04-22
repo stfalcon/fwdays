@@ -1,0 +1,51 @@
+liip_imagine:
+
+  resolvers:
+    speaker:
+      flysystem:
+        filesystem_service: oneup_flysystem.speaker_photo_filesystem
+        root_url:           '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.speaker_image%'
+        cache_prefix:       '%app.media_cache%'
+        visibility:         public
+    partner:
+      flysystem:
+        filesystem_service: oneup_flysystem.sponsor_image_filesystem
+        root_url:           '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.sponsor_image%'
+        cache_prefix:       '%app.media_cache%'
+        visibility:         public
+    upload_image:
+      flysystem:
+        filesystem_service: oneup_flysystem.upload_image_filesystem
+        root_url:           '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.upload_image%'
+        cache_prefix:       '%app.media_cache%'
+        visibility:         public
+
+  loaders:
+    speaker:
+      flysystem:
+        filesystem_service: oneup_flysystem.speaker_photo_filesystem
+    partner:
+      flysystem:
+        filesystem_service: oneup_flysystem.sponsor_image_filesystem
+    upload_image:
+      flysystem:
+        filesystem_service: oneup_flysystem.upload_image_filesystem
+
+  filter_sets:
+    speaker:
+      data_loader: speaker
+      cache: speaker
+      filters:
+        relative_resize: { widen: 232 }
+        crop: { size: [ 232, 232 ], start: [ 0, 0 ] }
+
+    partner:
+      data_loader: partner
+      cache: partner
+      filters:
+        downscale:
+          max: [280, 150]
+
+    upload_image:
+      data_loader: upload_image
+      cache: upload_image

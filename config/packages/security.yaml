@@ -1,0 +1,58 @@
+security:
+    encoders:
+        'App\Entity\User':
+            algorithm: sha512
+            encode_as_base64: false
+            iterations: 1
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        main:
+            pattern: ^/
+            oauth:
+                failure_path: /login
+                login_path: /login
+                check_path: /connect_check
+                provider: fos_userbundle
+                resource_owners:
+                    facebook: "/login/check-facebook"
+                    google: "/login/check-google"
+                oauth_user_provider:
+                    service: App\Security\OAuthUserProvider
+                success_handler: App\Handler\LoginHandler
+
+            form_login:
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                remember_me: true
+                use_referer: true
+                success_handler: App\Handler\LoginHandler
+            entry_point: App\EventListener\LoginEntryPoint
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                lifetime: 31536000 # 365 days in seconds
+                path: ~
+                domain: ~
+            logout:
+                path: fos_user_security_logout
+            anonymous:    true
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/translations/, role: ROLE_ADMIN }
+        - { path: ^/addwantstovisitevent/, role: ROLE_USER }
+        - { path: ^/subwantstovisitevent/, role: ROLE_USER }
+        - { path: ^/payment/interaction, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /pay$, role: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_VOLUNTEER:   ROLE_USER
+        ROLE_ADMIN:       [ROLE_VOLUNTEER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: ROLE_ADMIN

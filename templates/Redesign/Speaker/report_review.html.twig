@@ -1,0 +1,104 @@
+{% extends 'Redesign/layout.html.twig' %}
+
+{% block title %}{% if review.title is not null %}{{ review.title }}{% else %}{{ parent() }}{% endif %}{% endblock title %}
+
+{% block meta_description %}
+    {% if review.metaDescription is not null %}
+        <meta name="description" content="{{ review.metaDescription }}">
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock meta_description %}
+
+{% block content %}
+    {% include 'Redesign/Event/event.fix_header.html.twig' with
+        {
+            'event':event,
+            'programPage':programPage,
+            'venuePage':venuePage,
+            'pages':pages,
+            'position': 'report'
+        }
+    %}
+
+    {% if futureEvent is not null %}
+        {% if (futureEvent.adminOnly and is_granted('ROLE_ADMIN')) or (futureEvent.adminOnly != true) %}
+            <div class="event-alert">
+                <div class="container container--sm">
+                    {% if futureEvent.receivePayments %}
+                        <h1 class="h2 event-alert__title">{{ 'event.future_event_bye_tickets'|trans({'%name%': futureEvent.name}) }}</h1>
+                    {% else %}
+                        <h1 class="h2 event-alert__title">{{ 'event.future_event_registration'|trans({'%name%': futureEvent.name}) }}</h1>
+                    {% endif %}
+                    {% include 'Redesign/Event/event.row.html.twig' with {'event': futureEvent, 'listItem': false} %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <!--BEGIN report-review-->
+    <section class="report-review section-after-event-header">
+        <div class="container container--sm">
+            <article class="review-layout">
+                <div class="review-header review-layout__header">
+                    <h1 class="h2 review-header__title">{{ review.title }}</h1>
+                    {% if review.event.isActiveAndFuture %}
+                        <div class="review-header__likes">
+                            <div class="like-btn">
+                                {% include 'Redesign/like.html.twig' with {'review':review} %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="review-layout__content static-styles">
+                    <div class="review-info review-layout__info">
+                        <div class="review-description">
+                            {{ review.text|raw }}
+                        </div>
+                        <div class="share-buttons">
+                            <div class="share-buttons__item">
+                                <a class="twitter-share-button"
+                                   href="https://twitter.com/intent/tweet">
+                                    Tweet</a>
+                            </div>
+                            <div class="share-buttons__item">
+                                <div class="fb-like" data-send="false" data-layout="button_count" data-width="450"
+                                     data-show-faces="false"></div>
+                            </div>
+                            <div class="share-buttons__item">
+                                <div class="g-plusone" data-size="medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-layout__speaker">
+                        {% for speaker in review.speakers %}
+                            <div class="review-speaker review">
+                                {% if speaker.photo is not null %}
+                                    <img class="review-speaker__photo" src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}"
+                                         alt="">
+                                {% else %}
+                                    <img class="review-speaker__photo" src="{{ asset('build/img/speakers/default_avatar.png') }}"
+                                         alt="">
+                                {% endif %}
+                                <div class="review-speaker__description">
+                                    <div class="review-speaker__name">{{ speaker.name }}</div>
+                                    <div class="review-speaker__position">{{ speaker.company }}</div>
+                                    <div class="review-speaker__info">
+                                        {{ speaker.about|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+    <!--END report-review-->
+    <button class="btn-up" style="background-color: {{ event.backgroundColor }};"></button>
+{% endblock content %}
+
+{% block scripts %}
+    {{ parent() }}
+    {% include "Redesign/share_buttons.html.twig" %}
+{% endblock %}

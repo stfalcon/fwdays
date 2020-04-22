@@ -1,0 +1,73 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('vendor/markitup/skins/markitup/style.css') }}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('vendor/markitup/sets/html/style.css') }}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('vendor/markitup/InsCode/InsCode.css') }}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/markitup-style.css') }}" />
+
+    <style>
+        textarea.sonata-medium {
+            width: 98%;
+        }
+    </style>
+{% endblock %}
+
+{% block side_bar_before_nav %}{% endblock side_bar_before_nav %}
+
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('vendor/markitup/jquery.markitup.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/InlineUpload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/markitup/InsCode/InsCode.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/markItUpSettings.js') }}"></script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("textarea").markItUp(mySettings);
+
+            var $sideBar = $('.row-offcanvas-left');
+
+            $sideBar.find('aside.left-side').addClass('collapse-left');
+            $sideBar.find('aside.right-side').addClass('strech');
+
+            $('div[id$=_blocks]').on('sonata.add_element', function(event) {
+                $("textarea").markItUpRemove().markItUp(mySettings);
+            });
+        });
+        InlineUpload.options.action = '{{ path('text_area_upload_image') }}';
+
+        $(document).on('click', 'a[data-target=".a2lix_translationsFields-en"]', function () {
+            var $links = $('ul.a2lix_translationsLocales li').find('a[data-target=".a2lix_translationsFields-en"]');
+            $links.each(function() {
+                var $link = $(this);
+                var $li = $link.parent();
+                if (!$li.hasClass('active')) {
+                    $link.click();
+                }
+            });
+        });
+        $(document).on('click', 'a[data-target=".a2lix_translationsFields-uk"]', function () {
+            var $links = $('ul.a2lix_translationsLocales li').find('a[data-target=".a2lix_translationsFields-uk"]');
+            $links.each(function() {
+                var $link = $(this);
+                var $li = $link.parent();
+                if (!$li.hasClass('active')) {
+                    $link.click();
+                }
+            });
+        });
+
+        $(document).on('change', '.event_choice', function () {
+            var selected_val = $(this).val();
+            $('select.date_for_promo').find('option').each(function() {
+                if (selected_val === $(this).text()) {
+                    $('.promo_end_date').val($(this).val());
+                    return true;
+                }
+            });
+        })
+    </script>
+{% endblock %}

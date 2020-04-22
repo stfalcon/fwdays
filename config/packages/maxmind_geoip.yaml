@@ -1,0 +1,2 @@
+maxmind_geoip:
+    data_file_path: "%kernel.root_dir%/../geodata/GeoLiteCity.dat"

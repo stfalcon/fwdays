@@ -2,10 +2,9 @@ actor: AcceptancePhpWebTester
 modules:
     enabled:
         - PhpBrowser:
-              url: http://nginx/app_test.php/
+              url: http://nginx/index_test.php/
         - \Helper\Acceptance
 extensions:
     enabled:
         - Codeception\Extension\RunBefore:
                - composer.phar app:recreate-test-database
-#              - ./bin/console doctrine:fixtures:load --no-interaction --env=test

@@ -27,24 +27,24 @@ var gulp = require('gulp'),
 
 var path = {
     build: {
-        js: 'web/assets/js/en',
-        jsuk: 'web/assets/js/uk',
-        styles: 'web/assets/styles/',
-        img: 'web/assets/img/',
-        fonts: 'web/assets/fonts/'
+        js: 'public/build/js/en',
+        jsuk: 'public/build/js/uk',
+        styles: 'public/build/styles/',
+        img: 'public/build/img/',
+        fonts: 'public/build/fonts/'
     },
     src: {
-        js: 'web/js/en/main.js',
-        jsuk: 'web/js/uk/main.js',
-        styles: 'web/styles/main.scss',
-        img: 'web/img/**/*.*',
-        fonts: 'web/fonts/**/*.*'
+        js: 'public/js/en/main.js',
+        jsuk: 'public/js/uk/main.js',
+        styles: 'public/styles/main.scss',
+        img: 'public/img/**/*.*',
+        fonts: 'public/fonts/**/*.*'
     },
     watch: {
-        js: 'web/js/**/*.js',
-        styles: 'web/styles/**/*.scss',
-        img: 'web/img/**/*.*',
-        fonts: 'web/fonts/**/*.*'
+        js: 'public/js/**/*.js',
+        styles: 'public/styles/**/*.scss',
+        img: 'public/img/**/*.*',
+        fonts: 'public/fonts/**/*.*'
     }
 };
 
@@ -90,7 +90,7 @@ gulp.task('scss-lint', function () {
         })
     ];
 
-    gulp.src('web/styles/**/*.scss')
+    gulp.src('public/styles/**/*.scss')
         .pipe(gulpIf(dev, postCss(processors, {syntax: postScss})));
 });
 
@@ -98,7 +98,7 @@ gulp.task('styles:build', function () {
     gulp.src(path.src.styles)
         .pipe(gulpIf(dev, sourceMaps.init()))
         .pipe(sass({
-            includePaths: ['web/styles/'],
+            includePaths: ['public/styles/'],
             outputStyle: 'compressed',
             sourceMap: true,
             errLogToConsole: true

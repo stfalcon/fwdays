@@ -1,0 +1,3 @@
+twig:
+    globals:
+        sentry_dsn_js_public: "%env(SENTRY_DSN_JS)%"
