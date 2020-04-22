@@ -21,6 +21,7 @@ services:
             $environment: '%env(APP_ENV)%'
             $oAuthUserProviderProperties: {facebook: facebookID, google: googleID}
             $paymentSystem: '@App\Service\PaymentProcess\WayForPayService'
+            $eventFlySystem: '@oneup_flysystem.event_image_filesystem'
             $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
             $awsS3BucketName: '%env(AWS_S3_BUCKETNAME)%'
             $awsS3PublicEndpoint: '%env(AWS_S3_PUBLIC_ENDPOINT)%'
