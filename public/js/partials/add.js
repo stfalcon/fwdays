@@ -222,7 +222,7 @@ $(document).ready(function () {
     $(document).on('click', '.like-btn-js', function (e) {
         e.preventDefault();
         var rv_slug = $(this).data('review');
-        $.post(Routing.generate('like_review', {reviewSlug: rv_slug}),
+        $.post(Routing.generate('like_review', {slug: rv_slug}),
             function (data) {
                 if (data.result) {
                     $("div[data-review='"+ rv_slug+"']").html('<i class="icon-like like-btn__icon"></i>'+data.likesCount);
