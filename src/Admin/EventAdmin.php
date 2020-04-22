@@ -14,7 +14,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
-use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
@@ -249,7 +248,7 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Логотип и цвет', ['class' => 'col-md-4'])
                     ->add(
                         'backgroundColor',
-                        ColorType::class,
+                        null,
                         [
                             'label' => 'Цвет',
                             'required' => true,
