@@ -1,0 +1,5 @@
+swiftmailer:
+    transport: sendmail
+    spool:
+        type: file
+        path: "%spool_path%"

@@ -1,0 +1,22 @@
+ibrows_sonata_translation:
+    defaultDomain: messages
+    editable:
+        mode: inline		 # Mode of editable, can be popup or inline
+        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty 	 # text to display on empty translations
+        placement: top		 # ingnored for inline mode
+
+lexik_translation:
+    fallback_locale: "%locale%"     # (required) default locale to use
+    managed_locales: "%locales%"    # (required) locales that the bundle have to manage
+    auto_cache_clean: true
+    auto_cache_clean_interval: 600
+
+jms_i18n_routing:
+    default_locale: "%locale%"
+    locales: "%locales%"
+    strategy: prefix_except_default
+
+a2lix_translation_form:
+    locales: "%locales%"
+    manager_registry: doctrine

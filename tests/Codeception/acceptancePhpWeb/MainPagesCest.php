@@ -58,7 +58,7 @@ class MainPagesCest
                     'Golden sponsor',
                     'Silver sponsor',
                     'Місце проведення',
-                    'Киев, отель "Казацкий"',
+                    'отель "Казацкий"',
                     'Як дістатися',
                 ],
         ],

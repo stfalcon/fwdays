@@ -1,9 +1,0 @@
-{% include '@App/Email/_email_header.html.twig' %}
-<p style="margin: 10px 0;">
-{{ 'dear_user.email.text'|trans({'%user_name%': user.fullname})|raw }}
-</p>
-{% include '@App/Email/_email_end_table.html.twig' %}
-
-{% include '@App/Email/_email_footer.html.twig' with {'user':user, 'mail':null} %}
-</center>
-</body>

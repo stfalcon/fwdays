@@ -16,6 +16,11 @@ class UserCest
         '#fos_user_profile_form_post' => 'Post',
     ];
 
+    private const PROMO_USER_FIELDS = [
+        '#user_email_' => 'new-user@gmail.com',
+        '#user_password_' => 'qwerty',
+    ];
+
     private const SIGN_IN_FIELDS = [
         '#user_email_modal-signup' => 'user@gmail.com',
         '#user_password_modal-signup' => 'new_password',
@@ -34,7 +39,6 @@ class UserCest
         'Invite your friends and collect bonuses!',
         'Get 100 UAH per ticket purchased by your link.',
         'your referral link',
-        'My past events',
     ];
 
     private $newLogin = false;
@@ -47,12 +51,12 @@ class UserCest
         $I->wantTo('Check language switcher');
 
         $I->amOnPage('/');
-        $I->seeCurrentUrlEquals('/app_test.php/');
+        $I->seeCurrentUrlEquals('/index_test.php/');
         static::iAmNotSigned($I, 'uk');
 
         static::seeAndClick($I, '.language_switcher');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
         static::iAmNotSigned($I);
     }
 
@@ -67,7 +71,7 @@ class UserCest
     {
         $I->wantTo('Check click on login by facebook');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         static::iAmNotSigned($I);
 
         static::seeAndClick($I, '.header__auth--sign-in');
@@ -88,7 +92,7 @@ class UserCest
     {
         $I->wantTo('Check click on login by google');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         static::iAmNotSigned($I);
 
         static::seeAndClick($I, '.header__auth--sign-in');
@@ -107,7 +111,7 @@ class UserCest
     {
         $I->wantTo('Check sing in user from modal');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         static::iAmNotSigned($I);
 
         static::seeAndClick($I, '.header__auth--sign-in');
@@ -127,7 +131,7 @@ class UserCest
         static::seeAndClick($I, '#login-form-modal-signup button[type=submit]');
 
         $I->waitForText('ACCOUNT');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
         static::iAmSigned($I);
     }
 
@@ -140,9 +144,9 @@ class UserCest
     {
         $I->wantTo('Change user profiler');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         static::iAmSigned($I);
-        $I->amOnPage('/cabinet');
+        $I->amOnPage('/en/cabinet');
 
         static::seeAndClick($I, '.cabinet-head__link');
 
@@ -167,9 +171,9 @@ class UserCest
     {
         $I->wantTo('Check user profiler');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/en');
         static::iAmSigned($I);
-        $I->amOnPage('/cabinet');
+        $I->amOnPage('/en/cabinet');
 
         static::seeAndClick($I, '.cabinet-head__link');
 
@@ -194,15 +198,15 @@ class UserCest
     {
         $I->wantTo('Check change user password');
 
-        $I->amOnPage('/cabinet');
+        $I->amOnPage('/en/cabinet');
 
         static::seeAndClick($I, '.cabinet-head__link');
         $I->waitForText('User info');
 
-        static::seeAndClick($I, 'a[href="/app_test.php/en/change-password"]');
+        static::seeAndClick($I, 'a[href="/index_test.php/en/profile/change-password"]');
         $I->waitForText('Change password');
 
-        $I->seeCurrentUrlEquals('/app_test.php/en/change-password');
+        $I->seeCurrentUrlEquals('/index_test.php/en/profile/change-password');
 
         foreach (self::CHANGE_PASSWORD_FIELDS as $field => $value) {
             $I->seeElement($field);
@@ -219,7 +223,7 @@ class UserCest
         static::seeAndClick($I, 'form button[type=submit]');
 
         $I->waitForText('The password has been changed.');
-        $I->seeCurrentUrlEquals('/app_test.php/en/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
     }
 
     /**
@@ -231,8 +235,11 @@ class UserCest
     {
         $I->wantTo('Check login user with new password');
 
-        $I->amOnPage('/logout');
+        $I->amOnPage('/en/logout');
         $this->newLogin = true;
+        $I->amOnPage('/en');
+        static::seeAndClick($I, '.language_switcher');
+        $I->seeCurrentUrlEquals('/index_test.php/');
         $this->loginModal($I);
     }
 
@@ -245,9 +252,9 @@ class UserCest
     {
         $I->wantTo('Check user forgot password');
 
-        $I->amOnPage('/change-password');
+        $I->amOnPage('/en/profile/change-password');
 
-        static::seeAndClick($I, 'a[href="/app_test.php/en/resetting/check-email"]');
+        static::seeAndClick($I, 'a[href="/index_test.php/en/resetting/check-email"]');
         $I->waitForText('Forgot password?');
 
         $I->seeElement('#forgot_user_email');
@@ -258,6 +265,27 @@ class UserCest
 
         $I->see('An email has been sent to user@gmail.com. It contains a link you have to click on to reset your password.');
     }
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @depends forgotPassword
+     */
+    public function loginPromoUser(AcceptanceTester $I)
+    {
+        $I->wantTo('Login promo user - static page');
+        $I->amOnPage('/en/logout');
+        static::iAmNotSigned($I);
+
+        $I->amOnPage('/en/login');
+        foreach (self::PROMO_USER_FIELDS as $field => $value) {
+            $I->seeElement($field);
+            $I->fillField($field, $value);
+        }
+
+        static::seeAndClick($I, '#login-form- button');
+
+        static::iAmSigned($I);
+    }
 
     /**
      * @param AcceptanceTester $I
@@ -267,11 +295,11 @@ class UserCest
     public function cabinetPage(AcceptanceTester $I)
     {
         $I->wantTo('Check user cabinet page');
-
-        $I->wantTo('Check User Cabinet Page.');
         $I->amOnPage('/');
+        $I->seeCurrentUrlEquals('/index_test.php/en/');
+
         static::iAmSigned($I);
-        $I->amOnPage('/cabinet');
+        $I->amOnPage('/en/cabinet');
 
         foreach (self::CABINET_PAGE_TEXTS as $page) {
             $I->see($page);

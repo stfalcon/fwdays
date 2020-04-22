@@ -1,0 +1,13 @@
+{% extends '/layout.html.twig' %}
+
+{% block content %}
+    <div class="container container--sm static-styles">
+    <h2>{{ 'interkassa.payment.pending'|trans }}</h2>
+
+    <p>{{ 'interkassa.payment.pending.wait'|trans }}</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{  parent() }}
+{% endblock %}

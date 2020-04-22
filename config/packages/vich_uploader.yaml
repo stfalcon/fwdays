@@ -1,0 +1,27 @@
+vich_uploader:
+    db_driver: orm
+    storage: '@App\Service\MyFlySystemStorage'
+    mappings:
+        sponsor_image:
+            uri_prefix: '%app.sponsor_image%'
+            namer: vich_uploader.namer_uniqid
+            upload_destination: sponsor_image
+            delete_on_update: true
+            delete_on_remove: true
+        speaker_photo:
+            uri_prefix: '%app.speaker_image%'
+            namer: vich_uploader.namer_uniqid
+            upload_destination: speaker_photo
+            delete_on_update: true
+            delete_on_remove: true
+        event_image:
+            uri_prefix: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.event_image%'
+            upload_destination: event_image
+            delete_on_update: false
+            delete_on_remove: false
+        upload_image:
+            uri_prefix: '%app.upload_image%'
+            upload_destination: upload_image
+        event_header_video:
+            uri_prefix: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.event_header_video%'
+            upload_destination: event_header_video

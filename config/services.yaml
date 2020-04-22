@@ -1,0 +1,165 @@
+parameters:
+    locale: uk
+    locales:
+        - uk
+        - en
+
+    interkassa_override_callbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $locale: '%locale%'
+            $locales: '%locales%'
+            $projectDir: '%kernel.project_dir%'
+            $googleApiKey: '%env(GOOGLE_API_KEY)%'
+            $appConfig: '%app.config%'
+            $localeCookieName: '%jms_i18n_routing.cookie.name%'
+            $environment: '%env(APP_ENV)%'
+            $oAuthUserProviderProperties: {facebook: facebookID, google: googleID}
+            $paymentSystem: '@App\Service\PaymentProcess\WayForPayService'
+            $eventFlySystem: '@oneup_flysystem.event_image_filesystem'
+            $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
+            $awsS3BucketName: '%env(AWS_S3_BUCKETNAME)%'
+            $awsS3PublicEndpoint: '%env(AWS_S3_PUBLIC_ENDPOINT)%'
+            $uploadImagePath: '%app.upload_image%'
+
+    fos_user.registration.controller:
+        class: App\Controller\RegistrationController
+        public: true
+        arguments:
+            - '@event_dispatcher'
+            - '@fos_user.registration.form.factory'
+            - '@fos_user.user_manager'
+            - '@security.token_storage'
+            - '@fos_user.security.login_manager'
+            - '@App\Handler\LoginHandler'
+        calls:
+            - [setContainer, ["@service_container"]]
+
+    App\:
+        resource: '../src/{Command,EventListener,Form,Helper,Repository,Security,Serializer,Service,Twig,Validator}/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags:
+            - 'controller.service_arguments'
+
+    App\EventListener\ORM\:
+        resource: '../src/EventListener/ORM/'
+        tags:
+            - 'doctrine.orm.entity_listener'
+
+    App\DataFixtures\PrepareFileStorage:
+        public: true
+        arguments:
+            - '%kernel.environment%'
+            -
+                - '@oneup_flysystem.sponsor_image_filesystem'
+                - '@oneup_flysystem.speaker_photo_filesystem'
+                - '@oneup_flysystem.event_image_filesystem'
+                - '@oneup_flysystem.upload_image_filesystem'
+
+    App\Service\Ticket\TicketService:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%app.config%'
+            - '@translator'
+            - '@router'
+            - '@App\Service\User\UserService'
+        calls:
+            - [addEventState, ['@App\Service\Ticket\DoneEventState']]
+            - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationOpenEventState']]
+            - [addEventState, ['@App\Service\Ticket\RegistrationCloseEventState']]
+            - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
+
+
+    App\Handler\LoginHandler: ~
+
+    App\Menu\MenuBuilder:
+        arguments: ['@knp_menu.factory','%locales%', '@mobile_detect.mobile_detector', '@App\Service\User\UserService']
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    App\Service\GoogleMapService:
+        public: true
+
+    App\Service\LocalsRequiredService:
+        public: true
+
+    App\Command\AppResolveLiipCacheCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+
+    vich_uploader.my_storage.flysystem:
+        class: App\Service\MyFlySystemStorage
+        autowire: false
+        arguments: ['@vich_uploader.property_mapping_factory', '@oneup_flysystem.mount_manager']
+
+    liip_imagine.cache.resolver.prototype.flysystem:
+        class: App\Service\MyFlySystemResolver
+        arguments: ['', '@router.request_context', '', '', '']
+
+    Endroid\QrCode\QrCode: ~
+    App\Service\PaymentProcess\InterkassaService: ~
+    App\Service\PaymentProcess\WayForPayService: ~
+
+    app.menu.main.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: main_redesign }
+        factory: ['@App\Menu\MenuBuilder', createMainMenuRedesign]
+        arguments: ['@request_stack']
+
+    app.menu.main.login.redesign:
+        class: Knp\Menu\MenuItem
+        tags:
+            - { name: knp_menu.menu, alias: login_redesign }
+        factory: ['@App\Menu\MenuBuilder', createLoginMenu]
+        arguments: ['@request_stack']
+
+    App\Model\UserManager: ~
+
+    App\Service\User\UserService:
+        public: true
+
+    app.assets.s3:
+        class: Aws\S3\S3Client
+        public: true
+        autowire: false
+        arguments:
+            -
+                version: 'latest'
+                region: '%env(AWS_REGION)%'
+                endpoint: '%env(AWS_ENDPOINT)%'
+                use_path_style_endpoint: true
+                credentials:
+                    key: '%env(AWS_ACCESS_KEY_ID)%'
+                    secret: '%env(AWS_SECRET_ACCESS_KEY)%'
+
+    Aws\S3\S3Client: '@app.assets.s3'
+    Symfony\Component\Serializer\Serializer: '@serializer'
+    Symfony\Bundle\FrameworkBundle\Routing\Router: '@router'
+    Symfony\Component\HttpFoundation\Session\Session: '@session'
+    Symfony\Component\Security\Core\Authorization\AuthorizationChecker: '@security.authorization_checker'
+    Maxmind\Bundle\GeoipBundle\Service\GeoipManager: '@maxmind.geoip'
+    League\Flysystem\MountManager: '@oneup_flysystem.mount_manager'
+    Sonata\IntlBundle\Twig\Extension\DateTimeExtension: '@sonata.intl.twig.extension.datetime'
+    Monolog\Logger: '@logger'
+    Doctrine\Common\Persistence\ObjectManager: '@fos_user.object_manager'
+    Doctrine\ORM\EntityManager: '@doctrine.orm.entity_manager'
+    FOS\UserBundle\Form\Factory\FactoryInterface: '@fos_user.registration.form.factory'
+    FOS\UserBundle\Security\LoginManager: '@fos_user.security.login_manager'
+    Symfony\Bundle\FrameworkBundle\Translation\Translator: '@translator.default'
+    Liip\ImagineBundle\Imagine\Cache\CacheManager: '@liip_imagine.cache.manager'
+    Liip\ImagineBundle\Imagine\Filter\FilterManager: '@liip_imagine.filter.manager'
+    Liip\ImagineBundle\Imagine\Data\DataManager: '@liip_imagine.data.manager'
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']

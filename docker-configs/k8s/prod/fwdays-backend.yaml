@@ -49,6 +49,13 @@ spec:
       containers:
       - image: <place latest image>
         name: fwdays-backend
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/local/bin/graceful-shutdown"]
+        resources:
+          requests:
+            memory: "300Mi"
         livenessProbe:
           httpGet:
             path: /service/status
@@ -73,11 +80,9 @@ spec:
             secretKeyRef:
               name: server-name
               key: server-name
-        - name: PARAMETERS
-          valueFrom:
-            secretKeyRef:
-              name: fwdays-backend-parameters
-              key: parameters.yml
+        envFrom:
+        - configMapRef:
+            name: backend-env
         ports:
         - containerPort: 80
           name: fwdays-backend
