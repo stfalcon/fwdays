@@ -15,7 +15,7 @@ class AppDisablePriceWithDateCommand extends AbstractBaseCommand
 {
     use EntityManagerTrait;
 
-    protected static $defaultName = 'app:disable_price_with_less_end_date';
+    protected static $defaultName = 'app:disable-price';
 
     /** @var TicketCostRepository */
     private $ticketCostRepository;
@@ -37,7 +37,7 @@ class AppDisablePriceWithDateCommand extends AbstractBaseCommand
     {
         parent::configure();
 
-        $this->setDescription('Disable ticket price with end date less than current');
+        $this->setDescription('Disable ticket price with end date less than current date');
     }
 
     /** {@inheritdoc} */
