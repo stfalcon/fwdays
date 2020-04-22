@@ -33,16 +33,16 @@ class PdfGeneratorHelper
      * @param QrCode                 $qrCode          QrCode generator
      * @param string                 $projectDir
      * @param SvgToJpg               $svgToJpgService
-     * @param Filesystem             $filesystem
+     * @param Filesystem             $eventFlySystem
      * @param PropertyMappingFactory $vichUploader
      */
-    public function __construct(Environment $templating, QrCode $qrCode, string $projectDir, SvgToJpg $svgToJpgService, Filesystem $filesystem, PropertyMappingFactory $vichUploader)
+    public function __construct(Environment $templating, QrCode $qrCode, string $projectDir, SvgToJpg $svgToJpgService, Filesystem $eventFlySystem, PropertyMappingFactory $vichUploader)
     {
         $this->templating = $templating;
         $this->qrCode = $qrCode;
         $this->projectDir = $projectDir;
         $this->svgToJpgService = $svgToJpgService;
-        $this->filesystem = $filesystem;
+        $this->filesystem = $eventFlySystem;
         $this->vichUploader = $vichUploader;
     }
 
