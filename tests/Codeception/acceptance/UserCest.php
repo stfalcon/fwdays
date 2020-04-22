@@ -16,6 +16,11 @@ class UserCest
         '#fos_user_profile_form_post' => 'Post',
     ];
 
+    private const PROMO_USER_FIELDS = [
+        '#user_email_' => 'new-user@gmail.com',
+        '#user_password_' => 'qwerty',
+    ];
+
     private const SIGN_IN_FIELDS = [
         '#user_email_modal-signup' => 'user@gmail.com',
         '#user_password_modal-signup' => 'new_password',
@@ -34,7 +39,6 @@ class UserCest
         'Invite your friends and collect bonuses!',
         'Get 100 UAH per ticket purchased by your link.',
         'your referral link',
-        'My past events',
     ];
 
     private $newLogin = false;
@@ -260,6 +264,27 @@ class UserCest
         $I->waitForText('Reset password');
 
         $I->see('An email has been sent to user@gmail.com. It contains a link you have to click on to reset your password.');
+    }
+    /**
+     * @param AcceptanceTester $I
+     *
+     * @depends forgotPassword
+     */
+    public function loginPromoUser(AcceptanceTester $I)
+    {
+        $I->wantTo('Login promo user - static page');
+        $I->amOnPage('/en/logout');
+        static::iAmNotSigned($I);
+
+        $I->amOnPage('/en/login');
+        foreach (self::PROMO_USER_FIELDS as $field => $value) {
+            $I->seeElement($field);
+            $I->fillField($field, $value);
+        }
+
+        static::seeAndClick($I, '#login-form- button');
+
+        static::iAmSigned($I);
     }
 
     /**
