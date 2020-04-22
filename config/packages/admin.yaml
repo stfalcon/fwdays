@@ -139,7 +139,7 @@ services:
         class: App\Admin\TicketCostAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
-        arguments: [~, 'App\Entity\TicketCost', ~, '@App\Repository\EventRepository']
+        arguments: [~, 'App\Entity\TicketCost', ~]
 
     app.event_block.admin:
         class: App\Admin\EventBlockAdmin
