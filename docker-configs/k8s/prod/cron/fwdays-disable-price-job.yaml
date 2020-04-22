@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fwdays-disable-price
+  namespace: fwdays-prod
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: fwdays-backend
+            image: %job-image-name%
+            env:
+            - name: SERVER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: server-name
+                  key: server-name
+            envFrom:
+            - configMapRef:
+                name: backend-env
+            args:
+            - bash
+            - -c
+            - su www-data -c  "php bin/console app:disable-price --env=prod"
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: regcred-dockerhub
