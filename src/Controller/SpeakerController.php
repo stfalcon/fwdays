@@ -40,7 +40,7 @@ class SpeakerController extends AbstractController
             );
         }
 
-        $html = $this->renderView('@App/Redesign/Speaker/speaker.popup.html.twig', [
+        $html = $this->renderView('Redesign/Speaker/speaker.popup.html.twig', [
             'speaker' => $speaker,
             'event' => $event,
             'with_review' => $withReview,
