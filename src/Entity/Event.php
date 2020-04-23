@@ -1191,7 +1191,7 @@ class Event implements TranslatableInterface
     {
         /** @var TicketCost $cost */
         foreach ($this->ticketsCost as $cost) {
-            if ($cost->isEnabled() && ($cost->isUnlimited() || $cost->getCount() > $cost->getSoldCount() || $cost->endDateIsMoreThanNow())) {
+            if ($cost->isEnabled() && ($cost->isUnlimited() || $cost->getCount() > $cost->getSoldCount())) {
                 return true;
             }
         }
