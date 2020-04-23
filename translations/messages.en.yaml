@@ -102,6 +102,7 @@ tickets.coming_soon: 'coming soon'
 tickets.hint: available only via website
 tickets.tickets_run_out: Only few left
 tickets.other.title: other tickets
+tickets.end_date.title: 'till %date%'
 sold_out.title: Sold out
 
 image.home.title: Tech events in Ukraine. Share ideas, broaden experience.

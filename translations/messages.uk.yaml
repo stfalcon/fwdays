@@ -82,6 +82,7 @@ tickets.count: '{0}%ticket_count% квиток|{1}%ticket_count% квитка|{2
 tickets.coming_soon: 'незабаром'
 tickets.hint: тільки через сайт
 tickets.other.title: Всі інші квитки
+tickets.end_date.title: 'до %date%'
 tickets.tickets_run_out: Закінчуються
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
