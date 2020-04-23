@@ -242,6 +242,8 @@ class Event implements TranslatableInterface
      *      mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @Assert\Valid()
+     *
+     * @ORM\OrderBy({"sortOrder" = "ASC", "amount" = "ASC"})
      */
     protected $ticketsCost;
 
