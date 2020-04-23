@@ -69,7 +69,7 @@ class StfalconMailerCommand extends Command
         /** @var \Symfony\Component\Routing\RequestContext $context */
         $context = $this->router->getContext();
         $context->setHost('fwdays.com');
-        $context->setScheme('http');
+        $context->setScheme('https');
 
         $limit = 10;
 
