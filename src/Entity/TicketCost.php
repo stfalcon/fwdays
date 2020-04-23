@@ -169,7 +169,7 @@ class TicketCost
      */
     public function isHaveTemporaryCount(): bool
     {
-        return ($this->endDateIsMoreThanNow() || $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count) && $this->enabled;
+        return ($this->isUnlimitedOrDateEnd() || ($this->soldCount + $this->temporaryCount) < $this->count) && $this->enabled;
     }
 
     /**
@@ -354,7 +354,7 @@ class TicketCost
         }
         $this->soldCount = $soldCount;
 
-        if (!$this->unlimited && $this->isEnabled()) {
+        if (!$this->isUnlimitedOrDateEnd() && $this->isEnabled()) {
             $this->setEnabled($this->count > $this->soldCount);
         }
 
@@ -397,6 +397,14 @@ class TicketCost
     public function isUnlimited()
     {
         return $this->unlimited;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnlimitedOrDateEnd()
+    {
+        return $this->unlimited || $this->endDateIsMoreThanNow();
     }
 
     /**
