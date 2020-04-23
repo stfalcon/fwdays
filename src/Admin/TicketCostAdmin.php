@@ -37,7 +37,7 @@ final class TicketCostAdmin extends AbstractAdmin
                 \array_merge(
                     [
                         'required' => false,
-                        'label' => 'Дата начала',
+                        'label' => 'Дата окончания',
                     ],
                     $datetimePickerOptions
                 )
