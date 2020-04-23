@@ -51,7 +51,7 @@ class MailerHelper
                 '%user_id%' => $user->getId(),
             ]
         );
-        $template = '@App/Email/new_email.html.twig';
+        $template = 'Email/new_email.html.twig';
         $params =
             [
                 'text' => $text,
