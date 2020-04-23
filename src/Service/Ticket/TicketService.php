@@ -307,7 +307,7 @@ class TicketService
         $count = 0;
         /** @var TicketCost $cost */
         foreach ($eventCosts as $cost) {
-            if (!$cost->isUnlimited()) {
+            if (!$cost->isUnlimitedOrDateEnd()) {
                 $count += $cost->getCount() - $cost->getSoldCount();
             }
         }
