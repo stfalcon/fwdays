@@ -125,6 +125,20 @@ class TicketCost
     private $visible = true;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="end_date", type="datetime", nullable=true, options={"default":null})
+     */
+    private $endDate = null;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="sort_order", type="integer", nullable=true)
+     */
+    private $sortOrder;
+
+    /**
      * TicketCost constructor.
      */
     public function __construct()
@@ -155,7 +169,7 @@ class TicketCost
      */
     public function isHaveTemporaryCount(): bool
     {
-        return $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count;
+        return ($this->endDateIsMoreThanNow() || $this->unlimited || ($this->soldCount + $this->temporaryCount) < $this->count) && $this->enabled;
     }
 
     /**
@@ -463,5 +477,49 @@ class TicketCost
         $this->visible = $visible;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEndDate(): ?\DateTime
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime|null $endDate
+     *
+     * @return $this
+     */
+    public function setEndDate(?\DateTime $endDate): self
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function endDateIsMoreThanNow(): bool
+    {
+        return ($this->endDate instanceof \DateTime) && ((new \DateTime()) <= $this->endDate);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int|null $sortOrder
+     */
+    public function setSortOrder(?int $sortOrder): void
+    {
+        $this->sortOrder = $sortOrder;
     }
 }
