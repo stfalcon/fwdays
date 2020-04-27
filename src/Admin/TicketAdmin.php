@@ -91,7 +91,7 @@ final class TicketAdmin extends AbstractAdmin
                 'user',
                 'string',
                 [
-                    'template' => 'Admin:user_link_field.html.twig',
+                    'template' => 'Admin/user_link_field.html.twig',
                     'label' => 'Пользователь',
                 ]
             )
