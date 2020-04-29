@@ -32,8 +32,10 @@ class EventBlock implements TranslatableInterface
     const CANDIDATE_SPEAKERS = 'candidate_speakers';
     const COMMITTEE_SPEAKERS = 'committee_speakers';
     const EXPERT_SPEAKERS = 'expert_speakers';
-    const YOUTUBE_VIDEO_PAID = 'youtube_video_paid';
-    const YOUTUBE_PLAYLIST_PAID = 'youtube_playlist_paid';
+    const YOUTUBE_PRIVATE_VIDEO = 'youtube_private_video';
+    const YOUTUBE_PRIVATE_PLAYLIST = 'youtube_private_playlist';
+    const VIMEO_PRIVATE_VIDEO = 'vimeo_private_video';
+    const VIMEO_PRIVATE_PLAYLIST = 'vimeo_private_playlist';
 
     /**
      * @var int
@@ -234,8 +236,10 @@ class EventBlock implements TranslatableInterface
             'кандидаты' => self::CANDIDATE_SPEAKERS,
             'програмный комитет' => self::COMMITTEE_SPEAKERS,
             'эксперты' => self::EXPERT_SPEAKERS,
-            'youtube трансляция' => self::YOUTUBE_VIDEO_PAID,
-            'youtube playlist' => self::YOUTUBE_PLAYLIST_PAID,
+            'vimeo трансляция' => self::VIMEO_PRIVATE_VIDEO,
+            'vimeo playlist' => self::VIMEO_PRIVATE_PLAYLIST,
+            'youtube трансляция' => self::YOUTUBE_PRIVATE_VIDEO,
+            'youtube playlist' => self::YOUTUBE_PRIVATE_PLAYLIST,
         ];
     }
 }
