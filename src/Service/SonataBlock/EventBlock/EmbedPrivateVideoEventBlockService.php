@@ -18,15 +18,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * YoutubeVideoPaidEventBlockService.
+ * EmbedPrivateVideoEventBlockService.
  */
-class YoutubeVideoPaidEventBlockService extends AbstractBlockService
+class EmbedPrivateVideoEventBlockService extends AbstractBlockService
 {
     private $userService;
     private $ticketRepository;
     private $userRegistrationRepository;
     /** @var bool */
     private $isPlaylist = false;
+    /** @var string */
+    private $template = 'Redesign/Event/event.youtube_video_block.html.twig';
 
     /**
      * @param string                          $name
@@ -44,12 +46,16 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
         $this->userRegistrationRepository = $userRegistrationRepository;
     }
 
-    /**
-     * @param bool $isPlayList
-     */
+    /** @param bool $isPlayList */
     public function setIsPlayList(bool $isPlayList): void
     {
         $this->isPlaylist = $isPlayList;
+    }
+
+    /** @param string $template */
+    public function setTemplate(string $template): void
+    {
+        $this->template = $template;
     }
 
     /**
@@ -70,14 +76,14 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
         try {
             $user = $this->userService->getCurrentUser();
             $ticket = $this->ticketRepository->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
-            $userRegisteredForEvent = $event->isFree() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+            $userRegisteredForFreeEvent = $event->isFree() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
         } catch (AccessDeniedException $e) {
             $user = null;
             $ticket = null;
-            $userRegisteredForEvent = false;
+            $userRegisteredForFreeEvent = false;
         }
 
-        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForEvent || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
+        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForFreeEvent || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
             return $this->renderResponse($blockContext->getTemplate(), [
                 'block' => $blockContext->getBlock(),
                 'event_block' => $eventBlock,
@@ -94,7 +100,7 @@ class YoutubeVideoPaidEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'template' => 'AppBundle:Redesign/Event:event.youtube_video_block.html.twig',
+            'template' => $this->template,
             'event' => null,
             'event_block' => null,
             'is_playlist' => false,
