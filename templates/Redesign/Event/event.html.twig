@@ -107,6 +107,11 @@
                 "name":"{{ event.name }}",
                 "url":"{{ event_show_url }}",
                 "description": "{{ event.description  }}",
+                "organizer": {
+                    "@type": "Organization",
+                    "name": "Fwdays",
+                    "url": "https://fwdays.com/"
+                },
                 "startDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
                 {% if event.dateEnd -%}
                   "endDate":"{{ event.dateEnd|date('c', 'Europe/Kiev') }}",
