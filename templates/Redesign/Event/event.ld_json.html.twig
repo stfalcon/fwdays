@@ -33,6 +33,11 @@
                             "url":"{{ event_show_url }}",
                             "description": "{{ event.description  }}",
                             "startDate":"{{ event.date|date('c', 'Europe/Kiev') }}",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "Fwdays",
+                                "url": "https://fwdays.com/"
+                            },
                             {% if event.dateEnd -%}
                               "endDate":"{{ event.dateEnd|date('c', 'Europe/Kiev') }}",
                             {%- else -%}
