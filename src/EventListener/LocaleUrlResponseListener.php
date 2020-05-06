@@ -168,17 +168,6 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
             $langSource = self::LANG_FROM_COOKIE;
         }
 
-        if (!$local) {
-            if (false !== $this->geoIpService->lookup($request->getClientIp())) {
-                if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
-                    $local = $this->defaultLocale;
-                } else {
-                    $local = 'en';
-                }
-                $langSource = self::LANG_FROM_IP;
-            }
-        }
-
         // get locale from preferred languages
         if (!$local) {
             $local = $request->getPreferredLanguage($this->locales);
@@ -216,34 +205,6 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string|null
-     */
-    private function getRealIpAddr($request): ?string
-    {
-        $server = $request->server;
-        if (!$server instanceof ServerBag) {
-            return null;
-        }
-
-        $ip = null;
-        if ($server->has('HTTP_CLIENT_IP')) {
-            $ip = \filter_var($server->get('HTTP_CLIENT_IP'), FILTER_VALIDATE_IP);
-        }
-
-        if (!$ip && $server->has('HTTP_X_FORWARDED_FOR')) {
-            $ip = \filter_var($server->get('HTTP_X_FORWARDED_FOR'), FILTER_VALIDATE_IP);
-        }
-
-        if (!$ip) {
-            $ip = $server->get('REMOTE_ADDR');
-        }
-
-        return $ip;
     }
 
     /**
