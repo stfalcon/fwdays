@@ -157,7 +157,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
      */
     private function getCurrentLocale(Request $request, string &$langSource)
     {
-        $local = null;
+        $local = $this->defaultLocale;
 
         if ($request->cookies->has($this->cookieName) &&
             \in_array($request->cookies->get($this->cookieName), $this->locales, true)) {
@@ -166,10 +166,10 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
         }
 
         // get locale from preferred languages
-        if (!$local) {
-            $local = $request->getPreferredLanguage($this->locales);
-            $langSource = self::LANG_FROM_PREFERRED;
-        }
+//        if (!$local) {
+//            $local = $request->getPreferredLanguage($this->locales);
+//            $langSource = self::LANG_FROM_PREFERRED;
+//        }
 
         return $local;
     }
