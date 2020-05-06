@@ -4,6 +4,15 @@
 <div class="form-box">
     <h2 class="h2 form-box__title">{{ 'user.change_password.title'|trans }}</h2>
     <form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" method="POST" class="fos_user_resetting_reset">
+        {% if form.vars.errors.form.errors.count > 0 %}
+            <div class="form-row">
+                <div class="form-col form-col--6 form-col--xs-6">
+                    {% for error in form.vars.errors.form.errors -%}
+                        <p class="text-error">{{ error.message|trans }}</p>
+                    {%- endfor -%}
+                </div>
+            </div>
+        {% endif %}
         <div class="form-row">
             {% set is_first_error = form is defined and form.plainPassword.first.vars.errors|length %}
             <div class="form-col form-col--6 form-col--xs-6">
