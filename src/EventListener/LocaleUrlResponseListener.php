@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,9 +19,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class LocaleUrlResponseListener implements EventSubscriberInterface
 {
-    private const UKRAINE_COUNTRY_CODE = 'UA';
     private const LANG_FROM_COOKIE = 'lang_from_cookie';
-    private const LANG_FROM_IP = 'lang_from_ip';
     private const LANG_FROM_PREFERRED = 'lang_from_preferred';
     private const LANG_FROM_NULL = 'lang_from_null';
     private const REDIRECT_NUMBER = 302;
