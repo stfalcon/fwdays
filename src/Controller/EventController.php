@@ -11,7 +11,6 @@ use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
 use App\Service\User\UserService;
 use App\Traits\TranslatorTrait;
-use GuzzleHttp\Psr7\ServerRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,10 +82,6 @@ class EventController extends AbstractController
      */
     public function showAction(Event $event, Request $request): Response
     {
-        $seRequest = ServerRequest::fromGlobals();
-        $uri = (string) $seRequest->getUri();
-        $uri1 = ServerRequest::getUriFromGlobals();
-
         $this->referralService->handleRequest($request);
 
         return $this->render('Redesign/Event/event.html.twig', $this->eventService->getEventPages($event));
