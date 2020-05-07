@@ -184,7 +184,7 @@ class User extends BaseUser
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      *
-
+     * @Assert\NotBlank(groups={"registration", "profile"})
      * @Assert\Regex(
      *     pattern="/^[\pL\-\s']+$/u",
      *     match=true,
