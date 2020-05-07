@@ -51,7 +51,7 @@ class UserManager extends FosUserManager
         $user->setPlainPassword($plainPassword);
         $user->setEnabled(true);
 
-        $errors = $this->validator->validate($user);
+        $errors = $this->validator->validate($user, null, ['registration']);
         if ($errors->count() > 0) {
             throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
@@ -91,7 +91,7 @@ class UserManager extends FosUserManager
             ->setFullname($formUser->getFullname())
         ;
 
-        $errors = $this->validator->validate($user);
+        $errors = $this->validator->validate($user, null, ['registration']);
         if ($errors->count() > 0) {
             throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }
@@ -115,7 +115,7 @@ class UserManager extends FosUserManager
     public function getUserFromForm(FormInterface $form): User
     {
         $user = $form->getData();
-        $errors = $this->validator->validate($user);
+        $errors = $this->validator->validate($user, null, ['registration']);
         if ($errors->count() > 0) {
             throw new BadAutoRegistrationDataException('Bad credentials!', $this->getErrorMap($errors));
         }

@@ -68,7 +68,7 @@ class OAuthUserProvider extends FOSUBUserProvider
                     if ($request instanceof Request) {
                         $user->setEmailLanguage($request->getLocale());
                     }
-                    $errors = $this->validator->validate($user);
+                    $errors = $this->validator->validate($user, null, ['registration']);
                     if ($errors->count() > 0) {
                         throw new NeedUserDataException('need_data');
                     }

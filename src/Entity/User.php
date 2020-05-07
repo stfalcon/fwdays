@@ -44,6 +44,7 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
+     *     groups={"profile"}
      * )
      */
     protected $company;
@@ -56,6 +57,7 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
+     *     groups={"profile"}
      * )
      */
     protected $post;
@@ -68,6 +70,12 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
+     *     groups={"profile"}
+     * )
+     * @Assert\Regex(
+     *     pattern="/^[\pL\-\s']+$/u",
+     *     match=true,
+     *     groups={"profile"}
      * )
      */
     protected $country;
@@ -80,6 +88,12 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
+     *     groups={"profile"}
+     * )
+     * @Assert\Regex(
+     *     pattern="/^[\pL\-\s']+$/u",
+     *     match=true,
+     *     groups={"profile"}
      * )
      */
     protected $city;
@@ -170,15 +184,17 @@ class User extends BaseUser
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration", "profile"})
      * @Assert\Regex(
      *     pattern="/^[\pL\-\s']+$/u",
      *     match=true,
-     *     message="error.name.only_letters"
+     *     message="error.name.only_letters",
+     *     groups={"registration", "profile"}
      * )
      * @Assert\Length(
      *     min = 2,
      *     max = 32,
+     *     groups={"registration", "profile"}
      * )
      *
      * @Groups("payment.view")
@@ -190,15 +206,17 @@ class User extends BaseUser
      *
      * @ORM\Column(name="surname", type="string", length=255, nullable=false)
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration", "profile"})
      * @Assert\Regex(
      *     pattern="/^[\pL\-\s']+$/u",
      *     match=true,
-     *     message="error.surname.only_letters"
+     *     message="error.surname.only_letters",
+     *     groups={"registration", "profile"}
      * )
      * @Assert\Length(
      *     min = 2,
      *     max = 32,
+     *     groups={"registration", "profile"}
      * )
      *
      * @Groups("payment.view")
@@ -213,7 +231,8 @@ class User extends BaseUser
      * @Assert\Regex(
      *     pattern="/\+[1-9]{1}[0-9]{10,14}$/i",
      *     match=true,
-     *     message="error.phone_bad_format"
+     *     message="error.phone_bad_format",
+     *     groups={"registration", "profile"}
      * )
      */
     protected $phone;
@@ -221,8 +240,8 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @Assert\Email(message="error.email_bad_format", strict="true")
-     * @Assert\NotBlank()
+     * @Assert\Email(message="error.email_bad_format", strict="true", groups={"registration", "profile"})
+     * @Assert\NotBlank(groups={"registration", "profile"})
      *
      * @Groups("payment.view")
      */
@@ -255,6 +274,7 @@ class User extends BaseUser
      * @Assert\Length(
      *     min = 2,
      *     max = 72,
+     *     groups={"registration"}
      * )
      */
     protected $plainPassword;
@@ -271,8 +291,8 @@ class User extends BaseUser
      *
      * @ORM\Column(type="string", name="email_language", nullable=false, options={"default":"uk"})
      *
-     * @Assert\NotBlank()
-     * @Assert\Length(min="2")
+     * @Assert\NotBlank(groups={"registration", "profile"})
+     * @Assert\Length(min="2", groups={"registration", "profile"})
      */
     private $emailLanguage = LocalsRequiredService::UK_EMAIL_LANGUAGE;
 
