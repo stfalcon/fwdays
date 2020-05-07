@@ -87,7 +87,7 @@ class RegistrationController extends BaseController
             if ($user instanceof User) {
                 $this->setUserFromOAuthResponse($user, $oAuthData);
                 $form->setData($user);
-                $errors = $this->validator->validate($user);
+                $errors = $this->validator->validate($user, null, ['registration']);
                 $oAuthError = $errors->count() > 0;
                 foreach ($errors as $error) {
                     $form->get($error->getPropertyPath())->addError(new FormError($error->getMessage()));

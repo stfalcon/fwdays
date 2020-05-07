@@ -6,6 +6,7 @@ use App\Entity\Page;
 use App\Repository\EventRepository;
 use App\Traits\ValidatorTrait;
 use Doctrine\Common\Collections\Criteria;
+use GuzzleHttp\Psr7\ServerRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

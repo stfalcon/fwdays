@@ -5,6 +5,8 @@ parameters:
         - en
 
     interkassa_override_callbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
+    fos_user.registration.form.validation_groups: ['registration']
+    fos_user.profile.form.validation_groups: ['profile']
 
 services:
     _defaults:
