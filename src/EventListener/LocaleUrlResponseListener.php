@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ServerBag;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,9 +19,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class LocaleUrlResponseListener implements EventSubscriberInterface
 {
-    private const UKRAINE_COUNTRY_CODE = 'UA';
     private const LANG_FROM_COOKIE = 'lang_from_cookie';
-    private const LANG_FROM_IP = 'lang_from_ip';
     private const LANG_FROM_PREFERRED = 'lang_from_preferred';
     private const LANG_FROM_NULL = 'lang_from_null';
     private const REDIRECT_NUMBER = 302;
@@ -160,7 +157,7 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
      */
     private function getCurrentLocale(Request $request, string &$langSource)
     {
-        $local = null;
+        $local = $this->defaultLocale;
 
         if ($request->cookies->has($this->cookieName) &&
             \in_array($request->cookies->get($this->cookieName), $this->locales, true)) {
@@ -168,22 +165,11 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
             $langSource = self::LANG_FROM_COOKIE;
         }
 
-        if (!$local) {
-            if (false !== $this->geoIpService->lookup($request->getClientIp())) {
-                if (self::UKRAINE_COUNTRY_CODE === $this->geoIpService->getCountryCode()) {
-                    $local = $this->defaultLocale;
-                } else {
-                    $local = 'en';
-                }
-                $langSource = self::LANG_FROM_IP;
-            }
-        }
-
         // get locale from preferred languages
-        if (!$local) {
-            $local = $request->getPreferredLanguage($this->locales);
-            $langSource = self::LANG_FROM_PREFERRED;
-        }
+//        if (!$local) {
+//            $local = $request->getPreferredLanguage($this->locales);
+//            $langSource = self::LANG_FROM_PREFERRED;
+//        }
 
         return $local;
     }
@@ -216,34 +202,6 @@ class LocaleUrlResponseListener implements EventSubscriberInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string|null
-     */
-    private function getRealIpAddr($request): ?string
-    {
-        $server = $request->server;
-        if (!$server instanceof ServerBag) {
-            return null;
-        }
-
-        $ip = null;
-        if ($server->has('HTTP_CLIENT_IP')) {
-            $ip = \filter_var($server->get('HTTP_CLIENT_IP'), FILTER_VALIDATE_IP);
-        }
-
-        if (!$ip && $server->has('HTTP_X_FORWARDED_FOR')) {
-            $ip = \filter_var($server->get('HTTP_X_FORWARDED_FOR'), FILTER_VALIDATE_IP);
-        }
-
-        if (!$ip) {
-            $ip = $server->get('REMOTE_ADDR');
-        }
-
-        return $ip;
     }
 
     /**
