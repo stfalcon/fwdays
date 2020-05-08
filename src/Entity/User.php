@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="users")
  *
  * @UniqueEntity(fields={"emailCanonical"}, errorPath="email", groups={"registration", "profile"})
-  */
+ */
 class User extends BaseUser
 {
     /**
