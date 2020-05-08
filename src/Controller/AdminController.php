@@ -17,6 +17,7 @@ use App\Repository\UserRepository;
 use App\Service\LocalsRequiredService;
 use App\Service\User\UserService;
 use App\Traits\EntityManagerTrait;
+use App\Traits\ValidatorTrait;
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Admin\Pool;
@@ -33,6 +34,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     use EntityManagerTrait;
+    use ValidatorTrait;
 
     private $userManager;
     private $mailerHelper;
@@ -108,7 +110,7 @@ class AdminController extends AbstractController
                     $user->setPlainPassword($password);
                     $user->setEnabled(true);
 
-                    $errors = $this->container->get('validator')->validate($user);
+                    $errors = $this->validator->validate($user, null, ['registration']);
                     if ($errors->count() > 0) {
                         $this->addFlash('sonata_flash_info', $user->getFullname().' — User create Bad credentials!');
                         break;
@@ -118,7 +120,7 @@ class AdminController extends AbstractController
 
                     // отправляем сообщение о регистрации
                     $body = $this->mailerHelper->renderTwigTemplate(
-                        'Registration:automatically.html.twig',
+                        'Registration/automatically.html.twig',
                         [
                             'user' => $user,
                             'plainPassword' => $password,
