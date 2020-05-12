@@ -46,6 +46,10 @@
     </div>
     <!--END layout-box__top-->
 
+    <div id="fb-root" class="lazyload" data-src="script">
+        <script data-src="{{ asset('js/facebook-sdk.js') }}" async></script>
+    </div>
+
     <!--BEGIN layout-box__bottom-->
     <div class="layout-box__bottom">
         {% include 'Redesign/footer.html.twig' %}
@@ -90,9 +94,7 @@
         var homePath = "{{ path('homepage') }}";
         var lang = '{{ lang }}';
     </script>
-    <div id="fb-root" class="lazyload" data-src="script">
-        <script data-src="{{ asset('js/facebook-sdk.js') }}" async></script>
-    </div>
+
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}" defer></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}" defer></script>
 
