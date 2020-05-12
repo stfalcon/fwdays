@@ -5,12 +5,9 @@
         in_progress = true;
 
         $('.lazyload').each(function() {
-            console.log($(this));
             if (window.scrollY + window.innerHeight > $(this).clientRect().top) {
-                console.log($(this) + ' working');
                 if ($(this).data('src')) {
                     if ($(this).data('src') === 'script') {
-                        console.log($(this) + ' script');
                         var scripts = $(this).find('script');
                         scripts.each(function () {
                             if ($(this).data('time')) {
