@@ -9,6 +9,7 @@
 
  Custom
  */
+//= ../partials/xregexp-all.js
 //= ../partials/js.cookie.js
 //= ../partials/app.js
 //= ../partials/localization.js
@@ -16,7 +17,6 @@
 //= ../additional-methods.min.js
 //= ../validator_localization_uk.js
 //= ../partials/add.js
-//= ../partials/payment.js
 //= ../partials/validator.js
-//= ../partials/location.js
-//= ../scroll-near-event-date.js
+//= ../skinny.js
+//= ../lazyload.js

@@ -46,6 +46,7 @@
 
 {% block scripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/partials/payment.js') }}" defer></script>
     <script>
         let ticket_count = '{{ payment_data.ticket_count }}';
         let saved_payment_amount = '{{ payment_data.amount }}';

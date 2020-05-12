@@ -36,7 +36,7 @@
     {% for i in 0..4 %}
     <li class="social__item">
         <a href="{{ labels[i].link }}" class="social__link" target="_blank">
-            <img class="social__icon" src="{{ labels[i].img }}" alt="{{ labels[i].title }}">
+            <img class="social__icon lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ labels[i].img }}" alt="{{ labels[i].title }}">
         </a>
     </li>
     {% endfor %}
