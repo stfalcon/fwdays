@@ -5,7 +5,12 @@
         in_progress = true;
 
         $('.lazyload').each(function() {
-            if (window.scrollY + window.innerHeight > $(this).clientRect().top) {
+            var delta_height = 0;
+            if ($(this).data('img-height')) {
+                delta_height = $(this).data('img-height');
+            }
+
+            if (window.scrollY + window.innerHeight > $(this).clientRect().top - delta_height) {
                 if ($(this).data('src')) {
                     if ($(this).data('src') === 'script') {
                         var scripts = $(this).find('script');
@@ -29,9 +34,9 @@
     }
 
 $(function(){
-    loadSrc();
-
     $(window).scroll(function () {
         loadSrc()
     });
 });
+
+loadSrc();

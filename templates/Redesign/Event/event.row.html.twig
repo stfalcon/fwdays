@@ -2,9 +2,9 @@
     <div class="event-row__left">
         <a href="{{ path('event_show', {'slug': event.slug } )}}" class="event-row__logo-link">
             {% if event.smallLogo is not empty %}
-                <img class="event-row__logo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ vich_uploader_asset(event, 'smallLogoFile') }}" alt="">
+                <img class="event-row__logo lazyload" data-img-height="92" src="{{ asset('img/blank.png') }}" data-src="{{ vich_uploader_asset(event, 'smallLogoFile') }}" alt="">
             {% elseif event.logo is not empty %}
-                <img class="event-row__logo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
+                <img class="event-row__logo lazyload" data-img-height="92" src="{{ asset('img/blank.png') }}" data-src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
             {% endif %}
         </a>
         <div class="event-row__details">
