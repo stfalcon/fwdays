@@ -12,7 +12,7 @@
         <div class="event-card__photo">
             <a href="{{ path('event_show', {'slug': event.slug } )}}">
                 {% if event.logo is not empty %}
-                    <img class="event-card__img" src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
+                    <img class="event-card__img lazyload" src="{{ asset('img/blank.png') }}" data-img-height="290" data-src="{{ vich_uploader_asset(event, 'logoFile') }}" alt="">
                 {% endif %}
             </a>
         </div>

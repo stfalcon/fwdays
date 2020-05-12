@@ -74,11 +74,9 @@
                         {% for speaker in review.speakers %}
                             <div class="review-speaker review">
                                 {% if speaker.photo is not null %}
-                                    <img class="review-speaker__photo" src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}"
-                                         alt="">
+                                    <img class="review-speaker__photo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}" alt="">
                                 {% else %}
-                                    <img class="review-speaker__photo" src="{{ asset('build/img/speakers/default_avatar.png') }}"
-                                         alt="">
+                                    <img class="review-speaker__photo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ asset('build/img/speakers/default_avatar.png') }}" alt="">
                                 {% endif %}
                                 <div class="review-speaker__description">
                                     <div class="review-speaker__name">{{ speaker.name }}</div>

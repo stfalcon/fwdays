@@ -9,13 +9,13 @@
 
  Custom
  */
+//= ../partials/xregexp-all.js
 //= ../partials/js.cookie.js
 //= ../partials/app.js
 //= ../jquery.validate.min.js
 //= ../additional-methods.min.js
 //= ../partials/localization.js
 //= ../partials/add.js
-//= ../partials/payment.js
 //= ../partials/validator.js
-//= ../partials/location.js
-//= ../scroll-near-event-date.js
+//= ../skinny.js
+//= ../lazyload.js

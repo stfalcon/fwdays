@@ -1,6 +1,4 @@
-
 $(document).ready(function () {
-
     function setMapByCoords(lng, lat) {
         if (typeof google === 'undefined') {
             return;

@@ -44,18 +44,18 @@ $(document).ready(function () {
         var now_date = getCurrentDateStr();
         var event_date = event_header_date_element.attr('datetime');
 
-        if ('scrollRestoration' in history) {
-            try {
-                if (event_date === now_date) {
-                    history.scrollRestoration = 'manual';
-                } else {
-                    history.scrollRestoration = 'auto';
-                }
-            } catch (e) {
-                console.log('set history.scrollRestoration unsupported');
-            }
-        }
         if (event_date === now_date) {
+            if ('scrollRestoration' in history) {
+                try {
+                    if (event_date === now_date) {
+                        history.scrollRestoration = 'manual';
+                    } else {
+                        history.scrollRestoration = 'auto';
+                    }
+                } catch (e) {
+                    console.log('set history.scrollRestoration unsupported');
+                }
+            }
             scrollToNearReport();
         }
     }
