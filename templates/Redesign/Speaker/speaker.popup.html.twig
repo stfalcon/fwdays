@@ -1,8 +1,8 @@
 <div class="speaker-popup">
     {% if speaker.photo is not null %}
-        <img class="speaker-popup__photo" src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}" alt="">
+        <img class="speaker-popup__photo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ speaker_cache_path ~ '/' ~ speaker.photo }}" alt="">
     {% else %}
-        <img class="speaker-popup__photo" src="{{ asset('build/img/speakers/default_avatar.png') }}" alt="">
+        <img class="speaker-popup__photo lazyload" src="{{ asset('img/blank.png') }}" data-src="{{ asset('build/img/speakers/default_avatar.png') }}" alt="">
     {% endif %}
     <div class="speaker-popup__description">
         <div class="speaker-popup__name">{{ speaker.name }}</div>

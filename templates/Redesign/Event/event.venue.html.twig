@@ -8,7 +8,9 @@
             <a href="{{ path('show_event_venue_page', {'slug': event.slug }) }}" class="location__help">{{ 'event.page.venue_how'|trans }}</a>
         {%- endif -%}
     </div>
-    <div class="container">
+    <div class="container lazyload" data-src="script">
         <div id="map" data-event="{{ event.slug }}" data-lng="{{ event.lng }}" data-lat="{{ event.lat }}" class="location__map"></div>
+        <script type="text/javascript" data-src="https://maps.googleapis.com/maps/api/js?key={{ google_apikey }}&libraries=places" defer></script>
+        <script type="text/javascript" data-time="100" data-src="{{ asset('js/partials/location.js') }}" defer></script>
     </div>
 </section>

@@ -2,10 +2,9 @@
 
 namespace App\EventListener\Auth;
 
+use App\Traits;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\AuthenticationEvents;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 
@@ -14,20 +13,10 @@ use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
  */
 class UserAuthenticationSubscriber implements EventSubscriberInterface
 {
+    use Traits\SessionTrait;
+    use Traits\RequestStackTrait;
+
     public const SESSION_REMEMBER_ME_KEY = 'remember_me_state';
-
-    private $session;
-    private $requestStack;
-
-    /**
-     * @param Session      $session
-     * @param RequestStack $requestStack
-     */
-    public function __construct(Session $session, RequestStack $requestStack)
-    {
-        $this->session = $session;
-        $this->requestStack = $requestStack;
-    }
 
     /**
      * {@inheritdoc}
