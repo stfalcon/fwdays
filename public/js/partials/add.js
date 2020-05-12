@@ -22,6 +22,7 @@ function setSpeakerHtml(e_slug, s_slug, with_review) {
             if (data.result) {
                 $('#speaker-popup-content').html(data.html);
                 inst.open();
+                loadSrc();
             } else {
                 inst.close();
                 console.log('Error:' + data.html);
