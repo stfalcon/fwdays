@@ -13,6 +13,7 @@ use App\Helper\MailerHelper;
 use App\Model\UserManager;
 use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
+use App\Repository\UserEventRegistrationRepository;
 use App\Repository\UserRepository;
 use App\Service\LocalsRequiredService;
 use App\Service\User\UserService;
@@ -44,18 +45,20 @@ class AdminController extends AbstractController
     private $ticketRepository;
     private $eventRepository;
     private $userService;
+    private $userEventRegistrationRepository;
 
     /**
-     * @param UserManager      $userManager
-     * @param MailerHelper     $mailerHelper
-     * @param Pool             $pool
-     * @param \Swift_Mailer    $mailer
-     * @param UserRepository   $userRepository
-     * @param TicketRepository $ticketRepository
-     * @param EventRepository  $eventRepository
-     * @param UserService      $userService
+     * @param UserManager                     $userManager
+     * @param MailerHelper                    $mailerHelper
+     * @param Pool                            $pool
+     * @param \Swift_Mailer                   $mailer
+     * @param UserRepository                  $userRepository
+     * @param TicketRepository                $ticketRepository
+     * @param EventRepository                 $eventRepository
+     * @param UserService                     $userService
+     * @param UserEventRegistrationRepository $userEventRegistrationRepository
      */
-    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService)
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository)
     {
         $this->userManager = $userManager;
         $this->mailerHelper = $mailerHelper;
@@ -65,6 +68,7 @@ class AdminController extends AbstractController
         $this->ticketRepository = $ticketRepository;
         $this->eventRepository = $eventRepository;
         $this->userService = $userService;
+        $this->userEventRegistrationRepository = $userEventRegistrationRepository;
     }
 
     /**
@@ -391,6 +395,86 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/general_events_statistic", name="admin_general_events_statistic")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function generalEventsStatisticAction(Request $request): Response
+    {
+        $sinceString = $request->query->get('since');
+        $tillString = $request->query->get('till');
+
+        $since = \DateTime::createFromFormat('Y-m-d', $sinceString);
+        $till = \DateTime::createFromFormat('Y-m-d', $tillString);
+
+        if (!$since instanceof \DateTime || !$till instanceof \DateTime) {
+            $till = (new \DateTime());
+            $since = clone $till;
+            $since->modify('-14 days');
+        }
+        $data = $this->ticketRepository->getTicketsCountByEventsPerDateBetweenDates($since, $till);
+        $events = [];
+        foreach ($data as $key => $item) {
+            $data[$key]['name'] = \str_replace("'", ' ', $item['name']);
+            $events[$data[$key]['name']] = 0;
+        }
+
+        $resultSoldCount = $this->setEmptyIntervalArrayWithArray($events, $since, $till);
+        $resultSoldAmount = $resultSoldCount;
+        $resultReturnedAmount = $resultSoldCount;
+        $totalSoldCount = 0;
+        $totalSoldAmount = 0;
+        $totalReturnedAmount = 0;
+
+        foreach ($data as $item) {
+            if (Payment::STATUS_RETURNED === $item['status']) {
+                $resultReturnedAmount[$item['date']][$item['name']] = (int) $item['amount'];
+                $totalReturnedAmount += (int) $item['amount'];
+            } else {
+                $resultSoldCount[$item['date']][$item['name']] = (int) $item['tickets_count'];
+                $resultSoldAmount[$item['date']][$item['name']] = (int) $item['amount'];
+                $totalSoldCount += (int) $item['tickets_count'];
+                $totalSoldAmount += (int) $item['amount'];
+            }
+        }
+
+        $registrations = $this->userEventRegistrationRepository->getUsersRegistrationCountPerDateBetweenDates($since, $till);
+        $registrationEvents = [];
+
+        foreach ($registrations as $key => $item) {
+            $registrations[$key]['name'] = \str_replace("'", ' ', $item['name']);
+            $registrationEvents[$registrations[$key]['name']] = 0;
+        }
+        $resultRegistrationsCount = $this->setEmptyIntervalArrayWithArray($registrationEvents, $since, $till);
+        $totalRegistrationCount = 0;
+
+        foreach ($registrations as $item) {
+            $resultRegistrationsCount[$item['date']][$item['name']] = (int) $item['users_count'];
+            $totalRegistrationCount += (int) $item['users_count'];
+        }
+
+        return $this->render(
+            'Statistic/general_events_statistic.html.twig',
+            [
+                'data_sold_count' => $resultSoldCount,
+                'total_sold_count' => $totalSoldCount,
+                'data_sold_amount' => $resultSoldAmount,
+                'total_sold_amount' => $totalSoldAmount,
+                'data_returned_amount' => $resultReturnedAmount,
+                'total_returned_amount' => $totalReturnedAmount,
+                'data_registration_count' => $resultRegistrationsCount,
+                'total_registration_count' => $totalRegistrationCount,
+                'events' => $events,
+                'registration_events' => $registrationEvents,
+                'since' => $since,
+                'till' => $till,
+            ]
+        );
+    }
+
+    /**
      * @Route("/admin/users_not_buy_tickets", name="admin_user_tickets")
      *
      * @param Request $request
@@ -534,5 +618,24 @@ class AdminController extends AbstractController
         };
 
         return new StreamedResponse($callback, 200, $headers);
+    }
+
+    /**
+     * @param array     $emptyArray
+     * @param \DateTime $since
+     * @param \DateTime $till
+     *
+     * @return array
+     */
+    private function setEmptyIntervalArrayWithArray(array $emptyArray, \DateTime $since, \DateTime $till): array
+    {
+        $period = new \DatePeriod($since->setTime(0, 0, 0), new \DateInterval('P1D'), $till->setTime(23, 59, 59));
+        $result = [];
+        /** @var \DateTime $day */
+        foreach ($period as $day) {
+            $result[$day->format('Y-m-d')] = $emptyArray;
+        }
+
+        return  $result;
     }
 }

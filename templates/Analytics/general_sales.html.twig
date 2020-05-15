@@ -1,0 +1,153 @@
+<h1>Общее движение по оплатам (по дням)</h1>
+
+<div class="form-group">
+    <label class="control-label required" for="">
+        Начало периода
+    </label>
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <div class="input-group">
+            <div class="input-group date " id="dtp_since_date">
+                <input type="text" id="since_date" name="since_date" required="required" class="sonata-medium-date form-control" data-date-format="YYYY-MM-DD" value="{{ since|date('Y-m-d') }}">
+                <span class="input-group-addon"><span class="fa-calendar fa"></span></span>
+            </div>
+        </div>
+        <span class="help-block sonata-ba-field-widget-help"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label required" for="">
+        Окончание периода
+    </label>
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <div class="input-group">
+            <div class="input-group date " id="dtp_till_date">
+                <input type="text" id="till_date" name="till_date" required="required" class="sonata-medium-date form-control" data-date-format="YYYY-MM-DD" value="{{ till|date('Y-m-d') }}">
+                <span class="input-group-addon"><span class="fa-calendar fa"></span></span>
+            </div>
+        </div>
+        <span class="help-block sonata-ba-field-widget-help"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <button class="btn btn-primary" onclick="showStatistic()">Показать</button>
+</div>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#dtp_since_date').datetimepicker({"pickTime":true,"pickDate":true,"useCurrent":true,"minDate":"1\/1\/1900","maxDate":null,"showToday":true,"defaultDate":"","disabledDates":[],"enabledDates":[],"icons":{"time":"fa fa-clock-o","date":"fa fa-calendar","up":"fa fa-chevron-up","down":"fa fa-chevron-down"},"useStrict":false,"sideBySide":false,"daysOfWeekDisabled":[],"collapse":true,"calendarWeeks":false,"viewMode":"days","minViewMode":"days","useMinutes":true,"language":"ru","useSeconds":false,"minuteStepping":10});
+        $('#dtp_till_date').datetimepicker({"pickTime":true,"pickDate":true,"useCurrent":true,"minDate":"1\/1\/1900","maxDate":null,"showToday":true,"defaultDate":"","disabledDates":[],"enabledDates":[],"icons":{"time":"fa fa-clock-o","date":"fa fa-calendar","up":"fa fa-chevron-up","down":"fa fa-chevron-down"},"useStrict":false,"sideBySide":false,"daysOfWeekDisabled":[],"collapse":true,"calendarWeeks":false,"viewMode":"days","minViewMode":"days","useMinutes":true,"language":"ru","useSeconds":false,"minuteStepping":10});
+    });
+
+    function showStatistic() {
+        window.location.href = "{{ path('admin_general_events_statistic') }}"+"?since="+$('#since_date').val()+"&till="+$('#till_date').val();
+    }
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<h2>Продажи - количество</h2>
+<div id="chart_sold_count" style="width: auto; height: 500px;"></div>
+<h4>
+    Total sold count: <b>{{ total_sold_count|number_format(0, '.', ',') }}‎</b>
+</h4>
+<h2>Продажи - cумма</h2>
+<div id="chart_sold_amount" style="width: auto; height: 500px;"></div>
+<h4>
+    Total sold amount: <b>{{ total_sold_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+</h4>
+<h2>Продажи - возврат</h2>
+<div id="chart_returned_amount" style="width: auto; height: 500px;"></div>
+<h4>
+    Total return amount: <b>{{ total_returned_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+</h4>
+
+<h2>Регистрации - количество</h2>
+<div id="chart_registration_count" style="width: auto; height: 500px;"></div>
+<h4>
+    Total registration count: <b>{{ total_registration_count|number_format(0, '.', ',') }}‎</b>
+</h4>
+
+<script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+    function drawStacked() {
+        drawSoldCount();
+        drawSoldAmount();
+        drawReturnedAmount();
+        drawRegistrationCount();
+    }
+
+    function drawRegistrationCount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in registration_events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_registration_count %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_registration_count'));
+        chart.draw(data, options);
+    }
+
+    function drawSoldCount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_sold_count %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_sold_count'));
+        chart.draw(data, options);
+    }
+
+    function drawSoldAmount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_sold_amount %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_sold_amount'));
+        chart.draw(data, options);
+    }
+
+    function drawReturnedAmount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_returned_amount %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_returned_amount'));
+        chart.draw(data, options);
+    }
+</script>

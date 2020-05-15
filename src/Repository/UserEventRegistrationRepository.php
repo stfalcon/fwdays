@@ -66,4 +66,37 @@ class UserEventRegistrationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getOneOrNullResult() instanceof UserEventRegistration;
     }
+
+    /**
+     * @param \DateTime $since
+     * @param \DateTime $till
+     *
+     * @return array
+     */
+    public function getUsersRegistrationCountPerDateBetweenDates(\DateTime $since, \DateTime $till): array
+    {
+        $startSince = clone $since;
+        $endTill = clone $till;
+
+        $startSince->setTime(0, 0);
+        $endTill->setTime(23, 59, 59);
+
+        $qb = $this->createQueryBuilder('ur');
+        $qb->select('DATE(ur.createdAt) as date, COUNT(ur.id) as users_count, e.name')
+            ->join('ur.event', 'e')
+            ->andWhere($qb->expr()->between('ur.createdAt', ':date_from', ':date_to'))
+            ->setParameters(new ArrayCollection([
+                new Parameter('date_from', $startSince),
+                new Parameter('date_to', $endTill),
+            ]))
+            ->addGroupBy('e.name')
+            ->addGroupBy('date')
+            ->orderBy('date')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

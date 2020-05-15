@@ -1,0 +1,25 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
+
+{% block sonata_breadcrumb %}
+    <div class="navbar-left">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a>
+            </li>
+            <li class="active">Статистика событий</li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block title %} - {{ 'Статистика событий' }}{% endblock title %}
+
+{% block content %}
+    <a href="{{ path('admin_statistic_all') }}">Вернутся к общей статистике</a>
+    {% include 'Analytics/general_sales.html.twig' %}
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
