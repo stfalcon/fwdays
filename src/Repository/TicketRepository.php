@@ -112,20 +112,21 @@ class TicketRepository extends ServiceEntityRepository
         $endTill->setTime(23, 59, 59);
 
         $qb = $this->createQueryBuilder('t');
-        $qb->select('DATE(p.updatedAt) as date_of_sale, COUNT(t.id) as tickets_sold_count, e.name')
+        $qb->select('DATE(p.updatedAt) as date, COUNT(t.id) as tickets_count, SUM(t.amount) as amount, p.status, e.name')
             ->join('t.payment', 'p')
             ->join('t.event', 'e')
             ->andWhere($qb->expr()->between('p.updatedAt', ':date_from', ':date_to'))
-            ->andWhere($qb->expr()->eq('p.status', ':status'))
+            ->andWhere($qb->expr()->in('p.status', ':status'))
             ->andWhere($qb->expr()->gt('p.amount', 0))
             ->setParameters(new ArrayCollection([
                 new Parameter('date_from', $startSince),
                 new Parameter('date_to', $endTill),
-                new Parameter('status', Payment::STATUS_PAID),
+                new Parameter('status', [Payment::STATUS_PAID, Payment::STATUS_RETURNED]),
             ]))
             ->addGroupBy('e.name')
-            ->addGroupBy('date_of_sale')
-            ->orderBy('date_of_sale')
+            ->addGroupBy('date')
+            ->addGroupBy('p.status')
+            ->orderBy('date')
         ;
 
         return $qb
