@@ -442,17 +442,29 @@ class AdminController extends AbstractController
 
         $registrations = $this->userEventRegistrationRepository->getUsersRegistrationCountPerDateBetweenDates($since, $till);
         $registrationEvents = [];
+        $registrationMeetupsEvents = [];
 
         foreach ($registrations as $key => $item) {
             $registrations[$key]['name'] = \str_replace("'", ' ', $item['name']);
-            $registrationEvents[$registrations[$key]['name']] = 0;
+            if ($item['smallEvent']) {
+                $registrationMeetupsEvents[$registrations[$key]['name']] = 0;
+            } else {
+                $registrationEvents[$registrations[$key]['name']] = 0;
+            }
         }
         $resultRegistrationsCount = $this->setEmptyIntervalArrayWithArray($registrationEvents, $since, $till);
+        $resultSmallEventRegistrationsCount = $this->setEmptyIntervalArrayWithArray($registrationMeetupsEvents, $since, $till);
         $totalRegistrationCount = 0;
+        $totalSmallEventsRegistrationCount = 0;
 
         foreach ($registrations as $item) {
-            $resultRegistrationsCount[$item['date']][$item['name']] = (int) $item['users_count'];
-            $totalRegistrationCount += (int) $item['users_count'];
+            if ($item['smallEvent']) {
+                $resultSmallEventRegistrationsCount[$item['date']][$item['name']] = (int) $item['users_count'];
+                $totalSmallEventsRegistrationCount += (int) $item['users_count'];
+            } else {
+                $resultRegistrationsCount[$item['date']][$item['name']] = (int) $item['users_count'];
+                $totalRegistrationCount += (int) $item['users_count'];
+            }
         }
 
         return $this->render(
@@ -466,8 +478,11 @@ class AdminController extends AbstractController
                 'total_returned_amount' => $totalReturnedAmount,
                 'data_registration_count' => $resultRegistrationsCount,
                 'total_registration_count' => $totalRegistrationCount,
+                'data_small_events_registration_count' => $resultSmallEventRegistrationsCount,
+                'total_small_events_registration_count' => $totalSmallEventsRegistrationCount,
                 'events' => $events,
                 'registration_events' => $registrationEvents,
+                'registration_meetups_events' => $registrationMeetupsEvents,
                 'since' => $since,
                 'till' => $till,
             ]
