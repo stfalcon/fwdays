@@ -82,7 +82,7 @@ class UserEventRegistrationRepository extends ServiceEntityRepository
         $endTill->setTime(23, 59, 59);
 
         $qb = $this->createQueryBuilder('ur');
-        $qb->select('DATE(ur.createdAt) as date, COUNT(ur.id) as users_count, e.name')
+        $qb->select('DATE(ur.createdAt) as date, COUNT(ur.id) as users_count, e.name, e.smallEvent')
             ->join('ur.event', 'e')
             ->andWhere($qb->expr()->between('ur.createdAt', ':date_from', ':date_to'))
             ->setParameters(new ArrayCollection([

@@ -68,6 +68,12 @@
     Total registration count: <b>{{ total_registration_count|number_format(0, '.', ',') }}‎</b>
 </h4>
 
+<h2>Регистрации meetups - количество</h2>
+<div id="chart_meetups_registration_count" style="width: auto; height: 500px;"></div>
+<h4>
+    Total meetups registration count: <b>{{ total_small_events_registration_count|number_format(0, '.', ',') }}‎</b>
+</h4>
+
 <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawStacked);
@@ -77,6 +83,25 @@
         drawSoldAmount();
         drawReturnedAmount();
         drawRegistrationCount();
+        drawSmallEventsRegistrationCount();
+    }
+
+    function drawSmallEventsRegistrationCount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in registration_meetups_events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_small_events_registration_count %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_meetups_registration_count'));
+        chart.draw(data, options);
     }
 
     function drawRegistrationCount() {
