@@ -27,14 +27,13 @@
 {% block content %}
         {#<h1>{{ event.name }}</h1>#}
 
-
-
     {% if data['event_statistic_slug'] is not empty %}
-        <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Перейти к статистике по событиям</a>
+        <a href="{{ path('admin_event_statistic', {'slug' : data['event_statistic_slug']}) }}">Статистике по событиям</a>
         <br>
     {% endif %}
-        <a href="{{ path('admin_events_statistic_all') }}">Перейти к статистике по пересечению аудитории событий</a><br>
-        <a href="{{ path('admin_user_tickets') }}">Перейти к статистике по посетителям не купившим билет</a>
+        <a href="{{ path('admin_general_events_statistic') }}">Статистика по реализации билетов по всем событиям</a><br>
+        <a href="{{ path('admin_events_statistic_all') }}">Статистика по пересечению аудитории событий</a><br>
+        <a href="{{ path('admin_user_tickets') }}">Статистика по посетителям не купившим билет</a>
     <h1>Статистика</h1>
 
     <h4>Общая статистика участников</h4>
