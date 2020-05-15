@@ -1,4 +1,4 @@
-<h2>Загальні продажі (по дням)</h2>
+<h1>Общее движение по оплатам (по дням)</h1>
 
 <div class="form-group">
     <label class="control-label required" for="">
@@ -44,29 +44,110 @@
         window.location.href = "{{ path('admin_general_events_statistic') }}"+"?since="+$('#since_date').val()+"&till="+$('#till_date').val();
     }
 </script>
-
-<div id="chart_div" style="width: auto; height: 500px;"></div>
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<h2>Продажи - количество</h2>
+<div id="chart_sold_count" style="width: auto; height: 500px;"></div>
+<h4>
+    Total sold count: <b>{{ total_sold_count|number_format(0, '.', ',') }}‎</b>
+</h4>
+<h2>Продажи - cумма</h2>
+<div id="chart_sold_amount" style="width: auto; height: 500px;"></div>
+<h4>
+    Total sold amount: <b>{{ total_sold_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+</h4>
+<h2>Продажи - возврат</h2>
+<div id="chart_returned_amount" style="width: auto; height: 500px;"></div>
+<h4>
+    Total return amount: <b>{{ total_returned_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+</h4>
+
+<h2>Регистрации - количество</h2>
+<div id="chart_registration_count" style="width: auto; height: 500px;"></div>
+<h4>
+    Total registration count: <b>{{ total_registration_count|number_format(0, '.', ',') }}‎</b>
+</h4>
+
 <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawStacked);
 
     function drawStacked() {
+        drawSoldCount();
+        drawSoldAmount();
+        drawReturnedAmount();
+        drawRegistrationCount();
+    }
+
+    function drawRegistrationCount() {
         var data = google.visualization.arrayToDataTable([
-            [   'Genre',
-                {% for event_name, cnt in events %}
-                    '{{ event_name }}',
+            [   'Date',
+                {% for event_name, cnt in registration_events %}
+                '{{ event_name }}',
                 {% endfor %}
                 { role: 'annotation' }
             ],
-            {% for date, event_data in data %}
+            {% for date, event_data in data_registration_count %}
             ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
             {% endfor %}
         ]);
         var options = {isStacked: true};
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_registration_count'));
+        chart.draw(data, options);
+    }
+
+    function drawSoldCount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_sold_count %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_sold_count'));
+        chart.draw(data, options);
+    }
+
+    function drawSoldAmount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_sold_amount %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_sold_amount'));
+        chart.draw(data, options);
+    }
+
+    function drawReturnedAmount() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Date',
+                {% for event_name, cnt in events %}
+                '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data_returned_amount %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_returned_amount'));
         chart.draw(data, options);
     }
 </script>
