@@ -1,0 +1,72 @@
+<h2>Загальні продажі (по дням)</h2>
+
+<div class="form-group">
+    <label class="control-label required" for="">
+        Начало периода
+    </label>
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <div class="input-group">
+            <div class="input-group date " id="dtp_since_date">
+                <input type="text" id="since_date" name="since_date" required="required" class="sonata-medium-date form-control" data-date-format="YYYY-MM-DD" value="{{ since|date('Y-m-d') }}">
+                <span class="input-group-addon"><span class="fa-calendar fa"></span></span>
+            </div>
+        </div>
+        <span class="help-block sonata-ba-field-widget-help"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label required" for="">
+        Окончание периода
+    </label>
+    <div class="sonata-ba-field sonata-ba-field-standard-natural">
+        <div class="input-group">
+            <div class="input-group date " id="dtp_till_date">
+                <input type="text" id="till_date" name="till_date" required="required" class="sonata-medium-date form-control" data-date-format="YYYY-MM-DD" value="{{ till|date('Y-m-d') }}">
+                <span class="input-group-addon"><span class="fa-calendar fa"></span></span>
+            </div>
+        </div>
+        <span class="help-block sonata-ba-field-widget-help"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <button class="btn btn-primary" onclick="showStatistic()">Показать</button>
+</div>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('#dtp_since_date').datetimepicker({"pickTime":true,"pickDate":true,"useCurrent":true,"minDate":"1\/1\/1900","maxDate":null,"showToday":true,"defaultDate":"","disabledDates":[],"enabledDates":[],"icons":{"time":"fa fa-clock-o","date":"fa fa-calendar","up":"fa fa-chevron-up","down":"fa fa-chevron-down"},"useStrict":false,"sideBySide":false,"daysOfWeekDisabled":[],"collapse":true,"calendarWeeks":false,"viewMode":"days","minViewMode":"days","useMinutes":true,"language":"ru","useSeconds":false,"minuteStepping":10});
+        $('#dtp_till_date').datetimepicker({"pickTime":true,"pickDate":true,"useCurrent":true,"minDate":"1\/1\/1900","maxDate":null,"showToday":true,"defaultDate":"","disabledDates":[],"enabledDates":[],"icons":{"time":"fa fa-clock-o","date":"fa fa-calendar","up":"fa fa-chevron-up","down":"fa fa-chevron-down"},"useStrict":false,"sideBySide":false,"daysOfWeekDisabled":[],"collapse":true,"calendarWeeks":false,"viewMode":"days","minViewMode":"days","useMinutes":true,"language":"ru","useSeconds":false,"minuteStepping":10});
+    });
+
+    function showStatistic() {
+        window.location.href = "{{ path('admin_general_events_statistic') }}"+"?since="+$('#since_date').val()+"&till="+$('#till_date').val();
+    }
+</script>
+
+<div id="chart_div" style="width: auto; height: 500px;"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawStacked);
+
+    function drawStacked() {
+        var data = google.visualization.arrayToDataTable([
+            [   'Genre',
+                {% for event_name, cnt in events %}
+                    '{{ event_name }}',
+                {% endfor %}
+                { role: 'annotation' }
+            ],
+            {% for date, event_data in data %}
+            ['{{ date }}', {% for count in event_data %}{{ count }}, {% endfor %}''],
+            {% endfor %}
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>

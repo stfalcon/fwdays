@@ -391,6 +391,54 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/general_events_statistic", name="admin_general_events_statistic")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function generalEventsStatisticAction(Request $request): Response
+    {
+        $sinceString = $request->query->get('since');
+        $tillString = $request->query->get('till');
+
+        $since = \DateTime::createFromFormat('Y-m-d', $sinceString);
+        $till = \DateTime::createFromFormat('Y-m-d', $tillString);
+
+        if (!$since instanceof \DateTime || !$till instanceof \DateTime) {
+            $till = (new \DateTime());
+            $since = clone $till;
+            $since->modify('-14 days');
+        }
+
+        $data = $this->ticketRepository->getTicketsCountByEventsPerDateBetweenDates($since, $till);
+        $events = [];
+        foreach ($data as $item) {
+            $events[$item['name']] = 0;
+        }
+
+        $result = $this->setEmptyIntervalArrayWithArray($events, $since, $till);
+
+        foreach ($data as $item) {
+            if (!isset($result[$item['date_of_sale']])) {
+                $result[$item['date_of_sale']] = $events;
+            }
+
+            $result[$item['date_of_sale']][$item['name']] = (int) $item['tickets_sold_count'];
+        }
+
+        return $this->render(
+            'Statistic/general_events_statistic.html.twig',
+            [
+                'data' => $result,
+                'events' => $events,
+                'since' => $since,
+                'till' => $till,
+            ]
+        );
+    }
+
+    /**
      * @Route("/admin/users_not_buy_tickets", name="admin_user_tickets")
      *
      * @param Request $request
@@ -534,5 +582,24 @@ class AdminController extends AbstractController
         };
 
         return new StreamedResponse($callback, 200, $headers);
+    }
+
+    /**
+     * @param array     $emptyArray
+     * @param \DateTime $since
+     * @param \DateTime $till
+     *
+     * @return array
+     */
+    private function setEmptyIntervalArrayWithArray(array $emptyArray, \DateTime $since, \DateTime $till): array
+    {
+        $period = new \DatePeriod($since->setTime(0, 0, 0), new \DateInterval('P1D'), $till->setTime(23, 59, 59));
+        $result = [];
+        /** @var \DateTime $day */
+        foreach ($period as $day) {
+            $result[$day->format('Y-m-d')] = $emptyArray;
+        }
+
+        return  $result;
     }
 }
