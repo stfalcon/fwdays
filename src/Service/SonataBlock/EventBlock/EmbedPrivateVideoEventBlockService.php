@@ -83,7 +83,10 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $userRegisteredForFreeEvent = false;
         }
 
-        if (($ticket instanceof Ticket && $ticket->isPaid()) || $userRegisteredForFreeEvent || ($user instanceof User && $user->hasRole('ROLE_ADMIN'))) {
+        if (($ticket instanceof Ticket && $ticket->isPaid()) ||
+            $userRegisteredForFreeEvent ||
+            ($user instanceof User && ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')))
+        ) {
             return $this->renderResponse($blockContext->getTemplate(), [
                 'block' => $blockContext->getBlock(),
                 'event_block' => $eventBlock,
