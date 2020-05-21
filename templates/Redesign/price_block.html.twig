@@ -45,14 +45,18 @@
         {%- if ticket.count or ticket.unlimited -%}
             <div class="cost__tickets cost__tickets_with-hint">{{ 'tickets.count'|trans({'%ticket_count%': ticket.count}, null, null, ticket.count|pluralization) }}
                 {%- if ticket.isTicketsRunOut -%}
-                    <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans }}</span>
+                    <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
                 {% endif %}
                 {%- if loop.first -%}
                     <div class="cost__hint">{{ 'tickets.hint'|trans }}</div>
                 {% endif %}
             </div>
         {%- elseif null != ticket.endDate -%}
-            <div class="cost__tickets">{{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}</div>
+            <div class="cost__tickets">{{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}
+                {%- if ticket.isTicketsRunOut -%}
+                    <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
+                {% endif %}
+            </div>
         {%- else -%}
             <div class="cost__tickets">{{ 'tickets.other.title'|trans }}</div>
         {% endif %}
