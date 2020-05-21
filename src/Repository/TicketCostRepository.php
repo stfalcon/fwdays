@@ -5,8 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\TicketCost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Parameter;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -81,19 +80,41 @@ class TicketCostRepository extends ServiceEntityRepository
      */
     public function getEnabledTicketCostWithEndDateLessThanDate(\DateTimeInterface $dateTime): array
     {
+        $qb = $this->getEnabledTicketCostWithEndDateLessThanDateQb($dateTime);
+
+        return  $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param \DateTimeInterface $dateTime
+     *
+     * @return TicketCost[]
+     */
+    public function getNotRunOutEnabledTicketCostWithEndDateLessThanDate(\DateTimeInterface $dateTime): array
+    {
+        $qb = $this->getEnabledTicketCostWithEndDateLessThanDateQb($dateTime);
+        $qb->andWhere($qb->expr()->eq('tc.ticketsRunOut', ':run_out'))
+            ->setParameter('run_out', false);
+
+        return  $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param \DateTimeInterface $dateTime
+     *
+     * @return QueryBuilder
+     */
+    private function getEnabledTicketCostWithEndDateLessThanDateQb(\DateTimeInterface $dateTime): QueryBuilder
+    {
         $qb = $this->createQueryBuilder('tc');
         $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
             ->andWhere($qb->expr()->isNotNull('tc.endDate'))
             ->andWhere($qb->expr()->lt('tc.endDate', ':date_time'))
-            ->setParameters(new ArrayCollection(
-                [
-                    new Parameter('date_time', $dateTime),
-                    new Parameter('enabled', true),
-                ]
-            ))
+            ->setParameter('date_time', $dateTime)
+            ->setParameter('enabled', true)
         ;
 
-        return  $qb->getQuery()->getResult();
+        return  $qb;
     }
 
     /**
