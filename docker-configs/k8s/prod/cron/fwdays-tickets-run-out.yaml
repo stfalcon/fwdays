@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fwdays-tickets-run-out
+  namespace: fwdays-prod
+spec:
+  schedule: "13 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: fwdays-backend
+            image: %job-image-name%
+            env:
+            - name: SERVER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: server-name
+                  key: server-name
+            envFrom:
+            - configMapRef:
+                name: backend-env
+            args:
+            - bash
+            - -c
+            - su www-data -c  "php bin/console app:tickets-run-out --env=prod"
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: regcred-dockerhub
