@@ -201,15 +201,14 @@ class Payment
      */
     public function removeTicket(Ticket $ticket): bool
     {
-        $ticket->setPayment(null);
+        if ($this->tickets->contains($ticket)) {
+            $ticket->setPayment(null);
+            $this->tickets->removeElement($ticket);
+        }
 
         $ticketCost = $ticket->getTicketCost();
         if ($ticketCost instanceof TicketCost) {
             $ticketCost->recalculateSoldCount();
-        }
-
-        if ($this->tickets->contains($ticket)) {
-            $this->tickets->removeElement($ticket);
         }
 
         if ($this->isPaid()) {

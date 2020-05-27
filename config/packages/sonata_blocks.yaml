@@ -7,26 +7,26 @@ services:
 
     sonata.block.event.youtube_private_video:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository', '@App\Service\Ticket\TicketService']
         tags: [name: 'sonata.block']
 
     sonata.block.event.youtube_private_playlist:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository', '@App\Service\Ticket\TicketService']
         calls:
             - [setIsPlayList, ['true']]
         tags: [name: 'sonata.block']
 
     sonata.block.event.vimeo_private_video:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository', '@App\Service\Ticket\TicketService']
         calls:
             - [setTemplate, ['Redesign/Event/event.vimeo_video_block.html.twig']]
         tags: [name: 'sonata.block']
 
     sonata.block.event.vimeo_private_playlist:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
-        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository']
+        arguments: ['sonata.block.event.text', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Repository\UserEventRegistrationRepository', '@App\Service\Ticket\TicketService']
         calls:
             - [setIsPlayList, ['true']]
             - [setTemplate, ['Redesign/Event/event.vimeo_video_block.html.twig']]
