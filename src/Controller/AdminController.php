@@ -163,7 +163,6 @@ class AdminController extends AbstractController
                     $ticket = (new Ticket())
                         ->setEvent($event)
                         ->setUser($user)
-                        ->setHideConditions(isset($_POST['hide_conditions']))
                     ;
                     $em->persist($ticket);
                     $this->userService->registerUserToEvent($user, $event, null, false);
@@ -188,6 +187,7 @@ class AdminController extends AbstractController
                         ->setAmount($amount)
                         ->setHasDiscount($data['discount'])
                         ->setAmountWithoutDiscount($amountWithOutDiscount)
+                        ->setHideConditions(isset($_POST['hide_conditions']))
                     ;
 
                     $oldPayment = $ticket->getPayment();
