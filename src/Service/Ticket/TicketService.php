@@ -346,6 +346,30 @@ class TicketService
     }
 
     /**
+     * @param Ticket $ticket
+     */
+    public function setTickedUsedIfOnlineEvent(Ticket $ticket): void
+    {
+        $event = $ticket->getEvent();
+
+        if (!$ticket->isPaid() || $ticket->isUsed() || !$event instanceof Event || !$event->isActive() || $event->isAdminOnly() || !$event->isOnline()) {
+            return;
+        }
+
+        $now = new \DateTime();
+        $startDate = $event->getDate();
+        $endDate = clone $event->getEndDateFromDates();
+        if ($endDate == $startDate) {
+            $endDate->setTime(23, 59, 59);
+        }
+
+        if ($endDate > $now && $startDate < $now) {
+            $ticket->setUsed(true);
+            $this->em->flush($ticket);
+        }
+    }
+
+    /**
      * @param Event           $event
      * @param string          $position
      * @param TicketCost|null $ticketCost
