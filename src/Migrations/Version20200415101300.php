@@ -24,40 +24,40 @@ final class Version20200415101300 extends AbstractMigration implements Container
 
     public function up(Schema $schema) : void
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-
-        $cities = $em->getRepository(City::class)->findAll();
-
-        if (\count($cities) > 0) {
-            return;
-        }
-
-        $kyivCity = (new City())
-            ->setActive(true)
-            ->setDefault(true)
-            ->setName('Київ')
-            ->setUrlName('kyiv')
-        ;
-
-        $translations = (new CityTranslation())
-            ->setLocale('en')
-            ->setField('name')
-            ->setContent('Kyiv')
-            ->setObject($kyivCity)
-        ;
-
-        $em->persist($kyivCity);
-        $em->persist($translations);
-
-        $events = $em->getRepository(Event::class)->findAll();
-        /** @var Event $event */
-        foreach ($events as $event) {
-            if (null === $event->getCity()) {
-                $event->setCity($kyivCity);
-            }
-        }
-
-        $em->flush();
+//        $em = $this->container->get('doctrine.orm.entity_manager');
+//
+//        $cities = $em->getRepository(City::class)->findAll();
+//
+//        if (\count($cities) > 0) {
+//            return;
+//        }
+//
+//        $kyivCity = (new City())
+//            ->setActive(true)
+//            ->setDefault(true)
+//            ->setName('Київ')
+//            ->setUrlName('kyiv')
+//        ;
+//
+//        $translations = (new CityTranslation())
+//            ->setLocale('en')
+//            ->setField('name')
+//            ->setContent('Kyiv')
+//            ->setObject($kyivCity)
+//        ;
+//
+//        $em->persist($kyivCity);
+//        $em->persist($translations);
+//
+//        $events = $em->getRepository(Event::class)->findAll();
+//        /** @var Event $event */
+//        foreach ($events as $event) {
+//            if (null === $event->getCity()) {
+//                $event->setCity($kyivCity);
+//            }
+//        }
+//
+//        $em->flush();
     }
 
     public function down(Schema $schema) : void
