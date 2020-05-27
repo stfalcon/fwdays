@@ -35,6 +35,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Event implements TranslatableInterface
 {
+    public const EVENT_TYPE_CONFERENCE = 'conference';
+    public const EVENT_TYPE_WEBINAR = 'webinar';
+    public const EVENT_TYPE_MEETUP = 'meetup';
+    public const EVENT_TYPE_WORKSHOP = 'workshop';
+
     use TranslateTrait;
     /**
      * @var int
@@ -64,7 +69,8 @@ class Event implements TranslatableInterface
     /**
      * @var ArrayCollection|EventAudience[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\EventAudience", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="App\Entity\EventAudience", inversedBy="events")
+     * @ORM\JoinTable(name="events_audiences")
      *
      * @Assert\Valid()
      */
@@ -440,6 +446,20 @@ class Event implements TranslatableInterface
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $free = false;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $type;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $online = false;
 
     /**
      * Constructor.
@@ -1319,6 +1339,16 @@ class Event implements TranslatableInterface
      *
      * @return Event
      */
+    public function addAudiences(EventAudience $audience): self
+    {
+        return $this->addAudience($audience);
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
     public function removeAudience(EventAudience $audience): self
     {
         if ($this->audiences->contains($audience)) {
@@ -1327,6 +1357,16 @@ class Event implements TranslatableInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param EventAudience $audience
+     *
+     * @return Event
+     */
+    public function removeAudiences(EventAudience $audience): self
+    {
+        return $this->removeAudience($audience);
     }
 
     /**
@@ -1614,5 +1654,58 @@ class Event implements TranslatableInterface
     public function setFree(bool $free): void
     {
         $this->free = $free;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return $this->online;
+    }
+
+    /**
+     * @param bool $online
+     *
+     * @return $this
+     */
+    public function setOnline(bool $online): self
+    {
+        $this->online = $online;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeChoices(): array
+    {
+        return [
+            self::EVENT_TYPE_CONFERENCE => self::EVENT_TYPE_CONFERENCE,
+            self::EVENT_TYPE_MEETUP => self::EVENT_TYPE_MEETUP,
+            self::EVENT_TYPE_WEBINAR => self::EVENT_TYPE_WEBINAR,
+            self::EVENT_TYPE_WORKSHOP => self::EVENT_TYPE_WORKSHOP,
+        ];
     }
 }

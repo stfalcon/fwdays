@@ -14,6 +14,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
@@ -206,16 +207,27 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->end()
             ->end()
             ->tab('Настройки')
-                ->with('Город', ['class' => 'col-md-3'])
+                ->with('Город', ['class' => 'col-md-2'])
                     ->add('city', null, ['label' => 'Город'])
                 ->end()
                 ->with('Slug', ['class' => 'col-md-3'])
                     ->add('slug')
                 ->end()
-                ->with('Группа', ['class' => 'col-md-3'])
+                ->with('Тип', ['class' => 'col-md-2'])
+                    ->add(
+                        'type',
+                        ChoiceType::class,
+                        [
+                            'choices' => Event::getTypeChoices(),
+                            'label' => 'Тип',
+                            'required' => false,
+                        ]
+                    )
+                ->end()
+                ->with('Группа', ['class' => 'col-md-2'])
                     ->add('group', null, ['label' => 'Группа'])
                 ->end()
-                ->with('Аудитории', ['class' => 'col-md-3'])
+                ->with('Аудитории', ['class' => 'col-md-2'])
                         ->add('audiences', null, ['label' => 'Аудитории'])
                 ->end()
                 ->with('Цены')
@@ -244,6 +256,7 @@ class EventAdmin extends AbstractTranslateAdmin
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
                     ->add('smallEvent', null, ['required' => false, 'label' => 'Событие с одним потоком'])
+                    ->add('online', null, ['required' => false, 'label' => 'Online событие'])
                 ->end()
                 ->with('Логотип и цвет', ['class' => 'col-md-4'])
                     ->add(

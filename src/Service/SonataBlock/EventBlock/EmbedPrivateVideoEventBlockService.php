@@ -8,6 +8,7 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Repository\TicketRepository;
 use App\Repository\UserEventRegistrationRepository;
+use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -30,20 +31,25 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
     /** @var string */
     private $template = 'Redesign/Event/event.youtube_video_block.html.twig';
 
+    /** @var TicketService */
+    private $ticketService;
+
     /**
      * @param string                          $name
      * @param EngineInterface                 $templating
      * @param UserService                     $userService
      * @param TicketRepository                $ticketRepository
      * @param UserEventRegistrationRepository $userRegistrationRepository
+     * @param TicketService                   $ticketService
      */
-    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, UserEventRegistrationRepository $userRegistrationRepository)
+    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, UserEventRegistrationRepository $userRegistrationRepository, TicketService $ticketService)
     {
         parent::__construct($name, $templating);
 
         $this->userService = $userService;
         $this->ticketRepository = $ticketRepository;
         $this->userRegistrationRepository = $userRegistrationRepository;
+        $this->ticketService = $ticketService;
     }
 
     /** @param bool $isPlayList */
@@ -81,6 +87,10 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $user = null;
             $ticket = null;
             $userRegisteredForFreeEvent = false;
+        }
+
+        if ($ticket instanceof Ticket) {
+            $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
         }
 
         if (($ticket instanceof Ticket && $ticket->isPaid()) ||
