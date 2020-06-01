@@ -22,6 +22,8 @@
                                 $(this).attr('src', $(this).data('src'));
                             }
                         });
+                    } else if ($(this).hasClass('lazyload-style')) {
+                        $(this).css("background-image", "url('"+$(this).data('src')+"')");
                     } else {
                         $(this).attr('src', $(this).data('src'));
                     }
