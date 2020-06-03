@@ -84,7 +84,7 @@ class RefererRequestSubscriber implements EventSubscriberInterface
 
             $refererDomain = $this->getInnerSubstring($refererUrl, '/', 2);
             $currentDomain = $request->getHttpHost();
-            $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && ($_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0' ||  $_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache');
+            $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && ('max-age=0' === $_SERVER['HTTP_CACHE_CONTROL'] || 'no-cache' == $_SERVER['HTTP_CACHE_CONTROL']);
             if ($refererDomain !== $currentDomain && !$pageRefreshed) {
                 try {
                     $newCookieId = $this->refererService->addReferer($refererUrl, $request->getUri(), $cookieId);
