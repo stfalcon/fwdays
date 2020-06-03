@@ -127,6 +127,12 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Регистрации }
         arguments: ['', 'App\Entity\UserEventRegistration', ~, '@App\Repository\EventRepository']
 
+    app.admin.referer:
+        class: App\Admin\RefererAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Статистика, label: Рефереры }
+        arguments: ['', 'App\Entity\Referer\Referer', ~]
+
     app.admin.page:
         class: App\Admin\PageAdmin
         tags:
