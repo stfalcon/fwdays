@@ -37,8 +37,8 @@ class RefererRequestSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): \Generator
     {
-        yield KernelEvents::REQUEST => 'onKernelRequest';
-        yield KernelEvents::RESPONSE => 'onKernelResponse';
+        yield KernelEvents::REQUEST => ['onKernelRequest', 10];
+        yield KernelEvents::RESPONSE => ['onKernelResponse', 10];
     }
 
     /**
