@@ -50,13 +50,10 @@ class RefererRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('r');
         $qb->where($qb->expr()->eq('r.user', ':user'))
             ->andWhere($qb->expr()->lt('r.date', ':date'))
-            ->setParameters(new ArrayCollection(
-                    [
-                        new Parameter('user', $user),
-                        new Parameter('date', $dateTime),
-                    ]
-                )
-            )
+            ->setParameters(new ArrayCollection([
+                new Parameter('user', $user),
+                new Parameter('date', $dateTime),
+            ]))
             ->setMaxResults(10)
             ->orderBy('r.date', Criteria::DESC)
         ;

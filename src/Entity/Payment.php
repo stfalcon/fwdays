@@ -543,7 +543,7 @@ class Payment
     }
 
     /**
-     * for PaymentAdmin
+     * for PaymentAdmin.
      *
      * @return array
      */
