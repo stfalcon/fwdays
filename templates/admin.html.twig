@@ -68,6 +68,13 @@
                     return true;
                 }
             });
-        })
+        });
+
+        $(document).on('click', '.first-referer', function () {
+            $('.expands-referrers').hide();
+            $('.first-referer').show();
+            $(this).parent().find('.expands-referrers').show();
+            $(this).hide();
+        });
     </script>
 {% endblock %}

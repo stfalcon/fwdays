@@ -1,0 +1,11 @@
+{% if referrers|length > 0 %}
+    <div>
+        {% set first_referer = referrers[0] %}
+        <a href="#" class="first-referer editable editable-pre-wrapped editable-click">{{ first_referer.date|date('Y-m-d H:i:s') }}: {{ first_referer.fromUrl }}</a>
+        <div class="expands-referrers" style="display: none">
+            {% for referer in referrers %}
+            <p>{{ referer.date|date('Y-m-d H:i') }}: {{ referer.fromUrl }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
