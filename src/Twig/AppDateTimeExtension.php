@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Entity\Event;
+use App\Entity\TicketCost;
 use App\Traits\TranslatorTrait;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
 use Twig\Extension\AbstractExtension;
@@ -38,6 +39,7 @@ class AppDateTimeExtension extends AbstractExtension
         return [
             new TwigFilter('app_format_date_day_month', [$this, 'formatDateDayMonth'], ['is_safe' => ['html']]),
             new TwigFilter('app_event_date', [$this, 'eventDate'], ['is_safe' => ['html']]),
+            new TwigFilter('app_tickets_price_time_left', [$this, 'ticketsPriceTimeLeft'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -90,6 +92,47 @@ class AppDateTimeExtension extends AbstractExtension
         $pattern = trim(preg_replace('/[Hm:,Y]+/', '', $event->getDateFormat()));
 
         return $this->eventDate($event, $locale, false, $pattern);
+    }
+
+    /**
+     * @param TicketCost $ticketCost
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function ticketsPriceTimeLeft(TicketCost $ticketCost): string
+    {
+        $endDate = $ticketCost->getEndDate();
+
+        if (!$endDate instanceof \DateTimeInterface) {
+            return '';
+        }
+
+        $now = new \DateTime();
+        $interval = $now->diff($endDate);
+
+        $minutes = (int) $interval->format('%i');
+        $hours = (int) $interval->format('%h');
+        $days = (int) $interval->format('%a');
+
+        $result = $days;
+
+        $translateKey = 'tickets.price_days_left';
+        if (0 === $days) {
+            if ($hours > 0) {
+                $translateKey = 'tickets.price_hours_left';
+                $result = $hours;
+            } else {
+                $translateKey = 'tickets.price_minutes_left';
+                if (0 === $minutes) {
+                    ++$minutes;
+                }
+                $result = $minutes;
+            }
+        }
+
+        return $this->translator->trans($translateKey, ['%period_count%' => $result, '%count%' => AppPluralizationExtension::pluralization($result)]);
     }
 
     /**

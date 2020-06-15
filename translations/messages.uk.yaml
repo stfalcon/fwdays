@@ -79,6 +79,11 @@ pay.user.continue: 'продовжити'
 event.price.title: Вартість участі
 event.free: Участь безкоштовна
 tickets.count: '{0}%ticket_count% квиток|{1}%ticket_count% квитка|{2}%ticket_count% квитків'
+
+tickets.price_days_left: '{0}залишився %period_count% день|{1}залишилось %period_count% дні|{2}залишилось %period_count% днів'
+tickets.price_hours_left: '{0}залишилась %period_count% година|{1}залишилось %period_count% години|{2}залишилось %period_count% годин'
+tickets.price_minutes_left: '{0}залишилась %period_count% хвилина|{1}залишилось %period_count% хвилини|{2}залишилось %period_count% хвилин'
+
 tickets.coming_soon: 'незабаром'
 tickets.hint: тільки через сайт
 tickets.other.title: Всі інші квитки
