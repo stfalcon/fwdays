@@ -101,7 +101,7 @@ class AppDateTimeExtension extends AbstractExtension
      *
      * @throws \Exception
      */
-    public function ticketsPriceTimeLeft(TicketCost $ticketCost)
+    public function ticketsPriceTimeLeft(TicketCost $ticketCost): string
     {
         $endDate = $ticketCost->getEndDate();
 
