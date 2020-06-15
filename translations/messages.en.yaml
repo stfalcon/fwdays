@@ -98,6 +98,11 @@ pay.amount_changed: 'Payment Amount Changed! Check the data!'
 event.price.title: Event price
 event.free: Free paricipation
 tickets.count: '{0}%ticket_count% ticket|{1}%ticket_count% tickets|{2}%ticket_count% tickets'
+
+tickets.price_days_left: '{0}%period_count% day left|{1}%period_count% days left|{2}%period_count% days left'
+tickets.price_hours_left: '{0}%period_count% hour left|{1}%period_count% hours left|{2}%period_count% hours left'
+tickets.price_minutes_left: '{0}%period_count% minute left|{1}%period_count% minutes left|{2}%period_count% minutes left'
+
 tickets.coming_soon: 'coming soon'
 tickets.hint: available only via website
 tickets.tickets_run_out: Only few left

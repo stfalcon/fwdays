@@ -52,9 +52,12 @@
                 {% endif %}
             </div>
         {%- elseif null != ticket.endDate -%}
-            <div class="cost__tickets">{{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}
+            <div class="cost__tickets{%- if ticket.isTicketsRunOut %} cost__tickets_with-hint{% endif %}">
+                {{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}
                 {%- if ticket.isTicketsRunOut -%}
-                    <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
+                    <div class="cost__hint">
+                        <span class="cost__runout cost__days-left">{{ ticket|app_tickets_price_time_left }}</span>
+                    </div>
                 {% endif %}
             </div>
         {%- else -%}
