@@ -2,8 +2,10 @@
 
 namespace App\Handler;
 
+use App\Entity\Referer\Referer;
 use App\Entity\User;
 use App\Model\UserManager;
+use App\Service\RefererService;
 use App\Service\ReferralService;
 use App\Service\UrlForRedirect;
 use App\Traits\RouterTrait;
@@ -25,16 +27,21 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
     private $referralService;
     private $urlForRedirectService;
 
+    /** @var RefererService */
+    private $refererService;
+
     /**
      * @param ReferralService $referralService
      * @param UserManager     $userManager
      * @param UrlForRedirect  $urlForRedirectService
+     * @param RefererService  $refererService
      */
-    public function __construct(ReferralService $referralService, UserManager $userManager, UrlForRedirect $urlForRedirectService)
+    public function __construct(ReferralService $referralService, UserManager $userManager, UrlForRedirect $urlForRedirectService, RefererService $refererService)
     {
         $this->referralService = $referralService;
         $this->urlForRedirectService = $urlForRedirectService;
         $this->userManager = $userManager;
+        $this->refererService = $refererService;
     }
 
     /**
@@ -67,6 +74,13 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
                     $user->setUserReferral($userReferral);
                 }
                 $this->userManager->updateUser($user);
+            }
+        }
+
+        if ($user instanceof User) {
+            $refererCookieId = $request->cookies->get(Referer::COOKIE_KEY, null);
+            if (\is_string($refererCookieId)) {
+                $this->refererService->checkUserCookieRelation($user, $refererCookieId);
             }
         }
 

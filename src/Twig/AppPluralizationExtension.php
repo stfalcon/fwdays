@@ -25,7 +25,7 @@ class AppPluralizationExtension extends AbstractExtension
      *
      * @return int
      */
-    public function pluralization($number)
+    public static function pluralization($number)
     {
         return ((1 === $number % 10) && (11 !== $number % 100))
             ? 0

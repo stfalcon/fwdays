@@ -541,4 +541,14 @@ class Payment
 
         return true;
     }
+
+    /**
+     * for PaymentAdmin.
+     *
+     * @return array
+     */
+    public function getReferrers(): array
+    {
+        return [];
+    }
 }

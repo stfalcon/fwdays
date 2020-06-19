@@ -66,7 +66,7 @@ final class PaymentAdmin extends AbstractAdmin
      */
     public function getFormTheme(): array
     {
-        return array_merge(
+        return \array_merge(
             parent::getFormTheme(),
             ['Admin/admin.light_theme.html.twig']
         );
@@ -79,11 +79,19 @@ final class PaymentAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('amount', null, ['label' => 'Сума оплаты'])
-            ->add('fwdaysAmount', null, ['label' => 'Сума реферальных'])
-            ->add('refundedAmount', null, ['label' => 'Сума возвратов'])
-            ->add('status', null, ['label' => 'Статус платежа'])
+            ->add('amount', null, ['label' => 'сума'])
+            ->add('fwdaysAmount', null, ['label' => 'реф.'])
+            ->add('refundedAmount', null, ['label' => 'возв.'])
+            ->add('status', null, ['label' => 'статус'])
             ->add('user', null, ['label' => 'Пользователь'])
+            ->add(
+                'referrers',
+                'string',
+                [
+                    'template' => 'Admin/payment_user_referrers.html.twig',
+                    'label' => 'Реферы',
+                ]
+            )
             ->add(
                 'tickets',
                 'string',
@@ -95,7 +103,7 @@ final class PaymentAdmin extends AbstractAdmin
                     'template' => 'Admin/list_tickets.html.twig',
                 ]
             )
-            ->add('gate', null, ['label' => 'Способ оплаты'])
+            ->add('gate', null, ['label' => 'Способ'])
             ->add('createdAt', null, ['label' => 'Дата создания'])
             ->add('updatedAt', null, ['label' => 'Дата изменения']);
     }
