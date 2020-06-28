@@ -1,10 +1,17 @@
+{% set max_length = 42 %}
 {% if referrers|length > 0 %}
     <div>
         {% set first_referer = referrers[0] %}
-        <a href="#" class="first-referer editable editable-pre-wrapped editable-click">{{ first_referer.date|date('Y-m-d H:i:s') }}: {{ first_referer.fromUrl }}</a>
+        {% set from_url = first_referer.fromUrl|length > max_length ? first_referer.fromUrl|slice(0, max_length-1) ~ '...' : first_referer.fromUrl %}
+        <a href="#" class="first-referer editable editable-pre-wrapped editable-click">{{ first_referer.date|date('Y-m-d H:i:s') }}: {{ from_url }}</a>
         <div class="expands-referrers" style="display: none">
             {% for referer in referrers %}
-            <p>{{ referer.date|date('Y-m-d H:i') }}: {{ referer.fromUrl }}</p>
+                {% set from_url = referer.fromUrl|length > max_length ? referer.fromUrl|slice(0, max_length-1) ~ '...' : referer.fromUrl %}
+                {% if from_url != referer.fromUrl %}
+                    <p data-full-url="{{ referer.fromUrl }}" class="short-url editable editable-pre-wrapped editable-click">{{ referer.date|date('Y-m-d H:i') }}: {{ from_url }}</p>
+                {% else %}
+                    <p>{{ referer.date|date('Y-m-d H:i') }}: {{ from_url }}</p>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

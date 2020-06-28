@@ -78,8 +78,22 @@ final class RefererAdmin extends AbstractAdmin
             )
             ->add('user.email')
             ->add('date', null, ['label' => 'Дата перехода'])
-            ->add('fromUrl', null, ['label' => 'Referer'])
-            ->add('toUrl', null, ['label' => 'Перешел на url'])
+            ->add(
+                'fromUrl',
+                'string',
+                [
+                    'label' => 'Referer',
+                    'template' => 'Admin/referer_url.html.twig',
+                ]
+            )
+            ->add(
+                'toUrl',
+                'string',
+                [
+                    'label' => 'Перешел на url',
+                    'template' => 'Admin/referer_url.html.twig',
+                ]
+            )
         ;
     }
 }
