@@ -1,6 +1,6 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
-{% set max_length = 55 %}
+{% set max_length = 80 %}
 
 {% block field %}
     {% set from_url = value|length > max_length ? value|slice(0, max_length-1) ~ '...' : value %}
