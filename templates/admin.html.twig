@@ -65,16 +65,24 @@
             $('select.date_for_promo').find('option').each(function() {
                 if (selected_val === $(this).text()) {
                     $('.promo_end_date').val($(this).val());
-                    return true;
+                    return true;l
                 }
             });
         });
 
-        $(document).on('click', '.first-referer', function () {
+        $(document).on('click', '.first-referer', function (e) {
+            e.preventDefault();
             $('.expands-referrers').hide();
             $('.first-referer').show();
             $(this).parent().find('.expands-referrers').show();
             $(this).hide();
+        });
+
+        $(document).on('click', '.short-url', function (e) {
+            e.preventDefault();
+            var elem = $(this);
+            var save_url = elem.html();
+            elem.html(elem.data('full-url')).data('full-url', save_url);
         });
     </script>
 {% endblock %}
