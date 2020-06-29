@@ -7,6 +7,7 @@ parameters:
     interkassa_override_callbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
     fos_user.registration.form.validation_groups: ['registration']
     fos_user.profile.form.validation_groups: ['profile']
+    google_private_key: '%kernel.root_dir%/../config/google_private_key.json'
 
 services:
     _defaults:
@@ -28,6 +29,7 @@ services:
             $awsS3BucketName: '%env(AWS_S3_BUCKETNAME)%'
             $awsS3PublicEndpoint: '%env(AWS_S3_PUBLIC_ENDPOINT)%'
             $uploadImagePath: '%app.upload_image%'
+            $googleCalendarId: '%env(GOOGLE_CALENDAR_ID)%'
 
     fos_user.registration.controller:
         class: App\Controller\RegistrationController
@@ -145,6 +147,11 @@ services:
                 credentials:
                     key: '%env(AWS_ACCESS_KEY_ID)%'
                     secret: '%env(AWS_SECRET_ACCESS_KEY)%'
+
+    Google_Client:
+        class: Google_Client
+        calls:
+            - [setAuthConfig, ['%google_private_key%']]
 
     Aws\S3\S3Client: '@app.assets.s3'
     Symfony\Component\Serializer\Serializer: '@serializer'

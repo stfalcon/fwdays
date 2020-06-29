@@ -192,6 +192,9 @@
     "escapestudios/symfony2-coding-standard": {
         "version": "3.10.0"
     },
+    "firebase/php-jwt": {
+        "version": "v5.2.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -221,6 +224,24 @@
     },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.38"
+    },
+    "google/apiclient": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "49c5d7a66d863d28513979bf0666dc77599100c0"
+        },
+        "files": [
+            "config/packages/google_apiclient.yaml"
+        ]
+    },
+    "google/apiclient-services": {
+        "version": "v0.139"
+    },
+    "google/auth": {
+        "version": "v1.9.0"
     },
     "guzzlehttp/guzzle": {
         "version": "6.5.0"
@@ -409,6 +430,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.27"
     },
     "phpspec/prophecy": {
         "version": "1.10.0"
@@ -796,6 +820,18 @@
     "symfony/intl": {
         "version": "v4.4.1"
     },
+    "symfony/messenger": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "8a2675c061737658bed85102e9241c752620e575"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
     "symfony/mime": {
         "version": "v5.0.1"
     },
@@ -868,6 +904,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.1"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.14.0"

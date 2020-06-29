@@ -23,6 +23,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="event__events")
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  *
+ * @ORM\EntityListeners({
+ *     "App\EventListener\ORM\Event\NewEventListener",
+ * })
+ *
  * @UniqueEntity(
  *     "slug",
  *     errorPath="slug",
@@ -460,6 +464,13 @@ class Event implements TranslatableInterface
      * @ORM\Column(type="boolean", options={"default":false})
      */
     private $online = false;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, name="google_calendar_event_id")
+     */
+    private $googleCalendarEventId;
 
     /**
      * Constructor.
@@ -1694,6 +1705,22 @@ class Event implements TranslatableInterface
         $this->online = $online;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGoogleCalendarEventId(): ?string
+    {
+        return $this->googleCalendarEventId;
+    }
+
+    /**
+     * @param string|null $googleCalendarEventId
+     */
+    public function setGoogleCalendarEventId(?string $googleCalendarEventId): void
+    {
+        $this->googleCalendarEventId = $googleCalendarEventId;
     }
 
     /**

@@ -490,7 +490,7 @@ class User extends BaseUser
     public function getFullname()
     {
         if (empty($this->fullname)) {
-            $this->setFullname($this->name.' '.$this->surname);
+            $this->setFullname(\sprintf('%s %s', $this->name, $this->surname));
         }
 
         return $this->fullname;

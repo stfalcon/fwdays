@@ -44,3 +44,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> google/client ###
+/config/google_private_key.json
+###< google/client ###
