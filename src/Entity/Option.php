@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Option
 {
-    private const TYPE_STRING = 'string';
-    private const TYPE_NUMBER = 'number';
-    private const TYPE_BOOL = 'boolean';
+    public const TYPE_STRING = 'string';
+    public const TYPE_NUMBER = 'number';
+    public const TYPE_BOOL = 'boolean';
 
     /**
      * @var int
@@ -56,10 +56,14 @@ class Option
 
     /**
      * @param string $key
+     *
+     * @return $this
      */
-    public function setKey(string $key): void
+    public function setKey(string $key): self
     {
         $this->key = $key;
+
+        return $this;
     }
 
     /**
@@ -72,10 +76,14 @@ class Option
 
     /**
      * @param string $value
+     *
+     * @return $this
      */
-    public function setValue(string $value): void
+    public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -88,10 +96,14 @@ class Option
 
     /**
      * @param string $type
+     *
+     * @return $this
      */
-    public function setType(string $type): void
+    public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
