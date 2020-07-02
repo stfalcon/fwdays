@@ -177,3 +177,9 @@ services:
         arguments: ['', 'App\Entity\City', ~]
         calls:
             - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+
+    app.option.admin:
+        class: App\Admin\OptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Настройки, label: Настройки }
+        arguments: ['', 'App\Entity\Option', ~]
