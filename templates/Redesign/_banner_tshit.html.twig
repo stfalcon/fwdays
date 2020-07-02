@@ -1,0 +1,10 @@
+{% set locale_url = 'https://megakompromis.com.ua/t-shirts_fwdays.php?language=ua' %}
+
+    {% set show_explorer_cookie = app.request.cookies.get('explore-expanded') %}
+    {% set show_explorer = show_explorer_cookie == 'true' or (show_explorer_cookie == null and not is_mobile()) %}
+
+<div id="btn-explore-expanded" class="btn-explore btn-explore--expanded" {% if show_explorer == false %}style="display: none"{% endif %}>
+    <a href="{{ locale_url }}" class="link-explorer" target="_blank"></a>
+    <button class="btn-explore--close"></button>
+</div>
+<div id="btn-explore-rolled-up" class="btn-explore btn-explore--rolled-up" {% if show_explorer == false %}style="display: block"{% endif %}></div>
