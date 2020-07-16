@@ -4,6 +4,7 @@ metadata:
   name: fwdays-disable-price
   namespace: fwdays-prod
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:

@@ -4,6 +4,7 @@ metadata:
   name: fwdays-mailer
   namespace: fwdays-stag
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/2 * * * *"
   jobTemplate:
     spec:
