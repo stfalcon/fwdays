@@ -36,16 +36,14 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                 matchExpressions:
-                 - key: app
-                   operator: In
-                   values:
-                   - fwdays-backend
-              topologyKey: kubernetes.io/hostname
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - fwdays-backend
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - image: <place latest image>
         name: fwdays-backend
