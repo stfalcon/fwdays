@@ -8,6 +8,7 @@ spec:
   jobTemplate:
     spec:
       template:
+        concurrencyPolicy: Forbid
         spec:
           containers:
           - name: fwdays-backend
