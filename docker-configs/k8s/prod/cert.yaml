@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1alpha3
+kind: Certificate
+metadata:
+  name: fwdays-com
+  namespace: fwdays-prod
+spec:
+  commonName: fwdays.com
+  dnsNames:
+  - fwdays.com
+  - www.fwdays.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: fwdays-com-tls
+---
+apiVersion: cert-manager.io/v1alpha3
+kind: Certificate
+metadata:
+  name: frameworksdays-com
+  namespace: fwdays-prod
+spec:
+  commonName: frameworksdays.com
+  dnsNames:
+  - frameworksdays.com
+  - www.frameworksdays.com
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: frameworksdays-com-tls
