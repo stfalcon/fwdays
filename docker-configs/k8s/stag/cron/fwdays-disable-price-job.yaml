@@ -4,10 +4,10 @@ metadata:
   name: fwdays-disable-price
   namespace: fwdays-stag
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:
-      concurrencyPolicy: Forbid
       template:
         spec:
           containers:

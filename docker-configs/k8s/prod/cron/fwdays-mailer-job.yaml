@@ -4,10 +4,10 @@ metadata:
   name: fwdays-mailer
   namespace: fwdays-prod
 spec:
+  concurrencyPolicy: Forbid
   schedule: "* 5-18 * * *"
   jobTemplate:
     spec:
-      concurrencyPolicy: Forbid
       template:
         spec:
           containers:
