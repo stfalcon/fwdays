@@ -1,0 +1,66 @@
+{% set ticket_altAmount = '≈$'~ticket.altAmount|number_format(0,',',' ') %}
+{% set ticket_amount = ticket.amount|number_format(0,',',' ') %}
+
+{%- if currentPrice == null or currentPrice > ticket.amount -%}
+<div class="event-cost event-cost--free">
+    <div class="event-cost__type">Безкоштовний</div>
+    <div class="event-cost__features">
+        <p>Участь у конференції</p>
+        <p>Доступ до 3х потоків з доповідями</p>
+    </div>
+    <div class="event-cost__price">
+        <div class="btn btn--primary btn--lg event-cost__btn">
+            Отримати квиток
+        </div>
+    </div>
+</div>
+{%- elseif currentPrice < ticket.amount -%}
+<div class="event-cost event-cost--standart">
+    <div class="event-cost__type">Стандартний</div>
+    <div class="event-cost__features">
+        <p>Участь у конференції</p>
+        <p>Доступ до 3х потоків з доповідями</p>
+        <p>Доступ до Speakers’ corner</p>
+    </div>
+    <div class="event-cost__price">
+        <div class="event-cost__price-top">
+            <div class="cost__price">2 300 грн<span class="cost__dollars">≈$94</span></div>
+            <div class="cost__tickets">
+                50 квитків<span class="cost__sales">Закінчуються</span>
+            </div>
+        </div>
+        <div class="event-cost__price-bottom">
+            <p class="cost-tickets">наступні 150 квитків — 2600 грн</p>
+            <p class="cost-tickets">наступні 100 квитків — 2800 грн</p>
+        </div>
+        <div class="btn btn--primary btn--lg event-cost__btn">
+            Купити квиток
+        </div>
+    </div>
+</div>
+{%- else -%}
+<div class="event-cost event-cost--premium">
+    <div class="event-cost__type">Преміум</div>
+    <div class="event-cost__features">
+        <p>Участь у конференції</p>
+        <p>Доступ до 3х потоків з доповідями</p>
+        <p>Доступ до Speakers’ corner</p>
+        <p>Доступ до записів стрімів</p>
+    </div>
+    <div class="event-cost__price">
+        <div class="event-cost__price-top">
+            <div class="cost__price">4 000 грн<span class="cost__dollars">≈$150</span></div>
+            <div class="cost__tickets">
+                до 18 вересня<span class="cost__sales">ЗАЛИШИЛОСЬ 2 дні</span>
+            </div>
+        </div>
+        <div class="event-cost__price-bottom">
+            <div class="cost-tickets">з 18 вересня — 4400 грн</div>
+            <div class="cost-tickets">з 10 жовтня — 4800 грн</div>
+        </div>
+        <div class="btn btn--primary btn--lg event-cost__btn">
+            Купити квиток
+        </div>
+    </div>
+</div>
+{% endif %}
