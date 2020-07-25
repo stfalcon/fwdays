@@ -1,0 +1,34 @@
+<div class="event-cost event-cost--premium">
+    <div class="event-cost__type">Преміум</div>
+    <div class="event-cost__features">
+        {{ benefits|raw }}
+    </div>
+    <div class="event-cost__price">
+        {% for ticket in tickets if ticket.amount == currentPrice %}
+            <div class="event-cost__price-top">
+                <div class="cost__price">4 000 грн<span class="cost__dollars">≈$150</span></div>
+                <div class="cost__tickets">
+                    до 18 вересня / 50 квитків
+                    {% if ticket.isTicketsRunOut %}
+                        <span class="cost__sales">
+                            {% if null != ticket.endDate %}
+                                {{ ticket|app_tickets_price_time_left }}
+                            {% else %}
+                                <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="event-cost__price-bottom">
+        {% for ticket in tickets if ticket.amount != currentPrice %}
+            <div class="cost-tickets">з 18 вересня — 4400 грн</div>
+            <div class="cost-tickets">з 10 жовтня — 4800 грн</div>
+        {% endfor %}
+        </div>
+        <div class="btn btn--primary btn--lg event-cost__btn">
+            Купити квиток
+        </div>
+    </div>
+</div>

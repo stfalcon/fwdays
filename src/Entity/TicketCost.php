@@ -12,6 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TicketCost
 {
+    public const TYPE_FREE = 'type_free';
+    public const TYPE_STANDARD = 'type_standard';
+    public const TYPE_PREMIUM = 'type_premium';
+
     /**
      * @var int
      *
@@ -53,7 +57,7 @@ class TicketCost
      *
      * @ORM\Column(name="amount", type="decimal", precision=10, scale=2)
      *
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $amount;
 
@@ -64,7 +68,7 @@ class TicketCost
      *
      * @ORM\Column(name="alt_amount", type="decimal", precision=10, scale=2)
      *
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $altAmount;
 
@@ -137,6 +141,13 @@ class TicketCost
      * @ORM\Column(name="sort_order", type="integer", nullable=true)
      */
     private $sortOrder;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true, length=20)
+     */
+    private $type;
 
     /**
      * TicketCost constructor.
@@ -529,5 +540,37 @@ class TicketCost
     public function setSortOrder(?int $sortOrder): void
     {
         $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public static function getTypes(): array
+    {
+        return [
+            'free' => self::TYPE_FREE,
+            'standard' => self::TYPE_STANDARD,
+            'premium' => self::TYPE_PREMIUM,
+        ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): string
+    {
+        return $this->type ?: self::TYPE_STANDARD;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

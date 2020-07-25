@@ -3,6 +3,8 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
+use App\Entity\TicketBenefit;
+use App\Entity\TicketCost;
 use App\Repository\TicketCostRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -44,14 +46,35 @@ class PricesEventBlockService extends AbstractBlockService
             throw new NotFoundHttpException();
         }
 
-        $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);
-        $ticketCosts = $this->ticketCostRepository->getEventTicketsCost($event);
+        $ticketCosts = $this->ticketCostRepository->getEventEnabledTicketsCost($event);
+
+        $isOldPrice = false;
+        $ticketBenefits = [];
+
+        if (!empty($ticketCosts) && null === $ticketCosts[0]->getType()) {
+            $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);
+            $isOldPrice = true;
+        } else {
+            foreach (TicketCost::getTypes() as $type) {
+                $eventCurrentCost[$type] = $this->ticketCostRepository->getEventCurrentCost($event, $type);
+            }
+            $tmpArray = [];
+            foreach ($ticketCosts as $ticketCost) {
+                $tmpArray[$ticketCost->getType()][] = $ticketCost;
+            }
+            $ticketCosts = $tmpArray;
+            foreach ($event->getTicketBenefits() as $ticketBenefit) {
+                $ticketBenefits[$ticketBenefit->getType()] = $ticketBenefit->getBenefits();
+            }
+        }
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
             'ticketCosts' => $ticketCosts,
             'currentPrice' => $eventCurrentCost,
             'event' => $event,
+            'is_old_price' => $isOldPrice,
+            'ticket_benefits' => $ticketBenefits,
         ], $response);
     }
 
@@ -61,7 +84,7 @@ class PricesEventBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'template' => 'Redesign/Event/event_price.html.twig',
+            'template' => 'Redesign/Event/Price/event_price.html.twig',
             'event' => null,
             'event_block' => null,
         ]);

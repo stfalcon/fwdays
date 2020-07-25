@@ -2,9 +2,11 @@
 
 namespace App\Admin;
 
+use App\Entity\TicketCost;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * TicketCostAdmin.
@@ -26,6 +28,14 @@ final class TicketCostAdmin extends AbstractAdmin
 
         $formMapper
             ->add('name', null, ['label' => 'название'])
+            ->add(
+                'type',
+                ChoiceType::class,
+                [
+                    'choices' => TicketCost::getTypes(),
+                    'label' => 'Тип',
+                ]
+            )
             ->add('amount', null, ['label' => 'цена'])
             ->add('altAmount', null, ['label' => 'цена в валюте'])
             ->add('count', null, ['label' => 'количество'])
