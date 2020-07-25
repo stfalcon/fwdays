@@ -1,0 +1,41 @@
+    <div class="event-cost__price">
+        {% set active_ticket = null %}
+        {% for ticket in tickets if ticket.amount == currentPrice %}
+            {% set active_ticket = ticket %}
+            <div class="event-cost__price-top">
+                {% set ticket_altAmount = '≈$'~ticket.altAmount|number_format(0,',',' ') %}
+                <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}<span class="cost__dollars">{{ ticket_altAmount }}</span></div>
+                <div class="cost__tickets">
+                    {% if null != ticket.endDate %}
+                        {{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}
+                    {% else %}
+                        {{ 'tickets.count'|trans({'%ticket_count%': ticket.count}, null, null, ticket.count|pluralization) }}
+                    {% endif %}
+                    {% if ticket.isTicketsRunOut %}
+                        <span class="cost__sales">
+                            {% if null != ticket.endDate %}
+                                {{ ticket|app_tickets_price_time_left }}
+                            {% else %}
+                                <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="event-cost__price-bottom">
+        {% for ticket in tickets if ticket.amount != currentPrice %}
+            <div class="cost-tickets">
+                {% if null != ticket.endDate %}
+                    {{ 'tickets.end_date_with_price.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev'), '%price%' : ticket.amount}) }}
+                {% else %}
+                    {{ 'tickets.next_with_price.title'|trans({'%count%': ticket.count, '%price%' : ticket.amount}) }}
+                {% endif %}`
+            </div>
+        {% endfor %}
+        </div>
+        {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block', 'ticket_cost':active_ticket}) }}
+{#        <div class="btn btn--primary btn--lg event-cost__btn">#}
+{#            {{ 'ticket.status.pay'|trans }}#}
+{#        </div>#}
+    </div>

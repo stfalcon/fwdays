@@ -108,6 +108,8 @@ tickets.hint: available only via website
 tickets.tickets_run_out: Only few left
 tickets.other.title: other tickets
 tickets.end_date.title: 'till %date%'
+tickets.end_date_with_price.title: 'till %date% — %price% UAH'
+tickets.next_with_price.title: 'next %count% — %price% грн'
 sold_out.title: Sold out
 
 image.home.title: Tech events in Ukraine. Share ideas, broaden experience.
