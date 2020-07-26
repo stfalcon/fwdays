@@ -56,7 +56,7 @@ class TicketController extends AbstractController
         $user = $this->getUser();
 
         if (null === $type) {
-           /** @var Ticket|null $ticket */
+            /** @var Ticket|null $ticket */
             $ticket = $this->ticketRepository->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         } else {
             $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);

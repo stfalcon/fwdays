@@ -62,7 +62,8 @@ class TicketCostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Event $event
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return TicketCost[]
      */
@@ -98,7 +99,6 @@ class TicketCostRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
 
     /**
      * @param \DateTimeInterface $dateTime
@@ -145,7 +145,7 @@ class TicketCostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Event       $event
+     * @param Event $event
      *
      * @return QueryBuilder
      */

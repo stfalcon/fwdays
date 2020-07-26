@@ -39,7 +39,6 @@ class PaymentService
     private $referralService;
     private $ticketRepository;
 
-
     /**
      * @param TicketService    $ticketService
      * @param UserService      $userService
@@ -331,6 +330,7 @@ class PaymentService
      * @param string|null $type
      *
      * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -356,6 +356,7 @@ class PaymentService
      * @param string|null $type
      *
      * @return bool
+     *
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -445,6 +446,7 @@ class PaymentService
      * @param string|null $type
      *
      * @return Ticket
+     *
      * @throws NonUniqueResultException
      */
     public function replaceIfFindOtherUserTicketForEvent(User $user, Event $event, Ticket $editTicket, ?string $type): Ticket

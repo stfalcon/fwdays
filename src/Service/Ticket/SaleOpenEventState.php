@@ -33,16 +33,16 @@ class SaleOpenEventState extends AbstractBaseEventState
             $ticketCost = $eventStateData->getTicketCost();
             if (null === $ticketCost->getType()) {
                 $amount = $ticketCost ? $ticketCost->getAmount() : $eventStateData->getEvent()->getBiggestTicketCost()->getAmount();
-                $altAmount = $ticketCost ? '≈$' . \number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
-                $caption = $this->translator->trans('ticket.status.pay_for') . ' ' . $this->translator
+                $altAmount = $ticketCost ? '≈$'.\number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
+                $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
                         ->trans(
                             'payment.price',
                             [
-                                '%summ%' => \number_format((float)$amount, 0, ',', ' '),
+                                '%summ%' => \number_format((float) $amount, 0, ',', ' '),
                             ]
                         );
                 if ($ticketCost && $ticketCost->getAltAmount()) {
-                    $caption .= '<span class="cost__dollars">' . $altAmount . '</span>';
+                    $caption .= '<span class="cost__dollars">'.$altAmount.'</span>';
                 }
             } else {
                 $caption = $this->translator->trans('ticket.status.pay');

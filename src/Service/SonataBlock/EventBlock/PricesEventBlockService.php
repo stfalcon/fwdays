@@ -3,7 +3,6 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
-use App\Entity\TicketBenefit;
 use App\Entity\TicketCost;
 use App\Repository\TicketCostRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -50,6 +49,7 @@ class PricesEventBlockService extends AbstractBlockService
 
         $isOldPrice = false;
         $ticketBenefits = [];
+        $eventCurrentCost = 0;
 
         if (!empty($ticketCosts) && null === $ticketCosts[0]->getType()) {
             $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);

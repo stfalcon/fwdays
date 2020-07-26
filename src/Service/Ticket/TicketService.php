@@ -298,27 +298,6 @@ class TicketService
     }
 
     /**
-     * @param Event $event
-     *
-     * @return int
-     */
-    public function getEventFreeTicketCount($event)
-    {
-        /** @var TicketCostRepository $ticketCostRepository */
-        $ticketCostRepository = $this->em->getRepository(TicketCost::class);
-        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
-        $count = 0;
-        /** @var TicketCost $cost */
-        foreach ($eventCosts as $cost) {
-            if (!$cost->isUnlimitedOrDateEnd()) {
-                $count += $cost->getCount() - $cost->getSoldCount();
-            }
-        }
-
-        return $count;
-    }
-
-    /**
      * @param User|null   $user
      * @param Event       $event
      * @param string|null $type
