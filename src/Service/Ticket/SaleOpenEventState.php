@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Ticket;
 
+use App\Entity\TicketCost;
 use App\Model\EventStateData;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
@@ -30,17 +31,21 @@ class SaleOpenEventState extends AbstractBaseEventState
         $caption = $this->translator->trans(\sprintf('ticket.status.pay%s', $eventStateData->getMob()));
         if ('price_block' === $eventStateData->getPosition()) {
             $ticketCost = $eventStateData->getTicketCost();
-            $amount = $ticketCost ? $ticketCost->getAmount() : $eventStateData->getEvent()->getBiggestTicketCost()->getAmount();
-            $altAmount = $ticketCost ? '≈$'.\number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
-            $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
-                    ->trans(
-                        'payment.price',
-                        [
-                            '%summ%' => \number_format((float) $amount, 0, ',', ' '),
-                        ]
-                    );
-            if ($ticketCost && $ticketCost->getAltAmount()) {
-                $caption .= '<span class="cost__dollars">'.$altAmount.'</span>';
+            if (null === $ticketCost->getType()) {
+                $amount = $ticketCost ? $ticketCost->getAmount() : $eventStateData->getEvent()->getBiggestTicketCost()->getAmount();
+                $altAmount = $ticketCost ? '≈$' . \number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
+                $caption = $this->translator->trans('ticket.status.pay_for') . ' ' . $this->translator
+                        ->trans(
+                            'payment.price',
+                            [
+                                '%summ%' => \number_format((float)$amount, 0, ',', ' '),
+                            ]
+                        );
+                if ($ticketCost && $ticketCost->getAltAmount()) {
+                    $caption .= '<span class="cost__dollars">' . $altAmount . '</span>';
+                }
+            } else {
+                $caption = $this->translator->trans('ticket.status.pay');
             }
         }
 
@@ -52,7 +57,14 @@ class SaleOpenEventState extends AbstractBaseEventState
      */
     public function getHref(EventStateData $eventStateData): ?string
     {
-        return $this->router->generate('event_pay', ['slug' => $eventStateData->getEvent()->getSlug()]);
+        $ticketCost = $eventStateData->getTicketCost();
+        $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
+
+        if ('price_block' === $eventStateData->getPosition()) {
+            return $this->router->generate('event_pay', ['slug' => $eventStateData->getEvent()->getSlug(), 'type' => $type]);
+        }
+
+        return $this->router->generate('event_show', ['slug' => $eventStateData->getEvent()->getSlug()]).'#price-event';
     }
 
     /**

@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Payment;
 use App\Entity\Ticket;
+use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Exception\BadAutoRegistrationDataException;
 use App\Form\Type\ParticipantFormType;
 use App\Model\UserManager;
+use App\Repository\TicketRepository;
 use App\Service\PaymentProcess\AbstractPaymentProcessService;
 use App\Service\PaymentProcess\PaymentProcessInterface;
 use App\Service\PaymentService;
@@ -41,6 +43,7 @@ class PaymentController extends AbstractController
     private $userManager;
     private $ticketService;
     private $userService;
+    private $ticketRepository;
 
     /**
      * @param PaymentService          $paymentService
@@ -48,37 +51,42 @@ class PaymentController extends AbstractController
      * @param UserManager             $userManager
      * @param TicketService           $ticketService
      * @param UserService             $userService
+     * @param TicketRepository        $ticketRepository
      */
-    public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService, UserService $userService)
+    public function __construct(PaymentService $paymentService, PaymentProcessInterface $paymentSystem, UserManager $userManager, TicketService $ticketService, UserService $userService, TicketRepository $ticketRepository)
     {
         $this->paymentService = $paymentService;
         $this->paymentSystem = $paymentSystem;
         $this->userManager = $userManager;
         $this->ticketService = $ticketService;
         $this->userService = $userService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     public const NEW_PAYMENT_SESSION_KEY = 'new_payment';
 
     /**
-     * @Route("/event/{slug}/pay", name="event_pay")
+     * @Route("/event/{slug}/pay/{type}", name="event_pay", requirements={"type": "free|standard|premium"})
      *
-     * @param Event $event
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event       $event
+     * @param string|null $type
      *
      * @throws \Exception
      *
      * @return Response
      */
-    public function payAction(Event $event): Response
+    public function payAction(Event $event, ?string $type = null): Response
     {
-        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets($type)) {
             return $this->render(
                 'Page/index.html.twig',
                 ['text' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()])]
             );
         }
 
-        $payment = $this->paymentService->getPaymentForCurrentUser($event);
+        $payment = $this->paymentService->getPaymentForCurrentUser($event, $type);
 
         $result = $this->serializer->normalize($payment, null, ['groups' => ['payment.view']]);
 
@@ -87,6 +95,7 @@ class PaymentController extends AbstractController
             [
                 'event' => $event,
                 'payment_data' => $result,
+                'ticket_type' => $type,
                 'with_conditions' => $this->paymentSystem->isAgreeWithConditionsRequired(),
             ]
         );
@@ -108,7 +117,19 @@ class PaymentController extends AbstractController
      */
     public function editTicketParticipantAction(Event $event, Ticket $ticket, Request $request): JsonResponse
     {
-        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
+        $ticketCost = $ticket->getTicketCost();
+        if (!$ticketCost instanceof TicketCost) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => ['user_name' => $this->translator->trans('error.create_ticket_error')],
+                ]
+            );
+        }
+
+        $type = $ticketCost->getType();
+
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets($type)) {
             return new JsonResponse(
                 [
                     'result' => false,
@@ -137,24 +158,26 @@ class PaymentController extends AbstractController
         /** @var User|null $user */
         $user = $this->userManager->findUserBy(['email' => $formUser->getEmail()]);
 
-        if ($this->ticketService->isUserHasPaidTicketForEvent($user, $event)) {
-            return new JsonResponse(
-                [
-                    'result' => false,
-                    'error' => ['email' => $this->translator->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
-                ]
-            );
-        }
+        if ($user instanceof User) {
+            if ($this->ticketService->isUserHasPaidTicketForEvent($user, $event, $type)) {
+                return new JsonResponse(
+                    [
+                        'result' => false,
+                        'error' => ['email' => $this->translator->trans('error.user.already.paid', ['%email%' => $user->getEmail()])],
+                    ]
+                );
+            }
 
-        try {
-            $ticket = $this->paymentService->replaceIfFindOtherUserTicketForEvent($user, $event, $ticket);
-        } catch (BadRequestHttpException $e) {
-            return new JsonResponse(
-                [
-                    'result' => false,
-                    'error' => ['email' => $this->translator->trans('error.ticket.already.added')],
-                ]
-            );
+            try {
+                $ticket = $this->paymentService->replaceIfFindOtherUserTicketForEvent($user, $event, $ticket, $type);
+            } catch (BadRequestHttpException $e) {
+                return new JsonResponse(
+                    [
+                        'result' => false,
+                        'error' => ['email' => $this->translator->trans('error.ticket.already.added')],
+                    ]
+                );
+            }
         }
 
         $newUsersList = $this->session->get(UserManager::NEW_USERS_SESSION_KEY, []);
@@ -182,7 +205,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }
 
-        $this->paymentService->checkTicketsPricesInPayment($payment, $event);
+        $this->paymentService->checkTicketsPricesInPayment($payment, $event, $type);
 
         $paymentData = $this->serializer->normalize($payment, null, ['groups' => ['payment.view']]);
         $ticketData = $this->serializer->normalize($ticket, null, ['groups' => ['payment.view']]);
@@ -193,19 +216,23 @@ class PaymentController extends AbstractController
     /**
      * Add user to payment.
      *
-     * @Route("/event/{slug}/payment/participant/add", name="add_ticket_participant",
+     * @Route("/event/{slug}/payment/participant/add/{type}", name="add_ticket_participant",
      *     methods={"POST"},
      *     options={"expose"=true},
+     *     requirements={"type": "free|standard|premium"},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param Event   $event
-     * @param Request $request
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event       $event
+     * @param Request     $request
+     * @param string|null $type
      *
      * @return JsonResponse
      */
-    public function addTicketParticipantAction(Event $event, Request $request): JsonResponse
+    public function addTicketParticipantAction(Event $event, Request $request, ?string $type): JsonResponse
     {
-        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets()) {
+        if (!$event->getReceivePayments() || !$event->isHasAvailableTickets($type)) {
             return new JsonResponse(
                 [
                     'result' => false,
@@ -245,9 +272,7 @@ class PaymentController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        /** @var Ticket|null $ticket */
-        $ticket = $em->getRepository(Ticket::class)
-            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+        $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);
 
         if (!$ticket) {
             $ticket = $this->ticketService->createTicket($event, $user);
@@ -280,7 +305,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }
 
-        $this->paymentService->checkTicketsPricesInPayment($payment, $event);
+        $this->paymentService->checkTicketsPricesInPayment($payment, $event, $type);
 
         $paymentData = $this->serializer->normalize($payment, null, ['groups' => ['payment.view']]);
         $ticketData = $this->serializer->normalize($ticket, null, ['groups' => ['payment.view']]);
@@ -305,6 +330,18 @@ class PaymentController extends AbstractController
      */
     public function removeTicketFromPaymentAction(Event $event, Ticket $ticket)
     {
+        $ticketCost = $ticket->getTicketCost();
+        if (!$ticketCost instanceof TicketCost) {
+            return new JsonResponse(
+                [
+                    'result' => false,
+                    'error' => ['user_name' => $this->translator->trans('error.create_ticket_error')],
+                ]
+            );
+        }
+
+        $type = $ticketCost->getType();
+
         $payment = $this->paymentService->getPendingPaymentIfAccess($event, $ticket);
         if (!$payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!', 'html' => '']);
@@ -312,7 +349,7 @@ class PaymentController extends AbstractController
 
         if ($payment->getTickets()->count() > 1) {
             $this->paymentService->removeTicketFromPayment($payment, $ticket);
-            $this->paymentService->checkTicketsPricesInPayment($payment, $event);
+            $this->paymentService->checkTicketsPricesInPayment($payment, $event, $type);
         } else {
             return new JsonResponse(['result' => false, 'error' => 'Must be at least one ticket!', 'html' => '']);
         }
@@ -325,19 +362,22 @@ class PaymentController extends AbstractController
     /**
      * Pay for payment by bonus money.
      *
-     * @Route("/event/{slug}/pay-by-bonus", name="event_pay_by_bonus")
+     * @Route("/event/{slug}/pay-by-bonus/{type}", name="event_pay_by_bonus", requirements={"type": "free|standard|premium"})
      *
-     * @param Event $event
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return Response
      */
-    public function setPaidByBonusMoneyAction(Event $event)
+    public function setPaidByBonusMoneyAction(Event $event, ?string $type)
     {
         $result = false;
         $payment = $this->paymentService->getPendingPaymentIfAccess($event);
 
         if ($payment && 0.0 === $payment->getAmount()) {
-            $result = $this->paymentService->setPaidByBonusMoney($payment, $event);
+            $result = $this->paymentService->setPaidByBonusMoney($payment, $event, $type);
         }
 
         if ($result) {
@@ -352,19 +392,22 @@ class PaymentController extends AbstractController
     /**
      * Pay for payment by promocode (100% discount).
      *
-     * @Route("/event/{slug}/pay-by-promocode", name="event_pay_by_promocode")
+     * @Route("/event/{slug}/pay-by-promocode/{type}", name="event_pay_by_promocode", requirements={"type": "free|standard|premium"})
      *
-     * @param Event $event
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return Response
      */
-    public function setPaidByPromocodeAction(Event $event)
+    public function setPaidByPromocodeAction(Event $event, ?string $type)
     {
         $result = false;
         $payment = $this->paymentService->getPendingPaymentIfAccess($event);
 
         if ($payment && 0.0 === $payment->getAmount()) {
-            $result = $this->paymentService->setPaidByPromocode($payment, $event);
+            $result = $this->paymentService->setPaidByPromocode($payment, $event, $type);
         }
 
         if ($result) {
@@ -381,6 +424,8 @@ class PaymentController extends AbstractController
      *     methods={"POST"},
      *     options={"expose"=true},
      *     condition="request.isXmlHttpRequest()")
+     *
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
      * @param Event   $event
      * @param Request $request
@@ -403,24 +448,28 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/event/{slug}/paying", name="event_paying",
+     * @Route("/event/{slug}/paying/{type}", name="event_paying",
      *     methods={"POST"},
      *     options={"expose"=true},
+     *     requirements={"type": "free|standard|premium"},
      *     condition="request.isXmlHttpRequest()")
      *
-     * @param Event   $event
-     * @param Request $request
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
+     *
+     * @param Event       $event
+     * @param string|null $type
+     * @param Request     $request
      *
      * @return JsonResponse
      */
-    public function eventPayingAction(Event $event, Request $request): JsonResponse
+    public function eventPayingAction(Event $event, ?string $type, Request $request): JsonResponse
     {
         $payment = $this->paymentService->getPendingPaymentIfAccess($event);
         if (!$payment instanceof Payment) {
             return new JsonResponse(['result' => false, 'error' => 'Payment not found or access denied!']);
         }
 
-        $this->paymentService->checkTicketsPricesInPayment($payment, $event);
+        $this->paymentService->checkTicketsPricesInPayment($payment, $event, $type);
 
         $savedData = (float) $request->request->get('saved_data');
         $paymentData = $this->serializer->normalize($payment, null, ['groups' => ['payment.view']]);
@@ -438,7 +487,7 @@ class PaymentController extends AbstractController
             if ($payment->getTickets()->count() > 0) {
                 if (0.0 === $payment->getAmount()) {
                     $formAction = $payment->getFwdaysAmount() > 0 ?
-                        $this->generateUrl('event_pay_by_bonus', ['slug' => $event->getSlug()]) : $this->generateUrl('event_pay_by_promocode', ['slug' => $event->getSlug()]);
+                        $this->generateUrl('event_pay_by_bonus', ['slug' => $event->getSlug(), 'type' => $type]) : $this->generateUrl('event_pay_by_promocode', ['slug' => $event->getSlug(), 'type' => $type]);
                 } else {
                     $formAction = $this->paymentSystem->getFormAction();
                     $paySystemData = $this->paymentSystem->getData($payment, $event);

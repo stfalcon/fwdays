@@ -1215,9 +1215,26 @@ class Event implements TranslatableInterface
     }
 
     /**
+     * @param string|null $type
+     *
      * @return bool
      */
-    public function isHasAvailableTickets()
+    public function isHasAvailableTickets(?string $type)
+    {
+        /** @var TicketCost $cost */
+        foreach ($this->ticketsCost as $cost) {
+            if ($type === $cost->getType() && $cost->isEnabled() && ($cost->isUnlimitedOrDateEnd() || $cost->getCount() > $cost->getSoldCount())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasAvailableTicketsWithoutType()
     {
         /** @var TicketCost $cost */
         foreach ($this->ticketsCost as $cost) {

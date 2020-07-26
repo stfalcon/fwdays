@@ -123,7 +123,7 @@
                 "offers": {
                     "@type":"Offer",
                     "url":"{{ event_pay_url }}",
-                    {% if event.hasAvailableTickets() -%}
+                    {% if event.hasAvailableTicketsWithoutType() -%}
                       "price": "{{ event.currentPrice }}",
                       "priceCurrency": "UAH",
                     {% endif -%}

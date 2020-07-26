@@ -66,7 +66,30 @@ class TicketCostRepository extends ServiceEntityRepository
      *
      * @return TicketCost[]
      */
-    public function getEventEnabledTicketsCost(Event $event): array
+    public function getEventEnabledTicketsCost(Event $event, ?string $type): array
+    {
+        $qb = $this->getEventTicketsCostQB($event);
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', true)
+        ;
+
+        if (null === $type) {
+            $qb->andWhere($qb->expr()->isNull('tc.type'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
+                ->setParameter('type', $type)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return TicketCost[]
+     */
+    public function getEventAllEnabledTicketsCost(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
         $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
@@ -75,6 +98,7 @@ class TicketCostRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
 
     /**
      * @param \DateTimeInterface $dateTime

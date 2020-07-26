@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TicketCost
 {
-    public const TYPE_FREE = 'type_free';
-    public const TYPE_STANDARD = 'type_standard';
-    public const TYPE_PREMIUM = 'type_premium';
+    public const TYPE_FREE = 'free';
+    public const TYPE_STANDARD = 'standard';
+    public const TYPE_PREMIUM = 'premium';
 
     /**
      * @var int
