@@ -804,7 +804,9 @@
   }
 
   &__items {
+    display: flex;
     margin-bottom: 36px;
+    padding: 0 24px;
   }
 
   &__hint {
@@ -935,8 +937,8 @@
   }
 
   &__buy {
-    min-width: 370px;
-    text-transform: none;
+    min-width: 287px;
+    text-transform: uppercase;
     letter-spacing: normal;
     font-size: 24px;
 
@@ -978,6 +980,120 @@
 
 .cost--active {
   background-color: #F5F3EA;
+}
+
+.event-cost {
+  position: relative;
+  flex-direction: column;
+  padding: 44px 36px 33px;
+  margin-right: 20px;
+  max-width: 360px;
+  width: 100%;
+  height: 534px;
+  background: #F5F3EA;
+
+  &--standart {
+    background: url('../../images/bg_ticket_standart.png');
+  }
+
+  &--premium {
+    background: url('../../images/bg_ticket_premium.png');
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &__type {
+    font-family: 'GothamPro';
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 23px;
+    text-transform: capitalize;
+    text-align: center;
+    color: #121314;
+    margin-bottom: 31px;
+  }
+
+  &__features p {
+    position: relative;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 20px;
+    color: #121314;
+    padding-left: 28px;
+    margin-bottom: 10px;
+
+    &:before {
+      content: url("../../images/check-price.png");
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  &__price {
+    text-align: center;
+    position: absolute;
+    bottom: 33px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 36px;
+
+    &-top {
+      margin-bottom: 27px;
+    }
+
+    .cost__price {
+      width: 100%;
+      padding: 0;
+      margin-bottom: 8px;
+    }
+
+    .cost__tickets {
+      display: flex;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .cost__sales {
+      display: flex;
+      align-items: center;
+      min-height: 26px;
+      height: 100%;
+      margin-left: 10px;
+      font-size: 12px;
+      line-height: 24px;
+      background: #CC523D;
+    }
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 382px;
+    width: 100%;
+    font-family: 'GothamPro';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 15px;
+    margin-top: 30px;
+  }
+}
+
+.event-cost__price-bottom .cost-tickets {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .partners {

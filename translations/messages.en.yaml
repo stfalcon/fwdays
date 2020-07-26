@@ -108,6 +108,8 @@ tickets.hint: available only via website
 tickets.tickets_run_out: Only few left
 tickets.other.title: other tickets
 tickets.end_date.title: 'till %date%'
+tickets.end_date_with_price.title: 'till %date% — %price% UAH'
+tickets.next_with_price.title: 'next %count% — %price% грн'
 sold_out.title: Sold out
 
 image.home.title: Tech events in Ukraine. Share ideas, broaden experience.
@@ -208,6 +210,7 @@ error.surname.only_letters: Surname must contain only letters
 error.name.only_letters: Name must contain only letters
 error.user.already.paid: the %email% has already paid the ticket
 error.payment.closed: '<p></p><p>Payment for participation in %event% is not accepted.</p>'
+error.create_ticket_error: '<p></p><p>Create ticket error!</p>'
 error.promocode.not_found: 'Promo code not found!'
 error.promocode.used: 'Promo code used!'
 error.promocode.low_than_discount: 'Promo code discount is lower than regular participant!'

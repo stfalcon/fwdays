@@ -22,19 +22,26 @@ class TicketCostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get event current cost.
+     * @param Event       $event
+     * @param string|null $type
      *
-     * @param Event $event
-     *
-     * @return float
+     * @return float|null
      */
-    public function getEventCurrentCost(Event $event)
+    public function getEventCurrentCost(Event $event, string $type = null): ?float
     {
         $qb = $this->getEventTicketsCostQB($event);
         $qb->select('tc.amount');
         $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
             ->setParameter('enabled', true)
         ;
+
+        if (null === $type) {
+            $qb->andWhere($qb->expr()->isNull('tc.type'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
+                ->setParameter('type', $type)
+            ;
+        }
 
         $result = $qb->getQuery()->getResult();
         $result = \is_array($result) ? \array_shift($result) : null;
@@ -43,13 +50,11 @@ class TicketCostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get Event tickets cost.
-     *
      * @param Event $event
      *
-     * @return array
+     * @return TicketCost[]
      */
-    public function getEventTicketsCost(Event $event)
+    public function getEventTicketsCostForType(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
 
@@ -57,13 +62,35 @@ class TicketCostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get Event enabled tickets cost.
+     * @param Event       $event
+     * @param string|null $type
      *
+     * @return TicketCost[]
+     */
+    public function getEventEnabledTicketsCost(Event $event, ?string $type): array
+    {
+        $qb = $this->getEventTicketsCostQB($event);
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', true)
+        ;
+
+        if (null === $type) {
+            $qb->andWhere($qb->expr()->isNull('tc.type'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
+                ->setParameter('type', $type)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @param Event $event
      *
-     * @return array
+     * @return TicketCost[]
      */
-    public function getEventEnabledTicketsCost(Event $event)
+    public function getEventAllEnabledTicketsCost(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
         $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
@@ -82,7 +109,7 @@ class TicketCostRepository extends ServiceEntityRepository
     {
         $qb = $this->getEnabledTicketCostWithEndDateLessThanDateQb($dateTime);
 
-        return  $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -120,15 +147,16 @@ class TicketCostRepository extends ServiceEntityRepository
     /**
      * @param Event $event
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    private function getEventTicketsCostQB(Event $event)
+    private function getEventTicketsCostQB(Event $event): QueryBuilder
     {
         $qb = $this->createQueryBuilder('tc');
         $qb->where($qb->expr()->eq('tc.event', ':event'))
             ->andWhere($qb->expr()->eq('tc.visible', ':visible'))
             ->setParameter(':event', $event)
             ->setParameter(':visible', true)
+            ->orderBy('tc.type')
             ->orderBy('tc.sortOrder')
             ->addOrderBy('tc.amount')
         ;

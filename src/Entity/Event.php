@@ -249,7 +249,7 @@ class Event implements TranslatableInterface
      *
      * @Assert\Valid()
      *
-     * @ORM\OrderBy({"sortOrder" = "ASC", "amount" = "ASC"})
+     * @ORM\OrderBy({"type" = "ASC", "sortOrder" = "ASC", "amount" = "ASC"})
      */
     protected $ticketsCost;
 
@@ -462,6 +462,15 @@ class Event implements TranslatableInterface
     private $online = false;
 
     /**
+     * @var ArrayCollection|TicketBenefit[]
+     *
+     * @ORM\OneToMany(targetEntity="TicketBenefit", mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
+     */
+    private $ticketBenefits;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -474,6 +483,7 @@ class Event implements TranslatableInterface
         $this->ticketsCost = new ArrayCollection();
         $this->blocks = new ArrayCollection();
         $this->audiences = new ArrayCollection();
+        $this->ticketBenefits = new ArrayCollection();
     }
 
     /**
@@ -1205,9 +1215,26 @@ class Event implements TranslatableInterface
     }
 
     /**
+     * @param string|null $type
+     *
      * @return bool
      */
-    public function isHasAvailableTickets()
+    public function isHasAvailableTickets(?string $type)
+    {
+        /** @var TicketCost $cost */
+        foreach ($this->ticketsCost as $cost) {
+            if ($type === $cost->getType() && $cost->isEnabled() && ($cost->isUnlimitedOrDateEnd() || $cost->getCount() > $cost->getSoldCount())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasAvailableTicketsWithoutType()
     {
         /** @var TicketCost $cost */
         foreach ($this->ticketsCost as $cost) {
@@ -1692,6 +1719,55 @@ class Event implements TranslatableInterface
     public function setOnline(bool $online): self
     {
         $this->online = $online;
+
+        return $this;
+    }
+
+    /**
+     * @return TicketBenefit[]|ArrayCollection
+     */
+    public function getTicketBenefits()
+    {
+        return $this->ticketBenefits;
+    }
+
+    /**
+     * @param TicketBenefit[]|ArrayCollection $ticketBenefits
+     *
+     * @return $this
+     */
+    public function setTicketBenefits($ticketBenefits): self
+    {
+        $this->ticketBenefits = $ticketBenefits;
+
+        return $this;
+    }
+
+    /**
+     * @param TicketBenefit $ticketBenefit
+     *
+     * @return $this
+     */
+    public function addTicketBenefit(TicketBenefit $ticketBenefit): self
+    {
+        if (!$this->ticketBenefits->contains($ticketBenefit)) {
+            $this->ticketBenefits->add($ticketBenefit);
+            $ticketBenefit->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param TicketBenefit $ticketBenefit
+     *
+     * @return $this
+     */
+    public function removeTicketBenefit(TicketBenefit $ticketBenefit): self
+    {
+        if ($this->ticketBenefits->contains($ticketBenefit)) {
+            $this->ticketBenefits->removeElement($ticketBenefit);
+        }
 
         return $this;
     }
