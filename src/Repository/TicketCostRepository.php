@@ -46,7 +46,7 @@ class TicketCostRepository extends ServiceEntityRepository
         $result = $qb->getQuery()->getResult();
         $result = \is_array($result) ? \array_shift($result) : null;
 
-        return $result ? $result['amount'] : null;
+        return $result ? (float) $result['amount'] : null;
     }
 
     /**
