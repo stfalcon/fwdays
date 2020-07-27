@@ -24,8 +24,8 @@ class PromoCodeCest
         $I->amOnPage('/en/event/javaScript-framework-day-2018?promocode=AnyCode');
         $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018');
 
-        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
-        $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay/standard');
+        $I->seeCurrentUrlEquals('/index_test.php/en/event/javaScript-framework-day-2018/pay/standard');
 
         $I->seeElement('#payer-block-edit-1 input[name=user_promo_code]');
         $I->seeInField('#payer-block-edit-1 input[name=user_promo_code]', 'AnyCode');
@@ -40,7 +40,7 @@ class PromoCodeCest
     {
         $I->wantTo('Check error message if not found promocode and dicount message on found.');
 
-        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay/standard');
 
         $this->clickEditUser($I);
 
@@ -69,7 +69,7 @@ class PromoCodeCest
         $I->see('Buy ticket', '#card-javaScript-framework-day-2018');
         $I->dontSee('Download ticket');
 
-        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay/standard');
 
         $this->clickEditUser($I);
 
@@ -100,7 +100,7 @@ class PromoCodeCest
     {
         $I->wantTo('Check using limited promocode and see error text.');
 
-        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay/standard');
 
         $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
 
@@ -109,9 +109,9 @@ class PromoCodeCest
         }
 
         $I->dontSee('Promo code used!');
-        $I->click('#payer-block-edit-1 .add-user-btn');
+        $I->click('#payer-block-edit-1 .edit-user-btn');
 
-        $I->waitForText('Promo code used!');
+        $I->waitForText('Promo code used!', 15);
     }
 
     private function clickEditUser(AcceptanceTester $I)

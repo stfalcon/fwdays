@@ -63,7 +63,7 @@ class EventService
             }
         }
 
-        $eventCurrentAmount = $this->ticketCostRepository->getEventCurrentCost($event);
+        $eventCurrentAmount = $this->ticketCostRepository->getEventLowestCost($event);
 
         $futureEvent = !$event->isActiveAndFuture() && $event->getGroup() instanceof EventGroup ? $this->eventRepository->findFutureEventFromSameGroup($event->getGroup()) : null;
 

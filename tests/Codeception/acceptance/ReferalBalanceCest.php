@@ -17,18 +17,7 @@ class ReferalBalanceCest
     {
         $I->wantTo('Check buy ticket by user referal bonus.');
 
-        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay');
-
-        $I->dontSeeElement('#buy-ticket-btn-javaScript-framework-day-2018');
-
-        foreach (self::PAY_USER_DATA as $field => $value) {
-            $I->seeElement($field);
-            $I->fillField($field, $value);
-        }
-
-        $I->clearField('#payer-block-edit-1 input[name=user_promo_code].user_promo_code');
-
-        $I->click('#payer-block-edit-1 .add-user-btn');
+        $I->amOnPage('/en/event/javaScript-framework-day-2018/pay/standard');
 
         $I->waitForText('YOUR FWDAYS BONUS');
         $I->seeInField('#user-bonus-input', 1000);

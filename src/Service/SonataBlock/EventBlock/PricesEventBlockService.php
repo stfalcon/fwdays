@@ -52,7 +52,7 @@ class PricesEventBlockService extends AbstractBlockService
         $eventCurrentCost = null;
 
         if (!empty($ticketCosts) && null === $ticketCosts[0]->getType()) {
-            $eventCurrentCost = $this->ticketCostRepository->getEventCurrentCost($event);
+            $eventCurrentCost = $this->ticketCostRepository->getEventLowestCost($event);
             $isOldPrice = true;
         } else {
             foreach (TicketCost::getTypes() as $type) {
