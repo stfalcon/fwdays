@@ -28,28 +28,7 @@ class SaleOpenEventState extends AbstractBaseEventState
      */
     public function getCaption(EventStateData $eventStateData): string
     {
-        $caption = $this->translator->trans(\sprintf('ticket.status.pay%s', $eventStateData->getMob()));
-        if ('price_block' === $eventStateData->getPosition()) {
-            $ticketCost = $eventStateData->getTicketCost();
-            if (!$ticketCost instanceof TicketCost || null === $ticketCost->getType()) {
-                $amount = $ticketCost ? $ticketCost->getAmount() : $eventStateData->getEvent()->getBiggestTicketCost()->getAmount();
-                $altAmount = $ticketCost ? '≈$'.\number_format($ticketCost->getAltAmount(), 0, ',', ' ') : '';
-                $caption = $this->translator->trans('ticket.status.pay_for').' '.$this->translator
-                        ->trans(
-                            'payment.price',
-                            [
-                                '%summ%' => \number_format((float) $amount, 0, ',', ' '),
-                            ]
-                        );
-                if ($ticketCost && $ticketCost->getAltAmount()) {
-                    $caption .= '<span class="cost__dollars">'.$altAmount.'</span>';
-                }
-            } else {
-                $caption = $this->translator->trans('ticket.status.pay');
-            }
-        }
-
-        return $caption;
+        return $this->translator->trans('ticket.status.pay');
     }
 
     /**
