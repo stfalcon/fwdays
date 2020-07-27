@@ -32,12 +32,13 @@ class SigninCest
     public function unauthenticatedRedirectToLoginAndThanBack(AcceptancePhpWebTester $I): void
     {
         $I->wantTo('Check redirect to login if pressed buy button and back to pay page.');
-
+        $I->amOnPage('/logout');
+        static::iAmNotSigned($I);
         $I->amOnPage('/event/javaScript-framework-day-2018');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
-        $I->seeLink('Купити за');
-        $I->click('Купити за');
+        $I->seeLink('Купити квиток', '/index_test.php/event/javaScript-framework-day-2018/pay/standard');
+        $I->click('a[href="/index_test.php/event/javaScript-framework-day-2018/pay/standard"]');
 
         $I->seeCurrentUrlEquals('/index_test.php/login');
 
@@ -45,7 +46,7 @@ class SigninCest
 
         $I->click('#login-form- button[type=submit]');
 
-        $I->seeCurrentUrlEquals('/index_test.php/event/javaScript-framework-day-2018/pay');
+        $I->seeCurrentUrlEquals('/index_test.php/event/javaScript-framework-day-2018/pay/standard');
         $I->canSeeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     }
 

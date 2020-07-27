@@ -52,6 +52,31 @@ class TicketCostRepository extends ServiceEntityRepository
     /**
      * @param Event $event
      *
+     * @return float|null
+     */
+    public function getEventLowestCost(Event $event): ?float
+    {
+        $qb = $this->getEventTicketsCostQB($event);
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', true)
+        ;
+
+        /** @var TicketCost[] $ticketCosts */
+        $ticketCosts = $qb->getQuery()->getResult();
+
+        $result = null;
+        foreach ($ticketCosts as $ticketCost) {
+            if ($ticketCost->getAmount() < $result || null === $result) {
+                $result = $ticketCost->getAmount();
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Event $event
+     *
      * @return TicketCost[]
      */
     public function getEventTicketsCostForType(Event $event): array
