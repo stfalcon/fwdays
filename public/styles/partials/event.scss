@@ -994,10 +994,12 @@
 
   &--standart {
     background: url('../../images/bg_ticket_standart.png');
+    background-size: cover;
   }
 
   &--premium {
     background: url('../../images/bg_ticket_premium.png');
+    background-size: cover;
   }
 
   &:last-child {
@@ -1064,7 +1066,7 @@
       height: 100%;
       margin-left: 10px;
       font-size: 12px;
-      line-height: 24px;
+      line-height: 14px;
       background: #CC523D;
     }
   }
