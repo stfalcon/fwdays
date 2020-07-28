@@ -43,7 +43,7 @@
                     {% if event.activeAndFuture %}
                         {% if event.receivePayments and event.hasAvailableTicketsWithoutType %}
                             <a href="{{ link }}#price-event" class="event-header__tickets{{ scrollClass }}">{{ 'ticket.summ_from'|trans({"%summ%":eventCurrentAmount|number_format(0,',',' ')}) }}</a>
-                        {% elseif event.free %}
+                        {% elseif event.isFreeParticipationCost %}
                             <a class="event-header__tickets">{{ 'event.free'|trans }}</a>
                         {% endif %}
                     {% endif %}

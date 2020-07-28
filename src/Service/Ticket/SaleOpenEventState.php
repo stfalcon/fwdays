@@ -28,6 +28,10 @@ class SaleOpenEventState extends AbstractBaseEventState
      */
     public function getCaption(EventStateData $eventStateData): string
     {
+        if ($eventStateData->getEvent()->isFreemiumParticipationCost() && 'price_block' !== $eventStateData->getPosition()) {
+            return $this->translator->trans('ticket.status.get');
+        }
+
         return $this->translator->trans('ticket.status.pay');
     }
 

@@ -82,7 +82,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
         try {
             $user = $this->userService->getCurrentUser();
             $ticket = $this->ticketRepository->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
-            $userRegisteredForFreeEvent = $event->isFree() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+            $userRegisteredForFreeEvent = $event->isFreeParticipationCost() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
         } catch (AccessDeniedException $e) {
             $user = null;
             $ticket = null;

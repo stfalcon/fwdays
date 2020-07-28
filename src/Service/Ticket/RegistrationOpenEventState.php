@@ -20,7 +20,7 @@ class RegistrationOpenEventState extends AbstractBaseEventState
     {
         $event = $eventStateData->getEvent();
 
-        return $event->isActiveAndFuture() && (!$event->getReceivePayments() || self::NAME === $eventStateData->getForced()) && $event->isRegistrationOpen();
+        return $event->isActiveAndFuture() && (!$event->getReceivePayments() || self::NAME === $eventStateData->getForced() || $event->isFreeParticipationCost()) && $event->isRegistrationOpen();
     }
 
     /**

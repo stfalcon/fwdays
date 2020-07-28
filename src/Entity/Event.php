@@ -40,6 +40,10 @@ class Event implements TranslatableInterface
     public const EVENT_TYPE_MEETUP = 'meetup';
     public const EVENT_TYPE_WORKSHOP = 'workshop';
 
+    private const PAYMENT_TYPE_FREE = 'free';
+    private const PAYMENT_TYPE_FREEMIUM = 'freemium';
+    private const PAYMENT_TYPE_PAID = 'paid';
+
     use TranslateTrait;
     /**
      * @var int
@@ -259,7 +263,7 @@ class Event implements TranslatableInterface
      * @ORM\Column(name="receive_payments", type="boolean")
      *
      * @Assert\Expression(
-     *     "value !== this.isFree() || (!value && !this.isFree())",
+     *     "value !== this.isFreeParticipationCost() || (!value && !this.isFreeParticipationCost())",
      *     message="Нельзя принимать оплату в бесплатном событии."
      * )
      */
@@ -441,18 +445,18 @@ class Event implements TranslatableInterface
     private $registrationOpen = true;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":false})
-     */
-    private $free = false;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      */
     private $type;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", name="participation_cost", nullable=true, length=20)
+     */
+    private $participationCost;
 
     /**
      * @var bool
@@ -1668,22 +1672,6 @@ class Event implements TranslatableInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isFree(): bool
-    {
-        return $this->free;
-    }
-
-    /**
-     * @param bool $free
-     */
-    public function setFree(bool $free): void
-    {
-        $this->free = $free;
-    }
-
-    /**
      * @return string|null
      */
     public function getType(): ?string
@@ -1773,7 +1761,63 @@ class Event implements TranslatableInterface
     }
 
     /**
-     * @return array
+     * @return string|null
+     */
+    public function getParticipationCost(): ?string
+    {
+        return $this->participationCost;
+    }
+
+    /**
+     * @param string|null $participationCost
+     *
+     * @return $this
+     */
+    public function setParticipationCost(?string $participationCost)
+    {
+        $this->participationCost = $participationCost;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreeParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_FREE === $this->participationCost;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreemiumParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_FREEMIUM === $this->participationCost;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaidParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_PAID === $this->participationCost;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public static function getParticipationCostChoice(): array
+    {
+        return [
+            self::PAYMENT_TYPE_FREE => self::PAYMENT_TYPE_FREE,
+            self::PAYMENT_TYPE_FREEMIUM => self::PAYMENT_TYPE_FREEMIUM,
+            self::PAYMENT_TYPE_PAID => self::PAYMENT_TYPE_PAID,
+        ];
+    }
+
+    /**
+     * @return array|string[]
      */
     public static function getTypeChoices(): array
     {
