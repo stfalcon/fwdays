@@ -8,6 +8,7 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,7 +58,7 @@ class TicketController extends AbstractController
 
         if (null === $type) {
             /** @var Ticket|null $ticket */
-            $ticket = $this->ticketRepository->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+            $ticket = $this->ticketRepository->findOneBy(['event' => $event->getId(), 'user' => $user->getId()], ['updatedAt' => Criteria::DESC]);
         } else {
             $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);
         }
