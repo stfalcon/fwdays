@@ -39,6 +39,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $event = $blockContext->getSetting('event');
+        $forced = $blockContext->getSetting('forced');
 
         if (!$event instanceof Event) {
             throw new NotFoundHttpException();
@@ -47,11 +48,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
         $position = $blockContext->getSetting('position');
         $ticketCost = $blockContext->getSetting('ticket_cost');
 
-        $result = $this->ticketService->getTicketHtmlData(
-            $event,
-            $position,
-            $ticketCost
-        );
+        $result = $this->ticketService->getTicketHtmlData($event, $position, $ticketCost, $forced);
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
@@ -71,6 +68,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
             'position' => 'price_block',
             'ticket_cost' => null,
             'event_block' => null,
+            'forced' => null,
         ]);
     }
 }

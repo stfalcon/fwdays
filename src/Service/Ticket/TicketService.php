@@ -244,12 +244,13 @@ class TicketService
      * @param Event           $event
      * @param string          $position
      * @param TicketCost|null $ticketCost
+     * @param string|null     $forced
      *
      * @return array
      */
-    public function getTicketHtmlData(Event $event, string $position, ?TicketCost $ticketCost): array
+    public function getTicketHtmlData(Event $event, string $position, ?TicketCost $ticketCost, ?string $forced): array
     {
-        $eventStateData = $this->createEventData($event, $position, $ticketCost);
+        $eventStateData = $this->createEventData($event, $position, $ticketCost, $forced);
         $downloadTicketData = $this->getDownloadTicketData($eventStateData);
 
         foreach ($this->eventStates as $eventStateProcessor) {
@@ -354,10 +355,11 @@ class TicketService
      * @param Event           $event
      * @param string          $position
      * @param TicketCost|null $ticketCost
+     * @param string|null     $forced
      *
      * @return EventStateData
      */
-    private function createEventData(Event $event, string $position, ?TicketCost $ticketCost): EventStateData
+    private function createEventData(Event $event, string $position, ?TicketCost $ticketCost, ?string $forced): EventStateData
     {
         $ticket = null;
         $payment = null;
@@ -371,7 +373,7 @@ class TicketService
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         }
 
-        return (new EventStateData($event, $position, $ticketCost))
+        return (new EventStateData($event, $position, $ticketCost, $forced))
             ->setPendingPayment($payment)
             ->setTicket($ticket)
             ->setUser($user)
