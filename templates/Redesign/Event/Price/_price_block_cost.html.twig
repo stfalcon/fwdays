@@ -16,7 +16,7 @@
                             {% if null != ticket.endDate %}
                                 {{ ticket|app_tickets_price_time_left }}
                             {% else %}
-                                <span class="cost__runout">{{ 'tickets.tickets_run_out'|trans|raw }}</span>
+                                {{ 'tickets.tickets_run_out'|trans|raw }}
                             {% endif %}
                         </span>
                     {% endif %}
