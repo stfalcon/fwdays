@@ -218,6 +218,7 @@ class EventStateData
     public function setForced(?string $forced)
     {
         $this->forced = $forced;
+
         return $this;
     }
 }
