@@ -210,16 +210,27 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Город', ['class' => 'col-md-2'])
                     ->add('city', null, ['label' => 'Город'])
                 ->end()
-                ->with('Slug', ['class' => 'col-md-3'])
+                ->with('Slug', ['class' => 'col-md-2'])
                     ->add('slug')
                 ->end()
-                ->with('Тип', ['class' => 'col-md-2'])
+                ->with('Тип cобытия', ['class' => 'col-md-2'])
                     ->add(
                         'type',
                         ChoiceType::class,
                         [
                             'choices' => Event::getTypeChoices(),
-                            'label' => 'Тип',
+                            'label' => 'Тип cобытия',
+                            'required' => false,
+                        ]
+                    )
+                ->end()
+                ->with('Стоимость участия', ['class' => 'col-md-2'])
+                    ->add(
+                        'participationCost',
+                        ChoiceType::class,
+                        [
+                            'choices' => Event::getParticipationCostChoice(),
+                            'label' => 'Стоимость участия',
                             'required' => false,
                         ]
                     )
@@ -233,7 +244,6 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
-                    ->add('free', null, ['required' => false, 'label' => 'Бесплатное событие'])
                     ->add('registrationOpen', null, ['required' => false, 'label' => 'Включить регистрацию'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
