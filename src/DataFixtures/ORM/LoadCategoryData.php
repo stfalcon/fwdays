@@ -4,7 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Category;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * LoadCategoryData class.

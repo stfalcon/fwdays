@@ -12,7 +12,9 @@
                     {% else %}
                         {% for type, tickets in ticketCosts %}
                             {% set template = 'Redesign/Event/Price/price_block_' ~ type  ~ '.html.twig' %}
-                            {% include template with {'tickets':tickets, 'currentPrice' : currentPrice[type], 'benefits':ticket_benefits[type]}  %}
+                            {% set price = currentPrice[type] is defined ? currentPrice[type] : 0 %}
+                            {% set benefits = ticket_benefits[type] is defined ? ticket_benefits[type] : '' %}
+                            {% include template with {'tickets':tickets, 'currentPrice' : price, 'benefits':benefits}  %}
                         {% endfor %}
                     {% endif %}
                 {% endif %}

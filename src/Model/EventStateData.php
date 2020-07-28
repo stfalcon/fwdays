@@ -36,17 +36,22 @@ class EventStateData
     /** @var User|null */
     private $user;
 
+    /** @var string|null */
+    private $forced;
+
     /**
-     * @param Event      $event
-     * @param string     $position
-     * @param TicketCost $ticketCost
+     * @param Event           $event
+     * @param string          $position
+     * @param TicketCost|null $ticketCost
+     * @param string|null     $forced
      */
-    public function __construct(Event $event, string $position, ?TicketCost $ticketCost)
+    public function __construct(Event $event, string $position, ?TicketCost $ticketCost, ?string $forced)
     {
         $this->event = $event;
         $this->position = $position;
         $this->ticketCost = $ticketCost;
         $this->mob = \in_array($position, ['event_fix_header_mob', 'price_block_mob']) ? '_mob' : null;
+        $this->forced = $forced;
     }
 
     /**
@@ -195,5 +200,25 @@ class EventStateData
     public function canDownloadTicket(): bool
     {
         return $this->event->isActiveAndFuture() && $this->ticket && $this->ticket->isPaid();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getForced(): ?string
+    {
+        return $this->forced;
+    }
+
+    /**
+     * @param string|null $forced
+     *
+     * @return $this
+     */
+    public function setForced(?string $forced)
+    {
+        $this->forced = $forced;
+
+        return $this;
     }
 }
