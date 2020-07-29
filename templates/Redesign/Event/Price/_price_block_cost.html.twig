@@ -7,7 +7,7 @@
                 <div class="cost__price">{{ 'payment.price'|trans({'%summ%':ticket.amount|number_format(0,',',' ')}) }}<span class="cost__dollars">{{ ticket_altAmount }}</span></div>
                 <div class="cost__tickets">
                     {% if null != ticket.endDate %}
-                        {{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM Y', null, 'Europe/Kiev')}) }}
+                        {{ 'tickets.end_date.title'|trans({'%date%': ticket.endDate|format_date('d MMMM', null, 'Europe/Kiev')}) }}
                     {% else %}
                         {{ 'tickets.count'|trans({'%ticket_count%': ticket.count}, null, null, ticket.count|pluralization) }}
                     {% endif %}
