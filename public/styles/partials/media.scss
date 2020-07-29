@@ -6,7 +6,7 @@
 
 @media screen and (max-width: 1164px) {
   .event-cost {
-    padding: 32px 8px 0 16px;
+    padding: 32px 16px;
 
     &__price {
       padding: 0 16px;
@@ -894,6 +894,10 @@
 }
 
 @media screen and (max-width: 900px) {
+  .event-cost__top {
+    margin-bottom: 24px;
+  }
+
   .event-cost__type {
     margin-bottom: 17px;
   }
@@ -916,7 +920,6 @@
 @media screen and (max-width: 790px) {
   .price-list__items {
     flex-direction: column;
-    align-items: center;
     padding: 0 16px;
   }
 
@@ -926,16 +929,19 @@
     margin-bottom: 16px;
     margin-right: 0;
 
-    &--free {
-      height: 203px;
+    &__card--free {
+      min-height: 203px;
+      height: 100%;
     }
 
-    &--standart {
-      height: 364px;
+    &__card--standart {
+      min-height: 364px;
+      height: 100%;
     }
 
-    &--premium {
-      height: 406px;
+    &__card--premium {
+      min-height: 406px;
+      height: 100%;
     }
 
     &:last-child {
@@ -943,7 +949,6 @@
     }
 
     &__price {
-      bottom: 0;
       padding: 0;
     }
 
@@ -955,12 +960,9 @@
       margin-bottom: 17px;
     }
 
-    &__features {
-      margin-bottom: 24px;
-    }
-
     &__btn {
-      height: 57px;
+      min-height: 57px;
+      height: auto;
       max-width: 790px;
       width: 100%;
     }

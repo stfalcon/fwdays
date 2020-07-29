@@ -1,7 +1,13 @@
-<div class="event-cost event-cost--premium">
-    <div class="event-cost__type">Преміум</div>
-    <div class="event-cost__features">
-        {{ benefits|raw }}
+<div class="event-cost__card event-cost__card--premium">
+    <div class="event-cost">
+        <div class="event-cost__top">
+            <div class="event-cost__type">Преміум</div>
+            <div class="event-cost__features">
+                {{ benefits|raw }}
+            </div>
+        </div>
+        <div class="event-cost__bottom">
+            {% include 'Redesign/Event/Price/_price_block_cost.html.twig' %}
+        </div>
     </div>
-    {% include 'Redesign/Event/Price/_price_block_cost.html.twig' %}
 </div>
