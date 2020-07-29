@@ -253,7 +253,7 @@ class Event implements TranslatableInterface
      *
      * @Assert\Valid()
      *
-     * @ORM\OrderBy({"type" = "ASC", "sortOrder" = "ASC", "amount" = "ASC"})
+     * @ORM\OrderBy({"sortOrder" = "ASC", "type" = "ASC", "amount" = "ASC"})
      */
     protected $ticketsCost;
 
