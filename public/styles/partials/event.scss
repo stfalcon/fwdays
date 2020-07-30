@@ -1009,7 +1009,7 @@
   }
 
   &__type {
-    font-family: 'GothamPro';
+    font-family: 'GothamPro', sans-serif;
     font-weight: bold;
     font-size: 24px;
     line-height: 23px;
@@ -1042,7 +1042,7 @@
   &__price {
     text-align: center;
     width: 100%;
-    padding: 0 36px;
+    padding: 0 8px;
 
     &-top {
       margin-bottom: 27px;
@@ -1079,13 +1079,12 @@
     align-items: center;
     justify-content: center;
     max-width: 382px;
-    width: 100%;
-    font-family: 'GothamPro';
+    font-family: 'GothamPro', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 15px;
-    margin-top: 30px;
+    margin: 30px 8px 0;
   }
 }
 
