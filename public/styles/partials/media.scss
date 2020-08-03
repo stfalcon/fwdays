@@ -6,10 +6,11 @@
 
 @media screen and (max-width: 1164px) {
   .event-cost {
-    padding: 32px 16px;
+    padding: 44px 16px 33px;
 
-    &__price {
-      padding: 0 16px;
+    &__price-top {
+      margin-left: -8px;
+      margin-right: -8px;
     }
 
     &__btn {
@@ -931,8 +932,15 @@
   .event-cost {
     max-width: 790px;
     padding: 32px 16px 0;
-    margin-bottom: 16px;
     margin-right: 0;
+
+    &__card {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
 
     &__card--free {
       min-height: 203px;
@@ -949,16 +957,14 @@
       height: 100%;
     }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     &__price {
       padding: 0;
     }
 
     &__price-top {
       margin-bottom: 20px;
+      margin-left: 0;
+      margin-right: 0;
     }
 
     &__type {
@@ -969,8 +975,8 @@
       min-height: 57px;
       height: auto;
       max-width: 790px;
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: -16px;
+      margin-right: -16px;
     }
   }
 }
@@ -2420,7 +2426,7 @@
   .user-payment-form {
     .btn {
       width: 70%;
-      min-width: 200px
+      min-width: 200px;
     }
   }
 }
