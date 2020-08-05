@@ -12,6 +12,7 @@ use App\Model\DownloadTicketData;
 use App\Model\EventStateData;
 use App\Repository\PaymentRepository;
 use App\Repository\TicketCostRepository;
+use App\Repository\TicketRepository;
 use App\Service\User\UserService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -70,7 +71,7 @@ class TicketService
                     ],
                 'price_block' => [
                         self::CAN_DOWNLOAD_TICKET => '',
-                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-cost__btn',
                     ],
             ];
 
@@ -79,26 +80,27 @@ class TicketService
     private $translator;
     private $router;
     private $userService;
+    private $ticketRepository;
 
     /** @var EventStateInterface[] */
     private $eventStates = [];
 
     /**
-     * TicketService constructor.
-     *
      * @param EntityManager       $em
      * @param array               $paymentsConfig
      * @param TranslatorInterface $translator
      * @param RouterInterface     $router
      * @param UserService         $userService
+     * @param TicketRepository    $ticketRepository
      */
-    public function __construct($em, $paymentsConfig, $translator, $router, UserService $userService)
+    public function __construct($em, $paymentsConfig, $translator, $router, UserService $userService, TicketRepository $ticketRepository)
     {
         $this->em = $em;
         $this->paymentsConfig = $paymentsConfig;
         $this->translator = $translator;
         $this->router = $router;
         $this->userService = $userService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
@@ -225,7 +227,7 @@ class TicketService
             ->setAmountWithoutDiscount($event->getCost())
             ->setAmount($event->getCost());
         $this->em->persist($ticket);
-        $this->em->flush();
+        $this->em->flush($ticket);
 
         return $ticket;
     }
@@ -242,12 +244,13 @@ class TicketService
      * @param Event           $event
      * @param string          $position
      * @param TicketCost|null $ticketCost
+     * @param string|null     $forced
      *
      * @return array
      */
-    public function getTicketHtmlData(Event $event, string $position, ?TicketCost $ticketCost): array
+    public function getTicketHtmlData(Event $event, string $position, ?TicketCost $ticketCost, ?string $forced): array
     {
-        $eventStateData = $this->createEventData($event, $position, $ticketCost);
+        $eventStateData = $this->createEventData($event, $position, $ticketCost, $forced);
         $downloadTicketData = $this->getDownloadTicketData($eventStateData);
 
         foreach ($this->eventStates as $eventStateProcessor) {
@@ -271,15 +274,16 @@ class TicketService
     }
 
     /**
-     * @param Event $event
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return TicketCost|null
      */
-    public function getCurrentEventTicketCost($event)
+    public function getCurrentEventTicketCost(Event $event, ?string $type)
     {
         /** @var TicketCostRepository $ticketCostRepository */
         $ticketCostRepository = $this->em->getRepository(TicketCost::class);
-        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
+        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event, $type);
 
         $currentTicketCost = null;
 
@@ -295,40 +299,18 @@ class TicketService
     }
 
     /**
-     * @param Event $event
-     *
-     * @return int
-     */
-    public function getEventFreeTicketCount($event)
-    {
-        /** @var TicketCostRepository $ticketCostRepository */
-        $ticketCostRepository = $this->em->getRepository(TicketCost::class);
-        $eventCosts = $ticketCostRepository->getEventEnabledTicketsCost($event);
-        $count = 0;
-        /** @var TicketCost $cost */
-        foreach ($eventCosts as $cost) {
-            if (!$cost->isUnlimitedOrDateEnd()) {
-                $count += $cost->getCount() - $cost->getSoldCount();
-            }
-        }
-
-        return $count;
-    }
-
-    /**
-     * @param User|null $user
-     * @param Event     $event
+     * @param User|null   $user
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return bool
      */
-    public function isUserHasPaidTicketForEvent(?User $user, Event $event): bool
+    public function isUserHasPaidTicketForEvent(?User $user, Event $event, ?string $type): bool
     {
         if (!$user instanceof User) {
             return false;
         }
-        /** @var Ticket|null $ticket */
-        $ticket = $this->em->getRepository(Ticket::class)
-            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+        $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);
 
         return $ticket instanceof Ticket && $ticket->isPaid();
     }
@@ -373,10 +355,11 @@ class TicketService
      * @param Event           $event
      * @param string          $position
      * @param TicketCost|null $ticketCost
+     * @param string|null     $forced
      *
      * @return EventStateData
      */
-    private function createEventData(Event $event, string $position, ?TicketCost $ticketCost): EventStateData
+    private function createEventData(Event $event, string $position, ?TicketCost $ticketCost, ?string $forced): EventStateData
     {
         $ticket = null;
         $payment = null;
@@ -390,7 +373,7 @@ class TicketService
                 ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
         }
 
-        return (new EventStateData($event, $position, $ticketCost))
+        return (new EventStateData($event, $position, $ticketCost, $forced))
             ->setPendingPayment($payment)
             ->setTicket($ticket)
             ->setUser($user)
@@ -407,13 +390,15 @@ class TicketService
         $ticketClass = null;
         $ticketCaption = null;
         $downloadUrl = null;
+        $ticketCost = $eventStateData->getTicketCost();
+        $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
 
         if ($eventStateData->canDownloadTicket()) {
             $ticketCaption = $this->translator->trans('ticket.status.download');
             $position = $eventStateData->getPosition();
             $ticketClass = self::STATES[$position][self::CAN_DOWNLOAD_TICKET] ?? self::STATES[$position][self::EVENT_DEFAULT_STATE];
             if (!empty($ticketClass)) {
-                $downloadUrl = $this->router->generate('event_ticket_download', ['slug' => $eventStateData->getEvent()->getSlug()]);
+                $downloadUrl = $this->router->generate('event_ticket_download', ['slug' => $eventStateData->getEvent()->getSlug(), 'type' => $type]);
             }
         }
 

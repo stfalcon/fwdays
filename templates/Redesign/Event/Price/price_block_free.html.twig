@@ -1,0 +1,20 @@
+<div class="event-cost__card event-cost__card--free">
+    <div class="event-cost">
+        <div class="event-cost__top">
+            <div class="event-cost__type">Безкоштовний</div>
+            <div class="event-cost__features">
+                {{ benefits|raw }}
+            </div>
+        </div>
+        <div class="event-cost__bottom">
+            <div class="event-cost__price">
+                {% set active_ticket = null %}
+                {% for ticket in tickets if ticket.amount == currentPrice %}
+                    {% set active_ticket = ticket %}
+                {% endfor %}
+                {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'price_block', 'ticket_cost':active_ticket, 'forced': constant('App\\Service\\Ticket\\RegistrationOpenEventState::NAME')}) }}
+            </div>
+        </div>
+    </div>
+
+</div>

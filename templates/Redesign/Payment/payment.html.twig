@@ -46,6 +46,9 @@
 
 {% block scripts %}
     {{ parent() }}
+    <script>
+        var ticket_type = '{{ ticket_type }}';
+    </script>
     <script type="text/javascript" src="{{ asset('js/partials/payment.js') }}" defer></script>
     <script>
         let ticket_count = '{{ payment_data.ticket_count }}';

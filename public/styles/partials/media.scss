@@ -4,6 +4,22 @@
   }
 }
 
+@media screen and (max-width: 1164px) {
+  .event-cost {
+    padding: 44px 16px 33px;
+
+    &__price-top {
+      margin-left: -8px;
+      margin-right: -8px;
+    }
+
+    &__btn {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
 @media only screen and (max-width: 1150px) {
   .header {
     padding: 10px 0;
@@ -883,9 +899,85 @@
   }
 }
 
+@media screen and (max-width: 900px) {
+  .event-cost__top {
+    margin-bottom: 24px;
+  }
+
+  .event-cost__type {
+    margin-bottom: 17px;
+  }
+
+  .event-cost__price-top {
+    margin-bottom: 20px;
+  }
+
+  .event-cost__btn {
+    margin-top: 21px;
+  }
+}
+
 @media only screen and (max-width: 860px) {
   .header-nav {
     margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .price-list__items {
+    flex-direction: column;
+    padding: 0 16px;
+  }
+
+  .event-cost {
+    max-width: 790px;
+    padding: 32px 16px 0;
+    margin-right: 0;
+
+    &__card {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &__card--free {
+      min-height: 203px;
+      height: 100%;
+    }
+
+    &__card--standart {
+      min-height: 364px;
+      height: 100%;
+    }
+
+    &__card--premium {
+      min-height: 406px;
+      height: 100%;
+    }
+
+    &__price {
+      padding: 0;
+    }
+
+    &__price-top {
+      margin-bottom: 20px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    &__type {
+      margin-bottom: 17px;
+    }
+
+    &__btn {
+      min-height: 57px;
+      height: auto;
+      max-width: 790px;
+      margin-left: -16px;
+      margin-right: -16px;
+    }
   }
 }
 
@@ -1533,7 +1625,7 @@
     margin-bottom: 70px;
 
     &__title {
-      margin-bottom: 10px;
+      margin-bottom: 18px;
     }
 
     &__items {
@@ -2334,7 +2426,7 @@
   .user-payment-form {
     .btn {
       width: 70%;
-      min-width: 200px
+      min-width: 200px;
     }
   }
 }

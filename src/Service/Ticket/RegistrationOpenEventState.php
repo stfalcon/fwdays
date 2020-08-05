@@ -11,6 +11,8 @@ use App\Model\EventStateData;
  */
 class RegistrationOpenEventState extends AbstractBaseEventState
 {
+    public const NAME = 'registration_open';
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class RegistrationOpenEventState extends AbstractBaseEventState
     {
         $event = $eventStateData->getEvent();
 
-        return $event->isActiveAndFuture() && !$event->getReceivePayments() && $event->isRegistrationOpen();
+        return $event->isActiveAndFuture() && (!$event->getReceivePayments() || self::NAME === $eventStateData->getForced() || $event->isFreeParticipationCost()) && $event->isRegistrationOpen();
     }
 
     /**

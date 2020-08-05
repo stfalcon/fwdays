@@ -7,6 +7,9 @@ use App\Entity\Payment;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Helper\PdfGeneratorHelper;
+use App\Repository\TicketRepository;
+use Doctrine\Common\Collections\Criteria;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,53 +23,51 @@ class TicketController extends AbstractController
 {
     private $pdfGeneratorHelper;
     private $authorizationChecker;
+    private $ticketRepository;
 
     /**
      * @param PdfGeneratorHelper   $pdfGeneratorHelper
      * @param AuthorizationChecker $authorizationChecker
+     * @param TicketRepository     $ticketRepository
      */
-    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper, AuthorizationChecker $authorizationChecker)
+    public function __construct(PdfGeneratorHelper $pdfGeneratorHelper, AuthorizationChecker $authorizationChecker, TicketRepository $ticketRepository)
     {
         $this->pdfGeneratorHelper = $pdfGeneratorHelper;
         $this->authorizationChecker = $authorizationChecker;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
      * Generating ticket with QR-code to event.
      *
-     * @Route("/event/{slug}/ticket/{asHtml}", name="event_ticket_download", defaults={"asHtml":null})
+     * @Route("/event/{slug}/ticket/{type}", name="event_ticket_download", requirements={"type": "free|standard|premium"})
+     *
+     * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
      * @Security("has_role('ROLE_USER')")
      *
      * @param Event       $event
-     * @param string|null $asHtml
+     * @param string|null $type
      *
      * @return Response
      */
-    public function downloadAction(Event $event, $asHtml = null): Response
+    public function downloadAction(Event $event, ?string $type = null): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        /** @var Ticket|null $ticket */
-        $ticket = $this->getDoctrine()->getRepository(Ticket::class)
-            ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+
+        if (null === $type) {
+            /** @var Ticket|null $ticket */
+            $ticket = $this->ticketRepository->findOneBy(['event' => $event->getId(), 'user' => $user->getId()], ['updatedAt' => Criteria::DESC]);
+        } else {
+            $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);
+        }
 
         if (!$ticket || !$ticket->isPaid()) {
             return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), 402);
         }
 
         $html = $this->pdfGeneratorHelper->generateHTML($ticket);
-
-        if ('html' === $asHtml) {
-            return new Response(
-                $html,
-                200,
-                [
-                    'Content-Type' => 'application/txt',
-                    'Content-Disposition' => \sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
-                ]
-            );
-        }
 
         return new Response(
             $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
