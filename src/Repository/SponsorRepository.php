@@ -36,7 +36,7 @@ class SponsorRepository extends ServiceEntityRepository
             ->where($qb->expr()->eq('se.event', ':event'))
             ->setParameter('event', $event->getId())
             ->orderBy('c.sortOrder', Criteria::DESC)
-            ->addOrderBy('s.sortOrder', Criteria::DESC)
+            ->addOrderBy('s.sortOrder', Criteria::ASC)
         ;
 
         return $qb->getQuery()->getResult();
