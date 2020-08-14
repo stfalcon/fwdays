@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Ticket;
 
+use App\Entity\TicketCost;
 use App\Model\EventStateData;
 
 /**
@@ -17,8 +18,12 @@ class SoldOutEventState extends AbstractBaseEventState
     public function support(EventStateData $eventStateData): bool
     {
         $event = $eventStateData->getEvent();
+        $ticketCost = $eventStateData->getTicketCost();
+        $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
 
-        return $event->isActiveAndFuture() && !$event->isHasAvailableTickets() && $event->getReceivePayments();
+        $hasTickets = null === $type ? $event->isHasAvailableTicketsWithoutType() : $event->isHasAvailableTickets($type);
+
+        return $event->isActiveAndFuture() && !$hasTickets && $event->getReceivePayments();
     }
 
     /**

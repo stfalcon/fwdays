@@ -153,7 +153,7 @@ staging deploy:
     script:
         - wget https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VER/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
-        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - mkdir /root/.kube && echo $KUBECONF | base64 -d > /root/.kube/config
         - kubectl -n fwdays-stag set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
         - kubectl rollout status deployment/fwdays-backend -n fwdays-stag
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-stag|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
@@ -175,7 +175,7 @@ staging rollback:
     script:
         - wget https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VER/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
-        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - mkdir /root/.kube && echo $KUBECONF | base64 -d > /root/.kube/config
         - kubectl -n fwdays-stag rollout undo deployments/fwdays-backend
         - DEPLOYMENT_HASH=`kubectl -n fwdays-stag get deployment fwdays-backend -o=jsonpath='{$.spec.template.spec.containers[:1].image}'|cut -d ':' -f2`
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOYMENT_HASH/ docker-configs/k8s/stag/cron/*
@@ -195,7 +195,7 @@ production deploy:
     script:
         - wget https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VER/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
-        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - mkdir /root/.kube && echo $KUBECONF | base64 -d > /root/.kube/config
         - kubectl -n fwdays-prod set image deployments/fwdays-backend fwdays-backend=jekakm/fwdays-deployment:$CI_COMMIT_SHORT_SHA
         - kubectl rollout status deployment/fwdays-backend -n fwdays-prod
         - POD=`kubectl get pods -l app=fwdays-backend -n fwdays-prod|grep "^fwdays-backend.*Running"|awk '{print $1}'|head -n1` || true
@@ -224,7 +224,7 @@ production rollback:
     script:
         - wget https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VER/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
         - chmod a+x /usr/local/bin/kubectl
-        - 'mkdir /root/.kube && wget --header="Content-Type: application/json" --header="Authorization: Bearer $DO_TOKEN" "https://api.digitalocean.com/v2/kubernetes/clusters/$CLUSTER_ID/kubeconfig" -O /root/.kube/config'
+        - mkdir /root/.kube && echo $KUBECONF | base64 -d > /root/.kube/config
         - kubectl -n fwdays-prod rollout undo deployments/fwdays-backend
         - DEPLOYMENT_HASH=`kubectl -n fwdays-stag get deployment fwdays-backend -o=jsonpath='{$.spec.template.spec.containers[:1].image}'|cut -d ':' -f2`
         - sed -i s/%job-image-name%/jekakm\\/fwdays-deployment:$DEPLOYMENT_HASH/ docker-configs/k8s/stag/cron/*

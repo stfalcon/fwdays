@@ -147,6 +147,14 @@ services:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'App\Entity\TicketCost', ~]
 
+    app.ticket_benefit.admin:
+        class: App\Admin\TicketBenefitAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
+        arguments: [~, 'App\Entity\TicketBenefit', ~]
+        calls:
+            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+
     app.event_block.admin:
         class: App\Admin\EventBlockAdmin
         tags:
@@ -177,3 +185,9 @@ services:
         arguments: ['', 'App\Entity\City', ~]
         calls:
             - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+
+    app.option.admin:
+        class: App\Admin\OptionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Настройки, label: Настройки }
+        arguments: ['', 'App\Entity\Option', ~]

@@ -114,6 +114,7 @@ final class TicketAdmin extends AbstractAdmin
                 ]
             )
             ->add('promoCode', null, ['label' => 'Промокод'])
+            ->add('ticketCost.type', null, ['label' => 'Тип'])
             ->add('payment', null, ['label' => 'Оплата'])
             ->add('createdAt', null, ['label' => 'Дата создания'])
             ->add('updatedAt', null, ['label' => 'Дата изменения'])

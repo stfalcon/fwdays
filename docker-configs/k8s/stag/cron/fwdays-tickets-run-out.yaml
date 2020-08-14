@@ -4,6 +4,7 @@ metadata:
   name: fwdays-tickets-run-out
   namespace: fwdays-stag
 spec:
+  concurrencyPolicy: Forbid
   schedule: "13 * * * *"
   jobTemplate:
     spec:

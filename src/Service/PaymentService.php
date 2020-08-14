@@ -16,6 +16,7 @@ use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Traits;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,17 +37,20 @@ class PaymentService
     private $ticketService;
     private $userService;
     private $referralService;
+    private $ticketRepository;
 
     /**
-     * @param TicketService   $ticketService
-     * @param UserService     $userService
-     * @param ReferralService $referralService
+     * @param TicketService    $ticketService
+     * @param UserService      $userService
+     * @param ReferralService  $referralService
+     * @param TicketRepository $ticketRepository
      */
-    public function __construct(TicketService $ticketService, UserService $userService, ReferralService $referralService)
+    public function __construct(TicketService $ticketService, UserService $userService, ReferralService $referralService, TicketRepository $ticketRepository)
     {
         $this->ticketService = $ticketService;
         $this->userService = $userService;
         $this->referralService = $referralService;
+        $this->ticketRepository = $ticketRepository;
     }
 
     /**
@@ -232,17 +236,15 @@ class PaymentService
     }
 
     /**
-     * Пересчитываем итоговую сумму платежа по всем билетам
-     * с учетом скидки.
-     *
-     * @param Payment $payment
-     * @param Event   $event
+     * @param Payment     $payment
+     * @param Event       $event
+     * @param string|null $type
      */
-    public function checkTicketsPricesInPayment(Payment $payment, Event $event): void
+    public function checkTicketsPricesInPayment(Payment $payment, Event $event, ?string $type): void
     {
         /** @var Ticket $ticket */
         foreach ($payment->getTickets() as $ticket) {
-            $currentTicketCost = $this->ticketService->getCurrentEventTicketCost($event);
+            $currentTicketCost = $this->ticketService->getCurrentEventTicketCost($event, $type);
 
             if (null === $currentTicketCost) {
                 $currentTicketCost = $event->getBiggestTicketCost();
@@ -323,16 +325,18 @@ class PaymentService
     }
 
     /**
-     * set payment paid if have referral money.
-     *
-     * @param Payment $payment
-     * @param Event   $event
+     * @param Payment     $payment
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return bool
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function setPaidByBonusMoney(Payment $payment, Event $event)
+    public function setPaidByBonusMoney(Payment $payment, Event $event, ?string $type)
     {
-        $this->checkTicketsPricesInPayment($payment, $event);
+        $this->checkTicketsPricesInPayment($payment, $event, $type);
         if ($payment->isPending() && 0 === (int) $payment->getAmount() && $payment->getFwdaysAmount() > 0) {
             $payment->setPaidWithGate(Payment::BONUS_GATE);
 
@@ -347,16 +351,18 @@ class PaymentService
     }
 
     /**
-     * set payment paid if have referral money.
-     *
-     * @param Payment $payment
-     * @param Event   $event
+     * @param Payment     $payment
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return bool
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function setPaidByPromocode(Payment $payment, Event $event)
+    public function setPaidByPromocode(Payment $payment, Event $event, ?string $type)
     {
-        $this->checkTicketsPricesInPayment($payment, $event);
+        $this->checkTicketsPricesInPayment($payment, $event, $type);
         if ($payment->isPending() && 0 === (int) $payment->getAmount() && 0 === (int) $payment->getFwdaysAmount()) {
             $payment->setPaidWithGate(Payment::PROMOCODE_GATE);
 
@@ -379,21 +385,23 @@ class PaymentService
     }
 
     /**
-     * @param Event $event
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return Payment
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws NonUniqueResultException
      */
-    public function getPaymentForCurrentUser(Event $event): Payment
+    public function getPaymentForCurrentUser(Event $event, ?string $type): Payment
     {
         $this->session->set(PaymentController::NEW_PAYMENT_SESSION_KEY, false);
 
         $user = $this->userService->getCurrentUser();
 
         /* @var Ticket|null $ticket */
-        $ticket = $this->em->getRepository(Ticket::class)->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
+        $ticket = $this->ticketRepository->findOneForEventAndUser($event, $user, $type);
 
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->em->getRepository(Payment::class);
@@ -423,7 +431,7 @@ class PaymentService
 
         if ($payment->isPending()) {
             $this->addPromocodeFromSession($payment, $event);
-            $this->checkTicketsPricesInPayment($payment, $event);
+            $this->checkTicketsPricesInPayment($payment, $event, $type);
         }
         $sessionKey = \sprintf(self::ACTIVE_PAYMENT_ID_KEY, $event->getId());
         $this->session->set($sessionKey, $payment->getId());
@@ -432,22 +440,18 @@ class PaymentService
     }
 
     /**
-     * @param User|null $user
-     * @param Event     $event
-     * @param Ticket    $editTicket
+     * @param User        $user
+     * @param Event       $event
+     * @param Ticket      $editTicket
+     * @param string|null $type
      *
      * @return Ticket
+     *
+     * @throws NonUniqueResultException
      */
-    public function replaceIfFindOtherUserTicketForEvent(?User $user, Event $event, Ticket $editTicket): Ticket
+    public function replaceIfFindOtherUserTicketForEvent(User $user, Event $event, Ticket $editTicket, ?string $type): Ticket
     {
-        if (!$user instanceof User) {
-            return $editTicket;
-        }
-
-        /** @var TicketRepository $ticketRepository */
-        $ticketRepository = $this->em->getRepository(Ticket::class);
-
-        $ticket = $ticketRepository->findOneByUserAndEventWithPendingPayment($user, $event);
+        $ticket = $this->ticketRepository->findOneByUserAndEventWithPendingPayment($user, $event, $type);
 
         if (!$ticket instanceof Ticket || $editTicket->isEqualTo($ticket)) {
             return $editTicket;

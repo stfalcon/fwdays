@@ -158,17 +158,21 @@ class TicketRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User  $user  User
-     * @param Event $event Event
+     * @param User        $user
+     * @param Event       $event
+     * @param string|null $type
      *
      * @return Ticket|null
+     *
+     * @throws NonUniqueResultException
      */
-    public function findOneByUserAndEventWithPendingPayment(User $user, Event $event): ?Ticket
+    public function findOneByUserAndEventWithPendingPayment(User $user, Event $event, ?string $type): ?Ticket
     {
         $qb = $this->createQueryBuilder('t');
 
-        return $qb
+        $qb
             ->leftJoin('t.payment', 'p')
+            ->join('t.ticketCost', 'tc')
             ->where($qb->expr()->eq('t.event', ':event'))
             ->andWhere($qb->expr()->eq('t.user', ':user'))
             ->andWhere($qb->expr()->eq('p.status', ':status'))
@@ -177,10 +181,47 @@ class TicketRepository extends ServiceEntityRepository
                 new Parameter('user', $user),
                 new Parameter('status', Payment::STATUS_PENDING),
             ]))
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        if (null === $type) {
+            $qb->andWhere($qb->expr()->isNull('tc.type'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
+                ->setParameter('type', $type)
+            ;
+        }
+
+        return $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Event       $event
+     * @param User        $user
+     * @param string|null $type
+     *
+     * @return Ticket|null
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findOneForEventAndUser(Event $event, User $user, ?string $type): ?Ticket
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->where($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->eq('t.user', ':user'))
+            ->setParameter('event', $event)
+            ->setParameter('user', $user)
+            ->join('t.ticketCost', 'tc')
+        ;
+
+        if (null === $type) {
+            $qb->andWhere($qb->expr()->isNull('tc.type'));
+        } else {
+            $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
+                ->setParameter('type', $type)
+            ;
+        }
+
+        return $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
     }
 
     /**

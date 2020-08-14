@@ -44,6 +44,10 @@ class Event implements TranslatableInterface
     public const EVENT_TYPE_MEETUP = 'meetup';
     public const EVENT_TYPE_WORKSHOP = 'workshop';
 
+    private const PAYMENT_TYPE_FREE = 'free';
+    private const PAYMENT_TYPE_FREEMIUM = 'freemium';
+    private const PAYMENT_TYPE_PAID = 'paid';
+
     use TranslateTrait;
     /**
      * @var int
@@ -253,7 +257,7 @@ class Event implements TranslatableInterface
      *
      * @Assert\Valid()
      *
-     * @ORM\OrderBy({"sortOrder" = "ASC", "amount" = "ASC"})
+     * @ORM\OrderBy({"sortOrder" = "ASC", "type" = "ASC", "amount" = "ASC"})
      */
     protected $ticketsCost;
 
@@ -263,7 +267,7 @@ class Event implements TranslatableInterface
      * @ORM\Column(name="receive_payments", type="boolean")
      *
      * @Assert\Expression(
-     *     "value !== this.isFree() || (!value && !this.isFree())",
+     *     "value !== this.isFreeParticipationCost() || (!value && !this.isFreeParticipationCost())",
      *     message="Нельзя принимать оплату в бесплатном событии."
      * )
      */
@@ -445,18 +449,18 @@ class Event implements TranslatableInterface
     private $registrationOpen = true;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default":false})
-     */
-    private $free = false;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(type="string", nullable=true)
      */
     private $type;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", name="participation_cost", nullable=true, length=20)
+     */
+    private $participationCost;
 
     /**
      * @var bool
@@ -473,6 +477,15 @@ class Event implements TranslatableInterface
     private $googleCalendarEventId;
 
     /**
+     * @var ArrayCollection|TicketBenefit[]
+     *
+     * @ORM\OneToMany(targetEntity="TicketBenefit", mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
+     */
+    private $ticketBenefits;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -485,6 +498,7 @@ class Event implements TranslatableInterface
         $this->ticketsCost = new ArrayCollection();
         $this->blocks = new ArrayCollection();
         $this->audiences = new ArrayCollection();
+        $this->ticketBenefits = new ArrayCollection();
     }
 
     /**
@@ -1216,9 +1230,26 @@ class Event implements TranslatableInterface
     }
 
     /**
+     * @param string|null $type
+     *
      * @return bool
      */
-    public function isHasAvailableTickets()
+    public function isHasAvailableTickets(?string $type)
+    {
+        /** @var TicketCost $cost */
+        foreach ($this->ticketsCost as $cost) {
+            if ($type === $cost->getType() && $cost->isEnabled() && ($cost->isUnlimitedOrDateEnd() || $cost->getCount() > $cost->getSoldCount())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHasAvailableTicketsWithoutType()
     {
         /** @var TicketCost $cost */
         foreach ($this->ticketsCost as $cost) {
@@ -1652,22 +1683,6 @@ class Event implements TranslatableInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isFree(): bool
-    {
-        return $this->free;
-    }
-
-    /**
-     * @param bool $free
-     */
-    public function setFree(bool $free): void
-    {
-        $this->free = $free;
-    }
-
-    /**
      * @return string|null
      */
     public function getType(): ?string
@@ -1724,7 +1739,112 @@ class Event implements TranslatableInterface
     }
 
     /**
-     * @return array
+     * @return TicketBenefit[]|ArrayCollection
+     */
+    public function getTicketBenefits()
+    {
+        return $this->ticketBenefits;
+    }
+
+    /**
+     * @param TicketBenefit[]|ArrayCollection $ticketBenefits
+     *
+     * @return $this
+     */
+    public function setTicketBenefits($ticketBenefits): self
+    {
+        $this->ticketBenefits = $ticketBenefits;
+
+        return $this;
+    }
+
+    /**
+     * @param TicketBenefit $ticketBenefit
+     *
+     * @return $this
+     */
+    public function addTicketBenefit(TicketBenefit $ticketBenefit): self
+    {
+        if (!$this->ticketBenefits->contains($ticketBenefit)) {
+            $this->ticketBenefits->add($ticketBenefit);
+            $ticketBenefit->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param TicketBenefit $ticketBenefit
+     *
+     * @return $this
+     */
+    public function removeTicketBenefit(TicketBenefit $ticketBenefit): self
+    {
+        if ($this->ticketBenefits->contains($ticketBenefit)) {
+            $this->ticketBenefits->removeElement($ticketBenefit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParticipationCost(): ?string
+    {
+        return $this->participationCost;
+    }
+
+    /**
+     * @param string|null $participationCost
+     *
+     * @return $this
+     */
+    public function setParticipationCost(?string $participationCost)
+    {
+        $this->participationCost = $participationCost;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreeParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_FREE === $this->participationCost;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFreemiumParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_FREEMIUM === $this->participationCost;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaidParticipationCost(): bool
+    {
+        return self::PAYMENT_TYPE_PAID === $this->participationCost;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public static function getParticipationCostChoice(): array
+    {
+        return [
+            self::PAYMENT_TYPE_FREE => self::PAYMENT_TYPE_FREE,
+            self::PAYMENT_TYPE_FREEMIUM => self::PAYMENT_TYPE_FREEMIUM,
+            self::PAYMENT_TYPE_PAID => self::PAYMENT_TYPE_PAID,
+        ];
+    }
+
+    /**
+     * @return array|string[]
      */
     public static function getTypeChoices(): array
     {

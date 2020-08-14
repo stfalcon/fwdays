@@ -88,6 +88,8 @@ tickets.coming_soon: 'незабаром'
 tickets.hint: тільки через сайт
 tickets.other.title: Всі інші квитки
 tickets.end_date.title: 'до %date%'
+tickets.end_date_with_price.title: 'до %date% — %price% грн'
+tickets.next_with_price.title: 'наступні %count% — %price% грн'
 tickets.tickets_run_out: Закінчуються
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
@@ -199,6 +201,7 @@ error.surname.only_letters: 'Прізвище може містити лише �
 error.name.only_letters: "Ім'я може містити лише літери"
 error.user.already.paid: '%email% вже оплатив квиток'
 error.payment.closed: '<p></p><p>Оплата за участь в %event% не приймається.</p>'
+error.create_ticket_error: '<p></p><p>Помилка створення квитка!</p>'
 error.promocode.not_found: 'Промокод не знайдений!'
 error.promocode.used: 'Промокод використаний!'
 error.promocode.low_than_discount: 'Знижка по промокоду нижчя ніж постійного учасника!'

@@ -226,7 +226,7 @@ $(document).on('click', '.add-user-btn', function () {
 
         var e_slug = paymentList.data('event');
         $.ajax({
-            url: Routing.generate('add_ticket_participant', {slug: e_slug}),
+            url: Routing.generate('add_ticket_participant', {slug: e_slug, type: ticket_type}),
             method: 'POST',
             data: {name: input_name.val(), surname: input_surname.val(), email: input_email.val(), promocode: input_promocode.val()},
             success: function (data) {
@@ -329,7 +329,7 @@ buyTicketButton.on('click', function (e) {
     var e_slug = paymentList.data('event');
 
     $.ajax({
-        url: Routing.generate('event_paying', {slug: e_slug}),
+        url: Routing.generate('event_paying', {slug: e_slug, type: ticket_type}),
         method: 'POST',
         data: {'saved_data': saved_payment_amount},
         success: function (data) {

@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frameworksdays-ingress
+  namespace: fwdays-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+spec:
+  tls:
+  - hosts:
+    - frameworksdays.com
+    - www.frameworksdays.com
+    secretName: frameworksdays-com-tls
+  rules:
+  - host: frameworksdays.com
+    http:
+      paths:
+      - backend:
+          serviceName: fwdays-backend
+          servicePort: 80
+  - host: www.frameworksdays.com
+    http:
+      paths:
+      - backend:
+          serviceName: fwdays-backend
+          servicePort: 80

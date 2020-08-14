@@ -210,16 +210,27 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Город', ['class' => 'col-md-2'])
                     ->add('city', null, ['label' => 'Город'])
                 ->end()
-                ->with('Slug', ['class' => 'col-md-3'])
+                ->with('Slug', ['class' => 'col-md-2'])
                     ->add('slug')
                 ->end()
-                ->with('Тип', ['class' => 'col-md-2'])
+                ->with('Тип cобытия', ['class' => 'col-md-2'])
                     ->add(
                         'type',
                         ChoiceType::class,
                         [
                             'choices' => Event::getTypeChoices(),
-                            'label' => 'Тип',
+                            'label' => 'Тип cобытия',
+                            'required' => false,
+                        ]
+                    )
+                ->end()
+                ->with('Стоимость участия', ['class' => 'col-md-2'])
+                    ->add(
+                        'participationCost',
+                        ChoiceType::class,
+                        [
+                            'choices' => Event::getParticipationCostChoice(),
+                            'label' => 'Стоимость участия',
                             'required' => false,
                         ]
                     )
@@ -230,28 +241,9 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->with('Аудитории', ['class' => 'col-md-2'])
                         ->add('audiences', null, ['label' => 'Аудитории'])
                 ->end()
-                ->with('Цены')
-                    ->add(
-                        'ticketsCost',
-                        CollectionType::class,
-                        [
-                            'label' => 'Цены события',
-                            'by_reference' => false,
-                            'type_options' => ['delete' => true],
-                            'btn_add' => null === $objectId ? false : 'Добавить цену',
-                            'help' => null === $objectId ? 'добавление цен возможно только после создания события'
-                                : 'добавьте блоки с ценами на билеты',
-                        ],
-                        [
-                            'edit' => 'inline',
-                            'inline' => 'table',
-                        ]
-                    )
-                ->end()
                 ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])
                     ->add('receivePayments', null, ['required' => false, 'label' => 'Принимать оплату'])
-                    ->add('free', null, ['required' => false, 'label' => 'Бесплатное событие'])
                     ->add('registrationOpen', null, ['required' => false, 'label' => 'Включить регистрацию'])
                     ->add('useDiscounts', null, ['required' => false, 'label' => 'Возможна скидка'])
                     ->add('adminOnly', null, ['required' => false, 'label' => 'Видимое только администраторам'])
@@ -306,6 +298,44 @@ class EventAdmin extends AbstractTranslateAdmin
                             'label' => $video ? 'Видео | '.$video : 'Видео',
                             'required' => false,
                             'help' => 'Фоновое видео в шапке ивента.',
+                        ]
+                    )
+                ->end()
+            ->end()
+            ->tab('Цены и типы')
+                ->with('Типы')
+                    ->add(
+                        'ticketBenefits',
+                        CollectionType::class,
+                        [
+                            'label' => 'Типы билетов',
+                            'by_reference' => false,
+                            'type_options' => ['delete' => true],
+                            'btn_add' => null === $objectId ? false : 'Добавить тип',
+                            'help' => null === $objectId ? 'добавление типов возможно только после создания события'
+                                : 'добавьте описание для типа билета',
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
+                    )
+                ->end()
+                ->with('Цены')
+                    ->add(
+                        'ticketsCost',
+                        CollectionType::class,
+                        [
+                            'label' => 'Цены события',
+                            'by_reference' => false,
+                            'type_options' => ['delete' => true],
+                            'btn_add' => null === $objectId ? false : 'Добавить цену',
+                            'help' => null === $objectId ? 'добавление цен возможно только после создания события'
+                                : 'добавьте блоки с ценами на билеты',
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
                         ]
                     )
                 ->end()
