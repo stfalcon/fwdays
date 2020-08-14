@@ -1,5 +1,6 @@
 <li class="partners__item">
-    <a href="{{ partner.site }}" rel="nofollow" target="_blank" class="partners__link">
+    {% set add_blank = app.request.schemeAndHttpHost in partner.site ? false : true %}
+    <a href="{{ partner.site }}" rel="nofollow" {% if add_blank %}target="_blank"{% endif%} class="partners__link">
         {% if partner.logo is not empty%}
         <span class="partners__logo lazyload lazyload-style" data-src="{{ sponsor_cache_path ~ '/' ~ partner.logo}}" style="background-image:none"></span>
         {% endif%}
