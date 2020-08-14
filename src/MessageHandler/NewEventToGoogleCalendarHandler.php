@@ -38,7 +38,7 @@ class NewEventToGoogleCalendarHandler implements MessageHandlerInterface
     {
         $event = $this->eventRepository->find($createEventMessage->getEventId());
 
-        if ($event instanceof Event && $event->isActiveAndFuture()) {
+        if ($event instanceof Event && $event->isActiveAndFuture() && !$event->getGoogleCalendarEventId()) {
             $this->eventService->createGoogleEvent($event);
         }
     }
