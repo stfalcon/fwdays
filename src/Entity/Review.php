@@ -57,6 +57,7 @@ class Review extends AbstractPage implements TranslatableInterface
      *     @ORM\JoinColumn(name="speaker_id", referencedColumnName="id")
      *   }
      * )
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     private $speakers;
 
