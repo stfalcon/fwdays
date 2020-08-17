@@ -1,3 +1,7 @@
+event_cost_free: Безкоштовний
+event_cost_standard: Стандартний
+event_cost_premium: Преміум
+
 menu.events.my: Мої події
 menu.past_events.my: Мої минулі події
 menu.user.info: Особиста інформація
