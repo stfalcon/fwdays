@@ -1,3 +1,7 @@
+event_cost_free: Free
+event_cost_standard: Standard
+event_cost_premium: Premium
+
 menu.events.my: My events
 menu.past_events.my: My past events
 menu.user.info: User info
