@@ -45,7 +45,7 @@ spec:
         app: fwdays-mysql
     spec:
       containers:
-      - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v3
+      - image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-mysql:v4
         args:
         name: fwdays-mysql
         resources:
