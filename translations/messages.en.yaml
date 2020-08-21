@@ -1,3 +1,18 @@
+email_event_registration:
+    subject: Вы зарегистрировались на ивент %event_name%
+    registration: Вы зарегистрировались на ивент %event_name%
+    registration1: Ивент будет %event_date%.
+    registration2: Перед самим ивентом Вы получите инструкцию о участии. %add_calendar_link%
+
+    pre_subject: Вы предварительно зарегистрировались на ивент %event_name%
+    pre_registration: Вы предварительно зарегистрировались на ивент %event_name%
+    pre_registration1: Позже будет оплата о че мы вас уведомим.
+    pre_registration2: ''
+
+    add_google_calendar: Добавить в календарь
+    add_google_calendar_d1: Добавить в календарь День 1
+    add_google_calendar_d2: Добавить в календарь День 2
+
 event_cost_free: Free
 event_cost_standard: Standard
 event_cost_premium: Premium

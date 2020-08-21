@@ -148,6 +148,9 @@ class EventController extends AbstractController
 
         if ($event->isActiveAndFuture() && $event->isRegistrationOpen()) {
             $result = $this->userService->registerUserToEvent($user, $event);
+            if ($result) {
+                $this->userService->sendRegistrationEmail($user, $event);
+            }
             $error = $result ? '' : \sprintf('cant add event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';

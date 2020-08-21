@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\TicketCost;
 use App\Traits\TranslatorTrait;
@@ -79,6 +80,75 @@ class AppDateTimeExtension extends AbstractExtension
         }
 
         return $dateString;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return string
+     */
+    public function linksForGoogleCalendar(Event $event): string
+    {
+        if (false === \strpos($event->getDateFormat(), 'd') || false !== \strpos($event->getDateFormat(), 'S')) {
+            return '';
+        }
+
+        $linkPattern = '<a href="http://www.google.com/calendar/event?action=TEMPLATE&text=%event_name%&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false" target="_blank" rel="nofollow">%title%</a>';
+
+        $location = '';
+        if ($event->getCity() instanceof City) {
+            $location = $event->isOnline() ? $event->getCity()->getName() : $event->getCity()->getName().' '.$event->getPlace();
+        }
+
+        $linkPattern = $this->translator->trans(
+            $linkPattern,
+            [
+                '%event_name%' => $event->getName(),
+                '%event_description%' => $event->getDescription(),
+                '%event_location%' => $location,
+            ]
+        );
+
+        $linkString = '<br>';
+        $since = $event->getDate();
+        $till = $event->getEndDateFromDates();
+
+        if ($event->isStartAndEndDateSameByFormat('Y-m-d')) {
+            $linkString .= $this->translator->trans(
+                $linkPattern,
+                [
+                    '%since%' => $since,
+                    '%till%' => $till,
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar')
+                ]
+            );
+        } else {
+            $sinceEnd = clone $since;
+            $sinceEnd->setTime($till->format('H'), $till->format('i'));
+
+            $linkString .= $this->translator->trans(
+                $linkPattern,
+                [
+                    '%since%' => $since,
+                    '%till%' => $sinceEnd,
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d1')
+                ]
+            );
+
+            $sinceFrom = clone $till;
+            $sinceFrom->setTime($since->format('H'), $since->format('i'));
+
+            $linkString .= '<br>'.$this->translator->trans(
+                $linkPattern,
+                [
+                    '%since%' => $sinceFrom,
+                    '%till%' => $till,
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d2')
+                ]
+            );
+        }
+
+        return $linkString.'<br>';
     }
 
     /**
