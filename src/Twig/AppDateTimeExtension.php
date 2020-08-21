@@ -131,31 +131,31 @@ class AppDateTimeExtension extends AbstractExtension
                 [
                     '%since%' => $since->format($format),
                     '%till%' => $till->format($format),
-                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar')
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar'),
                 ]
             );
         } else {
             $sinceEnd = clone $since;
-            $sinceEnd->setTime($till->format('H'), $till->format('i'));
+            $sinceEnd->setTime((int) $till->format('H'), (int) $till->format('i'));
 
             $linkString .= $this->translator->trans(
                 $linkPattern,
                 [
                     '%since%' => $since->format($format),
                     '%till%' => $sinceEnd->format($format),
-                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d1')
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d1'),
                 ]
             );
 
             $sinceFrom = clone $till;
-            $sinceFrom->setTime($since->format('H'), $since->format('i'));
+            $sinceFrom->setTime((int) $since->format('H'), (int) $since->format('i'));
 
             $linkString .= ''.$this->translator->trans(
                 $linkPattern,
                 [
                     '%since%' => $sinceFrom->format($format),
                     '%till%' => $till->format($format),
-                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d2')
+                    '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d2'),
                 ]
             );
         }

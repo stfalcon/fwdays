@@ -28,7 +28,7 @@ class UserService
 
     private const SESSION_USER_REG_EMAIL_SEND_KEY = 'user_event_reg_send';
 
-    /** @var \Swift_Mailer */
+    /** @var MailerHelper */
     private $mailerHelper;
 
     /** @var AppDateTimeExtension */
@@ -38,7 +38,7 @@ class UserService
      * @param MailerHelper         $mailerHelper
      * @param AppDateTimeExtension $appDateTimeExtension
      */
-    public function __construct( MailerHelper $mailerHelper, AppDateTimeExtension $appDateTimeExtension)
+    public function __construct(MailerHelper $mailerHelper, AppDateTimeExtension $appDateTimeExtension)
     {
         $this->mailerHelper = $mailerHelper;
         $this->appDateTimeExtension = $appDateTimeExtension;
@@ -137,9 +137,9 @@ class UserService
     public function sendRegistrationEmail(User $user, Event $event): void
     {
         $sentEmails = $this->session->get(self::SESSION_USER_REG_EMAIL_SEND_KEY, []);
-//        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
-//            return;
-//        }
+        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
+            return;
+        }
 
         $addGoogleCalendarLinks = $this->appDateTimeExtension->linksForGoogleCalendar($event);
         $eventDate = $this->appDateTimeExtension->eventDate($event, null, false);
@@ -181,7 +181,6 @@ class UserService
                 )
             ;
         }
-
 
         if ($this->mailerHelper->sendEasyEmail($subject, 'Email/new_email.html.twig', ['text' => $text, 'user' => $user, 'mail' => null], $user) > 0) {
             $sentEmails[] = $event->getId();
