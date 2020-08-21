@@ -7,6 +7,7 @@ use App\Entity\Event;
 use App\Entity\TicketCost;
 use App\Traits\TranslatorTrait;
 use Sonata\IntlBundle\Twig\Extension\DateTimeExtension;
+use SunCat\MobileDetectBundle\Twig\Extension\MobileDetectExtension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -24,12 +25,17 @@ class AppDateTimeExtension extends AbstractExtension
     /** @var bool */
     private $convertToSeason = false;
 
+    /** @var MobileDetectExtension */
+    private $mobileDetectExtension;
+
     /**
-     * @param DateTimeExtension $intlTwigDateTimeService
+     * @param DateTimeExtension     $intlTwigDateTimeService
+     * @param MobileDetectExtension $mobileDetectExtension
      */
-    public function __construct(DateTimeExtension $intlTwigDateTimeService)
+    public function __construct(DateTimeExtension $intlTwigDateTimeService, MobileDetectExtension $mobileDetectExtension)
     {
         $this->intlTwigDateTimeService = $intlTwigDateTimeService;
+        $this->mobileDetectExtension = $mobileDetectExtension;
     }
 
     /**
@@ -41,6 +47,7 @@ class AppDateTimeExtension extends AbstractExtension
             new TwigFilter('app_format_date_day_month', [$this, 'formatDateDayMonth'], ['is_safe' => ['html']]),
             new TwigFilter('app_event_date', [$this, 'eventDate'], ['is_safe' => ['html']]),
             new TwigFilter('app_tickets_price_time_left', [$this, 'ticketsPriceTimeLeft'], ['is_safe' => ['html']]),
+            new TwigFilter('app_event_to_calendar', [$this, 'linksForGoogleCalendar'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -93,11 +100,16 @@ class AppDateTimeExtension extends AbstractExtension
             return '';
         }
 
-        $linkPattern = '<a href="http://www.google.com/calendar/event?action=TEMPLATE&text=%event_name%&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false" target="_blank" rel="nofollow">%title%</a>';
+        $format = 'Ymd\\THi00';
+
+        $linkPatternDesktop = '<p><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a></p>';
+        $linkPatternMobile = '<p><a href="https://calendar.google.com/calendar/gp#~calendar:view=e&action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a></p>';
+
+        $linkPattern = $this->mobileDetectExtension->isMobile() ? $linkPatternMobile : $linkPatternDesktop;
 
         $location = '';
         if ($event->getCity() instanceof City) {
-            $location = $event->isOnline() ? $event->getCity()->getName() : $event->getCity()->getName().' '.$event->getPlace();
+            $location = $event->isOnline() ? $event->getCity()->getName() : $event->getCity()->getName().', '.$event->getPlace();
         }
 
         $linkPattern = $this->translator->trans(
@@ -109,16 +121,16 @@ class AppDateTimeExtension extends AbstractExtension
             ]
         );
 
-        $linkString = '<br>';
-        $since = $event->getDate();
-        $till = $event->getEndDateFromDates();
+        $linkString = '';
+        $since = $event->getDate()->setTimezone(new \DateTimeZone('Europe/Kiev'));
+        $till = $event->getEndDateFromDates()->setTimezone(new \DateTimeZone('Europe/Kiev'));
 
         if ($event->isStartAndEndDateSameByFormat('Y-m-d')) {
             $linkString .= $this->translator->trans(
                 $linkPattern,
                 [
-                    '%since%' => $since,
-                    '%till%' => $till,
+                    '%since%' => $since->format($format),
+                    '%till%' => $till->format($format),
                     '%title%' => $this->translator->trans('email_event_registration.add_google_calendar')
                 ]
             );
@@ -129,8 +141,8 @@ class AppDateTimeExtension extends AbstractExtension
             $linkString .= $this->translator->trans(
                 $linkPattern,
                 [
-                    '%since%' => $since,
-                    '%till%' => $sinceEnd,
+                    '%since%' => $since->format($format),
+                    '%till%' => $sinceEnd->format($format),
                     '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d1')
                 ]
             );
@@ -138,17 +150,17 @@ class AppDateTimeExtension extends AbstractExtension
             $sinceFrom = clone $till;
             $sinceFrom->setTime($since->format('H'), $since->format('i'));
 
-            $linkString .= '<br>'.$this->translator->trans(
+            $linkString .= ''.$this->translator->trans(
                 $linkPattern,
                 [
-                    '%since%' => $sinceFrom,
-                    '%till%' => $till,
+                    '%since%' => $sinceFrom->format($format),
+                    '%till%' => $till->format($format),
                     '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d2')
                 ]
             );
         }
 
-        return $linkString.'<br>';
+        return $linkString;
     }
 
     /**

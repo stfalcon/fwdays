@@ -165,3 +165,4 @@ services:
     Liip\ImagineBundle\Imagine\Data\DataManager: '@liip_imagine.data.manager'
     Symfony\Contracts\HttpClient\HttpClientInterface:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+    SunCat\MobileDetectBundle\Twig\Extension\MobileDetectExtension: '@mobile_detect.twig.extension'

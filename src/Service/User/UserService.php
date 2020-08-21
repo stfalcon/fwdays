@@ -137,9 +137,9 @@ class UserService
     public function sendRegistrationEmail(User $user, Event $event): void
     {
         $sentEmails = $this->session->get(self::SESSION_USER_REG_EMAIL_SEND_KEY, []);
-        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
-            return;
-        }
+//        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
+//            return;
+//        }
 
         $addGoogleCalendarLinks = $this->appDateTimeExtension->linksForGoogleCalendar($event);
         $eventDate = $this->appDateTimeExtension->eventDate($event, null, false);
@@ -163,7 +163,7 @@ class UserService
                 )
             ;
         } else {
-            $subject = $this->translator->trans('email_event_registration.pre_subject', ['%%event_name%' => $event->getName()]);
+            $subject = $this->translator->trans('email_event_registration.pre_subject', ['%event_name%' => $event->getName()]);
 
             $text = $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName()]).
                 $this->translator->trans(
@@ -183,7 +183,7 @@ class UserService
         }
 
 
-        if ($this->mailerHelper->sendEasyEmail($subject, 'Email/new_email.html.twig', ['text' => $text], $user) > 0) {
+        if ($this->mailerHelper->sendEasyEmail($subject, 'Email/new_email.html.twig', ['text' => $text, 'user' => $user, 'mail' => null], $user) > 0) {
             $sentEmails[] = $event->getId();
             $this->session->set(self::SESSION_USER_REG_EMAIL_SEND_KEY, $sentEmails);
         }

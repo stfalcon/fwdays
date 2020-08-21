@@ -1,12 +1,12 @@
 email_event_registration:
   subject: Вы зарегистрировались на ивент %event_name%
-  registration: Вы зарегистрировались на ивент %event_name%
-  registration1: Ивент будет %event_date%.
-  registration2: Перед самим ивентом Вы получите инструкцию о участии. %add_calendar_link%
+  registration: <p>Вы зарегистрировались на ивент %event_name%</p>
+  registration1: <p>Ивент будет %event_date%.</p>
+  registration2: <p>Перед самим ивентом Вы получите инструкцию о участии. %add_calendar_links%</p>
 
-  pre_subject: Вы предварительно зарегистрировались на ивент %event_name%
-  pre_registration: Вы предварительно зарегистрировались на ивент %event_name%
-  pre_registration1: Позже будет оплата о че мы вас уведомим.
+  pre_subject: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
+  pre_registration: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
+  pre_registration1: <p>Позже будет оплата о че мы вас уведомим.</p>
   pre_registration2: ''
 
   add_google_calendar: Добавить в календарь
