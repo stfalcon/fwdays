@@ -56,10 +56,11 @@ class AppDateTimeExtension extends AbstractExtension
      * @param string|null $locale
      * @param bool        $withTime
      * @param string|null $pattern
+     * @param string      $timeSeparate
      *
      * @return string
      */
-    public function eventDate(Event $event, ?string $locale = null, bool $withTime = true, ?string $pattern = null): string
+    public function eventDate(Event $event, ?string $locale = null, bool $withTime = true, ?string $pattern = null, string $timeSeparate = '<br>'): string
     {
         $pattern = $pattern ?: $event->getDateFormat();
 
@@ -67,7 +68,7 @@ class AppDateTimeExtension extends AbstractExtension
         if (false !== \strpos($event->getDateFormat(), 'H')) {
             $timeStart = $this->formatTimeOnly($event->getDate(), $pattern, $locale, 'Europe/Kiev');
             $timeEnd = $this->formatTimeOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');
-            $timeString = \sprintf(',<br> %s–%s', $timeStart, $timeEnd);
+            $timeString = \sprintf(',%s %s–%s', $timeSeparate, $timeStart, $timeEnd);
         }
 
         if ($event->isStartAndEndDateSameByFormat('Y-m-d')) {
@@ -102,8 +103,8 @@ class AppDateTimeExtension extends AbstractExtension
 
         $format = 'Ymd\\THi00';
 
-        $linkPatternDesktop = '<p><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a></p>';
-        $linkPatternMobile = '<p><a href="https://calendar.google.com/calendar/gp#~calendar:view=e&action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a></p>';
+        $linkPatternDesktop = '<a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a>';
+        $linkPatternMobile = '<a href="https://calendar.google.com/calendar/gp#~calendar:view=e&action=TEMPLATE&text=%event_name%&ctz=Europe/Kiev&dates=%since%/%till%&details=%event_description%&location=%event_location%&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">%title%</a>';
 
         $linkPattern = $this->mobileDetectExtension->isMobile() ? $linkPatternMobile : $linkPatternDesktop;
 
@@ -150,7 +151,7 @@ class AppDateTimeExtension extends AbstractExtension
             $sinceFrom = clone $till;
             $sinceFrom->setTime((int) $since->format('H'), (int) $since->format('i'));
 
-            $linkString .= ''.$this->translator->trans(
+            $linkString .= ' '.$this->translator->trans(
                 $linkPattern,
                 [
                     '%since%' => $sinceFrom->format($format),

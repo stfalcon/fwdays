@@ -142,30 +142,39 @@ class UserService
         }
 
         $addGoogleCalendarLinks = $this->appDateTimeExtension->linksForGoogleCalendar($event);
-        $eventDate = $this->appDateTimeExtension->eventDate($event, null, false);
+        $eventDate = $this->appDateTimeExtension->eventDate($event, null, true, null, ' ');
 
         if ($event->isFreeParticipationCost() || $event->isFreemiumParticipationCost()) {
             $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
 
-            $text = $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName()]).
-                $this->translator->trans(
-                    'email_event_registration.registration1',
-                    [
-                        '%event_date%' => $eventDate,
-                        '%add_calendar_links%' => $addGoogleCalendarLinks,
-                    ]
-                ).
-                $this->translator->trans(
-                    'email_event_registration.registration2',
-                    [
-                        '%add_calendar_links%' => $addGoogleCalendarLinks,
-                    ]
-                )
+            $text = $this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]).
+                $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName()]).
+                $this->translator->trans('email_event_registration.registration_event_date', ['%event_date%' => $eventDate]).
+                $this->translator->trans('email_event_registration.registration1')
             ;
-        } else {
-            $subject = $this->translator->trans('email_event_registration.pre_subject', ['%event_name%' => $event->getName()]);
 
-            $text = $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName()]).
+            if ('' !== $addGoogleCalendarLinks) {
+                $googleTitle = $this->translator->trans('email_event_registration.registration_calendar', ['%add_calendar_links%' => $addGoogleCalendarLinks]);
+            } else {
+                $googleTitle = '';
+            }
+
+            if (!empty($event->getTelegramLink())) {
+                $telegramTitle = $this->translator->trans('email_event_registration.telegram_link', ['%telegram_link%' => $event->getTelegramLink()]);
+            } else {
+                $telegramTitle = '';
+            }
+
+            if (!empty($googleTitle) || !empty($telegramTitle)) {
+                $text .= $this->translator->trans('email_event_registration.registration2', ['%google%' => $googleTitle, '%telegram%' => $telegramTitle]);
+            }
+
+            $text .= $this->translator->trans('email_event_registration.footer');
+        } else {
+            $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
+
+            $text = $this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]).
+                $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName()]).
                 $this->translator->trans(
                     'email_event_registration.pre_registration1',
                     [
@@ -173,12 +182,7 @@ class UserService
                         '%add_calendar_links%' => $addGoogleCalendarLinks,
                     ]
                 ).
-                $this->translator->trans(
-                    'email_event_registration.pre_registration2',
-                    [
-                        '%add_calendar_links%' => $addGoogleCalendarLinks,
-                    ]
-                )
+                $this->translator->trans('email_event_registration.footer')
             ;
         }
 

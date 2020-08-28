@@ -1,17 +1,31 @@
 email_event_registration:
-  subject: Вы зарегистрировались на ивент %event_name%
-  registration: <p>Вы зарегистрировались на ивент %event_name%</p>
-  registration1: <p>Ивент будет %event_date%.</p>
-  registration2: <p>Перед самим ивентом Вы получите инструкцию о участии. %add_calendar_links%</p>
+  subject: Ви зареєструвались на подію %event_name%
 
-  pre_subject: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
-  pre_registration: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
-  pre_registration1: <p>Позже будет оплата о че мы вас уведомим.</p>
-  pre_registration2: ''
+  hello: <p>Вітаємо, %user_name%.</p>
 
-  add_google_calendar: Добавить в календарь
-  add_google_calendar_d1: Добавить в календарь День 1
-  add_google_calendar_d2: Добавить в календарь День 2
+  registration: '<p>Ви успішно зареєструвались на подію %event_name%</p>'
+  registration_event_date: '<p>Дата та час події: %event_date%.</p>'
+  registration1: '<p>Напередодні події ви отримаєте додатковий лист про деталі участі.</p>'
+  registration2: '<p>%google%%telegram%</p>'
+
+  registration_calendar: 'Додайте подію в %add_calendar_links% щоб не пропустити.'
+  telegram_link: '<br>Долучайтесь до <a href="%telegram_link%">Telegram чат</a> конференції щоб бути в курсі новин.'
+
+  pre_registration: '<p>Ви попередньо зареєструвались на подію %event_name%</p>'
+  pre_registration1: '<p>Пізніше буде відкрита оплата про що ми Вас повідомимо.</p>'
+
+  add_google_calendar: 'Google календар'
+  add_google_calendar_d1: 'Google календар День 1'
+  add_google_calendar_d2: 'Google календар День 2'
+
+  footer: '<p>Команда Fwdays організує конференції для розробників з 2010 року. <br>
+           Наші тематики це: JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA та інші.<br>
+           Перегляньте які ще актуальні <a href="https://fwdays.com" target="_blank">події</a> доступні на сайті.</p>
+
+           <p>На нашому <a href="https://www.youtube.com/user/fwdays/" target="_blank">YouTube каналі</a> ви знайдете сотні актуальних доповідей, підписуйтесь.</p>
+           <p>Будемо раді вас бачити на наших подіях! Якщо у вас є запитання - просто дайте відповідь на цей лист.</p>
+           <p>P.S. Якщо ви хочете гарантовано не пропускати наші листи, рекомендуємо додати адресу <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> до списку контактів</p>'
+
 
 event_cost_free: Безкоштовний
 event_cost_standard: Стандартний
