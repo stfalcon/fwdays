@@ -168,7 +168,7 @@ class UserService
 
         if ($event->isFreeParticipationCost() || $event->isFreemiumParticipationCost()) {
             $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
-            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName(), '%%event_link' => $eventLink, '%event_date%' => $eventDate]).
+            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName(), '%event_link' => $eventLink, '%event_date%' => $eventDate]).
                 $this->translator->trans('email_event_registration.registration1')
             ;
             if (!empty($googleTitle) || !empty($telegramTitle)) {
