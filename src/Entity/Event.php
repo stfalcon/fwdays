@@ -475,6 +475,13 @@ class Event implements TranslatableInterface
     private $ticketBenefits;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", name="telegram_link", nullable=true)
+     */
+    private $telegramLink;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -1827,5 +1834,25 @@ class Event implements TranslatableInterface
             self::EVENT_TYPE_WEBINAR => self::EVENT_TYPE_WEBINAR,
             self::EVENT_TYPE_WORKSHOP => self::EVENT_TYPE_WORKSHOP,
         ];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTelegramLink(): ?string
+    {
+        return $this->telegramLink;
+    }
+
+    /**
+     * @param string|null $telegramLink
+     *
+     * @return $this
+     */
+    public function setTelegramLink(?string $telegramLink): self
+    {
+        $this->telegramLink = $telegramLink;
+
+        return $this;
     }
 }

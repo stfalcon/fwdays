@@ -1,17 +1,29 @@
 email_event_registration:
-    subject: Вы зарегистрировались на ивент %event_name%
-    registration: <p>Вы зарегистрировались на ивент %event_name%</p>
-    registration1: <p>Ивент будет %event_date%.</p>
-    registration2: <p>Перед самим ивентом Вы получите инструкцию о участии. %add_calendar_links%</p>
+    subject: You have registered for the event %event_name%
 
-    pre_subject: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
-    pre_registration: <p>Вы предварительно зарегистрировались на ивент %event_name%</p>
-    pre_registration1: <p>Позже будет оплата о че мы вас уведомим.</p>
-    pre_registration2: ''
+    hello: <p>Hello, %user_name%.</p>
 
-    add_google_calendar: Добавить в календарь
-    add_google_calendar_d1: Добавить в календарь День 1
-    add_google_calendar_d2: Добавить в календарь День 2
+    registration: '<p>You have successfully registered for %event_name%</p>'
+    registration_event_date: '<p>Event date and time: %event_date%.</p>'
+    registration1: '<p>You will receive an additional email about participation details later.</p>'
+    registration2: '<p>%google%%telegram%</p>'
+
+    registration_calendar: 'Add the event to the %add_calendar_links% not to miss it.'
+    telegram_link: '<br>Join the conference <a href="%telegram_link%">Telegram чат</a> to follow the latest news.'
+
+    pre_registration: '<p>You have pre-registered for the event %event_name%</p>'
+    pre_registration1: '<p>Payment will be opened later and we will notify you.</p>'
+
+    add_google_calendar: Google calendar
+    add_google_calendar_d1: Google calendar Day 1
+    add_google_calendar_d2: Google calendar Day 2
+
+    footer: '<p> Fwdays team has been organizing conferences for developers since 2010. <br>
+           Our topics are JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA, and others.<br>
+           Take a look at other <a href="https://fwdays.com" target="_blank">events</a> that are available on our website.</p>
+           <p>You can find hundreds of relevant talks on our <a href="https://www.youtube.com/user/fwdays/" target="_blank">YouTube channel</a>.</p>
+           <p>We are happy to see you at our events! If you have any questions just reply to this email.</p>
+           <p>If you want to make sure that you receive our emails, we recommend you to add <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> to your contact list</p>'
 
 event_cost_free: Free
 event_cost_standard: Standard
