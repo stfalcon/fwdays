@@ -136,10 +136,10 @@ class UserService
      */
     public function sendRegistrationEmail(User $user, Event $event): void
     {
-//        $sentEmails = $this->session->get(self::SESSION_USER_REG_EMAIL_SEND_KEY, []);
-//        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
-//            return;
-//        }
+        $sentEmails = $this->session->get(self::SESSION_USER_REG_EMAIL_SEND_KEY, []);
+        if (\in_array($event->getId(), $sentEmails, true) || ($event->isPaidParticipationCost() && $event->getReceivePayments())) {
+            return;
+        }
 
         $addGoogleCalendarLinks = $this->appDateTimeExtension->linksForGoogleCalendar($event);
         $eventDate = $this->appDateTimeExtension->eventDate($event, null, true, null, ' ');
