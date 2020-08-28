@@ -1,7 +1,7 @@
 email_event_registration:
-  subject: Ви зареєструвались на подію %event_name%
+  subject: 'Ви зареєструвались на подію %event_name%'
 
-  hello: <p>Вітаємо, %user_name%.</p>
+  hello: '<p>Вітаємо, %user_name%.</p>'
 
   registration: '<p>Ви успішно зареєструвались на подію %event_name%</p>'
   registration_event_date: '<p>Дата та час події: %event_date%.</p>'

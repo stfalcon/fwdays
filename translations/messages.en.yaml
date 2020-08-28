@@ -1,7 +1,7 @@
 email_event_registration:
-    subject: You have registered for the event %event_name%
+    subject: 'You have registered for the event %event_name%'
 
-    hello: <p>Hello, %user_name%.</p>
+    hello: '<p>Hello, %user_name%.</p>'
 
     registration: '<p>You have successfully registered for %event_name%</p>'
     registration_event_date: '<p>Event date and time: %event_date%.</p>'
