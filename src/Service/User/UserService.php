@@ -10,6 +10,8 @@ use App\Entity\UserEventRegistration;
 use App\Helper\MailerHelper;
 use App\Traits;
 use App\Twig\AppDateTimeExtension;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -34,14 +36,19 @@ class UserService
     /** @var AppDateTimeExtension */
     private $appDateTimeExtension;
 
+    /** @var Router */
+    private $router;
+
     /**
      * @param MailerHelper         $mailerHelper
      * @param AppDateTimeExtension $appDateTimeExtension
+     * @param Router               $router
      */
-    public function __construct(MailerHelper $mailerHelper, AppDateTimeExtension $appDateTimeExtension)
+    public function __construct(MailerHelper $mailerHelper, AppDateTimeExtension $appDateTimeExtension, Router $router)
     {
         $this->mailerHelper = $mailerHelper;
         $this->appDateTimeExtension = $appDateTimeExtension;
+        $this->router = $router;
     }
 
     /**
@@ -145,7 +152,7 @@ class UserService
         $eventDate = $this->appDateTimeExtension->eventDate($event, null, true, null, ' ');
 
         if (!empty($addGoogleCalendarLinks)) {
-            $googleTitle = $this->translator->trans('email_event_registration.registration_calendar', ['%add_calendar_links%' => $addGoogleCalendarLinks]);
+            $googleTitle = '<li>'.$this->translator->trans('email_event_registration.registration_calendar', ['%add_calendar_links%' => $addGoogleCalendarLinks]).'</li>';
         } else {
             $googleTitle = '';
         }
@@ -157,22 +164,24 @@ class UserService
         }
 
         $text = $this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]);
-        $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
+        $eventLink = $this->router->generate('event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         if ($event->isFreeParticipationCost() || $event->isFreemiumParticipationCost()) {
-            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName()]).
-                $this->translator->trans('email_event_registration.registration_event_date', ['%event_date%' => $eventDate]).
+            $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
+            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName(), '%event_link' => $eventLink, '%event_date%' => $eventDate]).
                 $this->translator->trans('email_event_registration.registration1')
             ;
             if (!empty($googleTitle) || !empty($telegramTitle)) {
+                $telegramTitle = !empty($telegramTitle) ? '<li>'.$telegramTitle.'</li>' : '';
                 $text .= $this->translator->trans('email_event_registration.registration2', ['%google%' => $googleTitle, '%telegram%' => $telegramTitle]);
             }
         } else {
-            $text .= $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName()]).
+            $subject = $this->translator->trans('email_event_registration.pre_subject', ['%event_name%' => $event->getName()]);
+            $text .= $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName(), '%%event_link' => $eventLink]).
                 $this->translator->trans('email_event_registration.pre_registration1')
             ;
             if (!empty($telegramTitle)) {
-                $text .= $this->translator->trans('email_event_registration.registration2', ['%google%' => '', '%telegram%' => $telegramTitle]);
+                $text .= $this->translator->trans('email_event_registration.pre_registration2', ['%telegram%' => $telegramTitle]);
             }
         }
 

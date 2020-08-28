@@ -1,30 +1,37 @@
 email_event_registration:
   subject: 'Ви зареєструвались на подію %event_name%'
+  pre_subject: 'Ви попередньо зареєструвалися на подію %event_name%'
 
   hello: '<p>Вітаємо, %user_name%.</p>'
 
-  registration: '<p>Ви успішно зареєструвались на подію %event_name%</p>'
-  registration_event_date: '<p>Дата та час події: %event_date%.</p>'
+  registration: '<p>Ви успішно зареєструвались на подію <a href="%event_link%">%event_name%</a><br>
+                    Дата та час події: %event_date%.</p>'
   registration1: '<p>Напередодні події ви отримаєте додатковий лист про деталі участі.</p>'
-  registration2: '<p>%google%%telegram%</p>'
+  registration2: '<ul>
+                      %google%
+                      %telegram%
+                  </ul>'
 
   registration_calendar: 'Додайте подію в %add_calendar_links% щоб не пропустити.'
-  telegram_link: '<br>Долучайтесь до <a href="%telegram_link%">Telegram чат</a> конференції щоб бути в курсі новин.'
+  telegram_link: 'Долучайтесь до <a href="%telegram_link%">Telegram чату</a> конференції щоб бути в курсі новин.'
 
   pre_registration: '<p>Ви попередньо зареєструвались на подію %event_name%</p>'
-  pre_registration1: '<p>Пізніше буде відкрита оплата про що ми Вас повідомимо.</p>'
+  pre_registration1: '<p>Пізніше буде відкрита оплата про що ми вас повідомимо.</p>'
+  pre_registration2: '<p>%telegram%</p>'
 
   add_google_calendar: 'Google календар'
   add_google_calendar_d1: 'Google календар День 1'
   add_google_calendar_d2: 'Google календар День 2'
 
   footer: '<p>Команда Fwdays організує конференції для розробників з 2010 року. <br>
-           Наші тематики це: JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA та інші.<br>
-           Перегляньте які ще актуальні <a href="https://fwdays.com" target="_blank">події</a> доступні на сайті.</p>
+           Наші тематики це: JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA та інші.
+           Перегляньте які ще актуальні <a href="https://fwdays.com/events" target="_blank">події</a> доступні на сайті.</p>
 
            <p>На нашому <a href="https://www.youtube.com/user/fwdays/" target="_blank">YouTube каналі</a> ви знайдете сотні актуальних доповідей, підписуйтесь.</p>
-           <p>Будемо раді вас бачити на наших подіях! Якщо у вас є запитання - просто дайте відповідь на цей лист.</p>
-           <p>P.S. Якщо ви хочете гарантовано не пропускати наші листи, рекомендуємо додати адресу <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> до списку контактів</p>'
+
+           <p>Будемо раді вас бачити на наших подіях!<br>Якщо у вас є запитання - просто дайте відповідь на цей лист.</p>
+
+           <p style="color: #747A88;">P.S. Якщо ви хочете гарантовано не пропускати наші листи, рекомендуємо додати адресу <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> до списку контактів</p>'
 
 
 event_cost_free: Безкоштовний
