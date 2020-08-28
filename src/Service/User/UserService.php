@@ -173,7 +173,7 @@ class UserService
         } else {
             $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
 
-            $text =$this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]).
+            $text = $this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]).
                 $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName()]).
                 $this->translator->trans(
                     'email_event_registration.pre_registration1',
