@@ -32,10 +32,21 @@ class EventBlock implements TranslatableInterface
     const CANDIDATE_SPEAKERS = 'candidate_speakers';
     const COMMITTEE_SPEAKERS = 'committee_speakers';
     const EXPERT_SPEAKERS = 'expert_speakers';
+
     const YOUTUBE_PRIVATE_VIDEO = 'youtube_private_video';
     const YOUTUBE_PRIVATE_PLAYLIST = 'youtube_private_playlist';
     const VIMEO_PRIVATE_VIDEO = 'vimeo_private_video';
     const VIMEO_PRIVATE_PLAYLIST = 'vimeo_private_playlist';
+
+    const YOUTUBE_PRIVATE_VIDEO_STANDARD = 'youtube_private_video_standard';
+    const YOUTUBE_PRIVATE_PLAYLIST_STANDARD = 'youtube_private_playlist_standard';
+    const VIMEO_PRIVATE_VIDEO_STANDARD = 'vimeo_private_video_standard';
+    const VIMEO_PRIVATE_PLAYLIST_STANDARD = 'vimeo_private_playlist_standard';
+
+    const YOUTUBE_PRIVATE_VIDEO_PREMIUM = 'youtube_private_video_premium';
+    const YOUTUBE_PRIVATE_PLAYLIST_PREMIUM = 'youtube_private_playlist_premium';
+    const VIMEO_PRIVATE_VIDEO_PREMIUM = 'vimeo_private_video_premium';
+    const VIMEO_PRIVATE_PLAYLIST_PREMIUM = 'vimeo_private_playlist_premium';
 
     /**
      * @var int
@@ -225,21 +236,35 @@ class EventBlock implements TranslatableInterface
     public static function getTypeChoices(): array
     {
         return [
-            'html текст' => self::HTML_TEXT,
-            'програма' => self::PROGRAM,
-            'партнеры' => self::PARTNERS,
-            'цены' => self::PRICES,
-            'описание' => self::DESCRIPTION,
-            'карта' => self::VENUE,
-            'докладчики' => self::SPEAKERS,
-            'доклады' => self::REVIEWS,
-            'кандидаты' => self::CANDIDATE_SPEAKERS,
-            'програмный комитет' => self::COMMITTEE_SPEAKERS,
-            'эксперты' => self::EXPERT_SPEAKERS,
-            'vimeo трансляция' => self::VIMEO_PRIVATE_VIDEO,
-            'vimeo playlist' => self::VIMEO_PRIVATE_PLAYLIST,
-            'youtube трансляция' => self::YOUTUBE_PRIVATE_VIDEO,
-            'youtube playlist' => self::YOUTUBE_PRIVATE_PLAYLIST,
+            'общие' => [
+                'html текст' => self::HTML_TEXT,
+                'програма' => self::PROGRAM,
+                'партнеры' => self::PARTNERS,
+                'цены' => self::PRICES,
+                'описание' => self::DESCRIPTION,
+                'карта' => self::VENUE,
+                'докладчики' => self::SPEAKERS,
+                'доклады' => self::REVIEWS,
+                'кандидаты' => self::CANDIDATE_SPEAKERS,
+                'програмный комитет' => self::COMMITTEE_SPEAKERS,
+                'эксперты' => self::EXPERT_SPEAKERS,
+            ],
+            'vimeo' => [
+                'vimeo трансляция' => self::VIMEO_PRIVATE_VIDEO,
+                'vimeo playlist' => self::VIMEO_PRIVATE_PLAYLIST,
+                'vimeo трансляция standard' => self::VIMEO_PRIVATE_VIDEO_STANDARD,
+                'vimeo playlist standard' => self::VIMEO_PRIVATE_PLAYLIST_STANDARD,
+                'vimeo трансляция premium' => self::VIMEO_PRIVATE_VIDEO_PREMIUM,
+                'vimeo playlist premium' => self::VIMEO_PRIVATE_PLAYLIST_PREMIUM,
+            ],
+            'youtube' => [
+                'youtube трансляция' => self::YOUTUBE_PRIVATE_VIDEO,
+                'youtube playlist' => self::YOUTUBE_PRIVATE_PLAYLIST,
+                'youtube трансляция standard' => self::YOUTUBE_PRIVATE_VIDEO_STANDARD,
+                'youtube playlist standard' => self::YOUTUBE_PRIVATE_PLAYLIST_STANDARD,
+                'youtube трансляция premium' => self::YOUTUBE_PRIVATE_VIDEO_PREMIUM,
+                'youtube playlist premium' => self::YOUTUBE_PRIVATE_PLAYLIST_PREMIUM,
+            ],
         ];
     }
 }
