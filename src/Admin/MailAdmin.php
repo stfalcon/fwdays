@@ -8,6 +8,7 @@ use App\Entity\EventAudience;
 use App\Entity\Mail;
 use App\Entity\MailQueue;
 use App\Entity\Payment;
+use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Repository\MailQueueRepository;
 use App\Repository\TicketRepository;
@@ -140,6 +141,7 @@ final class MailAdmin extends AbstractAdmin
             $audiencesChange ||
             $originalObject['wantsVisitEvent'] !== $object->isWantsVisitEvent() ||
             $originalObject['paymentStatus'] !== $object->getPaymentStatus() ||
+            $originalObject['ticketType'] !== $object->getTicketType() ||
             $originalObject['ignoreUnsubscribe'] !== $object->isIgnoreUnsubscribe()
         ) {
             $objectStatus = $object->getStart();
@@ -254,6 +256,11 @@ final class MailAdmin extends AbstractAdmin
                     'label' => 'Статус оплаты',
                     'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
+                ->add('ticketType', ChoiceType::class, [
+                    'choices' => TicketCost::getTypes(),
+                    'required' => false,
+                    'label' => 'Тип билета',
+                ])
                 ->add('ignoreUnsubscribe', null, ['label' => 'Отправлять отписанным от рассылки', 'required' => false])
             ->end()
             ->with('Запустить')
@@ -287,6 +294,7 @@ final class MailAdmin extends AbstractAdmin
     private function getUsersForEmail($mail): array
     {
         $paymentStatus = $mail->getPaymentStatus();
+        $ticketType = $mail->getTicketType();
 
         $eventCollection = $paymentStatus ? [] : $mail->getEvents()->toArray();
         /** @var EventAudience $audience */
@@ -305,7 +313,7 @@ final class MailAdmin extends AbstractAdmin
         $isIgnoreUnsubscribe = $mail->isIgnoreUnsubscribe();
 
         if ($allEvents->count() > 0 || $selectedEvents->count() > 0) {
-            $users = $this->userRepository->getUsersForEmail($mail->isWantsVisitEvent(), $allEvents, $selectedEvents, $isIgnoreUnsubscribe, $paymentStatus);
+            $users = $this->userRepository->getUsersForEmail($mail->isWantsVisitEvent(), $allEvents, $selectedEvents, $isIgnoreUnsubscribe, $paymentStatus, $ticketType);
         } else {
             $users = $this->userRepository->getAllSubscribed($isIgnoreUnsubscribe);
         }
