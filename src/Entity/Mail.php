@@ -102,6 +102,13 @@ class Mail implements TranslatableInterface
     protected $paymentStatus = null;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="ticket_type", type="string", length=20, nullable=true)
+     */
+    protected $ticketType = null;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="wants_visit_event", type="boolean")
@@ -774,6 +781,26 @@ class Mail implements TranslatableInterface
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTicketType(): ?string
+    {
+        return $this->ticketType;
+    }
+
+    /**
+     * @param string|null $ticketType
+     *
+     * @return $this
+     */
+    public function setTicketType(?string $ticketType): self
+    {
+        $this->ticketType = $ticketType;
 
         return $this;
     }
