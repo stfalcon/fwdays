@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Class PaymentAdmin.
+ * PaymentAdmin.
  */
 final class PaymentAdmin extends AbstractAdmin
 {
@@ -43,7 +43,7 @@ final class PaymentAdmin extends AbstractAdmin
 
     /**
      * @param string          $code
-     * @param string          $class
+     * @param class-string    $class
      * @param string          $baseControllerName
      * @param EventRepository $eventRepository
      */

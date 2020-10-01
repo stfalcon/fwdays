@@ -26,7 +26,7 @@ class TicketAdminController extends CoreController
             return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
-                'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
+                'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             ]);
         }
@@ -47,7 +47,7 @@ class TicketAdminController extends CoreController
             return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
-                'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
+                'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
                 'ticket_url' => $url,
             ]);
@@ -56,7 +56,7 @@ class TicketAdminController extends CoreController
         return $this->render('ticket_admin/check.html.twig', [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
-            'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
+            'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
             'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             'message' => 'Not Found',
         ]);

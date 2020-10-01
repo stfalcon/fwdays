@@ -45,7 +45,7 @@ class EventAdmin extends AbstractTranslateAdmin
 
     /**
      * @param string         $code
-     * @param string         $class
+     * @param class-string   $class
      * @param string         $baseControllerName
      * @param UserService    $userService
      * @param CityRepository $cityRepository

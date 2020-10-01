@@ -44,7 +44,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
 
     /**
      * @param string          $code
-     * @param string          $class
+     * @param class-string    $class
      * @param string          $baseControllerName
      * @param EventRepository $eventRepository
      */

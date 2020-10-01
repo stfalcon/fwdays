@@ -18,7 +18,7 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
 
     /**
      * @param string          $code
-     * @param string          $class
+     * @param class-string    $class
      * @param string          $baseControllerName
      * @param EventRepository $eventRepository
      */
