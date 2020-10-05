@@ -57,7 +57,7 @@ final class MailAdmin extends AbstractAdmin
      * MailAdmin constructor.
      *
      * @param string           $code
-     * @param string           $class
+     * @param class-string     $class
      * @param string           $baseControllerName
      * @param UserRepository   $userRepository
      * @param TicketRepository $ticketRepository

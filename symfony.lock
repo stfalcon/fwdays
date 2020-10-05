@@ -290,7 +290,7 @@
         "version": "1.0.23"
     },
     "league/mime-type-detection": {
-        "version": "1.4.0"
+        "version": "1.5.0"
     },
     "lexik/translation-bundle": {
         "version": "v4.0.14"
@@ -335,6 +335,9 @@
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
+    "ocramius/package-versions": {
+        "version": "1.5.1"
+    },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
     },
@@ -370,9 +373,6 @@
     },
     "php-http/discovery": {
         "version": "1.7.0"
-    },
-    "php-http/guzzle6-adapter": {
-        "version": "v2.0.1"
     },
     "php-http/httplug": {
         "version": "v1.1.0"
@@ -877,6 +877,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.13.1"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.14.0"

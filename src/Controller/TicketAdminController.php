@@ -23,13 +23,11 @@ class TicketAdminController extends CoreController
      */
     public function checkAction(Request $request): Response
     {
-        $blocks = $this->container instanceof ContainerInterface ? $this->container->getParameter('sonata.admin.configuration.dashboard_blocks') : '';
-
         if (!($ticketId = $request->get('id'))) {
             return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
-                'blocks' => $blocks,
+                'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             ]);
         }
@@ -37,7 +35,7 @@ class TicketAdminController extends CoreController
         $ticket = $this->getDoctrine()->getManager()->getRepository(Ticket::class)
             ->find($ticketId);
 
-        $blocks = $this->container instanceof ContainerInterface ? $this->container->getParameter('sonata.admin.configuration.dashboard_blocks') : '';
+
 
         if ($ticket instanceof Ticket) {
             $url = $this->generateUrl(
@@ -52,7 +50,7 @@ class TicketAdminController extends CoreController
             return $this->render('ticket_admin/check.html.twig', [
                 'base_template' => $this->getBaseTemplate(),
                 'admin_pool' => $this->container->get('sonata.admin.pool'),
-                'blocks' => $blocks,
+                'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
                 'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
                 'ticket_url' => $url,
             ]);
@@ -61,7 +59,7 @@ class TicketAdminController extends CoreController
         return $this->render('ticket_admin/check.html.twig', [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
-            'blocks' => $blocks,
+            'blocks' => $this->getParameter('sonata.admin.configuration.dashboard_blocks'),
             'form_action' => $this->generateUrl('sonata_admin_ticket_check'),
             'message' => 'Not Found',
         ]);
