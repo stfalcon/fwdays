@@ -477,4 +477,12 @@ class Ticket
 
         return true;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getTicketType(): ?string
+    {
+        return $this->ticketCost instanceof TicketCost ? $this->ticketCost->getType() : null;
+    }
 }

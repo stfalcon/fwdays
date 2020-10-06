@@ -42,7 +42,7 @@ class BoughtStandardTicketGrandAccess implements GrandAccessForVideoInterface
             if ($ticket->getEvent()->isEqualTo($event) &&
                 $ticket->isPaid() &&
                 $ticket->getTicketCost() instanceof TicketCost &&
-                TicketCost::TYPE_STANDARD === $ticket->getTicketCost()->getType()
+                \in_array($ticket->getTicketCost()->getType(), [TicketCost::TYPE_STANDARD, TicketCost::TYPE_PREMIUM], true)
             ) {
                 return true;
             }
