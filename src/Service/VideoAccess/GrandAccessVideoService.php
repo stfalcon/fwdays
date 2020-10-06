@@ -37,6 +37,10 @@ class GrandAccessVideoService
      */
     public function isAccessGrand(string $grandAccessType, Event $event, ?User $user, array $tickets): bool
     {
+        if ($user instanceof User && ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN'))) {
+            return true;
+        }
+
         foreach ($this->accessProcessors as $accessProcessor) {
             if ($accessProcessor->support($grandAccessType)) {
                 return $accessProcessor->access($event, $user, $tickets);

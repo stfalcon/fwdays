@@ -110,11 +110,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
         }
 
-//        if ($user instanceof User && ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN'))) {
-//            $accessGrand = true;
-//        } else {
         $accessGrand = $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
-//        }
 
         if (!$accessGrand) {
             return new Response();
