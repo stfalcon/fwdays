@@ -55,6 +55,6 @@ class RegisteredOrBoughtAnyTicketGrandAccess implements GrandAccessForVideoInter
             }
         }
 
-        return $event->isFreeParticipationCost() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+        return $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
     }
 }

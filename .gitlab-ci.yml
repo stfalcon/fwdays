@@ -212,7 +212,6 @@ production deploy:
     environment:
         name: production
         url: https://fwdays.com
-    when: manual
 
 production rollback:
     stage: 'Deploy to production'
