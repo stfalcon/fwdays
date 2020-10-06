@@ -4,7 +4,6 @@ namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
 use App\Entity\EventBlock;
-use App\Entity\User;
 use App\Repository\TicketRepository;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Ticket;
 use Sonata\AdminBundle\Controller\CoreController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,8 +33,6 @@ class TicketAdminController extends CoreController
 
         $ticket = $this->getDoctrine()->getManager()->getRepository(Ticket::class)
             ->find($ticketId);
-
-
 
         if ($ticket instanceof Ticket) {
             $url = $this->generateUrl(
