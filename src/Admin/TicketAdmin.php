@@ -178,7 +178,8 @@ final class TicketAdmin extends AbstractAdmin
             ->add('user.email', null, ['label' => 'E-Mail пользователя'])
             ->add('user.phone', null, ['label' => 'Номер телефона пользователя'])
             ->add('used', null, ['label' => 'Использован'])
-            ->add('ticketCost.type',
+            ->add(
+                'ticketCost.type',
                 'doctrine_orm_choice',
                 [
                     'label' => 'Тип билета',
@@ -186,7 +187,8 @@ final class TicketAdmin extends AbstractAdmin
                         'choices' => TicketCost::getTypes(),
                     ],
                     'field_type' => ChoiceType::class,
-                ])
+                ]
+            )
             ->add(
                 'payment.status',
                 'doctrine_orm_choice',
