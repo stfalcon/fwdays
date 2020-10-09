@@ -139,7 +139,7 @@ class AppDateTimeExtension extends AbstractExtension
             $sinceEnd = clone $since;
             $sinceEnd->setTime((int) $till->format('H'), (int) $till->format('i'));
 
-            $linkString .= $this->translator->trans(
+            $day1 = $this->translator->trans(
                 $linkPattern,
                 [
                     '%since%' => $since->format($format),
@@ -151,7 +151,7 @@ class AppDateTimeExtension extends AbstractExtension
             $sinceFrom = clone $till;
             $sinceFrom->setTime((int) $since->format('H'), (int) $since->format('i'));
 
-            $linkString .= ' '.$this->translator->trans(
+            $day2 = $this->translator->trans(
                 $linkPattern,
                 [
                     '%since%' => $sinceFrom->format($format),
@@ -159,6 +159,10 @@ class AppDateTimeExtension extends AbstractExtension
                     '%title%' => $this->translator->trans('email_event_registration.add_google_calendar_d2'),
                 ]
             );
+
+            $googleCalendar = $this->translator->trans('email_event_registration.add_google_calendar');
+
+            $linkString .= \sprintf('%s (%s, %s)', $googleCalendar, $day1, $day2);
         }
 
         return $linkString;

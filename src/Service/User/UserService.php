@@ -168,7 +168,7 @@ class UserService
 
         if ($event->isFreeParticipationCost() || $event->isFreemiumParticipationCost()) {
             $subject = $this->translator->trans('email_event_registration.subject', ['%event_name%' => $event->getName()]);
-            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName(), '%event_link' => $eventLink, '%event_date%' => $eventDate]).
+            $text .= $this->translator->trans('email_event_registration.registration', ['%event_name%' => $event->getName(), '%event_link%' => $eventLink, '%event_date%' => $eventDate]).
                 $this->translator->trans('email_event_registration.registration1')
             ;
             if (!empty($googleTitle) || !empty($telegramTitle)) {
@@ -177,15 +177,14 @@ class UserService
             }
         } else {
             $subject = $this->translator->trans('email_event_registration.pre_subject', ['%event_name%' => $event->getName()]);
-            $text .= $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName(), '%%event_link' => $eventLink]).
-                $this->translator->trans('email_event_registration.pre_registration1')
-            ;
+            $text .= $this->translator->trans('email_event_registration.pre_registration', ['%event_name%' => $event->getName(), '%event_link%' => $eventLink]);
             if (!empty($telegramTitle)) {
                 $text .= $this->translator->trans('email_event_registration.pre_registration2', ['%telegram%' => $telegramTitle]);
             }
         }
 
-        $text .= $this->translator->trans('email_event_registration.footer');
+        $text .= $this->translator->trans('email_event_registration.footer')
+            .$this->translator->trans('email_event_registration.ps');
 
         if ($this->mailerHelper->sendEasyEmail($subject, 'Email/new_email.html.twig', ['text' => $text, 'user' => $user, 'mail' => null], $user) > 0) {
             $sentEmails[] = $event->getId();

@@ -13,21 +13,32 @@ email_event_registration:
                     </ul>'
 
     registration_calendar: 'Add the event to the %add_calendar_links% not to miss it.'
-    telegram_link: 'Join the conference <a href="%telegram_link%">Telegram чат</a> to follow the latest news.'
+    telegram_link: 'Join the conference <a href="%telegram_link%">Telegram chat</a> to follow the latest news.'
 
-    pre_registration: '<p>You have pre-registered for the event %event_name%</p>'
-    pre_registration1: '<p>Payment will be opened later and we will notify you.</p>'
+    pre_registration: '<p>You have pre-registered for the event <a href="%event_link%">%event_name%</a><br>
+                        Payment will be opened later and we will notify you.</p>'
     pre_registration2: '<p>%telegram%</p>'
     add_google_calendar: Google calendar
-    add_google_calendar_d1: Google calendar Day 1
-    add_google_calendar_d2: Google calendar Day 2
+    add_google_calendar_d1: Day 1
+    add_google_calendar_d2: Day 2
 
     footer: '<p> Fwdays team has been organizing conferences for developers since 2010. <br>
-           Our topics are JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA, and others.<br>
-           Take a look at other <a href="https://fwdays.com" target="_blank">events</a> that are available on our website.</p>
+           Our topics are JavaScript, Node.js, .NET, PHP, Python, Highload, DevOps, Data Science, QA, and others.
+           Take a look at other <a href="https://fwdays.com/events" target="_blank">events</a> that are available on our website.</p>
            <p>You can find hundreds of relevant talks on our <a href="https://www.youtube.com/user/fwdays/" target="_blank">YouTube channel</a>.</p>
-           <p>We are happy to see you at our events!<br>If you have any questions just reply to this email.</p>
-           <p style="color: #747A88;">P.S. If you want to make sure that you receive our emails, we recommend you to add <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> to your contact list</p>'
+           <p>We are happy to see you at our events!<br>If you have any questions just reply to this email.</p>'
+    ps: '<p style="color: #747A88;">P.S. If you want to make sure that you receive our emails, we recommend you to add <a href="mailto:orgs@fwdays.com">orgs@fwdays.com</a> to your contact list</p>'
+
+email_with_ticket:
+    subject: 'Ticket for event %event_name%'
+    text0: '<p>You have successfully registered and paid for <a href="%event_link%">%event_name%</a><br>
+            Event date and time: %event_date%.</p>
+          <p><b>If you bought a ticket for an online event, all the links and access will be sent to you with another email 1-2 days before the event.</b></p>'
+    text1: '<p>You can find the ticket in attachments, it is also available in your cabinet.</p>'
+    refund_rules: '<p style="color: #747A88;">Ticket refund policy (excerpt of the offer):<br>
+                5.5. The Ticket Cost shall be refunded by the Service Provider upon receiving the written request from the Customer in the following cases:<br>
+                - The Ticket Cost, minus the fee of the Payment Service, shall be returned to the Customer if the latter has informed the Service Provider of their intention to refund the Ticket not less than 20 (twenty) days before the Event date.<br>
+                - 50% of the Ticket Cost, minus the fee of the Payment Service, shall be returned to the Customer if the latter has informed the Service Provider of their intention to refund the Ticket not less than 24 hours before the Event date.</p>'
 
 event_cost_free: Free
 event_cost_standard: Standard
