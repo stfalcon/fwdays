@@ -1,16 +1,7 @@
 {% include 'Email/_email_header.html.twig' %}
-                                        <p style="margin: 10px 0;">
-                                            {{ 'mail.with_ticket.text0'|trans|raw }}
-                                        </p>
-                                        <p style="margin: 10px 0;">
-                                            {{ 'mail.with_ticket.text1'|trans|raw }}
-                                        </p>
-                                        <p style="margin: 10px 0;">
-                                            {{ 'mail.with_ticket.text2'|trans|raw }}
-                                        </p>
-                                        <p style="margin: 10px 0;">
-                                            {{ event|app_event_to_calendar|raw }}
-                                        </p>
+
+                                        {{ text|raw }}
+
                                         <p style="margin: 10px 0;">
                                             <a href="{{ 'mail.news.site_link'|trans }}" style="color: #0c9db9;">{{ 'mail.news.site'|trans }}</a>
                                         </p>

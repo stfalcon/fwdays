@@ -478,6 +478,8 @@ class Event implements TranslatableInterface
      * @var string|null
      *
      * @ORM\Column(type="string", name="telegram_link", nullable=true)
+     *
+     * @Assert\Url(protocols={"https"})
      */
     private $telegramLink;
 
