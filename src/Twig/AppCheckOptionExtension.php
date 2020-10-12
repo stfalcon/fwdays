@@ -30,7 +30,7 @@ class AppCheckOptionExtension extends AbstractExtension
     {
         return [
             new TwigFilter('app_is_option', [$this, 'isOption']),
-            new TwigFilter('app_get_option', [$this, 'isOption']),
+            new TwigFilter('app_get_option', [$this, 'getOption']),
         ];
     }
 
