@@ -218,7 +218,7 @@ class PromoCode implements TranslatableInterface, BlameableInterface
     /**
      * @return int
      */
-    public function getDiscountAmount()
+    public function getDiscountAmount(): int
     {
         return $this->discountAmount;
     }
