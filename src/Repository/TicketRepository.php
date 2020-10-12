@@ -29,6 +29,30 @@ class TicketRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return array|Ticket[]
+     */
+    public function getAllPaidForUserAndEvent(User $user, Event $event): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->join('t.payment', 'p')
+            ->where($qb->expr()->eq('t.event', ':event'))
+            ->andWhere($qb->expr()->eq('t.user', ':user'))
+            ->andWhere($qb->expr()->eq('p.status', ':payment_status'))
+            ->setParameters(new ArrayCollection([
+                new Parameter('event', $event),
+                new Parameter('user', $user),
+                new Parameter('payment_status', Payment::STATUS_PAID),
+            ]))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @param Event $event
      * @param bool  $freeTickets
      *

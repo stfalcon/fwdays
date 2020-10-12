@@ -207,13 +207,14 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->end()
             ->end()
             ->tab('Настройки')
-                ->with('Город', ['class' => 'col-md-2'])
+                ->with('Город, Slug', ['class' => 'col-md-3'])
                     ->add('city', null, ['label' => 'Город'])
-                ->end()
-                ->with('Slug', ['class' => 'col-md-2'])
                     ->add('slug')
                 ->end()
-                ->with('Тип cобытия', ['class' => 'col-md-2'])
+                ->with('Телеграм', ['class' => 'col-md-3'])
+                    ->add('telegramLink', null, ['label' => 'Телеграм канал', 'required' => false])
+                ->end()
+                ->with('Тип и стоимость', ['class' => 'col-md-3'])
                     ->add(
                         'type',
                         ChoiceType::class,
@@ -223,8 +224,6 @@ class EventAdmin extends AbstractTranslateAdmin
                             'required' => false,
                         ]
                     )
-                ->end()
-                ->with('Стоимость участия', ['class' => 'col-md-2'])
                     ->add(
                         'participationCost',
                         ChoiceType::class,
@@ -235,11 +234,9 @@ class EventAdmin extends AbstractTranslateAdmin
                         ]
                     )
                 ->end()
-                ->with('Группа', ['class' => 'col-md-2'])
+                ->with('Группа', ['class' => 'col-md-3'])
                     ->add('group', null, ['label' => 'Группа'])
-                ->end()
-                ->with('Аудитории', ['class' => 'col-md-2'])
-                        ->add('audiences', null, ['label' => 'Аудитории'])
+                    ->add('audiences', null, ['label' => 'Аудитории'])
                 ->end()
                 ->with('Переключатели', ['class' => 'col-md-4'])
                     ->add('active', null, ['required' => false, 'label' => 'Активно'])

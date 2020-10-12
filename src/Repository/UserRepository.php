@@ -153,10 +153,11 @@ class UserRepository extends ServiceEntityRepository
      * @param Collection      $selectedEvents
      * @param bool            $isIgnoreUnsubscribe
      * @param string|null     $paymentStatus
+     * @param string|null     $ticketType
      *
      * @return User[]
      */
-    public function getUsersForEmail(bool $isEventsRegisteredUsers, ArrayCollection $allEvents, Collection $selectedEvents, bool $isIgnoreUnsubscribe = false, ?string $paymentStatus = null): array
+    public function getUsersForEmail(bool $isEventsRegisteredUsers, ArrayCollection $allEvents, Collection $selectedEvents, bool $isIgnoreUnsubscribe, ?string $paymentStatus, ?string $ticketType): array
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -166,7 +167,7 @@ class UserRepository extends ServiceEntityRepository
             $this->addEventsWithTicketFilter($qb, $allEvents);
         }
 
-        $this->addPaymentStatusFilter($qb, $selectedEvents, $paymentStatus);
+        $this->addPaymentStatusFilter($qb, $selectedEvents, $paymentStatus, $ticketType);
 
         $qb->groupBy('u');
 
@@ -283,8 +284,9 @@ class UserRepository extends ServiceEntityRepository
      * @param QueryBuilder $qb
      * @param Collection   $selectedEvents
      * @param string|null  $paymentStatus
+     * @param string|null  $ticketType
      */
-    private function addPaymentStatusFilter(QueryBuilder $qb, Collection $selectedEvents, ?string $paymentStatus = null): void
+    private function addPaymentStatusFilter(QueryBuilder $qb, Collection $selectedEvents, ?string $paymentStatus, ?string $ticketType): void
     {
         if (null !== $paymentStatus && $selectedEvents->count() > 0) {
             $onExp = 't.user = u AND t.event IN (:selected_events)';
@@ -306,6 +308,16 @@ class UserRepository extends ServiceEntityRepository
                 ;
 
                 $statusQuery = $qb->expr()->eq('p.status', ':status');
+            }
+            if (null !== $ticketType) {
+                $qb
+                    ->join('t.ticketCost', 'tc')
+                    ->setParameter('ticket_type', $ticketType)
+                ;
+                $statusQuery = $qb->expr()->andX(
+                    $statusQuery,
+                    $qb->expr()->eq('tc.type', ':ticket_type')
+                );
             }
 
             $qb->andWhere($qb->expr()->andX($statusQuery))

@@ -65,6 +65,15 @@ services:
                 - '@oneup_flysystem.event_image_filesystem'
                 - '@oneup_flysystem.upload_image_filesystem'
 
+    _instanceof:
+        App\Service\VideoAccess\GrandAccessForVideoInterface:
+            tags:
+                - 'grand_access_video'
+
+    App\Service\VideoAccess\GrandAccessVideoService:
+        arguments:
+            - !tagged grand_access_video
+
     App\Service\Ticket\TicketService:
         arguments:
             - '@doctrine.orm.entity_manager'
@@ -165,3 +174,4 @@ services:
     Liip\ImagineBundle\Imagine\Data\DataManager: '@liip_imagine.data.manager'
     Symfony\Contracts\HttpClient\HttpClientInterface:
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+    SunCat\MobileDetectBundle\Twig\Extension\MobileDetectExtension: '@mobile_detect.twig.extension'

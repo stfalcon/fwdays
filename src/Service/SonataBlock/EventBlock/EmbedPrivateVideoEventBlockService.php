@@ -4,12 +4,10 @@ namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
 use App\Entity\EventBlock;
-use App\Entity\Ticket;
-use App\Entity\User;
 use App\Repository\TicketRepository;
-use App\Repository\UserEventRegistrationRepository;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
+use App\Service\VideoAccess\GrandAccessVideoService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -24,8 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class EmbedPrivateVideoEventBlockService extends AbstractBlockService
 {
     private $userService;
+
+    /** @var TicketRepository */
     private $ticketRepository;
-    private $userRegistrationRepository;
+
     /** @var bool */
     private $isPlaylist = false;
     /** @var string */
@@ -34,28 +34,46 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
     /** @var TicketService */
     private $ticketService;
 
+    /** @var string */
+    private $grandAccessType = '';
+
+    /** @var GrandAccessVideoService */
+    private $grandAccessVideoService;
+
     /**
-     * @param string                          $name
-     * @param EngineInterface                 $templating
-     * @param UserService                     $userService
-     * @param TicketRepository                $ticketRepository
-     * @param UserEventRegistrationRepository $userRegistrationRepository
-     * @param TicketService                   $ticketService
+     * @param string                  $name
+     * @param EngineInterface         $templating
+     * @param UserService             $userService
+     * @param TicketRepository        $ticketRepository
+     * @param TicketService           $ticketService
+     * @param GrandAccessVideoService $grandAccessVideoService
      */
-    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, UserEventRegistrationRepository $userRegistrationRepository, TicketService $ticketService)
+    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, TicketService $ticketService, GrandAccessVideoService $grandAccessVideoService)
     {
         parent::__construct($name, $templating);
 
         $this->userService = $userService;
         $this->ticketRepository = $ticketRepository;
-        $this->userRegistrationRepository = $userRegistrationRepository;
         $this->ticketService = $ticketService;
+        $this->grandAccessVideoService = $grandAccessVideoService;
     }
 
     /** @param bool $isPlayList */
     public function setIsPlayList(bool $isPlayList): void
     {
         $this->isPlaylist = $isPlayList;
+    }
+
+    /**
+     * @param string $grandAccessType
+     *
+     * @return $this
+     */
+    public function setGrandAccessType(string $grandAccessType): self
+    {
+        $this->grandAccessType = $grandAccessType;
+
+        return $this;
     }
 
     /** @param string $template */
@@ -81,30 +99,27 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
 
         try {
             $user = $this->userService->getCurrentUser();
-            $ticket = $this->ticketRepository->findOneBy(['user' => $user->getId(), 'event' => $event->getId()]);
-            $userRegisteredForFreeEvent = $event->isFreeParticipationCost() && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+            $tickets = $this->ticketRepository->getAllPaidForUserAndEvent($user, $event);
         } catch (AccessDeniedException $e) {
             $user = null;
-            $ticket = null;
-            $userRegisteredForFreeEvent = false;
+            $tickets = [];
         }
 
-        if ($ticket instanceof Ticket) {
+        foreach ($tickets as $ticket) {
             $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
         }
 
-        if (($ticket instanceof Ticket && $ticket->isPaid()) ||
-            $userRegisteredForFreeEvent ||
-            ($user instanceof User && ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')))
-        ) {
-            return $this->renderResponse($blockContext->getTemplate(), [
-                'block' => $blockContext->getBlock(),
-                'event_block' => $eventBlock,
-                'is_playlist' => $this->isPlaylist,
-            ], $response);
+        $accessGrand = $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
+
+        if (!$accessGrand) {
+            return new Response();
         }
 
-        return new Response();
+        return $this->renderResponse($blockContext->getTemplate(), [
+            'block' => $blockContext->getBlock(),
+            'event_block' => $eventBlock,
+            'is_playlist' => $this->isPlaylist,
+        ], $response);
     }
 
     /**

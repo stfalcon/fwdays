@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Payment;
+use App\Entity\TicketCost;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\Criteria;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -60,6 +61,7 @@ final class TicketAdmin extends AbstractAdmin
             'user.fullname',
             'user.email',
             'user.phone',
+            'ticketCost.type',
             'amount',
             'amountWithoutDiscount',
             'payment',
@@ -114,7 +116,7 @@ final class TicketAdmin extends AbstractAdmin
                 ]
             )
             ->add('promoCode', null, ['label' => 'Промокод'])
-            ->add('ticketCost.type', null, ['label' => 'Тип'])
+            ->add('ticketType', null, ['label' => 'Тип'])
             ->add('payment', null, ['label' => 'Оплата'])
             ->add('createdAt', null, ['label' => 'Дата создания'])
             ->add('updatedAt', null, ['label' => 'Дата изменения'])
@@ -177,6 +179,17 @@ final class TicketAdmin extends AbstractAdmin
             ->add('user.phone', null, ['label' => 'Номер телефона пользователя'])
             ->add('used', null, ['label' => 'Использован'])
             ->add(
+                'ticketCost.type',
+                'doctrine_orm_choice',
+                [
+                    'label' => 'Тип билета',
+                    'field_options' => [
+                        'choices' => TicketCost::getTypes(),
+                    ],
+                    'field_type' => ChoiceType::class,
+                ]
+            )
+            ->add(
                 'payment.status',
                 'doctrine_orm_choice',
                 [
@@ -226,6 +239,7 @@ final class TicketAdmin extends AbstractAdmin
                 ]
             )
             ->add('payment', TextType::class, ['label' => 'Оплата', 'disabled' => true])
+            ->add('ticketType', TextType::class, ['label' => 'Тип билета', 'disabled' => true])
             ->add('used', null, ['label' => 'Использован', 'disabled' => true])
         ;
     }

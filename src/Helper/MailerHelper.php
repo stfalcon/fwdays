@@ -6,8 +6,10 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use App\Model\TranslatedMail;
 use App\Traits;
+use App\Twig\AppDateTimeExtension;
 use Endroid\QrCode\Exceptions\ImageFunctionFailedException;
 use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * MailerHelper.
@@ -23,14 +25,19 @@ class MailerHelper
     /** @var PdfGeneratorHelper */
     private $pdfGeneratorHelper;
 
+    /** @var AppDateTimeExtension */
+    private $appDateTimeExtension;
+
     /**
-     * @param \Swift_Mailer      $mailer
-     * @param PdfGeneratorHelper $pdfGeneratorHelper
+     * @param \Swift_Mailer        $mailer
+     * @param PdfGeneratorHelper   $pdfGeneratorHelper
+     * @param AppDateTimeExtension $appDateTimeExtension
      */
-    public function __construct(\Swift_Mailer $mailer, PdfGeneratorHelper $pdfGeneratorHelper)
+    public function __construct(\Swift_Mailer $mailer, PdfGeneratorHelper $pdfGeneratorHelper, AppDateTimeExtension $appDateTimeExtension)
     {
         $this->mailer = $mailer;
         $this->pdfGeneratorHelper = $pdfGeneratorHelper;
+        $this->appDateTimeExtension = $appDateTimeExtension;
     }
 
     /**
@@ -83,16 +90,49 @@ class MailerHelper
         $event = $ticket->getEvent();
         $user = $ticket->getUser();
 
+        $addGoogleCalendarLinks = $this->appDateTimeExtension->linksForGoogleCalendar($event);
+        $eventDate = $this->appDateTimeExtension->eventDate($event, null, true, null, ' ');
+        if (!empty($addGoogleCalendarLinks)) {
+            $googleTitle = '<li>'.$this->translator->trans('email_event_registration.registration_calendar', ['%add_calendar_links%' => $addGoogleCalendarLinks]).'</li>';
+        } else {
+            $googleTitle = '';
+        }
+
+        $subject = $this->translator->trans('email_with_ticket.subject', ['%event_name%' => $event->getName()]);
+
+        if (!empty($event->getTelegramLink())) {
+            $telegramTitle = $this->translator->trans('email_event_registration.telegram_link', ['%telegram_link%' => $event->getTelegramLink()]);
+        } else {
+            $telegramTitle = '';
+        }
+
+        $eventLink = $this->router->generate('event_show', ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $text = $this->translator->trans('email_event_registration.hello', ['%user_name%' => $user->getFullname()]).
+            $this->translator->trans('email_with_ticket.text0', ['%event_name%' => $event->getName(), '%event_link%' => $eventLink, '%event_date%' => $eventDate]);
+
+        if (!empty($googleTitle) || !empty($telegramTitle)) {
+            $telegramTitle = !empty($telegramTitle) ? '<li>'.$telegramTitle.'</li>' : '';
+            $text .= $this->translator->trans('email_event_registration.registration2', ['%google%' => $googleTitle, '%telegram%' => $telegramTitle]);
+        }
+
+        $text .=
+            $this->translator->trans('email_with_ticket.text1')
+            .$this->translator->trans('email_event_registration.footer')
+            .$this->translator->trans('email_with_ticket.refund_rules')
+            .$this->translator->trans('email_event_registration.ps')
+        ;
+
         $body = $this->renderTwigTemplate(
             'Email/email_with_ticket.html.twig',
             [
+                'text' => $text,
                 'event' => $event,
                 'ticket' => $ticket,
                 'user' => $user,
             ]
         );
 
-        $message = $this->createMessage($event->getName(), $user->getEmail(), $body);
+        $message = $this->createMessage($subject, $user->getEmail(), $body);
 
         $html = $this->pdfGeneratorHelper->generateHTML($ticket);
         $message->attach(
