@@ -6,7 +6,6 @@ namespace App\Service\VideoAccess;
 
 use App\Entity\Event;
 use App\Entity\Ticket;
-use App\Entity\TicketCost;
 use App\Entity\User;
 
 /**
@@ -39,11 +38,7 @@ class BoughtPremiumTicketGrandAccess implements GrandAccessForVideoInterface
 
         /** @var Ticket $ticket */
         foreach ($tickets as $ticket) {
-            if ($ticket->getEvent()->isEqualTo($event) &&
-                $ticket->isPaid() &&
-                $ticket->getTicketCost() instanceof TicketCost &&
-                TicketCost::TYPE_PREMIUM === $ticket->getTicketCost()->getType()
-            ) {
+            if ($ticket->getEvent()->isEqualTo($event) && $ticket->isPremiumType()) {
                 return true;
             }
         }

@@ -155,6 +155,38 @@ class Ticket
     }
 
     /**
+     * @return bool
+     */
+    public function isStandardType(): bool
+    {
+        return $this->isPaid() && $this->getTicketCost() instanceof TicketCost && TicketCost::TYPE_STANDARD === $this->getTicketCost()->getType();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPremiumType(): bool
+    {
+        return $this->isPaid() &&
+            (
+                (
+                    $this->getTicketCost() instanceof TicketCost && TicketCost::TYPE_PREMIUM === $this->getTicketCost()->getType()
+                ) ||
+                (
+                    !$this->getTicketCost() instanceof TicketCost && $this->is100PercentPromo()
+                )
+            );
+    }
+
+    /**
+     * @return bool
+     */
+    public function is100PercentPromo(): bool
+    {
+        return $this->hasPromoCode() && 100 === $this->promoCode->getDiscountAmount();
+    }
+
+    /**
      * @param TicketCost $ticketCost
      *
      * @return $this
