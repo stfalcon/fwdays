@@ -37,6 +37,8 @@ class PromoCode implements TranslatableInterface, BlameableInterface
     public const PROMOCODE_APPLIED = 'promocode_applied';
     public const PROMOCODE_LOW_THAN_DISCOUNT = 'error.promocode.low_than_discount';
     public const PROMOCODE_USED = 'error.promocode.used';
+    public const PROMOCODE_NOT_FOUND = 'error.promocode.not_found';
+    public const PROMOCODE_OTHER_TYPE = 'error.promocode.other_type';
 
     /**
      * @ORM\OneToMany(
@@ -141,6 +143,13 @@ class PromoCode implements TranslatableInterface, BlameableInterface
      * @ORM\Column(name="description", type="string", nullable=true)
      */
     private $description;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="ticker_cost_type",  type="string", nullable=true, length=20)
+     */
+    private $tickerCostType;
 
     /**
      * PromoCode constructor.
@@ -425,5 +434,35 @@ class PromoCode implements TranslatableInterface, BlameableInterface
         $this->description = $description;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTickerCostType(): ?string
+    {
+        return $this->tickerCostType;
+    }
+
+    /**
+     * @param string|null $tickerCostType
+     *
+     * @return $this
+     */
+    public function setTickerCostType(?string $tickerCostType): self
+    {
+        $this->tickerCostType = $tickerCostType;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $ticketCostType
+     *
+     * @return bool
+     */
+    public function isSameTicketCostTypeOrNull(?string $ticketCostType = null): bool
+    {
+        return \in_array($this->tickerCostType, [null, $ticketCostType]);
     }
 }

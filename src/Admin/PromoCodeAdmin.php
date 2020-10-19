@@ -6,6 +6,7 @@ use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\Event;
 use App\Entity\PromoCode;
+use App\Entity\TicketCost;
 use App\Entity\User;
 use App\Repository\EventRepository;
 use App\Traits\LocalsRequiredServiceTrait;
@@ -93,6 +94,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ->add('code', null, ['label' => 'Код'])
             ->add('event', null, ['label' => 'Событие'])
             ->add('used', null, ['label' => 'Использований'])
+            ->add('tickerCostType', null, ['label' => 'Тип билета'])
             ->add('endDate', null, ['label' => 'Дата окончания'])
             ->add('createdBy', null, ['label' => 'Создал'])
         ;
@@ -146,6 +148,15 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
                     'choices' => $this->getActiveEvents(),
                     'attr' => ['class' => 'event_choice'],
                 ])
+                ->add(
+                    'tickerCostType',
+                    ChoiceType::class,
+                    [
+                        'choices' => TicketCost::getTypesWithOutFree(),
+                        'label' => 'Тип билета',
+                        'required' => false,
+                    ]
+                )
                 ->add('date_for_promo', ChoiceType::class, [
                     'mapped' => false,
                     'label' => false,
@@ -184,6 +195,16 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ['choices' => $this->getEvents()]
         )
             ->add('createdBy', null, ['label' => 'Создал'])
+            ->add(
+                'tickerCostType',
+                'doctrine_orm_choice',
+                ['label' => 'Тип билета'],
+                ChoiceType::class,
+                [
+                    'choices' => TicketCost::getTypesWithOutFree(),
+                    'required' => false,
+                ]
+            )
         ;
     }
 

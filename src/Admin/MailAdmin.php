@@ -185,6 +185,7 @@ final class MailAdmin extends AbstractAdmin
             ->add('startDate', null, ['label' => 'Дата запуска'])
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('statistic', 'string', ['label' => 'всего/отправлено/открыли/отписались'])
+            ->add('ticketType', 'string', ['label' => 'Тип билета'])
             ->add('usersLocalsStatistic', 'string', ['label' => 'получатели украинской / английской версий'])
             ->add('audiences', null, ['label' => 'Аудитории'])
             ->add('events', null, ['label' => 'События'])
@@ -257,7 +258,7 @@ final class MailAdmin extends AbstractAdmin
                     'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из")',
                 ])
                 ->add('ticketType', ChoiceType::class, [
-                    'choices' => TicketCost::getTypes(),
+                    'choices' => TicketCost::getTypesWithOutFree(),
                     'required' => false,
                     'label' => 'Тип билета',
                 ])
