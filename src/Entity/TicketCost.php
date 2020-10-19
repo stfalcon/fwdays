@@ -555,6 +555,17 @@ class TicketCost
     }
 
     /**
+     * @return array|string[]
+     */
+    public static function getTypesWithOutFree(): array
+    {
+        return [
+            'standard' => self::TYPE_STANDARD,
+            'premium' => self::TYPE_PREMIUM,
+        ];
+    }
+
+    /**
      * @return string|null
      */
     public function getType(): ?string
