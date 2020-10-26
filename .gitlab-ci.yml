@@ -118,17 +118,9 @@ static analysis:
 #        - composer.phar app:recreate-test-database
 #        - sudo composer.phar ci:phpunit-with-coverage
 
-sonar-scanner:
-    stage: 'SonarQube'
-    image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-sonar-scanner:v1.1
-    only:
-        - master
-    <<: *build_ci
-    script:
-        - sudo sonar-scanner -Dsonar.projectKey=$CI_PROJECT_NAME -Dsonar.sources=. -Dsonar.host.url=https://sonar.stfalcon.com -Dsonar.login=$SONAR_TOKEN
-
 build image:
     stage: 'Build'
+    needs: []
     image: docker:stable
     only:
         - master
@@ -145,6 +137,7 @@ build image:
 
 staging deploy:
     stage: 'Deploy to staging'
+    cache: {}
     only:
         - stag
     image: docker:stable
@@ -167,6 +160,7 @@ staging deploy:
 
 staging rollback:
     stage: 'Deploy to staging'
+    cache: {}
     only:
         - stag
     image: docker:stable
@@ -187,6 +181,7 @@ staging rollback:
 
 production deploy:
     stage: 'Deploy to production'
+    cache: {}
     only:
         - master
     image: docker:stable
@@ -215,6 +210,7 @@ production deploy:
 
 production rollback:
     stage: 'Deploy to production'
+    cache: {}
     only:
         - master
     image: docker:stable
