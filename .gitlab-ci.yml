@@ -129,6 +129,7 @@ sonar-scanner:
 
 build image:
     stage: 'Build'
+    needs: []
     image: docker:stable
     only:
         - master
