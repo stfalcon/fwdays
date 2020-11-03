@@ -21,8 +21,8 @@
         </div>
         <div class="fix-event-header__right">
             {% include 'Redesign/Event/event.menu.html.twig' with {'event':event, 'programPage':programPage, 'venuePage':venuePage, 'pages':pages, 'position': position} %}
-            {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'event_fix_header'}) }}
-            {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':'event_fix_header_mob'}) }}
+            {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':position~'_event_fix_header'}) }}
+            {{ sonata_block_render({ 'type': 'sonata.block.event.ticket_status' }, {'event': event, 'position':position~'_event_fix_header_mob'}) }}
         </div>
     </div>
 </section>
