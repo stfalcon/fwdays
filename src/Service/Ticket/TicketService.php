@@ -50,16 +50,26 @@ class TicketService
                         self::EVENT_DONE => 'event-header__status',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-header__btn',
                     ],
-                'event_fix_header' => [
+                'event_event_fix_header' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn',
                     ],
-                'event_fix_header_mob' => [
+                'event_event_fix_header_mob' => [
                         self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
+                'report_event_fix_header' => [
+                        self::CAN_DOWNLOAD_TICKET => '',
+                        self::EVENT_DONE => 'fix-event-header__status',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
+                ],
+                'report_event_fix_header_mob' => [
+                        self::CAN_DOWNLOAD_TICKET => '',
+                        self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
+                        self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
+                ],
                 'event_action_mob' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-action-mob__download',
                         self::EVENT_DONE => 'event-action-mob__status',
