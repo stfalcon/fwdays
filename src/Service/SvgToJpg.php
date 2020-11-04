@@ -35,7 +35,7 @@ class SvgToJpg
         try {
             $im->setBackgroundColor(new \ImagickPixel('transparent'));
             $im->setResolution($this->xResolution, $this->yResolution);
-            $svg = \file_get_contents(\urlencode($fileName));
+            $svg = \file_get_contents($fileName);
             if (false !== $svg) {
                 $im->readImageBlob($svg);
             }
