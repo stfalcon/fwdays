@@ -26,21 +26,20 @@ class SvgToJpg
 
     /**
      * @param string $fileName
-     * @param string $backgroundColor
      *
      * @return \Imagick
      */
-    public function convert($fileName, $backgroundColor = '#F5F3EA')
+    public function convert($fileName)
     {
         $im = new \Imagick();
         try {
-            $im->setBackgroundColor(new \ImagickPixel($backgroundColor));
+            $im->setBackgroundColor(new \ImagickPixel('transparent'));
             $im->setResolution($this->xResolution, $this->yResolution);
             $svg = \file_get_contents($fileName);
             if (false !== $svg) {
                 $im->readImageBlob($svg);
             }
-            $im->setImageFormat('jpeg');
+            $im->setImageFormat('png');
         } catch (\Exception $e) {
             $this->logger->addError($e->getMessage(), [$e]);
         }
