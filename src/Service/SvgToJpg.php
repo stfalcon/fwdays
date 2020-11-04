@@ -40,7 +40,7 @@ class SvgToJpg
             if (false !== $svg) {
                 $im->readImageBlob($svg);
             }
-            $im->setImageFormat('jpeg');
+            $im->setImageFormat('png');
         } catch (\Exception $e) {
             $this->logger->addError($e->getMessage(), [$e]);
         }
