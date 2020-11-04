@@ -26,11 +26,10 @@ class SvgToJpg
 
     /**
      * @param string $fileName
-     * @param string $backgroundColor
      *
      * @return \Imagick
      */
-    public function convert($fileName, $backgroundColor = '#F5F3EA')
+    public function convert($fileName)
     {
         $im = new \Imagick();
         try {
