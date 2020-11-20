@@ -122,7 +122,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => ['user_name' => $this->translator->trans('error.create_ticket_error')],
+                    'error' => ['name' => $this->translator->trans('error.create_ticket_error')],
                 ]
             );
         }
@@ -133,7 +133,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => ['user_name' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()])],
+                    'error' => ['name' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()])],
                 ]
             );
         }
@@ -236,14 +236,13 @@ class PaymentController extends AbstractController
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()]),
-                    'path' => 'user_name',
+                    'error' => ['name' => $this->translator->trans('error.payment.closed', ['%event%' => $event->getName()])],
                 ]
             );
         }
         $payment = $this->paymentService->getPendingPaymentIfAccess($event);
         if (!$payment) {
-            return new JsonResponse(['result' => false, 'error' => ['user_name' => 'Payment not found or access denied!']]);
+            return new JsonResponse(['result' => false, 'error' => ['name' => 'Payment not found or access denied!']]);
         }
         $form = $this->createForm(ParticipantFormType::class, null, ['csrf_protection' => false]);
         $form->submit($request->request->all());
@@ -335,7 +334,7 @@ class PaymentController extends AbstractController
             return new JsonResponse(
                 [
                     'result' => false,
-                    'error' => ['user_name' => $this->translator->trans('error.create_ticket_error')],
+                    'error' => ['name' => $this->translator->trans('error.create_ticket_error')],
                 ]
             );
         }

@@ -210,7 +210,15 @@ class PaymentService
 
             if (!$promoCode) {
                 if ($throwException) {
-                    throw new BadRequestHttpException($this->translator->trans('error.promocode.not_found'));
+                    throw new BadRequestHttpException($this->translator->trans(PromoCode::PROMOCODE_NOT_FOUND));
+                }
+
+                return;
+            }
+
+            if (!$promoCode->isSameTicketCostTypeOrNull($ticket->getTicketType())) {
+                if ($throwException) {
+                    throw new BadRequestHttpException($this->translator->trans(PromoCode::PROMOCODE_OTHER_TYPE));
                 }
 
                 return;
@@ -218,7 +226,7 @@ class PaymentService
 
             if (!$promoCode->isCanBeUsed()) {
                 if ($throwException) {
-                    throw new BadRequestHttpException($this->translator->trans('error.promocode.used'));
+                    throw new BadRequestHttpException($this->translator->trans(PromoCode::PROMOCODE_USED));
                 }
 
                 return;
@@ -534,6 +542,12 @@ class PaymentService
                     }
                 }
             }
+        }
+
+        if (!$promoCode->isSameTicketCostTypeOrNull($ticket->getTicketType())) {
+            $promoCode->clearTmpUsedCount();
+
+            return PromoCode::PROMOCODE_OTHER_TYPE;
         }
 
         if (!$promoCode->isCanBeTmpUsed()) {

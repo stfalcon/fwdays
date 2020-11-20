@@ -184,7 +184,7 @@ final class TicketAdmin extends AbstractAdmin
                 [
                     'label' => 'Тип билета',
                     'field_options' => [
-                        'choices' => TicketCost::getTypes(),
+                        'choices' => TicketCost::getTypesWithOutFree(),
                     ],
                     'field_type' => ChoiceType::class,
                 ]
