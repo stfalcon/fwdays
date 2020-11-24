@@ -60,9 +60,9 @@ services:
             - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::BOUGHT_STANDARD_TICKET]]
         tags: [name: 'sonata.block']
 
-    sonata.block.event.vimeo_private_playlist_standard_standard:
+    sonata.block.event.vimeo_private_playlist_standard:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
-        arguments: ['sonata.block.event.vimeo_private_playlist', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Service\Ticket\TicketService', '@App\Service\VideoAccess\GrandAccessVideoService']
+        arguments: ['sonata.block.event.vimeo_private_playlist_standard', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Service\Ticket\TicketService', '@App\Service\VideoAccess\GrandAccessVideoService']
         calls:
             - [setIsPlayList, ['true']]
             - [setTemplate, ['Redesign/Event/event.vimeo_video_block.html.twig']]
