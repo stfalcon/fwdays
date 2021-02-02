@@ -39,6 +39,6 @@ class DiscountService
             }
         }
 
-        return $this->appConfig['discount'];
+        return (float) $this->appConfig['discount'];
     }
 }
