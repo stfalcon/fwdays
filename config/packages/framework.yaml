@@ -17,7 +17,7 @@ parameters:
         interkassa:
             shop_id: '%env(INTERKASSA_SHOP_ID)%'
             secret: '%env(INTERKASSA_SECRET)%'
-        discount: 0.2
+        discount: 0.1
 
 framework:
     router:
