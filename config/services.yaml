@@ -75,12 +75,6 @@ services:
             - !tagged grand_access_video
 
     App\Service\Ticket\TicketService:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%app.config%'
-            - '@translator'
-            - '@router'
-            - '@App\Service\User\UserService'
         calls:
             - [addEventState, ['@App\Service\Ticket\DoneEventState']]
             - [addEventState, ['@App\Service\Ticket\SoldOutEventState']]
