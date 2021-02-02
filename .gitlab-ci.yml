@@ -68,11 +68,11 @@ composer checks:
     script:
         - composer.phar ci:composer-validate
 
-security checks:
-    stage: 'CI jobs'
-    <<: *build_ci
-    script:
-        - composer.phar ci:security-check
+#security checks:
+#    stage: 'CI jobs'
+#    <<: *build_ci
+#    script:
+#        - composer.phar ci:security-check
 
 doctrine checks:
     stage: 'CI jobs'
