@@ -13,17 +13,22 @@ use App\Model\EventStateData;
 use App\Repository\PaymentRepository;
 use App\Repository\TicketCostRepository;
 use App\Repository\TicketRepository;
+use App\Service\Discount\DiscountService;
 use App\Service\User\UserService;
-use Doctrine\ORM\EntityManager;
+use App\Traits\EntityManagerTrait;
+use App\Traits\RouterTrait;
+use App\Traits\TranslatorTrait;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * TicketService.
  */
 class TicketService
 {
+    use EntityManagerTrait;
+    use TranslatorTrait;
+    use RouterTrait;
+
     public const CAN_BUY_TICKET = 'can buy ticket';
     public const CAN_DOWNLOAD_TICKET = 'can download ticket';
     public const TICKETS_SOLD_OUT = 'all tickets sold out';
@@ -85,32 +90,25 @@ class TicketService
                     ],
             ];
 
-    private $em;
-    private $paymentsConfig;
-    private $translator;
-    private $router;
     private $userService;
     private $ticketRepository;
+
+    /** @var DiscountService */
+    private $discountService;
 
     /** @var EventStateInterface[] */
     private $eventStates = [];
 
     /**
-     * @param EntityManager       $em
-     * @param array               $paymentsConfig
-     * @param TranslatorInterface $translator
-     * @param RouterInterface     $router
-     * @param UserService         $userService
-     * @param TicketRepository    $ticketRepository
+     * @param UserService      $userService
+     * @param TicketRepository $ticketRepository
+     * @param DiscountService  $discountService
      */
-    public function __construct($em, $paymentsConfig, $translator, $router, UserService $userService, TicketRepository $ticketRepository)
+    public function __construct(UserService $userService, TicketRepository $ticketRepository, DiscountService $discountService)
     {
-        $this->em = $em;
-        $this->paymentsConfig = $paymentsConfig;
-        $this->translator = $translator;
-        $this->router = $router;
         $this->userService = $userService;
         $this->ticketRepository = $ticketRepository;
+        $this->discountService = $discountService;
     }
 
     /**
@@ -166,7 +164,7 @@ class TicketService
     public function setTicketBestDiscount(Ticket $ticket, ?PromoCode $promoCode, $discount = -1): string
     {
         if (-1 === $discount) {
-            $discount = (float) $this->paymentsConfig['discount'];
+            $discount = $this->discountService->getFloatDiscount();
         }
 
         if ($promoCode instanceof PromoCode && $promoCode->getDiscountAmount() / 100 > $discount) {
