@@ -24,7 +24,8 @@
                     <div class="price-list__discount-item">
                         {%- if event.useDiscounts -%}
                             <div class="price-list__hint">
-                                {{ 'payment.discount.member'|trans({'%summ%':20})|raw }}&nbsp;
+                                {% set dicount_percent = 'REGULAR_PARTICIPANT_DISCOUNT'|app_is_option ? 'REGULAR_PARTICIPANT_DISCOUNT'|app_get_option : 10 %}
+                                {{ 'payment.discount.member'|trans({'%summ%': dicount_percent})|raw }}&nbsp;
                             </div>
                             <div class="price-list__hint-small">
                                 {{ 'payment.discount.tooltip'|trans}}

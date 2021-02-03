@@ -23,6 +23,15 @@ class LoadOptionsData extends AbstractFixture
         ;
 
         $manager->persist($option);
+
+        $option = (new Option())
+            ->setKey('REGULAR_PARTICIPANT_DISCOUNT')
+            ->setValue('10')
+            ->setType(Option::TYPE_NUMBER)
+        ;
+
+        $manager->persist($option);
+
         $manager->flush();
     }
 }
