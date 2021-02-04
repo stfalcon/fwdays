@@ -25,6 +25,17 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('build/styles/main.css'|app_asset_version) }}">
+
+    {%- if app.environment == 'prod' -%}
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PHVHRX');
+        </script>
+        <!-- End Google Tag Manager -->
+    {% endif %}
 </head>
 
 {% block body_class %}
@@ -84,16 +95,6 @@
 {% set lang = app.request.locale == 'uk' ? 'uk_UA' : 'en_US' %}
 
 {% block scripts %}
-    {%- if app.environment == 'prod' -%}
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-PHVHRX');
-    </script>
-    <!-- End Google Tag Manager -->
-    {% endif %}
     <script>
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}";
