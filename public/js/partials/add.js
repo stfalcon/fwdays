@@ -135,6 +135,9 @@ $(document).on('click', '.add-wants-visit-event', function () {
                             $( this ).removeClass('add-wants-visit-event').addClass('sub-wants-visit-event').html(data.html);
                         }
                     });
+                    if ('prod' === environment || 'stag' === environment) {
+                        dataLayer.push({'event': 'register_event'});
+                    }
                     setFlashTextAndShow(data.flash);
                 } else {
                     console.log('Error:'+data.error);
