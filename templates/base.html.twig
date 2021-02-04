@@ -98,6 +98,7 @@
         var locale = "{{ app.request.locale }}";
         var homePath = "{{ path('homepage') }}";
         var lang = '{{ lang }}';
+        var environment = '{{ app.environment }}';
     </script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}" defer></script>
@@ -121,6 +122,11 @@
         <script>
             var flashText = '{{ message|trans }}';
         </script>
+        {% if- app.environment == 'prod' and 'registration.flash.user_created' == message -%}
+            <script>
+                dataLayer.push({'event': 'register'});
+            </script>
+        {%- endif -%}
         <script src="{{ asset('js/flash-text.js') }}" defer></script>
     {% endfor %}
 {% endblock scripts %}
