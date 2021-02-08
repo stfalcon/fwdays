@@ -47,6 +47,7 @@ email_with_ticket:
 event_cost_free: Безкоштовний
 event_cost_standard: Стандартний
 event_cost_premium: Преміум
+event_cost_full: Full
 
 menu.events.my: Мої події
 menu.past_events.my: Мої минулі події
