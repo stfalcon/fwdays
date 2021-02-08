@@ -40,7 +40,7 @@ class TicketController extends AbstractController
     /**
      * Generating ticket with QR-code to event.
      *
-     * @Route("/event/{slug}/ticket/{type}", name="event_ticket_download", requirements={"type": "free|standard|premium"})
+     * @Route("/event/{slug}/ticket/{type}", name="event_ticket_download", requirements={"type": App\Entity\TicketCost::TYPES})
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
