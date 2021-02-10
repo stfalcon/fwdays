@@ -43,7 +43,6 @@ email_with_ticket:
 event_cost_free: Free
 event_cost_standard: Standard
 event_cost_premium: Premium
-event_cost_full: Full
 
 menu.events.my: My events
 menu.past_events.my: My past events
