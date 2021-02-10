@@ -10,9 +10,9 @@ use App\Entity\User;
 use App\Repository\UserEventRegistrationRepository;
 
 /**
- * RegisteredOrBoughtAnyTicketGrandAccess.
+ * RegisteredForEventTicketGrandAccess.
  */
-class RegisteredOrBoughtAnyTicketGrandAccess implements GrandAccessForVideoInterface
+class RegisteredForEventTicketGrandAccess implements GrandAccessForVideoInterface
 {
     /** @var UserEventRegistrationRepository */
     private $userRegistrationRepository;
@@ -32,7 +32,7 @@ class RegisteredOrBoughtAnyTicketGrandAccess implements GrandAccessForVideoInter
      */
     public function support(string $accessType): bool
     {
-        return GrandAccessVideoService::REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET === $accessType;
+        return GrandAccessVideoService::REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET === $accessType;
     }
 
     /**
@@ -48,13 +48,16 @@ class RegisteredOrBoughtAnyTicketGrandAccess implements GrandAccessForVideoInter
             return false;
         }
 
+        $hasAnyTicket = false;
+
         /** @var Ticket $ticket */
         foreach ($tickets as $ticket) {
             if ($ticket->getEvent()->isEqualTo($event) && $ticket->isPaid()) {
-                return true;
+                $hasAnyTicket = true;
+                break;
             }
         }
 
-        return $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+        return !$hasAnyTicket && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
     }
 }
