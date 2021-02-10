@@ -9,7 +9,7 @@ services:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments: ['sonata.block.event.youtube_private_video', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Service\Ticket\TicketService', '@App\Service\VideoAccess\GrandAccessVideoService']
         calls:
-            - [ setGrandAccessType, [ !php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET ] ]
+            - [ setGrandAccessType, [ !php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET ] ]
         tags: [name: 'sonata.block']
 
     sonata.block.event.youtube_private_playlist:
@@ -17,7 +17,7 @@ services:
         arguments: ['sonata.block.event.youtube_private_playlist', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Service\Ticket\TicketService', '@App\Service\VideoAccess\GrandAccessVideoService']
         calls:
             - [setIsPlayList, ['true']]
-            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET]]
+            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET]]
         tags: [name: 'sonata.block']
 
     sonata.block.event.vimeo_private_video:
@@ -25,7 +25,7 @@ services:
         arguments: ['sonata.block.event.vimeo_private_video', '@templating', '@App\Service\User\UserService', '@App\Repository\TicketRepository', '@App\Service\Ticket\TicketService', '@App\Service\VideoAccess\GrandAccessVideoService']
         calls:
             - [setTemplate, ['Redesign/Event/event.vimeo_video_block.html.twig']]
-            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET]]
+            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET]]
         tags: [name: 'sonata.block']
 
     sonata.block.event.vimeo_private_playlist:
@@ -34,7 +34,7 @@ services:
         calls:
             - [setIsPlayList, ['true']]
             - [setTemplate, ['Redesign/Event/event.vimeo_video_block.html.twig']]
-            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET]]
+            - [setGrandAccessType, [!php/const App\Service\VideoAccess\GrandAccessVideoService::REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET]]
         tags: [name: 'sonata.block']
 
     sonata.block.event.youtube_private_video_standard:

@@ -38,8 +38,7 @@ class BoughtStandardTicketGrandAccess implements GrandAccessForVideoInterface
 
         /** @var Ticket $ticket */
         foreach ($tickets as $ticket) {
-            if ($ticket->getEvent()->isEqualTo($event) && ($ticket->isStandardType() || $ticket->isPremiumType())
-            ) {
+            if ($ticket->getEvent()->isEqualTo($event) && $ticket->isStandardType()) {
                 return true;
             }
         }
