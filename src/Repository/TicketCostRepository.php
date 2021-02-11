@@ -31,9 +31,7 @@ class TicketCostRepository extends ServiceEntityRepository
     {
         $qb = $this->getEventTicketsCostQB($event);
         $qb->select('tc.amount');
-        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
-            ->setParameter('enabled', true)
-        ;
+        $this->enabledFilter($qb);
 
         if (null === $type) {
             $qb->andWhere($qb->expr()->isNull('tc.type'));
@@ -57,9 +55,7 @@ class TicketCostRepository extends ServiceEntityRepository
     public function getEventLowestCost(Event $event): ?float
     {
         $qb = $this->getEventTicketsCostQB($event);
-        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
-            ->setParameter('enabled', true)
-        ;
+        $this->enabledFilter($qb);
 
         /** @var TicketCost[] $ticketCosts */
         $ticketCosts = $qb->getQuery()->getResult();
@@ -79,7 +75,7 @@ class TicketCostRepository extends ServiceEntityRepository
      *
      * @return TicketCost[]
      */
-    public function getEventTicketsCostForType(Event $event): array
+    public function getAllTicketsCostForEvent(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
 
@@ -95,9 +91,7 @@ class TicketCostRepository extends ServiceEntityRepository
     public function getEventEnabledTicketsCost(Event $event, ?string $type): array
     {
         $qb = $this->getEventTicketsCostQB($event);
-        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
-            ->setParameter('enabled', true)
-        ;
+        $this->enabledFilter($qb);
 
         if (null === $type) {
             $qb->andWhere($qb->expr()->isNull('tc.type'));
@@ -118,9 +112,7 @@ class TicketCostRepository extends ServiceEntityRepository
     public function getEventAllEnabledTicketsCost(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
-        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
-            ->setParameter('enabled', true)
-        ;
+        $this->enabledFilter($qb);
 
         return $qb->getQuery()->getResult();
     }
@@ -159,14 +151,25 @@ class TicketCostRepository extends ServiceEntityRepository
     private function getEnabledTicketCostWithEndDateLessThanDateQb(\DateTimeInterface $dateTime): QueryBuilder
     {
         $qb = $this->createQueryBuilder('tc');
-        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
-            ->andWhere($qb->expr()->isNotNull('tc.endDate'))
+        $qb->andWhere($qb->expr()->isNotNull('tc.endDate'))
             ->andWhere($qb->expr()->lt('tc.endDate', ':date_time'))
             ->setParameter('date_time', $dateTime)
-            ->setParameter('enabled', true)
         ;
 
+        $this->enabledFilter($qb);
+
         return  $qb;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param bool         $enabled
+     */
+    private function enabledFilter(QueryBuilder $qb, bool $enabled = true): void
+    {
+        $qb->andWhere($qb->expr()->eq('tc.enabled', ':enabled'))
+            ->setParameter('enabled', $enabled)
+        ;
     }
 
     /**
