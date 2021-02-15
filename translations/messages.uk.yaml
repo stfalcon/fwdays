@@ -140,6 +140,7 @@ tickets.other.title: Всі інші квитки
 tickets.end_date.title: 'до %date%'
 tickets.end_date_with_price.title: 'до %date% — %price% грн'
 tickets.next_with_price.title: 'наступні %count% — %price% грн'
+tickets.last_with_price.title: '%ticket_count% — %price% UAH'
 tickets.tickets_run_out: Закінчуються
 sold_out.title: Продано
 sponsor.partners.can_be_your_logo: Тут може<br> бути ваш логотип
