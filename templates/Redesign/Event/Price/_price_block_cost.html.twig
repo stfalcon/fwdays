@@ -25,12 +25,14 @@
         {% endfor %}
         <div class="event-cost__price-bottom">
         {% for ticket in tickets if ticket.amount != currentPrice %}
-            <div class="cost-tickets{% if false == ticket.enabled %} cost__strike{% endif %}">
-                {% if null != ticket.endDate %}
-                    {{ 'tickets.end_date_with_price.title'|trans({'%date%': ticket.endDate|format_date('d MMMM', null, 'Europe/Kiev'), '%price%' : ticket.amount}) }}
-                {% else %}
-                    {{ 'tickets.next_with_price.title'|trans({'%count%': ticket.count, '%price%' : ticket.amount}) }}
-                {% endif %}
+            <div class="cost-tickets">
+                {% if false == ticket.enabled -%}<span class="cost__strike">{% endif %}
+                    {% if null != ticket.endDate %}
+                        {{ 'tickets.end_date_with_price.title'|trans({'%date%': ticket.endDate|format_date('d MMMM', null, 'Europe/Kiev'), '%price%' : ticket.amount}) }}
+                    {% else %}
+                        {{ 'tickets.next_with_price.title'|trans({'%count%': ticket.count, '%price%' : ticket.amount}) }}
+                    {% endif %}
+                {% if false == ticket.enabled -%}</span>{% endif %}
             </div>
         {% endfor %}
         </div>
