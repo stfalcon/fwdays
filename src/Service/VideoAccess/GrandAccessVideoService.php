@@ -12,7 +12,7 @@ use App\Entity\User;
  */
 class GrandAccessVideoService
 {
-    public const REGISTERED_FOR_FREE_EVENT_OR_BOUGHT_ANY_TICKET = 'registered_for_free_event_or_bought_any_ticket';
+    public const REGISTERED_FOR_EVENT_AND_HAVE_NOT_ANY_TICKET = 'registered_for_event_and_have_not_any_ticket';
     public const BOUGHT_PREMIUM_TICKET = 'bought_premium_ticket';
     public const BOUGHT_STANDARD_TICKET = 'bought_standard_ticket';
 

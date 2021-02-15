@@ -16,6 +16,8 @@ class TicketCost
     public const TYPE_STANDARD = 'standard';
     public const TYPE_PREMIUM = 'premium';
 
+    public const TYPES = self::TYPE_FREE.'|'.self::TYPE_PREMIUM.'|'.self::TYPE_STANDARD;
+
     /**
      * @var int
      *
@@ -548,9 +550,9 @@ class TicketCost
     public static function getTypes(): array
     {
         return [
-            'free' => self::TYPE_FREE,
-            'standard' => self::TYPE_STANDARD,
-            'premium' => self::TYPE_PREMIUM,
+            self::TYPE_FREE => self::TYPE_FREE,
+            self::TYPE_STANDARD => self::TYPE_STANDARD,
+            self::TYPE_PREMIUM => self::TYPE_PREMIUM,
         ];
     }
 
@@ -560,8 +562,8 @@ class TicketCost
     public static function getTypesWithOutFree(): array
     {
         return [
-            'standard' => self::TYPE_STANDARD,
-            'premium' => self::TYPE_PREMIUM,
+            self::TYPE_STANDARD => self::TYPE_STANDARD,
+            self::TYPE_PREMIUM => self::TYPE_PREMIUM,
         ];
     }
 

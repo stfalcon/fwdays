@@ -66,7 +66,7 @@ class PaymentController extends AbstractController
     public const NEW_PAYMENT_SESSION_KEY = 'new_payment';
 
     /**
-     * @Route("/event/{slug}/pay/{type}", name="event_pay", requirements={"type": "free|standard|premium"})
+     * @Route("/event/{slug}/pay/{type}", name="event_pay", requirements={"type": App\Entity\TicketCost::TYPES})
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
@@ -219,7 +219,7 @@ class PaymentController extends AbstractController
      * @Route("/event/{slug}/payment/participant/add/{type}", name="add_ticket_participant",
      *     methods={"POST"},
      *     options={"expose"=true},
-     *     requirements={"type": "free|standard|premium"},
+     *     requirements={"type": App\Entity\TicketCost::TYPES},
      *     condition="request.isXmlHttpRequest()")
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
@@ -361,7 +361,7 @@ class PaymentController extends AbstractController
     /**
      * Pay for payment by bonus money.
      *
-     * @Route("/event/{slug}/pay-by-bonus/{type}", name="event_pay_by_bonus", requirements={"type": "free|standard|premium"})
+     * @Route("/event/{slug}/pay-by-bonus/{type}", name="event_pay_by_bonus", requirements={"type": App\Entity\TicketCost::TYPES})
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
@@ -391,7 +391,7 @@ class PaymentController extends AbstractController
     /**
      * Pay for payment by promocode (100% discount).
      *
-     * @Route("/event/{slug}/pay-by-promocode/{type}", name="event_pay_by_promocode", requirements={"type": "free|standard|premium"})
+     * @Route("/event/{slug}/pay-by-promocode/{type}", name="event_pay_by_promocode", requirements={"type": App\Entity\TicketCost::TYPES})
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
@@ -450,7 +450,7 @@ class PaymentController extends AbstractController
      * @Route("/event/{slug}/paying/{type}", name="event_paying",
      *     methods={"POST"},
      *     options={"expose"=true},
-     *     requirements={"type": "free|standard|premium"},
+     *     requirements={"type": App\Entity\TicketCost::TYPES},
      *     condition="request.isXmlHttpRequest()")
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})

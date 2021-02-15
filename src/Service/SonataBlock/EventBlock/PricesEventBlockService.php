@@ -45,7 +45,7 @@ class PricesEventBlockService extends AbstractBlockService
             throw new NotFoundHttpException();
         }
 
-        $ticketCosts = $this->ticketCostRepository->getEventAllEnabledTicketsCost($event);
+        $ticketCosts = $this->ticketCostRepository->getAllTicketsCostForEvent($event);
 
         $isOldPrice = false;
         $ticketBenefits = [];
