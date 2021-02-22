@@ -160,7 +160,9 @@ class EventController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
-        } else {
+        }
+
+        if ($result) {
             $this->addFlash('app_user_event', 'flash_you_registrated.title');
         }
 
