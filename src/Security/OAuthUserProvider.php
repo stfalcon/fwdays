@@ -47,6 +47,8 @@ class OAuthUserProvider extends FOSUBUserProvider
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $socialID = $response->getUsername();
+        $service = $response->getResourceOwner()->getName();
+
         /** @var User|null $user */
         $user = $socialID ? $this->userManager->findUserBy([$this->getProperty($response) => $socialID]) : null;
         if (!$user instanceof User) {
@@ -79,7 +81,7 @@ class OAuthUserProvider extends FOSUBUserProvider
                         'last_name' => $response->getLastName(),
                         'email' => $email,
                         'socialID' => $socialID,
-                        'service' => $response->getResourceOwner()->getName(),
+                        'service' => $service,
                     ];
 
                     $needUserData->setResponse($responseArr);
@@ -96,8 +98,7 @@ class OAuthUserProvider extends FOSUBUserProvider
 
                 $this->session->getFlashBag()->set('fos_user_success', 'registration.flash.user_created');
             }
-            $service = $response->getResourceOwner()->getName();
-            $socialID = $response->getUsername();
+
             if ('google' === $service) {
                 $user->setGoogleID($socialID);
             } elseif ('facebook' === $service) {
@@ -108,6 +109,8 @@ class OAuthUserProvider extends FOSUBUserProvider
         } else {
             $checker = new UserChecker();
             $checker->checkPreAuth($user);
+
+            $this->session->getFlashBag()->set('app_social_user_login', \sprintf('%s_login_event', $service));
         }
 
         return $user;

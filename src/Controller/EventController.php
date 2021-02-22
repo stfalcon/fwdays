@@ -150,19 +150,20 @@ class EventController extends AbstractController
             $result = $this->userService->registerUserToEvent($user, $event);
             if ($result) {
                 $this->userService->sendRegistrationEmail($user, $event);
+                $flashContent = $this->translator->trans('flash_you_registrated.title');
+                $html = $this->translator->trans('ticket.status.not_take_apart');
             }
             $error = $result ? '' : \sprintf('cant add event %s', $event->getSlug());
         } else {
             $error = 'Event not active!';
         }
 
-        if ($result) {
-            $flashContent = $this->translator->trans('flash_you_registrated.title');
-            $html = $this->translator->trans('ticket.status.not_take_apart');
-        }
-
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(['result' => $result, 'error' => $error, 'html' => $html, 'flash' => $flashContent]);
+        }
+
+        if ($result) {
+            $this->addFlash('app_user_event', 'flash_you_registrated.title');
         }
 
         return $this->redirect($this->urlForRedirect->getRedirectUrl($request->headers->get('referer')));

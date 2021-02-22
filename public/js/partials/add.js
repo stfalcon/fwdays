@@ -170,6 +170,9 @@ $(document).on('click', '.sub-wants-visit-event', function () {
                         $( this ).removeClass('sub-wants-visit-event').addClass('add-wants-visit-event').html(data.html);
                     }
                 });
+                if ('prod' === environment) {
+                    dataLayer.push({'event': 'unsubscribed_event'});
+                }
                 setFlashTextAndShow(data.flash);
             } else {
                 console.log('Error:'+data.error);

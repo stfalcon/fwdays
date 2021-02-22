@@ -119,17 +119,37 @@
         <script src="{{ asset('js/payment-after-login.js') }}" defer></script>
     {%- endif %}
 
-    {% for message in app.session.flashBag.get('fos_user_success') %}
-        <script>
-            var flashText = '{{ message|trans }}';
-        </script>
-        {% if- app.environment == 'prod' and 'registration.flash.user_created' == message -%}
-            <script>
-                dataLayer.push({'event': 'register'});
-            </script>
-        {%- endif -%}
-        <script src="{{ asset('js/flash-text.js') }}" defer></script>
+    <script>
+        var flashTextArr = [];
+    </script>
+
+    {% for label, messages in app.flashes(['fos_user_success', 'app_user_event', 'app_social_user_login']) %}
+        {% for message in messages %}
+            {%- if app.environment == 'prod' -%}
+                {% if 'registration.flash.user_created' == message %}
+                    <script>
+                        dataLayer.push({'event': 'register'});
+                    </script>
+                {% elseif 'flash_you_registrated.title' == message %}
+                    <script>
+                        dataLayer.push({'event': 'register_event'});
+                    </script>
+                {%- endif -%}
+
+                {%- if 'app_social_user_login' == label -%}
+                    <script>
+                        dataLayer.push({'event': '{{ message }}'});
+                    </script>
+                {%- endif -%}
+            {%- endif -%}
+            {%- if 'app_social_user_login' != label -%}
+                <script>
+                    flashTextArr.push('{{ message|trans }}');
+                </script>
+            {%- endif -%}
+        {% endfor %}
     {% endfor %}
+    <script src="{{ asset('js/flash-text.js') }}?v1" defer></script>
 {% endblock scripts %}
 </body>
 </html>
