@@ -1,1 +1,3 @@
-setFlashTextAndShow(flashText);
+if (flashTextArr.length) {
+    setFlashTextAndShow(flashTextArr.join('. '));
+}
