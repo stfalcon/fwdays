@@ -77,6 +77,8 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
             }
         }
 
+        $session = $request->getSession();
+
         if ($user instanceof User) {
             $refererCookieId = $request->cookies->get(Referer::COOKIE_KEY, null);
             if (\is_string($refererCookieId)) {
@@ -85,16 +87,15 @@ class LoginHandler implements AuthenticationSuccessHandlerInterface
         }
 
         $key = '_security.main.target_path';
-        if ($request->getSession()->has($key)) {
-            $url = $request->getSession()->get($key);
-            $request->getSession()->remove($key);
+        if ($session->has($key)) {
+            $url = $session->get($key);
+            $session->remove($key);
 
             return new RedirectResponse($url);
         }
 
         $referrer = $request->headers->get('referer');
 
-        $session = $request->getSession();
         if ($session instanceof SessionInterface && $session->has('request_params')) {
             $requestParams = $session->get('request_params');
             $session->remove('request_params');
