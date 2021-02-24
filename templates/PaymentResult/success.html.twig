@@ -25,28 +25,29 @@
                             'revenue': '{{ payment.amount }}',
                         },
                         'products': [
-                        {%- for ticket in payment.tickets %}
-                            {% if ticket.ticketCost is defined and ticket.ticketCost is not null  %}
-                                {% set price_block_name = ticket.ticketCost.Name %}
-                            {% else %}
-                                {% set price_block_name = 'null' %}
-                            {% endif %}
-                            {% if ticket.promoCode is defined and ticket.promoCode is not null %}
-                                {% set promo_code_name = ticket.promoCode.title~'-'~ticket.promoCode.discountAmount %}
-                            {% else %}
-                                {% set promo_code_name = 'null' %}
-                            {% endif %}
+                            {%- for ticket in payment.tickets %}
+                                {% if ticket.ticketCost is defined and ticket.ticketCost is not null  %}
+                                    {% set price_block_name = ticket.ticketCost.Name %}
+                                {% else %}
+                                    {% set price_block_name = 'null' %}
+                                {% endif %}
 
-                            {
-                            'name': 'Квиток {{ event_name }}',
-                            'id': '{{ ticket.id }}',
-                            'price': '{{ ticket.amount }}',
-                            'category': '{{ event_type }}',
-                            'variant': '{{ price_block_name }}',
-                            'quantity': 1,
-                            'coupon': '{{ promo_code_name }}'
-                            },
-                        {% endfor %}
+                                {% if ticket.promoCode is defined and ticket.promoCode is not null %}
+                                    {% set promo_code_name = ticket.promoCode.title~'-'~ticket.promoCode.discountAmount %}
+                                {% else %}
+                                    {% set promo_code_name = 'null' %}
+                                {% endif %}
+
+                                {
+                                    'name': 'Квиток {{ event_name }}',
+                                    'id': '{{ ticket.id }}',
+                                    'price': '{{ ticket.amount }}',
+                                    'category': '{{ event_type }}',
+                                    'variant': '{{ price_block_name }}',
+                                    'quantity': 1,
+                                    'coupon': '{{ promo_code_name }}'
+                                },
+                            {% endfor %}
                         ]
                     }
                 },
@@ -54,6 +55,39 @@
                 'gtm-ee-event-category': 'Enhanced Ecommerce',
                 'gtm-ee-event-action': 'Purchase',
                 'gtm-ee-event-non-interaction': 'False',
+            });
+
+            window.dataLayer.push({
+                event: 'purchase',
+                ecommerce: {
+                    currency: 'UAH',
+                    value: '{{ payment.amount }}',
+                    transaction_id: '{{ payment.id }}',
+                    items: [
+                        {%- for ticket in payment.tickets %}
+                            {% if ticket.ticketCost is defined and ticket.ticketCost is not null  %}
+                                {% set price_block_name = ticket.ticketCost.Name %}
+                            {% else %}
+                                {% set price_block_name = 'null' %}
+                            {% endif %}
+
+                            {% if ticket.promoCode is defined and ticket.promoCode is not null %}
+                                {% set promo_code_name = ticket.promoCode.title~'-'~ticket.promoCode.discountAmount %}
+                            {% else %}
+                                {% set promo_code_name = 'null' %}
+                            {% endif %}
+
+                            {
+                                item_name: 'Квиток {{ event_name }}',
+                                item_id: '{{ ticket.id }}',
+                                price: '{{ ticket.amount }}',
+                                item_variant: '{{ price_block_name }}',
+                                quantity: '1',
+                                coupon: '{{ promo_code_name }}'
+                            },
+                        {% endfor %}
+                    ]
+                }
             });
         </script>
     {% endif %}
