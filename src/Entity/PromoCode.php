@@ -463,6 +463,6 @@ class PromoCode implements TranslatableInterface, BlameableInterface
      */
     public function isSameTicketCostTypeOrNull(?string $ticketCostType = null): bool
     {
-        return \in_array($this->tickerCostType, [null, $ticketCostType]);
+        return $this->tickerCostType === $ticketCostType;
     }
 }
