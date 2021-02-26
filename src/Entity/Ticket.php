@@ -167,15 +167,7 @@ class Ticket
      */
     public function isPremiumType(): bool
     {
-        return $this->isPaid() &&
-            (
-                (
-                    $this->getTicketCost() instanceof TicketCost && TicketCost::TYPE_PREMIUM === $this->getTicketCost()->getType()
-                ) ||
-                (
-                    !$this->getTicketCost() instanceof TicketCost && $this->is100PercentPromo()
-                )
-            );
+        return $this->isPaid() && $this->getTicketCost() instanceof TicketCost && TicketCost::TYPE_PREMIUM === $this->getTicketCost()->getType();
     }
 
     /**
