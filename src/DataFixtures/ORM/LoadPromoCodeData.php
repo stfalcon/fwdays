@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\PromoCode;
+use App\Entity\TicketCost;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -80,6 +81,7 @@ class LoadPromoCodeData extends AbstractFixture implements DependentFixtureInter
                 ->setEvent($event)
                 ->setDiscountAmount((int) $promoData['discount'])
                 ->setMaxUseCount((int) $promoData['max'])
+                ->setTickerCostType(TicketCost::TYPE_STANDARD)
             ;
             if ($promoData['date_end']) {
                 if ('event' === $promoData['date_end']) {

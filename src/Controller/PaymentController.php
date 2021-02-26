@@ -299,7 +299,7 @@ class PaymentController extends AbstractController
 
         $this->paymentService->addTicketToPayment($payment, $ticket);
         try {
-            $this->paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket);
+            $this->paymentService->addPromoCodeForTicketByCode($promoCodeString, $event, $ticket, true, $type);
         } catch (BadRequestHttpException $e) {
             return new JsonResponse(['result' => false, 'error' => ['user_promo_code' => $e->getMessage()]]);
         }

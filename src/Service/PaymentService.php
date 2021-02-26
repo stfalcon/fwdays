@@ -192,15 +192,16 @@ class PaymentService
     }
 
     /**
-     * @param string $promoCodeString
-     * @param Event  $event
-     * @param Ticket $ticket
-     * @param bool   $throwException
+     * @param string|null $promoCodeString
+     * @param Event       $event
+     * @param Ticket      $ticket
+     * @param bool        $throwException
+     * @param string|null $requestTicketType
      *
      * @throws \Exception
      * @throws BadRequestHttpException
      */
-    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket, bool $throwException = true): void
+    public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket, bool $throwException = true, ?string $requestTicketType = null): void
     {
         if ($promoCodeString) {
             /** @var PromoCodeRepository $promoCodeRepository */
@@ -216,7 +217,10 @@ class PaymentService
                 return;
             }
 
-            if (!$promoCode->isSameTicketCostTypeOrNull($ticket->getTicketType())) {
+            $ticketType = $ticket->getTicketType();
+            $ticketType = null !== $ticketType ? $ticketType : $requestTicketType;
+
+            if (!$promoCode->isSameTicketCostTypeOrNull($ticketType)) {
                 if ($throwException) {
                     throw new BadRequestHttpException($this->translator->trans(PromoCode::PROMOCODE_OTHER_TYPE));
                 }
@@ -232,7 +236,7 @@ class PaymentService
                 return;
             }
 
-            $result = $this->addPromoCodeForTicket($ticket, $promoCode);
+            $result = $this->addPromoCodeForTicket($ticket, $promoCode, $ticketType);
         } else {
             $result = PromoCode::PROMOCODE_APPLIED;
             $ticket->setPromoCode(null);
@@ -278,10 +282,6 @@ class PaymentService
                 $promoCodeCleared
             ) {
                 $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
-            }
-
-            if ($ticket->is100PercentPromo()) {
-                $ticket->removeTicketCost();
             }
         }
         $this->recalculatePaymentAmount($payment);
@@ -525,26 +525,25 @@ class PaymentService
     }
 
     /**
-     * @param Ticket    $ticket
-     * @param PromoCode $promoCode
+     * @param Ticket      $ticket
+     * @param PromoCode   $promoCode
+     * @param string|null $ticketType
      *
      * @return string
      */
-    private function addPromoCodeForTicket(Ticket $ticket, PromoCode $promoCode): string
+    private function addPromoCodeForTicket(Ticket $ticket, PromoCode $promoCode, ?string $ticketType = null): string
     {
         $promoCode->clearTmpUsedCount();
         if (!$promoCode->isUnlimited()) {
-            $payment = $ticket->getPayment();
-            if ($payment instanceof Payment) {
-                foreach ($payment->getTickets() as $paymentTicket) {
-                    if ($promoCode->isEqualTo($paymentTicket->getPromoCode()) && !$ticket->isEqualTo($paymentTicket)) {
-                        $promoCode->incTmpUsedCount();
-                    }
+            $event = $ticket->getEvent();
+            foreach ($event->getTickets() as $eventTicket) {
+                if ($promoCode->isEqualTo($eventTicket->getPromoCode()) && !$ticket->isEqualTo($eventTicket)) {
+                    $promoCode->incTmpUsedCount();
                 }
             }
         }
 
-        if (!$promoCode->isSameTicketCostTypeOrNull($ticket->getTicketType())) {
+        if (!$promoCode->isSameTicketCostTypeOrNull($ticketType)) {
             $promoCode->clearTmpUsedCount();
 
             return PromoCode::PROMOCODE_OTHER_TYPE;

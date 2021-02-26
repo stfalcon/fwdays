@@ -109,7 +109,7 @@ class PromoCodeCest
         }
 
         $I->dontSee('Promo code used!');
-        $I->click('#payer-block-edit-1 .edit-user-btn');
+        $I->click('#payer-block-edit-1 .add-user-btn');
 
         $I->waitForText('Promo code used!', 15);
     }

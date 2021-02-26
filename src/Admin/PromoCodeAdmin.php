@@ -154,7 +154,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
                     [
                         'choices' => TicketCost::getTypesWithOutFree(),
                         'label' => 'Тип билета',
-                        'required' => false,
+                        'required' => true,
                     ]
                 )
                 ->add('date_for_promo', ChoiceType::class, [
