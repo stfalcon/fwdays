@@ -279,10 +279,6 @@ class PaymentService
             ) {
                 $this->ticketService->setTicketAmount($ticket, $eventCost, $isMustBeDiscount, $currentTicketCost);
             }
-
-            if ($ticket->is100PercentPromo()) {
-                $ticket->removeTicketCost();
-            }
         }
         $this->recalculatePaymentAmount($payment);
     }
