@@ -1,5 +1,6 @@
-{% set ctgname_title = ctgname~'.call_to_action.title' %}
-{% set ctgname_description = ctgname~'.call_to_action.description' %}
+{% set ctg_name_spaceless = ctgname|replace({' ': ''}) %}
+{% set ctgname_title = ctg_name_spaceless~'.call_to_action.title' %}
+{% set ctgname_description = ctg_name_spaceless~'.call_to_action.description' %}
 {%- if ctgname_title != ctgname_title|trans -%}
     <div class="price-list__hint">
         {{ ctgname_title|trans }}
