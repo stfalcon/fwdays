@@ -1107,6 +1107,9 @@
 
   &__box {
     margin-bottom: 36px;
+    .price-list__hint-small {
+      margin-bottom: 10px;
+    }
   }
 
   &__cols {
