@@ -7,6 +7,7 @@
             {% for ctgname, partners in sort_order %}
             <div class="partners__box">
                 <div class="partners__title">{{ ctgname }}</div>
+                {% include 'Redesign/Partner/partner_ctg_call_to_action.html.twig' %}
                 <ul class="partners__items">
                 {% for partner in partners %}
                     {% include 'Redesign/Partner/partner.html.twig' with {'partner': partner} %}
@@ -29,6 +30,7 @@
                 {% endif %}
                     <div class="partners__{{ class }}">
                         <div class="partners__title">{{ ctgname }}</div>
+                        {% include 'Redesign/Partner/partner_ctg_call_to_action.html.twig' %}
                         <ul class="partners__items">
                         {% for partner in partners %}
                             {% include 'Redesign/Partner/partner.html.twig' with {'partner': partner} %}

@@ -1,0 +1,10 @@
+{% set ctgname_title = ctgname~'.call_to_action.title' %}
+{% set ctgname_description = ctgname~'.call_to_action.description' %}
+{%- if ctgname_title != ctgname_title|trans -%}
+    <div class="price-list__hint">
+        {{ ctgname_title|trans }}
+    </div>
+    <div class="price-list__hint-small">
+        {{ ctgname_description|trans|raw }}
+    </div>
+{%- endif -%}
