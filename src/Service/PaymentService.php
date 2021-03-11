@@ -268,7 +268,7 @@ class PaymentService
             $promoCodeCleared = false;
             $promoCode = $ticket->getPromoCode();
             if ($promoCode instanceof PromoCode) {
-                if (!$promoCode->isCanBeTmpUsed()) {
+                if (!$promoCode->isLimitUsed()) {
                     $ticket->setPromoCode(null);
                     $promoCodeCleared = true;
                 } else {
@@ -549,7 +549,7 @@ class PaymentService
             return PromoCode::PROMOCODE_OTHER_TYPE;
         }
 
-        if (!$promoCode->isCanBeTmpUsed()) {
+        if (!$promoCode->isTmpLimitUsed()) {
             $promoCode->clearTmpUsedCount();
 
             return PromoCode::PROMOCODE_USED;
