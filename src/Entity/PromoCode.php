@@ -393,9 +393,17 @@ class PromoCode implements TranslatableInterface, BlameableInterface
     /**
      * @return bool
      */
-    public function isCanBeTmpUsed()
+    public function isLimitUsed()
     {
         return $this->isUnlimited() || ($this->getUsedCount() + $this->tmpUsedCount) < $this->getMaxUseCount();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTmpLimitUsed()
+    {
+        return $this->isUnlimited() || $this->tmpUsedCount < $this->getMaxUseCount();
     }
 
     /**
