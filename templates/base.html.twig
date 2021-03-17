@@ -105,12 +105,12 @@
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}" defer></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}" defer></script>
 
-    {% if app.environment in ['prod', 'stag'] -%}
-        <script>
-            var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';
-        </script>
-        <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>
-    {% endif -%}
+{#    {% if app.environment in ['prod', 'stag'] -%}#}
+{#        <script>#}
+{#            var sentry_dsn_js_public = '{{ sentry_dsn_js_public }}';#}
+{#        </script>#}
+{#        <script src="{{ asset('js/raven.min.js')}}" defer crossorigin="anonymous"></script>#}
+{#    {% endif -%}#}
 
     {% set main_script = 'build/js/'~ app.request.locale ~'/main.js' %}
     <script src="{{ asset(main_script|app_asset_version) }}" defer></script>
