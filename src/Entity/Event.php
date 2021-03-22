@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
-  * @Vich\Uploadable
+ * @Vich\Uploadable
  *
  * @ORM\Table(name="event__events",
  *     indexes={
