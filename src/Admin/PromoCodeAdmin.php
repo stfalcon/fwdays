@@ -33,12 +33,16 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     /** @var EventRepository */
     private $eventRepository;
 
+    /** @var array */
+    private $activeEvents = [];
+
     /**
      * @var array
      */
     protected $datagridValues =
         [
             '_page' => 1,
+            '_per_page' => 32,
             '_sort_order' => 'DESC',
             '_sort_by' => 'id',
         ];
@@ -193,7 +197,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             EntityType::class,
             ['choices' => $this->getEvents()]
         )
-            ->add('createdBy', null, ['label' => 'Создал'])
+            ->add('createdBy.email', null, ['label' => 'Создал'])
             ->add(
                 'tickerCostType',
                 'doctrine_orm_choice',
@@ -220,7 +224,11 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     private function getActiveEvents(): array
     {
-        return $this->eventRepository->findBy(['active' => true, 'receivePayments' => true], ['id' => Criteria::DESC]);
+        if (empty($this->activeEvents)) {
+            $this->activeEvents = $this->eventRepository->findBy(['active' => true, 'receivePayments' => true], ['id' => Criteria::DESC]);
+        }
+
+        return $this->activeEvents;
     }
 
     /**

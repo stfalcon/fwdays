@@ -16,11 +16,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * App\Entity\Event.
+  * @Vich\Uploadable
  *
- * @Vich\Uploadable
- *
- * @ORM\Table(name="event__events")
+ * @ORM\Table(name="event__events",
+ *     indexes={
+ *         @ORM\Index(columns={"active"}),
+ *         @ORM\Index(columns={"receive_payments"}),
+ *         @ORM\Index(columns={"date"}),
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  *
  * @UniqueEntity(
