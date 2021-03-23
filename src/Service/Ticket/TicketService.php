@@ -8,6 +8,7 @@ use App\Entity\PromoCode;
 use App\Entity\Ticket;
 use App\Entity\TicketCost;
 use App\Entity\User;
+use App\Model\DownloadCertificateData;
 use App\Model\DownloadTicketData;
 use App\Model\EventStateData;
 use App\Repository\PaymentRepository;
@@ -31,6 +32,7 @@ class TicketService
 
     public const CAN_BUY_TICKET = 'can buy ticket';
     public const CAN_DOWNLOAD_TICKET = 'can download ticket';
+    public const CAN_DOWNLOAD_CERTIFICATE = 'can download certificate';
     public const TICKETS_SOLD_OUT = 'all tickets sold out';
     public const EVENT_REGISTRATION_OPEN = 'event registration open';
     public const WAIT_FOR_PAYMENT_RECEIVE = 'wait for payment receive';
@@ -41,7 +43,6 @@ class TicketService
     public const STATES =
             [
                 'row' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'event-row__status',
                         self::EVENT_DEFAULT_STATE => 'event-row__btn btn btn--primary btn--sm',
                     ],
@@ -52,26 +53,23 @@ class TicketService
                     ],
                 'event_header' => [
                         self::CAN_DOWNLOAD_TICKET => 'event-card__download',
+                        self::CAN_DOWNLOAD_CERTIFICATE => 'event-card__download',
                         self::EVENT_DONE => 'event-header__status',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-header__btn',
                     ],
                 'event_event_fix_header' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn',
                     ],
                 'event_event_fix_header_mob' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                     ],
                 'report_event_fix_header' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn',
                 ],
                 'report_event_fix_header_mob' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DONE => 'fix-event-header__status fix-event-header__status--mob',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg fix-event-header__btn fix-event-header__btn--mob',
                 ],
@@ -81,11 +79,9 @@ class TicketService
                         self::EVENT_DEFAULT_STATE => 'go-to-block btn btn--primary btn--lg event-action-mob__btn',
                     ],
                 'price_block_mob' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg cost__buy cost__buy--mob',
                     ],
                 'price_block' => [
-                        self::CAN_DOWNLOAD_TICKET => '',
                         self::EVENT_DEFAULT_STATE => 'btn btn--primary btn--lg event-cost__btn',
                     ],
             ];
@@ -260,14 +256,14 @@ class TicketService
     {
         $eventStateData = $this->createEventData($event, $position, $ticketCost, $forced);
         $downloadTicketData = $this->getDownloadTicketData($eventStateData);
+        $downloadCertificateData = $this->getDownloadCertificateData($eventStateData);
 
         foreach ($this->eventStates as $eventStateProcessor) {
             if ($eventStateProcessor->support($eventStateData)) {
                 return
                     [
-                        'ticket_caption' => $downloadTicketData->getCaption(),
-                        'ticket_class' => $downloadTicketData->getClass(),
-                        'download_url' => $downloadTicketData->getUrl(),
+                        'ticket' => $downloadTicketData->getTwigDate(),
+                        'certificate' => $downloadCertificateData->getTwigDate(),
                         'href' => $eventStateProcessor->getHref($eventStateData),
                         'class' => $eventStateProcessor->getClass($eventStateData),
                         'caption' => $eventStateProcessor->getCaption($eventStateData),
@@ -391,6 +387,28 @@ class TicketService
     /**
      * @param EventStateData $eventStateData
      *
+     * @return DownloadCertificateData
+     */
+    private function getDownloadCertificateData(EventStateData $eventStateData): DownloadCertificateData
+    {
+        $ticketCaption = null;
+        $downloadUrl = null;
+        $ticketCost = $eventStateData->getTicketCost() ?? $eventStateData->getTicket()->getTicketCost();
+        $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
+        $position = $eventStateData->getPosition();
+        $ticketClass = self::STATES[$position][self::CAN_DOWNLOAD_CERTIFICATE] ?? null;
+
+        if (null !== $ticketClass && $eventStateData->canDownloadCertificate($type)) {
+            $ticketCaption = $this->translator->trans('ticket.status.certificate');
+            $downloadUrl = $this->router->generate('event_certificate_download', ['slug' => $eventStateData->getEvent()->getSlug(), 'type' => $type]);
+        }
+
+        return new DownloadCertificateData($ticketCaption, $ticketClass, $downloadUrl);
+    }
+
+    /**
+     * @param EventStateData $eventStateData
+     *
      * @return DownloadTicketData
      */
     private function getDownloadTicketData(EventStateData $eventStateData): DownloadTicketData
@@ -404,7 +422,7 @@ class TicketService
         if ($eventStateData->canDownloadTicket()) {
             $ticketCaption = $this->translator->trans('ticket.status.download');
             $position = $eventStateData->getPosition();
-            $ticketClass = self::STATES[$position][self::CAN_DOWNLOAD_TICKET] ?? self::STATES[$position][self::EVENT_DEFAULT_STATE];
+            $ticketClass = self::STATES[$position][self::CAN_DOWNLOAD_TICKET] ?? null;
             if (!empty($ticketClass)) {
                 $downloadUrl = $this->router->generate('event_ticket_download', ['slug' => $eventStateData->getEvent()->getSlug(), 'type' => $type]);
             }

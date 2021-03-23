@@ -10,6 +10,10 @@ use Endroid\QrCode\Exceptions\ImageFunctionUnknownException;
 use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
+use Mpdf\MpdfException;
+use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
@@ -47,6 +51,57 @@ class PdfGeneratorHelper
     }
 
     /**
+     * @param string $filename
+     *
+     * @return Mpdf|null
+     *
+     * @throws MpdfException
+     * @throws CrossReferenceException
+     * @throws PdfParserException
+     * @throws PdfTypeException
+     */
+    public function loadPdfFromFilename(string $filename): ?Mpdf
+    {
+        $constructorArgs = [
+            'tempDir' => '/tmp',
+            'orientation' => 'L',
+            'format' => [317, 564],
+        ];
+
+        $pdf = new Mpdf($constructorArgs);
+
+        $pdf->AddPage();
+        $pageCount = $pdf->setSourceFile($filename);
+        if (0 !== $pageCount) {
+            $tpl = $pdf->importPage(1);
+            $pdf->useTemplate($tpl, 0, 0);
+
+            return $pdf;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $text
+     * @param Mpdf   $pdf
+     * @param float  $x
+     * @param float  $y
+     */
+    public function addTextToPdf(string $text, Mpdf $pdf, float $x, float $y): void
+    {
+        // Set font and color
+        $pdf->SetFont('Helvetica', '', 75); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+        $pdf->SetTextColor(255, 255, 255); // RGB
+
+// Position our "cursor" to left edge and in the middle in vertical position minus 1/2 of the font size
+        $pdf->SetXY($x, $y);
+
+        // Add text cell that has full page width and height of our font
+        $pdf->Cell(335, 75, $text, 0, 2, 'L');
+    }
+
+    /**
      * @param Ticket $ticket
      * @param string $html
      *
@@ -70,7 +125,7 @@ class PdfGeneratorHelper
 
         $mPDF = new Mpdf($constructorArgs);
         $mPDF->AddFontDirectory(\realpath($this->projectDir.'/public/fonts/').'/');
-
+        $mPDF->
         $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysTicket-Font.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';

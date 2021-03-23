@@ -64,14 +64,14 @@ class TicketController extends AbstractController
         }
 
         if (!$ticket || !$ticket->isPaid()) {
-            return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), 402);
+            return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), Response::HTTP_PAYMENT_REQUIRED);
         }
 
         $html = $this->pdfGeneratorHelper->generateHTML($ticket);
 
         return new Response(
             $this->pdfGeneratorHelper->generatePdfFile($ticket, $html),
-            200,
+            Response::HTTP_OK,
             [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => \sprintf('attach; filename="%s"', $ticket->generatePdfFilename()),
