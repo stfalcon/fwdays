@@ -95,6 +95,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
         $listMapper
             ->addIdentifier('title', null, ['label' => 'Название'])
             ->add('discountAmount', null, ['label' => 'Скидка (%)'])
+            ->add('code', null, ['label' => 'Код'])
             ->add('event', 'string', ['label' => 'Событие'])
             ->add('used', null, ['label' => 'Использований'])
             ->add('tickerCostType', null, ['label' => 'Тип билета'])
