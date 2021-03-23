@@ -7,7 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="event__ticketsCost")
+ * @ORM\Table(name="event__ticketsCost",
+ *     indexes={
+ *         @ORM\Index(columns={"type"}),
+ *         @ORM\Index(columns={"tickets_run_out"}),
+ *         @ORM\Index(columns={"end_date"}),
+ *         @ORM\Index(columns={"enabled"}),
+ *         @ORM\Index(columns={"visible"}),
+ *     })
  * @ORM\Entity(repositoryClass="App\Repository\TicketCostRepository")
  */
 class TicketCost
@@ -17,6 +24,7 @@ class TicketCost
     public const TYPE_PREMIUM = 'premium';
 
     public const TYPES = self::TYPE_FREE.'|'.self::TYPE_PREMIUM.'|'.self::TYPE_STANDARD;
+    public const CERTIFICATED_TYPES = self::TYPE_PREMIUM;
 
     /**
      * @var int

@@ -24,6 +24,11 @@ oneup_flysystem:
                 client: 'app.assets.s3'
                 bucket: '%env(AWS_S3_BUCKETNAME)%'
                 prefix: '%app.event_header_video%'
+        event_certificate_adapter:
+            awss3v3:
+                client: 'app.assets.s3'
+                bucket: '%env(AWS_S3_BUCKETNAME)%'
+                prefix: '%app.event_certificate%'
         upload_image_adapter:
             awss3v3:
                 client: 'app.assets.s3'
@@ -53,6 +58,11 @@ oneup_flysystem:
             adapter: 'event_header_video_adapter'
             mount: 'event_header_video'
             visibility: public
+            disable_asserts: true
+        event_certificate:
+            adapter: 'event_certificate_adapter'
+            mount: 'event_certificate'
+            visibility: private
             disable_asserts: true
         upload_image:
             adapter: 'upload_image_adapter'

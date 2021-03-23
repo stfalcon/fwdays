@@ -6,16 +6,22 @@ use A2lix\TranslationFormBundle\Form\Type\GedmoTranslationsType;
 use App\Admin\AbstractClass\AbstractTranslateAdmin;
 use App\Entity\City;
 use App\Entity\Event;
+use App\Entity\TicketBenefit;
+use App\Entity\Translation\TicketBenefitTranslation;
 use App\Repository\CityRepository;
+use App\Service\S3HelperService;
 use App\Service\User\UserService;
 use App\Traits\GoogleMapServiceTrait;
 use App\Traits\LocalsRequiredServiceTrait;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class EventAdmin.
@@ -32,6 +38,7 @@ class EventAdmin extends AbstractTranslateAdmin
     protected $savePlace;
     private $userService;
     private $cityRepository;
+    private $s3Helper;
 
     /**
      * @var array
@@ -44,17 +51,20 @@ class EventAdmin extends AbstractTranslateAdmin
         ];
 
     /**
-     * @param string         $code
-     * @param class-string   $class
-     * @param string         $baseControllerName
-     * @param UserService    $userService
-     * @param CityRepository $cityRepository
+     * @param string          $code
+     * @param class-string    $class
+     * @param string          $baseControllerName
+     * @param UserService     $userService
+     * @param CityRepository  $cityRepository
+     * @param S3HelperService $s3Helper
      */
-    public function __construct($code, $class, $baseControllerName, UserService $userService, CityRepository $cityRepository)
+    public function __construct($code, $class, $baseControllerName, UserService $userService, CityRepository $cityRepository, S3HelperService $s3Helper)
     {
         parent::__construct($code, $class, $baseControllerName);
+
         $this->userService = $userService;
         $this->cityRepository = $cityRepository;
+        $this->s3Helper = $s3Helper;
     }
 
     /**
@@ -81,6 +91,12 @@ class EventAdmin extends AbstractTranslateAdmin
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
+
+        foreach ($object->getTicketBenefits() as $ticketBenefit) {
+            $this->updateBenefitTranslations($ticketBenefit);
+            $this->removeNullTranslate($ticketBenefit);
+        }
+
         if ($this->saveCity !== $object->getCity() || $this->savePlace !== $object->getPlace()) {
             $this->googleMap->setEventMapPosition($object);
         }
@@ -95,6 +111,12 @@ class EventAdmin extends AbstractTranslateAdmin
         foreach ($object->getBlocks() as $block) {
             $this->removeNullTranslate($block);
         }
+
+        foreach ($object->getTicketBenefits() as $ticketBenefit) {
+            $this->updateBenefitTranslations($ticketBenefit);
+            $this->removeNullTranslate($ticketBenefit);
+        }
+
         $this->googleMap->setEventMapPosition($object);
     }
 
@@ -391,5 +413,43 @@ class EventAdmin extends AbstractTranslateAdmin
                 ->end()
             ->end()
         ;
+    }
+
+    /**
+     * @param TicketBenefit $object
+     */
+    private function updateBenefitTranslations(TicketBenefit $object): void
+    {
+        $filename = null;
+        /** @var TicketBenefitTranslation $translation */
+        foreach ($object->getTranslations() as $translation) {
+            if ('certificateFile' === $translation->getField()) {
+                $container = $this->getConfigurationPool()->getContainer();
+                /** @var UploadedFile $uploadFile */
+                $uploadFile = $translation->getContent();
+                if ($uploadFile instanceof UploadedFile) {
+                    /** @var Filesystem $fs */
+                    $fs = $container->get('oneup_flysystem.event_certificate_filesystem');
+                    /** @var AbstractAdapter $adapter */
+                    $adapter = $fs->getAdapter();
+                    try {
+                        $filename = \sprintf('%s.%s', \uniqid(), $uploadFile->guessExtension());
+                        $this->s3Helper->uploadFile($uploadFile->getPathname(), $adapter->getPathPrefix().$filename);
+                    } catch (\Exception $e) {
+                        $filename = null;
+                    }
+                }
+                break;
+            }
+        }
+
+        if (null !== $filename) {
+            foreach ($object->getTranslations() as $translation) {
+                if ('certificate' === $translation->getField()) {
+                    $translation->setContent($filename);
+                    break;
+                }
+            }
+        }
     }
 }

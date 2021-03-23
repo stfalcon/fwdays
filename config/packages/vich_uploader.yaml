@@ -25,3 +25,9 @@ vich_uploader:
         event_header_video:
             uri_prefix: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.event_header_video%'
             upload_destination: event_header_video
+        event_certificate:
+            uri_prefix: '%env(AWS_S3_PUBLIC_ENDPOINT)%/%app.event_certificate%'
+            namer: vich_uploader.namer_uniqid
+            upload_destination: event_certificate
+            delete_on_update: true
+            delete_on_remove: true
