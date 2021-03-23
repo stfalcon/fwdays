@@ -393,7 +393,7 @@ class TicketService
     {
         $ticketCaption = null;
         $downloadUrl = null;
-        $ticketCost = $eventStateData->getTicketCost() ?? $eventStateData->getTicket()->getTicketCost();
+        $ticketCost = $eventStateData->getTicketCost();
         $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
         $position = $eventStateData->getPosition();
         $ticketClass = self::STATES[$position][self::CAN_DOWNLOAD_CERTIFICATE] ?? null;

@@ -131,6 +131,8 @@ class EventStateData
     {
         $this->ticket = $ticket;
 
+        $this->setTicketCost($ticket instanceof Ticket ? $ticket->getTicketCost() : null);
+
         return $this;
     }
 
