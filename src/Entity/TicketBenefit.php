@@ -87,7 +87,7 @@ class TicketBenefit implements TranslatableInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="certificate", type="string", length=255)
+     * @ORM\Column(name="certificate", type="string", length=255, nullable=true)
      *
      * @Gedmo\Translatable(fallback=true)
      */
