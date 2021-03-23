@@ -5,4 +5,7 @@
 >{% if result['caption'] %}{{ result['caption']|raw }}{% endif %}{% if result['isDiv'] %}</div>{% else %}</a>{% endif %}
 
 {#ticket download#}
-{% if result['download_url'] %}<div class="{{ result['ticket_class'] }}"><a href="{{ result['download_url'] }}">{{ result['ticket_caption']|raw }}</a></div>{% endif %}
+{% if result['ticket']['url'] %}<div class="{{ result['ticket']['class'] }}"><a href="{{ result['ticket']['url'] }}">{{ result['ticket']['caption']|raw }}</a></div>{% endif %}
+
+{#certificate download#}
+{% if result['certificate']['url'] %}<div class="{{ result['certificate']['class'] }}"><a href="{{ result['certificate']['url'] }}">{{ result['certificate']['caption']|raw }}</a></div>{% endif %}

@@ -24,6 +24,7 @@ services:
             $oAuthUserProviderProperties: {facebook: facebookID, google: googleID}
             $paymentSystem: '@App\Service\PaymentProcess\WayForPayService'
             $eventFlySystem: '@oneup_flysystem.event_image_filesystem'
+            $eventCertificateFlySystem: '@oneup_flysystem.event_certificate_filesystem'
             $isOverrideCallbacks: '%env(INTERKASSA_OVERRIDE_CALLBACKS)%'
             $awsS3BucketName: '%env(AWS_S3_BUCKETNAME)%'
             $awsS3PublicEndpoint: '%env(AWS_S3_PUBLIC_ENDPOINT)%'
@@ -131,6 +132,15 @@ services:
         arguments: ['@request_stack']
 
     App\Model\UserManager: ~
+
+    app.s3_helper.service:
+        class: App\Service\S3HelperService
+        arguments:
+            - '@app.assets.s3'
+            - '%env(AWS_S3_BUCKETNAME)%'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.data.manager'
 
     App\Service\User\UserService:
         public: true
