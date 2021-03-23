@@ -25,7 +25,7 @@ spec:
             args:
             - bash
             - -c
-            - su www-data -c  "php bin/console stfalcon:mailer --host=fwdays.com --amount=20 --env=prod"
+            - su www-data -c  "php bin/console stfalcon:mailer --host=fwdays.com --amount=25 --env=prod"
           restartPolicy: Never
           imagePullSecrets:
             - name: regcred-dockerhub
