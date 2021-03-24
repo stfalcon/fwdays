@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\CollectionType;
 use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -409,6 +410,15 @@ class EventAdmin extends AbstractTranslateAdmin
                             ],
                             $datetimePickerOptions
                         )
+                    )
+                    ->add(
+                        'takesMoreThan2Days',
+                        CheckboxType::class,
+                        [
+                            'required' => false,
+                            'label' => 'Ивент проводится больше 2х дней',
+                            'help' => 'Влияет на знак между датами события & или —'
+                        ]
                     )
                 ->end()
             ->end()
