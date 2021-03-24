@@ -488,7 +488,7 @@ class Event implements TranslatableInterface
     private $telegramLink;
 
     /**
-     * for between dates delimiter
+     * for between dates delimiter.
      *
      * @var bool
      *
