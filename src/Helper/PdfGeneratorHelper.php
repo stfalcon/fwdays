@@ -125,7 +125,7 @@ class PdfGeneratorHelper
 
         $mPDF = new Mpdf($constructorArgs);
         $mPDF->AddFontDirectory(\realpath($this->projectDir.'/public/fonts/').'/');
-        $mPDF->
+
         $mPDF->fontdata['fwdays'] = ['R' => 'FwDaysTicket-Font.ttf'];
         // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
         $mPDF->sans_fonts[] = 'fwdays';
