@@ -76,7 +76,8 @@ class AppDateTimeExtension extends AbstractExtension
         } elseif ($event->isStartAndEndDateSameByFormat('Y-m')) {
             $dayStart = $event->getDate()->format('d');
             $dateEnd = $this->formatDateOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');
-            $dateString = \sprintf('%s — %s', $dayStart, $dateEnd);
+            $dateDelimiter = $event->isTakesMoreThan2Days() ? '—' : '&';
+            $dateString = \sprintf('%s %s %s', $dayStart, $dateDelimiter, $dateEnd);
         } else {
             $dayStart = $this->formatDateOnly($event->getDate(), $pattern, $locale, 'Europe/Kiev');
             $dateEnd = $this->formatDateOnly($event->getEndDateFromDates(), $pattern, $locale, 'Europe/Kiev');

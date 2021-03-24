@@ -488,6 +488,15 @@ class Event implements TranslatableInterface
     private $telegramLink;
 
     /**
+     * for between dates delimiter.
+     *
+     * @var bool
+     *
+     * @ORM\Column(name="takes_more_than2days", type="boolean", options={"default":true})
+     */
+    private $takesMoreThan2Days = true;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -1858,6 +1867,26 @@ class Event implements TranslatableInterface
     public function setTelegramLink(?string $telegramLink): self
     {
         $this->telegramLink = $telegramLink;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTakesMoreThan2Days(): bool
+    {
+        return $this->takesMoreThan2Days;
+    }
+
+    /**
+     * @param bool $takesMoreThan2Days
+     *
+     * @return $this
+     */
+    public function setTakesMoreThan2Days(bool $takesMoreThan2Days): self
+    {
+        $this->takesMoreThan2Days = $takesMoreThan2Days;
 
         return $this;
     }
