@@ -1887,6 +1887,7 @@ class Event implements TranslatableInterface
     public function setTakesMoreThan2Days(bool $takesMoreThan2Days): self
     {
         $this->takesMoreThan2Days = $takesMoreThan2Days;
+
         return $this;
     }
 }
