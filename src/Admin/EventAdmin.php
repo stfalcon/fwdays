@@ -417,7 +417,7 @@ class EventAdmin extends AbstractTranslateAdmin
                         [
                             'required' => false,
                             'label' => 'Ивент проводится больше 2х дней',
-                            'help' => 'Влияет на знак между датами события & или —'
+                            'help' => 'Влияет на знак между датами события & или —',
                         ]
                     )
                 ->end()
