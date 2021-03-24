@@ -12,6 +12,7 @@ use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,12 +91,13 @@ class CertificateController extends AbstractController
         if (!$pdf instanceof Mpdf) {
             throw new FileNotFoundException($path);
         }
-        $this->pdfGeneratorHelper->addTextToPdf($user->getFullname(), $pdf, 230, 105);
+        $this->pdfGeneratorHelper->addTextToPdf($user->getName(), $pdf, 229, 161);
+        $this->pdfGeneratorHelper->addTextToPdf($user->getSurname(), $pdf, 229, 200);
 
         $newFilename = \sprintf('certificate-%s.pdf', $event->getSlug());
 
         return new Response(
-            $pdf->Output($newFilename, 'S'),
+            $pdf->Output($newFilename, Destination::STRING_RETURN),
             Response::HTTP_OK,
             [
                 'Content-Type' => 'application/pdf',

@@ -11,6 +11,7 @@ use Endroid\QrCode\QrCode;
 use League\Flysystem\Filesystem;
 use Mpdf\Mpdf;
 use Mpdf\MpdfException;
+use Mpdf\Output\Destination;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use setasign\Fpdi\PdfParser\StreamReader;
@@ -70,6 +71,13 @@ class PdfGeneratorHelper
         ];
 
         $pdf = new Mpdf($constructorArgs);
+        $pdf->AddFontDirectory(\realpath($this->projectDir.'/public/fonts/').'/');
+        $pdf->fontdata['gilroy'] = ['R' => 'Gilroy-ExtraBold.ttf'];
+        // phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
+        $pdf->sans_fonts[] = 'gilroy';
+        $pdf->available_unifonts[] = 'gilroy';
+        $pdf->default_available_fonts[] = 'gilroy';
+        // phpcs:enable
 
         $fileContent = \file_get_contents($filename);
 
@@ -97,15 +105,11 @@ class PdfGeneratorHelper
      */
     public function addTextToPdf(string $text, Mpdf $pdf, float $x, float $y): void
     {
-        // Set font and color
-        $pdf->SetFont('Helvetica', '', 75); // Font Name, Font Style (eg. 'B' for Bold), Font Size
+        $pdf->SetFont('Gilroy', '', 91);
         $pdf->SetTextColor(255, 255, 255); // RGB
 
-// Position our "cursor" to left edge and in the middle in vertical position minus 1/2 of the font size
         $pdf->SetXY($x, $y);
-
-        // Add text cell that has full page width and height of our font
-        $pdf->Cell(335, 75, $text, 0, 2, 'L');
+        $pdf->Cell(335, 0, $text, 0, 1, 'L');
     }
 
     /**
@@ -143,7 +147,7 @@ class PdfGeneratorHelper
         $mPDF->SetDisplayMode('fullpage');
         $mPDF->WriteHTML($html);
 
-        return $mPDF->Output($ticket->generatePdfFilename(), 'S');
+        return $mPDF->Output($ticket->generatePdfFilename(), Destination::STRING_RETURN);
     }
 
     /**
