@@ -62,7 +62,7 @@ oneup_flysystem:
         event_certificate:
             adapter: 'event_certificate_adapter'
             mount: 'event_certificate'
-            visibility: private
+            visibility: public
             disable_asserts: true
         upload_image:
             adapter: 'upload_image_adapter'

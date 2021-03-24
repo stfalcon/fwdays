@@ -64,7 +64,7 @@ class S3HelperService
             $meta['mimetype'] = $mimeType;
         }
 
-        $meta['visibility'] = 'private';
+        $meta['visibility'] = 'public';
         if ($withCache) {
             $meta['CacheControl'] = \sprintf('max-age=%s', self::CACHE_MAX_AGE);
         }
