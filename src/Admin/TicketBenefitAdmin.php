@@ -59,10 +59,10 @@ final class TicketBenefitAdmin extends AbstractTranslateAdmin
                         ],
                         'certificateFile' => [
                             'data_class' => null,
-                            'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(true, 'Файл сертификата для %lang%'),
+                            'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(false, 'Файл сертификата для %lang%'),
                         ],
                         'certificate' => [
-                            'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(true, 'Имя файла сертификата для %lang% (после сохранения)'),
+                            'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(false, 'Имя файла сертификата для %lang% (после сохранения)'),
                             'field_type' => null,
                             'attr' => ['readonly' => true],
                         ],
