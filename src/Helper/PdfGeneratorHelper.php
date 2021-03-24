@@ -13,6 +13,7 @@ use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
 use setasign\Fpdi\PdfParser\PdfParserException;
+use setasign\Fpdi\PdfParser\StreamReader;
 use setasign\Fpdi\PdfParser\Type\PdfTypeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -70,8 +71,10 @@ class PdfGeneratorHelper
 
         $pdf = new Mpdf($constructorArgs);
 
+        $fileContent = \file_get_contents($filename,'rb');
+
         $pdf->AddPage();
-        $pageCount = $pdf->setSourceFile($filename);
+        $pageCount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
         if (0 !== $pageCount) {
             $tpl = $pdf->importPage(1);
             $pdf->useTemplate($tpl, 0, 0);
