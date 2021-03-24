@@ -27,7 +27,7 @@
                 </div>
                 <div class="event-header__details">
                     <div class="event-header__details-left">
-                        <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-header__date">{{ event|app_event_date(app.request.locale)|raw }}</time>
+                        <time datetime="{{ event.date|format_date('Y-MM-dd') }}" class="event-header__date">{{ event|app_event_date(app.request.locale, false)|raw }}</time>
                         {% if programPage %}
                         <a href="{{ link }}#program-event" class="event-header__program{{ scrollClass }}">{{ 'event.page.program'|trans }}</a>
                         {% endif %}
