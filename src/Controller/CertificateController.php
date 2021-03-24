@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Ticket;
+use App\Entity\TicketBenefit;
 use App\Entity\User;
 use App\Helper\PdfGeneratorHelper;
 use App\Repository\TicketRepository;
@@ -16,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Vich\UploaderBundle\Mapping\PropertyMappingFactory;
 
@@ -50,7 +52,7 @@ class CertificateController extends AbstractController
     }
 
     /**
-     * @Route("/event/{slug}/certificate/{type}", name="event_certificate_download", requirements={"type": App\Entity\TicketCost::CERTIFICATED_TYPES})
+     * @Route("/event/{slug}/certificate/{type}", name="event_certificate_download", requirements={"type": App\Entity\TicketCost::TYPES})
      *
      * @ParamConverter("event", options={"mapping": {"slug": "slug"}})
      *
@@ -70,9 +72,14 @@ class CertificateController extends AbstractController
         if (!$ticket instanceof Ticket || !$ticket->isPaid()) {
             return new Response(\sprintf('Вы не оплачивали участие в "%s"', $event->getName()), Response::HTTP_PAYMENT_REQUIRED);
         }
+        $ticketBenefit = $event->findTicketBenefitForType($type);
 
-        $path = $this->vichUploader->fromField($event->findTicketBenefitForType($type), 'certificateFile');
-        $fileName = $event->findCertificateFileForType($type);
+        if (!$ticketBenefit instanceof TicketBenefit) {
+            throw new NotFoundHttpException('ticket benefit not founded');
+        }
+
+        $path = $this->vichUploader->fromField($ticketBenefit, 'certificateFile');
+        $fileName = $ticketBenefit->getCertificate();
         $path = $path->getUriPrefix().'/'.$fileName;
 
         if (!$this->eventCertificateFlySystem->has($fileName)) {

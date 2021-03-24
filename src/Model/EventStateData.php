@@ -131,7 +131,9 @@ class EventStateData
     {
         $this->ticket = $ticket;
 
-        $this->setTicketCost($ticket instanceof Ticket ? $ticket->getTicketCost() : null);
+        if ($ticket instanceof Ticket) {
+            $this->setTicketCost($ticket->getTicketCost());
+        }
 
         return $this;
     }
@@ -211,10 +213,8 @@ class EventStateData
      */
     public function canDownloadCertificate(?string $type): bool
     {
-        $approveTypes = \explode('|', TicketCost::CERTIFICATED_TYPES);
-
         return
-            \in_array($type, $approveTypes, true) &&
+            \is_string($type) &&
             $this->ticketIsPaid() &&
             null !== $this->event->findCertificateFileForType($type)
         ;
