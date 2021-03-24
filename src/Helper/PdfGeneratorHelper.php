@@ -71,7 +71,11 @@ class PdfGeneratorHelper
 
         $pdf = new Mpdf($constructorArgs);
 
-        $fileContent = \file_get_contents($filename,'rb');
+        $fileContent = \file_get_contents($filename);
+
+        if (false === $fileContent) {
+            return null;
+        }
 
         $pdf->AddPage();
         $pageCount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
