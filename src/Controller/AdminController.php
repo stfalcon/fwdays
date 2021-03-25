@@ -59,6 +59,7 @@ class AdminController extends AbstractController
      * @param EventRepository                 $eventRepository
      * @param UserService                     $userService
      * @param UserEventRegistrationRepository $userEventRegistrationRepository
+     * @param AnalyticsService                $analyticsService
      */
     public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository, AnalyticsService $analyticsService)
     {
