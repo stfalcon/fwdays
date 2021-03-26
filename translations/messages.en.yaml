@@ -211,6 +211,7 @@ ticket.print.ticket.text1: 'Please, print this invitation and take it with you. 
 ticket.print.ticket.text2: We are looking forward to meet you!
 ticket.print.ticket.text3: Best regards,<br> sponsors %event_name%
 ticket.status.download: Download ticket
+ticket.status.certificate: Get a certificate
 ticket.status.pay: Buy ticket
 ticket.status.get: Get ticket
 ticket.status.pay_mob: Buy

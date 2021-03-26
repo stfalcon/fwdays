@@ -15,6 +15,7 @@ use App\Repository\EventRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserEventRegistrationRepository;
 use App\Repository\UserRepository;
+use App\Service\AnalyticsService;
 use App\Service\LocalsRequiredService;
 use App\Service\User\UserService;
 use App\Traits\EntityManagerTrait;
@@ -46,6 +47,7 @@ class AdminController extends AbstractController
     private $eventRepository;
     private $userService;
     private $userEventRegistrationRepository;
+    private $analyticsService;
 
     /**
      * @param UserManager                     $userManager
@@ -57,8 +59,9 @@ class AdminController extends AbstractController
      * @param EventRepository                 $eventRepository
      * @param UserService                     $userService
      * @param UserEventRegistrationRepository $userEventRegistrationRepository
+     * @param AnalyticsService                $analyticsService
      */
-    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository)
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository, AnalyticsService $analyticsService)
     {
         $this->userManager = $userManager;
         $this->mailerHelper = $mailerHelper;
@@ -69,6 +72,7 @@ class AdminController extends AbstractController
         $this->eventRepository = $eventRepository;
         $this->userService = $userService;
         $this->userEventRegistrationRepository = $userEventRegistrationRepository;
+        $this->analyticsService = $analyticsService;
     }
 
     /**
@@ -547,11 +551,13 @@ class AdminController extends AbstractController
         $ticketsWithoutCostsCount = (int) $this->ticketRepository->getEventTicketsWithoutTicketCostCount($event);
         $totalSoldTicketCount += $ticketsWithoutCostsCount;
         $totalTicketCount += $ticketsWithoutCostsCount;
+        $analyticsResult = $this->analyticsService->getSummaryTicketsSoldData($event);
 
         return $this->renderView('Statistic/event_statistic.html.twig', [
             'wannaVisitEvent' => $wannaVisitEvent,
             'ticketBlocks' => $ticketBlocks,
             'totalTicketCount' => $totalTicketCount,
+            'freeTicketCount' => $analyticsResult['free_tickets_number'],
             'totalSoldTicketCount' => $totalSoldTicketCount,
             'totalTicketsWithoutCostsCount' => $ticketsWithoutCostsCount,
             'ticketsAmountSumByBlock' => $ticketsAmountSumByBlock,

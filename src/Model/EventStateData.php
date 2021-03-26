@@ -199,7 +199,21 @@ class EventStateData
      */
     public function canDownloadTicket(): bool
     {
-        return $this->event->isActiveAndFuture() && $this->ticket && $this->ticket->isPaid();
+        return $this->event->isActiveAndFuture() && $this->ticketIsPaid();
+    }
+
+    /**
+     * @param string|null $type
+     *
+     * @return bool
+     */
+    public function canDownloadCertificate(?string $type): bool
+    {
+        return
+            \is_string($type) &&
+            $this->ticketIsPaid() &&
+            null !== $this->event->findCertificateFileForType($type)
+        ;
     }
 
     /**
@@ -220,5 +234,13 @@ class EventStateData
         $this->forced = $forced;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    private function ticketIsPaid(): bool
+    {
+        return $this->ticket instanceof Ticket && $this->ticket->isPaid();
     }
 }

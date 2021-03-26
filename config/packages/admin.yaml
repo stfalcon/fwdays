@@ -34,7 +34,7 @@ services:
         class: App\Admin\EventAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: События }
-        arguments: ['', 'App\Entity\Event', ~, '@App\Service\User\UserService', '@App\Repository\CityRepository']
+        arguments: ['', 'App\Entity\Event', ~, '@App\Service\User\UserService', '@App\Repository\CityRepository', '@app.s3_helper.service']
         calls:
             - [setGoogleMap, ['@App\Service\GoogleMapService']]
             - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
