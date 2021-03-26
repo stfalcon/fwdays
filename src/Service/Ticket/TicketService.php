@@ -394,10 +394,7 @@ class TicketService
         $ticketCaption = null;
         $downloadUrl = null;
 
-        $ticketCost = $eventStateData->getTicketCost();
-        if (!$ticketCost instanceof TicketCost) {
-            $ticketCost = $eventStateData->getTicket() instanceof Ticket ? $eventStateData->getTicket()->getTicketCost() : null;
-        }
+        $ticketCost = $eventStateData->getTicket() instanceof Ticket ? $eventStateData->getTicket()->getTicketCost() : null;
         $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
 
         $position = $eventStateData->getPosition();
