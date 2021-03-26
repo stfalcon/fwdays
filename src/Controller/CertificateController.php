@@ -91,8 +91,20 @@ class CertificateController extends AbstractController
         if (!$pdf instanceof Mpdf) {
             throw new FileNotFoundException($path);
         }
-        $this->pdfGeneratorHelper->addTextToPdf($user->getName(), $pdf, 229, 161);
-        $this->pdfGeneratorHelper->addTextToPdf($user->getSurname(), $pdf, 229, 200);
+
+        $name = \trim($user->getName());
+        $surname = \trim($user->getSurname());
+        $fullname = \trim($user->getFullname());
+
+        $nameY = 161;
+        $surnameY = 200;
+
+        if (empty($name) || empty($surname)) {
+            $this->pdfGeneratorHelper->addTextToPdf($fullname, $pdf, 229, ($nameY + $surnameY) / 2);
+        } else {
+            $this->pdfGeneratorHelper->addTextToPdf($name, $pdf, 229, $nameY);
+            $this->pdfGeneratorHelper->addTextToPdf($surname, $pdf, 229, $surnameY);
+        }
 
         $newFilename = \sprintf('certificate-%s.pdf', $event->getSlug());
 
