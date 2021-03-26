@@ -29,6 +29,18 @@ class DownloadTicketData
     }
 
     /**
+     * @return null[]|string[]
+     */
+    public function getTwigDate(): array
+    {
+        return [
+            'caption' => $this->getCaption(),
+            'class' => $this->getClass(),
+            'url' => $this->getUrl(),
+        ];
+    }
+
+    /**
      * @return string|null
      */
     public function getCaption(): ?string

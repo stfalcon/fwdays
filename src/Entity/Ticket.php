@@ -313,8 +313,6 @@ class Ticket
     }
 
     /**
-     * Checking if ticket is "paid".
-     *
      * @return bool
      */
     public function isPaid(): bool

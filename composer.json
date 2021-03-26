@@ -29,6 +29,7 @@
     ],
     "require": {
         "php": "^7.1.3",
+        "ext-fileinfo": "*",
         "ext-imagick": "*",
         "ext-json": "*",
         "ext-redis": "*",
@@ -182,8 +183,6 @@
         ],
         "ci:pack": [
             "@ci:composer-validate",
-            "@ci:security-check",
-            "@ci:doctrine-schema-validate",
             "@ci:twig-lint",
             "@ci:yaml-lint",
             "@ci:code-style",

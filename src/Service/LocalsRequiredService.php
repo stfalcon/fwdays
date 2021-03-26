@@ -24,15 +24,19 @@ class LocalsRequiredService
     }
 
     /**
-     * @param bool|null $setAllAs
+     * @param bool|null   $setAllAs
+     * @param string|null $label
      *
      * @return array
      */
-    public function getLocalsRequiredArray($setAllAs = null): array
+    public function getLocalsRequiredArray(?bool $setAllAs = null, string $label = null): array
     {
         $result = [];
         foreach ($this->locales as $locale) {
             $result[$locale] = ['required' => (null === $setAllAs) ? $locale === $this->defaultLocale : $setAllAs];
+            if (\is_string($label)) {
+                $result[$locale]['label'] = \str_replace('%lang%', \strtoupper($locale), $label);
+            }
         }
 
         return $result;

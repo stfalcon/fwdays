@@ -5,9 +5,7 @@
         (avg price {{ (summary.tickets_amount / summary.total_tickets_number)|number_format(0, '.', ',') }} ₴‎)
     {%- endif -%}
 </h4>
-<h4>
-    Total sold number: <b>{{ summary.total_tickets_number }} tickets</b> ({{  summary.free_tickets_number }} free)
-</h4>
+
 <div id="div_chart_{{ event.id }}"></div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

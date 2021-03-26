@@ -206,6 +206,7 @@ ticket.print.ticket.text1: 'Будь ласка, роздрукуйте це з�
 ticket.print.ticket.text2: 'З нетерпінням чекаємо на зустріч!'
 ticket.print.ticket.text3: 'З повагою,<br> Організатори %event_name%'
 ticket.status.download: Завантажити квиток
+ticket.status.certificate: Отримати сертифікат
 ticket.status.pay: Купити квиток
 ticket.status.get: Отримати квиток
 ticket.status.pay_mob: Купити

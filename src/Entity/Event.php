@@ -1890,4 +1890,32 @@ class Event implements TranslatableInterface
 
         return $this;
     }
+
+    /**
+     * @param string $type
+     *
+     * @return TicketBenefit|null
+     */
+    public function findTicketBenefitForType(string $type): ?TicketBenefit
+    {
+        foreach ($this->ticketBenefits as $ticketBenefit) {
+            if ($type === $ticketBenefit->getType()) {
+                return $ticketBenefit;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string|null
+     */
+    public function findCertificateFileForType(string $type): ?string
+    {
+        $ticketBenefit = $this->findTicketBenefitForType($type);
+
+        return $ticketBenefit instanceof TicketBenefit ? $ticketBenefit->getCertificate() : null;
+    }
 }
