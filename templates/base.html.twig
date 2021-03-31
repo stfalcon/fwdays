@@ -121,6 +121,7 @@
 
     <script>
         var flashTextArr = [];
+        window.dataLayer = window.dataLayer || [];
     </script>
 
     {% for label, messages in app.flashes(['fos_user_success', 'app_user_event', 'app_social_user_login']) %}
@@ -128,17 +129,17 @@
             {%- if app.environment == 'prod' -%}
                 {% if 'registration.flash.user_created' == message %}
                     <script>
-                        dataLayer.push({'event': 'register'});
+                        window.dataLayer.push({'event': 'register'});
                     </script>
                 {% elseif 'flash_you_registrated.title' == message %}
                     <script>
-                        dataLayer.push({'event': 'register_event'});
+                        window.dataLayer.push({'event': 'register_event'});
                     </script>
                 {%- endif -%}
 
                 {%- if 'app_social_user_login' == label -%}
                     <script>
-                        dataLayer.push({'event': '{{ message }}'});
+                        window.dataLayer.push({'event': '{{ message }}'});
                     </script>
                 {%- endif -%}
             {%- endif -%}
