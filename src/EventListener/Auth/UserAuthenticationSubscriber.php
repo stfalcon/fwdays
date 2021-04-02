@@ -39,7 +39,7 @@ class UserAuthenticationSubscriber implements EventSubscriberInterface
     {
         $user = $event->getAuthenticationToken()->getUser();
 
-        if ($user instanceof UserInterface) {
+        if ($user instanceof UserInterface && !$this->session->getFlashBag()->has('app_social_user_login')) {
             $this->session->getFlashBag()->set('app_social_user_login', 'mail_login_event');
         }
     }
