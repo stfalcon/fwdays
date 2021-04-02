@@ -129,11 +129,11 @@
             {%- if app.environment == 'prod' -%}
                 {% if 'registration.flash.user_created' == message %}
                     <script>
-                        window.dataLayer.push({'event': 'register'});
+                        dataLayer.push({'event': 'register'});
                     </script>
                 {% elseif 'flash_you_registrated.title' == message %}
                     <script>
-                        window.dataLayer.push({'event': 'register_event'});
+                        dataLayer.push({'event': 'register_event'});
                     </script>
                 {%- endif -%}
 
