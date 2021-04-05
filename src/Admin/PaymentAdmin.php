@@ -189,7 +189,7 @@ final class PaymentAdmin extends AbstractAdmin
                 ->add('amount', MoneyType::class, [
                     'currency' => 'UAH',
                     'label' => 'Сума оплаты',
-                    'disabled' => $subject->isPaid(),
+                    'disabled' => $subject->isPaid() && Payment::ADMIN_GATE !== $subject->getGate(),
                 ])
                 ->add('fwdaysAmount', MoneyType::class, [
                     'currency' => 'UAH',
