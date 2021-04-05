@@ -16,6 +16,7 @@ use App\Repository\TicketRepository;
 use App\Repository\UserEventRegistrationRepository;
 use App\Repository\UserRepository;
 use App\Service\AnalyticsService;
+use App\Service\Discount\DiscountService;
 use App\Service\LocalsRequiredService;
 use App\Service\User\UserService;
 use App\Traits\EntityManagerTrait;
@@ -48,6 +49,7 @@ class AdminController extends AbstractController
     private $userService;
     private $userEventRegistrationRepository;
     private $analyticsService;
+    private $discountService;
 
     /**
      * @param UserManager                     $userManager
@@ -60,8 +62,9 @@ class AdminController extends AbstractController
      * @param UserService                     $userService
      * @param UserEventRegistrationRepository $userEventRegistrationRepository
      * @param AnalyticsService                $analyticsService
+     * @param DiscountService                 $discountService
      */
-    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository, AnalyticsService $analyticsService)
+    public function __construct(UserManager $userManager, MailerHelper $mailerHelper, Pool $pool, \Swift_Mailer $mailer, UserRepository $userRepository, TicketRepository $ticketRepository, EventRepository $eventRepository, UserService $userService, UserEventRegistrationRepository $userEventRegistrationRepository, AnalyticsService $analyticsService, DiscountService $discountService)
     {
         $this->userManager = $userManager;
         $this->mailerHelper = $mailerHelper;
@@ -73,6 +76,7 @@ class AdminController extends AbstractController
         $this->userService = $userService;
         $this->userEventRegistrationRepository = $userEventRegistrationRepository;
         $this->analyticsService = $analyticsService;
+        $this->discountService = $discountService;
     }
 
     /**
@@ -186,7 +190,7 @@ class AdminController extends AbstractController
                         }
                     }
 
-                    $amount = $data['discount'] ? $amountWithOutDiscount * 0.8 : $amountWithOutDiscount;
+                    $amount = $data['discount'] ? $amountWithOutDiscount - $amountWithOutDiscount * $this->discountService->getFloatDiscount() : $amountWithOutDiscount;
                     $ticket
                         ->setAmount($amount)
                         ->setHasDiscount($data['discount'])
