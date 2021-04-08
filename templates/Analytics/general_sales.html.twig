@@ -49,29 +49,35 @@
 <h2>Продажи - количество</h2>
 <div id="chart_sold_count" style="width: auto; height: 500px;"></div>
 <h4>
-    Total sold count: <b>{{ total_sold_count|number_format(0, '.', ',') }}‎</b>
+    Total sold count: <b>{{ total_sold_count|number_format(0, '.', ',') }}</b>
 </h4>
 <h2>Продажи - cумма</h2>
 <div id="chart_sold_amount" style="width: auto; height: 500px;"></div>
 <h4>
-    Total sold amount: <b>{{ total_sold_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+    Total sold amount: <b>{{ total_sold_amount|number_format(0, '.', ',') }} ₴</b>
 </h4>
 <h2>Продажи - возврат</h2>
 <div id="chart_returned_amount" style="width: auto; height: 500px;"></div>
 <h4>
-    Total return amount: <b>{{ total_returned_amount|number_format(0, '.', ',') }} ₴‎‎</b>
+    Total return amount: <b>{{ total_returned_amount|number_format(0, '.', ',') }} ₴</b>
 </h4>
 
 <h2>Регистрации - количество</h2>
 <div id="chart_registration_count" style="width: auto; height: 500px;"></div>
 <h4>
-    Total registration count: <b>{{ total_registration_count|number_format(0, '.', ',') }}‎</b>
+    Total registration count: <b>{{ total_registration_count|number_format(0, '.', ',') }}</b>
 </h4>
 
 <h2>Регистрации meetups - количество</h2>
 <div id="chart_meetups_registration_count" style="width: auto; height: 500px;"></div>
 <h4>
-    Total meetups registration count: <b>{{ total_small_events_registration_count|number_format(0, '.', ',') }}‎</b>
+    Total meetups registration count: <b>{{ total_small_events_registration_count|number_format(0, '.', ',') }}</b>
+</h4>
+
+<h2>Отписки от рассылок - количество</h2>
+<div id="chart_unsubscribe_count" style="width: auto; height: 500px;"></div>
+<h4>
+{#    Всего: <b>{{ total_unsubscribe_count|number_format(0, '.', ',') }}</b>#}
 </h4>
 
 <script type="text/javascript">
@@ -84,6 +90,23 @@
         drawReturnedAmount();
         drawRegistrationCount();
         drawSmallEventsRegistrationCount();
+        drawUnsubscribeCount();
+    }
+
+    function drawUnsubscribeCount() {
+        var data = google.visualization.arrayToDataTable([
+             [  'Date',
+                'Count'
+            ],
+            {% for date, count in data_unsubscribe_count %}
+                ['{{ date }}', {{ count }}],
+            {% endfor %}
+
+        ]);
+        var options = {isStacked: true};
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_unsubscribe_count'));
+        chart.draw(data, options);
     }
 
     function drawSmallEventsRegistrationCount() {
