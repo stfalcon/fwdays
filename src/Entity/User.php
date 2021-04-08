@@ -109,6 +109,13 @@ class User extends BaseUser
     protected $subscribe = true;
 
     /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="unsubscribed_at", type="datetime", nullable=true)
+     */
+    private $unsubscribedAt = null;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -578,6 +585,10 @@ class User extends BaseUser
     public function setSubscribe(bool $subscribe): self
     {
         $this->subscribe = $subscribe;
+
+        if (!$subscribe) {
+            $this->unsubscribedAt = new \DateTime();
+        }
 
         return $this;
     }

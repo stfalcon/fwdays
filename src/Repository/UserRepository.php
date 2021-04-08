@@ -194,6 +194,35 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param \DateTime $since
+     * @param \DateTime $till
+     *
+     * @return array
+     */
+    public function findUnsubscribedCountForEveryDate(\DateTime $since, \DateTime $till): array
+    {
+        $startSince = clone $since;
+        $endTill = clone $till;
+
+        $startSince->setTime(0, 0);
+        $endTill->setTime(23, 59, 59);
+
+        $qb = $this->createQueryBuilder('u');
+
+        $qb->select('DATE(u.unsubscribedAt) as unsubscribed_at, COUNT(u.id) as user_count')
+            ->where($qb->expr()->isNotNull('u.unsubscribedAt'))
+            ->andWhere($qb->expr()->between('u.unsubscribedAt', ':date_from', ':date_to'))
+            ->setParameters(new ArrayCollection([
+                new Parameter('date_from', $startSince),
+                new Parameter('date_to', $endTill),
+            ]))
+            ->groupBy('unsubscribed_at')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @param int    $checkEventId
      * @param int    $hasTicketObjectId
      * @param string $checkType
