@@ -109,7 +109,7 @@ class User extends BaseUser
     protected $subscribe = true;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(name="unsubscribed_at", type="datetime", nullable=true)
      */
