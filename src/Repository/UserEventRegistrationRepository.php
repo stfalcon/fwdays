@@ -50,6 +50,21 @@ class UserEventRegistrationRepository extends ServiceEntityRepository
      */
     public function isUserRegisteredForEvent(User $user, Event $event): bool
     {
+        $result = $this->findOneForUserAndEvent($user, $event);
+
+        return $result instanceof UserEventRegistration;
+    }
+
+    /**
+     * @param User  $user
+     * @param Event $event
+     *
+     * @return UserEventRegistration|null
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneForUserAndEvent(User $user, Event $event): ?UserEventRegistration
+    {
         $qb = $this->createQueryBuilder('ur');
         $qb->where($qb->expr()->eq('ur.user', ':user'))
             ->andWhere($qb->expr()->eq('ur.event', ':event'))
@@ -64,7 +79,7 @@ class UserEventRegistrationRepository extends ServiceEntityRepository
             ->setMaxResults(1)
         ;
 
-        return $qb->getQuery()->getOneOrNullResult() instanceof UserEventRegistration;
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

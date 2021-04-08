@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     "App\EventListener\ORM\Ticket\TicketAmountListener",
  * })
  */
-class Ticket
+class Ticket implements UsedInterface
 {
     /**
      * @var int
@@ -339,7 +339,7 @@ class Ticket
      *
      * @return bool
      */
-    public function isUsed()
+    public function isUsed(): bool
     {
         return $this->used;
     }

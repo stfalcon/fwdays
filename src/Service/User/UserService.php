@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\User;
 
 use App\Entity\Event;
+use App\Entity\UsedInterface;
 use App\Entity\User;
 use App\Entity\UserEventRegistration;
 use App\Helper\MailerHelper;
@@ -116,6 +117,46 @@ class UserService
         }
 
         return false;
+    }
+
+    /**
+     * @param UserEventRegistration $eventRegistration
+     */
+    public function setUserUsedRegistrationIfOnlineEvent(UserEventRegistration $eventRegistration): void
+    {
+        $event = $eventRegistration->getEvent();
+
+        if (!$event->isActive() || $event->isAdminOnly() || !$event->isOnline()) {
+            return;
+        }
+
+        $this->setUsedIfInEventDateRange($event, $eventRegistration);
+    }
+
+    /**
+     * @param Event         $event
+     * @param UsedInterface $entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function setUsedIfInEventDateRange(Event $event, UsedInterface $entity): void
+    {
+        if ($entity->isUsed()) {
+            return;
+        }
+
+        $now = new \DateTime();
+        $startDate = $event->getDate();
+        $endDate = clone $event->getEndDateFromDates();
+        if ($endDate == $startDate) {
+            $endDate->setTime(23, 59, 59);
+        }
+
+        if ($endDate > $now && $startDate < $now) {
+            $entity->setUsed(true);
+            $this->em->flush($entity);
+        }
     }
 
     /**

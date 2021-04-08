@@ -475,6 +475,13 @@ class AdminController extends AbstractController
             }
         }
 
+        $dataUnsubscribeCountRepResult = $this->userRepository->findUnsubscribedCountForEveryDate($since, $till);
+        $dataUnsubscribeCount = [];
+
+        foreach ($dataUnsubscribeCountRepResult as $item) {
+            $dataUnsubscribeCount[$item['unsubscribed_at']] = (int) $item['user_count'];
+        }
+
         return $this->render(
             'Statistic/general_events_statistic.html.twig',
             [
@@ -488,6 +495,7 @@ class AdminController extends AbstractController
                 'total_registration_count' => $totalRegistrationCount,
                 'data_small_events_registration_count' => $resultSmallEventRegistrationsCount,
                 'total_small_events_registration_count' => $totalSmallEventsRegistrationCount,
+                'data_unsubscribe_count' => $dataUnsubscribeCount,
                 'events' => $events,
                 'registration_events' => $registrationEvents,
                 'registration_meetups_events' => $registrationMeetupsEvents,

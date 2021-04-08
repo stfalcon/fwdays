@@ -4,7 +4,9 @@ namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
 use App\Entity\EventBlock;
+use App\Entity\UserEventRegistration;
 use App\Repository\TicketRepository;
+use App\Repository\UserEventRegistrationRepository;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Service\VideoAccess\GrandAccessVideoService;
@@ -40,15 +42,19 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
     /** @var GrandAccessVideoService */
     private $grandAccessVideoService;
 
+    /** @var UserEventRegistrationRepository */
+    private $eventRegistrationRepository;
+
     /**
-     * @param string                  $name
-     * @param EngineInterface         $templating
-     * @param UserService             $userService
-     * @param TicketRepository        $ticketRepository
-     * @param TicketService           $ticketService
-     * @param GrandAccessVideoService $grandAccessVideoService
+     * @param string                          $name
+     * @param EngineInterface                 $templating
+     * @param UserService                     $userService
+     * @param TicketRepository                $ticketRepository
+     * @param TicketService                   $ticketService
+     * @param GrandAccessVideoService         $grandAccessVideoService
+     * @param UserEventRegistrationRepository $eventRegistrationRepository
      */
-    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, TicketService $ticketService, GrandAccessVideoService $grandAccessVideoService)
+    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, TicketService $ticketService, GrandAccessVideoService $grandAccessVideoService, UserEventRegistrationRepository $eventRegistrationRepository)
     {
         parent::__construct($name, $templating);
 
@@ -56,6 +62,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
         $this->ticketRepository = $ticketRepository;
         $this->ticketService = $ticketService;
         $this->grandAccessVideoService = $grandAccessVideoService;
+        $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
     /** @param bool $isPlayList */
@@ -105,14 +112,20 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $tickets = [];
         }
 
-        foreach ($tickets as $ticket) {
-            $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
-        }
-
         $accessGrand = $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
 
         if (!$accessGrand) {
             return new Response();
+        }
+
+        foreach ($tickets as $ticket) {
+            $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
+        }
+
+        $registration = empty($tickets) ? $this->eventRegistrationRepository->findOneForUserAndEvent($user, $event) : null;
+
+        if ($registration instanceof UserEventRegistration) {
+            $this->userService->setUserUsedRegistrationIfOnlineEvent($registration);
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [

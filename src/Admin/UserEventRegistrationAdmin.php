@@ -39,6 +39,7 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
             'user.fullname',
             'user.email',
             'user.phone',
+            'used',
             'createdAt',
         ];
     }
@@ -73,6 +74,7 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
             ->add('user.fullname', null, ['label' => 'Пользователь'])
             ->add('user.email', null, ['label' => 'E-mail'])
             ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('used', null, ['label' => 'Использован'])
             ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }
@@ -88,6 +90,7 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
             ->add('user.fullname', null, ['label' => 'Пользователь'])
             ->add('user', null, ['label' => 'E-mail'])
             ->add('user.phone', null, ['label' => 'Номер телефона'])
+            ->add('used', null, ['label' => 'Использован'])
             ->add('createdAt', null, ['label' => 'Дата регистрации'])
         ;
     }

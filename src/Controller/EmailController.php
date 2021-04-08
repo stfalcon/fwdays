@@ -30,9 +30,9 @@ class EmailController extends AbstractController
     /**
      * @Route("/unsubscribe/{hash}/{id}/{mailId}", name="unsubscribe")
      *
-     * @param string $hash
-     * @param User   $subscriber
-     * @param int    $mailId
+     * @param string   $hash
+     * @param User     $subscriber
+     * @param int|null $mailId
      *
      * @return Response
      */
