@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"user", "event"})
  */
-class UserEventRegistration
+class UserEventRegistration implements UsedInterface
 {
     /**
      * @var int
@@ -54,6 +54,13 @@ class UserEventRegistration
      * @Assert\Type("App\Entity\Event")
      */
     private $event;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $used = false;
 
     /**
      * @param User                    $user
@@ -115,6 +122,26 @@ class UserEventRegistration
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUsed(): bool
+    {
+        return $this->used;
+    }
+
+    /**
+     * @param bool $used
+     *
+     * @return $this
+     */
+    public function setUsed(bool $used): self
+    {
+        $this->used = $used;
 
         return $this;
     }
