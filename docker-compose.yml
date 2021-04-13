@@ -25,7 +25,7 @@ services:
             - "php"
 
     php:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.9
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.10
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
@@ -41,7 +41,7 @@ services:
             - "sessions"
 
     php_cli:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev-cli:v1.9
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev-cli:v1.10
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:

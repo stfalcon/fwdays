@@ -1,4 +1,4 @@
-image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.3
+image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.4
 cache:
     paths:
         - vendor/
