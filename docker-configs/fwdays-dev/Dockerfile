@@ -1,4 +1,4 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.2
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.4
 RUN apt-get update && apt-get install -y sudo php7.3-xdebug
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb && apt install -y /tmp/chrome.deb && rm /tmp/chrome.deb
 RUN CHROME_VER=`apt-cache show google-chrome-stable|grep "Version:"|awk '{print $2}'|cut -d '.' -f 1,2,3` && \ 
