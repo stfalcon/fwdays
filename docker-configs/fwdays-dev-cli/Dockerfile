@@ -1,2 +1,2 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.8
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.9
 USER root

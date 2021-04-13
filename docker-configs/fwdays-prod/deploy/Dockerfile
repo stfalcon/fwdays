@@ -1,4 +1,4 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-prod:v2.3
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-prod:v2.4
 COPY . /app
 WORKDIR /app
 RUN unxz geodata/GeoLiteCity.dat.xz

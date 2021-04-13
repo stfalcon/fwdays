@@ -1,4 +1,4 @@
-FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.2
+FROM gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-base:v1.3
 RUN apt-get update && apt-get install -y nginx-extras
 ADD configs/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
 ADD configs/fpm-pool.conf /etc/php/7.3/fpm/pool.d/www.conf
