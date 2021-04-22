@@ -137,6 +137,7 @@ $(document).on('click', '.add-wants-visit-event', function () {
                     });
                     if ('prod' === environment) {
                         dataLayer.push({'event': 'register_event'});
+                        dataLayer.push({'event': 'register_'+e_slug});
                     }
                     setFlashTextAndShow(data.flash);
                 } else {

@@ -164,6 +164,7 @@ class EventController extends AbstractController
 
         if ($result) {
             $this->addFlash('app_user_event', 'flash_you_registrated.title');
+            $request->getSession()->set('register_event_slug', $event->getSlug());
         }
 
         return $this->redirect($this->urlForRedirect->getRedirectUrl($request->headers->get('referer')));
