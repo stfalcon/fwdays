@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "App\EventListener\ORM\Payment\PaymentListener",
  * })
  */
-class Payment
+class Payment implements UserWithDateActionInterface
 {
     const STATUS_PENDING = 'pending';
     const STATUS_PAID = 'paid';
@@ -543,12 +543,10 @@ class Payment
     }
 
     /**
-     * for PaymentAdmin.
-     *
-     * @return array
+     * @return \DateTimeInterface
      */
-    public function getReferrers(): array
+    public function getActionDate(): \DateTimeInterface
     {
-        return [];
+        return $this->getUpdatedAt();
     }
 }

@@ -18,6 +18,10 @@ class RefererRequestSubscriber implements EventSubscriberInterface
 {
     use LoggerTrait;
 
+    public const EXCLUDE_URLS = [
+        '~^https://accounts.google.com/~',
+    ];
+
     /** @var RefererService */
     private $refererService;
 
@@ -79,15 +83,22 @@ class RefererRequestSubscriber implements EventSubscriberInterface
         }
 
         $refererUrl = $request->headers->get('referer', null);
-        if (\is_string($refererUrl)) {
-            $cookieId = $request->cookies->get(Referer::COOKIE_KEY, null);
 
+        if (\is_string($refererUrl)) {
             $refererDomain = $this->getInnerSubstring($refererUrl, '/', 2);
             $currentDomain = $request->getHttpHost();
-            $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && ('max-age=0' === $_SERVER['HTTP_CACHE_CONTROL'] || 'no-cache' == $_SERVER['HTTP_CACHE_CONTROL']);
-            if ($refererDomain !== $currentDomain && !$pageRefreshed) {
+
+            if ($refererDomain !== $currentDomain) {
+                foreach (self::EXCLUDE_URLS as $pattern) {
+                    if (\preg_match($pattern, $refererUrl)) {
+                        return;
+                    }
+                }
+
+                $cookieId = $request->cookies->get(Referer::COOKIE_KEY, null);
                 try {
                     $newCookieId = $this->refererService->addReferer($refererUrl, $request->getUri(), $cookieId);
+
                     if (!empty($newCookieId) && $newCookieId !== $cookieId) {
                         $this->newCookie = $newCookieId;
                     }
