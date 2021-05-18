@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"user", "event"})
  */
-class UserEventRegistration implements UsedInterface
+class UserEventRegistration implements UsedInterface, UserWithDateActionInterface
 {
     /**
      * @var int
@@ -144,5 +144,13 @@ class UserEventRegistration implements UsedInterface
         $this->used = $used;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getActionDate(): \DateTimeInterface
+    {
+        return $this->getCreatedAt();
     }
 }

@@ -88,8 +88,9 @@ final class PaymentAdmin extends AbstractAdmin
                 'referrers',
                 'string',
                 [
-                    'template' => 'Admin/payment_user_referrers.html.twig',
+                    'template' => 'Admin/entity_user_referrers.html.twig',
                     'label' => 'Реферы',
+                    'mapping' => false,
                 ]
             )
             ->add(

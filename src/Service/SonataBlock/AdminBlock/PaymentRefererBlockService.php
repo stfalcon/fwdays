@@ -2,8 +2,8 @@
 
 namespace App\Service\SonataBlock\AdminBlock;
 
-use App\Entity\Payment;
 use App\Entity\User;
+use App\Entity\UserWithDateActionInterface;
 use App\Repository\Referer\RefererRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -36,16 +36,16 @@ class PaymentRefererBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $payment = $blockContext->getSetting('payment');
-        if (!$payment instanceof Payment) {
-            throw new \RuntimeException(\sprintf('Object of class %s is not instance of %s', \get_class($payment), Payment::class));
+        $entity = $blockContext->getSetting('entity');
+        if (!$entity instanceof UserWithDateActionInterface) {
+            throw new \RuntimeException(\sprintf('Object of class %s is not instance of %s', \get_class($entity), UserWithDateActionInterface::class));
         }
 
         $referrers = [];
-        $user = $payment->getUser();
+        $user = $entity->getUser();
 
         if ($user instanceof User) {
-            $referrers = $this->refererRepository->findAllByUserBeforeDate($user, $payment->getUpdatedAt());
+            $referrers = $this->refererRepository->findAllByUserBeforeDate($user, $entity->getActionDate());
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
@@ -61,7 +61,7 @@ class PaymentRefererBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Admin/referrers.html.twig',
-            'payment' => null,
+            'entity' => null,
         ]);
     }
 }

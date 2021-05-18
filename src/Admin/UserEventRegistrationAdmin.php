@@ -17,6 +17,16 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
     private $eventRepository;
 
     /**
+     * Default Datagrid values.
+     *
+     * @var array
+     */
+    protected $datagridValues = [
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
+    /**
      * @param string          $code
      * @param class-string    $class
      * @param string          $baseControllerName
@@ -89,6 +99,15 @@ final class UserEventRegistrationAdmin extends AbstractAdmin
             ->add('event', null, ['label' => 'Событие'])
             ->add('user.fullname', null, ['label' => 'Пользователь'])
             ->add('user', null, ['label' => 'E-mail'])
+            ->add(
+                'referrers',
+                'string',
+                [
+                    'template' => 'Admin/entity_user_referrers.html.twig',
+                    'label' => 'Реферы',
+                    'mapping' => false,
+                ]
+            )
             ->add('user.phone', null, ['label' => 'Номер телефона'])
             ->add('used', null, ['label' => 'Использован'])
             ->add('createdAt', null, ['label' => 'Дата регистрации'])
