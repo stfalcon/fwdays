@@ -19,7 +19,7 @@ class RefererRequestSubscriber implements EventSubscriberInterface
     use LoggerTrait;
 
     public const EXCLUDE_URLS = [
-        '~^https://accounts.google.com/~',
+        '~^https://accounts\.google\.com/~',
     ];
 
     /** @var RefererService */
