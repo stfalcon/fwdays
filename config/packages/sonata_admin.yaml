@@ -73,4 +73,4 @@ sonata_block:
         sonata.block.footer:
         sonata.block.language_switcher:
         sonata.block.email_user_subscribe:
-        sonata.block.event.payment_referer:
+        sonata.block.event.entity_referer:

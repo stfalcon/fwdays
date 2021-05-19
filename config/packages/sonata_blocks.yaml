@@ -263,8 +263,8 @@ services:
         tags:
             - { name: sonata.block }
 
-    sonata.block.event.payment_referer:
+    sonata.block.event.entity_referer:
         class: App\Service\SonataBlock\AdminBlock\PaymentRefererBlockService
-        arguments: ['sonata.block.event.payment_referer', '@templating', '@App\Repository\Referer\RefererRepository']
+        arguments: ['sonata.block.event.entity_referer', '@templating', '@App\Repository\Referer\RefererRepository']
         tags:
             - { name: sonata.block }

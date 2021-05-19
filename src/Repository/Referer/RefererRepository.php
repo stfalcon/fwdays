@@ -40,12 +40,12 @@ class RefererRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User      $user
-     * @param \DateTime $dateTime
+     * @param User               $user
+     * @param \DateTimeInterface $dateTime
      *
      * @return Referer[]
      */
-    public function findAllByUserBeforeDate(User $user, \DateTime $dateTime)
+    public function findAllByUserBeforeDate(User $user, \DateTimeInterface $dateTime)
     {
         $qb = $this->createQueryBuilder('r');
         $qb->where($qb->expr()->eq('r.user', ':user'))
