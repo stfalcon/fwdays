@@ -112,7 +112,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $tickets = [];
         }
 
-        $accessGrand = $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
+        $accessGrand = EventBlock::VISIBILITY_ALL !== $eventBlock->getVisibility() || $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
 
         if (!$accessGrand) {
             return new Response();

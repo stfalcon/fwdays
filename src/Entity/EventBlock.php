@@ -308,18 +308,18 @@ class EventBlock implements TranslatableInterface
             'vimeo' => [
                 'vimeo трансляция' => self::VIMEO_PRIVATE_VIDEO,
                 'vimeo playlist' => self::VIMEO_PRIVATE_PLAYLIST,
-                'vimeo трансляция standard' => self::VIMEO_PRIVATE_VIDEO_STANDARD,
-                'vimeo playlist standard' => self::VIMEO_PRIVATE_PLAYLIST_STANDARD,
-                'vimeo трансляция premium' => self::VIMEO_PRIVATE_VIDEO_PREMIUM,
-                'vimeo playlist premium' => self::VIMEO_PRIVATE_PLAYLIST_PREMIUM,
+                '(не использовать) vimeo трансляция standard' => self::VIMEO_PRIVATE_VIDEO_STANDARD,
+                '(не использовать) vimeo playlist standard' => self::VIMEO_PRIVATE_PLAYLIST_STANDARD,
+                '(не использовать) vimeo трансляция premium' => self::VIMEO_PRIVATE_VIDEO_PREMIUM,
+                '(не использовать) vimeo playlist premium' => self::VIMEO_PRIVATE_PLAYLIST_PREMIUM,
             ],
             'youtube' => [
                 'youtube трансляция' => self::YOUTUBE_PRIVATE_VIDEO,
                 'youtube playlist' => self::YOUTUBE_PRIVATE_PLAYLIST,
-                'youtube трансляция standard' => self::YOUTUBE_PRIVATE_VIDEO_STANDARD,
-                'youtube playlist standard' => self::YOUTUBE_PRIVATE_PLAYLIST_STANDARD,
-                'youtube трансляция premium' => self::YOUTUBE_PRIVATE_VIDEO_PREMIUM,
-                'youtube playlist premium' => self::YOUTUBE_PRIVATE_PLAYLIST_PREMIUM,
+                '(не использовать) youtube трансляция standard' => self::YOUTUBE_PRIVATE_VIDEO_STANDARD,
+                '(не использовать) youtube playlist standard' => self::YOUTUBE_PRIVATE_PLAYLIST_STANDARD,
+                '(не использовать) youtube трансляция premium' => self::YOUTUBE_PRIVATE_VIDEO_PREMIUM,
+                '(не использовать) youtube playlist premium' => self::YOUTUBE_PRIVATE_PLAYLIST_PREMIUM,
             ],
         ];
     }
