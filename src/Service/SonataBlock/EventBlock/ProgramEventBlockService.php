@@ -2,33 +2,33 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
-use App\Entity\Event;
+use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
 use App\Service\EventService;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
- * Class ProgramEventBlockService.
+ * ProgramEventBlockService.
  */
 class ProgramEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     /** @var EventService */
     private $eventService;
 
     /**
-     * ProgramEventBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param EventService    $eventService
+     * @param Environment  $twig
+     * @param EventService $eventService
      */
-    public function __construct($name, EngineInterface $templating, EventService $eventService)
+    public function __construct(Environment $twig, EventService $eventService)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->eventService = $eventService;
     }
@@ -38,11 +38,17 @@ class ProgramEventBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $event = $blockContext->getSetting('event');
-
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+        $eventBlock = $blockContext->getSetting('event_block');
+        if (!$eventBlock instanceof EventBlock) {
+            throw new RuntimeException();
         }
+
+        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+        if (!$accessGrand) {
+            return new Response();
+        }
+
+        $event = $eventBlock->getEvent();
 
         $pages = $this->eventService->getEventPages($event);
         $programPage = isset($pages['programPage']) ? $pages['programPage'] : null;
@@ -60,7 +66,6 @@ class ProgramEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.program.html.twig',
-            'event' => null,
             'event_block' => null,
         ]);
     }

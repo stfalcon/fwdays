@@ -3,35 +3,35 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Category;
-use App\Entity\Event;
+use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
 use App\Repository\CategoryRepository;
 use App\Repository\SponsorRepository;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
- * Class PartnersEventBlockService.
+ * PartnersEventBlockService.
  */
 class PartnersEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     private $partnerRepository;
     private $partnerCategoryRepository;
 
     /**
-     * PartnersEventBlockService constructor.
-     *
-     * @param string             $name
-     * @param EngineInterface    $templating
+     * @param Environment        $twig
      * @param SponsorRepository  $partnerRepository
      * @param CategoryRepository $partnerCategoryRepository
      */
-    public function __construct($name, EngineInterface $templating, SponsorRepository $partnerRepository, CategoryRepository $partnerCategoryRepository)
+    public function __construct(Environment $twig, SponsorRepository $partnerRepository, CategoryRepository $partnerCategoryRepository)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->partnerRepository = $partnerRepository;
         $this->partnerCategoryRepository = $partnerCategoryRepository;
@@ -42,12 +42,16 @@ class PartnersEventBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $event = $blockContext->getSetting('event');
-
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+        $eventBlock = $blockContext->getSetting('event_block');
+        if (!$eventBlock instanceof EventBlock) {
+            throw new RuntimeException();
         }
 
+        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+        if (!$accessGrand) {
+            return new Response();
+        }
+        $event = $eventBlock->getEvent();
         $partners = $this->partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
@@ -80,7 +84,6 @@ class PartnersEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Partner/partners.html.twig',
-            'event' => null,
             'event_block' => null,
         ]);
     }
