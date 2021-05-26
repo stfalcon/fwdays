@@ -2,9 +2,10 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
+use App\Entity\Event;
 use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
 use App\Traits\GrandAccessSonataBlockServiceTrait;
-use http\Exception\RuntimeException;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,16 +24,20 @@ class DescriptionEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $eventBlock = $blockContext->getSetting('event_block');
-        if (!$eventBlock instanceof EventBlock) {
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
+        }
+
+        if (!$event instanceof Event) {
             throw new RuntimeException();
         }
 
-        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
-        if (!$accessGrand) {
-            return new Response();
-        }
-
-        $event = $eventBlock->getEvent();
         $about = $event->getAbout();
 
         if (!$about) {
@@ -54,6 +59,7 @@ class DescriptionEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.description.html.twig',
+            'event' => null,
             'event_block' => null,
         ]);
     }

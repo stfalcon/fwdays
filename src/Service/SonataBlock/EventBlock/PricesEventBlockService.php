@@ -2,6 +2,7 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
+use App\Entity\Event;
 use App\Entity\EventBlock;
 use App\Entity\TicketCost;
 use App\Exception\RuntimeException;
@@ -40,16 +41,19 @@ class PricesEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $eventBlock = $blockContext->getSetting('event_block');
-        if (!$eventBlock instanceof EventBlock) {
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
+        }
+
+        if (!$event instanceof Event) {
             throw new RuntimeException();
         }
-
-        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
-        if (!$accessGrand) {
-            return new Response();
-        }
-
-        $event = $eventBlock->getEvent();
         $ticketCosts = $this->ticketCostRepository->getAllTicketsCostForEvent($event);
 
         $isOldPrice = false;
@@ -90,6 +94,7 @@ class PricesEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/Price/event_price.html.twig',
+            'event' => null,
             'event_block' => null,
         ]);
     }

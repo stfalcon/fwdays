@@ -2,6 +2,7 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
+use App\Entity\Event;
 use App\Entity\EventBlock;
 use App\Repository\ReviewRepository;
 use App\Traits\GrandAccessSonataBlockServiceTrait;
@@ -40,16 +41,19 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
         $eventBlock = $blockContext->getSetting('event_block');
-        if (!$eventBlock instanceof EventBlock) {
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
+        }
+
+        if (!$event instanceof Event) {
             throw new RuntimeException();
         }
-
-        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
-        if (!$accessGrand) {
-            return new Response();
-        }
-
-        $event = $eventBlock->getEvent();
         $speakers = $event->getCandidateSpeakers();
 
         foreach ($speakers as &$speaker) {
@@ -75,6 +79,7 @@ class CandidateSpeakersEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.speakers.html.twig',
+            'event' => null,
             'event_block' => null,
         ]);
     }

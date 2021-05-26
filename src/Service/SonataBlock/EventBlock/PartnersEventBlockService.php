@@ -3,6 +3,7 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Category;
+use App\Entity\Event;
 use App\Entity\EventBlock;
 use App\Exception\RuntimeException;
 use App\Repository\CategoryRepository;
@@ -43,15 +44,19 @@ class PartnersEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $eventBlock = $blockContext->getSetting('event_block');
-        if (!$eventBlock instanceof EventBlock) {
-            throw new RuntimeException();
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
         }
 
-        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
-        if (!$accessGrand) {
-            return new Response();
+        if (!$event instanceof Event) {
+            throw new RuntimeException();
         }
-        $event = $eventBlock->getEvent();
         $partners = $this->partnerRepository->getSponsorsOfEventWithCategory($event);
 
         $sortedPartners = [];
@@ -84,6 +89,7 @@ class PartnersEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Partner/partners.html.twig',
+            'event' => null,
             'event_block' => null,
         ]);
     }
