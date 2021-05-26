@@ -10,7 +10,6 @@ use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
@@ -41,19 +40,18 @@ class VenueEventBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $eventBlock = $blockContext->getSetting('event_block');
-        if (!$eventBlock instanceof EventBlock) {
-            throw new RuntimeException();
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
         }
-
-        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
-        if (!$accessGrand) {
-            return new Response();
-        }
-
-        $event = $eventBlock->getEvent();
 
         if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+            throw new RuntimeException();
         }
 
         $pages = $this->eventService->getEventPages($event);
@@ -73,6 +71,7 @@ class VenueEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.venue.html.twig',
+            'event' => null,
             'event_block' => null,
         ]);
     }

@@ -58,7 +58,7 @@
         {{ sonata_block_render({ 'type': block_type }, {'event_block': block}) }}
     {%- endfor -%}
     {%- if event_blocks_rendered == 0 -%}
-        {% include 'Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}
+        {% include 'Redesign/Event/event.standart_blocks.html.twig' with {'event': event} %}
     {%- endif -%}
 
     <button class="btn-up" style="background-color: {{ event.backgroundColor }}"></button>
