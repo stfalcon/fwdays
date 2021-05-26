@@ -31,8 +31,16 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                     'label' => 'Тип',
                 ]
             )
-            ->add('visible', null, ['label' => 'включен'])
-            ->add('position', null, ['label' => 'позиция'])
+            ->add(
+                'visibility',
+                ChoiceType::class,
+                [
+                    'choices' => EventBlock::getVisibilityChoices(),
+                    'label' => 'Видимость блока',
+                ]
+            )
+            ->add('visible', null, ['label' => 'Включен'])
+            ->add('position', null, ['label' => 'Позиция'])
             ->add('translations', GedmoTranslationsType::class, [
                 'translatable_class' => $this->getClass(),
                 'fields' => [

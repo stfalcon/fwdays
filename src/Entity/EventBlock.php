@@ -48,6 +48,13 @@ class EventBlock implements TranslatableInterface
     const VIMEO_PRIVATE_VIDEO_PREMIUM = 'vimeo_private_video_premium';
     const VIMEO_PRIVATE_PLAYLIST_PREMIUM = 'vimeo_private_playlist_premium';
 
+    public const VISIBILITY_ALL = 'vis_all';
+    public const VISIBILITY_NOT_AUTH = 'vis_not_auth';
+    public const VISIBILITY_AUTH = 'vis_auth';
+    public const VISIBILITY_EVENT_REGISTERED = 'vis_event_registered';
+    public const VISIBILITY_EVENT_STANDARD = 'vis_event_standard';
+    public const VISIBILITY_EVENT_PREMIUM = 'vis_event_premium';
+
     /**
      * @var int
      *
@@ -103,6 +110,16 @@ class EventBlock implements TranslatableInterface
      * @ORM\Column(type="boolean")
      */
     private $visible = true;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", name="visibility", options={"default": "vis_all"}, nullable=false)
+     *
+     * @Assert\NotBlank
+     * @Assert\Type("string")
+     */
+    private $visibility = self::VISIBILITY_ALL;
 
     /**
      * @var int
@@ -228,6 +245,45 @@ class EventBlock implements TranslatableInterface
         $this->position = $position;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibility(): string
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * @param string $visibility
+     *
+     * @return $this
+     */
+    public function setVisibility(string $visibility): self
+    {
+        $this->visibility = $visibility;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getVisibilityChoices(): array
+    {
+        return [
+            'Вид авторизации' => [
+                'Всем (видят все)' => self::VISIBILITY_ALL,
+                'Не авторизирован (видят только не авторизированные пользователи)' => self::VISIBILITY_NOT_AUTH,
+                'Авторизирован (видят только авторизированные пользователи)' => self::VISIBILITY_AUTH,
+            ],
+            'Билет' => [
+                'Регистрация на событие (видят только бесплатно зарегистрированые на событие)' => self::VISIBILITY_EVENT_REGISTERED,
+                'Standard билет (видят только купившие билет Standard)' => self::VISIBILITY_EVENT_STANDARD,
+                'Premium билет(видят только купившие билет Premium)' => self::VISIBILITY_EVENT_PREMIUM,
+            ],
+        ];
     }
 
     /**

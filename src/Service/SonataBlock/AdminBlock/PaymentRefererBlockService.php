@@ -7,9 +7,9 @@ use App\Entity\UserWithDateActionInterface;
 use App\Repository\Referer\RefererRepository;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * PaymentRefererBlockService.
@@ -20,13 +20,12 @@ class PaymentRefererBlockService extends AbstractBlockService
     private $refererRepository;
 
     /**
-     * @param string            $name
-     * @param EngineInterface   $templating
+     * @param Environment       $twig
      * @param RefererRepository $refererRepository
      */
-    public function __construct($name, EngineInterface $templating, RefererRepository $refererRepository)
+    public function __construct(Environment $twig, RefererRepository $refererRepository)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->refererRepository = $refererRepository;
     }

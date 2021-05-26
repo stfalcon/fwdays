@@ -2,33 +2,33 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
-use App\Entity\Event;
+use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
 use App\Repository\ReviewRepository;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
- * Class ReviewsEventBlockService.
+ * ReviewsEventBlockService.
  */
 class ReviewsEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     /** @var ReviewRepository */
     private $reviewRepository;
 
     /**
-     * SpeakersEventBlockService constructor.
-     *
-     * @param string           $name
-     * @param EngineInterface  $templating
+     * @param Environment      $twig
      * @param ReviewRepository $reviewRepository
      */
-    public function __construct($name, EngineInterface $templating, ReviewRepository $reviewRepository)
+    public function __construct(Environment $twig, ReviewRepository $reviewRepository)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->reviewRepository = $reviewRepository;
     }
@@ -36,14 +36,19 @@ class ReviewsEventBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
-        $event = $blockContext->getSetting('event');
-
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+        $eventBlock = $blockContext->getSetting('event_block');
+        if (!$eventBlock instanceof EventBlock) {
+            throw new RuntimeException();
         }
 
+        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+        if (!$accessGrand) {
+            return new Response();
+        }
+
+        $event = $eventBlock->getEvent();
         $reviews = $this->reviewRepository->findReviewsByEvent($event);
 
         return $this->renderResponse($blockContext->getTemplate(), [
@@ -60,7 +65,6 @@ class ReviewsEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.reviews.html.twig',
-            'event' => null,
             'event_block' => null,
         ]);
     }

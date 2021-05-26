@@ -55,7 +55,7 @@
     {%- for block in event.blocks if block.visible -%}
         {% set event_blocks_rendered = event_blocks_rendered + 1 %}
         {% set block_type = 'sonata.block.event.' ~ block.type %}
-        {{ sonata_block_render({ 'type': block_type }, {'event': event, 'event_block': block}) }}
+        {{ sonata_block_render({ 'type': block_type }, {'event_block': block}) }}
     {%- endfor -%}
     {%- if event_blocks_rendered == 0 -%}
         {% include 'Redesign/Event/event.standart_blocks.html.twig' with{'event': event} %}

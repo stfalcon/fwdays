@@ -8,11 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Templating\EngineInterface;
 use Twig\Environment;
 
 /**
- * Class LanguageSwitcherBlockService.
+ * LanguageSwitcherBlockService.
  */
 class LanguageSwitcherBlockService extends AbstractBlockService
 {
@@ -23,16 +22,13 @@ class LanguageSwitcherBlockService extends AbstractBlockService
     private $locales;
 
     /**
-     * ProgramEventBlockService constructor.
-     *
-     * @param Environment|EngineInterface|string $name
-     * @param EngineInterface                    $templating
-     * @param RequestStack                       $requestStack
-     * @param array                              $locales
+     * @param Environment  $twig
+     * @param RequestStack $requestStack
+     * @param array        $locales
      */
-    public function __construct($name, EngineInterface $templating, RequestStack $requestStack, array $locales)
+    public function __construct(Environment $twig, RequestStack $requestStack, array $locales)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->request = $requestStack->getCurrentRequest();
         $this->locales = $locales;
