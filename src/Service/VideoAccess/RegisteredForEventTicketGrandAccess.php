@@ -44,20 +44,6 @@ class RegisteredForEventTicketGrandAccess implements GrandAccessForVideoInterfac
      */
     public function access(Event $event, ?User $user, array $tickets): bool
     {
-        if (!$user instanceof User) {
-            return false;
-        }
-
-        $hasAnyTicket = false;
-
-        /** @var Ticket $ticket */
-        foreach ($tickets as $ticket) {
-            if ($ticket->getEvent()->isEqualTo($event) && $ticket->isPaid()) {
-                $hasAnyTicket = true;
-                break;
-            }
-        }
-
-        return !$hasAnyTicket && $this->userRegistrationRepository->isUserRegisteredForEvent($user, $event);
+        return true;
     }
 }
