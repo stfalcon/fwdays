@@ -11,7 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * App\Entity\Payment.
  *
- * @ORM\Table(name="payments")
+ * @ORM\Table(name="payments", indexes={
+ *         @ORM\Index(columns={"status"})
+ *     })
  * @ORM\Entity(repositoryClass="App\Repository\PaymentRepository")
  *
  * @ORM\EntityListeners({
