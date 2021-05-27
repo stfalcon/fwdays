@@ -2,11 +2,10 @@
 
 namespace App\Service\SonataBlock;
 
-use App\Repository\BannerRepository;
-use App\Traits\RequestStackTrait;
+use App\Entity\Banner;
+use App\Service\BannerService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
@@ -16,20 +15,18 @@ use Twig\Environment;
  */
 class BannerBlockService extends AbstractBlockService
 {
-    use RequestStackTrait;
-
-    /** @var BannerRepository */
-    private $bannerRepository;
+    /** @var BannerService */
+    private $bannerService;
 
     /**
-     * @param Environment      $twig
-     * @param BannerRepository $bannerRepository
+     * @param Environment   $twig
+     * @param BannerService $bannerService
      */
-    public function __construct(Environment $twig, BannerRepository $bannerRepository)
+    public function __construct(Environment $twig, BannerService $bannerService)
     {
         parent::__construct($twig);
 
-        $this->bannerRepository = $bannerRepository;
+        $this->bannerService = $bannerService;
     }
 
     /**
@@ -37,24 +34,16 @@ class BannerBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $banners = $this->bannerRepository->getActiveBanners();
-        $request = $this->requestStack->getCurrentRequest();
+        $banner = $this->bannerService->getActiveBannerWithOutCookieClosed();
 
-        if ($request instanceof Request && !empty($banners)) {
-            $currentUri = $request->getRequestUri();
-
-            foreach ($banners as $banner) {
-                if (\preg_match('~'.$banner->getUrl().'~', $currentUri)) {
-
-                    return $this->renderResponse($blockContext->getTemplate(), [
-                        'block' => $blockContext->getBlock(),
-                        'banner' => $banner,
-                    ], $response);
-                }
-            }
+        if (!$banner instanceof Banner) {
+            return new Response();
         }
 
-        return new Response();
+        return $this->renderResponse($blockContext->getTemplate(), [
+            'block' => $blockContext->getBlock(),
+            'banner' => $banner,
+        ], $response);
     }
 
     /**

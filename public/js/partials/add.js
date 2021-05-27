@@ -118,6 +118,15 @@ $(document).on('click', '.alert__close', function () {
     }
 });
 
+$(document).on('click', '.banner__close', function () {
+    var parent = $(this).parent().parent();
+    var parent_id = parent.data('banner-id');
+
+    parent.hide();
+
+    $.post(Routing.generate('close_banner', {'id': parent_id}));
+});
+
 $(document).on('click', '.language_switcher', function (e) {
     Cookies.set('hl', $(this).data('lang'));
 });

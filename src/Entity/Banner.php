@@ -7,8 +7,8 @@ use App\Entity\Timestampable\TimestampableTrait;
 use App\Traits\TranslateTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="banners",

@@ -3,7 +3,7 @@
 namespace App\Entity\Translation;
 
 use App\Entity\AbstractClass\AbstractTranslation;
-use App\Entity\Event;
+use App\Entity\Banner;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

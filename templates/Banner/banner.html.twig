@@ -1,3 +1,8 @@
 {% if banner %}
-    <div>{{ banner.text|raw }}</div>
+    <div class="banner" data-banner-id="{{ banner.id }}" style="background-color: {{ banner.backgroundColor }};">
+        <div class="banner__container">
+            <div class="banner__content">{{ banner.text|raw }}</div>
+            <button class="banner__close icon-close icon-close--white"></button>
+        </div>
+    </div>
 {% endif %}

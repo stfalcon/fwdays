@@ -6,9 +6,8 @@ namespace App\Repository;
 
 use App\Entity\Banner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\Query\Parameter;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,9 +24,45 @@ class BannerRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param array $notInclude
+     *
      * @return array|Banner[]
      */
-    public function getActiveBanners(): array
+    public function getActiveBannersWithOutIncluded(array $notInclude = []): array
+    {
+        $qb = $this->getActiveBannersQb();
+
+        if (!empty($notInclude)) {
+            $qb->andWhere($qb->expr()->notIn('b.id', ':not_include'))
+                ->setParameter('not_include', $notInclude)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $include
+     *
+     * @return array|Banner[]
+     */
+    public function getActiveBannersIncluded(array $include = []): array
+    {
+        $qb = $this->getActiveBannersQb();
+
+        if (!empty($include)) {
+            $qb->andWhere($qb->expr()->in('b.id', ':include'))
+                ->setParameter('include', $include)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    private function getActiveBannersQb(): QueryBuilder
     {
         $now = new \DateTime('now');
 
@@ -35,23 +70,18 @@ class BannerRepository extends ServiceEntityRepository
 
         $qb
             ->where($qb->expr()->eq('b.active', ':active'))
-            ->andWhere($qb->expr()->orX(
-                $qb->expr()->lte('b.since', ':now'),
-                $qb->expr()->isNull('b.since')
-            ))
+            ->andWhere($qb->expr()->lte('b.since', ':now'))
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->gte('b.till', ':now'),
                 $qb->expr()->isNull('b.till')
             ))
-            ->setParameters(new ArrayCollection([
-                new Parameter('active', true),
-                new Parameter('now', $now),
-            ]))
+            ->setParameter('active', true)
+            ->setParameter('now', $now)
             ->orderBy('b.since', Criteria::DESC)
             ->addOrderBy('b.till', Criteria::DESC)
             ->addOrderBy('b.id', Criteria::DESC)
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 }
