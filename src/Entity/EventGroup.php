@@ -7,8 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class EventGroup.
- *
  * @ORM\Table(name="event_group")
  * @ORM\Entity()
  */

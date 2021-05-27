@@ -225,6 +225,10 @@ services:
         arguments: ['@twig', '@App\Repository\PageRepository']
         tags: [name: 'sonata.block']
 
+    sonata.block.banner:
+        class: App\Service\SonataBlock\BannerBlockService
+        tags: [name: 'sonata.block']
+
     sonata.block.language_switcher:
         class: App\Service\SonataBlock\LanguageSwitcherBlockService
         arguments: ['@twig', '@request_stack', '%locales%']

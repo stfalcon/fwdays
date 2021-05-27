@@ -99,6 +99,13 @@
   }
 }
 
+.icon-close--white {
+  &:after,
+  &:before {
+    background-color: $white-color;
+  }
+}
+
 .icon-close--circle {
   width: 54px;
   height: 54px;

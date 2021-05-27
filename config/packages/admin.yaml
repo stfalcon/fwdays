@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     app.admin.event_audience:
         class: App\Admin\EventAudienceAdmin
         arguments: [~, 'App\Entity\EventAudience', ~]
@@ -191,3 +195,9 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Настройки, label: Настройки }
         arguments: ['', 'App\Entity\Option', ~]
+
+    app.banner.admin:
+        class: App\Admin\BannerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Настройки, label: Баннер }
+        arguments: ['', 'App\Entity\Banner', ~]
