@@ -77,9 +77,7 @@ class BannerRepository extends ServiceEntityRepository
             ))
             ->setParameter('active', true)
             ->setParameter('now', $now)
-            ->orderBy('b.since', Criteria::DESC)
-            ->addOrderBy('b.till', Criteria::DESC)
-            ->addOrderBy('b.id', Criteria::DESC)
+            ->orderBy('b.createdAt', Criteria::DESC)
         ;
 
         return $qb;
