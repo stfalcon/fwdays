@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     app.admin.event_audience:
         class: App\Admin\EventAudienceAdmin
         arguments: [~, 'App\Entity\EventAudience', ~]
@@ -16,28 +20,28 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Спонсоры }
         arguments: ['', 'App\Entity\Sponsor', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
-            - [setCacheManager, ['@liip_imagine.cache.manager']]
-            - [setDataManager, ['@liip_imagine.data.manager']]
-            - [setFilterManager, ['@liip_imagine.filter.manager']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#            - [setCacheManager, ['@liip_imagine.cache.manager']]
+#            - [setDataManager, ['@liip_imagine.data.manager']]
+#            - [setFilterManager, ['@liip_imagine.filter.manager']]
 
     app.admin.category:
         class: App\Admin\CategoryAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Спонсоры, label: Категории }
         arguments: ['', 'App\Entity\Category', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.admin.event:
         class: App\Admin\EventAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: События }
         arguments: ['', 'App\Entity\Event', ~, '@App\Service\User\UserService', '@App\Repository\CityRepository', '@app.s3_helper.service']
-        calls:
-            - [setGoogleMap, ['@App\Service\GoogleMapService']]
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setGoogleMap, ['@App\Service\GoogleMapService']]
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.admin.event_group:
         class: App\Admin\EventGroupAdmin
@@ -50,27 +54,27 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Доклады }
         arguments: ['', 'App\Entity\Review', ~, '@App\Repository\EventRepository']
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.admin.speaker:
         class: App\Admin\SpeakerAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Докладчики }
         arguments: ['', 'App\Entity\Speaker', ~, '@App\Repository\EventRepository']
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
-            - [setCacheManager, ['@liip_imagine.cache.manager']]
-            - [setDataManager, ['@liip_imagine.data.manager']]
-            - [setFilterManager, ['@liip_imagine.filter.manager']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#            - [setCacheManager, ['@liip_imagine.cache.manager']]
+#            - [setDataManager, ['@liip_imagine.data.manager']]
+#            - [setFilterManager, ['@liip_imagine.filter.manager']]
 
     app.admin.event_page:
         class: App\Admin\EventPageAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: События, label: Страницы }
         arguments: ['', 'App\Entity\EventPage', ~, '@App\Repository\EventRepository']
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.admin.mails:
         class: App\Admin\MailAdmin
@@ -79,16 +83,16 @@ services:
         arguments: ['', 'App\Entity\Mail', App\Controller\MailAdminController, '@App\Repository\UserRepository', '@App\Repository\TicketRepository']
         calls:
             - [addChild, ['@app.admin.mail_queue']]
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
-            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#            - [setEntityManager, ['@doctrine.orm.entity_manager']]
 
     app.admin.mail_queue:
         class: App\Admin\MailQueueAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Рассылки, label: Очередь }
         arguments: ['', 'App\Entity\MailQueue', ~]
-        calls:
-            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+#        calls:
+#            - [setEntityManager, ['@doctrine.orm.entity_manager']]
 
     app.admin.tickets:
         class: App\Admin\TicketAdmin
@@ -101,25 +105,25 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: Платежи }
         arguments: ['', 'App\Entity\Payment', ~, '@App\Repository\EventRepository']
-        calls:
-            - [setTokenStorage, ['@security.token_storage']]
+#        calls:
+#            - [setTokenStorage, ['@security.token_storage']]
 
     app.admin.promo_code:
         class: App\Admin\PromoCodeAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Билеты, label: 'Промо коды' }
         arguments: ['', 'App\Entity\PromoCode', ~, '@App\Repository\EventRepository']
-        calls:
-            - [setTokenStorage, ['@security.token_storage']]
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setTokenStorage, ['@security.token_storage']]
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.admin.user:
         class: App\Admin\UserAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Пользователи, label: 'Пользователи' }
         arguments: ['', 'App\Entity\User', ~]
-        calls:
-            - [setTokenStorage, ['@security.token_storage']]
+#        calls:
+#            - [setTokenStorage, ['@security.token_storage']]
 
     app.admin.user_event:
         class: App\Admin\UserEventRegistrationAdmin
@@ -138,8 +142,8 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Страницы, label: Страницы }
         arguments: ['', 'App\Entity\Page', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.ticket_cost.admin:
         class: App\Admin\TicketCostAdmin
@@ -152,16 +156,16 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'App\Entity\TicketBenefit', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.event_block.admin:
         class: App\Admin\EventBlockAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, show_in_dashboard: false}
         arguments: [~, 'App\Entity\EventBlock', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.wayforpay_log.admin:
         class: App\Admin\WayForPayLogAdmin
@@ -174,20 +178,26 @@ services:
         tags:
             - { name: mail_admin, manager_type: orm }
         arguments: ['', 'App\Entity\Mail', 'App\Controller\MailAdminController', '@App\Repository\UserRepository', '@App\Repository\TicketRepository']
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
-            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#            - [setEntityManager, ['@doctrine.orm.entity_manager']]
 
     app.city.admin:
         class: App\Admin\CityAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Города, label: Города }
         arguments: ['', 'App\Entity\City', ~]
-        calls:
-            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
+#        calls:
+#            - [setLocalsRequiredService, ['@App\Service\LocalsRequiredService']]
 
     app.option.admin:
         class: App\Admin\OptionAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Настройки, label: Настройки }
         arguments: ['', 'App\Entity\Option', ~]
+
+    app.banner.admin:
+        class: App\Admin\BannerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Настройки, label: Баннер }
+        arguments: ['', 'App\Entity\Banner', ~]

@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
     sonata.block.event.text:
         class: App\Service\SonataBlock\EventBlock\TextEventBlockService
@@ -243,6 +247,10 @@ services:
     sonata.block.footer:
         class: App\Service\SonataBlock\FooterBlockService
         arguments: ['sonata.block.footer', '@templating', '@App\Repository\PageRepository']
+        tags: [name: 'sonata.block']
+
+    sonata.block.banner:
+        class: App\Service\SonataBlock\BannerBlockService
         tags: [name: 'sonata.block']
 
     sonata.block.language_switcher:

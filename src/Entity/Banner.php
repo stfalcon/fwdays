@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Timestampable\TimestampableInterface;
 use App\Entity\Timestampable\TimestampableTrait;
 use App\Traits\TranslateTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -66,7 +67,7 @@ class Banner implements TimestampableInterface
      *
      * @Gedmo\Translatable(fallback=true)
      */
-    private $text;
+    private $text = '';
 
     /**
      * @var string
@@ -75,7 +76,7 @@ class Banner implements TimestampableInterface
      *
      * @Assert\NotBlank()
      */
-    private $backgroundColor;
+    private $backgroundColor = '';
 
     /**
      * @var string
@@ -99,6 +100,7 @@ class Banner implements TimestampableInterface
     public function __construct()
     {
         $this->initTimestampableFields();
+        $this->translations = new ArrayCollection();
     }
 
     /**
