@@ -11,8 +11,6 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 abstract class AbstractTranslation extends AbstractPersonalTranslation implements TranslatableEntityInterface
 {
     /**
-     * Convenient constructor.
-     *
      * @param string $locale  locale
      * @param string $field   field
      * @param string $content content

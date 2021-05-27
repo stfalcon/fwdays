@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity\Timestampable;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -15,18 +13,18 @@ trait TimestampableTrait
     /**
      * @var \DateTimeImmutable
      *
-     * @ORM\Column(type="datetimetz_immutable")
+     * @ORM\Column(type="datetime_immutable")
      */
-    protected \DateTimeImmutable $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetime")
      *
      * @Gedmo\Timestampable(on="update")
      */
-    protected \DateTime $updatedAt;
+    protected $updatedAt;
 
     /**
      * @param \DateTimeImmutable $createdAt

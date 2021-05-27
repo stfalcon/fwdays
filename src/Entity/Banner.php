@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Entity\Timestampable\TimestampableInterface;
 use App\Entity\Timestampable\TimestampableTrait;
+use App\Traits\TranslateTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="banners",
@@ -13,10 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\Index(columns={"since", "till", "active"})
  *     })
  * @ORM\Entity()
+ *
+ * @Gedmo\TranslationEntity(class="App\Entity\Translation\BannerTranslation")
  */
 class Banner implements TimestampableInterface
 {
     use TimestampableTrait;
+    use TranslateTrait;
 
     /**
      * @var int
@@ -26,6 +31,15 @@ class Banner implements TimestampableInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(
+     *   targetEntity="App\Entity\Translation\BannerTranslation",
+     *   mappedBy="object",
+     *   cascade={"persist", "remove"}
+     * )
+     */
+    private $translations;
 
     /**
      * @var \DateTimeInterface|null
@@ -49,6 +63,8 @@ class Banner implements TimestampableInterface
      * @ORM\Column(type="string", nullable=false)
      *
      * @Assert\NotBlank()
+     *
+     * @Gedmo\Translatable(fallback=true)
      */
     private $text;
 
