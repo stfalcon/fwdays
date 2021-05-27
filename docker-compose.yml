@@ -25,7 +25,9 @@ services:
             - "php"
 
     php:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.10
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev:v1.11
+        # extra_hosts:
+        #     - "host.docker.internal:host-gateway"
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
@@ -41,13 +43,12 @@ services:
             - "sessions"
 
     php_cli:
-        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev-cli:v1.10
+        image: gitlab.stfalcon.com:4567/stfalcon/fwdays/fwdays-dev-cli:v1.11
         environment:
             - "PHP_IDE_CONFIG=serverName=fwdays-docker"
         volumes:
             - "./docker-configs/fwdays-dev/configs/php-fpm.ini:/etc/php/7.3/fpm/php.ini"
             - "./docker-configs/fwdays-dev/configs/php-cli.ini:/etc/php/7.3/cli/php.ini"
-            - "./docker-configs/fwdays-dev/configs/xdebug.ini:/etc/php/7.3/mods-available/xdebug.ini"
             - ".:/app:cached"
             - "composer:/var/www/.composer"
             - "bash-history-user:/var/www/history/"
