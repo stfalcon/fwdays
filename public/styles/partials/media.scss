@@ -158,6 +158,12 @@
       padding: 10px 16px;
     }
 
+    &__close {
+      height: 24px;
+      width: 24px;
+      top: 10px;
+    }
+
     &__content {
       max-width: 94%;
     }
@@ -1005,9 +1011,6 @@
     }
 
     &__close {
-      height: 24px;
-      width: 24px;
-
       &:after {
         top: 0;
         left: 12px;
