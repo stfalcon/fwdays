@@ -70,10 +70,17 @@ services:
         App\Service\VideoAccess\GrandAccessForVideoInterface:
             tags:
                 - 'grand_access_video'
+        App\Service\SonataBlockAccess\GrandAccessForSonataBlockInterface:
+            tags:
+                - 'grand_access_sonata_block'
 
     App\Service\VideoAccess\GrandAccessVideoService:
         arguments:
             - !tagged grand_access_video
+
+    App\Service\SonataBlockAccess\GrandAccessSonataBlockService:
+        arguments:
+            - !tagged grand_access_sonata_block
 
     App\Service\Ticket\TicketService:
         calls:

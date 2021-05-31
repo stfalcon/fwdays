@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Service\SonataBlock\EventBlock;
+namespace App\Service\SonataBlock;
 
 use App\Entity\Event;
 use App\Service\Ticket\TicketService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
- * Class TicketStatusEventBlockService.
+ * TicketStatusEventBlockService.
  */
 class TicketStatusEventBlockService extends AbstractBlockService
 {
@@ -20,15 +20,12 @@ class TicketStatusEventBlockService extends AbstractBlockService
     private $ticketService;
 
     /**
-     * TicketStatusEventBlockService constructor.
-     *
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param TicketService   $ticketService
+     * @param Environment   $twig
+     * @param TicketService $ticketService
      */
-    public function __construct($name, EngineInterface $templating, TicketService $ticketService)
+    public function __construct(Environment $twig, TicketService $ticketService)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->ticketService = $ticketService;
     }

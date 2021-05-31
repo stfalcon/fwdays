@@ -53,6 +53,7 @@
 <div class="layout-box">
     <!--BEGIN layout-box__top-->
     <div class="layout-box__top">
+        {{ sonata_block_render({ 'type': 'sonata.block.banner' }) }}
         {% include 'Redesign/header.html.twig' %}
 
         {% block content %}{% endblock content %}

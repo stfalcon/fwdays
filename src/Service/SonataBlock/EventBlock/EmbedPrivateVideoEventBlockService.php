@@ -2,31 +2,32 @@
 
 namespace App\Service\SonataBlock\EventBlock;
 
-use App\Entity\Event;
 use App\Entity\EventBlock;
 use App\Entity\UserEventRegistration;
-use App\Repository\TicketRepository;
+use App\Exception\RuntimeException;
 use App\Repository\UserEventRegistrationRepository;
 use App\Service\Ticket\TicketService;
 use App\Service\User\UserService;
 use App\Service\VideoAccess\GrandAccessVideoService;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
+use App\Traits\TicketRepositoryTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Twig\Environment;
 
 /**
  * EmbedPrivateVideoEventBlockService.
  */
 class EmbedPrivateVideoEventBlockService extends AbstractBlockService
 {
-    private $userService;
+    use GrandAccessSonataBlockServiceTrait;
+    use TicketRepositoryTrait;
 
-    /** @var TicketRepository */
-    private $ticketRepository;
+    /** @var UserService */
+    private $userService;
 
     /** @var bool */
     private $isPlaylist = false;
@@ -46,20 +47,17 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
     private $eventRegistrationRepository;
 
     /**
-     * @param string                          $name
-     * @param EngineInterface                 $templating
+     * @param Environment                     $twig
      * @param UserService                     $userService
-     * @param TicketRepository                $ticketRepository
      * @param TicketService                   $ticketService
      * @param GrandAccessVideoService         $grandAccessVideoService
      * @param UserEventRegistrationRepository $eventRegistrationRepository
      */
-    public function __construct($name, EngineInterface $templating, UserService $userService, TicketRepository $ticketRepository, TicketService $ticketService, GrandAccessVideoService $grandAccessVideoService, UserEventRegistrationRepository $eventRegistrationRepository)
+    public function __construct(Environment $twig, UserService $userService, TicketService $ticketService, GrandAccessVideoService $grandAccessVideoService, UserEventRegistrationRepository $eventRegistrationRepository)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->userService = $userService;
-        $this->ticketRepository = $ticketRepository;
         $this->ticketService = $ticketService;
         $this->grandAccessVideoService = $grandAccessVideoService;
         $this->eventRegistrationRepository = $eventRegistrationRepository;
@@ -94,15 +92,17 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $event = $blockContext->getSetting('event');
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
-        }
-
         $eventBlock = $blockContext->getSetting('event_block');
         if (!$eventBlock instanceof EventBlock) {
-            throw new NotFoundHttpException();
+            throw new RuntimeException();
         }
+
+        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+        if (!$accessGrand) {
+            return new Response();
+        }
+
+        $event = $eventBlock->getEvent();
 
         try {
             $user = $this->userService->getCurrentUser();
@@ -112,7 +112,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $tickets = [];
         }
 
-        $accessGrand = $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
+        $accessGrand = EventBlock::VISIBILITY_ALL !== $eventBlock->getVisibility() || $this->grandAccessVideoService->isAccessGrand($this->grandAccessType, $event, $user, $tickets);
 
         if (!$accessGrand) {
             return new Response();
@@ -142,7 +142,6 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => $this->template,
-            'event' => null,
             'event_block' => null,
             'is_playlist' => false,
         ]);

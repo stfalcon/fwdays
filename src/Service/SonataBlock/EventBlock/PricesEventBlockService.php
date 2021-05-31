@@ -3,33 +3,34 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
+use App\Entity\EventBlock;
 use App\Entity\TicketCost;
+use App\Exception\RuntimeException;
 use App\Repository\TicketCostRepository;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * PricesEventBlockService.
  */
 class PricesEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     /** @var TicketCostRepository */
     private $ticketCostRepository;
 
     /**
-     * PricesEventBlockService constructor.
-     *
-     * @param string               $name
-     * @param EngineInterface      $templating
+     * @param Environment          $twig
      * @param TicketCostRepository $ticketCostRepository
      */
-    public function __construct($name, EngineInterface $templating, TicketCostRepository $ticketCostRepository)
+    public function __construct(Environment $twig, TicketCostRepository $ticketCostRepository)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twig);
 
         $this->ticketCostRepository = $ticketCostRepository;
     }
@@ -39,12 +40,20 @@ class PricesEventBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $event = $blockContext->getSetting('event');
-
-        if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+        $eventBlock = $blockContext->getSetting('event_block');
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
         }
 
+        if (!$event instanceof Event) {
+            throw new RuntimeException();
+        }
         $ticketCosts = $this->ticketCostRepository->getAllTicketsCostForEvent($event);
 
         $isOldPrice = false;

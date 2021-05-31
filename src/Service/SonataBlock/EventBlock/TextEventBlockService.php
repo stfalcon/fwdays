@@ -3,26 +3,33 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TextEventBlockService.
+ * TextEventBlockService.
  */
 class TextEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     /**
      * {@inheritdoc}
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $eventBlock = $blockContext->getSetting('event_block');
-
         if (!$eventBlock instanceof EventBlock) {
-            throw new NotFoundHttpException();
+            throw new RuntimeException();
+        }
+
+        $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+        if (!$accessGrand) {
+            return new Response();
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [
@@ -38,7 +45,6 @@ class TextEventBlockService extends AbstractBlockService
     {
         $resolver->setDefaults([
             'template' => 'Redesign/Event/event.text_block.html.twig',
-            'event' => null,
             'event_block' => null,
         ]);
     }

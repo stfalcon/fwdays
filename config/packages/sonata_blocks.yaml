@@ -1,17 +1,19 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
     sonata.block.event.text:
         class: App\Service\SonataBlock\EventBlock\TextEventBlockService
-        arguments: ['sonata.block.event.text', '@templating']
+        arguments: ['@twig']
         tags: [name: 'sonata.block']
 
     sonata.block.event.youtube_private_video:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -22,10 +24,8 @@ services:
     sonata.block.event.youtube_private_playlist:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -37,10 +37,8 @@ services:
     sonata.block.event.vimeo_private_video:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -52,10 +50,8 @@ services:
     sonata.block.event.vimeo_private_playlist:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -68,10 +64,8 @@ services:
     sonata.block.event.youtube_private_video_standard:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -82,10 +76,8 @@ services:
     sonata.block.event.youtube_private_playlist_standard:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -97,10 +89,8 @@ services:
     sonata.block.event.vimeo_private_video_standard:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -112,10 +102,8 @@ services:
     sonata.block.event.vimeo_private_playlist_standard:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -128,10 +116,8 @@ services:
     sonata.block.event.youtube_private_video_premium:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -142,10 +128,8 @@ services:
     sonata.block.event.youtube_private_playlist_premium:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -157,10 +141,8 @@ services:
     sonata.block.event.vimeo_private_video_premium:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -172,10 +154,8 @@ services:
     sonata.block.event.vimeo_private_playlist_premium:
         class: App\Service\SonataBlock\EventBlock\EmbedPrivateVideoEventBlockService
         arguments:
-            - 'sonata.block.event.youtube_private_video'
-            - '@templating'
+            - '@twig'
             - '@App\Service\User\UserService'
-            - '@App\Repository\TicketRepository'
             - '@App\Service\Ticket\TicketService'
             - '@App\Service\VideoAccess\GrandAccessVideoService'
             - '@App\Repository\UserEventRegistrationRepository'
@@ -187,84 +167,86 @@ services:
 
     sonata.block.event.partners:
         class: App\Service\SonataBlock\EventBlock\PartnersEventBlockService
-        arguments: ['sonata.block.event.partners', '@templating', '@App\Repository\SponsorRepository', '@App\Repository\CategoryRepository']
+        arguments: ['@twig', '@App\Repository\SponsorRepository', '@App\Repository\CategoryRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.prices:
         class: App\Service\SonataBlock\EventBlock\PricesEventBlockService
-        arguments: ['sonata.block.event.prices', '@templating', '@App\Repository\TicketCostRepository']
+        arguments: ['@twig', '@App\Repository\TicketCostRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.description:
         class: App\Service\SonataBlock\EventBlock\DescriptionEventBlockService
-        arguments: ['sonata.block.event.description', '@templating']
+        arguments: ['@twig']
         tags: [name: 'sonata.block']
 
     sonata.block.event.venue:
         class: App\Service\SonataBlock\EventBlock\VenueEventBlockService
-        arguments: ['sonata.block.event.venue', '@templating', '@App\Service\EventService']
+        arguments: ['@twig', '@App\Service\EventService']
         tags: [name: 'sonata.block']
 
     sonata.block.event.program:
         class: App\Service\SonataBlock\EventBlock\ProgramEventBlockService
-        arguments: ['sonata.block.event.program', '@templating', '@App\Service\EventService']
+        arguments: ['@twig', '@App\Service\EventService']
         tags: [name: 'sonata.block']
 
     sonata.block.event.speakers:
         class: App\Service\SonataBlock\EventBlock\SpeakersEventBlockService
-        arguments: ['sonata.block.event.speakers', '@templating', '@translator', '@App\Repository\ReviewRepository']
+        arguments: ['@twig', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.reviews:
         class: App\Service\SonataBlock\EventBlock\ReviewsEventBlockService
-        arguments: ['sonata.block.event.reviews', '@templating', '@App\Repository\ReviewRepository']
+        arguments: ['@twig', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.candidate_speakers:
         class: App\Service\SonataBlock\EventBlock\CandidateSpeakersEventBlockService
-        arguments: ['sonata.block.event.candidate_speakers', '@templating', '@translator', '@App\Repository\ReviewRepository']
+        arguments: ['@twig', '@App\Repository\ReviewRepository']
         tags: [name: 'sonata.block']
 
     sonata.block.event.committee_speakers:
         class: App\Service\SonataBlock\EventBlock\CommitteeSpeakersEventBlockService
-        arguments: ['sonata.block.event.committee_speakers', '@templating', '@translator']
+        arguments: ['@twig']
         tags: [name: 'sonata.block']
 
     sonata.block.event.expert_speakers:
         class: App\Service\SonataBlock\EventBlock\DiscussionExpertsEventBlockService
-        arguments: ['sonata.block.event.expert_speakers', '@templating', '@translator']
+        arguments: ['@twig']
         tags: [name: 'sonata.block']
 
     sonata.block.event.ticket_status:
-        class: App\Service\SonataBlock\EventBlock\TicketStatusEventBlockService
-        arguments: ['sonata.block.event.ticket_status', '@templating', '@App\Service\Ticket\TicketService']
+        class: App\Service\SonataBlock\TicketStatusEventBlockService
+        arguments: ['@twig', '@App\Service\Ticket\TicketService']
         tags: [name: 'sonata.block']
 
     sonata.block.footer:
         class: App\Service\SonataBlock\FooterBlockService
-        arguments: ['sonata.block.footer', '@templating', '@App\Repository\PageRepository']
+        arguments: ['@twig', '@App\Repository\PageRepository']
+        tags: [name: 'sonata.block']
+
+    sonata.block.banner:
+        class: App\Service\SonataBlock\BannerBlockService
         tags: [name: 'sonata.block']
 
     sonata.block.language_switcher:
         class: App\Service\SonataBlock\LanguageSwitcherBlockService
-        arguments: ['sonata.block.language_switcher', '@templating', '@request_stack', '%locales%']
+        arguments: ['@twig', '@request_stack', '%locales%']
         tags: [name: 'sonata.block']
 
     sonata.block.email_user_subscribe:
         class: App\Service\SonataBlock\EmailSubscribeBlockService
-        arguments: ['sonata.block.email_user_subscribe', '@templating']
+        arguments: ['@twig']
         calls:
             - [setEmailHashValidationService, ['@App\Service\EmailHashValidationService']]
         tags: [name: 'sonata.block']
 
     sonata.block.service.statistic:
         class: App\Service\SonataBlock\StatisticBlockService
-        arguments: ['sonata.block.service.statistic', '@templating']
-        tags:
-            - { name: sonata.block }
+        arguments: ['@twig']
+        tags: [name: 'sonata.block']
 
     sonata.block.event.entity_referer:
         class: App\Service\SonataBlock\AdminBlock\PaymentRefererBlockService
-        arguments: ['sonata.block.event.entity_referer', '@templating', '@App\Repository\Referer\RefererRepository']
-        tags:
-            - { name: sonata.block }
+        arguments: ['@twig', '@App\Repository\Referer\RefererRepository']
+        tags: [name: 'sonata.block']

@@ -4,10 +4,11 @@ namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\Event;
 use App\Entity\EventBlock;
+use App\Exception\RuntimeException;
+use App\Traits\GrandAccessSonataBlockServiceTrait;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -15,24 +16,32 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DescriptionEventBlockService extends AbstractBlockService
 {
+    use GrandAccessSonataBlockServiceTrait;
+
     /**
      * {@inheritdoc}
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $event = $blockContext->getSetting('event');
+        $eventBlock = $blockContext->getSetting('event_block');
+        if ($eventBlock instanceof EventBlock) {
+            $accessGrand = $this->accessSonataBlockService->isAccessGrand($eventBlock);
+            if (!$accessGrand) {
+                return new Response();
+            }
+            $event = $eventBlock->getEvent();
+        } else {
+            $event = $blockContext->getSetting('event');
+        }
 
         if (!$event instanceof Event) {
-            throw new NotFoundHttpException();
+            throw new RuntimeException();
         }
 
         $about = $event->getAbout();
-        if (!$about) {
-            $eventBlock = $blockContext->getSetting('event_block');
 
-            if ($eventBlock instanceof EventBlock) {
-                $about = $eventBlock->getText();
-            }
+        if (!$about) {
+            $about = $eventBlock->getText();
         }
 
         return $this->renderResponse($blockContext->getTemplate(), [

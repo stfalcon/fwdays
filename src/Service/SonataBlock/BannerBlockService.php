@@ -2,7 +2,8 @@
 
 namespace App\Service\SonataBlock;
 
-use App\Repository\PageRepository;
+use App\Entity\Banner;
+use App\Service\BannerService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,22 +11,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
 /**
- * FooterBlockService.
+ * BannerBlockService.
  */
-class FooterBlockService extends AbstractBlockService
+class BannerBlockService extends AbstractBlockService
 {
-    /** @var PageRepository */
-    private $pageRepository;
+    /** @var BannerService */
+    private $bannerService;
 
     /**
-     * @param Environment    $twig
-     * @param PageRepository $pageRepository
+     * @param Environment   $twig
+     * @param BannerService $bannerService
      */
-    public function __construct(Environment $twig, PageRepository $pageRepository)
+    public function __construct(Environment $twig, BannerService $bannerService)
     {
         parent::__construct($twig);
 
-        $this->pageRepository = $pageRepository;
+        $this->bannerService = $bannerService;
     }
 
     /**
@@ -33,11 +34,15 @@ class FooterBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $pages = $this->pageRepository->findBy(['showInFooter' => true]);
+        $banner = $this->bannerService->getActiveBannerWithOutCookieClosed();
+
+        if (!$banner instanceof Banner) {
+            return new Response();
+        }
 
         return $this->renderResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
-            'pages' => $pages,
+            'banner' => $banner,
         ], $response);
     }
 
@@ -47,8 +52,7 @@ class FooterBlockService extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'template' => 'Redesign/_footer_pages.html.twig',
-            'pages' => null,
+            'template' => 'Banner/banner.html.twig',
         ]);
     }
 }

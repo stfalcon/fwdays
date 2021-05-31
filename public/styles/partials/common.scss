@@ -892,6 +892,43 @@ iframe {
     margin: -1px 4px 0 0;
   }
 }
+.banner {
+  top: 0;
+  left: 0;
+  right: 0;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 65px;
+    color: $white-color;
+    text-align: center;
+    padding: 16px;
+  }
+
+  &__content {
+    max-width: 94%;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: bold;
+
+    a {
+      color: $white-color;
+      font-weight: 700;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+}
 
 .alert {
   display: none;

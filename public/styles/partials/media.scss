@@ -152,6 +152,23 @@
     line-height: 42px;
   }
 
+  .banner {
+    &__container {
+      min-height: 45px;
+      padding: 10px 16px;
+    }
+
+    &__close {
+      height: 24px;
+      width: 24px;
+      top: 10px;
+    }
+
+    &__content {
+      max-width: 94%;
+    }
+  }
+
   .alert {
     &__container {
       min-height: 45px;
@@ -982,6 +999,32 @@
 }
 
 @media only screen and (max-width: 767px) {
+  .banner {
+    &__container {
+      justify-content: flex-start;
+    }
+
+    &__content {
+      font-size: 14px;
+      text-align: left;
+      margin-right: 30px;
+    }
+
+    &__close {
+      &:after {
+        top: 0;
+        left: 12px;
+        height: 24px;
+      }
+
+      &:before {
+        top: 0;
+        left: 12px;
+        height: 24px;
+      }
+    }
+  }
+
   .alert {
     &__container {
       justify-content: flex-start;
