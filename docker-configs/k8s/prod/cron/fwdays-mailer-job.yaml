@@ -5,7 +5,7 @@ metadata:
   namespace: fwdays-prod
 spec:
   concurrencyPolicy: Forbid
-  schedule: "* 5-20 * * *"
+  schedule: "* 4-19 * * *"
   jobTemplate:
     spec:
       template:
