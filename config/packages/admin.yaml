@@ -122,8 +122,6 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Пользователи, label: 'Пользователи' }
         arguments: ['', 'App\Entity\User', ~]
-        calls:
-            - [setTokenStorage, ['@security.token_storage']]
 
     app.admin.user_event:
         class: App\Admin\UserEventRegistrationAdmin
