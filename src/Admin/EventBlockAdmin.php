@@ -42,7 +42,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 ]
             )
             ->add('visible', null, ['label' => 'Включен'])
-            ->add('position', null, ['label' => 'Позиция', 'attr' => ['style' => 'max-width: 50px']])
+            ->add('position', null, ['label' => 'Позиция', 'attr' => ['style' => 'max-width: 60px']])
             ->add('translations', GedmoTranslationsType::class, [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
