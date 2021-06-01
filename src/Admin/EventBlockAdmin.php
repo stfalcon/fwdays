@@ -29,7 +29,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 [
                     'choices' => EventBlock::getTypeChoices(),
                     'label' => 'Тип',
-                    'attr' => ['style' => 'max-width: 160px']
+                    'attr' => ['style' => 'max-width: 160px'],
                 ]
             )
             ->add(
@@ -38,7 +38,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 [
                     'choices' => EventBlock::getVisibilityChoices(),
                     'label' => 'Видимость блока',
-                    'attr' => ['style' => 'max-width: 200px']
+                    'attr' => ['style' => 'max-width: 200px'],
                 ]
             )
             ->add('visible', null, ['label' => 'Включен'])
