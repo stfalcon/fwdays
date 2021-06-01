@@ -29,6 +29,7 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 [
                     'choices' => EventBlock::getTypeChoices(),
                     'label' => 'Тип',
+                    'attr' => ['style' => 'max-width: 160px'],
                 ]
             )
             ->add(
@@ -37,10 +38,11 @@ class EventBlockAdmin extends AbstractTranslateAdmin
                 [
                     'choices' => EventBlock::getVisibilityChoices(),
                     'label' => 'Видимость блока',
+                    'attr' => ['style' => 'max-width: 200px'],
                 ]
             )
             ->add('visible', null, ['label' => 'Включен'])
-            ->add('position', null, ['label' => 'Позиция'])
+            ->add('position', null, ['label' => 'Позиция', 'attr' => ['style' => 'max-width: 50px']])
             ->add('translations', GedmoTranslationsType::class, [
                 'translatable_class' => $this->getClass(),
                 'fields' => [
