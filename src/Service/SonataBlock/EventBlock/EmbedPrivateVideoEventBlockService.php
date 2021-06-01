@@ -3,6 +3,7 @@
 namespace App\Service\SonataBlock\EventBlock;
 
 use App\Entity\EventBlock;
+use App\Entity\User;
 use App\Entity\UserEventRegistration;
 use App\Exception\RuntimeException;
 use App\Repository\UserEventRegistrationRepository;
@@ -122,7 +123,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $this->ticketService->setTickedUsedIfOnlineEvent($ticket);
         }
 
-        $registration = empty($tickets) ? $this->eventRegistrationRepository->findOneForUserAndEvent($user, $event) : null;
+        $registration = (empty($tickets) && $user instanceof User) ? $this->eventRegistrationRepository->findOneForUserAndEvent($user, $event) : null;
 
         if ($registration instanceof UserEventRegistration) {
             $this->userService->setUserUsedRegistrationIfOnlineEvent($registration);
