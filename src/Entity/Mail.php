@@ -161,7 +161,7 @@ class Mail implements TranslatableInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", name="users_with_en_local", options={"unsigned"=true}, nullable=true)
+     * @ORM\Column(type="integer", name="users_with_en_local", options={"unsigned":true}, nullable=true)
      *
      * @Assert\GreaterThanOrEqual(value="0")
      */
@@ -170,7 +170,7 @@ class Mail implements TranslatableInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", name="users_with_uk_local", options={"unsigned"=true}, nullable=true)
+     * @ORM\Column(type="integer", name="users_with_uk_local", options={"unsigned":true}, nullable=true)
      *
      * @Assert\GreaterThanOrEqual(value="0")
      */

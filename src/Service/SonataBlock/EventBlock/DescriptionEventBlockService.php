@@ -40,7 +40,7 @@ class DescriptionEventBlockService extends AbstractBlockService
 
         $about = $event->getAbout();
 
-        if (!$about) {
+        if (!$about && $eventBlock instanceof EventBlock) {
             $about = $eventBlock->getText();
         }
 
