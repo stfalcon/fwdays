@@ -250,12 +250,12 @@ final class MailAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Фильтры', ['class' => 'col-md-6'])
-                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false, 'help' => 'действует на аудиторию либо на аудиторию + события, если не указан статус оплаты'])
+                ->add('wantsVisitEvent', null, ['label' => 'Подписанным на события', 'required' => false])
                 ->add('paymentStatus', ChoiceType::class, [
                     'choices' => Payment::getPaymentStatusChoice(),
                     'required' => false,
                     'label' => 'Статус оплаты',
-                    'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из")',
+                    'help' => 'проверяет статус билета на ивент(-ы) указаные в поле "События" ("любое из"). "ожидание" - включает тех кто создал, но не оплатил билет + тех кто не создавал',
                 ])
                 ->add('ticketType', ChoiceType::class, [
                     'choices' => TicketCost::getTypesWithOutFree(),
@@ -297,24 +297,22 @@ final class MailAdmin extends AbstractAdmin
         $paymentStatus = $mail->getPaymentStatus();
         $ticketType = $mail->getTicketType();
 
-        $eventCollection = $paymentStatus ? [] : $mail->getEvents()->toArray();
+        $eventCollection = $mail->getEvents()->toArray();
         /** @var EventAudience $audience */
         foreach ($mail->getAudiences() as $audience) {
             $eventCollection = \array_merge($eventCollection, $audience->getEvents()->toArray());
         }
 
-        $allEvents = [];
+        $events = [];
         foreach ($eventCollection as $event) {
-            $allEvents[$event->getId()] = $event;
+            $events[$event->getId()] = $event;
         }
-        $allEvents = new ArrayCollection($allEvents);
-
-        $selectedEvents = $mail->getEvents();
+        $events = new ArrayCollection($events);
 
         $isIgnoreUnsubscribe = $mail->isIgnoreUnsubscribe();
 
-        if ($allEvents->count() > 0 || $selectedEvents->count() > 0) {
-            $users = $this->userRepository->getUsersForEmail($mail->isWantsVisitEvent(), $allEvents, $selectedEvents, $isIgnoreUnsubscribe, $paymentStatus, $ticketType);
+        if ($events->count() > 0) {
+            $users = $this->userRepository->getUsersForEmail($mail->isWantsVisitEvent(), $events, $isIgnoreUnsubscribe, $paymentStatus, $ticketType);
         } else {
             $users = $this->userRepository->getAllSubscribed($isIgnoreUnsubscribe);
         }
