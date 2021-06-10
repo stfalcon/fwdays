@@ -34,7 +34,6 @@
         "ext-json": "*",
         "ext-redis": "*",
         "a2lix/translation-form-bundle": "dev-symfony4",
-        "accord/mandrill-swiftmailer-bundle": "^1.2",
         "aws/aws-sdk-php": "^3.92.5",
         "beberlei/doctrineextensions": "^1.2",
         "cmen/google-charts-bundle": "^3.2",
@@ -91,6 +90,7 @@
         "symfony/validator": "4.4.*",
         "symfony/workflow": "4.4.*",
         "symfony/yaml": "4.4.*",
+        "symfony/dom-crawler":"v5.1.6",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.10.0",
         "vich/uploader-bundle": "^1.9.2"

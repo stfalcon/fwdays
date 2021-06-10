@@ -3,8 +3,8 @@
 namespace App\Admin;
 
 use App\Entity\User;
-use App\Service\User\UserService;
 use App\Traits\TokenStorageTrait;
+use App\Traits\UserServiceTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -24,6 +24,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class UserAdmin extends AbstractAdmin
 {
     use TokenStorageTrait;
+    use UserServiceTrait;
 
     /**
      * {@inheritdoc}
@@ -141,9 +142,8 @@ final class UserAdmin extends AbstractAdmin
         if (!$container instanceof ContainerInterface) {
             throw new BadRequestHttpException('container not found');
         }
-        /** @var UserService $userService */
-        $userService = $container->get(UserService::class);
-        $user = $userService->getCurrentUser();
+
+        $user = $this->userService->getCurrentUser();
         $environment = $container->getParameter('kernel.environment');
 
         $isSuperAdmin = \in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || 'dev' === $environment;
@@ -228,8 +228,10 @@ final class UserAdmin extends AbstractAdmin
         $roles = [];
         $rolesHierarhy = $this->getConfigurationPool()->getContainer()
             ->getParameter('security.role_hierarchy.roles');
-        foreach (array_keys($rolesHierarhy) as $role) {
-            $roles[$role] = $role;
+        if (\is_array($rolesHierarhy)) {
+            foreach (\array_keys($rolesHierarhy) as $role) {
+                $roles[$role] = $role;
+            }
         }
 
         return $roles;

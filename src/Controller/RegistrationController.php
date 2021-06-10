@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Event\User\UseRegistrationCompletedEvent;
 use App\Event\User\UseRegistrationSuccessEvent;
+use App\Exception\RuntimeException;
 use App\Handler\LoginHandler;
 use App\Traits;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
@@ -259,11 +260,12 @@ class RegistrationController extends BaseController
     private function authenticateUser(UserInterface $user, Response $response): void
     {
         try {
-            $this->loginManager->loginUser(
-                $this->getParameter('fos_user.firewall_name'),
-                $user,
-                $response
-            );
+            $firewallName = $this->getParameter('fos_user.firewall_name');
+            if (\is_string($firewallName)) {
+                $this->loginManager->loginUser($firewallName, $user, $response);
+            } else {
+                throw new RuntimeException();
+            }
         } catch (AccountStatusException $ex) {
         }
     }

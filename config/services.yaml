@@ -149,9 +149,6 @@ services:
             - '@liip_imagine.filter.manager'
             - '@liip_imagine.data.manager'
 
-    App\Service\User\UserService:
-        public: true
-
     app.assets.s3:
         class: Aws\S3\S3Client
         public: true
