@@ -1,2 +1,0 @@
-accord_mandrill_swift_mailer:
-    api_key: '%env(MANDRILL_API_KEY)%'

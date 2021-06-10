@@ -22,7 +22,6 @@ return [
     Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
-    Accord\MandrillSwiftMailerBundle\AccordMandrillSwiftMailerBundle::class => ['all' => true],
     Lexik\Bundle\TranslationBundle\LexikTranslationBundle::class => ['all' => true],
     Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],

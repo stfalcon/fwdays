@@ -425,8 +425,9 @@ class AdminController extends AbstractController
         $data = $this->ticketRepository->getTicketsCountByEventsPerDateBetweenDates($since, $till);
         $events = [];
         foreach ($data as $key => $item) {
-            $data[$key]['name'] = \str_replace("'", ' ', $item['name']);
-            $events[$data[$key]['name']] = 0;
+            $value = (string) \str_replace("'", ' ', $item['name']);
+            $data[$key]['name'] = $value;
+            $events[$value] = 0;
         }
 
         $resultSoldCount = $this->setEmptyIntervalArrayWithArray($events, $since, $till);
@@ -452,8 +453,9 @@ class AdminController extends AbstractController
         $registrationEvents = [];
         $registrationMeetupsEvents = [];
 
+        /** @var array $item */
         foreach ($registrations as $key => $item) {
-            $registrations[$key]['name'] = \str_replace("'", ' ', $item['name']);
+            $registrations[$key]['name'] = (string) \str_replace("'", ' ', $item['name']);
             if ($item['smallEvent']) {
                 $registrationMeetupsEvents[$registrations[$key]['name']] = 0;
             } else {
