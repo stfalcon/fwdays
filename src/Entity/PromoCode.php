@@ -345,21 +345,15 @@ class PromoCode implements TranslatableInterface, BlameableInterface
      */
     public function isUnlimited()
     {
-        $unlimited = 0 === $this->maxUseCount;
-
-        return $unlimited;
+        return 0 === $this->maxUseCount;
     }
 
     /**
      * @return int|string
      */
-    public function getUsed()
+    public function getLimit()
     {
-        if ($this->isUnlimited()) {
-            return $this->getUsedCount();
-        }
-
-        return $this->getUsedCount().' из '.$this->getMaxUseCount();
+        return $this->isUnlimited() ? '-' : $this->getMaxUseCount();
     }
 
     /**

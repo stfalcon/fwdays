@@ -43,7 +43,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
         [
             '_page' => 1,
             '_per_page' => 32,
-            '_sort_order' => 'DESC',
+            '_sort_order' => Criteria::DESC,
             '_sort_by' => 'id',
         ];
 
@@ -56,6 +56,7 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
     public function __construct($code, $class, $baseControllerName, EventRepository $eventRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
+
         $this->eventRepository = $eventRepository;
     }
 
@@ -97,7 +98,8 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
             ->add('discountAmount', null, ['label' => 'Скидка (%)'])
             ->add('code', null, ['label' => 'Код'])
             ->add('event', 'string', ['label' => 'Событие'])
-            ->add('used', null, ['label' => 'Использований'])
+            ->add('usedCount', null, ['label' => 'Использований'])
+            ->add('Limit', null, ['label' => 'Лимит'])
             ->add('tickerCostType', null, ['label' => 'Тип билета'])
             ->add('endDate', null, ['label' => 'Дата окончания'])
             ->add('createdBy', 'string', ['label' => 'Создал'])
@@ -191,13 +193,15 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
-        $datagridMapper->add(
-            'event',
-            null,
-            [],
-            EntityType::class,
-            ['choices' => $this->getEvents()]
-        )
+        $datagridMapper
+            ->add('title', null, ['label' => 'Название'])
+            ->add(
+                'event',
+                null,
+                ['label' => 'Событие'],
+                EntityType::class,
+                ['choices' => $this->getEvents()]
+            )
             ->add('createdBy.email', null, ['label' => 'Создал'])
             ->add(
                 'tickerCostType',
