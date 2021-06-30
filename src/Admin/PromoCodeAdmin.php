@@ -196,12 +196,12 @@ class PromoCodeAdmin extends AbstractTranslateAdmin
         $datagridMapper
             ->add('title', null, ['label' => 'Название'])
             ->add(
-            'event',
-            null,
-            ['label' => 'Событие'],
-            EntityType::class,
-            ['choices' => $this->getEvents()]
-        )
+                'event',
+                null,
+                ['label' => 'Событие'],
+                EntityType::class,
+                ['choices' => $this->getEvents()]
+            )
             ->add('createdBy.email', null, ['label' => 'Создал'])
             ->add(
                 'tickerCostType',
