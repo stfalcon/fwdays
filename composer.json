@@ -49,6 +49,7 @@
         "ibrows/sonata-translation-bundle": "dev-symfony44",
         "jms/i18n-routing-bundle": "^3.0",
         "league/flysystem-aws-s3-v3": "^1.0.22",
+        "lexik/translation-bundle": "4.4.0",
         "liip/imagine-bundle": "^2.2",
         "maxmind/geoip": "^1.1.5",
         "monolog/monolog": "1.*",
@@ -69,6 +70,7 @@
         "stof/doctrine-extensions-bundle": "^1.3",
         "suncat/mobile-detect-bundle": "^1.1.1",
         "symfony/console": "4.4.*",
+        "symfony/dom-crawler": "v5.1.6",
         "symfony/dotenv": "4.4.*",
         "symfony/expression-language": "4.4.*",
         "symfony/flex": "^1.2",
@@ -90,7 +92,6 @@
         "symfony/validator": "4.4.*",
         "symfony/workflow": "4.4.*",
         "symfony/yaml": "4.4.*",
-        "symfony/dom-crawler":"v5.1.6",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.10.0",
         "vich/uploader-bundle": "^1.9.2"

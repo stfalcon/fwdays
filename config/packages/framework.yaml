@@ -29,7 +29,6 @@ framework:
     default_locale:  "%locale%"
     translator:
         default_path: '%kernel.project_dir%/translations'
-        fallback: "%locale%"
     secret: '%env(APP_SECRET)%'
     form: true
     csrf_protection: true
