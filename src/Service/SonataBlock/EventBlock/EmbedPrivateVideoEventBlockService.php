@@ -129,7 +129,7 @@ class EmbedPrivateVideoEventBlockService extends AbstractBlockService
             $this->userService->setUserUsedRegistrationIfOnlineEvent($registration);
         }
 
-        return $this->renderResponse($blockContext->getTemplate(), [
+        return $this->renderPrivateResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
             'event_block' => $eventBlock,
             'is_playlist' => $this->isPlaylist,

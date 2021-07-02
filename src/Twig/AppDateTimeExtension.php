@@ -286,7 +286,7 @@ class AppDateTimeExtension extends AbstractExtension
         ) {
             $words = \explode(' ', $formattedDate);
             foreach ($words as $key => $word) {
-                $words[$key] = $this->translator->transChoice($word, (int) $this->convertToSeason + 1, [], 'year_season');
+                $words[$key] = $this->translator->trans($word, ['%count%' => (int) $this->convertToSeason + 1], 'year_season');
             }
             $result = \implode(' ', $words);
         }

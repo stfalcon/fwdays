@@ -47,7 +47,7 @@ class TicketStatusEventBlockService extends AbstractBlockService
 
         $result = $this->ticketService->getTicketHtmlData($event, $position, $ticketCost, $forced);
 
-        return $this->renderResponse($blockContext->getTemplate(), [
+        return $this->renderPrivateResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
             'event' => $event,
             'result' => $result,

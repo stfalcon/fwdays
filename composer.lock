@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b90fe1a3933f4fed35e089aa42460d17",
+    "content-hash": "9738fc9c6ee90a09f0d7ea0accef78b8",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3469,34 +3469,31 @@
         },
         {
             "name": "lexik/translation-bundle",
-            "version": "v4.0.14",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikTranslationBundle.git",
-                "reference": "b110bc15a0bff04111b0ea12911a9a73dd08569b"
+                "reference": "090b6ad0388cb1083b3b922edb0edb94042fa064"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/b110bc15a0bff04111b0ea12911a9a73dd08569b",
-                "reference": "b110bc15a0bff04111b0ea12911a9a73dd08569b",
+                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/090b6ad0388cb1083b3b922edb0edb94042fa064",
+                "reference": "090b6ad0388cb1083b3b922edb0edb94042fa064",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0",
-                "symfony/framework-bundle": "~2.8|~3.0|~4.0"
+                "php": "^7.1",
+                "symfony/framework-bundle": "^4.0"
             },
             "require-dev": {
+                "alcaeus/mongo-php-adapter": "~1.0",
                 "doctrine/data-fixtures": "~1.1",
                 "doctrine/doctrine-bundle": "~1.2",
                 "doctrine/mongodb-odm-bundle": "~3.0",
-                "doctrine/orm": "^2.2.3",
-                "phpunit/phpunit": "^5.7",
-                "propel/propel": "@dev",
-                "propel/propel-bundle": "^3.0@dev|^4.0@dev"
-            },
-            "suggest": {
-                "doctrine/mongodb-odm-bundle": "~3.0",
-                "doctrine/orm": ">=2.4"
+                "doctrine/orm": ">=2.4",
+                "phpunit/phpunit": "~7.5.2",
+                "propel/propel": "2.0.0-alpha10|dev-master",
+                "symfony/symfony": "~4.4"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -3526,12 +3523,12 @@
             "description": "This bundle allows to import translation files content into the database and provide a GUI to edit translations.",
             "homepage": "https://github.com/lexik/LexikTranslationBundle",
             "keywords": [
-                "Symfony2",
                 "bundle",
                 "i18n",
+                "symfony",
                 "translation"
             ],
-            "time": "2019-08-01T06:13:53+00:00"
+            "time": "2021-01-26T07:40:30+00:00"
         },
         {
             "name": "liip/imagine-bundle",
