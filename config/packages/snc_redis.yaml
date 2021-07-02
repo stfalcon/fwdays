@@ -5,7 +5,21 @@ snc_redis:
             type: predis
             logging: false
             alias: session
-
+        app_cache:
+            dsn: "%env(REDIS_APP_CACHE_URL)%"
+            type: predis
+            logging: false
+            alias: app_cache
+        doctrine_metadata_cache:
+            type: predis
+            alias: doctrine_metadata_cache
+            dsn: "%env(REDIS_DOCTRINE_METADATA_CACHE_URL)%"
+            logging: "%kernel.debug%"
+        doctrine_query_cache:
+            type: predis
+            alias: doctrine_query_cache
+            dsn: "%env(REDIS_DOCTRINE_QUERY_CACHE_URL)%"
+            logging: "%kernel.debug%"
     session:
         client: session
         ttl: 1728000
