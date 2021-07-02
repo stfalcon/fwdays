@@ -90,6 +90,15 @@ services:
             - [addEventState, ['@App\Service\Ticket\RegistrationCloseEventState']]
             - [addEventState, ['@App\Service\Ticket\SaleOpenEventState']]
 
+    doctrine.metadata_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        arguments:
+            - '@doctrine.metadata_cache_pool'
+
+    doctrine.query_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        arguments:
+            - '@doctrine.query_cache_pool'
 
     App\Handler\LoginHandler: ~
 

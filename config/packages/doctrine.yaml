@@ -25,3 +25,9 @@ doctrine:
                 WEEK: DoctrineExtensions\Query\Mysql\Week
                 DAY: DoctrineExtensions\Query\Mysql\Day
                 DATE: DoctrineExtensions\Query\Mysql\Date
+        metadata_cache_driver:
+            type: service
+            id: doctrine.metadata_cache_provider
+        query_cache_driver:
+            type: service
+            id: doctrine.query_cache_provider
