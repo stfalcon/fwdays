@@ -11,6 +11,9 @@ lexik_translation:
     managed_locales: "%locales%"    # (required) locales that the bundle have to manage
     auto_cache_clean: true
     auto_cache_clean_interval: 600
+    resources_registration:
+        type: database  # all | files | database
+        managed_locales_only: true
 
 jms_i18n_routing:
     default_locale: "%locale%"
