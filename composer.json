@@ -182,6 +182,11 @@
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env=test",
             "bin/console doctrine:fixtures:load --no-interaction --env=test"
         ],
+        "app:clear-doctrine-cache": [
+            "bin/console cache:pool:clear doctrine.metadata_cache_pool",
+            "bin/console cache:pool:clear doctrine.query_cache_pool",
+            "echo DONE"
+        ],
         "ci:pack": [
             "@ci:composer-validate",
             "@ci:twig-lint",
