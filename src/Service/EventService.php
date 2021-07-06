@@ -63,7 +63,7 @@ class EventService
             }
         }
 
-        $eventCurrentAmount = $this->ticketCostRepository->getEventLowestCost($event);
+        [$eventCurrentAmount, $ticketCostCount] = $this->ticketCostRepository->getEventLowestCost($event);
 
         $futureEvent = !$event->isActiveAndFuture() && $event->getGroup() instanceof EventGroup ? $this->eventRepository->findFutureEventFromSameGroup($event->getGroup()) : null;
 
@@ -74,6 +74,7 @@ class EventService
             'pages' => $pages,
             'review' => $review,
             'eventCurrentAmount' => $eventCurrentAmount,
+            'header_ticket_text' => $ticketCostCount > 1 ? 'ticket.summ_from' : 'ticket.summ',
             'futureEvent' => $futureEvent,
         ];
     }
