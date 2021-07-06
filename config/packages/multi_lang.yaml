@@ -12,7 +12,7 @@ lexik_translation:
     auto_cache_clean: true
     auto_cache_clean_interval: 600
     resources_registration:
-        type: database  # all | files | database
+        type: all  # all | files | database
         managed_locales_only: true
 
 jms_i18n_routing:

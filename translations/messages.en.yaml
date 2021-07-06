@@ -221,6 +221,7 @@ ticket.status.sold: Tickets sold out
 ticket.status.sold_mob: sold out
 
 ticket.summ_from: Tickets cost from %summ% UAH
+ticket.summ: Tickets cost %summ% UAH
 ticket.status.event.add: Event added
 ticket.status.paid: Participation is paid
 ticket.status.paid_mov: Paid

@@ -50,9 +50,9 @@ class TicketCostRepository extends ServiceEntityRepository
     /**
      * @param Event $event
      *
-     * @return float|null
+     * @return array
      */
-    public function getEventLowestCost(Event $event): ?float
+    public function getEventLowestCost(Event $event): array
     {
         $qb = $this->getEventTicketsCostQB($event);
         $this->enabledFilter($qb);
@@ -67,7 +67,7 @@ class TicketCostRepository extends ServiceEntityRepository
             }
         }
 
-        return $result;
+        return [$result, \count($ticketCosts)];
     }
 
     /**
