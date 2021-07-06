@@ -61,11 +61,13 @@ class EventRepository extends ServiceEntityRepository
             ->where($qb->expr()->eq('e.active', ':active'))
             ->andWhere($qb->expr()->gte('e.date', ':date'))
             ->andWhere($qb->expr()->eq('e.group', ':group'))
+            ->andWhere($qb->expr()->eq('e.type', ':type'))
             ->setParameters(
                 new ArrayCollection([
                     new Parameter('active', true),
                     new Parameter('group', $eventGroup),
                     new Parameter('date', new \DateTime()),
+                    new Parameter('type', Event::EVENT_TYPE_CONFERENCE),
                 ])
             )
             ->orderBy('e.date', Criteria::ASC)
