@@ -212,6 +212,7 @@ ticket.status.get: Отримати квиток
 ticket.status.pay_mob: Купити
 ticket.status.pay_for: Купити за
 ticket.summ_from: Квитки від %summ% грн
+ticket.summ: Квитки %summ% грн
 ticket.status.payment_returned: Оплата повернута
 ticket.status.payment_returned_mob: Оплата повернута
 ticket.status.paid: Участь сплачено
