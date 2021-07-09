@@ -199,6 +199,35 @@ class TicketRepository extends ServiceEntityRepository
      */
     public function findOneByUserAndEventWithPendingPayment(User $user, Event $event, ?string $type): ?Ticket
     {
+        return $this->findOneByUserEventPaymentStatus($user, $event, Payment::STATUS_PENDING, $type);
+    }
+
+    /**
+     * @param User        $user
+     * @param Event       $event
+     * @param string|null $type
+     *
+     * @return Ticket|null
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findOneByUserEventWithPaidPayment(User $user, Event $event, ?string $type): ?Ticket
+    {
+        return $this->findOneByUserEventPaymentStatus($user, $event, Payment::STATUS_PAID, $type);
+    }
+
+    /**
+     * @param User        $user
+     * @param Event       $event
+     * @param string      $paymentStatus
+     * @param string|null $type
+     *
+     * @return Ticket|null
+     *
+     * @throws NonUniqueResultException
+     */
+    public function findOneByUserEventPaymentStatus(User $user, Event $event, string $paymentStatus, ?string $type): ?Ticket
+    {
         $qb = $this->createQueryBuilder('t');
 
         $qb
@@ -210,7 +239,7 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameters(new ArrayCollection([
                 new Parameter('event', $event),
                 new Parameter('user', $user),
-                new Parameter('status', Payment::STATUS_PENDING),
+                new Parameter('status', $paymentStatus),
             ]))
         ;
 
