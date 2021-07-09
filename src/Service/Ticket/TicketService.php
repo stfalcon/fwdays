@@ -362,9 +362,9 @@ class TicketService
             /** @var PaymentRepository $paymentRepository */
             $paymentRepository = $this->em->getRepository(Payment::class);
             $payment = $paymentRepository->findPendingPaymentByUserAndEvent($user, $event);
+            $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
             /** @var Ticket|null $ticket */
-            $ticket = $this->em->getRepository(Ticket::class)
-                ->findOneBy(['event' => $event->getId(), 'user' => $user->getId()]);
+            $ticket = $this->ticketRepository->findOneByUserEventWithPaidPayment($user, $event, $type);
         }
 
         return (new EventStateData($event, $position, $ticketCost, $forced))
@@ -409,6 +409,11 @@ class TicketService
         $ticketCaption = null;
         $downloadUrl = null;
         $ticketCost = $eventStateData->getTicketCost();
+
+        if (!$ticketCost instanceof TicketCost && $eventStateData->getTicket() instanceof Ticket) {
+            $ticketCost = $eventStateData->getTicket()->getTicketCost();
+        }
+
         $type = $ticketCost instanceof TicketCost ? $ticketCost->getType() : null;
 
         if ($eventStateData->canDownloadTicket()) {
