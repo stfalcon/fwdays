@@ -243,9 +243,7 @@ class TicketRepository extends ServiceEntityRepository
             ]))
         ;
 
-        if (null === $type) {
-            $qb->andWhere($qb->expr()->isNull('tc.type'));
-        } else {
+        if (null !== $type) {
             $qb->andWhere($qb->expr()->eq('tc.type', ':type'))
                 ->setParameter('type', $type)
             ;
