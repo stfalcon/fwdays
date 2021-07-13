@@ -74,6 +74,15 @@ class TicketBenefit implements TranslatableInterface
     private $benefits;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Gedmo\Translatable(fallback=true)
+     */
+    private $title = null;
+
+    /**
      * @var File|null
      *
      * @Assert\File(
@@ -237,5 +246,25 @@ class TicketBenefit implements TranslatableInterface
     public function getTranslations()
     {
         return $this->translations;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string|null $title
+     *
+     * @return $this
+     */
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }
