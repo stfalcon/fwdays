@@ -53,6 +53,10 @@ final class TicketBenefitAdmin extends AbstractTranslateAdmin
                 [
                     'translatable_class' => $this->getClass(),
                     'fields' => [
+                        'title' => [
+                            'label' => 'Название',
+                            'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(false),
+                        ],
                         'benefits' => [
                             'label' => 'Описание/список бонусов',
                             'locale_options' => $this->localsRequiredService->getLocalsRequiredArray(true, 'Описание/список бонусов %lang%'),

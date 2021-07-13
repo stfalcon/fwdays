@@ -73,7 +73,7 @@ class PricesEventBlockService extends AbstractBlockService
             }
             $ticketCosts = $tmpArray;
             foreach ($event->getTicketBenefits() as $ticketBenefit) {
-                $ticketBenefits[$ticketBenefit->getType()] = $ticketBenefit->getBenefits();
+                $ticketBenefits[$ticketBenefit->getType()] = $ticketBenefit;
             }
         }
 

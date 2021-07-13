@@ -13,8 +13,9 @@
                         {% for type, tickets in ticketCosts %}
                             {% set template = 'Redesign/Event/Price/price_block_' ~ type  ~ '.html.twig' %}
                             {% set price = currentPrice[type] is defined ? currentPrice[type] : 0 %}
-                            {% set benefits = ticket_benefits[type] is defined ? ticket_benefits[type] : '' %}
-                            {% include template with {'tickets':tickets, 'currentPrice' : price, 'benefits':benefits}  %}
+                            {% set benefits = ticket_benefits[type] is defined ? ticket_benefits[type].getBenefits() : '' %}
+                            {% set title = ticket_benefits[type] is defined ? ticket_benefits[type].getTitle() : null %}
+                            {% include template with {'tickets':tickets, 'currentPrice' : price, 'benefits':benefits, 'title': title}  %}
                         {% endfor %}
                     {% endif %}
                 {% endif %}
