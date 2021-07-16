@@ -22,8 +22,10 @@
             <a href="{{ link }}#price-event" class="event-menu__link{{ scrollClass }}">{{ 'event.price.title'|trans }}</a>
         </li>
     {% endif %}
+    {% if false == event.online %}
         <li class="event-menu__item">
             <a href="{{ link }}#location-event" class="event-menu__link{{ scrollClass }}">{{ 'event.page.venue'|trans }}</a>
         </li>
+    {% endif %}
     </ul>
 </nav>
