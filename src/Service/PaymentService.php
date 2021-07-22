@@ -204,10 +204,13 @@ class PaymentService
     public function addPromoCodeForTicketByCode(?string $promoCodeString, Event $event, Ticket $ticket, bool $throwException = true, ?string $requestTicketType = null): void
     {
         if ($promoCodeString) {
+            $ticketType = $ticket->getTicketType();
+            $ticketType = null !== $ticketType ? $ticketType : $requestTicketType;
+
             /** @var PromoCodeRepository $promoCodeRepository */
             $promoCodeRepository = $this->em->getRepository(PromoCode::class);
-            $promoCode = $promoCodeRepository
-                ->findActivePromoCodeByCodeAndEvent($promoCodeString, $event);
+
+            $promoCode = $promoCodeRepository->findActivePromoCodeByCodeAndEvent($promoCodeString, $event, $ticketType);
 
             if (!$promoCode) {
                 if ($throwException) {
@@ -216,9 +219,6 @@ class PaymentService
 
                 return;
             }
-
-            $ticketType = $ticket->getTicketType();
-            $ticketType = null !== $ticketType ? $ticketType : $requestTicketType;
 
             if (!$promoCode->isSameTicketCostTypeOrNull($ticketType)) {
                 if ($throwException) {
@@ -268,7 +268,7 @@ class PaymentService
             $promoCodeCleared = false;
             $promoCode = $ticket->getPromoCode();
             if ($promoCode instanceof PromoCode) {
-                if (!$promoCode->isLimitUsed()) {
+                if (!$promoCode->isLimitUsed() || !$promoCode->isSameTicketCostTypeOrNull($currentTicketCost->getType())) {
                     $ticket->setPromoCode(null);
                     $promoCodeCleared = true;
                 } else {
