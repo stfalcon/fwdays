@@ -24,14 +24,13 @@ class PromoCodeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $code
-     * @param Event  $event
+     * @param string      $code
+     * @param Event       $event
+     * @param string|null $ticketType
      *
      * @return PromoCode|null
-     *
-     * @throws \Exception
      */
-    public function findActivePromoCodeByCodeAndEvent($code, $event): ?PromoCode
+    public function findActivePromoCodeByCodeAndEvent(string $code, Event $event, ?string $ticketType): ?PromoCode
     {
         $qb = $this->createQueryBuilder('pc');
         $qb->andWhere($qb->expr()->eq('pc.event', ':event'))
@@ -46,6 +45,13 @@ class PromoCodeRepository extends ServiceEntityRepository
             ))
             ->setMaxResults(1)
         ;
+
+        if (\is_string($ticketType)) {
+            $qb->andWhere($qb->expr()->eq('pc.tickerCostType', ':ticket_type'))
+                ->setParameter('ticket_type', $ticketType)
+            ;
+        }
+
         try {
             $result = $qb->getQuery()->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {

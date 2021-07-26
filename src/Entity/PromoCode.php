@@ -16,17 +16,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * PromoCode.
  *
- * @ORM\Table(name="event__promo_code")
+ * @ORM\Table(name="event__promo_code", indexes={
+ *         @ORM\Index(columns={"code", "ticker_cost_type"})
+ *     })
  * @ORM\Entity(repositoryClass="App\Repository\PromoCodeRepository")
  * @ORM\EntityListeners({
  *     "App\EventListener\ORM\Blameable\BlameableListener"
  * })
  *
- * @UniqueEntity(
- *     "code",
- *     errorPath="code",
- *     message="Поле code повинне бути унікальне."
- * )
+ * @UniqueEntity({"code", "tickerCostType"}, errorPath="code", message="Поля code+тип повинні бути унікальні.")
+ *
  * @Gedmo\TranslationEntity(class="App\Entity\Translation\PromoCodeTranslation")
  */
 class PromoCode implements TranslatableInterface, BlameableInterface
@@ -147,7 +146,7 @@ class PromoCode implements TranslatableInterface, BlameableInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="ticker_cost_type",  type="string", nullable=true, length=20)
+     * @ORM\Column(name="ticker_cost_type", type="string", nullable=true, length=20)
      */
     private $tickerCostType;
 
